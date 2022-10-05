@@ -173,7 +173,7 @@
 		<saaj-impl-version>1.3.16</saaj-impl-version>
 		<ap-fonts-version>1.0.1</ap-fonts-version>
 		<wsdl4j-version>1.6.3</wsdl4j-version>
-		<google-guava-version>23.2-jre</google-guava-version>
+		<google-guava-version>29.0-jre</google-guava-version>
 		<google.zxing.version>3.3.0</google.zxing.version>
 		<javaxt.core.version>1.7.8</javaxt.core.version>
 		<recaptcha.version>0.0.8</recaptcha.version>
