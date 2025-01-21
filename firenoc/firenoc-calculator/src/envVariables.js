@@ -5,7 +5,7 @@ const envVariables = {
   DB_HOST: process.env.DB_HOST || "localhost",
   DB_NAME: process.env.DB_NAME || "egov_firenoc",
   DB_PORT: process.env.DB_PORT || 5432,
-  DB_SSL: process.env.DB_SSL || true,
+  DB_SSL: process.env.DB_SSL || false,
   DB_MAX_POOL_SIZE: process.env.DB_MAX_POOL_SIZE || "5",
 
   //----------------------------- FLYWAY CONFIGURATIONS ------------------------------//
@@ -17,7 +17,7 @@ const envVariables = {
 
   //mdms urls
   EGOV_MDMS_HOST:
-    process.env.EGOV_MDMS_HOST || "https://dev.digit.org",
+    process.env.EGOV_MDMS_HOST || "https://unified-qa.digit.org",
   EGOV_MDMS_SEARCH_ENDPOINT:
     process.env.EGOV_MDMS_SEARCH_ENDPOINT || "/egov-mdms-service/v1/_search",
 
@@ -78,7 +78,7 @@ const envVariables = {
     process.env.HTTP_CLIENT_DETAILED_LOGGING_ENABLED || false,
 
   // default state // IDEA:
-  EGOV_DEFAULT_STATE_ID: process.env.EGOV_DEFAULT_STATE_ID || "pb",
+  EGOV_DEFAULT_STATE_ID: process.env.EGOV_DEFAULT_STATE_ID || "pg",
   STATE_LEVEL_TENANTID_LENGTH: process.env.STATE_LEVEL_TENANTID_LENGTH || 1,
   IS_ENVIRONMENT_CENTRAL_INSTANCE: process.env.IS_ENVIRONMENT_CENTRAL_INSTANCE || false
 };
