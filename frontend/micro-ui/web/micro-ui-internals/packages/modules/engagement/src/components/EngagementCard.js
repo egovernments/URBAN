@@ -47,7 +47,7 @@ const EngagementCard = () => {
   );
 
   const { data: surveysCount, isLoading: isLoadingSurveys } = Digit.Hooks.survey.useSearch(
-    { tenantIds: tenantId },
+    { tenantId: tenantId },
     { select: (data) => data?.TotalCount }
   );
 

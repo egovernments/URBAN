@@ -28,6 +28,6 @@ public class Producer {
 		}
 		log.info("The Kafka topic for the tenantId : " + tenantId + " is : " + updatedTopic);
 	    log.info("object pushed to kafka topic : {}",value.toString());
-		kafkaTemplate.send(updatedTopic, value);
+		  kafkaTemplate.send(updatedTopic, value);
 	}
 }

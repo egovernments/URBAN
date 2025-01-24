@@ -24,7 +24,7 @@ const CreateEDCR = ({ parentRoute }) => {
   function handleSelect(key, data, skipStep, index) {
     setIsSubmitBtnDisable(true);
     const loggedInuserInfo = Digit.UserService.getUser();
-    const userInfo = { id: loggedInuserInfo?.info?.uuid, tenantId: loggedInuserInfo?.info?.tenantId };
+    const userInfo = { id: loggedInuserInfo?.info?.id, uuid: loggedInuserInfo?.info?.uuid, tenantId: loggedInuserInfo?.info?.tenantId };
     let edcrRequest = {
       transactionNumber: "",
       edcrNumber: "",
@@ -40,8 +40,8 @@ const CreateEDCR = ({ parentRoute }) => {
         key: "",
         msgId: "",
         correlationId: "",
-        userInfo: userInfo
-      }
+        userInfo: userInfo,
+      },
     };
 
     const applicantName = data?.applicantName;
@@ -73,15 +73,14 @@ const CreateEDCR = ({ parentRoute }) => {
         }
       })
       .catch((e) => {
-        setParams({data: e?.response?.data?.errorCode ? e?.response?.data?.errorCode : "BPA_INTERNAL_SERVER_ERROR", type: "ERROR"});
+        setParams({ data: e?.response?.data?.errorCode ? e?.response?.data?.errorCode : "BPA_INTERNAL_SERVER_ERROR", type: "ERROR" });
         setIsSubmitBtnDisable(false);
-        setIsShowToast({ key: true, label: e?.response?.data?.errorCode ? e?.response?.data?.errorCode : "BPA_INTERNAL_SERVER_ERROR" })
+        setIsShowToast({ key: true, label: e?.response?.data?.errorCode ? e?.response?.data?.errorCode : "BPA_INTERNAL_SERVER_ERROR" });
       });
-
   }
 
-  const handleSkip = () => { };
-  const handleMultiple = () => { };
+  const handleSkip = () => {};
+  const handleMultiple = () => {};
 
   const onSuccess = () => {
     sessionStorage.removeItem("CurrentFinancialYear");
@@ -93,7 +92,7 @@ const CreateEDCR = ({ parentRoute }) => {
   });
   config.indexRoute = "home";
 
-  const EDCRAcknowledgement = Digit?.ComponentRegistryService?.getComponent('EDCRAcknowledgement') ;
+  const EDCRAcknowledgement = Digit?.ComponentRegistryService?.getComponent("EDCRAcknowledgement");
 
   return (
     <Switch>
@@ -102,7 +101,17 @@ const CreateEDCR = ({ parentRoute }) => {
         const Component = typeof component === "string" ? Digit.ComponentRegistryService.getComponent(component) : component;
         return (
           <Route path={`${match.path}/${routeObj.route}`} key={index}>
-            <Component config={{ texts, inputs, key }} onSelect={handleSelect} onSkip={handleSkip} t={t} formData={params} onAdd={handleMultiple} isShowToast={isShowToast} isSubmitBtnDisable={isSubmitBtnDisable} setIsShowToast={setIsShowToast}/>
+            <Component
+              config={{ texts, inputs, key }}
+              onSelect={handleSelect}
+              onSkip={handleSkip}
+              t={t}
+              formData={params}
+              onAdd={handleMultiple}
+              isShowToast={isShowToast}
+              isSubmitBtnDisable={isSubmitBtnDisable}
+              setIsShowToast={setIsShowToast}
+            />
           </Route>
         );
       })}

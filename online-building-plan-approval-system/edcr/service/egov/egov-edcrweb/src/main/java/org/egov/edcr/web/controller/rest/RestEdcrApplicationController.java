@@ -228,6 +228,8 @@ public class RestEdcrApplicationController {
                 UserInfo enrichUser = new UserInfo();
                 enrichUser.setId(userInfoReq.getId());
                 enrichUser.setUuid(userInfoReq.getUuid());
+                if(userInfoReq.getUuid() == null)
+                	enrichUser.setUuid(userInfoReq.getId());
                 enrichUser.setMobile(userInfoReq.getMobile());
                 enrichUser.setTenantId(userInfoReq.getTenantId());
                 enrichUser.setName(userInfoReq.getName());

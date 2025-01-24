@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.validation.Valid;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 
 import org.bel.birthdeath.common.contract.DeathPdfApplicationRequest;
 import org.bel.birthdeath.common.contract.DeathResponse;

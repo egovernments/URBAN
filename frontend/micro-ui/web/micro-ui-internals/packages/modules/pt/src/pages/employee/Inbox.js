@@ -38,7 +38,7 @@ const Inbox = ({
     : { limit: pageSize, offset: pageOffset, sortBy: sortParams?.[0]?.id, sortOrder: sortParams?.[0]?.desc ? "DESC" : "ASC" };
 
   const { isFetching, isLoading: hookLoading, searchResponseKey, data, searchFields, ...rest } = useNewInboxAPI
-    ? Digit.Hooks.useNewInboxGeneral({
+    ? Digit.Hooks.useNewInboxGeneralV2({
         tenantId,
         ModuleCode: moduleCode,
         filters: { ...searchParams, ...paginationParams, sortParams },
@@ -102,7 +102,7 @@ const Inbox = ({
           searchParams={searchParams}
           sortParams={sortParams}
           linkPrefix={`${parentRoute}/application-details/`}
-          tableConfig={rest?.tableConfig?res?.tableConfig:TableConfig(t)["PT"]}
+          tableConfig={rest?.tableConfig ? res?.tableConfig : TableConfig(t)["PT"]}
           filterComponent={filterComponent}
           EmptyResultInboxComp={EmptyResultInboxComp}
           useNewInboxAPI={useNewInboxAPI}
@@ -114,7 +114,7 @@ const Inbox = ({
         <div>
           {isInbox && <Header>{t("ES_COMMON_INBOX")}</Header>}
           {!isInbox && <Header>{t("SEARCH_PROPERTY")}</Header>}
-          
+
           <DesktopInbox
             moduleCode={moduleCode}
             data={data}

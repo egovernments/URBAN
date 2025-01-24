@@ -12,7 +12,7 @@ import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * A object holds a org.bel.birthdeath.common.calculation.demand.models and collection values for a tax head and period.

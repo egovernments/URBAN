@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.validation.Valid;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 
 import org.bel.birthdeath.birth.certmodel.BirthCertAppln;
 import org.bel.birthdeath.birth.certmodel.BirthCertApplnResponse;

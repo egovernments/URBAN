@@ -73,8 +73,11 @@ public class RequestInfo {
     private String requesterId;
 
     private String correlationId;
+    
+    private PlainAccessRequest plainAccessRequest;
 
     private UserInfo userInfo;
+   
 
     public String getApiId() {
         return apiId;
@@ -163,5 +166,13 @@ public class RequestInfo {
     public void setUserInfo(final UserInfo userInfo) {
         this.userInfo = userInfo;
     }
+
+	public PlainAccessRequest getPlainAccessRequest() {
+		return plainAccessRequest;
+	}
+
+	public void setPlainAccessRequest(PlainAccessRequest plainAccessRequest) {
+		this.plainAccessRequest = plainAccessRequest;
+	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -27,18 +28,37 @@ public class KafkaConfigBatch {
 
 
     @Bean("consumerConfigsBatch")
-    public Map<String, Object> consumerConfigs() {
+    public Map<String, Object> consumerConfigsBatch() {
         Map<String, Object> props = new HashMap<>(
                 kafkaProperties.getProperties()
         );
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, propertyConfiguration.getBatchSize());
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,org.apache.kafka.common.serialization.StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,org.egov.tracer.kafka.deserializer.HashMapDeserializer.class);
         props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 900000);
         props.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, 10000);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "egov-pt-services-v2");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, List.of("release-name-kafka-controller-headless.kafka-kraft:9092"));
+        return props;
+    }
 
+    @Bean("consumerConfigs")
+    public Map<String, Object> consumerConfigs() {
+        Map<String, Object> props = new HashMap<>(
+                kafkaProperties.getProperties()
+        );
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,org.apache.kafka.common.serialization.StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,org.egov.tracer.kafka.deserializer.HashMapDeserializer.class);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "egov-pt-services-v2");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, List.of("release-name-kafka-controller-headless.kafka-kraft:9092"));
         return props;
     }
 
     @Bean("consumerFactoryBatch")
+    public ConsumerFactory<String, Object> consumerFactoryBatch() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfigsBatch());
+    }
+    @Bean("consumerFactory")
     public ConsumerFactory<String, Object> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
@@ -48,10 +68,17 @@ public class KafkaConfigBatch {
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(consumerFactoryBatch());
         factory.setBatchListener(true);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.BATCH);
 
+        return factory;
+    }
+
+    @Bean("kafkaListenerContainerFactory")
+    public ConcurrentKafkaListenerContainerFactory<String, Object> singleKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 
@@ -67,6 +94,8 @@ public class KafkaConfigBatch {
         props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 2080075);
         props.put(ProducerConfig.LINGER_MS_CONFIG, 500);
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 1000);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "egov-pt-services-v2");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, List.of("release-name-kafka-controller-headless.kafka-kraft:9092"));
         return props;
     }
 

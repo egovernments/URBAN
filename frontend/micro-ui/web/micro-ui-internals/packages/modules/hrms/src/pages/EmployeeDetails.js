@@ -1,4 +1,15 @@
-import { ActionBar, Card, CardSubHeader, DocumentSVG, Header, Loader, Menu, Row, StatusTable, SubmitBar } from "@egovernments/digit-ui-react-components";
+import {
+  ActionBar,
+  Card,
+  CardSubHeader,
+  DocumentSVG,
+  Header,
+  Loader,
+  Menu,
+  Row,
+  StatusTable,
+  SubmitBar,
+} from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,7 +23,7 @@ const Details = () => {
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
   const { id: employeeId } = useParams();
-  const { tenantId: tenantId } = useParams()
+  const { tenantId: tenantId } = useParams();
   const history = useHistory();
   const [displayMenu, setDisplayMenu] = useState(false);
   const isupdate = Digit.SessionStorage.get("isupdate");
@@ -43,7 +54,7 @@ const Details = () => {
     window.open(documentLink, "_blank");
   };
 
-  const submitAction = (data) => { };
+  const submitAction = (data) => {};
 
   useEffect(() => {
     switch (selectedAction) {
@@ -64,7 +75,13 @@ const Details = () => {
 
   return (
     <React.Fragment>
-      <div style={isMobile ? {marginLeft: "-12px", fontFamily: "calibri", color: "#FF0000"} :{ marginLeft: "15px", fontFamily: "calibri", color: "#FF0000" }}>
+      <div
+        style={
+          isMobile
+            ? { marginLeft: "-12px", fontFamily: "calibri", color: "#FF0000" }
+            : { marginLeft: "15px", fontFamily: "calibri", color: "#FF0000" }
+        }
+      >
         <Header>{t("HR_NEW_EMPLOYEE_FORM_HEADER")}</Header>
       </div>
       {!isLoading && data?.Employees.length > 0 ? (
@@ -74,7 +91,11 @@ const Details = () => {
               <Row
                 label={<CardSubHeader className="card-section-header">{t("HR_EMP_STATUS_LABEL")} </CardSubHeader>}
                 text={
-                  data?.Employees?.[0]?.isActive ? <div className="sla-cell-success"> {t("ACTIVE")} </div> : <div className="sla-cell-error">{t("INACTIVE")}</div>
+                  data?.Employees?.[0]?.isActive ? (
+                    <div className="sla-cell-success"> {t("ACTIVE")} </div>
+                  ) : (
+                    <div className="sla-cell-error">{t("INACTIVE")}</div>
+                  )
                 }
                 textStyle={{ fontWeight: "bold", maxWidth: "6.5rem" }}
               />
@@ -89,7 +110,11 @@ const Details = () => {
             </StatusTable>
             <CardSubHeader className="card-section-header">{t("HR_NEW_EMPLOYEE_FORM_HEADER")}</CardSubHeader>
             <StatusTable>
-              <Row label={t("HR_EMPLOYMENT_TYPE_LABEL")} text={t(data?.Employees?.[0]?.employeeType ? `EGOV_HRMS_EMPLOYEETYPE_${data?.Employees?.[0]?.employeeType}` : "NA")} textStyle={{ whiteSpace: "pre" }} />
+              <Row
+                label={t("HR_EMPLOYMENT_TYPE_LABEL")}
+                text={t(data?.Employees?.[0]?.employeeType ? `EGOV_HRMS_EMPLOYEETYPE_${data?.Employees?.[0]?.employeeType}` : "NA")}
+                textStyle={{ whiteSpace: "pre" }}
+              />
               <Row
                 label={t("HR_APPOINTMENT_DATE_LABEL")}
                 text={convertEpochFormateToDate(data?.Employees?.[0]?.dateOfAppointment) || "NA"}
@@ -108,70 +133,88 @@ const Details = () => {
                 <Row
                   label={t("HR_DEACTIVATION_REASON")}
                   text={
-                    t("EGOV_HRMS_DEACTIVATIONREASON_" + data?.Employees?.[0]?.deactivationDetails?.sort((a, b) => new Date(a.effectiveFrom) - new Date(b.effectiveFrom))[0]
-                      .reasonForDeactivation) || "NA"
+                    t(
+                      "EGOV_HRMS_DEACTIVATIONREASON_" +
+                        data?.Employees?.[0]?.deactivationDetails?.sort((a, b) => new Date(a.effectiveFrom) - new Date(b.effectiveFrom))[0]
+                          .reasonForDeactivation
+                    ) || "NA"
                   }
                 />
-                  <Row
+                <Row
                   label={t("HR_REMARKS")}
                   text={
-                   data?.Employees?.[0]?.deactivationDetails?.sort((a, b) => new Date(a.effectiveFrom) - new Date(b.effectiveFrom))[0].remarks || "NA"
+                    data?.Employees?.[0]?.deactivationDetails?.sort((a, b) => new Date(a.effectiveFrom) - new Date(b.effectiveFrom))[0].remarks ||
+                    "NA"
                   }
                 />
-                
+
                 <Row
                   label={t("HR_ORDER_NO")}
-                  text={data?.Employees?.[0]?.deactivationDetails?.sort((a, b) => new Date(a.effectiveFrom) - new Date(b.effectiveFrom))[0]?.orderNo || "NA"}
+                  text={
+                    data?.Employees?.[0]?.deactivationDetails?.sort((a, b) => new Date(a.effectiveFrom) - new Date(b.effectiveFrom))[0]?.orderNo ||
+                    "NA"
+                  }
                 />
               </StatusTable>
             ) : null}
 
-            {data?.Employees?.[0]?.documents ? <StatusTable style={{ marginBottom: "40px" }}>
-              <Row label={t("TL_APPROVAL_UPLOAD_HEAD")} text={""} />
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
-                {data?.Employees?.[0]?.documents?.map((document, index) => {
-                  return (
-                    <a onClick={() => handleDownload(document)} style={{ minWidth: "160px", marginRight: "20px" }} key={index}>
-                      <DocumentSVG width={85} height={100} style={{ background: "#f6f6f6", padding: "8px", marginLeft: "15px" }} />
-                      <p style={{ marginTop: "8px", maxWidth: "196px", }}>{document.documentName}</p>
-                    </a>
-                  );
-                })}
-              </div>
-            </StatusTable>
-              : null}
+            {data?.Employees?.[0]?.documents ? (
+              <StatusTable style={{ marginBottom: "40px" }}>
+                <Row label={t("TL_APPROVAL_UPLOAD_HEAD")} text={""} />
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {data?.Employees?.[0]?.documents?.map((document, index) => {
+                    return (
+                      <a onClick={() => handleDownload(document)} style={{ minWidth: "160px", marginRight: "20px" }} key={index}>
+                        <DocumentSVG width={85} height={100} style={{ background: "#f6f6f6", padding: "8px", marginLeft: "15px" }} />
+                        <p style={{ marginTop: "8px", maxWidth: "196px" }}>{document.documentName}</p>
+                      </a>
+                    );
+                  })}
+                </div>
+              </StatusTable>
+            ) : null}
             {data?.Employees?.[0]?.jurisdictions.length > 0 ? (
               <CardSubHeader className="card-section-header">{t("HR_JURIS_DET_HEADER")}</CardSubHeader>
             ) : null}
 
             {data?.Employees?.[0]?.jurisdictions?.length > 0
               ? data?.Employees?.[0]?.jurisdictions.map((element, index) => {
-                return (
-                  <StatusTable
-                    key={index}
-                    style={{
-                      maxWidth: "640px",
-                      border: "1px solid rgb(214, 213, 212)",
-                      inset: "0px",
-                      width: "auto",
-                      padding: ".2rem",
-                      marginBottom: "2rem",
-                    }}
-                  >
-                    <div style={{ paddingBottom: "2rem" }}>
-                      {" "}
-                      {t("HR_JURISDICTION")} {index + 1}
-                    </div>
-                    <Row label={t("HR_HIERARCHY_LABEL")} text={t(element?.hierarchy ? `EGOV_LOCATION_TENANTBOUNDARY_${element?.hierarchy}` : "NA")} textStyle={{ whiteSpace: "pre" }} />
-                    <Row label={t("HR_BOUNDARY_TYPE_LABEL")} text={t(Digit.Utils.locale.convertToLocale(element?.boundaryType, 'EGOV_LOCATION_BOUNDARYTYPE'))} textStyle={{ whiteSpace: "pre" }} />
-                    <Row label={t("HR_BOUNDARY_LABEL")} text={t(element?.boundary)} />
-                    <Row
-                      label={t("HR_ROLE_LABEL")}
-                      text={data?.Employees?.[0]?.user.roles.filter((ele) => ele.tenantId == element?.boundary).map((ele) => t(`ACCESSCONTROL_ROLES_ROLES_` + ele?.code))}
-                    />
-                  </StatusTable>
-                );
-              })
+                  return (
+                    <StatusTable
+                      key={index}
+                      style={{
+                        maxWidth: "640px",
+                        border: "1px solid rgb(214, 213, 212)",
+                        inset: "0px",
+                        width: "auto",
+                        padding: ".2rem",
+                        marginBottom: "2rem",
+                      }}
+                    >
+                      <div style={{ paddingBottom: "2rem" }}>
+                        {" "}
+                        {t("HR_JURISDICTION")} {index + 1}
+                      </div>
+                      <Row
+                        label={t("HR_HIERARCHY_LABEL")}
+                        text={t(element?.hierarchy ? `EGOV_LOCATION_TENANTBOUNDARY_${element?.hierarchy}` : "NA")}
+                        textStyle={{ whiteSpace: "pre" }}
+                      />
+                      <Row
+                        label={t("HR_BOUNDARY_TYPE_LABEL")}
+                        text={t(Digit.Utils.locale.convertToLocale(element?.boundaryType, "EGOV_LOCATION_BOUNDARYTYPE"))}
+                        textStyle={{ whiteSpace: "pre" }}
+                      />
+                      <Row label={t("HR_BOUNDARY_LABEL")} text={t(element?.boundary)} />
+                      <Row
+                        label={t("HR_ROLE_LABEL")}
+                        text={data?.Employees?.[0]?.user.roles
+                          .filter((ele) => ele.tenantId == element?.boundary)
+                          .map((ele) => t(`ACCESSCONTROL_ROLES_ROLES_` + ele?.code))}
+                      />
+                    </StatusTable>
+                  );
+                })
               : null}
             {data?.Employees?.[0]?.assignments.length > 0 ? (
               <CardSubHeader className="card-section-header">{t("HR_ASSIGN_DET_HEADER")}</CardSubHeader>

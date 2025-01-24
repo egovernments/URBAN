@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Collection of audit related fields used by most models

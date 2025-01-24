@@ -2,7 +2,7 @@ package org.bel.birthdeath;
 
 import java.util.TimeZone;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import org.egov.common.utils.MultiStateInstanceUtil;
 import org.egov.encryption.config.EncryptionConfiguration;

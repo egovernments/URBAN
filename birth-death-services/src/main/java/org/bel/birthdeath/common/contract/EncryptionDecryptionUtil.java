@@ -81,12 +81,13 @@ public class EncryptionDecryptionUtil {
                 objectToDecryptNotList = true;
                 objectToDecrypt = Collections.singletonList(objectToDecrypt);
             }
-            final User encrichedUserInfo = getEncrichedandCopiedUserInfo(requestInfo.getUserInfo());
-            P decryptedObject = (P) encryptionService.decryptJson(objectToDecrypt, key, encrichedUserInfo, classType);
+            String purpose= "BndDetail";
+            //final User encrichedUserInfo = getEncrichedandCopiedUserInfo(requestInfo.getUserInfo());
+            P decryptedObject =  encryptionService.decryptJson(requestInfo,objectToDecrypt, key,purpose, classType);
             if (decryptedObject == null) {
                 throw new CustomException("DECRYPTION_NULL_ERROR", "Null object found on performing decryption");
             }
-            auditTheDecryptRequest(key, encrichedUserInfo);
+           // auditTheDecryptRequest(key, encrichedUserInfo);
             if (objectToDecryptNotList) {
                 decryptedObject = (P) ((List<E>) decryptedObject).get(0);
             }
@@ -101,7 +102,7 @@ public class EncryptionDecryptionUtil {
     }
 
 
-    public void auditTheDecryptRequest(String key, User userInfo) {
+/*    public void auditTheDecryptRequest(String key, User userInfo) {
         String purpose= "BndDetail";
 
         ObjectNode abacParams = objectMapper.createObjectNode();
@@ -113,7 +114,7 @@ public class EncryptionDecryptionUtil {
         auditData.set("entityType", TextNode.valueOf(User.class.getName()));
         auditData.set("decryptedEntityIds", objectMapper.valueToTree(decryptedUserUuid));
         auditService.audit(userInfo.getUuid(), System.currentTimeMillis(), purpose, abacParams, auditData);
-    }
+    }*/
 
     private User getEncrichedandCopiedUserInfo(User userInfo) {
         List<Role> newRoleList = new ArrayList<>();

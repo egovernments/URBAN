@@ -2,8 +2,8 @@ package org.bel.birthdeath.birth.calculation;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import org.bel.birthdeath.birth.certmodel.BirthCertificate;
 import org.bel.birthdeath.common.calculation.TaxHeadEstimate;

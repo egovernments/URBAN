@@ -124,7 +124,8 @@ public class PGRRepository {
             throw new CustomException("PGR_SEARCH_ERROR",
                     "TenantId length is not sufficient to replace query schema in a multi state instance");
         }
-		int averageResolutionTime = jdbcTemplate.queryForObject(query, preparedStmtListAverageResolutionTime.toArray(),Integer.class);
+        Integer result = jdbcTemplate.queryForObject(query, preparedStmtListAverageResolutionTime.toArray(), Integer.class);
+        int averageResolutionTime = (result != null) ? result : 0;
 
 		Map<String, Integer> dynamicData = new HashMap<String,Integer>();
 		dynamicData.put(PGRConstants.COMPLAINTS_RESOLVED, complaintsResolved);

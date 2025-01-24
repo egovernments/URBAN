@@ -9,12 +9,14 @@ echo "the schemas : $schemas"
 for schemaname in $(echo "$schemas" | tr ',' ' ')
 do
     echo "the schema name : ${baseurl}${schemasetter}${schemaname}"
-    flyway -url="${baseurl}${schemasetter}${schemaname}" \
-           -table="$SCHEMA_TABLE" \
-           -user="$FLYWAY_USER" \
-           -password="$FLYWAY_PASSWORD" \
-           -locations="$FLYWAY_LOCATIONS" \
-           -baselineOnMigrate=true \
-           -outOfOrder=true \
-           migrate
+        # Run flyway migrate
+        echo "Running flyway migrate for schema: ${schemaname}"
+        flyway -url="${baseurl}${schemasetter}${schemaname}" \
+               -table="$SCHEMA_TABLE" \
+               -user="$FLYWAY_USER" \
+               -password="$FLYWAY_PASSWORD" \
+               -locations="$FLYWAY_LOCATIONS" \
+               -baselineOnMigrate=true \
+               -outOfOrder=true \
+               migrate
 done

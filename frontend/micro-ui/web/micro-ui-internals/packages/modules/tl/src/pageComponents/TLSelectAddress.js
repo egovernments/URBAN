@@ -8,7 +8,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
   const allCities = Digit.Hooks.tl.useTenants();
   let tenantId = Digit.ULBService.getCurrentTenantId();
   //let isEditProperty = formData?.isEditProperty || false;
-  const isEdit = window.location.href.includes("/edit-application/")||window.location.href.includes("renew-trade");
+  const isEdit = window.location.href.includes("/edit-application/") || window.location.href.includes("renew-trade");
   //if (formData?.isUpdateProperty) isEditProperty = true;
   const { pincode, city } = formData?.address || "";
   const cities =
@@ -19,9 +19,10 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
       : allCities;
 
   const [selectedCity, setSelectedCity] = useState(() => formData?.address?.city || null);
+  const selectedCityCode = typeof selectedCity === "object" ? selectedCity?.code : selectedCity;
 
   const { data: fetchedLocalities } = Digit.Hooks.useBoundaryLocalities(
-    selectedCity?.code,
+    selectedCityCode,
     "revenue",
     {
       enabled: !!selectedCity,
@@ -45,17 +46,15 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
 
   useEffect(() => {
     if (formData?.address) {
-      let flag = true;;
-        Object.keys(formData?.address)?.map(dta => {
-          if (dta != "key" || formData?.address[dta] != undefined || formData?.address[dta] != "" || formData?.address[dta] != null) {
-
-          } else {
-            if (flag) setSelectedCity(cities[0]);
-            flag = false;
-          }
-        });
+      let flag = true;
+      Object.keys(formData?.address)?.map((dta) => {
+        if (dta != "key" || formData?.address[dta] != undefined || formData?.address[dta] != "" || formData?.address[dta] != null) {
+        } else {
+          if (flag) setSelectedCity(cities[0]);
+          flag = false;
+        }
+      });
     }
-
   }, [formData?.tradeUnits?.[0]?.tradeCategory?.code]);
 
   useEffect(() => {
@@ -122,7 +121,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
 
     if (userType === "employee") {
       if (!_.isEqual(formValue, part)) {
-        Object.keys(formValue)?.map(data => {
+        Object.keys(formValue)?.map((data) => {
           if (data != "key" && formValue[data] != undefined && formValue[data] != "" && formValue[data] != null && !isErrors) {
             setIsErrors(true);
           }
@@ -146,8 +145,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
     if (userType === "employee") {
       if (Object.keys(errors).length && !_.isEqual(formState.errors[config.key]?.type || {}, errors)) {
         setError(config.key, { type: errors });
-      }
-      else if (!Object.keys(errors).length && formState.errors[config.key] && isErrors) {
+      } else if (!Object.keys(errors).length && formState.errors[config.key] && isErrors) {
         clearErrors(config.key);
       }
     }
@@ -164,7 +162,7 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
             name={"city"}
             defaultValue={cities?.length === 1 ? cities[0] : selectedCity}
             control={control}
-            rules={{required: t("REQUIRED_FIELD")}}
+            rules={{ required: t("REQUIRED_FIELD") }}
             render={(props) => (
               <Dropdown
                 className="form-field"
@@ -186,18 +184,22 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
             name="locality"
             defaultValue={checkingLocationForRenew ? formData?.address?.locality : null}
             control={control}
-            rules={{required: t("REQUIRED_FIELD")}}
+            rules={{ required: t("REQUIRED_FIELD") }}
             render={(props) => (
               <Dropdown
                 className="form-field"
-                selected={checkingLocationForRenew || formData?.cpt?.details ? ({...formData?.cpt?.details?.address?.locality, i18nkey:formData?.cpt?.details?.address?.locality?.name}) :(props.value || {...formData?.cpt?.details?.address?.locality, i18nkey:formData?.cpt?.details?.address?.locality?.name})}
+                selected={
+                  checkingLocationForRenew || formData?.cpt?.details
+                    ? { ...formData?.cpt?.details?.address?.locality, i18nkey: formData?.cpt?.details?.address?.locality?.name }
+                    : props.value || { ...formData?.cpt?.details?.address?.locality, i18nkey: formData?.cpt?.details?.address?.locality?.name }
+                }
                 option={localities}
                 select={props.onChange}
                 onBlur={props.onBlur}
                 optionKey="i18nkey"
                 t={t}
                 disable={checkingLocationForRenew || formData?.cpt?.details ? true : false}
-                errorStyle={(localFormState.touched.locality && errors?.locality?.message) ? true : false}
+                errorStyle={localFormState.touched.locality && errors?.locality?.message ? true : false}
               />
             )}
           />
@@ -208,40 +210,40 @@ const TLSelectAddress = ({ t, config, onSelect, userType, formData, setError, fo
   }
   return (
     <React.Fragment>
-    {window.location.href.includes("/citizen") ? <Timeline currentStep={2}/> : null}
-    <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>
-      <CardLabel>{`${t("MYCITY_CODE_LABEL")}*`}</CardLabel>
-      <span className={"form-pt-dropdown-only"}>
-        <RadioOrSelect
-          options={cities.sort((a, b) => a.name.localeCompare(b.name))}
-          selectedOption={selectedCity}
-          optionKey="i18nKey"
-          onSelect={selectCity}
-          t={t}
-          isDependent={true}
-          labelKey=""
-          disabled={isEdit}
-        />
-      </span>
-      {selectedCity && localities && <CardLabel>{`${t("TL_LOCALIZATION_LOCALITY")} `}</CardLabel>}
-      {selectedCity && localities && (
+      {window.location.href.includes("/citizen") ? <Timeline currentStep={2} /> : null}
+      <FormStep config={config} onSelect={onSubmit} t={t} isDisabled={selectedLocality ? false : true}>
+        <CardLabel>{`${t("MYCITY_CODE_LABEL")}*`}</CardLabel>
         <span className={"form-pt-dropdown-only"}>
           <RadioOrSelect
-            dropdownStyle={{ paddingBottom: "20px" }}
-            isMandatory={config.isMandatory}
-            options={localities.sort((a, b) => a.name.localeCompare(b.name))}
-            selectedOption={selectedLocality}
-            optionKey="i18nkey"
-            onSelect={selectLocality}
+            options={cities.sort((a, b) => a.name.localeCompare(b.name))}
+            selectedOption={selectedCity}
+            optionKey="i18nKey"
+            onSelect={selectCity}
             t={t}
-            optionCardStyles={{maxHeight:"210px",overflow:"scroll"}}
-            //isDependent={true}
+            isDependent={true}
             labelKey=""
             disabled={isEdit}
           />
         </span>
-      )}
-    </FormStep>
+        {selectedCity && localities && <CardLabel>{`${t("TL_LOCALIZATION_LOCALITY")} `}</CardLabel>}
+        {selectedCity && localities && (
+          <span className={"form-pt-dropdown-only"}>
+            <RadioOrSelect
+              dropdownStyle={{ paddingBottom: "20px" }}
+              isMandatory={config.isMandatory}
+              options={localities.sort((a, b) => a.name.localeCompare(b.name))}
+              selectedOption={selectedLocality}
+              optionKey="i18nkey"
+              onSelect={selectLocality}
+              t={t}
+              optionCardStyles={{ maxHeight: "210px", overflow: "scroll" }}
+              //isDependent={true}
+              labelKey=""
+              disabled={isEdit}
+            />
+          </span>
+        )}
+      </FormStep>
     </React.Fragment>
   );
 };

@@ -106,14 +106,12 @@ public class DBMigrationConfiguration {
     @DependsOn("dataSource")
     public Flyway flyway(DataSource dataSource, @Qualifier("cities") List<String> cities) {
         if (dbMigrationEnabled) {
-
-            cities.stream().forEach(schema -> {
-                if (devMode)
-                    migrateDatabase(dataSource, schema,
-                            mainMigrationFilePath, sampleMigrationFilePath, format(tenantMigrationFilePath, schema));
-                else
-                    migrateDatabase(dataSource, schema,
-                            mainMigrationFilePath, format(tenantMigrationFilePath, schema));
+            cities.forEach(schema -> {
+                if (devMode) {
+                    migrateDatabase(dataSource, schema, mainMigrationFilePath, sampleMigrationFilePath, String.format(tenantMigrationFilePath, schema));
+                } else {
+                    migrateDatabase(dataSource, schema, mainMigrationFilePath, String.format(tenantMigrationFilePath, schema));
+                }
             });
 
             if (statewideMigrationRequired && !devMode) {
@@ -121,24 +119,69 @@ public class DBMigrationConfiguration {
             } else if (!devMode) {
                 migrateDatabase(dataSource, statewideSchemaName, mainMigrationFilePath);
             }
-
         }
 
-        return new Flyway();
+        // Return a configured Flyway instance
+        return Flyway.configure()
+                .dataSource(dataSource)
+                .load();
     }
 
     private void migrateDatabase(DataSource dataSource, String schema, String... locations) {
-        Flyway flyway = new Flyway();
-        flyway.setBaselineOnMigrate(true);
-        flyway.setValidateOnMigrate(validateOnMigrate);
-        flyway.setOutOfOrder(true);
-        flyway.setLocations(locations);
-        flyway.setDataSource(dataSource);
-        flyway.setSchemas(schema);
-        if (repairMigration)
-            flyway.repair();
-        flyway.migrate();
+        Flyway flyway = Flyway.configure()
+                .dataSource(dataSource)
+                .schemas(schema)          // Set schema
+                .locations(locations)     // Set migration locations
+                .baselineOnMigrate(true)  // Enable baseline on migrate
+                .validateOnMigrate(validateOnMigrate) // Validate migrations
+                .outOfOrder(true)        // Allow out-of-order migrations
+                .load();
+
+        if (repairMigration) {
+            flyway.repair(); // Repair Flyway metadata table if needed
+        }
+
+        flyway.migrate(); // Execute migrations
     }
+
+
+//    @Bean
+//    @DependsOn("dataSource")
+//    public Flyway flyway(DataSource dataSource, @Qualifier("cities") List<String> cities) {
+//        if (dbMigrationEnabled) {
+//
+//            cities.stream().forEach(schema -> {
+//                if (devMode)
+//                    migrateDatabase(dataSource, schema,
+//                            mainMigrationFilePath, sampleMigrationFilePath, format(tenantMigrationFilePath, schema));
+//                else
+//                    migrateDatabase(dataSource, schema,
+//                            mainMigrationFilePath, format(tenantMigrationFilePath, schema));
+//            });
+//
+//            if (statewideMigrationRequired && !devMode) {
+//                migrateDatabase(dataSource, statewideSchemaName, mainMigrationFilePath, statewideMigrationFilePath);
+//            } else if (!devMode) {
+//                migrateDatabase(dataSource, statewideSchemaName, mainMigrationFilePath);
+//            }
+//
+//        }
+//
+//        return new Flyway();
+//    }
+//
+//    private void migrateDatabase(DataSource dataSource, String schema, String... locations) {
+//        Flyway flyway = new Flyway();
+//        flyway.setBaselineOnMigrate(true);
+//        flyway.setValidateOnMigrate(validateOnMigrate);
+//        flyway.setOutOfOrder(true);
+//        flyway.setLocations(locations);
+//        flyway.setDataSource(dataSource);
+//        flyway.setSchemas(schema);
+//        if (repairMigration)
+//            flyway.repair();
+//        flyway.migrate();
+//    }
 
     @Bean(name = "tenants", autowire = Autowire.BY_NAME)
 	public List<String> tenants() {

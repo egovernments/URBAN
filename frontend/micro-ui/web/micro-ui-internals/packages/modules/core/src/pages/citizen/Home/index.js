@@ -26,8 +26,8 @@ const Home = () => {
   const tenantId = Digit.ULBService.getCitizenCurrentTenant(true);
   const { data: { stateInfo, uiHomePage } = {}, isLoading } = Digit.Hooks.useStore.getInitData();
   let isMobile = window.Digit.Utils.browser.isMobile();
-  if(window.Digit.SessionStorage.get("TL_CREATE_TRADE")) window.Digit.SessionStorage.set("TL_CREATE_TRADE",{})
-   
+  if (window.Digit.SessionStorage.get("TL_CREATE_TRADE")) window.Digit.SessionStorage.set("TL_CREATE_TRADE", {});
+
   const conditionsToDisableNotificationCountTrigger = () => {
     if (Digit.UserService?.getUser()?.info?.type === "EMPLOYEE") return false;
     if (!Digit.UserService?.getUser()?.access_token) return false;
@@ -138,17 +138,18 @@ const Home = () => {
         <StaticCitizenSideBar />
       </div> */}
       <div className="HomePageWrapper">
-        {<div className="BannerWithSearch">
-          {isMobile ? <img src={appBannerMobObj?.bannerUrl} /> : <img src={appBannerWebObj?.bannerUrl} />}
-          {/* <div className="Search">
+        {
+          <div className="BannerWithSearch">
+            {isMobile ? <img src={appBannerMobObj?.bannerUrl} /> : <img src={appBannerWebObj?.bannerUrl} />}
+            {/* <div className="Search">
             <StandaloneSearchBar placeholder={t("CS_COMMON_SEARCH_PLACEHOLDER")} />
           </div> */}
-          <div className="ServicesSection">
-          <CardBasedOptions style={{marginTop:"-30px"}} {...allCitizenServicesProps} />
-          <CardBasedOptions style={isMobile ? {} : {marginTop:"-30px"}} {...allInfoAndUpdatesProps} />
-        </div>
-        </div>}
-
+            <div className="ServicesSection">
+              <CardBasedOptions style={{ marginTop: "-30px" }} {...allCitizenServicesProps} />
+              <CardBasedOptions style={isMobile ? {} : { marginTop: "-30px" }} {...allInfoAndUpdatesProps} />
+            </div>
+          </div>
+        }
 
         {(whatsAppBannerMobObj || whatsAppBannerWebObj) && (
           <div className="WhatsAppBanner">
@@ -164,13 +165,16 @@ const Home = () => {
           EventsDataLoading ? (
             <Loader />
           ) : (
-            <div className="WhatsNewSection">
-              <div className="headSection">
-                <h2>{t(whatsNewSectionObj?.headerLabel)}</h2>
-                <p onClick={() => history.push(whatsNewSectionObj?.sideOption?.navigationUrl)}>{t(whatsNewSectionObj?.sideOption?.name)}</p>
+            EventsData &&
+            EventsData[0] && (
+              <div className="WhatsNewSection">
+                <div className="headSection">
+                  <h2>{t(whatsNewSectionObj?.headerLabel)}</h2>
+                  <p onClick={() => history.push(whatsNewSectionObj?.sideOption?.navigationUrl)}>{t(whatsNewSectionObj?.sideOption?.name)}</p>
+                </div>
+                <WhatsNewCard {...EventsData?.[0]} />
               </div>
-              <WhatsNewCard {...EventsData?.[0]} />
-            </div>
+            )
           )
         ) : null}
       </div>

@@ -1,11 +1,10 @@
-import React,{ useEffect,useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import CitizenSurveyForm from "../../../components/Surveys/CitizenSurveyForm";
 import { useQueryClient } from "react-query";
-import { ActionBar, Card, SubmitBar, Menu,Loader } from "@egovernments/digit-ui-react-components";
+import { ActionBar, Card, SubmitBar, Menu, Loader } from "@egovernments/digit-ui-react-components";
 import { format } from "date-fns";
-import SurveyResultsView from '../../../components/Surveys/ResultsView/SurveyResultsView';
-
+import SurveyResultsView from "../../../components/Surveys/ResultsView/SurveyResultsView";
 
 const TypeAnswerEnum = {
   SHORT_ANSWER_TYPE: "Short Answer",
@@ -17,23 +16,26 @@ const TypeAnswerEnum = {
 };
 
 const SurveyResults = () => {
-    const tenantId = Digit.ULBService.getCurrentTenantId();
-    const params = useParams();
-    const mutation = Digit.Hooks.survey.useShowResults();
-    const queryClient = useQueryClient();
-    useEffect(() => {
-        const onSuccess = () => {
-        queryClient.clear();
-        };
-        mutation.mutate({
-        surveyId:params.id
-        }, {
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const params = useParams();
+  const mutation = Digit.Hooks.survey.useShowResults();
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const onSuccess = () => {
+      queryClient.clear();
+    };
+    mutation.mutate(
+      {
+        surveyId: params.id,
+      },
+      {
         onSuccess,
-        });
-    }, []);
-    
-    const { isLoading, data: surveyData } = Digit.Hooks.survey.useSearch(
-    { tenantIds: tenantId, uuid: params.id },
+      }
+    );
+  }, []);
+
+  const { isLoading, data: surveyData } = Digit.Hooks.survey.useSearch(
+    { tenantId: tenantId, uuid: params.id },
     {
       select: (data) => {
         const surveyObj = data?.Surveys?.[0];
@@ -52,23 +54,21 @@ const SurveyResults = () => {
             required,
             options,
             uuid,
-            surveyId
+            surveyId,
           })),
           status: surveyObj.status,
-          answersCount:surveyObj.answersCount,
+          answersCount: surveyObj.answersCount,
         };
       },
     }
   );
 
-    if(isLoading) return <Loader />
-    
-    // else if(mutation.isLoading) return <Loader />
-    // //if(mutation.isError) return <div>An error occured...</div>
-    
-    return <SurveyResultsView surveyInfo={surveyData} responsesInfoMutation={mutation} />
-    
-}
+  if (isLoading) return <Loader />;
 
-export default SurveyResults
+  // else if(mutation.isLoading) return <Loader />
+  // //if(mutation.isError) return <div>An error occured...</div>
 
+  return <SurveyResultsView surveyInfo={surveyData} responsesInfoMutation={mutation} />;
+};
+
+export default SurveyResults;

@@ -2,7 +2,7 @@ package org.bel.birthdeath.common.contract;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.bel.birthdeath.birth.model.EgBirthDtl;
 import org.egov.common.contract.request.RequestInfo;

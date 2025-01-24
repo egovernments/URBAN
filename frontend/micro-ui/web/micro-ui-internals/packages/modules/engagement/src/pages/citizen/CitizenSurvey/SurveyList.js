@@ -14,10 +14,10 @@ const isActive = (startDate, endDate) => {
 const SurveyList = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const tenantIds = Digit.ULBService.getCitizenCurrentTenant();
+  const tenantId = Digit.ULBService.getCitizenCurrentTenant();
 
   const { data, isLoading: isLoadingSurveys } = Digit.Hooks.survey.useSearch(
-    { tenantIds },
+    { tenantId },
     {
       select: ({ Surveys }) => {
         // const allSurveys = Surveys.map((survey) => ({ hasResponded: false, responseStatus: "CS_SURVEY_YT_TO_RESPOND", ...survey }));
@@ -54,7 +54,6 @@ const SurveyList = () => {
 
   //trying to implement like this-> If user already responded then open ShowSurvey
   const handleCardClick = (details) => {
-    
     if (!details.hasResponded) {
       history.push(`/digit-ui/citizen/engagement/surveys/fill-survey?applicationNumber=${details?.uuid}&tenantId=${details?.tenantId}`, details);
     } else {

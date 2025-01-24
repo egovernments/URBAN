@@ -58,7 +58,8 @@ import org.egov.eis.service.OldEmployeeService;
 import org.egov.eis.service.JurisdictionService;
 import org.egov.infra.admin.master.service.BoundaryTypeService;
 import org.egov.infra.admin.master.service.DepartmentService;
-import org.postgresql.util.Base64;
+//import org.postgresql.util.Base64;
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -121,7 +122,8 @@ public class ViewAndUpdateEmployeController {
             assign.setDeptSet(headOfDepartmentsRepository.getAllHodDepartments(assign.getId()));
         String image = null;
         if (null != employee.getSignature())
-            image = Base64.encodeBytes(employee.getSignature());
+//            image = Base64.encodeBytes(employee.getSignature());
+            image = Base64.getEncoder().encodeToString(employee.getSignature());
         model.addAttribute(IMAGE, image);
         return EMPLOYEEFORM;
     }
@@ -164,7 +166,8 @@ public class ViewAndUpdateEmployeController {
 
         String image = null;
         if (null != employee.getSignature())
-            image = Base64.encodeBytes(employee.getSignature());
+//            image = Base64.encodeBytes(employee.getSignature());
+            image = Base64.getEncoder().encodeToString(employee.getSignature());
         model.addAttribute(IMAGE, image);
 
         employeeService.update(employee);
@@ -199,7 +202,8 @@ public class ViewAndUpdateEmployeController {
         for (final Assignment assign : employee.getAssignments())
             assign.setDeptSet(headOfDepartmentsRepository.getAllHodDepartments(assign.getId()));
         if (null != employee.getSignature())
-            image = Base64.encodeBytes(employee.getSignature());
+//            image = Base64.encodeBytes(employee.getSignature());
+            image = Base64.getEncoder().encodeToString(employee.getSignature());
         model.addAttribute(IMAGE, image);
         return EMPLOYEESUCCESS;
     }

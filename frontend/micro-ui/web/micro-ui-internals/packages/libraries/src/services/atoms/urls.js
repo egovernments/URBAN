@@ -26,6 +26,7 @@ const Urls = {
   EmployeeSearch: "/egov-hrms/employees/_search",
 
   InboxSearch: "/inbox/v1/_search",
+  InboxSearchV2: "/inbox/v2/_search",
 
   UserSearch: "/user/_search",
   UserLogout: "/user/_logout",
@@ -134,7 +135,7 @@ const Urls = {
     bpaRegUpdate: "/tl-services/v1/BPAREG/_update",
     receipt_download: "/egov-pdf/download/PAYMENT/consolidatedreceipt",
     edcrreportdownload: "/bpa-services/v1/bpa/_permitorderedcr",
-    getSearchDetails: "/inbox/v1/dss/_search",
+    getSearchDetails: "/inbox/v2/dss/_search",
   },
 
   edcr: {

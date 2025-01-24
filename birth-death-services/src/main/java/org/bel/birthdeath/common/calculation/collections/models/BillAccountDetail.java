@@ -2,9 +2,9 @@ package org.bel.birthdeath.common.calculation.collections.models;
 
 import java.math.BigDecimal;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
-import javax.xml.crypto.KeySelector.Purpose;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
+
 
 import org.bel.birthdeath.common.model.AuditDetails;
 
@@ -18,6 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.xml.crypto.KeySelector;
 
 @Setter
 @Getter
@@ -75,7 +77,7 @@ public class BillAccountDetail {
 
 	@JsonProperty("purpose")
 	@Valid
-    private Purpose purpose = null;
+    private KeySelector.Purpose purpose = null;
 
 	@JsonProperty("auditDetails")
 	@Valid

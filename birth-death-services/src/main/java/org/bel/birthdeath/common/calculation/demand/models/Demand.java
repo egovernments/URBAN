@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.bel.birthdeath.common.model.AuditDetails;
 import org.egov.common.contract.request.User;

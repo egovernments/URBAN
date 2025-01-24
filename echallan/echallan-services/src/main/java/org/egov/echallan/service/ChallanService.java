@@ -97,6 +97,12 @@ public class ChallanService {
 	        }
 
 	        criteria=enrichmentService.getChallanCriteriaFromIds(challans);
+	
+	        Optional.ofNullable(requestInfo)
+	        .map(req -> req.getUserInfo())
+	        .map(user -> user.getTenantId())
+	        .ifPresent(criteria::setTenantId);
+
 	        challans = getChallansWithOwnerInfo(criteria,requestInfo);
 	        return challans;
 	    }

@@ -33,13 +33,17 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
 
   const { isLoading, data: Data = {} } = Digit.Hooks.tl.useTradeLicenseMDMS(stateId, "TradeLicense", "AccessoryCategory");
   const [accessories, SetAccessories] = useState([]);
-  const { data: billingSlabData } = Digit.Hooks.tl.useTradeLicenseBillingslab({ tenantId: TenantId, filters: {} }, {
-    select: (data) => {
-    return data?.billingSlab.filter((e) => e.accessoryCategory && (window.location.href.includes("renew-trade") ? "RENEWAL" : "NEW") && e.uom);
-    }});
+  const { data: billingSlabData } = Digit.Hooks.tl.useTradeLicenseBillingslab(
+    { tenantId: TenantId, filters: {} },
+    {
+      select: (data) => {
+        return data?.billingSlab.filter((e) => e.accessoryCategory && (window.location.href.includes("renew-trade") ? "RENEWAL" : "NEW") && e.uom);
+      },
+    }
+  );
 
   useEffect(() => {
-    if (billingSlabData  && billingSlabData?.length > 0) {
+    if (billingSlabData && billingSlabData?.length > 0) {
       const processedData =
         billingSlabData &&
         billingSlabData.reduce(
@@ -83,7 +87,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
         return { code: item.licenseType, active: true };
       });
 
-      accessories?.((data) => {
+      accessories?.map((data) => {
         data.i18nKey = t(`TRADELICENSE_ACCESSORIESCATEGORY_${stringReplaceAll(data?.code?.toUpperCase(), "-", "_")}`);
       });
 
@@ -122,7 +126,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
     acc[i].accessorycount = "";
     acc[i].uom = "";
     setenableUOM(true);
-    acc[i].unit = value?.uom != null ?  value.uom : "";
+    acc[i].unit = value?.uom != null ? value.uom : "";
     Array.from(document.querySelectorAll("input"))?.forEach((input) => (input.value = ""));
     setUnitOfMeasure(value?.uom != null ? value.uom : null);
     // Data?.TradeLicense?.AccessoriesCategory.map((ob) => {
@@ -149,29 +153,28 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
   function selectUomValue(i, e) {
     setAccUOMError(null);
     if (isNaN(e.target.value)) setAccUOMError("TL_ONLY_NUM_ALLOWED");
-    if(!(e.target.value && parseFloat(e.target.value) > 0)){
-      setAccUOMError(t("TL_UOM_VALUE_GREATER_O"))
-      window.setTimeout(function(){
-        window.scrollTo(0,0);
+    if (!(e.target.value && parseFloat(e.target.value) > 0)) {
+      setAccUOMError(t("TL_UOM_VALUE_GREATER_O"));
+      window.setTimeout(function () {
+        window.scrollTo(0, 0);
       }, 0);
-    }
-    else{
-    if(fields?.[i]?.accessory && Number.isInteger(fields?.[i]?.accessory?.fromUom)){
-      if(!(e.target.value && parseInt(e.target.value) >= fields?.[i]?.accessory?.fromUom)){
-        setAccUOMError(`${t("TL_FILL_CORRECT_UOM_VALUE")} ${fields?.[i]?.accessory?.fromUom} - ${fields?.[i]?.accessory?.toUom}`);
-        window.setTimeout(function(){
-          window.scrollTo(0,0);
-        }, 0);
+    } else {
+      if (fields?.[i]?.accessory && Number.isInteger(fields?.[i]?.accessory?.fromUom)) {
+        if (!(e.target.value && parseInt(e.target.value) >= fields?.[i]?.accessory?.fromUom)) {
+          setAccUOMError(`${t("TL_FILL_CORRECT_UOM_VALUE")} ${fields?.[i]?.accessory?.fromUom} - ${fields?.[i]?.accessory?.toUom}`);
+          window.setTimeout(function () {
+            window.scrollTo(0, 0);
+          }, 0);
+        }
       }
-     }
-     if(fields?.[i]?.accessory && Number.isInteger(fields?.[i]?.accessory?.toUom)){
-     if(!(e.target.value && parseInt(e.target.value) <= fields?.[i]?.accessory?.toUom)){
-      setAccUOMError(`${t("TL_FILL_CORRECT_UOM_VALUE")} ${fields?.[i]?.accessory?.fromUom} - ${fields?.[i]?.accessory?.toUom}`);
-      window.setTimeout(function(){
-        window.scrollTo(0,0);
-      }, 0);
-       }
-     }
+      if (fields?.[i]?.accessory && Number.isInteger(fields?.[i]?.accessory?.toUom)) {
+        if (!(e.target.value && parseInt(e.target.value) <= fields?.[i]?.accessory?.toUom)) {
+          setAccUOMError(`${t("TL_FILL_CORRECT_UOM_VALUE")} ${fields?.[i]?.accessory?.fromUom} - ${fields?.[i]?.accessory?.toUom}`);
+          window.setTimeout(function () {
+            window.scrollTo(0, 0);
+          }, 0);
+        }
+      }
     }
     let acc = [...fields];
     acc[i].uom = e.target.value;
@@ -187,11 +190,10 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
     onSelect(config.key, formdata);
   };
 
-  function canMoveNext(){
-    if(!fields?.[0]?.accessory || !fields?.[0]?.accessorycount || (fields?.[0]?.unit && !fields?.[0]?.uom) || AccCountError || AccUOMError)
-    return true
-    else 
-    return false
+  function canMoveNext() {
+    if (!fields?.[0]?.accessory || !fields?.[0]?.accessorycount || (fields?.[0]?.unit && !fields?.[0]?.uom) || AccCountError || AccUOMError)
+      return true;
+    else return false;
   }
 
   const onSkip = () => onSelect();
@@ -201,14 +203,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
       {isLoading ? (
         <Loader />
       ) : (
-        <FormStep
-          config={config}
-          onSelect={goNext}
-          onSkip={onSkip}
-          t={t}
-          forcedError={t(AccCountError) || t(AccUOMError)}
-          isDisabled={canMoveNext()}
-        >
+        <FormStep config={config} onSelect={goNext} onSkip={onSkip} t={t} forcedError={t(AccCountError) || t(AccUOMError)} isDisabled={canMoveNext()}>
           {fields.map((field, index) => {
             return (
               <div key={`${field}-${index}`}>
@@ -253,7 +248,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
                       optionKey="i18nKey"
                       isMandatory={config.isMandatory}
                       //options={[{ i18nKey: "a" }, { i18nKey: "a" }, { i18nKey: "a" }, { i18nKey: "a" }, { i18nKey: "a" }, { i18nKey: "a" }]}
-                      options={sortDropdownNames( accessories, "i18nKey", t) || []}
+                      options={sortDropdownNames(accessories, "i18nKey", t) || []}
                       selectedOption={field.accessory}
                       onSelect={(e) => selectAccessory(index, e)}
                       isPTFlow={true}

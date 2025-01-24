@@ -44,6 +44,8 @@ module.exports = function (app) {
     "/tl-services/v1/_search",
     "/egov-url-shortening/shortener",
     "/inbox/v1/_search",
+    "/inbox/v2/_search",
+
     "/tl-services",
     "/tl-calculator",
     "/edcr",
@@ -61,6 +63,8 @@ module.exports = function (app) {
     "/report",
     "/inbox/v1/dss/_search",
     "/inbox/v1/elastic/_search",
+    "/inbox/v2/dss/_search",
+    "/inbox/v2/elastic/_search",
     "/fsm-calculator",
     "/service-request",
   ].forEach((location) => app.use(location, createProxy));

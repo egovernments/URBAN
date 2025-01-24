@@ -679,11 +679,10 @@ public class EdcrRestService {
             if (edcrRequest != null && edcrRequest.getTenantId().equalsIgnoreCase(stateCity.getCode())) {
                 final Map<String, String> params = new ConcurrentHashMap<>();
 
-                StringBuilder queryStr = new StringBuilder();
-                searchAtStateTenantLevel(edcrRequest, userInfo, userId, onlyTenantId, params, isStakeholder);
-                final Query query = getCurrentSession().createSQLQuery(queryStr.toString()).setFirstResult(offset)
+                String queryString = searchAtStateTenantLevel(edcrRequest, userInfo, userId, onlyTenantId, params, isStakeholder);
+                final Query query = getCurrentSession().createSQLQuery(queryString).setFirstResult(offset)
                         .setMaxResults(limit);
-                LOG.info(queryStr.toString());
+                LOG.info(queryString.toString());
 
                 for (final Map.Entry<String, String> param : params.entrySet())
                     query.setParameter(param.getKey(), param.getValue());
@@ -1037,7 +1036,8 @@ public class EdcrRestService {
                 return new ErrorDetail(BPA_07, REQ_BODY_REQUIRED);
             else if (edcrRequest.getRequestInfo().getUserInfo() == null
                     || (edcrRequest.getRequestInfo().getUserInfo() != null
-                    && isBlank(edcrRequest.getRequestInfo().getUserInfo().getUuid())))
+							&& isBlank(edcrRequest.getRequestInfo().getUserInfo().getUuid())
+									&& isBlank(edcrRequest.getRequestInfo().getUserInfo().getId())))
                 return new ErrorDetail(BPA_07, USER_ID_IS_MANDATORY);
 
             if (isBlank(edcrRequest.getTransactionNumber()))
@@ -1055,7 +1055,8 @@ public class EdcrRestService {
                 return new ErrorDetail(BPA_07, REQ_BODY_REQUIRED);
             else if (edcrRequest.getRequestInfo().getUserInfo() == null
                     || (edcrRequest.getRequestInfo().getUserInfo() != null
-                    && isBlank(edcrRequest.getRequestInfo().getUserInfo().getUuid())))
+							&& isBlank(edcrRequest.getRequestInfo().getUserInfo().getUuid())
+									&& isBlank(edcrRequest.getRequestInfo().getUserInfo().getId())))
                 return new ErrorDetail(BPA_07, USER_ID_IS_MANDATORY);
 
             if (isBlank(edcrRequest.getTransactionNumber()))

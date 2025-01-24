@@ -2,7 +2,7 @@ package org.bel.birthdeath.common.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.bel.birthdeath.birth.model.ImportBirthWrapper;
 import org.bel.birthdeath.birth.model.SearchCriteria;

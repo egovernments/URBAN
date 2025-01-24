@@ -2,20 +2,11 @@
   "name": "egovernments",
   "version": "1.5.4",
   "main": "index.js",
-  "workspaces": [
+  "workspaces": [    
     "packages/libraries",
-    "packages/css",
     "example",
     "packages/react-components",
-    "packages/modules/common",
-    "packages/modules/core",
-    "packages/modules/dss",
-    "packages/modules/engagement",
-    "packages/modules/pgr",
-    "packages/modules/pt",
-    "packages/modules/tl",
-    "packages/modules/fsm",
-    "packages/modules/ws"
+     "packages/modules/*"
   ],
   "author": "Abhinav Kushwaha <abhinav.kushwaha@egovernments.org>",
   "license": "MIT",
@@ -24,11 +15,11 @@
     "node": ">=14"
   },
   "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true run-s build start:dev",
+    "start": "run-s build start:dev",
     "sprint": "SKIP_PREFLIGHT_CHECK=true run-s start:script",
     "start:dev": "run-p dev:**",
     "start:script": "./scripts/create.sh",
-    "dev:css": "cd packages/css && yarn start",
+    "devD:css": "cd packages/css && yarn start",
     "publish:css": "cd packages/css && yarn publish --access public",
     "dev:libraries": "cd packages/libraries && yarn start",
     "dev:components": "cd packages/react-components && yarn start",
@@ -85,7 +76,8 @@
   "dependencies": {
     "lodash": "4.17.21",
     "microbundle-crl": "0.13.11"
-  } ,"resolutions": {
+  } ,
+  "resolutions": {
     "**/babel-loader": "8.2.2",
     "**/@babel/core": "7.14.0",
     "**/@babel/preset-env": "7.14.0",

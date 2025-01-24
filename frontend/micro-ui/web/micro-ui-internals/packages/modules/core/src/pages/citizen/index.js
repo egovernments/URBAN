@@ -77,7 +77,7 @@ const Home = ({
   };
 
   const hideSidebar = sidebarHiddenFor.some((e) => window.location.href.includes(e));
-  const appRoutes = modules.map(({ code, tenants }, index) => {
+  const appRoutes = modules?.map(({ code, tenants }, index) => {
     const Module = Digit.ComponentRegistryService.getComponent(`${code}Module`);
     return Module ? (
       <Route key={index} path={`${path}/${code.toLowerCase()}`}>
@@ -86,12 +86,13 @@ const Home = ({
     ) : null;
   });
 
-  const ModuleLevelLinkHomePages = modules.map(({ code, bannerImage }, index) => {
+  const ModuleLevelLinkHomePages = modules?.map(({ code, bannerImage }, index) => {
     let Links = Digit.ComponentRegistryService.getComponent(`${code}Links`) || (() => <React.Fragment />);
     let mdmsDataObj = isLinkDataFetched ? processLinkData(linkData, code, t) : undefined;
 
     //if (mdmsDataObj?.header === "ACTION_TEST_WS") {
-      mdmsDataObj?.links && mdmsDataObj?.links.sort((a, b) => {
+    mdmsDataObj?.links &&
+      mdmsDataObj?.links.sort((a, b) => {
         return a.orderNumber - b.orderNumber;
       });
     // }
@@ -124,7 +125,7 @@ const Home = ({
               )}
               {/* <Links key={index} matchPath={`/digit-ui/citizen/${code.toLowerCase()}`} userType={"citizen"} /> */}
             </div>
-            <StaticDynamicCard moduleCode={code?.toUpperCase()}/>
+            <StaticDynamicCard moduleCode={code?.toUpperCase()} />
           </div>
         </Route>
         <Route key={"faq" + index} path={`${path}/${code.toLowerCase()}-faq`}>
@@ -206,7 +207,7 @@ const Home = ({
           </Route>
 
           <Route path={`${path}/Audit`}>
-            <Search/>
+            <Search />
           </Route>
           <ErrorBoundary initData={initData}>
             {appRoutes}

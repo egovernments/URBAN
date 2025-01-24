@@ -6,7 +6,7 @@ const envVariables = {
     "46ad4cd2bd2d8d2f3a6cb567482b6c703473dc0eaf150baea5a92909131302b5",
   DB_HOST: process.env.DB_HOST || "ec2-54-225-68-133.compute-1.amazonaws.com",
   DB_NAME: process.env.DB_NAME || "d9jf2v9doprlot",
-  DB_SSL: process.env.DB_SSL || false,
+  DB_SSL: process.env.DB_SSL || true,
   DB_PORT: process.env.DB_PORT || 5432,
   DB_MAX_POOL_SIZE: process.env.DB_MAX_POOL_SIZE || "5",
 
@@ -64,7 +64,7 @@ const envVariables = {
   //location service configurations
   EGOV_LOCATION_HOST: process.env.EGOV_LOCATION_HOST || "http://localhost:8090",
   EGOV_LOCATION_CONTEXT_PATH:
-    process.env.EGOV_LOCATION_CONTEXT_PATH || "/egov-location/location/v11/",
+    process.env.EGOV_LOCATION_CONTEXT_PATH || "/egov-location/location/v11",
   EGOV_LOCATION_SEARCH_ENDPOINT:
     process.env.EGOV_LOCATION_SEARCH_ENDPOINT || "/boundarys/_search",
   EGOV_LOCATION_HIERARCHY_TYPE_CODE: process.env.EGOV_LOCATION || "REVENUE",

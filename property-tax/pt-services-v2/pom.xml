@@ -69,10 +69,7 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka</artifactId>
-    </dependency>
+
 
     <dependency>
       <groupId>org.egov</groupId>
@@ -85,6 +82,11 @@
     <version>4.13.2</version>
     <scope>test</scope>
   </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
   </dependencies>
   <repositories>
     <repository>

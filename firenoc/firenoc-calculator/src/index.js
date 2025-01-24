@@ -14,12 +14,14 @@ var ssl = envVariables.DB_SSL;
 if(typeof ssl =="string")
   ssl = (ssl.toLowerCase() == "true");
 
+const sslConfig = ssl ? { rejectUnauthorized: false } : false;
+
 const pool = new Pool({
   user: envVariables.DB_USERNAME,
   host: envVariables.DB_HOST,
   database: envVariables.DB_NAME,
   password: envVariables.DB_PASSWORD,
-  ssl: ssl,
+  ssl: sslConfig,
   port: envVariables.DB_PORT,
   max: envVariables.DB_MAX_POOL_SIZE,
   idleTimeoutMillis: 30000,

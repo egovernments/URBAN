@@ -88,6 +88,7 @@ public final class WebUtils {
                 domainName = commonDomainName;
             } else {
                 String host = httpRequest.getHeader("x-forwarded-host");
+                domainName = commonDomainName;
                 if (StringUtils.isNotBlank(host)) {
                     domainName = host.split(",")[0];
                 }
@@ -130,7 +131,9 @@ public final class WebUtils {
         	String proto = "https";
         	if(protocol != null)
         		proto = protocol.split(",")[0];
-            String hostName = host.split(",")[0];
+        	String hostName = domainName;
+        	if(host != null)
+        		hostName = host.split(",")[0];
             if(isCentralInstance) {
             	proto = "https";
                 hostName = domainName;
