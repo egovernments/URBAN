@@ -165,7 +165,7 @@
 		<joda-time-jsptag-version>1.1.1</joda-time-jsptag-version>
 		<jsoup-version>1.10.3</jsoup-version>
 		<jython-version>2.7.1b3</jython-version>
-		<flyway-core-version>9.22.3</flyway-core-version>
+		<flyway-core-version>10.7.1</flyway-core-version>
 		<junit-version>4.12</junit-version>
 		<mockito-all-version>1.10.19</mockito-all-version>
 		<springockito-version>1.0.9</springockito-version>
@@ -188,12 +188,15 @@
 
 		<!-- Plugin dependency versions -->
 		<mvn.release.plugin.version>2.5.3</mvn.release.plugin.version>
-		<mvn.ear.plugin.version>2.10.1</mvn.ear.plugin.version>
+		<mvn.ear.plugin.version>3.1.0</mvn.ear.plugin.version>
 		<mvn.war.plugin.version>3.2.0</mvn.war.plugin.version>
 		<mvn.jar.plugin.version>3.0.2</mvn.jar.plugin.version>
-		<mvn.compiler.plugin.version>3.7.0</mvn.compiler.plugin.version>
 		<mvn.dependency.plugin.version>3.0.2</mvn.dependency.plugin.version>
 		<mvn.resource.plugin.version>3.0.1</mvn.resource.plugin.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencyManagement>
@@ -1422,10 +1425,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${mvn.compiler.plugin.version}</version>
+				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>17</source>
+					<target>17</target>
 				</configuration>
 			</plugin>
 			<plugin>
