@@ -1,7 +1,7 @@
 package org.egov.demoutility.model;
 
 
-import org.hibernate.validator.constraints.SafeHtml;
+
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -19,7 +19,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-06T05:37:21.257Z[GMT]")
+@jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-06T05:37:21.257Z[GMT]")
 @AllArgsConstructor
 @EqualsAndHashCode
 @Getter
@@ -30,26 +30,26 @@ import lombok.ToString;
 @JsonIgnoreProperties
 public class Vehicle {
 
-    @SafeHtml
+    
     @JsonProperty("id")
     private String id = null;
 
-    @SafeHtml
+    
     @JsonProperty("tenantId")
     private String tenantId = null;
 
     @NonNull
-    @SafeHtml
+    
     @JsonProperty("registrationNumber")
     private String registrationNumber  = null;
 
     @NonNull
-    @SafeHtml
+    
     @JsonProperty("model")
     private String model = null;
 
     @NonNull
-    @SafeHtml
+    
     @JsonProperty("type")
     private String type = null;
 
@@ -57,7 +57,7 @@ public class Vehicle {
     @JsonProperty("tankCapicity")
     private Double tankCapicity;
 
-    @SafeHtml
+    
     @JsonProperty("suctionType")
     private String suctionType = null;
 
@@ -79,11 +79,11 @@ public class Vehicle {
     @JsonProperty("additionalDetails")
     private Object additionalDetails = null;
 
-    @SafeHtml
+    
     @JsonProperty("source")
     private String source = null;
 
-    @SafeHtml
+    
     @JsonProperty("ownerId")
     private String ownerId = null;
 

@@ -38,7 +38,7 @@ public class KafkaConfigBatch {
         props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 900000);
         props.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, 10000);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "egov-pt-services-v2");
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, List.of("release-name-kafka-controller-headless.kafka-kraft:9092"));
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, List.of(propertyConfiguration.getKafkBootStrapServer()));
         return props;
     }
 

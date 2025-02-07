@@ -1,10 +1,10 @@
 package org.egov.demoutility.model;
 
 import lombok.*;
-import org.hibernate.validator.constraints.SafeHtml;
+
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Validated
 @EqualsAndHashCode(exclude = {"auditDetails"})
@@ -16,23 +16,23 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class DeactivationDetails {
 
-	@SafeHtml
+	
 	private String id;
 
-	@SafeHtml
+	
 	@NotNull
 	private String reasonForDeactivation;
 
-	@SafeHtml
+	
 	private String orderNo;
 
-	@SafeHtml
+	
 	private String remarks;
 
 	@NotNull
 	private Long effectiveFrom;
 
-	@SafeHtml
+	
 	private String tenantId;
 
 	private AuditDetails auditDetails;

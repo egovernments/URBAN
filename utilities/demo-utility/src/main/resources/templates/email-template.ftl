@@ -1,6 +1,6 @@
 <table>
 <tr>
-<td><b>Product</b></td>
+<td><b>Username &#8594;</span></b></td>
 <td><b>${employee1}</b></td>
 <td><b>${employee2}</b></td>
 <td><b>${employee3}</b></td>
@@ -9,18 +9,23 @@
 <td><b>${employee6}</b></td>
 </tr>
 <tr>
-<td>OBPS</td>
+<td><b>Application &#8595;</b></td>
+<td><b>Roles  &#8595;</span><b></td>
+<td><b>Roles  &#8595;<b></td>
+<td><b>Roles  &#8595; <b></td>
+<td><b>Roles  &#8595;<b></td>
+<td><b>Roles  &#8595;<b></td>
+<td><b>Roles  &#8595;<b></td>
+</tr>
+<tr>
+<td>Building Plan Approval</td>
 <td>Counter operator</td>
-<td> Document verifier <br>
-Airport NOC user <br>
-Stakeholer registraion document verifier</td>
+<td> Document verifier,Airport NOC user,Stakeholder registration document verifier</td>
 <td>
-Field inspector <br>
-Fire NOC user
+Field inspector, Fire NOC user
 </td>
 <td>
-Approver <br>
-Stakeholder registration approver &nbsp
+Approver,Stakeholder registration approver 
 </td>
 <td>
 NOC verifier
@@ -28,7 +33,7 @@ NOC verifier
 <td></td>
 </tr>
 <tr>
-<td>TL</td>
+<td>Trade License</td>
 <td>Counter operator</td>
 <td>Document verifier</td>
 <td>
@@ -43,7 +48,7 @@ Approver
 <td>State Admin</td>
 </tr>
 <tr>
-<td>FIRE NOC</td>
+<td>Fire NOC</td>
 <td>Counter operator</td>
 <td>Document verifier</td>
 <td>
@@ -59,7 +64,7 @@ Approver
 </tr>
 
 <tr>
-<td>PGR</td>
+<td>Complaints</td>
 <td>CSR</td>
 <td>GRO</td>
 <td>
@@ -74,7 +79,7 @@ LME
 <td></td>
 </tr>
 <tr>
-<td>W & S</td>
+<td>Water & Sewerage</td>
 <td>Counter operator</td>
 <td>Document verifier</td>
 <td>
@@ -89,11 +94,9 @@ Clerk
 <td></td>
 </tr>
 <tr>
-<td>FSM</td>
+<td>Faecal Sludge Management</td>
 <td>FSM Collector</td>
-<td>FSM Creator <br>
-FSM Editor <br>
-FSM Viewer &nbsp;</td>
+<td>FSM Creator,FSM Editor,FSM Viewer</td>
 <td>
  
 </td>
@@ -103,32 +106,16 @@ FSM Viewer &nbsp;</td>
 <td>
 
 </td>
-<td>FSM Viewer <br>
-FSM Report viewer <br>
-FSM DSS &nbsp;</td>
+<td>FSM Viewer, FSM Report viewer,FSM DSS </td>
 </tr>
 <tr>
-<td>HRMS</td>
-<td></td>
-<td></td>
-<td>
-</td>
-<td>
-</td>
-<td>
-</td>
-<td>Super User</td>
-</tr>
+
 <tr>
 <td>Finance</td>
 <td>Receipt creator</td>
-<td>Bill creator <br>
-Voucher creator <br>
-Payment approver &nbsp;</td>
+<td>Bill creator, Voucher creator,Payment approver</td>
 <td>
-Bill Approver <br>
-Voucher Approver <br>
-Payment Approver<br>
+Bill Approver,Voucher Approver,Payment Approver
 </td>
 <td>
 Collection remitter
@@ -136,11 +123,10 @@ Collection remitter
 <td>
 
 </td>
-<td>Finance Admin <br>
-Finance report viewer &nbsp;</td>
+<td>Finance Admin,Finance report viewer</td>
 </tr>
 <tr>
-<td>PT</td>
+<td>Property Tax</td>
 <td>Counter operator</td>
 <td>Document verifier 
 </td>
@@ -153,9 +139,7 @@ Approver
 <td>
 
 </td>
-<td>Receipt cancellator <br>
-PT report viewer <br>
-State Admin</td>
+<td>Receipt cancellator,PT report viewer,State Admin</td>
 </tr>
 <tr>
 <td>Bill Amendment</td>
@@ -175,8 +159,7 @@ Approver
 </tr>
 <tr>
 <td>Miscellaneous collection</td>
-<td>Counter operator <br>
-mcollect report viewer</td>
+<td>Counter operator,mcollect report viewer</td>
 <td>
  
 </td>
@@ -247,4 +230,4 @@ Supervisor
 </td>
 </tr>
 </table>
-<br><br>
+<br>

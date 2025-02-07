@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UtilityConstants {
-	
-	public static final String  MESSAGE="Processing your request, you will get email with all details soon";
-	
+
 	public static final String  TENANTID="pg.cityb";
 	public static final String  TENANTID_TOKEN="pg.citya";
 	
@@ -69,30 +67,27 @@ public class UtilityConstants {
 
 	public static final String TENANT_CODE = "107";
 
-	public static final String SUBJECT = "DIGIT USER CREDTINALS";
+	public static final String SUBJECT = "User Credentials for DIGIT Instance";
 	
-	public static StringBuffer EMAIL_STRATING_CONTENT=new StringBuffer("<html><head><style type=\"text/css\" media=\"screen\">table { border-collapse:collapse;border:1px solid;}  table td {border:1px solid #000000;}</style></head><body><h4> Hi, <br> <br> Thanks for registering for digit demo. Please find the below details for accessing modules.<br><br> URL: <u>https://staging.digit.org/employee</u> <br> <br> Default password for all users is : eGov@123 </h4>\r\n");
+	public static StringBuffer EMAIL_STRATING_CONTENT=new StringBuffer("<html><head><style type=\"text/css\" media=\"screen\">table { border-collapse:collapse;border:1px solid;}  table td {border:1px solid #000000;}</style></head><body><h4 style=\"color:#500050\"> Hi, <br> <br>Thanks for taking the time out to fill in the details required to generate user credentials for using the demo instance. Please find the role-based login credentials for individual modules in the table below<br>The default password for all users is: eGov@123<br></h4>\r\n");
 	
-	public static String EMAIL_REGARDS="<p style=\"margin-right:100px\">Regards <br>Egov Foundation</p>";
+	public static String EMAIL_REGARDS="<p style=\"margin-right:50px;\">Note: Use your mobile number submitted in Access DIGIT Credentials form to access DSO role for Faecal Sludge Management Application <br>"
+			+ " Login url for DSO role is - <U> https://staging.digit.org/digit-ui/citizen/login </U>  <br> <br> Thank you, <br>eGov Team</p>";
 	
 	public static StringBuffer EMAIL_ENDING_CONTENT=new StringBuffer("</body></html>");
-	
 
-    public static final String PATTERN_NAME = "^[^\\\\$\\\"'<>?\\\\\\\\~`!@#$%^()+={}\\\\[\\\\]*,:;“”‘’]*$";
-
-
-    public static final String PATTERN_GENDER = "^[a-zA-Z ]*$";
-    public static final String PATTERN_MOBILE = "(^$|[0-9]{10})";
-    public static final String PATTERN_CITY = "^[a-zA-Z. ]*$";
-    public static final String PATTERN_TENANT = "^[a-zA-Z. ]*$";
     public static final List<String> NUMBERS=Arrays.asList("ONE","TWO","THREE","FOUR","FIVE","SIX");
-	
-	
-	
-	
-	
 
+	public static final String PATTERN_ORGANISATION_CODE = "[A-Z]{3}";
+
+	public static final String INVALID_ORGANISATION_CODE = "Invalid Code";
+
+	public static final String INVALID_ORGANISATION_CODE_MESSAGE = "Enter 3 characters code for your organization (only alphabets)";
+
+	public static final String CITIZEN_ROLE = "CITIZEN";
 	
+	public static final String AGENCY_TYPE = "Private";
 	
+    public static final String PAYMENT_PREFERENCE = "post-service";
 	
 }

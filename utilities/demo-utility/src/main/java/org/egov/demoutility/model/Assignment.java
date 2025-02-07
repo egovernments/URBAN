@@ -42,9 +42,9 @@ package org.egov.demoutility.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.SafeHtml;
+
 import org.springframework.validation.annotation.Validated;
 
 @Validated
@@ -57,16 +57,16 @@ import org.springframework.validation.annotation.Validated;
 @ToString
 public class Assignment {
 
-	@SafeHtml
+	
 	private String id;
 
 	private Long position;
 
-	@SafeHtml
+	
 	@NotNull
 	private String designation;
 
-	@SafeHtml
+	
 	@NotNull
 	private String department;
 
@@ -75,13 +75,13 @@ public class Assignment {
 
 	private Long toDate;
 
-	@SafeHtml
+	
 	private String govtOrderNumber;
 
-	@SafeHtml
+	
 	private String tenantid;
 
-	@SafeHtml
+	
 	private  String reportingTo;
 
 	@JsonProperty("isHOD")
