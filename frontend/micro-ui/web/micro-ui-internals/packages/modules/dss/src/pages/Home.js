@@ -107,7 +107,6 @@ const Chart = ({ data, moduleLevel, overview = false }) => {
       {response?.responseData?.data?.[0]?.insight?.value ? (
         <p className={`p3 ${response?.responseData?.data?.[0]?.insight?.indicator === "upper_green" ? "color-green" : "color-red"}`}>
           {response?.responseData?.data?.[0]?.insight?.indicator === "upper_green" ? ArrowUpwardElement("10px") : ArrowDownwardElement("10px")}
-          {/* {insight?.[0] ? `${insight[0]} ${t(Digit.Utils.locale.getTransformedLocale("DSS" +  (insight?.[1] ?? "")))}` : ""} */}
           {insight?.[0] !== undefined && insight?.[0] !== ""
             ? (isNaN(insight[0])
               ? `${insight[0]}` + ` ${t(Digit.Utils.locale.getTransformedLocale("DSS" + (insight?.[1] ?? "")))}`
