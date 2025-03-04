@@ -238,6 +238,7 @@ config:
       - work-dir: "utilities/demo-utility"
         image-name: "demo-utility"
         dockerfile: "build/maven/Dockerfile"
+
   - name: "builds/urban/utilities/egov-pdf"
     build:
       - work-dir: "utilities/egov-pdf"
@@ -253,7 +254,7 @@ config:
     build:
       - work-dir: "utilities/report"
         image-name: "report"
-        dockerfile: "build/maven/Dockerfile" 
+        dockerfile: "build/maven/Dockerfile"  
 
   - name: "builds/urban/utilities/egov-survey-services"
     build:
