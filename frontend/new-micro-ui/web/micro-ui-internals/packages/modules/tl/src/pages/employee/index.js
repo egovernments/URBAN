@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Inbox from "./Inbox";
 // import ApplicationDetails from "./ApplicationDetails";
 import Search from "./Search";
+import { NewApplicationDetails } from "./NewApplicationDetails";
 
 const TLBreadCrumb = ({ location }) => {
   const { t } = useTranslation();
@@ -151,7 +152,6 @@ const EmployeeApp = ({ path, url, userType }) => {
     window.location.href.includes("employee/tl/edit-application-details") ||
     window.location.href.includes("employee/tl/renew-application-details");
 
-
   return (
     <Switch>
       <React.Fragment>
@@ -177,9 +177,9 @@ const EmployeeApp = ({ path, url, userType }) => {
             <span>{location.pathname.includes("/digit-ui/employee/tl/renew-application-details") ? `/ ${t("ES_TITLE_RENEW_TRADE_LICESE_APPLICATION") }`  : null}</span>
             <span>{location.pathname.includes("/digit-ui/employee/tl/edit-application-details") ? `/ ${t("ES_TITLE_RE_NEW_TRADE_LICESE_APPLICATION") }`  : null}</span>
           </p> */}
-          <PrivateRoute path={`${path}/inbox`} component={() => <Inbox />}/>
+          <PrivateRoute path={`${path}/inbox`} component={() => <Inbox />} />
           {/* <PrivateRoute path={`${path}/new-application`} component={() => <NewApplication parentUrl={url} />} /> */}
-          {/* <PrivateRoute path={`${path}/application-details/:id`} component={() => <ApplicationDetails parentRoute={path} />} /> */}
+          <PrivateRoute path={`${path}/application-details/:id`} component={() => <NewApplicationDetails parentRoute={path} />} />
           {/* <PrivateRoute path={`${path}/renew-application-details/:id`} component={(props) => <ReNewApplication {...props} parentRoute={path} />} /> */}
           {/* <PrivateRoute
             path={`${path}/edit-application-details/:id`}

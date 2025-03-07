@@ -750,6 +750,14 @@ export const pdfDocumentName = (documentLink = "", index = 0) => {
   return documentName;
 };
 
+export const getAddress = (address, t) => {
+  return `${address?.doorNo ? `${address?.doorNo}, ` : ""} ${address?.street ? `${address?.street}, ` : ""}${
+    address?.landmark ? `${address?.landmark}, ` : ""
+  }${t(Digit.Utils.pt.getMohallaLocale(address?.locality.code, address?.tenantId))}, ${t(Digit.Utils.pt.getCityLocale(address?.tenantId))}${
+    address?.pincode && t(address?.pincode) ? `, ${address.pincode}` : " "
+  }`;
+};
+
 /* methid to get date from epoch */
 export const convertEpochToDate = (dateEpoch) => {
   // Returning null in else case because new Date(null) returns initial date from calender
