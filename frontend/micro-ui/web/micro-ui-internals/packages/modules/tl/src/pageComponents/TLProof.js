@@ -5,8 +5,9 @@ import Timeline from "../components/TLTimeline";
 
 const TLProof = ({ t, config, onSelect, userType, formData }) => {
   //let index = window.location.href.charAt(window.location.href.length - 1);
-  const [uploadedFile, setUploadedFile] = useState(formData?.owners?.documents?.OwnerPhotoProof?.fileStoreId || null);
-  const [file, setFile] = useState(formData?.owners?.documents?.OwnerPhotoProof);
+  const [uploadedFile, setUploadedFile] = useState(formData?.owners?.documents?.OwnerPhotoProof?.fileStoreId);
+  console.log("uploadedFile", uploadedFile);
+  const [file, setFile] = useState(formData?.owners?.documents?.OwnerPhotoProof || []);
   const [error, setError] = useState(null);
   const cityDetails = Digit.ULBService.getCurrentUlb();
   let acceptFormat = ".jpg,.png,.pdf,.jpeg";
@@ -15,7 +16,10 @@ const TLProof = ({ t, config, onSelect, userType, formData }) => {
   // let dropdownData = [];
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
-  const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
+  const { data: Documentsob = {} } = Digit.Hooks.useCustomMDMS(stateId, "PropertyTax", [{ name: "Documents" }], {});
+  console.log("data", Documentsob);
+
+  // const { data: Documentsob = {} } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Documents");
   const docs = Documentsob?.PropertyTax?.Documents;
   const ownerPhotoProof = Array.isArray(docs) && docs.filter((doc) => doc.code.includes("ADDRESSPROOF"));
   // if (ownerPhotoProof.length > 0) {
@@ -75,6 +79,11 @@ const TLProof = ({ t, config, onSelect, userType, formData }) => {
     })();
   }, [file]);
 
+  const handleDelete = useCallback(() => {
+    setUploadedFile(null);
+    setFile(null);
+  }, []);
+
   return (
     <React.Fragment>
       {window.location.href.includes("/citizen") ? <Timeline currentStep={3} /> : null}
@@ -96,9 +105,7 @@ const TLProof = ({ t, config, onSelect, userType, formData }) => {
           extraStyleName={"propertyCreate"}
           accept=".jpg,.png,.pdf,.jpeg"
           onUpload={selectfile}
-          onDelete={() => {
-            setUploadedFile(null);
-          }}
+          onDelete={handleDelete}
           message={uploadedFile ? `1 ${t(`TL_ACTION_FILEUPLOADED`)}` : t(`TL_ACTION_NO_FILEUPLOADED`)}
           error={error}
         />
