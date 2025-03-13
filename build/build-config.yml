@@ -313,6 +313,12 @@ config:
         dockerfile: frontend/micro-ui/web/docker/Dockerfile
         image-name: digit-ui
 
+  - name: builds/urban/frontend/micro-ui/digit-ui-tl
+    build:
+      - work-dir: frontend/new-micro-ui/
+        dockerfile: frontend/new-micro-ui/web/docker/Dockerfile
+        image-name: digit-ui-tl
+
   - name: builds/urban/frontend/micro-ui/storybook
     build:
     - work-dir: .
