@@ -19,7 +19,8 @@ import "./index.css";
 import { onchangeOfTenant } from "./propertyLocationDetails";
 export const getTenantId = () => {
   let tenant=sessionStorage.getItem('Digit.Employee.tenantId');
-  return `${JSON.parse(tenant)?.value||localStorage.getItem('tenant-id')}`;
+  if(tenant) return JSON.parse(tenant).value;
+  return localStorage.getItem('tenant-id');
 }
 
 const loadProvisionalNocData = async (state, dispatch) => {
