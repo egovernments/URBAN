@@ -114,14 +114,14 @@ const getDetailsFromProperty = async (state, dispatch) => {
               payload.Properties[0].address
             )
           );
-          // dispatch(
-          //   handleField(
-          //     "apply",
-          //     "components.div.children.formwizardSecondStep.children.tradeLocationDetails.children.cardContent.children.tradeDetailsConatiner.children.tradeLocCity.children.cityDropdown",
-          //     "props.value",
-          //     payload.Properties[0].address.tenantId
-          //   )
-          // );
+          dispatch(
+            handleField(
+              "apply",
+              "components.div.children.formwizardSecondStep.children.tradeLocationDetails.children.cardContent.children.tradeDetailsConatiner.children.tradeLocCity.children.cityDropdown",
+              "props.value",
+              payload.Properties[0].address.tenantId
+            )
+          );
         }
       }
     }
