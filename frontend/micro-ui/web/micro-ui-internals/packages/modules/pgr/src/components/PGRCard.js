@@ -7,6 +7,7 @@ import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 const PGRCard = () => {
   const { t } = useTranslation();
   const [count, setCount] = useState(0);
+  const [countNSLA, setCountNSLA] = useState(0);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   
   const allLinks = [
@@ -36,8 +37,15 @@ const PGRCard = () => {
   useEffect(() => {
     (async () => {
       let response = await Digit.PGRService.count(tenantId, {} );
+      let responseNSLA = await Digit.PGRService.count(tenantId, { 
+        slaDeltaMaxLimit: 345600000, 
+        slaDeltaMinLimit: 0 
+    } );
       if (response?.count) {
         setCount(response.count);
+      }
+      if (responseNSLA?.count) {
+        setCountNSLA(responseNSLA.count);
       }
     })();
   });
@@ -55,7 +63,7 @@ const PGRCard = () => {
             label: t("TOTAL_PGR"),
             link: `/digit-ui/employee/pgr/inbox`
         },
-        {
+        {   count: countNSLA && countNSLA,
             label: t("TOTAL_NEARING_SLA"),
             link: `/digit-ui/employee/pgr/inbox`
         }

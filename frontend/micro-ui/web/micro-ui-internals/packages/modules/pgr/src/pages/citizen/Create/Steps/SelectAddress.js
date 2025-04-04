@@ -28,7 +28,11 @@ const SelectAddress = ({ t, config, onSelect, value }) => {
     if (selectedCity && fetchedLocalities) {
       const { pincode } = value;
       let __localityList = pincode ? fetchedLocalities.filter((city) => city["pincode"] == pincode) : fetchedLocalities;
-      setLocalities(__localityList);
+      if (__localityList && __localityList.length > 0) {
+        setLocalities(__localityList);
+      } else {
+        setLocalities(fetchedLocalities);
+      }
     }
   }, [selectedCity, fetchedLocalities]);
 

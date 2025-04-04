@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-npm install --save @egovernments/digit-ui-module-dss
+npm install --save @1.7.38
 ```
 
 ## Limitation
@@ -22,7 +22,7 @@ frontend/micro-ui/web/package.json
 
 ## Changelog
 
-### Summary for Version [1.7.10] - 2025-02-13
+### Summary for Version [1.7.38] - 2025-03-28
 
 Added tenantId in Dashboard Api calls
 
