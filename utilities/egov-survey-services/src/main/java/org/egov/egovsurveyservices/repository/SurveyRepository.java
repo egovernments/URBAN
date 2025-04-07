@@ -84,15 +84,12 @@ public class SurveyRepository {
     public Integer fetchTotalSurveyCount(SurveySearchCriteria criteria) {
         List<Object> preparedStmtList = new ArrayList<>();
 
-        if(CollectionUtils.isEmpty(criteria.getTenantIds()) && ObjectUtils.isEmpty(criteria.getUuid()))
-            return 0;
-
         // Omit pagination in case of count
         criteria.setIsCountCall(Boolean.TRUE);
         String query = surveyQueryBuilder.getSurveyCountQuery(criteria, preparedStmtList);
         criteria.setIsCountCall(Boolean.FALSE);
 
-        log.info("query for search: " + query + " params: " + preparedStmtList);
+        log.info("query for surveyCount: " + query + " params: " + preparedStmtList);
 
         return jdbcTemplate.queryForObject(query, preparedStmtList.toArray(), Integer.class);
     }
