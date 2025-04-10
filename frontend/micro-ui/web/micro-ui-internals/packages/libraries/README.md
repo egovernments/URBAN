@@ -35,7 +35,7 @@ export default App;
 
 ## Changelog
 
-### Summary for Version [1.7.10] - 2025-02-13
+### Summary for Version [1.7.35] - 2025-03-20
 
 Added tenantId in Multiple api calls of obps, bills, tl, pt etc
 

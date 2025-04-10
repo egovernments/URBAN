@@ -18,6 +18,7 @@ import FilterContext from "../components/FilterContext";
 import Filters from "../components/Filters";
 import FiltersNational from "../components/FiltersNational";
 import Layout from "../components/Layout";
+import { useLocation } from 'react-router-dom';
 
 const key = "DSS_FILTERS";
 
@@ -34,6 +35,7 @@ const getInitialRange = () => {
 };
 
 const DashBoard = ({ stateCode }) => {
+  const location = useLocation(); 
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const [filters, setFilters] = useState(() => {
@@ -79,6 +81,7 @@ const DashBoard = ({ stateCode }) => {
       return serviceJS;
     },
   });
+  
   const { data: nationalInfo, isLoadingNAT } = Digit.Hooks.dss.useMDMS(stateCode, "tenant", ["nationalInfo"], {
     select: (data) => {
       let nationalInfo = data?.tenant?.nationalInfo || [];
@@ -154,6 +157,7 @@ const DashBoard = ({ stateCode }) => {
       ...filters,
       moduleLevel: "",
     });
+    setFilters((prev) => ({ ...prev, moduleLevel: [] }));
   };
 
   const removeTenant = (id) => {
@@ -172,10 +176,39 @@ const DashBoard = ({ stateCode }) => {
   };
   const clearAllSt = () => {
     handleFilters({ ...filters, filters: { ...filters?.filters, state: [], ulb: [] } });
-  };
+  };  
+
+  const [refresh, setRefresh] = useState(false);
+
+  // const clearAllServices = () => {
+  //   handleFilters({ ...filters, moduleLevel: "" });
+  //   setFilters({});
+  //   setRefresh((prev) => !prev);
+  // };
   const clearAllServices = () => {
-    handleFilters({ ...filters, moduleLevel: "" });
+    // Check if the URL contains /dashboard/overview
+    if (location.pathname.includes('/dashboard/overview')) {
+      handleFilters({ ...filters, moduleLevel: "" });
+      setFilters({});
+      setRefresh((prev) => !prev);
+    } else {
+      handleFilters({ ...filters, moduleLevel: "" });
+      // setFilters({});
+      setRefresh((prev) => !prev);
+    }
   };
+
+
+    // Check URL during page load (on init)
+    useEffect(() => {
+      if (location.pathname.includes('/dashboard/overview')) {
+        // Do nothing, keep the state intact for /dashboard/overview
+        console.log('Keeping state for /dashboard/overview');
+      } else {
+        // Perform necessary operations (like clearing services)
+        clearAllServices();
+      }
+    }, [location.pathname]);  
 
   const dashboardConfig = response?.responseData;
   let tabArrayObj =
@@ -262,6 +295,7 @@ const DashBoard = ({ stateCode }) => {
   if (isLoading || isUlbLoading || localizationLoading || isMdmsLoading || isLoadingNAT || isServicesLoading) {
     return <Loader />;
   }
+
   return (
     <FilterContext.Provider value={provided}>
       <div ref={fullPageRef} id="divToPrint">

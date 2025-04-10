@@ -201,7 +201,7 @@ class SingleApplication extends React.Component {
     const {certificateDowloadHandler} = this.props;
     certificateDowloadHandler(item.fileStoreId);
     if(callPostPaymentActivity)
-      postPaymentActivity({consumerCode:item.applicationNumber, tenantId:item.tenantId, businessService: item.applicationCategory == "Birth" ? "BIRTH_CERT" : "DEATH_CERT"}
+      postPaymentActivity({consumerCode:item.applicationNumber, tenantId:item.tenantId, businessService: item.applicationCategory == "Birth" ? "BIRTH_CERT.BIRTH_CERT" : "DEATH_CERT"}
         , false);
   }
 

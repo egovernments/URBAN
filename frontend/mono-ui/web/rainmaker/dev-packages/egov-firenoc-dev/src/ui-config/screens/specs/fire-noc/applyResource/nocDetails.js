@@ -17,6 +17,10 @@ import {
 } from "../../../../../ui-utils/commons";
 import "./index.css";
 import { onchangeOfTenant } from "./propertyLocationDetails";
+export const getTenantId = () => {
+  let tenant=sessionStorage.getItem('Digit.Employee.tenantId');
+  return `${JSON.parse(tenant)?.value||localStorage.getItem('tenant-id')}`;
+}
 
 const loadProvisionalNocData = async (state, dispatch) => {
   let fireNOCNumber = get(
@@ -41,6 +45,7 @@ const loadProvisionalNocData = async (state, dispatch) => {
 
     let response = await getSearchResults([
       { key: "fireNOCNumber", value: fireNOCNumber },
+      { key: "tenantId", value: getTenantId() },
     ]);
 
     if ((response && response.FireNOCs && response.FireNOCs.length == 0) || (!response)) {

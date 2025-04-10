@@ -615,29 +615,29 @@ const ApplicationBillAmendment = () => {
           submit={true} 
           label={state?.data?.action ? t("WF_CITIZEN_NEWSW1_RESUBMIT_APPLICATION") : t("WS_COMMON_BUTTON_SUBMIT")} 
           disabled={
-            (servicev1 == "WS" && ischeckedReduce && 
-            ((getValues().WS_REDUCED_AMOUNT.WS_CHARGE == "" || getValues().WS_REDUCED_AMOUNT.WS_CHARGE == null) 
-            && (getValues().WS_REDUCED_AMOUNT.WS_TIME_PENALTY  == "" || getValues().WS_REDUCED_AMOUNT.WS_TIME_PENALTY  == null) 
-            && (getValues().WS_REDUCED_AMOUNT.WS_TIME_INTEREST  == "" || getValues().WS_REDUCED_AMOUNT.WS_TIME_INTEREST  == null) 
-            && (getValues().WS_REDUCED_AMOUNT.WS_WATER_CESS == "" || getValues().WS_REDUCED_AMOUNT.WS_WATER_CESS == null))) 
-            || 
-            (servicev1 == "SW" && ischeckedReduce && 
-            ((getValues().SW_REDUCED_AMOUNT.SW_CHARGE == "" || getValues().SW_REDUCED_AMOUNT.SW_CHARGE == null) 
-            && (getValues().SW_REDUCED_AMOUNT.SW_TIME_PENALTY  == "" || getValues().SW_REDUCED_AMOUNT.SW_TIME_PENALTY == null)
-            && (getValues().SW_REDUCED_AMOUNT.SW_TIME_INTEREST  == "" || getValues().SW_REDUCED_AMOUNT.SW_TIME_INTEREST  == null) 
-            && (getValues().SW_REDUCED_AMOUNT.SW_SEWERAGE_CESS == "" || getValues().SW_REDUCED_AMOUNT.SW_SEWERAGE_CESS  == null)))
-            || 
-            (servicev1 == "WS" && ischeckedAddition && 
-            ((getValues().WS_ADDITIONAL_AMOUNT.WS_CHARGE == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_CHARGE == null) 
-            && (getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_PENALTY  == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_PENALTY  == null) 
-            && (getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_INTEREST  == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_INTEREST  == null)  
-            && (getValues().WS_ADDITIONAL_AMOUNT.WS_WATER_CESS == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_WATER_CESS == null)))
-            || 
-            (servicev1 == "SW" && ischeckedAddition && 
-            ((getValues().SW_ADDITIONAL_AMOUNT.SW_CHARGE == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_CHARGE == null) 
-            && (getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_PENALTY  == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_PENALTY  == null) 
-            && (getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_INTEREST  == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_INTEREST  == null) 
-            && (getValues().SW_ADDITIONAL_AMOUNT.SW_SEWERAGE_CESS == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_SEWERAGE_CESS == null)))
+            (
+              (servicev1 == "WS" && ischeckedReduce &&
+                ((getValues().WS_REDUCED_AMOUNT.WS_CHARGE == "" || getValues().WS_REDUCED_AMOUNT.WS_CHARGE == null) &&
+                  (getValues().WS_REDUCED_AMOUNT.WS_TIME_PENALTY == "" || getValues().WS_REDUCED_AMOUNT.WS_TIME_PENALTY == null) &&
+                  (getValues().WS_REDUCED_AMOUNT.WS_TIME_INTEREST == "" || getValues().WS_REDUCED_AMOUNT.WS_TIME_INTEREST == null) &&
+                  (getValues().WS_REDUCED_AMOUNT.WS_WATER_CESS == "" || getValues().WS_REDUCED_AMOUNT.WS_WATER_CESS == null))) ||
+              (servicev1 == "SW" && ischeckedReduce &&
+                ((getValues().SW_REDUCED_AMOUNT.SW_CHARGE == "" || getValues().SW_REDUCED_AMOUNT.SW_CHARGE == null) &&
+                  (getValues().SW_REDUCED_AMOUNT.SW_TIME_PENALTY == "" || getValues().SW_REDUCED_AMOUNT.SW_TIME_PENALTY == null) &&
+                  (getValues().SW_REDUCED_AMOUNT.SW_TIME_INTEREST == "" || getValues().SW_REDUCED_AMOUNT.SW_TIME_INTEREST == null) &&
+                  (getValues().SW_REDUCED_AMOUNT.SW_SEWERAGE_CESS == "" || getValues().SW_REDUCED_AMOUNT.SW_SEWERAGE_CESS == null))) ||
+              (servicev1 == "WS" && ischeckedAddition &&
+                ((getValues().WS_ADDITIONAL_AMOUNT.WS_CHARGE == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_CHARGE == null) &&
+                  (getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_PENALTY == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_PENALTY == null) &&
+                  (getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_INTEREST == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_TIME_INTEREST == null) &&
+                  (getValues().WS_ADDITIONAL_AMOUNT.WS_WATER_CESS == "" || getValues().WS_ADDITIONAL_AMOUNT.WS_WATER_CESS == null))) ||
+              (servicev1 == "SW" && ischeckedAddition &&
+                ((getValues().SW_ADDITIONAL_AMOUNT.SW_CHARGE == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_CHARGE == null) &&
+                  (getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_PENALTY == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_PENALTY == null) &&
+                  (getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_INTEREST == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_TIME_INTEREST == null) &&
+                  (getValues().SW_ADDITIONAL_AMOUNT.SW_SEWERAGE_CESS == "" || getValues().SW_ADDITIONAL_AMOUNT.SW_SEWERAGE_CESS == null)))
+            ) &&
+            !(getValues().WS_REBATE || getValues().WS_PENALTY || getValues().SW_REBATE || getValues().SW_PENALTY)
           }
           //UM-4354:: Above code is used To disable the button when reduced amount or additional amount is selected and none of the fields have any value
           />
