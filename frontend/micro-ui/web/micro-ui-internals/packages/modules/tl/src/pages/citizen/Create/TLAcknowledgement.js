@@ -58,8 +58,6 @@ const TLAcknowledgement = ({ data, onSuccess, onUpdateSuccess }) => {
   const filteredData = mdmsBillingData?.MdmsRes?.BillingService?.TaxPeriod?.filter(
     (item) => item.service === "TL" && item.code === `TLRENEWAL${financialYearStart}`
   );
-  console.log(`*** LOG 2***`,financialYearStart);
-  console.log(`*** LOG filteredData***`,filteredData);
   const mutation = Digit.Hooks.tl.useTradeLicenseAPI(
     data?.cpt?.details?.address?.tenantId ? data?.cpt?.details?.address?.tenantId : tenantId,
     isRenewTrade
