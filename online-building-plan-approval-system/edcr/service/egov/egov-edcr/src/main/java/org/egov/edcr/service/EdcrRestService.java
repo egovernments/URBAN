@@ -184,7 +184,8 @@ public class EdcrRestService {
     public EdcrDetail createEdcr(final EdcrRequest edcrRequest, final MultipartFile file,
                                  Map<String, List<Object>> masterData) {
         EdcrApplication edcrApplication = new EdcrApplication();
-        edcrApplication.setTenantId(ApplicationThreadLocals.getFullTenantID());
+		edcrApplication.setTenantId(ApplicationThreadLocals.getFullTenantID() == null ? edcrRequest.getTenantId()
+				: ApplicationThreadLocals.getFullTenantID());
         edcrApplication.setMdmsMasterData(masterData);
         EdcrApplicationDetail edcrApplicationDetail = new EdcrApplicationDetail();
         if (ApplicationType.OCCUPANCY_CERTIFICATE.toString().equalsIgnoreCase(edcrRequest.getAppliactionType())) {
@@ -1101,6 +1102,8 @@ public class EdcrRestService {
             } else {
                 EdcrApplicationDetail permitDcr = applicationDetailService.findByDcrNumberAndTPUserTenant(dcrNo,
                         edcrRequest.getTenantId());
+                if(permitDcr == null)
+                	permitDcr = applicationDetailService.findByDcrNumberAndTenantId(dcrNo, edcrRequest.getTenantId());
 
                 if (permitDcr != null && permitDcr.getApplication() != null
                         && StringUtils.isBlank(permitDcr.getApplication().getServiceType())) {
