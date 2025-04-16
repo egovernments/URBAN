@@ -186,7 +186,7 @@ export const searchApiCall = async (state, dispatch) => {
       ["BND_COMMON_MOTHERSNAME"]: item.mothersName || "-",
       ["BND_COMMON_FATHERSNAME"]: item.fathersName || "-",
       ["BND_COMMON_TABLE_ACTION"]: item.action || "-",
-      ["BUSINESS_SERVICE"]: "BIRTH_CERT",
+      ["BUSINESS_SERVICE"]: "BIRTH_CERT.BIRTH_CERT",
       ["TENANT_ID"]: item.tenantId,
       ["BND_VIEW_CERTIFICATE"]: "BND_VIEW_CERTIFICATE",
     }));

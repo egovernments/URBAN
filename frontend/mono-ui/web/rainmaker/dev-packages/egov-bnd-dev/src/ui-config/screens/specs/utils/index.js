@@ -758,7 +758,7 @@ export const postPaymentActivity = async (
         { key: "tenantId", value: data.tenantId },
         { key: "consumerCode", value: data.consumerCode },
       ];
-      let module = data.businessService == "BIRTH_CERT" ? "birth" : "death";
+      let module = data.businessService == "BIRTH_CERT.BIRTH_CERT" ? "birth" : "death";
       const response = await httpRequest(
         "post",
         `birth-death-services/${module}/_getfilestoreid`,
