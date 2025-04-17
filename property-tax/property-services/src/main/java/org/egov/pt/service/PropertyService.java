@@ -1,12 +1,6 @@
 package org.egov.pt.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
@@ -30,6 +24,7 @@ import org.egov.pt.util.UnmaskingUtil;
 import org.egov.pt.validator.PropertyValidator;
 import org.egov.pt.web.contracts.PropertyRequest;
 import org.egov.tracer.model.CustomException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -326,6 +321,7 @@ public class PropertyService {
 
 
 				util.saveOldUuidToRequest(request, propertyFromSearch.getId());
+				updateOldOwnereAsInactive(request,propertyFromSearch);
 				/* save new record */
 				producer.pushAfterEncrytpion(config.getSavePropertyTopic(), request);
 				producer.pushAfterEncrytpion(config.getPropertyEventInboxKafkaTopic(), request);
@@ -352,6 +348,35 @@ public class PropertyService {
 			producer.pushAfterEncrytpion(config.getPropertyEventInboxKafkaTopic(), request);
 
 		}
+	}
+
+	/**
+	 * This method is used for setting previousOwners As Inactive in the
+	 * mutation object
+	 *
+	 * @param request
+	 * @param propertyFromSearch
+	 */
+	private void updateOldOwnereAsInactive(PropertyRequest request, Property propertyFromSearch) {
+		List<OwnerInfo> newOwnerInfo = Optional.ofNullable(request.getProperty().getOwners())
+				.orElseGet(ArrayList::new);
+
+		List<OwnerInfo> previousOwnerInfo = propertyFromSearch.getOwners();
+		if (previousOwnerInfo == null || previousOwnerInfo.isEmpty()) {
+			return;
+		}
+
+		List<OwnerInfo> inactiveOwners = previousOwnerInfo.stream()
+				.map(oldOwner -> {
+					OwnerInfo inactive = new OwnerInfo();
+					BeanUtils.copyProperties(oldOwner, inactive);
+					inactive.setStatus(Status.INACTIVE);
+					return inactive;
+				})
+				.toList();
+
+		newOwnerInfo.addAll(inactiveOwners);
+		request.getProperty().setOwners(newOwnerInfo);
 	}
 
 	private void terminateWorkflowAndReInstatePreviousRecord(PropertyRequest request, Property propertyFromSearch) {
