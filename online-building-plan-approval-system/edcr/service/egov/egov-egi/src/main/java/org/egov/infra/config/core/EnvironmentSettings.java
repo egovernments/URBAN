@@ -49,7 +49,10 @@
 package org.egov.infra.config.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Component;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -113,4 +116,28 @@ public class EnvironmentSettings {
     public boolean getDataPush() {
 		return this.environment.getProperty(DATA_PUSH, Boolean.class);
 	}
+    
+    public String getDomainNameFromSchema(String schemaName) {
+        if (!(environment instanceof ConfigurableEnvironment)) {
+            return null;
+        }
+
+        ConfigurableEnvironment configEnv = (ConfigurableEnvironment) environment;
+        for (PropertySource<?> propertySource : configEnv.getPropertySources()) {
+            if (propertySource instanceof EnumerablePropertySource) {
+                for (String key : ((EnumerablePropertySource<?>) propertySource).getPropertyNames()) {
+                    if (key.startsWith("tenant.")) {
+                        String value = environment.getProperty(key);
+                        if (schemaName.equals(value)) {
+                            // return only the domain part: strip "tenant."
+                            return key.substring("tenant.".length());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    
 }

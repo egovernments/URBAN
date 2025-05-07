@@ -81,14 +81,36 @@ export const generateFireNOCSearchURL = (tenantId, applicationNumber) => {
   return url;
 };
 
+
 export const replaceSchemaPlaceholder = (query, tenantId) => {
   let finalQuery = null;
-  var isCentralInstance  = JSON.parse(envVariables.IS_ENVIRONMENT_CENTRAL_INSTANCE);
-	if (tenantId.includes('.') && isCentralInstance) {
-		let schemaName = tenantId.split('.')[1];
-		finalQuery = query.replace(/{schema}/g, schemaName);
-	} else {
-			finalQuery = query.replace(/{schema}./g, "");
-	}
-	return finalQuery;
+  const SCHEMA_REPLACE_STRING = '{schema}';
+  const isCentralInstance = JSON.parse(envVariables.IS_ENVIRONMENT_CENTRAL_INSTANCE);
+  const stateSchemaIndexPositionInTenantId = parseInt(envVariables.STATE_SCHEMA_INDEX_POSITION); // set this in env
+
+  if (isCentralInstance) {
+    if (tenantId.length <= stateSchemaIndexPositionInTenantId) {
+      throw new Error(
+        'The tenantId length is smaller than the defined schema index in tenantId for central instance'
+      );
+    }
+
+    let schemaName;
+    if (tenantId.includes('.')) {
+      const parts = tenantId.split('.');
+      schemaName = parts[stateSchemaIndexPositionInTenantId];
+    } else {
+      schemaName = tenantId;
+    }
+
+    // Case-insensitive global replace
+    const pattern = new RegExp(SCHEMA_REPLACE_STRING, 'gi');
+    finalQuery = query.replace(pattern, schemaName);
+  } else {
+    // Remove `{schema}.` case-insensitively
+    const pattern = new RegExp(SCHEMA_REPLACE_STRING + '\\.', 'gi');
+    finalQuery = query.replace(pattern, '');
+  }
+
+  return finalQuery;
 };

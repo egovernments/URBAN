@@ -74,12 +74,16 @@ public class OcComparisonService {
             comparisonDetail.setOcdcrNumber(ocComparisonDetail.getOcdcrNumber());
             comparisonDetail
                     .setComparisonReport(format(getFileDownloadUrl(ocComparisonDetail.getOcComparisonReport().getFileStoreId(),
-                            ApplicationThreadLocals.getTenantID())));
-            comparisonDetail.setTenantId(ocComparisonDetail.getTenantId());
+                    		ocComparisonDetail.getOcComparisonReport().getTenantId() == null ? ApplicationThreadLocals.getFilestoreTenantID() : ocComparisonDetail.getOcComparisonReport().getTenantId())));
+            comparisonDetail.setTenantId(ocComparisonDetail.getOcComparisonReport().getTenantId() == null ? ApplicationThreadLocals.getFilestoreTenantID() : ocComparisonDetail.getOcComparisonReport().getTenantId());
             comparisonDetail.setStatus(ocComparisonDetail.getStatus());
         } else {
-            EdcrApplicationDetail ocDcr = applicationDetailService.findByDcrNumberAndTPUserTenant(ocdcrNo, tenantId);
-            EdcrApplicationDetail permitDcr = applicationDetailService.findByDcrNumberAndTPUserTenant(dcrNo, tenantId);
+			EdcrApplicationDetail ocDcr = applicationDetailService.findByDcrNumberAndTenantId(ocdcrNo, tenantId);
+			if (ocDcr == null)
+				ocDcr = applicationDetailService.findByDcrNumberAndTPUserTenant(ocdcrNo, tenantId);
+			EdcrApplicationDetail permitDcr = applicationDetailService.findByDcrNumberAndTenantId(dcrNo, tenantId);
+			if (permitDcr == null)
+				permitDcr = applicationDetailService.findByDcrNumberAndTPUserTenant(dcrNo, tenantId);
 
             List<ErrorDetail> errors = validate(ocdcrNo, dcrNo, ocDcr, permitDcr);
 
@@ -108,9 +112,9 @@ public class OcComparisonService {
             comparisonDetail.setOcdcrNumber(ocComparisonDetailE.getOcdcrNumber());
             comparisonDetail
                     .setComparisonReport(format(getFileDownloadUrl(ocComparisonDetailE.getOcComparisonReport().getFileStoreId(),
-                            ApplicationThreadLocals.getTenantID())));
+                    		ocComparisonDetailE.getOcComparisonReport().getTenantId() == null ? ApplicationThreadLocals.getFilestoreTenantID() : ocComparisonDetailE.getOcComparisonReport().getTenantId())));
             comparisonDetail.setStatus(ocComparisonDetailE.getStatus());
-            comparisonDetail.setTenantId(ocComparisonDetailE.getTenantId());
+            comparisonDetail.setTenantId(ocComparisonDetailE.getTenantId() == null ? ApplicationThreadLocals.getFilestoreTenantID() : ocComparisonDetailE.getOcComparisonReport().getTenantId());
         }
 
         return comparisonDetail;
@@ -139,6 +143,8 @@ public class OcComparisonService {
         String tenantId = comparisonRequest.getTenantId();
 
         EdcrApplicationDetail permitDcr = applicationDetailService.findByDcrNumberAndTPUserTenant(dcrNo, tenantId);
+        if(permitDcr == null)
+        	permitDcr = applicationDetailService.findByDcrNumberAndTenantId(dcrNo, tenantId);
 
         EdcrApplication dcrApplication = ocDcr.getApplication();
 

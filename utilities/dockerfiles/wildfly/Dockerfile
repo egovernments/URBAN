@@ -9,10 +9,13 @@ USER root
 RUN rm /etc/localtime \
    && ln -s /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 RUN cd $HOME
+# Fix CentOS 7 repo issue
+RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo \
+ && sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo
 RUN yum install -y epel-release
 RUN yum install -y net-tools
 RUN yum install -y curl cabextract xorg-x11-font-utils fontconfig
-RUN curl -O http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+RUN curl -L -O http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
 RUN rpm -Uvh nux-dextop-release-0-5.el7.nux.noarch.rpm
 RUN rpm -Uvh  https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
 RUN rm nux-dextop-release-0-5.el7.nux.noarch.rpm
@@ -20,7 +23,7 @@ RUN rm nux-dextop-release-0-5.el7.nux.noarch.rpm
 # Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
 # Make sure the distribution is available from a well-known place
 RUN cd /tmp \
-    && curl -O https://devops.egovernments.org/Downloads/wildfly/$WILDFLY_VERSION.zip \
+    && curl -O https://unified-demo-central-instance.s3.ap-south-1.amazonaws.com/$WILDFLY_VERSION.zip \
     && unzip $WILDFLY_VERSION.zip \
     && rm $WILDFLY_VERSION.zip \
     && mv /tmp/wildfly-* $JBOSS_HOME \
