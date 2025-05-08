@@ -194,12 +194,40 @@ const SurveyDetails = ({ location, match }) => {
     history.push("/digit-ui/employee/engagement/surveys/update-response", details);
   };
 
+  // const handleMarkInactive = () => {
+  //   const details = {
+  //     SurveyEntity: { ...surveyData, tenantId, questions: surveyData.questions.map(filterQuestion), status: "INACTIVE" },
+  //   };
+  //   history.push("/digit-ui/employee/engagement/surveys/update-response", details);
+  // };
+
   const handleMarkInactive = () => {
+    const toEpoch = (dateStr, timeStr) => {
+      // Combine date and time to a single ISO string and convert to epoch
+      return new Date(`${dateStr}T${timeStr}:00`).getTime();
+    };
+  
+    const updatedSurveyData = {
+      ...surveyData,
+      startDate: toEpoch(surveyData.fromDate, surveyData.fromTime),
+      endDate: toEpoch(surveyData.toDate, surveyData.toTime),
+      tenantId,
+      questions: surveyData.questions.map(filterQuestion),
+      status: "INACTIVE"
+    };
+  
+    // Remove fromDate and toDate
+    delete updatedSurveyData.fromDate;
+    delete updatedSurveyData.toDate;
+    delete updatedSurveyData.fromTime;
+    delete updatedSurveyData.toTime;
+  
     const details = {
-      SurveyEntity: { ...surveyData, tenantId, questions: surveyData.questions.map(filterQuestion), status: "INACTIVE" },
+      SurveyEntity: updatedSurveyData,
     };
     history.push("/digit-ui/employee/engagement/surveys/update-response", details);
   };
+  
 
   const actionMenuOptions = useMemo(() => {
     const options = ["EDIT", "DELETE"];

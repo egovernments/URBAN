@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 const BPACitizenHomeScreen = ({ parentRoute }) => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData.code);
+  const tenantId = Digit.ULBService.getCitizenCurrentTenant();
   const stateCode = Digit.ULBService.getStateId();
   const [stakeHolderRoles, setStakeholderRoles] = useState(false);
   const { data: stakeHolderDetails, isLoading: stakeHolderDetailsLoading } = Digit.Hooks.obps.useMDMS(
@@ -40,7 +41,7 @@ const BPACitizenHomeScreen = ({ parentRoute }) => {
   const inboxSearchParams = { limit: 10, offset: 0, mobileNumber: userInfo?.info?.mobileNumber };
 
   const { isLoading: bpaLoading, data: bpaInboxData } = Digit.Hooks.obps.useArchitectInbox({
-    tenantId: stateCode,
+    tenantId: tenantId,
     moduleName: "bpa-services",
     businessService: ["BPA_LOW", "BPA", "BPA_OC"],
     filters: {

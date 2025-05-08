@@ -52,11 +52,11 @@ const WrapCheckPage = ({ onSubmit, value }) => {
       new Date(newdate).getDate().toString() + "/" + (new Date(newdate).getMonth() + 1).toString() + "/" + new Date(newdate).getFullYear().toString()
     }`;
   }
-  useEffect(() => {
-    return () => {
-      localStorage.setItem("TLAppSubmitEnabled", "false");
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     localStorage.setItem("TLAppSubmitEnabled", "false");
+  //   };
+  // }, []);
 
   function routeTo(jumpTo) {
     sessionStorage.getItem("isDirectRenewal") ? sessionStorage.removeItem("isDirectRenewal") : "";
@@ -91,6 +91,7 @@ const WrapCheckPage = ({ onSubmit, value }) => {
     }
     else
     onSubmit();
+    localStorage.setItem("TLAppSubmitEnabled", "false");
   }
 
   

@@ -18,6 +18,22 @@ import {
 import "./index.css";
 import { onchangeOfTenant } from "./propertyLocationDetails";
 
+
+export const getTenantId = () => {
+  const tenantRaw = sessionStorage.getItem('Digit.Employee.tenantId');
+  let tenantValue = null;
+
+  try {
+    const parsed = JSON.parse(tenantRaw);
+    tenantValue = parsed && parsed.value ? parsed.value : null;
+  } catch (e) {
+    // Ignore JSON parse errors and fall back to localStorage
+  }
+
+  return tenantValue || localStorage.getItem('tenant-id');
+};
+
+
 const loadProvisionalNocData = async (state, dispatch) => {
   let fireNOCNumber = get(
     state,
@@ -41,6 +57,7 @@ const loadProvisionalNocData = async (state, dispatch) => {
 
     let response = await getSearchResults([
       { key: "fireNOCNumber", value: fireNOCNumber },
+      { key: "tenantId", value: getTenantId() },
     ]);
 
     if ((response && response.FireNOCs && response.FireNOCs.length == 0) || (!response)) {

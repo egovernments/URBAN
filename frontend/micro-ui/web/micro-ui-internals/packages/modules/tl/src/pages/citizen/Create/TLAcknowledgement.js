@@ -1,5 +1,5 @@
 import { Banner, Card, CardText, LinkButton, Loader, SubmitBar } from "@egovernments/digit-ui-react-components";
-import React, { useEffect } from "react";
+import React, { useEffect,useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { convertToEditTrade, convertToResubmitTrade, convertToTrade, convertToUpdateTrade, stringToBoolean } from "../../../utils";
@@ -32,12 +32,32 @@ const BannerPicker = (props) => {
   );
 };
 
+function getFinancialYear() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+
+  if (month >= 4) {
+    return `${year}-${(year + 1).toString().slice(-2)}`;
+  } else {
+    return `${year - 1}-${year.toString().slice(-2)}`;
+  }
+}
+
 const TLAcknowledgement = ({ data, onSuccess, onUpdateSuccess }) => {
+  const hasTriggeredMutation = useRef(false);
   const { t } = useTranslation();
   const [mutationHappened, setMutationHappened, clear] = Digit.Hooks.useSessionStorage("CITIZEN_TL_MUTATION_HAPPENED", false);
   const resubmit = window.location.href.includes("edit-application");
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const isRenewTrade = !window.location.href.includes("renew-trade")
+
+  const { isLoading: mdmsLoading, data: mdmsBillingData } = Digit.Hooks.useGetPaymentRulesForBusinessServices(tenantId);
+
+  const financialYearStart = getFinancialYear().slice(0, 4);
+  const filteredData = mdmsBillingData?.MdmsRes?.BillingService?.TaxPeriod?.filter(
+    (item) => item.service === "TL" && item.code === `TLRENEWAL${financialYearStart}`
+  );
   const mutation = Digit.Hooks.tl.useTradeLicenseAPI(
     data?.cpt?.details?.address?.tenantId ? data?.cpt?.details?.address?.tenantId : tenantId,
     isRenewTrade
@@ -59,6 +79,11 @@ const TLAcknowledgement = ({ data, onSuccess, onUpdateSuccess }) => {
 
 
   useEffect(() => {
+    if (!filteredData || filteredData.length === 0) return;
+    if (hasTriggeredMutation.current) return; // Prevent re-trigger
+
+    hasTriggeredMutation.current = true; 
+
     const onSuccessedit = () => {
       setMutationHappened(true);
     };
@@ -106,7 +131,7 @@ const TLAcknowledgement = ({ data, onSuccess, onUpdateSuccess }) => {
       }
     } catch (err) {
     }
-  }, [fydata]);
+  }, [filteredData]);
 
   useEffect(() => {
     if (mutation.isSuccess || (mutation1.isSuccess && isEdit && !isDirectRenewal)) {

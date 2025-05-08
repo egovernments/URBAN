@@ -563,7 +563,7 @@ export const convertToEditTrade = (data, fy = []) => {
         applicationDate: data?.applicationDate,
         commencementDate: data?.commencementDate,
         issuedDate: data?.issuedDate,
-        financialYear: nextFinancialYearForRenewal || "2022-23",
+        financialYear: nextFinancialYearForRenewal || "2025-26",
         validFrom: data?.validFrom,
         validTo: data?.validTo,
         action: "INITIATE",
@@ -885,7 +885,8 @@ export const getPattern = type => {
     case "NoOfEmp":
       return /^(0)*[1-9][0-9]{0,6}$/i;
     case "GSTNo":
-      return /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/i;
+      return /^[a-zA-Z-0-9_@/#&+-.`' ]*$/i;
+      // return /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/i;
     case "DoorHouseNo":
       return /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;“”‘’]{1,50}$/i;
     case "BuildingStreet":

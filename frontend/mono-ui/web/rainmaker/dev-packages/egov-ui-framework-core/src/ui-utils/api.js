@@ -158,7 +158,7 @@ export const uploadFile = async (endPoint, module, file, ulbLevel) => {
   });
 
   const requestParams = {
-    tenantId,
+    // tenantId,
     module,
     file
   };

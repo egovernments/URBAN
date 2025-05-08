@@ -682,6 +682,15 @@ export const getMaxDate = (yr) => {
   return date;
 };
 
+export const getMaxDateInYMDForAbove18 = () => {
+  let date = new Date();
+  date.setFullYear(date.getFullYear() - 18); // subtract 18 years
+  let month = date.getMonth() + 1;
+  let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  month = month < 10 ? `0${month}` : month;
+  return `${date.getFullYear()}-${month}-${day}`;
+};
+
 export const isPublicSearch = () => {
   return (
     location && location.pathname && location.pathname.includes("/withoutAuth")

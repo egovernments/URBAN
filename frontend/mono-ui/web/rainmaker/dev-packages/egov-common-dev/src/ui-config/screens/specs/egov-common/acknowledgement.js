@@ -239,7 +239,7 @@ const screenConfig = {
       window.location.href,
       "businessService"
     );
-    if(businessService=="BIRTH_CERT" || businessService=="DEATH_CERT")
+    if(businessService=="BIRTH_CERT.BIRTH_CERT" || businessService=="DEATH_CERT")
     {
         //Only for birth and death certificate.
         postPaymentSuccess({consumerCode:consumerCode, tenantId:tenant, businessService: businessService});
