@@ -222,9 +222,22 @@ export default class UpdateMobileDialog extends React.Component {
     myHeaders.append("accept", "application/json, text/plain, */*");
     myHeaders.append("content-type", "application/json;charset=UTF-8");
     var raw = {
-      ...getRequestInfo(localStorage.getItem("token")),
-      Property: { ...property },
     };
+    let isCitizen =  process.env.REACT_APP_NAME == "Citizen";
+    if(isCitizen){
+      raw = {
+        ...getRequestInfo(localStorage.getItem("Citizen.token")),
+        Property: { ...property },
+      };
+    }else{
+      raw = {
+        ...getRequestInfo(localStorage.getItem("Employee.token")),
+        Property: { ...property },
+      };
+    }
+   
+   
+   
 
     var requestOptions = {
       method: "POST",

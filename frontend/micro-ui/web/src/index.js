@@ -40,7 +40,17 @@ if (!user || !user.access_token || !user.info) {
   const employeeInfo = getFromStorage("Employee.user-info")
   const employeeTenantId = getFromStorage("Employee.tenant-id")
 
-  const userType = token === citizenToken ? "citizen" : "employee";
+  // const userType = token === citizenToken ? "citizen" : "employee";
+  let userType = null;
+
+if (citizenToken) {
+  userType = "citizen";
+} else if (employeeToken) {
+  userType = "employee";
+} else {
+  userType = null; // or "guest", "unknown", etc.
+}
+  console.log(`*** LOG ***`,userType);
   window.Digit.SessionStorage.set("user_type", userType);
   window.Digit.SessionStorage.set("userType", userType);
 

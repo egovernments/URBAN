@@ -138,7 +138,15 @@ class Inbox extends Component {
       props: { variant: "outlined", style: { marginLeft: 5, marginRight: 15, marginTop: 10, backgroundColor: "#FE7A51", color: "#fff", border: "none", height: "40px", width: "200px" } },
       menu: downloadMenu
     }
-    let user = { ...JSON.parse(localStorage.getItem("Employee.user-info")), auth: localStorage.getItem("token") };
+    let isCitizen =  process.env.REACT_APP_NAME == "Citizen";
+    var tokenData;
+    if(isCitizen){
+      tokenData = localStorage.getItem("Citizen.token");
+    }else{
+      tokenData = localStorage.getItem("Employee.token")
+
+    }
+    let user = { ...JSON.parse(localStorage.getItem("Employee.user-info")), auth: tokenData};
     return (
       <div>
         <div className="rainmaker-topHeader" style={{ marginTop: 15, justifyContent: "space-between" }}>

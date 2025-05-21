@@ -155,10 +155,20 @@ export default class AlternateMobileDialog extends React.Component {
     }
     myHeaders.append("accept", "application/json, text/plain, */*");
     myHeaders.append("content-type", "application/json;charset=UTF-8");
-    var raw = {
-      ...getRequestInfo(auth?auth:localStorage.getItem("token")),
-      "Property": { ...property }
-    };
+    var raw = {}
+    let isCitizen =  process.env.REACT_APP_NAME == "Citizen";
+    if(isCitizen){
+      raw = {
+        ...getRequestInfo(auth?auth:localStorage.getItem("Citizen.token")),
+        "Property": { ...property }
+      };
+    }else{
+      raw = {
+        ...getRequestInfo(auth?auth:localStorage.getItem("Employee.token")),
+        "Property": { ...property }
+      };
+    }
+    
 
     var requestOptions = {
       method: 'POST',
