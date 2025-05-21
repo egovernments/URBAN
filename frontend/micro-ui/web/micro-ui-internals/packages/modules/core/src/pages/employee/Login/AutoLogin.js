@@ -8,7 +8,7 @@ const setEmployeeDetail = (userObject, token) => {
     localStorage.setItem("Employee[HPM] Error occurred while trying to proxy request /localization/messages/v1/_search?module=rainmaker-privacy-policy&locale=en_IN&_=1743502018537 from localhost:3000 to https://unified-qa.digit.org (ECONNRESET) (https://nodejs.org/api/errors.html#errors_common_system_errors).tenant-id", userObject?.tenantId);
     localStorage.setItem("tenant-id", userObject?.tenantId);
     // localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
-    localStorage.setItem("locale", locale);setEmployeeDetail
+    localStorage.setItem("locale", locale);
     localStorage.setItem("Employee.locale", locale);
     // localStorage.setItem("token", token);
     localStorage.setItem("Employee.token", token);
@@ -35,7 +35,7 @@ const AutoLogin = () => {
   };
   const redirectUrl = queryParams.get("redirectUrl") || "/digit-ui/employee"; 
 
-
+  console.log(`*** LOG ***`,redirectUrl);
   useEffect(() => {
     if (!user) {
       return;
@@ -51,7 +51,7 @@ const AutoLogin = () => {
       }
     else
     history.replace(redirectUrl);
-  }, [user]);
+  });
 
   const handleAutoLogin = async () => {
     try {
