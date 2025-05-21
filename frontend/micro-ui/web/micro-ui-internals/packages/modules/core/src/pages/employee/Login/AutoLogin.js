@@ -51,7 +51,7 @@ const AutoLogin = () => {
       }
     else
     history.replace(redirectUrl);
-  });
+  }, [user]);
 
   const handleAutoLogin = async () => {
     try {
