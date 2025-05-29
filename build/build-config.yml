@@ -258,6 +258,11 @@ config:
         dockerfile: "build/maven/Dockerfile"
       - work-dir: "utilities/egov-survey-services/src/main/resources/db"
         image-name: "egov-survey-services-db"
+
+  - name: "builds/urban/utilities/egov-pdf"
+    build:
+      - work-dir: "utilities/egov-pdf"
+        image-name: "egov-pdf"
                     
         
 
