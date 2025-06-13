@@ -36,7 +36,7 @@ import { initWSComponents } from "@egovernments/digit-ui-module-ws";
 import { initCustomisationComponents } from "./Customisations";
 import { initCommonPTComponents } from "@egovernments/digit-ui-module-commonpt";
 import { initBillsComponents } from "@egovernments/digit-ui-module-bills";
-// import { initReportsComponents } from "@egovernments/digit-ui-module-reports";
+import { initFinanceComponents } from "@egovernments/digit-ui-module-finance";
 
 initLibraries();
 
@@ -60,7 +60,8 @@ const enabledModules = [
   "Reports",
   "Bills",
   "SW",
-  "BillAmendment"
+  "BillAmendment",
+  "Finance"
 ];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,
@@ -92,7 +93,7 @@ initCommonPTComponents();
 initBillsComponents();
 // initReportsComponents();
 initCustomisationComponents();
-
+initFinanceComponents();
 const moduleReducers = (initData) => ({
   pgr: PGRReducers(initData),
 });
