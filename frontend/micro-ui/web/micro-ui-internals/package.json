@@ -16,7 +16,8 @@
     "packages/modules/firenoc",
     "packages/modules/obps",
     "packages/modules/pt",
-    "packages/modules/commonPt"
+    "packages/modules/commonPt",
+    "packages/modules/finance"
   ],
   "author": "Abhinav Kushwaha <abhinav.kushwaha@egovernments.org>",
   "license": "MIT",
@@ -54,6 +55,7 @@
     "dev:firenoc": "cd packages/modules/firenoc && yarn start",
     "dev:birth": "cd packages/modules/birth && yarn start",
     "dev:death": "cd packages/modules/death && yarn start",
+    "dev:finance": "cd packages/modules/finance && yarn start",
     "build": "run-p build:**",
     "build:libraries": "cd packages/libraries && yarn build",
     "build:components": "cd packages/react-components && yarn build",
@@ -77,6 +79,7 @@
     "build:ws": "cd packages/modules/ws && yarn build",
     "buildD:bills": "cd packages/modules/bills && yarn build",
     "buildR:reports": "cd packages/modules/reports && yarn build",
+    "build:finance": "cd packages/modules/finance && yarn build",
     "deploy:jenkins": "./scripts/jenkins.sh"
   },
   "devDependencies": {

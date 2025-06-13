@@ -7,32 +7,12 @@ import EmployeeLogin from "../pages/employee/Login/index";
 import ChangePassword from "../pages/employee/ChangePassword/index";
 import ForgotPassword from "../pages/employee/ForgotPassword/index";
 import LanguageSelection from "../pages/employee/LanguageSelection";
-import EGF from "../pages/employee/EGF";
-import { BreadCrumb } from "@egovernments/digit-ui-react-components";
-import { useTranslation } from "react-i18next";
 // import UserProfile from "./userProfile";
 
 const getTenants = (codes, tenants) => {
   return tenants.filter((tenant) => codes?.map?.((item) => item.code).includes(tenant.code));
 };
 
-const ServicesBreadCrumbs = ({ location }) => {
-  const { t } = useTranslation();
-  const crumbs = [
-    {
-      path: "/digit-ui/employee",
-      content: t("ES_COMMON_HOME"),
-      show: true,
-    },
-    {
-      path: "/digit-ui/employee/services/EGF",
-      content: t("EGF_COMMON_HEADER"),
-      show: location.pathname.includes("/services/EGF") ? true : false,
-    }
-  ]
-
-  return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} style={{marginTop: "15px"}}/>
-}
 
 export const AppModules = ({ stateCode, userType, modules, appTenants }) => {
   const ComponentProvider = Digit.Contexts.ComponentProvider;
@@ -68,10 +48,6 @@ export const AppModules = ({ stateCode, userType, modules, appTenants }) => {
         </Route>
         <Route path={`${path}/change-password`}>
           <ChangePassword />
-        </Route>
-        <Route path={`${path}/services/EGF`}>
-          <ServicesBreadCrumbs location={location}/>
-          <EGF />
         </Route>
         <Route>
           <AppHome userType={userType} modules={modules} />

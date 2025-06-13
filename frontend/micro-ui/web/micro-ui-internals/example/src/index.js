@@ -38,6 +38,7 @@ import { pgrCustomizations, pgrComponents } from "./pgr";
 import { initFirenocComponents } from "@egovernments/digit-ui-module-firenoc";
 import { initBirthComponents } from "@egovernments/digit-ui-module-birth";
 import { initDeathComponents } from "@egovernments/digit-ui-module-death";
+import { initFinanceComponents, FinanceModule } from "@egovernments/digit-ui-module-finance";
 
 var Digit = window.Digit || {};
 
@@ -63,8 +64,9 @@ const enabledModules = [
   "SW",
   "BillAmendment",
   "Firenoc",
-   "Birth",
-   "Death"
+  "Birth",
+  "Death",
+  "Finance"
 ];
 
 const initTokens = (stateCode) => {
@@ -109,6 +111,7 @@ const initDigitUI = () => {
     HRMSModule,
     ReceiptsModule,
     BillsModule,
+    FinanceModule
     // FireNocCard
 
     // TLModule,
@@ -118,6 +121,7 @@ const initDigitUI = () => {
 
   initBirthComponents();
   initDeathComponents();  
+  initFinanceComponents();
   initFSMComponents();
   initPGRComponents();
   initDSSComponents();

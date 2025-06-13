@@ -39,6 +39,7 @@ import { initBillsComponents } from "@egovernments/digit-ui-module-bills";
 import { initFirenocComponents } from "@egovernments/digit-ui-module-firenoc";
 import { initBirthComponents } from "@egovernments/digit-ui-module-birth";
 import { initDeathComponents } from "@egovernments/digit-ui-module-death";
+import { initFinanceComponents } from "@egovernments/digit-ui-module-finance";
 
 // import { initReportsComponents } from "@egovernments/digit-ui-module-reports";
 
@@ -67,7 +68,8 @@ const enabledModules = [
   "BillAmendment",
   "Firenoc",
   "Birth",
-  "Death"
+  "Death",
+  "Finance"
 ];
 window.Digit.ComponentRegistryService.setupRegistry({
   ...paymentConfigs,
@@ -102,6 +104,7 @@ initCustomisationComponents();
 initFirenocComponents();
 initBirthComponents();
 initDeathComponents(); 
+initFinanceComponents();
 
 const moduleReducers = (initData) => ({
   pgr: PGRReducers(initData),
