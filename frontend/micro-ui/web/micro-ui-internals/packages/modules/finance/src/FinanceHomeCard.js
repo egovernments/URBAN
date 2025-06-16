@@ -29,7 +29,21 @@ const buildMenuDict = (items) => {
 const FinanceCard = () => {
   const { t } = useTranslation();
   const userRoles = Digit.SessionStorage.get("User")?.info?.roles;
-  const isFinanceEmployee = userRoles.find((role) => role.code === "EMPLOYEE_FINANCE");
+  const allowedRoles = [
+    "EMPLOYEE_FINANCE", 
+    "EGF_VOUCHER_CREATOR", 
+    "EGF_MASTER_ADMIN", 
+    "EGF_REPORT_VIEW", 
+    "EGF_BILL_CREATOR", 
+    "EGF_ADMINISTRATOR", 
+    "EGF_BILL_APPROVER", 
+    "SYS_INTEGRATOR_FINANCE", 
+    "EGF_PAYMENT_CREATOR", 
+    "EGF_VOUCHER_APPROVER", 
+    "WORKS_FINANCIAL_APPROVER", 
+    "EGF_PAYMENT_APPROVER"
+  ];
+  const isFinanceEmployee = userRoles.find((role) => allowedRoles.includes(role.code));
   const { isLoading, data } = Digit.Hooks.useAccessControl();
 
   if (!isFinanceEmployee) return null;
