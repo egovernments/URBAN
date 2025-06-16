@@ -33,7 +33,6 @@ const EmployeeApp = ({ path, url, userType }) => {
   const location = useLocation();
   const mobileView = innerWidth <= 640;
   const tenantId = Digit.ULBService.getCurrentTenantId();
-console.log("pathhere", path)
   return (
     <Switch>
       <React.Fragment>

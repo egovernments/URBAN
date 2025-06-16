@@ -28,4 +28,4 @@ Created finance module with submenu card and iframe pages
 
 ### Contributors
 
-[jagankumar-egov] [hari-egov] [mukund-egov]
+[kamalesh-egov]
