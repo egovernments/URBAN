@@ -1,7 +1,7 @@
 import { CollectionIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import LandingPageCard from "./components/LandingPageCard";
+import LandingPageSubMenuCard from "./components/LandingPageSubMenuCard";
 
 const buildMenuDict = (items) => {
   const root = {};
@@ -52,7 +52,7 @@ const FinanceCard = () => {
     moduleName: t("ACTION_TEST_FINANCE"),
     menuDict: buildMenuDict(data?.actions)?.["Finance"],
   };
-  return <LandingPageCard {...propsForModuleCard} />
+  return <LandingPageSubMenuCard {...propsForModuleCard} />
 };
 
 export default FinanceCard;

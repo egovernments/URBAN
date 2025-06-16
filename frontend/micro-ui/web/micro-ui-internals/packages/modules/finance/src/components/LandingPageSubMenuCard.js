@@ -49,7 +49,7 @@ const RenderMenuDict = ({ tree, level = 0 }) => {
   });
 };
 
-const LandingPageSubMenuCard = ({ Icon, moduleName, menuDict = {}, style = {} }) => {
+const LandingPageSubMenuCard = ({ Icon, moduleName, menuDict = {}}) => {
 
   return (
     <div className='employeeCard customEmployeeCard card-home home-action-cards'>
@@ -71,8 +71,7 @@ const LandingPageSubMenuCard = ({ Icon, moduleName, menuDict = {}, style = {} })
 LandingPageSubMenuCard.propTypes = {
   icon: PropTypes.node,
   moduleName: PropTypes.string.isRequired,
-  menuDict: PropTypes.object.isRequired,
-  style: PropTypes.object
+  menuDict: PropTypes.object
 };
 
 export default LandingPageSubMenuCard;
