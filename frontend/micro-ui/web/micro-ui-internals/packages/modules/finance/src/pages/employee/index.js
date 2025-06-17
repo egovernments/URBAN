@@ -40,7 +40,7 @@ const EmployeeApp = ({ path, url, userType }) => {
           <p className="breadcrumb" style={{ marginLeft: mobileView ? "2vw" : "revert" }}>
             <FinanceBreadCrumbs location={location} />
           </p>
-          <PrivateRoute path={`${path}/services/EGF`}>
+          <PrivateRoute path={`${path}/services`}>
             <EGF />
           </PrivateRoute>
         </div>
