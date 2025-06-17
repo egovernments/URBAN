@@ -18,9 +18,9 @@ const FinanceBreadCrumbs = ({ location }) => {
       show: true,
     },
     {
-      path: "/digit-ui/employee/services/EGF",
-      content: t("EGF_COMMON_HEADER"),
-      show: location.pathname.includes("/services/EGF") ? true : false,
+      path: "/digit-ui/employee/services",
+      content: t("FINANCE_SERVICES_HEADER"),
+      show: location.pathname.includes("/services") ? true : false,
     }
   ];
 

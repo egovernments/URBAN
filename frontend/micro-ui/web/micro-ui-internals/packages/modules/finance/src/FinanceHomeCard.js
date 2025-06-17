@@ -1,4 +1,4 @@
-import { CollectionIcon } from "@egovernments/digit-ui-react-components";
+import { CollectionIcon, Header } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import LandingPageSubMenuCard from "./components/LandingPageSubMenuCard";
@@ -45,14 +45,19 @@ const FinanceCard = () => {
   ];
   const isFinanceEmployee = userRoles.find((role) => allowedRoles.includes(role.code));
   const { isLoading, data } = Digit.Hooks.useAccessControl();
+  const menuDict = buildMenuDict(data?.actions)?.Finance;
 
-  if (!isFinanceEmployee) return null;
-  const propsForModuleCard = {
-    Icon: <CollectionIcon />,
-    moduleName: t("ACTION_TEST_FINANCE"),
-    menuDict: buildMenuDict(data?.actions)?.["Finance"],
-  };
-  return <LandingPageSubMenuCard {...propsForModuleCard} />
+  if (!isFinanceEmployee || !menuDict) return null;
+  return (
+    <div>
+      <Header styles={{ marginLeft: "24px", paddingTop: "10px", fontSize: "32px" }}>{t("ACTION_TEST_FINANCE")}</Header>
+      <div className="moduleCardWrapper gridModuleWrapper">
+        {Object.entries(menuDict).map(([key, value]) => (
+          <LandingPageSubMenuCard key={key} t={t} Icon={<CollectionIcon />} moduleName={key} menuDict={value} />
+        ))}
+      </div>
+    </div>
+  )
 };
 
 export default FinanceCard;

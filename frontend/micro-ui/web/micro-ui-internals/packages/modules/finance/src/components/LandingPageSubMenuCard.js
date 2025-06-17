@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import {
+  ArrowForward,
+  ArrowVectorDown,
+} from "@egovernments/digit-ui-react-components";
 
-const RenderMenuDict = ({ tree, level = 0 }) => {
+const RenderMenuDict = ({ t, tree, level = 0 }) => {
   const history = useHistory();
   const [openKeys, setOpenKeys] = useState({});
 
@@ -21,7 +25,7 @@ const RenderMenuDict = ({ tree, level = 0 }) => {
     color: "#F47738",
   };
 
-  return Object.entries(tree).map(([key, node], idx) => {
+  return Object.entries(tree).sort().map(([key, node], idx) => {
     const meta = node._meta || {};
     const hasChildren = Object.keys(node).some(childKey => childKey !== '_meta');
     const isOpen = openKeys[key];
@@ -34,12 +38,12 @@ const RenderMenuDict = ({ tree, level = 0 }) => {
             meta.link.includes(`${window.contextPath}/`) ? history.push(meta.link) : window.location.href = meta.link
           )}
         >
-          <p>{meta.label || key}</p>
-          {hasChildren && <p>{isOpen ? '-' : '+'}</p>}
+          <p>{t(meta.label || key)}</p>
+          {hasChildren && (isOpen ? <ArrowVectorDown styles={{width: "18px", height: "18px"}}  /> : <div className='primary-label-btn'><ArrowForward /></div>)}
         </span>
         {hasChildren && isOpen && (
           <div>
-            <RenderMenuDict tree={Object.fromEntries(
+            <RenderMenuDict t={t} tree={Object.fromEntries(
               Object.entries(node).filter(([k]) => k !== '_meta')
             )} level={level + 1} />
           </div>
@@ -49,18 +53,17 @@ const RenderMenuDict = ({ tree, level = 0 }) => {
   });
 };
 
-const LandingPageSubMenuCard = ({ Icon, moduleName, menuDict = {}}) => {
-
+const LandingPageSubMenuCard = ({ t, Icon, moduleName, menuDict = {}}) => {
   return (
     <div className='employeeCard customEmployeeCard card-home home-action-cards'>
       <div className="complaint-links-container">
         <div className="header" >
-          <span className="text removeHeight">{moduleName}</span>
+          <span className="text removeHeight">{t(moduleName)}</span>
           <span className="logo removeBorderRadiusLogo">{Icon}</span>
         </div>
         <div className="body" style={{ margin: "0px", padding: "0px" }}>
           <div className="links-wrapper" style={{ width: "90%" }}>
-            <RenderMenuDict tree={menuDict} />
+            <RenderMenuDict t={t} tree={menuDict} />
           </div>
         </div>
       </div>
