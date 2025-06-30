@@ -168,7 +168,7 @@ const Dropdown = (props) => {
       {!hasCustomSelector && (
         <div
           className={`${dropdownStatus ? "select-active" : "select"} ${props.disable && "disabled"}`}
-          style={props.errorStyle ? { border: "1px solid red" } : {}}
+          style={props.errorStyle ? { border: "1px solid red" } : {border:"none"} }
         >
           <TextField
             autoComplete={props.autoComplete}

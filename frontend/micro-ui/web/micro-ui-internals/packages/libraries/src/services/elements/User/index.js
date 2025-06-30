@@ -13,7 +13,7 @@ export const UserService = {
       url: Urls.Authenticate,
       data,
       headers: {
-        authorization: `Basic ${window?.globalConfigs?.getConfig("JWT_TOKEN")||"ZWdvdi11c2VyLWNsaWVudDo="}`,
+        authorization: `Basic ${window?.globalConfigs?.getConfig("JWT_TOKEN") || "ZWdvdi11c2VyLWNsaWVudDo="}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
@@ -46,13 +46,15 @@ export const UserService = {
       await UserService.logoutUser();
     } catch (e) {
     }
-    finally{
+    finally {
       window.localStorage.clear();
       window.sessionStorage.clear();
       if (userType === "citizen") {
         window.location.replace("/digit-ui/citizen");
       } else {
-        window.location.replace("/digit-ui/employee/user/language-selection");
+        // window.location.replace("/digit-ui/employee/user/language-selection");
+        window.location.replace("/digit-ui/employee/user/login");
+
       }
     }
   },

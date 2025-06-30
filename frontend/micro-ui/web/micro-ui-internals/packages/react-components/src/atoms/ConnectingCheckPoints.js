@@ -3,8 +3,14 @@ import PropTypes from "prop-types";
 
 export const CheckPoint = (props) => {
   return (
-    <div className={props.isCompleted ? "checkpoint-done" : "checkpoint"} key={props.keyValue}>
-      <h2></h2>
+    <div className={props.isCompleted ? "checkpoint-done" : "checkpoint"} key={props.keyValue} >
+      {props.isCompleted ? (
+        <h2 style={{
+          borderColor: "#4729A3",
+          borderBottomWidth: "1px",
+          borderStyle: "solid",
+          backgroundColor: "#4729A3",
+        }}></h2>) : (<h2></h2>)}
       <header>
         {props.label}
         {props.info ? <p>{props.info}</p> : null}

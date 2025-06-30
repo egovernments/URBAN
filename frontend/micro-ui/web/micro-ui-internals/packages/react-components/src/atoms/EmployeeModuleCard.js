@@ -7,8 +7,8 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
     <div className={className ? className : "employeeCard customEmployeeCard card-home home-action-cards"} style={styles ? styles : {}}>
       <div className="complaint-links-container">
         <div className="header" style={isCitizen ? { padding: "0px" } : longModuleName ? {alignItems:"flex-start"}:{}}>
-          <span className="text removeHeight">{moduleName}</span>
-          <span className="logo removeBorderRadiusLogo">{Icon}</span>
+          <span className="text removeHeight" style={{color:"#4729A3"}}>{moduleName}</span>
+          <span className="logo removeBorderRadiusLogo" style={{backgroundColor:"#4729A3"}}>{Icon}</span>
         </div>
         <div className="body" style={{ margin: "0px", padding: "0px" }}>
           {kpis.length !== 0 && (
@@ -20,7 +20,7 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
                   </div>
                   <div>
                     {link ? (
-                      <Link to={link} className="employeeTotalLink">
+                      <Link to={link} className="employeeTotalLink" >
                         {label}
                       </Link>
                     ) : null}
@@ -31,12 +31,12 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
           )}
           <div className="links-wrapper" style={{ width: "80%" }}>
             {links.map(({ count, label, link, hyperlink }, index) => (
-              <span className="link" key={index}>
-                {link ? hyperlink ? <a href={link}>{label}</a> : <Link to={link}>{label}</Link> : null}
+              <span className="link" key={index} style={{ color: "#282828"}}>
+                {link ? hyperlink ? <a href={link} style={{ color: "#282828"}}>{label}</a> : <Link to={link} style={{ color: "#282828"}}>{label}</Link> : null}
                 {count ? (
                   <>
-                    {FsmHideCount ? null : <span className={"inbox-total"}>{count || "-"}</span>}
-                    <Link to={link}>
+                    {FsmHideCount ? null : <span className={"inbox-total"} style={{ background: "#4729A3"}}>{count || "-"}</span>}
+                    <Link to={link} style={{ color: "#282828"}}>
                       <ArrowRightInbox />
                     </Link>
                   </>

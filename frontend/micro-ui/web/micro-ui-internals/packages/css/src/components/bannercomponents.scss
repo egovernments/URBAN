@@ -110,7 +110,7 @@
 .banner {
   @apply flex justify-center items-center;
   height: calc(100vh - 80px);
-  background: linear-gradient(rgba(11, 75, 102, 0.8), rgba(11, 75, 102, 0.8)), var(--banner-url) center center;
+  background: linear-gradient(180deg, rgba(5, 117, 230, 0.5) 0%, rgba(89, 50, 234, 0.5) 84.79%, rgba(2, 27, 121, 0.5) 100%);
 
   .bannerCard {
     min-width: 400px;

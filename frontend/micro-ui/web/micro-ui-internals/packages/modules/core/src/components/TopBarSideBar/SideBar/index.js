@@ -3,6 +3,7 @@ import { CitizenSideBar } from "./CitizenSideBar";
 import EmployeeSideBar from "./EmployeeSideBar";
 
 const SideBar = ({ t, CITIZEN, isSidebarOpen, toggleSidebar, handleLogout, mobileView, userDetails, modules, linkData, islinkDataLoading, isSideBarScroll,setSideBarScrollTop  }) => {
+  console.log("SideBar component rendered", { handleLogout});
   if (CITIZEN)
     return (
       <CitizenSideBar
@@ -17,7 +18,7 @@ const SideBar = ({ t, CITIZEN, isSidebarOpen, toggleSidebar, handleLogout, mobil
       />
     );
   else {
-    if (!mobileView && userDetails?.access_token) return <EmployeeSideBar {...{ mobileView, userDetails, modules }} />;
+    if (!mobileView && userDetails?.access_token) return <EmployeeSideBar  handleLogout={handleLogout} {...{ mobileView, userDetails, modules }} />;
     else return <CitizenSideBar isOpen={isSidebarOpen} isMobile={true} toggleSidebar={toggleSidebar} onLogout={handleLogout} isEmployee={true} />;
   }
 };

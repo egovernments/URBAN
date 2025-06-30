@@ -33,6 +33,7 @@
     .inbox-total {
       padding: 4px;
       display: table;
+      background-color: #4729A3 !important;
       @apply whitespace-normal text-center text-white w-8 h-8 bg-primary-main rounded-full ml-xs;
     }
   }
@@ -430,6 +431,7 @@
 }
 .complaint-links-container .header .removeHeight {
   line-height: 28px;
+  color: #4729A3 !important;
 }
 
 @screen dt {

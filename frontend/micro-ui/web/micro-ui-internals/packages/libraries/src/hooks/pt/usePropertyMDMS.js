@@ -11,6 +11,13 @@ const usePropertyMDMS = (tenantId, moduleCode, type, config = {}) => {
   const useSubOwnerShipCategory = () => {
     return useQuery("PT_SUB_OWNERSHIP_CATEGORY", () => MdmsService.getPropertySubOwnerShipCategory(tenantId, moduleCode, type), config);
   };
+  const useAssessmentYear = ()=>{
+    return useQuery("PT_ASSESSMENT_YEAR", () => MdmsService.getPropertyAssessmentYear(tenantId, moduleCode, type), config);
+  }
+   const useRoadFactor = ()=>{
+    return useQuery("PT_ROAD_FACTOR", () => MdmsService.getPropertyRoadFactor(tenantId, moduleCode, type), config);
+  }
+  
   const useDocumentRequiredScreen = () => {
     return useQuery("PT_DOCUMENT_REQ_SCREEN", () => MdmsService.getDocumentRequiredScreen(tenantId, moduleCode), config);
   };
@@ -20,6 +27,13 @@ const usePropertyMDMS = (tenantId, moduleCode, type, config = {}) => {
   const usePTPropertyType = () => {
     return useQuery("PT_PROPERTY_TYPE", () => MdmsService.getPTPropertyType(tenantId, moduleCode, type), config);
   };
+  const usegetPTConstructionType = () => {
+    return useQuery("PT_CONSTRUCTION_TYPE", () => MdmsService.getPTConstructionType(tenantId, moduleCode, type), config);
+  };
+  const usegetPTOccupancyType = () => {
+    return useQuery("PT_OCCUPANCY_TYPE", () => MdmsService.getPTOccupancyType(tenantId, moduleCode, type), config);
+  };
+
   const useRentalDetails = () => {
     return useQuery("PT_RENTAL_DETAILS", () => MdmsService.getRentalDetails(tenantId, moduleCode), config);
   };
@@ -44,12 +58,20 @@ const usePropertyMDMS = (tenantId, moduleCode, type, config = {}) => {
       return usePropertyOwnerType();
     case "SubOwnerShipCategory":
       return useSubOwnerShipCategory();
+    case "AssessmentYear":
+      return useAssessmentYear();
+       case "RoadFactor":
+      return useRoadFactor();
     case "Documents":
       return useDocumentRequiredScreen();
     case "UsageCategory":
       return useUsageCategory();
     case "PTPropertyType":
       return usePTPropertyType();
+    case "ConstructionType":
+      return usegetPTConstructionType();
+    case "OccupancyType":
+      return usegetPTOccupancyType();
     case "RentalDetails":
       return useRentalDetails();
     case "Floor":

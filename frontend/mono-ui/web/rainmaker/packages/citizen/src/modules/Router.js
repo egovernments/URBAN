@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Citizen from "modules/citizen";
 
 const Main = ({ routes, hasLocalisation, defaultUrl }) => {
+  console.log("defauldtUrl", defaultUrl);
   return (
     <main>
       <Switch>

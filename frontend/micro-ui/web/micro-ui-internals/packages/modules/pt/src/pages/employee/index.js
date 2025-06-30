@@ -1,4 +1,4 @@
-import { PrivateRoute,BreadCrumb } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, BreadCrumb } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Switch, useLocation } from "react-router-dom";
@@ -70,7 +70,7 @@ const EmployeeApp = ({ path, url, userType }) => {
     const { t } = useTranslation();
     const search = useLocation().search;
     const fromScreen = new URLSearchParams(search).get("from") || null;
-    const { from : fromScreen2 } = Digit.Hooks.useQueryParams();
+    const { from: fromScreen2 } = Digit.Hooks.useQueryParams();
     const crumbs = [
       {
         path: "/digit-ui/employee",
@@ -109,15 +109,15 @@ const EmployeeApp = ({ path, url, userType }) => {
       },
       {
         path: `/digit-ui/employee/pt/ptsearch/property-details/${sessionStorage.getItem("propertyIdinPropertyDetail")}`,
-        content: fromScreen || fromScreen2 ? `${t(fromScreen || fromScreen2)} / ${t("PT_PROPERTY_INFORMATION")}`:t("PT_PROPERTY_INFORMATION"),
-        show:  location.pathname.includes("/pt/ptsearch/property-details/") || location.pathname.includes("/pt/ptsearch/payment-details/") || location.pathname.includes("/pt/ptsearch/assessment-details/")  ? true : false,
-        isBack:fromScreen && true,
+        content: fromScreen || fromScreen2 ? `${t(fromScreen || fromScreen2)} / ${t("PT_PROPERTY_INFORMATION")}` : t("PT_PROPERTY_INFORMATION"),
+        show: location.pathname.includes("/pt/ptsearch/property-details/") || location.pathname.includes("/pt/ptsearch/payment-details/") || location.pathname.includes("/pt/ptsearch/assessment-details/") ? true : false,
+        isBack: fromScreen && true,
       },
       {
-        path: `/digit-ui/employee/pt/property-details/${sessionStorage.getItem("propertyIdinPropertyDetail")}?${fromScreen2?`from=${fromScreen2}` : ''}`,
-        content: fromScreen || fromScreen2 ? `${t(fromScreen || fromScreen2)} / ${t("PT_PROPERTY_INFORMATION")}`:t("PT_PROPERTY_INFORMATION"),
+        path: `/digit-ui/employee/pt/property-details/${sessionStorage.getItem("propertyIdinPropertyDetail")}?${fromScreen2 ? `from=${fromScreen2}` : ''}`,
+        content: fromScreen || fromScreen2 ? `${t(fromScreen || fromScreen2)} / ${t("PT_PROPERTY_INFORMATION")}` : t("PT_PROPERTY_INFORMATION"),
         show: location.pathname.includes("/pt/property-details/") || location.pathname.includes("/pt/payment-details/") ? true : false,
-        isBack:true,
+        isBack: true,
       },
       {
         path: `/digit-ui/employee/pt/applicationsearch/application-details/${sessionStorage.getItem("applicationNoinAppDetails")}`,
@@ -127,9 +127,9 @@ const EmployeeApp = ({ path, url, userType }) => {
       {
         path: "/digit-ui/employee/pt/payment-details/",
         content: fromScreen ? `${t(fromScreen)} / ${t("PT_PAYMENT_HISTORY")
-} `: t("PT_PAYMENT_HISTORY"),
+          } ` : t("PT_PAYMENT_HISTORY"),
         show: location.pathname.includes("/pt/ptsearch/payment-details") || location.pathname.includes("/pt/payment-details") ? true : false,
-        isBack:fromScreen && true,
+        isBack: fromScreen && true,
       },
       {
         path: "/digit-ui/employee/pt/assessment-details/",
@@ -137,11 +137,13 @@ const EmployeeApp = ({ path, url, userType }) => {
         show: location.pathname.includes("pt/ptsearch/assessment-details") ? true : false,
       },
     ];
-  
-    return <BreadCrumb style={isMobile?{display:"flex"}:{}}  spanStyle={{maxWidth:"min-content"}} crumbs={crumbs} />;
+
+    return <BreadCrumb style={isMobile ? { display: "flex" } : {}} spanStyle={{ maxWidth: "min-content" }} crumbs={crumbs} />;
   }
 
   const NewApplication = Digit?.ComponentRegistryService?.getComponent("PTNewApplication");
+  const PTPropertyTaxForm = Digit?.ComponentRegistryService?.getComponent("PropertyTaxForm");
+  const PreviewDemand = Digit?.ComponentRegistryService?.getComponent("PreviewDemand");
   const ApplicationDetails = Digit?.ComponentRegistryService?.getComponent("ApplicationDetails");
   const PropertyDetails = Digit?.ComponentRegistryService?.getComponent("PTPropertyDetails");
   const AssessmentDetails = Digit?.ComponentRegistryService?.getComponent("PTAssessmentDetails");
@@ -155,14 +157,14 @@ const EmployeeApp = ({ path, url, userType }) => {
   return (
     <Switch>
       <React.Fragment>
-        <div className="ground-container">
+        <div className="ground-container" style={{ margin: "0px" }}>
           {/* <p className="breadcrumb" style={{ marginLeft: mobileView ? "2vw" : "revert" }}>
             <Link to="/digit-ui/employee" style={{ cursor: "pointer", color: "#666" }}>
               {t("ES_COMMON_HOME")}
             </Link>{" "}
             / <span>{getBreadCrumb()}</span>
           </p>} */}
-          {!isRes ? <div style={isNewRegistration ? {marginLeft: "12px" } : {marginLeft:"-4px"}}><PTBreadCrumbs location={location} /></div> : null}
+          {/* {!isRes ? <div style={isNewRegistration ? { marginLeft: "12px" } : { marginLeft: "-4px" }}><PTBreadCrumbs location={location} /></div> : null} */}
           <PrivateRoute exact path={`${path}/`} component={() => <PTLinks matchPath={path} userType={userType} />} />
           <PrivateRoute
             path={`${path}/inbox`}
@@ -178,6 +180,9 @@ const EmployeeApp = ({ path, url, userType }) => {
             )}
           />
           <PrivateRoute path={`${path}/new-application`} component={() => <NewApplication parentUrl={url} />} />
+          <PrivateRoute path={`${path}/PreviewDemand`} component={PreviewDemand} />
+          <PrivateRoute path={`${path}/PTPropertyTaxForm/:id`} component={PTPropertyTaxForm} />
+
           <PrivateRoute path={`${path}/application-details/:id`} component={() => <ApplicationDetails parentRoute={path} />} />
           <PrivateRoute path={`${path}/property-details/:id`} component={() => <PropertyDetails parentRoute={path} />} />
           <PrivateRoute path={`${path}/applicationsearch/application-details/:id`} component={() => <ApplicationDetails parentRoute={path} />} />

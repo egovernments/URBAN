@@ -55,7 +55,7 @@ class Layout extends Component {
                         onError={"this.src='./../digit-footer.png'"}
                         style={{ height: "1.1em", cursor: "pointer" }}
                         onClick={() => {
-                        window.open('https://www.digit.org/', '_blank').focus();
+                        window.open('https://urban.eydemoapp.in', '_blank').focus();
                         }}/>
                 </div>
             </div>

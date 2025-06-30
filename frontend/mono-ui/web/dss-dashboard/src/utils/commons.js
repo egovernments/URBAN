@@ -37,6 +37,8 @@ export const getToken = () => {
 }
 export const stateTenant= () => {
     let globalConfigs=window&&window.globalConfigs?window.globalConfigs : window.parent&&window.parent.globalConfigs;
+    console.log("globalConfigs",window)
+
     return globalConfigs&&globalConfigs.getConfig("STATE_LEVEL_TENANT_ID")?globalConfigs.getConfig("STATE_LEVEL_TENANT_ID"):getTenantId().split('.')[0];
 }
 

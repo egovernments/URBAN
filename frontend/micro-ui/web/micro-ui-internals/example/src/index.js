@@ -28,7 +28,7 @@ import { initBillsComponents, BillsModule } from "@egovernments/digit-ui-module-
 
 // import { PGRModule, PGRLinks } from "@egovernments/digit-ui-module-pgr";
 // import { Body, TopBar } from "@egovernments/digit-ui-react-components";
-// import "@egovernments/digit-ui-css/example/index.css";
+import "@egovernments/digit-ui-css/example/index.css";
 
 // import * as comps from "@egovernments/digit-ui-react-components";
 

@@ -21,7 +21,7 @@ const ApplicationDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [enableAudit, setEnableAudit] = useState(false);
   const [businessService, setBusinessService] = useState("PT.CREATE");
-  sessionStorage.setItem("applicationNoinAppDetails",propertyId);
+  sessionStorage.setItem("applicationNoinAppDetails", propertyId);
 
   const { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, propertyId);
 
@@ -64,7 +64,7 @@ const ApplicationDetails = () => {
       });
       setAppDetailsToShow({ ...appDetailsToShow, applicationDetails });
     }
-  },[setAppDetailsToShow,appDetailsToShow,auditData,applicationDetails,auditData,newConfigMutate]);
+  }, [setAppDetailsToShow, appDetailsToShow, auditData, applicationDetails, auditData, newConfigMutate]);
 
   const closeToast = () => {
     setShowToast(null);
@@ -81,9 +81,9 @@ const ApplicationDetails = () => {
 
   useEffect(() => {
     showTransfererDetails();
-    if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP&&businessService=="PT.CREATE") {
-       setBusinessService("PT.UPDATE");
-      }
+    if (appDetailsToShow?.applicationData?.status === "ACTIVE" && PT_CEMP && businessService == "PT.CREATE") {
+      setBusinessService("PT.UPDATE");
+    }
   }, [auditData, applicationDetails, appDetailsToShow]);
 
   useEffect(() => {
@@ -173,8 +173,8 @@ const ApplicationDetails = () => {
     ];
   }
   const handleDownloadPdf = async () => {
-    const Property = appDetailsToShow?.applicationData ;
-    const tenantInfo  = tenants.find((tenant) => tenant.code === Property.tenantId);
+    const Property = appDetailsToShow?.applicationData;
+    const tenantInfo = tenants.find((tenant) => tenant.code === Property.tenantId);
 
     const data = await getPTAcknowledgementData(Property, tenantInfo, t);
     Digit.Utils.pdf.generate(data);
@@ -187,33 +187,51 @@ const ApplicationDetails = () => {
   };
   let dowloadOptions = [propertyDetailsPDF];
 
- if (applicationDetails?.applicationData?.creationReason === "MUTATION"){
-   return(
-    <MutationApplicationDetails 
-      propertyId = {propertyId}
-      acknowledgementIds={appDetailsToShow?.applicationData?.acknowldgementNumber}
-      workflowDetails={workflowDetails}
-      mutate={mutate}
-    />
-   )
- } 
+  if (applicationDetails?.applicationData?.creationReason === "MUTATION") {
+    return (
+      <MutationApplicationDetails
+        propertyId={propertyId}
+        acknowledgementIds={appDetailsToShow?.applicationData?.acknowldgementNumber}
+        workflowDetails={workflowDetails}
+        mutate={mutate}
+      />
+    )
+  }
 
   return (
     <div>
-        <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-      <Header styles={{ marginLeft: "0px", paddingTop: "10px", fontSize: "32px" }}>{t("PT_APPLICATION_TITLE")}</Header>
-      {dowloadOptions && dowloadOptions.length > 0 && (
-            <MultiLink
-              className="multilinkWrapper employee-mulitlink-main-div"
-              onHeadClick={() => setShowOptions(!showOptions)}
-              displayOptions={showOptions}
-              options={dowloadOptions}
-              downloadBtnClassName={"employee-download-btn-className"}
-              optionsClassName={"employee-options-btn-className"}
-              // ref={menuRef}
-            />
-          )}
-          </div>
+      <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+        <div style={{
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: "bold",
+          fontSize: '24px',
+          lineHeight: '100%',
+          letterSpacing: '0',
+          textDecorationStyle: 'solid',
+          textDecorationColor: '#4729A3',
+          textDecorationThickness: '1px',
+          textDecorationOffset: '2px',
+          color: '#4729A3',
+          marginBottom: '20px',
+          display:"flex",
+          alignItems:"center",
+          background:"#4729A34D",
+          borderRadius:"20px",
+          paddingLeft:"20px",
+          paddingRight:"20px"
+        }}>{t("PT_APPLICATION_TITLE")}</div>
+        {dowloadOptions && dowloadOptions.length > 0 && (
+          <MultiLink
+            className="multilinkWrapper employee-mulitlink-main-div"
+            onHeadClick={() => setShowOptions(!showOptions)}
+            displayOptions={showOptions}
+            options={dowloadOptions}
+            downloadBtnClassName={"employee-download-btn-className"}
+            optionsClassName={"employee-options-btn-className"}
+          // ref={menuRef}
+          />
+        )}
+      </div>
       <ApplicationDetailsTemplate
         applicationDetails={appDetailsToShow}
         isLoading={isLoading}
@@ -231,7 +249,7 @@ const ApplicationDetails = () => {
         statusAttribute={"state"}
         MenuStyle={{ color: "#FFFFFF", fontSize: "18px" }}
       />
-    
+
     </div>
   );
 };
