@@ -28,6 +28,7 @@ const AssessmentDetailsSection = ({
           value={assessmentDetails.rateZone}
           placeholder={t("Auto fetched")}
           onChange={handleAssessmentInputChange}
+          disabled
         />
         {formErrors?.rateZone && (
           <p style={{ color: "red", fontSize: "12px" }}>{formErrors.rateZone}</p>

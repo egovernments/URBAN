@@ -65,8 +65,9 @@ const DesktopInbox = ({ tableConfig, filterComponent, ...props }) => {
                 <td style={tdStyle}>{property.searchData.acknowldgementNumber}</td>
                 <td style={tdStyle}>{property.searchData.auditDetails.createdTime}</td>
                 <td style={tdStyle}>
-                  {property.searchData.propertyType.includes('BUILTUP') ? 'Built-up Property' : 'Vacant Land'}
+                  {property?.searchData?.propertyType?.includes('BUILTUP') ? 'Built-up Property' : 'Vacant Land'}
                 </td>
+
                 <td style={{ ...tdStyle, ...statusStyle }}>
                   {property.searchData.status === 'INWORKFLOW' ? 'Correction Pending' : property.searchData.status}
                 </td>

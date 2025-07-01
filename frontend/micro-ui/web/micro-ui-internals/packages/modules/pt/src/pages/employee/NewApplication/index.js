@@ -63,8 +63,9 @@ const NewApplication = () => {
   });
   const [correspondenceAddress, setCorrespondenceAddress] = useState("");
   const [isSameAsPropertyAddress, setIsSameAsPropertyAddress] = useState(false);
+  const [rateZones,setRateZones]=useState([])
   const [assessmentDetails, setAssessmentDetails] = useState({
-    rateZone: "", // Usually fetched
+    rateZone: null, // Usually fetched
     roadFactor: null,
     oldPropertyId: "",
     plotArea: "",
@@ -304,7 +305,7 @@ if (!owner.noSamagra) {
               constructionType: unit.constructionType || null,
             },
             floorNo: parseInt(unit.floorNo) || 0,
-            rateZone: assessmentDetails.rateZone || "",
+            rateZone: rateZones[0].code || "",
             roadFactor: assessmentDetails.roadFactor?.code || "",
           })),
 
@@ -343,7 +344,7 @@ if (!owner.noSamagra) {
                 constructionType: unit.constructionType || null,
               },
               floorNo: parseInt(unit.floorNo) || 0,
-              rateZone: assessmentDetails.rateZone || "",
+               rateZone: rateZones[0].code || "",
               roadFactor: assessmentDetails.roadFactor?.code || "",
             })),
 
@@ -502,7 +503,18 @@ if (!owner.noSamagra) {
   const handleRoadFactorChange = (selected) => {
     setAssessmentDetails((prev) => ({ ...prev, roadFactor: selected }));
   };
-
+const updateRateZone =(value)=>{
+  console.log("fdsfdsfsdfdsfsdfsdf",value)
+  setRateZones(value);
+}
+useEffect(() => {
+  if (rateZones.length > 0) {
+    setAssessmentDetails(prev => ({
+      ...prev,
+      rateZone: rateZones[0].name,
+    }));
+  }
+}, [rateZones]);
   const addNewOwner = () => {
     setOwners([...owners, {}]); // Add a new empty owner object
     setIsJointStarted(true);
@@ -575,6 +587,7 @@ if (!owner.noSamagra) {
             addressDetails={addressDetails}
             handleInputChange={handleInputChange}
             handleDropdownChange={handleDropdownChange}
+            updateRateZone={updateRateZone}
             styles={styles}
             formErrors={formErrors}
           />
