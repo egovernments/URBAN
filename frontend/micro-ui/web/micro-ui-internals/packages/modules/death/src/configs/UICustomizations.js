@@ -37,8 +37,8 @@ export const UICustomizations = {
         data.params.gender = 2;
       }else if (gender === "TRANSGENDER") {
       data.params.gender = 3;
-    } else if (gender === "OTHER") {
-      data.params.gender=0;
+    } else if (gender === "OTHERS") {
+      data.params.gender=4;
     }
     else{
         delete data.params.gender;
