@@ -228,14 +228,16 @@ public class CommonRepository {
 					bdtl.setId(UUID.randomUUID().toString());
 					if (!isLegacy && (bdtl.getRegistrationno() == null || bdtl.getRegistrationno().isEmpty())) {
 						// Generate registrationno from IdGen
-						IdGenerationResponse idGenResp = idGenRepository.getId(requestInfo, bdtl.getTenantid(), config.getBirthApplNumberIdgenName(), config.getBirthApplNumberIdgenFormat(), 1);
-						if (idGenResp != null && idGenResp.getIdResponses() != null && !idGenResp.getIdResponses().isEmpty()) {
+						IdGenerationResponse idGenResp = idGenRepository.getId(requestInfo, bdtl.getTenantid(),
+								config.getBirthApplNumberIdgenName(), config.getBirthApplNumberIdgenFormat(), 1);
+						if (idGenResp != null && idGenResp.getIdResponses() != null
+								&& !idGenResp.getIdResponses().isEmpty()) {
 							bdtl.setRegistrationno(idGenResp.getIdResponses().get(0).getId());
 						} else {
 							importBirthWrapper.updateMaps(BirthDeathConstants.REG_EMPTY, bdtl);
 							importBirthWrapper.setServiceError(BirthDeathConstants.REG_EMPTY);
 							return;
-						} 
+						}
 					}
 					if (bdtl.getRegistrationno() != null) {
 						if (uniqueList.get(bdtl.getRegistrationno()) == null) {
@@ -404,21 +406,21 @@ public class CommonRepository {
 		sqlParameterSource.addValue("district", presentaddr.getDistrict());
 		sqlParameterSource.addValue("city", presentaddr.getCity());
 		sqlParameterSource.addValue("state", presentaddr.getState());
-	 sqlParameterSource.addValue("pinno", presentaddr.getPinno());
-	 sqlParameterSource.addValue("country", presentaddr.getCountry());
-	 sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
-	 sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
-	 if (isInsert) {
-		 sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
-		 sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
-		 sqlParameterSource.addValue("lastmodifiedtime", null);
-		 sqlParameterSource.addValue("lastmodifiedby", null);
-	 } else {
-		 sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
-		 sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
-	 }
-	 sqlParameterSource.addValue("birthdtlid", birthDtl.getId());
-	 return sqlParameterSource;
+		sqlParameterSource.addValue("pinno", presentaddr.getPinno());
+		sqlParameterSource.addValue("country", presentaddr.getCountry());
+		sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
+		sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
+		if (isInsert) {
+			sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
+			sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
+			sqlParameterSource.addValue("lastmodifiedtime", null);
+			sqlParameterSource.addValue("lastmodifiedby", null);
+		} else {
+			sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
+			sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
+		}
+		sqlParameterSource.addValue("birthdtlid", birthDtl.getId());
+		return sqlParameterSource;
 	}
 
 	private MapSqlParameterSource getParametersForPermAddr(EgBirthDtl birthDtl, AuditDetails auditDetails,
@@ -428,27 +430,27 @@ public class CommonRepository {
 		sqlParameterSource.addValue("id", UUID.randomUUID().toString());
 		sqlParameterSource.addValue("buildingno", permaddr.getBuildingno());
 		sqlParameterSource.addValue("houseno", permaddr.getHouseno());
-	 sqlParameterSource.addValue("streetname", permaddr.getStreetname());
-	 sqlParameterSource.addValue("locality", permaddr.getLocality());
-	 sqlParameterSource.addValue("tehsil", permaddr.getTehsil());
-	 sqlParameterSource.addValue("district", permaddr.getDistrict());
-	 sqlParameterSource.addValue("city", permaddr.getCity());
-	 sqlParameterSource.addValue("state", permaddr.getState());
-	 sqlParameterSource.addValue("pinno", permaddr.getPinno());
-	 sqlParameterSource.addValue("country", permaddr.getCountry());
-	 sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
-	 sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
-	 if (isInsert) {
-		 sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
-		 sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
-		 sqlParameterSource.addValue("lastmodifiedtime", null);
-		 sqlParameterSource.addValue("lastmodifiedby", null);
-	 } else {
-		 sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
-		 sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
-	 }
-	 sqlParameterSource.addValue("birthdtlid", birthDtl.getId());
-	 return sqlParameterSource;
+		sqlParameterSource.addValue("streetname", permaddr.getStreetname());
+		sqlParameterSource.addValue("locality", permaddr.getLocality());
+		sqlParameterSource.addValue("tehsil", permaddr.getTehsil());
+		sqlParameterSource.addValue("district", permaddr.getDistrict());
+		sqlParameterSource.addValue("city", permaddr.getCity());
+		sqlParameterSource.addValue("state", permaddr.getState());
+		sqlParameterSource.addValue("pinno", permaddr.getPinno());
+		sqlParameterSource.addValue("country", permaddr.getCountry());
+		sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
+		sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
+		if (isInsert) {
+			sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
+			sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
+			sqlParameterSource.addValue("lastmodifiedtime", null);
+			sqlParameterSource.addValue("lastmodifiedby", null);
+		} else {
+			sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
+			sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
+		}
+		sqlParameterSource.addValue("birthdtlid", birthDtl.getId());
+		return sqlParameterSource;
 	}
 
 	private MapSqlParameterSource getParametersForMotherInfo(EgBirthDtl birthDtl, AuditDetails auditDetails,
@@ -525,27 +527,27 @@ public class CommonRepository {
 		sqlParameterSource.addValue("dateofbirth", birthDtl.getDateofbirth());
 		sqlParameterSource.addValue("firstname", birthDtl.getFirstname());
 		sqlParameterSource.addValue("middlename", birthDtl.getMiddlename());
-	 sqlParameterSource.addValue("lastname", birthDtl.getLastname());
-	 sqlParameterSource.addValue("placeofbirth", birthDtl.getPlaceofbirth());
-	 sqlParameterSource.addValue("informantsname", birthDtl.getInformantsname());
-	 sqlParameterSource.addValue("informantsaddress", birthDtl.getInformantsaddress());
-	 if (isInsert) {
-		 sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
-		 sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
-		 sqlParameterSource.addValue("lastmodifiedtime", null);
-		 sqlParameterSource.addValue("lastmodifiedby", null);
-	 } else {
-		 sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
-		 sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
-	 }
-	 sqlParameterSource.addValue("counter", birthDtl.getCounter());
-	 sqlParameterSource.addValue("tenantid", birthDtl.getTenantid());
-	 sqlParameterSource.addValue("gender", birthDtl.getGender());
-	 sqlParameterSource.addValue("remarks", birthDtl.getRemarks());
-	 sqlParameterSource.addValue("hospitalid", birthDtl.getHospitalid());
-	 sqlParameterSource.addValue("islegacyrecord", birthDtl.getIsLegacyRecord());
-	 birthDtl.setId(id);
-	 return sqlParameterSource;
+		sqlParameterSource.addValue("lastname", birthDtl.getLastname());
+		sqlParameterSource.addValue("placeofbirth", birthDtl.getPlaceofbirth());
+		sqlParameterSource.addValue("informantsname", birthDtl.getInformantsname());
+		sqlParameterSource.addValue("informantsaddress", birthDtl.getInformantsaddress());
+		if (isInsert) {
+			sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
+			sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
+			sqlParameterSource.addValue("lastmodifiedtime", null);
+			sqlParameterSource.addValue("lastmodifiedby", null);
+		} else {
+			sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
+			sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
+		}
+		sqlParameterSource.addValue("counter", birthDtl.getCounter());
+		sqlParameterSource.addValue("tenantid", birthDtl.getTenantid());
+		sqlParameterSource.addValue("gender", birthDtl.getGender());
+		sqlParameterSource.addValue("remarks", birthDtl.getRemarks());
+		sqlParameterSource.addValue("hospitalid", birthDtl.getHospitalid());
+		sqlParameterSource.addValue("islegacyrecord", birthDtl.getIsLegacyRecord());
+		birthDtl.setId(id);
+		return sqlParameterSource;
 
 	}
 
@@ -565,8 +567,10 @@ public class CommonRepository {
 					deathtl.setId(UUID.randomUUID().toString());
 					if (!isLegacy && (deathtl.getRegistrationno() == null || deathtl.getRegistrationno().isEmpty())) {
 						// Generate registrationno from IdGen
-						IdGenerationResponse idGenResp = idGenRepository.getId(requestInfo, deathtl.getTenantid(), config.getDeathApplNumberIdgenName(), config.getDeathApplNumberIdgenFormat(), 1);
-						if (idGenResp != null && idGenResp.getIdResponses() != null && !idGenResp.getIdResponses().isEmpty()) {
+						IdGenerationResponse idGenResp = idGenRepository.getId(requestInfo, deathtl.getTenantid(),
+								config.getDeathApplNumberIdgenName(), config.getDeathApplNumberIdgenFormat(), 1);
+						if (idGenResp != null && idGenResp.getIdResponses() != null
+								&& !idGenResp.getIdResponses().isEmpty()) {
 							deathtl.setRegistrationno(idGenResp.getIdResponses().get(0).getId());
 						} else {
 							importDeathWrapper.updateMaps(BirthDeathConstants.REG_EMPTY, deathtl);
@@ -840,24 +844,24 @@ public class CommonRepository {
 		if (isInsert) {
 			sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
 			sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
-		 sqlParameterSource.addValue("lastmodifiedtime", null);
-		 sqlParameterSource.addValue("lastmodifiedby", null);
+			sqlParameterSource.addValue("lastmodifiedtime", null);
+			sqlParameterSource.addValue("lastmodifiedby", null);
 		} else {
-		 sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
-		 sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
+			sqlParameterSource.addValue("lastmodifiedtime", auditDetails.getLastModifiedTime());
+			sqlParameterSource.addValue("lastmodifiedby", auditDetails.getLastModifiedBy());
 		}
 		sqlParameterSource.addValue("counter", deathDtl.getCounter());
 		sqlParameterSource.addValue("tenantid", deathDtl.getTenantid());
 		sqlParameterSource.addValue("gender", deathDtl.getGender());
-	 sqlParameterSource.addValue("remarks", deathDtl.getRemarks());
-	 sqlParameterSource.addValue("hospitalid", deathDtl.getHospitalid());
-	 sqlParameterSource.addValue("age", deathDtl.getAge());
-	 sqlParameterSource.addValue("eidno", deathDtl.getEidno());
-	 sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno());
-	 sqlParameterSource.addValue("nationality", deathDtl.getNationality());
-	 sqlParameterSource.addValue("religion", deathDtl.getReligion());
-	 sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode());
-	 sqlParameterSource.addValue("islegacyrecord", deathDtl.getIsLegacyRecord());
+		sqlParameterSource.addValue("remarks", deathDtl.getRemarks());
+		sqlParameterSource.addValue("hospitalid", deathDtl.getHospitalid());
+		sqlParameterSource.addValue("age", deathDtl.getAge());
+		sqlParameterSource.addValue("eidno", deathDtl.getEidno());
+		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno());
+		sqlParameterSource.addValue("nationality", deathDtl.getNationality());
+		sqlParameterSource.addValue("religion", deathDtl.getReligion());
+		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode());
+		sqlParameterSource.addValue("islegacyrecord", deathDtl.getIsLegacyRecord());
 		deathDtl.setId(id);
 		return sqlParameterSource;
 
@@ -934,7 +938,7 @@ public class CommonRepository {
 					case "transgender":
 						birthDtl.setGender(3);
 						break;
-					case "others":
+					case "other":
 						birthDtl.setGender(4);
 						break;
 					default:
@@ -1055,7 +1059,7 @@ public class CommonRepository {
 					case "transgender":
 						deathDtl.setGender(3);
 						break;
-							case "others":
+					case "other":
 						deathDtl.setGender(4);
 						break;
 					default:
