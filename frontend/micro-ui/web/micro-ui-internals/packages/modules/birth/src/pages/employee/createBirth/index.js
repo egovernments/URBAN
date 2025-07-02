@@ -73,7 +73,6 @@ export const CreateBirth = () => {
         return {
           ...section,
           body: section.body.map((field) => {
-           
             if (field.populators?.name !== "same_as_permanent_address") {
               return {
                 ...field,
@@ -207,11 +206,14 @@ export const CreateBirth = () => {
       },
       {
         onSuccess: (response) => {
-          // Show success or error toast based on API response
+        
           if (response?.serviceError) {
             setShowToast({ key: "error", label: `Failed: ${response.serviceError}` });
           } else {
             setShowToast({ key: "success", label: "Birth Certificate Created Successfully" });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           }
         },
         onError: (error) => {
@@ -263,7 +265,6 @@ export const CreateBirth = () => {
               ...section,
               body: section.body.map((field) => {
                 if (field.populators?.name === "registration_number") {
-               
                   return {
                     ...field,
                     disable: !isLegacy,

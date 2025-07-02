@@ -63,7 +63,7 @@ export const inboxConfig = () => {
               // },
             },
             {
-              isMandatory: false,
+              isMandatory: true,
               type: "dropdown",
               key: "gender",
               label: "BND_GENDER",
@@ -72,7 +72,6 @@ export const inboxConfig = () => {
                 name: "gender",
                 optionsKey: "name",
                 error: "gender is required !",
-                required: false,
                 mdmsConfig: {
                   masterName: "GenderType",
                   moduleName: "common-masters",
