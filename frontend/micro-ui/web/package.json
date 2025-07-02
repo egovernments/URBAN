@@ -74,7 +74,8 @@
   },
   "resolutions": {
     "**/@babel/traverse": "7.25.9",
-    "**/styled-components": "5.0.0"
+    "**/styled-components": "5.0.0",
+    "minimatch": "^3.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
