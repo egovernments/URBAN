@@ -39,6 +39,7 @@
   "resolutions": {
     "**/@babel/traverse": "7.25.9",
     "**/styled-components": "5.0.0"
+
   },
   "browserslist": [
     ">0.2%",
