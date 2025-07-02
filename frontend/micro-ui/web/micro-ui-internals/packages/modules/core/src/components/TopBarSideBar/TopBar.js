@@ -42,6 +42,8 @@ const TopBar = ({
 
   const CitizenHomePageTenantId = Digit.ULBService.getCitizenCurrentTenant(true);
 
+  const fromSandbox = Digit.SessionStorage.get("fromSandbox");
+
   let history = useHistory();
   const { pathname } = useLocation();
 
@@ -127,7 +129,7 @@ const TopBar = ({
               )}
             </div>
             <div className="left">{showLanguageChange && <ChangeLanguage dropdown={true} />}</div>
-            {userDetails?.access_token && (
+            {!fromSandbox && userDetails?.access_token && (
               <div className="left">
                 <Dropdown
                   option={userOptions}
