@@ -222,7 +222,7 @@ const BpaApplicationDetail = () => {
     const userInfo = Digit.UserService.getUser();
     const rolearray = userInfo?.info?.roles;
     if (data?.applicationData?.status == "CITIZEN_APPROVAL_INPROCESS") {
-      if(rolearray?.length == 1 && rolearray?.[0]?.code == "CITIZEN") {
+      if(rolearray?.length == 1 && (rolearray?.[0]?.code == "CITIZEN" || rolearray?.[0]?.code == "BPA_CITIZEN")) {
         workflowDetails.data.nextActions = workflowDetails?.data?.nextActions;
       } else {
         workflowDetails.data.nextActions = [];
