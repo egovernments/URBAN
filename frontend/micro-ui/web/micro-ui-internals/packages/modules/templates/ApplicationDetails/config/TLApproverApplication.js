@@ -52,15 +52,18 @@ export const configTLApproverApplication = ({
           {
             label: t("TL_APPROVAL_CHECKLIST_BUTTON_UP_FILE"),
             populators: (
-              <UploadFile
-                id={"workflow-doc"}
-                // accept=".jpg"
-                onUpload={selectFile}
-                onDelete={() => {
-                  setUploadedFile(null);
-                }}
-                message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
-              />
+              <div>
+                <p>{t("TL_DOCUMENTS_ATTACH_RESTRICTIONS_SIZE")}</p>
+                <UploadFile
+                  id={"workflow-doc"}
+                  // accept=".jpg"
+                  onUpload={selectFile}
+                  onDelete={() => {
+                    setUploadedFile(null);
+                  }}
+                  message={uploadedFile ? `1 ${t(`ES_PT_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
+                />
+              </div>
             )
           },
           //   {
