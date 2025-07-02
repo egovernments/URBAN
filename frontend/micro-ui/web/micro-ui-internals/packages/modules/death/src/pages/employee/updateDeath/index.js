@@ -42,7 +42,8 @@ const UpdateDeath = () => {
   const genderOptions = [
     { code: "MALE", name: "COMMON_GENDER_MALE" },
     { code: "FEMALE", name: "COMMON_GENDER_FEMALE" },
-    { code: "TRANSGENDER", name: "COMMON_GENDER_TRANSGENDER" }
+    { code: "TRANSGENDER", name: "COMMON_GENDER_TRANSGENDER" },
+    { code: "OTHER", name: "COMMON_GENDER_OTHER" },
   ];
 
   const getMdmsGenderOption = (genderNum) => {
@@ -50,6 +51,7 @@ const UpdateDeath = () => {
       case 1: return genderOptions.find(opt => opt.code === "MALE");
       case 2: return genderOptions.find(opt => opt.code === "FEMALE");
       case 3: return genderOptions.find(opt => opt.code === "TRANSGENDER");
+      case 4: return genderOptions.find(opt => opt.code === "OTHER");
       default: return undefined;
     }
   };
@@ -216,17 +218,15 @@ const UpdateDeath = () => {
       case "MALE": return { gender: 1, genderStr: "Male" };
       case "FEMALE": return { gender: 2, genderStr: "Female" };
       case "TRANSGENDER": return { gender: 3, genderStr: "Transgender" };
+      case "OTHER": return { gender: 4, genderStr: "Other" };
       default: return { gender: null, genderStr: "" };
     }
   };
 
-  // Moved toEpoch outside to be accessible by transformFormDataForUpdate
-  const toEpoch = (dateStr) => dateStr ? Math.floor(new Date(dateStr).getTime() / 1000) : undefined; // DIVIDE BY 1000
+  const toEpoch = (dateStr) => dateStr ? Math.floor(new Date(dateStr).getTime() / 1000) : undefined; 
 
   const transformFormDataForUpdate = (formData) => {
     const { gender, genderStr } = mapGenderToPayload(formData?.Gender);
-    // const toEpoch = (dateStr) => dateStr ? Math.floor(new Date(dateStr).getTime() / 1000) : undefined; // Now defined outside
-
     const presentAddress = {
       buildingno: formData?.buildingNumber || "", houseno: formData?.houseNo || "",
       district: formData?.district || "", streetname: formData?.streetName || "",
