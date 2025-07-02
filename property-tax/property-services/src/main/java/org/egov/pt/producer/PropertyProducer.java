@@ -31,7 +31,7 @@ public class PropertyProducer {
 	}
 
 	public void pushAfterEncrytpion(String topic, PropertyRequest request) {
-		request.setProperty(encryptionDecryptionUtil.encryptObject(request.getProperty(), "Property", Property.class));
+//		request.setProperty(encryptionDecryptionUtil.encryptObject(request.getProperty(), "Property", Property.class));
 		push(request.getProperty().getTenantId(),topic, request);
 	}
 }
