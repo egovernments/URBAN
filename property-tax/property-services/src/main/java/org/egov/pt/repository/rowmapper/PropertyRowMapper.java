@@ -184,6 +184,10 @@ public class PropertyRowMapper implements ResultSetExtractor<List<Property>> {
 				.floorNo(rs.getInt("floorno"))
 				.arv(arv)
 				.id(unitId)
+				.rateZone(rs.getString("rateZone"))
+				.roadFactor(rs.getString("roadFactor"))
+				.toDate(rs.getString("toDate"))
+				.fromDate(rs.getString("fromDate"))
 				.build();
 		
 		currentProperty.addUnitsItem(unit);
@@ -340,6 +344,8 @@ public class PropertyRowMapper implements ResultSetExtractor<List<Property>> {
 		.geoLocation(geoLocation)
 		.locality(locality)
 		.tenantId(tenanId)
+		.ward(rs.getString("ward"))
+		.colony(rs.getString("colony"))
 		.build();
 	}
 	
