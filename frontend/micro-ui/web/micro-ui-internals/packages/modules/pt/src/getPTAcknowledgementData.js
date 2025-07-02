@@ -21,7 +21,7 @@ const getOwner = (application, t, customTitle) => {
     application.ownershipCategory = application?.transferorDetails?.ownershipCategory;
     owners = [...(application?.transferorDetails?.owners) || []];
   } else {
-    owners = [...(application?.owners.filter((owner) => owner.status == "INACTIVE") || [])];
+    owners = [...(application?.ownersInit || [])];
   }
   else
   owners = [...(application?.owners.filter((owner) => owner.status == "ACTIVE") || [])];
