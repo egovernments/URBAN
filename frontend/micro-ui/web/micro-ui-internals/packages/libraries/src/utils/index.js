@@ -152,14 +152,25 @@ const fsmAccess = () => {
 const NOCAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
-
   const NOC_ROLES = [
-    "FIRE_NOC_APPROVER"
+    "FIRE_NOC_APPROVER",
   ]
 
   const NOC_ACCESS = userRoles?.filter((role) => NOC_ROLES?.includes(role));
-
   return NOC_ACCESS?.length > 0;
+};
+
+const FirenocAccess = () => {
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
+  const Firenoc_ROLES = [
+    "NOC_APPROVER",
+    "NOC_CEMP",
+    "NOC_DOC_VERIFIER",
+    "NOC_FIELD_INSPECTOR",
+  ]
+  const Firenoc_ACCESS = userRoles?.filter((role) => Firenoc_ROLES?.includes(role));
+  return Firenoc_ACCESS?.length > 0;
 };
 
 const BnDAccess = () => {
@@ -374,6 +385,7 @@ export default {
   pt,
   ptAccess,
   NOCAccess,
+  FirenocAccess,
   mCollectAccess,
   receiptsAccess,
   didEmployeeHasRole,

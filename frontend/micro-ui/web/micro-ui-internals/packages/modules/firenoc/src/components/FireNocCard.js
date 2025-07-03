@@ -6,7 +6,7 @@ import { CaseIcon } from "@egovernments/digit-ui-react-components";
 
 const FirenocCard = () => {
 
-  if (!Digit.Utils.NOCAccess()) return null;
+   if (!Digit.Utils.FirenocAccess()) return null;
   const { t } = useTranslation();
 
 
