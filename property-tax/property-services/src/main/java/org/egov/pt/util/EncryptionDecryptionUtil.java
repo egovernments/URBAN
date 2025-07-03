@@ -49,10 +49,6 @@ public class EncryptionDecryptionUtil {
 
     public <T> T encryptObject(Object objectToEncrypt, String key, Class<T> classType) {
 
-        // Return as-is by converting/casting to T if needed
-        if (!abacEnabled) {
-            return (T) objectToEncrypt;
-        }
         try {
             if (objectToEncrypt == null) {
                 return null;
@@ -69,11 +65,6 @@ public class EncryptionDecryptionUtil {
     }
 
     public <E, P> P decryptObject(Object objectToDecrypt, String key, Class<E> classType, RequestInfo requestInfo) {
-
-        if (!abacEnabled) {
-            // Return as-is by converting/casting to P if needed
-            return (P) objectToDecrypt;
-        }
 
         try {
             boolean objectToDecryptNotList = false;
