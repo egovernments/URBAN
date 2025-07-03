@@ -103,6 +103,7 @@
     "**/@babel/core": "7.14.0",
     "**/@babel/preset-env": "7.14.0",
     "**/@babel/plugin-transform-modules-commonjs": "7.14.0",
-    "minimatch": "^3.0.4"
+    "minimatch": "^3.0.4",
+    "glob": "^7.1.2"
   }
 }
