@@ -429,127 +429,129 @@ export const FailedPayment = (props) => {
 };
 
 
-// export const SuccessPayment = (props) => {
-// //   if(localStorage.getItem("BillPaymentEnabled")!=="true"){
-// //     window.history.forward();
-// //    return null;
-// //  }
-//  return <PaymentComponent {...props}/>
-// }
+export const SuccessPayment = (props) => {
 
-// const PaymentComponent = (props) => {
-//   const { t } = useTranslation();
-//   const queryClient = useQueryClient();
-//   const { eg_pg_txnid: egId, workflow: workflw } = Digit.Hooks.useQueryParams();
-//   const [printing, setPrinting] = useState(false);
-//   const { businessService: business_service, consumerCode, tenantId } = useParams();
+  console.log("Entered the success payment page");
+//   if(localStorage.getItem("BillPaymentEnabled")!=="true"){
+//     window.history.forward();
+//    return null;
+//  }
+ return <PaymentComponent {...props}/>
+}
 
-//   // 1. CRITICAL CHANGE: Get payment response from sessionStorage (like the Death module does)
-//   const storedPaymentData = JSON.parse(sessionStorage.getItem("PaymentResponse"));
+const PaymentComponent = (props) => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { eg_pg_txnid: egId, workflow: workflw } = Digit.Hooks.useQueryParams();
+  const [printing, setPrinting] = useState(false);
+  const { businessService: business_service, consumerCode, tenantId } = useParams();
 
-//   // This API call will still run in the background to update the server, but we won't rely on it for the UI.
-//   const { isLoading, data, isError } = Digit.Hooks.usePaymentUpdate({ egId }, business_service, {
-//     retry: false,
-//     staleTime: Infinity,
-//     refetchOnWindowFocus: false,
-//   });
+  // 1. CRITICAL CHANGE: Get payment response from sessionStorage (like the Death module does)
+  const storedPaymentData = JSON.parse(sessionStorage.getItem("PaymentResponse"));
 
-//   const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
-//     select: (data) =>
-//       data["common-masters"]?.uiCommonPay?.filter(({ code }) => business_service?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
-//     retry: false,
-//     staleTime: Infinity,
-//     refetchOnWindowFocus: false,
-//   });
+  // This API call will still run in the background to update the server, but we won't rely on it for the UI.
+  const { isLoading, data, isError } = Digit.Hooks.usePaymentUpdate({ egId }, business_service, {
+    retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
 
-//   useEffect(() => {
-//     return () => {
-//       // Clear the session storage item if you want to prevent re-showing this page on refresh
-//       // sessionStorage.removeItem("PaymentResponse");
-//       queryClient.clear();
-//     };
-//   }, []);
+  const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
+    select: (data) =>
+      data["common-masters"]?.uiCommonPay?.filter(({ code }) => business_service?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
+    retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
 
-//   // Show a loader while the background API call is happening, but don't fail if it's slow.
-//   if (isLoading) {
-//     return <Loader />;
-//   }
+  useEffect(() => {
+    return () => {
+      // Clear the session storage item if you want to prevent re-showing this page on refresh
+      // sessionStorage.removeItem("PaymentResponse");
+      queryClient.clear();
+    };
+  }, []);
 
-//   // 2. CRITICAL CHANGE: Use the reliable stored data for the failure check.
-//   if (!storedPaymentData || !storedPaymentData.Payments || storedPaymentData.Payments.length === 0) {
-//     return (
-//       <Card>
-//         <Banner
-//           message={t("CITIZEN_FAILURE_COMMON_PAYMENT_MESSAGE")}
-//           info={t("CS_PAYMENT_TRANSANCTION_ID")}
-//           applicationNumber={egId}
-//           successful={false}
-//         />
-//         <CardText>{t("CS_PAYMENT_FAILURE_MESSAGE")}</CardText>
-//         <Link to={`/digit-ui/employee/payment/collect/${business_service}/${consumerCode}`}>
-//             <SubmitBar label={t("CS_PAYMENT_TRY_AGAIN")} />
-//         </Link>
-//       </Card>
-//     );
-//   }
+  // Show a loader while the background API call is happening, but don't fail if it's slow.
+  if (isLoading) {
+    return <Loader />;
+  }
 
-//   // 3. CRITICAL CHANGE: Create the printReciept function using the stored data.
-//   const printReciept = async () => {
-//     if (printing) return;
-//     setPrinting(true);
-//     const tenantId = storedPaymentData.Payments[0]?.tenantId;
-//     const state = Digit.ULBService.getStateId();
-//     // We use the filestoreId from the payment response if it exists, otherwise we generate a new PDF.
-//     let response = { filestoreIds: [storedPaymentData.Payments[0]?.fileStoreId] };
-//     if (!response.filestoreIds[0]) {
-//       response = await Digit.PaymentService.generatePdf(state, { Payments: [storedPaymentData.Payments[0]] }, generatePdfKey);
-//     }
-//     const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
-//     if (fileStore && fileStore[response.filestoreIds[0]]) {
-//       window.open(fileStore[response.filestoreIds[0]], "_blank");
-//     }
-//     setPrinting(false);
-//   };
+  // 2. CRITICAL CHANGE: Use the reliable stored data for the failure check.
+  if (!storedPaymentData || !storedPaymentData.Payments || storedPaymentData.Payments.length === 0) {
+    return (
+      <Card>
+        <Banner
+          message={t("CITIZEN_FAILURE_COMMON_PAYMENT_MESSAGE")}
+          info={t("CS_PAYMENT_TRANSANCTION_ID")}
+          applicationNumber={egId}
+          successful={false}
+        />
+        <CardText>{t("CS_PAYMENT_FAILURE_MESSAGE")}</CardText>
+        <Link to={`/digit-ui/employee/payment/collect/${business_service}/${consumerCode}`}>
+            <SubmitBar label={t("CS_PAYMENT_TRY_AGAIN")} />
+        </Link>
+      </Card>
+    );
+  }
 
-//   // 4. CRITICAL CHANGE: Define the banner text for Birth Certificates.
-//   let bannerText;
-//   if (storedPaymentData?.Payments?.[0]?.paymentDetails?.[0]?.businessService?.includes("BIRTH_CERT")) {
-//     bannerText = `CITIZEN_SUCCESS_BIRTH_CERT_PAYMENT_MESSAGE`;
-//   } else {
-//     // Fallback for other services if this component is ever reused
-//     bannerText = t("CITIZEN_SUCCESS_UC_PAYMENT_MESSAGE");
-//   }
+  // 3. CRITICAL CHANGE: Create the printReciept function using the stored data.
+  const printReciept = async () => {
+    if (printing) return;
+    setPrinting(true);
+    const tenantId = storedPaymentData.Payments[0]?.tenantId;
+    const state = Digit.ULBService.getStateId();
+    // We use the filestoreId from the payment response if it exists, otherwise we generate a new PDF.
+    let response = { filestoreIds: [storedPaymentData.Payments[0]?.fileStoreId] };
+    if (!response.filestoreIds[0]) {
+      response = await Digit.PaymentService.generatePdf(state, { Payments: [storedPaymentData.Payments[0]] }, generatePdfKey);
+    }
+    const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
+    if (fileStore && fileStore[response.filestoreIds[0]]) {
+      window.open(fileStore[response.filestoreIds[0]], "_blank");
+    }
+    setPrinting(false);
+  };
 
-//   return (
-//     <Card>
-//       <Banner
-//         svg={
-//           <svg className="payment-svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-//             <path
-//               d="M20 0C8.96 0 0 8.96 0 20C0 31.04 8.96 40 20 40C31.04 40 40 31.04 40 20C40 8.96 31.04 0 20 0ZM16 30L6 20L8.82 17.18L16 24.34L31.18 9.16L34 12L16 30Z"
-//               fill="white"
-//             />
-//           </svg>
-//         }
-//         message={t("CS_COMMON_PAYMENT_COMPLETE")}
-//         info={t("CS_COMMON_RECIEPT_NO")}
-//         applicationNumber={storedPaymentData?.Payments[0]?.paymentDetails[0]?.receiptNumber}
-//         successful={true}
-//       />
-//       <CardText>{t(`${bannerText}_DETAIL`)}</CardText>
+  // 4. CRITICAL CHANGE: Define the banner text for Birth Certificates.
+  let bannerText;
+  if (storedPaymentData?.Payments?.[0]?.paymentDetails?.[0]?.businessService?.includes("BIRTH_CERT")) {
+    bannerText = `CITIZEN_SUCCESS_BIRTH_CERT_PAYMENT_MESSAGE`;
+  } else {
+    // Fallback for other services if this component is ever reused
+    bannerText = t("CITIZEN_SUCCESS_UC_PAYMENT_MESSAGE");
+  }
+
+  return (
+    <Card>
+      <Banner
+        svg={
+          <svg className="payment-svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path
+              d="M20 0C8.96 0 0 8.96 0 20C0 31.04 8.96 40 20 40C31.04 40 40 31.04 40 20C40 8.96 31.04 0 20 0ZM16 30L6 20L8.82 17.18L16 24.34L31.18 9.16L34 12L16 30Z"
+              fill="white"
+            />
+          </svg>
+        }
+        message={t("CS_COMMON_PAYMENT_COMPLETE")}
+        info={t("CS_COMMON_RECIEPT_NO")}
+        applicationNumber={storedPaymentData?.Payments[0]?.paymentDetails[0]?.receiptNumber}
+        successful={true}
+      />
+      <CardText>{t(`${bannerText}_DETAIL`)}</CardText>
       
-//       {/* 5. CRITICAL CHANGE: Add the Print Receipt and Go Home buttons */}
-//       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", marginTop: "2rem" }}>
-//         {generatePdfKey && (
-//           <div className="primary-label-btn d-grid" onClick={printReciept}>
-//             <DownloadPrefixIcon />
-//             {t("CS_COMMON_DOWNLOAD_RECEIPT")}
-//           </div>
-//         )}
-//         <Link to={`/digit-ui/employee`}>
-//           <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
-//         </Link>
-//       </div>
-//     </Card>
-//   );
-// };
+      {/* 5. CRITICAL CHANGE: Add the Print Receipt and Go Home buttons */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", marginTop: "2rem" }}>
+        {generatePdfKey && (
+          <div className="primary-label-btn d-grid" onClick={printReciept}>
+            <DownloadPrefixIcon />
+            {t("CS_COMMON_DOWNLOAD_RECEIPT")}
+          </div>
+        )}
+        <Link to={`/digit-ui/employee`}>
+          <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
+        </Link>
+      </div>
+    </Card>
+  );
+};

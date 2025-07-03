@@ -213,7 +213,7 @@ export const CreateBirth = () => {
             setShowToast({ key: "success", label: "Birth Certificate Created Successfully" });
             setTimeout(() => {
               window.location.reload();
-            }, 1000);
+            }, 3000);
           }
         },
         onError: (error) => {

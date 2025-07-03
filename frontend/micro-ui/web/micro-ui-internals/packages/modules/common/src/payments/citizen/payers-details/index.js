@@ -119,34 +119,7 @@ const SelectPaymentType = (props) => {
   };
 
   const onSubmit = async () => {
-    // if (wrkflow === "birth") {
-    //   const recieptRequest = {
-    //     Payment: {
-    //       mobileNumber: bill.mobileNumber,
-    //       paymentDetails: [{
-    //           businessService,
-    //           billId: bill.id,
-    //           totalDue: bill.totalAmount,
-    //           totalAmountPaid: bill.totalAmount,
-    //       }],
-    //       tenantId: bill.tenantId,
-    //       totalDue: bill.totalAmount,
-    //       totalAmountPaid: bill.totalAmount,
-    //       paymentMode: "CASH", // Special logic for this flow
-    //       payerName: bill.payerName,
-    //       paidBy: paymentType?.code === optionFirst.code ? "OWNER" : "OTHER",
-    //     },
-    //   };
 
-    //   try {
-    //     const response = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
-    //     sessionStorage.setItem("PaymentResponse", JSON.stringify(response));
-    //     history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=birth`);
-    //   } catch (error) {
-    //     console.error("Error while creating receipt for birth workflow:", error);
-    //   }
-    // }
-    // Logic for WNS workflow
     if (wrkflow === "WNS") {
       history.push(
         `/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}?workflow=WNS&consumerCode=${stringReplaceAll(consumerCode, "+", "/")}`,
@@ -165,35 +138,35 @@ const SelectPaymentType = (props) => {
         }
       );
     } else if (wrkflow === "birth") {
-      console.log("billDetails inside: ", paymentAmt, billDetails.tenantId);
-      console.log(paymentType?.code);
-      console.log(paymentType?.code !== optionSecound?.code ? bill?.payerName : userInfo ? payersActiveName : payersName);
-      console.log(
-        paymentType?.code !== optionSecound?.code
-          ? bill?.mobileNumber?.includes("*")
-            ? userData?.user?.[0]?.mobileNumber
-            : bill?.mobileNumber
-          : userInfo
-          ? payersActiveMobileNumber
-          : payersMobileNumber
-      );
-      history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}?workflow=birth`, {
-        bill: bill,
-        paymentAmount: paymentAmt,
-        tenantId: billDetails.tenantId,
-        name: paymentType?.code !== optionSecound?.code ? bill?.payerName : userInfo ? payersActiveName : payersName,
-        mobileNumber:
-          paymentType?.code !== optionSecound?.code
-            ? bill?.mobileNumber?.includes("*")
-              ? userData?.user?.[0]?.mobileNumber
-              : bill?.mobileNumber
-            : userInfo
-            ? payersActiveMobileNumber
-            : payersMobileNumber,
-      });
+      // console.log("billDetails inside: ", paymentAmt, billDetails.tenantId);
+      // console.log(paymentType?.code);
+      // console.log(paymentType?.code !== optionSecound?.code ? bill?.payerName : userInfo ? payersActiveName : payersName);
+      // console.log(
+      //   paymentType?.code !== optionSecound?.code
+      //     ? bill?.mobileNumber?.includes("*")
+      //       ? userData?.user?.[0]?.mobileNumber
+      //       : bill?.mobileNumber
+      //     : userInfo
+      //     ? payersActiveMobileNumber
+      //     : payersMobileNumber
+      // );
+      // history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}?workflow=birth`, {
+      //   bill: bill,
+      //   paymentAmount: paymentAmt,
+      //   tenantId: billDetails.tenantId,
+      //   name: paymentType?.code !== optionSecound?.code ? bill?.payerName : userInfo ? payersActiveName : payersName,
+      //   mobileNumber:
+      //     paymentType?.code !== optionSecound?.code
+      //       ? bill?.mobileNumber?.includes("*")
+      //         ? userData?.user?.[0]?.mobileNumber
+      //         : bill?.mobileNumber
+      //       : userInfo
+      //       ? payersActiveMobileNumber
+      //       : payersMobileNumber,
+      // });
 
       //payment
-      // history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`)
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=birth`)
     } else {
       history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
         paymentAmount: paymentAmt,
