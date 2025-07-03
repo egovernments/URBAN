@@ -165,6 +165,9 @@ const FirenocAccess = () => {
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
   const Firenoc_ROLES = [
     "NOC_APPROVER",
+    "NOC_CEMP",
+    "NOC_DOC_VERIFIER",
+    "NOC_FIELD_INSPECTOR",
   ]
   const Firenoc_ACCESS = userRoles?.filter((role) => Firenoc_ROLES?.includes(role));
   return Firenoc_ACCESS?.length > 0;
