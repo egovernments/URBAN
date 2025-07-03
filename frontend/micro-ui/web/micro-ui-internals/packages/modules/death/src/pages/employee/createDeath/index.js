@@ -204,7 +204,6 @@ export const CreateDeath = () => {
     const payload = {
       deathCerts: [transformFormData(formData)],
     };
-    console.log("Submitting Payload:", payload);
 
     await mutation.mutate(
       {
@@ -212,7 +211,6 @@ export const CreateDeath = () => {
       },
       {
         onSuccess: (response) => {
-          console.log("API Response:", response);
           setShowToast({ key: "success", label: "Death Certificate Created Successfully" });
            setTimeout(() => {
               window.location.reload();

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Header } from "@egovernments/digit-ui-react-components";
 
 const SearchDeath = () => {
-    console.log(InboxSearchComposer, "InboxSearchComposer")
     
     const { t } = useTranslation();
    

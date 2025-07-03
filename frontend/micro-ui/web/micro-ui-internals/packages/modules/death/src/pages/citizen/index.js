@@ -8,24 +8,11 @@ import SearchAndDownload from "./searchanddownload";
 import MyApplications from "./myapplications";
 
 
-
-
-const deathPaymentRules = {
-  minAmountPayable: 0,
-  isAdvanceAllowed: false,
-  partPaymentAllowed: false, 
-};
-
-
-
 const CitizenApp = ({ path, url, userType }) => {
 
   
   const { t } = useTranslation();
 
-   console.log("User Type: ........................", userType);
-    console.log("Path: ", path);
-    console.log("qwertyu",SearchAndDownload)
 
 
   return (

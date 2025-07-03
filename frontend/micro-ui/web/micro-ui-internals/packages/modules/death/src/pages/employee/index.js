@@ -12,9 +12,7 @@ import DeathCard from "../../components/DeathCard";
 
 
 const EmployeeApp = ({ path, url, userType }) => {
-    console.log("User Type: ........................", userType);
   const { t } = useTranslation();
-  console.log("Path: ", path);
   
   
 

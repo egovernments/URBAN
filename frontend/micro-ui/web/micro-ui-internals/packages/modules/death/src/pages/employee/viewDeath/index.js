@@ -56,7 +56,6 @@ const ViewDeath = () => {
   useEffect(() => {
     if (certificateViewData?.DeathCertificate && certificateViewData.DeathCertificate.length > 0) {
       const certData = certificateViewData.DeathCertificate[0];
-      console.log("ViewDeath: Certificate Data Received:", certData);
 
       // Prepare data for ViewComposer
       const certsForView = [{ ...certData }]; // Create a new array/object for safety
@@ -68,15 +67,12 @@ const ViewDeath = () => {
 
       // Determine which button to show based on counter
       if (certData.counter >= 1) {
-        console.log("ViewDeath: Counter is 1, showing Pay and Download button.");
         setShowPayAndDownload(true);
       } else {
-        console.log("ViewDeath: Counter is not 1 (or undefined), showing Free Download button. Counter:", certData.counter);
         setShowPayAndDownload(false);
       }
     } else if (certificateViewData && (!certificateViewData.DeathCertificate || certificateViewData.DeathCertificate.length === 0)) {
         console.warn("ViewDeath: DeathCertificate array is missing or empty in the response.");
-        // Handle cases where certificate data is expected but not found properly
     }
   }, [certificateViewData, Hospitalname, id, currentLocalTenantId, t]);
 
@@ -97,7 +93,6 @@ const ViewDeath = () => {
   };
 
   const handleFreeDownload = () => {
-    console.log("ViewDeath: Initiating Free Download...");
     initiateFreeDownload(currentLocalTenantId, id);
   };
 
@@ -117,7 +112,6 @@ const ViewDeath = () => {
   // history.push(`/digit-ui/employee/payment/collect/${businessService}/${consumerCode}/tenantId=${tenantId}?workflow=death`);
    const fallbackConsumerCode = `DT-${id}-${Date.now()}`;
   
-  // Try to get the real consumer code (but don't wait for it)
   const apiPromise = downloadApi(tenantId, id)
     .then(realCode => realCode || fallbackConsumerCode)
     .catch(() => fallbackConsumerCode);
@@ -141,7 +135,6 @@ const ViewDeath = () => {
 
  useEffect(() => {
     if (isDownloaded) {
-      console.log("Download complete, refreshing page...");
       window.location.reload();
     }
   }, [isDownloaded]);

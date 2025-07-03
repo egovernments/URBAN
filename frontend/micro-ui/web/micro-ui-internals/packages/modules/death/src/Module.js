@@ -31,7 +31,6 @@ export const DeathModule = ({ stateCode, userType, tenants }) => {
     return <Loader />;
   }
   const { path, url } = useRouteMatch();
-  console.log("path: ........................", path);
   if(userType==="employee"){
     return <EmployeeApp path={path} url={url} userType={userType}/>
   }else{

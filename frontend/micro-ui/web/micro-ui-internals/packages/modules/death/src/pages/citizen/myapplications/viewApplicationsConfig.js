@@ -13,7 +13,6 @@ const DownloadButton = ({ tenantId, idForFilenameAndMutation, directFileStoreId,
 
   const handleClick = () => {
     if (isDownloading) return;
-    console.log(`DownloadButton clicked. ID (filename/mutation): ${idForFilenameAndMutation}, Direct FileStoreID: ${directFileStoreId}, Tenant (for mutation): ${tenantId}`);
     initiateDownload(tenantId, idForFilenameAndMutation, directFileStoreId);
   };
 
@@ -119,13 +118,8 @@ export const viewApplicationConfig = (applicationsArray, t, props = {}) => {
       additionalDetails: {},
     };
   }
-
-   console.log("viewApplicationConfig PROPS received:", props);
-
   const applicationCards = applicationsArray.map((appData, index) => {
 
-    console.log(`------------------------------------`);
-    console.log(`Processing appData[${index}]:`, JSON.parse(JSON.stringify(appData)));
     const rawStatus = appData.status;
     const translatedStatusDisplay = getTranslatedApplicationStatus(rawStatus, t);
 

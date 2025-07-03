@@ -77,7 +77,6 @@ const UpdateDeath = () => {
   useEffect(() => {
     if (editData && hospitalListData?.hospitalListOptions) {
       const transformedApiData = transformApiDataToForm(editData, hospitalListData.hospitalListOptions);
-      console.log("Transformed API Data for Initial Values:", transformedApiData); // For debugging buildingNumber
       setInitialValues(transformedApiData);
 
       const initialSameAddress = !!transformedApiData.sameAddressCheckbox;
@@ -303,22 +302,17 @@ const UpdateDeath = () => {
   const mutation = Digit.Hooks.useCustomAPIMutationHook(reqUpdate);
 
   const onSubmit = async (formData) => {
-    console.log("Form Data before update transformation:", formData); // For debugging
     const payload = {
       deathCerts: [transformFormDataForUpdate(formData)]
     };
-    console.log("Submitting Update Payload:", JSON.stringify(payload, null, 2)); // Pretty print payload
-
     await mutation.mutate(
       { body: payload },
       {
         onSuccess: (response) => {
-          console.log("API Update Response:", response);
           if (response?.statsMap?.["Sucessful Records"] > 0) {
             setShowToast({ key: "success", label: "Death Certificate Updated Successfully" });
             setTimeout(() => history.push(`/${window.contextPath}/employee/death/death-common/getCertificate`), 1000); 
           } else {
-            // Even if API call is 200, it might contain logical errors reported in statsMap
             const errorMsg = response?.serviceError || response?.errorRowMap?.[Object.keys(response.errorRowMap)[0]]?.[0] || "Update failed with logical errors.";
             setShowToast({ key: "error", label: `Failed to Update: ${errorMsg}` });
           }
