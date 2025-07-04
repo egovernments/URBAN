@@ -1,206 +1,33 @@
 import { Link, useHistory } from "react-router-dom";
 import _ from "lodash";
-import React from "react";
+import React, { useState, Fragment, useEffect } from "react";
+import { Button as ButtonNew,Toast,Loader } from "@egovernments/digit-ui-components";
 
 //create functions here based on module name set in mdms(eg->SearchProjectConfig)
 //how to call these -> Digit?.Customizations?.[masterName]?.[moduleName]
 // these functions will act as middlewares
 // var Digit = window.Digit || {};
 
-// const businessServiceMap = {};
+const businessServiceMap = {};
 
-// const inboxModuleNameMap = {};
+const inboxModuleNameMap = {};
 
 var Digit = window.Digit || {};
 
-// const GetSlaCell = (value) => {
-//   if (value === "-") return <span className="sla-cell-success">-</span>;
-//   if (isNaN(value)) return <span className="sla-cell-success">0</span>;
-//   return value < 0 ? <span className="sla-cell-error">{value}</span> : <span className="sla-cell-success">{value}</span>;
-// };
+
+
+const GetSlaCell = (value) => {
+  if (value === "-") return <span className="sla-cell-success">-</span>;
+  if (isNaN(value)) return <span className="sla-cell-success">0</span>;
+  return value < 0 ? <span className="sla-cell-error">{value}</span> : <span className="sla-cell-success">{value}</span>;
+};
+
+
+
+
 
 export const UICustomizations = {
-  searchBirthConfig: {
-    preProcess: (data) => {
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-      const gender = data?.state?.searchForm?.gender?.code;
-      if (gender === "MALE") {
-        data.params.gender = 1;
-      } else if (gender === "FEMALE") {
-        data.params.gender = 2;
-      } else if (gender === "TRANSGENDER") {
-        data.params.gender = 3;
-      } else if (gender === "OTHER") {
-        data.params.gender = 4;
-      } else {
-        data.params.gender = 0;
-      }
-      const fromDate = data?.state?.searchForm?.fromDate;
-      if (fromDate) {
-        const [yyyy, mm, dd] = fromDate.split("-");
-        data.params.fromDate = `${dd}-${mm}-${yyyy}`;
-      }
-      const toDate = data?.state?.searchForm?.toDate;
-      if (toDate) {
-        const [yyyy, mm, dd] = toDate.split("-");
-        data.params.toDate = `${dd}-${mm}-${yyyy}`;
-      }
-
-      data.params.tenantId = tenantId;
-      // console.log(data, "data in preProcess of search Birth Ui config");
-      if (data?.params?.fromDate || data?.params?.toDate) {
-        const createdFrom = data.params?.fromDate;
-        const createdTo = data.params?.toDate;
-        data.params.fromDate = createdFrom;
-        data.params.toDate = createdTo;
-      }
-      return data;
-    },
-    additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      console.log("key", key);
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-
-      const ViewBirthLinkButton = Digit.ComponentRegistryService.getComponent("ViewBirthLinkButton");
-      console.log("value", value);
-      console.log("column", column);
-      console.log("t", t);
-      console.log("searchResult", searchResult);
-
-      switch (key) {
-        case "view":
-          return <ViewBirthLinkButton tenantId={tenantId} certificateId={row?.id} />;
-
-        case "BND_BIRTH_DATE":
-          const epoch = row?.dateofbirth;
-          // console.log(epoch, "changing the format of date");
-          if (epoch) {
-            const date = new Date(epoch);
-            const dd = String(date.getDate()).padStart(2, "0");
-            const mm = String(date.getMonth() + 1).padStart(2, "0");
-            const yyyy = date.getFullYear();
-            return <span>{`${dd}-${mm}-${yyyy}`}</span>;
-          }
-          return <span>{t("ES_COMMON_NA")}</span>;
-        default:
-          return t("ES_COMMON_NA");
-      }
-    },
-    additionalValidations: (type, data, keys) => {
-      if (type === "date") {
-        return data.fromDate && data.toDate ? () => new Date(data.fromDate).getTime() < new Date(data.toDate).getTime() : true;
-      }
-    },
-    customValidationCheck: (data) => {
-      //checking both to and from date are present
-      const { fromDate, toDate } = data;
-      if ((fromDate === "" && toDate !== "") || (fromDate !== "" && toDate === "")) return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
-
-      return false;
-    },
-  },
-  searchAndDownloadBirthConfig: {
-    // preProcess function to transform form data into API query parameters
-    preProcess: (data) => {
-      // console.log("BIRTH: UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
-
-      const formValues = data.state.searchForm || {};
-      // console.log("BIRTH: Form Values (data.state.searchForm):", JSON.stringify(formValues, null, 2));
-
-      // 1. Tenant ID
-      const tenantFromForm = formValues.tenantId;
-      if (tenantFromForm && tenantFromForm.code) {
-        data.params.tenantId = tenantFromForm.code;
-      } else if (typeof tenantFromForm === "string" && tenantFromForm) {
-        data.params.tenantId = tenantFromForm;
-      } else {
-        console.warn("PreProcess: tenantId issue. Value:", tenantFromForm);
-      }
-
-      // 2. Gender
-      const gender = formValues.gender?.code;
-      if (gender) {
-        if (gender === "MALE") data.params.gender = 1;
-        else if (gender === "FEMALE") data.params.gender = 2;
-        else if (gender === "TRANSGENDER") data.params.gender = 3;
-        else if (gender === "OTHER") data.params.gender = 4;
-        else data.params.gender = 0;
-      }
-
-      // 3. Date of Birth
-      const dateOfBirth = formValues.dateOfBirth;
-      if (dateOfBirth) {
-        try {
-          const [yyyy, mm, dd] = dateOfBirth.split("-");
-          data.params.dateOfBirth = `${dd}-${mm}-${yyyy}`;
-        } catch (e) {
-          console.error("Error parsing dateOfBirth:", dateOfBirth, e);
-        }
-      }
-
-      // 4. Registration Number
-      const registrationNo = formValues.registrationno;
-      if (registrationNo && String(registrationNo).trim() !== "") {
-        data.params.registrationNo = String(registrationNo).trim();
-      }
-
-      // 5. Hospital ID
-      const placeOfBirthRawValue = formValues.placeofbirth; // <-- CHANGED
-      // console.log("Raw value of formValues.placeofbirth:", JSON.stringify(placeOfBirthRawValue));
-
-      let placeOfBirthCode = null;
-      if (typeof placeOfBirthRawValue === "string" && placeOfBirthRawValue.trim() !== "") {
-        placeOfBirthCode = placeOfBirthRawValue.trim();
-      } else if (typeof placeOfBirthRawValue === "object" && placeOfBirthRawValue !== null && placeOfBirthRawValue.code) {
-        placeOfBirthCode = String(placeOfBirthRawValue.code).trim();
-      } else {
-        // console.log("placeofbirth is not a usable string or object with a code property.");
-      }
-
-      if (placeOfBirthCode) {
-        data.params.hospitalId = placeOfBirthCode;
-        // console.log(`PreProcess: Hospital ID set to: ${finalApiParams.hospitalId}`);
-      } else {
-        delete data.params.hospitalId;
-      }
-
-      return data;
-    },
-
-    // additionalCustomizations for rendering columns in the results table
-    additionalCustomizations: (row, key, column, value, t, searchResult) => {
-  const DownloadButton = Digit.ComponentRegistryService.getComponent("DownloadBirthButton");
-      const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent("PayAndDownloadBirthButton");
-      const colKey = column.key;
-      const tenantId = searchResult?.[0]?.tenantid;
-      const counter = row?.counter;
-
-      switch (colKey) {
-        case "action":
-          if (counter === 0) {
-            return <DownloadButton tenantId={tenantId} certificateId={row?.id} />;
-          } else if (counter >= 1) {
-            return <PayAndDownloadButton tenantId={tenantId} certificateId={row?.id} />;
-          }
-
-          return <span>{t("ES_COMMON_NA")}</span>;
-
-        case "dateOfBirth":
-          const epoch = row?.dateofbirth;
-          if (epoch) {
-            const date = new Date(epoch);
-            const dd = String(date.getDate()).padStart(2, "0");
-            const mm = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
-            const yyyy = date.getFullYear();
-            return <span>{`${dd}-${mm}-${yyyy}`}</span>;
-          }
-          return <span>{t("ES_COMMON_NA")}</span>;
-
-        default:
-          return <span>{t("ES_COMMON_NA")}</span>;
-      }
-    },
-  },
-  searchDeathConfig: {
+   searchDeathConfig: {
     preProcess: (data) => {
       const tenantId = Digit.ULBService.getCurrentTenantId();
       const gender = data?.state?.searchForm?.gender?.code;
@@ -246,11 +73,12 @@ export const UICustomizations = {
           }
 
           if (hospitalNameString !== "") {
+            console.log("hospitalNameString", hospitalNameString);
               data.params.hospitalId = hospitalNameString;
-              data.params.placeofdeath = hospitalNameString; // Assuming you want to keep placeOfDeath as well
+               data.params.placeofdeath = hospitalNameString;
           } else {
               delete data.params.hospitalId;
-              delete data.params.placeofdeath; // Remove placeOfDeath if hospitalId is not provided
+              delete data.params.placeofdeath;
           }
       } else {
           delete data.params.hospitalId;
@@ -290,6 +118,7 @@ export const UICustomizations = {
       }
 
       data.params.tenantId = tenantId;
+      console.log(data, "data in preProcess of searchDeathConfig");
       if (data?.params?.fromDate || data?.params?.toDate) {
         const createdFrom =data.params?.fromDate;
         const createdTo = data.params?.toDate;
@@ -300,7 +129,15 @@ export const UICustomizations = {
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
       const ViewLinkButton = Digit.ComponentRegistryService.getComponent("ViewLinkButton");
+      console.log("key", key);
       const tenantId = Digit.ULBService.getCurrentTenantId();
+      console.log("key", key);
+      console.log("value", value);
+      console.log("column", column);
+      console.log("t", t);
+      console.log("searchResult", searchResult);
+
+
       switch (key) {
         case "View":
           return <ViewLinkButton tenantId={tenantId} certificateId={row?.id} hospitalname={row?.hospitalname} />;
@@ -324,24 +161,26 @@ export const UICustomizations = {
       }
     },
     customValidationCheck: (data) => {
-    const { fromDate, toDate } = data;
+   const { fromDate, toDate } = data;
 
-    
+   console.log("customValidationCheck called with data:", data);
 
-        if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
-          return  {type: "warning",warning: true, label:"DATE_VALIDATION_MSG" };
-        }
-        return false;
+      if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
+        console.log("Validation error: To date before From date");
+        return {type: "warning",warning: true, label:"DATE_VALIDATION_MSG" };
+      }
+      return false;
     },
-   
  },
 
 
  searchAndDownloadConfig: {
      preProcess: (data) => {
+    console.log("UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
 
     let finalApiParams = {};
     const formValues = data.state.searchForm || {};
+    console.log("Form Values (data.state.searchForm):", JSON.stringify(formValues, null, 2));
 
 
     // 1. Tenant ID
@@ -386,21 +225,27 @@ export const UICustomizations = {
 
     // 5. Hospital ID (from placeofdeath field) - DETAILED LOGGING
     const placeOfDeathRawValue = formValues.placeofdeath;
+    console.log("Raw value of formValues.placeofdeath:", JSON.stringify(placeOfDeathRawValue));
 
     let placeOfDeathCode = null;
     if (typeof placeOfDeathRawValue === 'string' && placeOfDeathRawValue.trim() !== "") {
       placeOfDeathCode = placeOfDeathRawValue.trim();
+      console.log("placeofdeath is a string:", placeOfDeathCode);
     } else if (typeof placeOfDeathRawValue === 'object' && placeOfDeathRawValue !== null && placeOfDeathRawValue.code) {
       placeOfDeathCode = String(placeOfDeathRawValue.code).trim();
+      console.log("placeofdeath is an object, extracted code:", placeOfDeathCode);
     } else {
       console.log("placeofdeath is not a usable string or object with a code property.");
     }
 
+   console.log("PreProcess: Value of placeOfDeathCode (raw hospital name):", placeOfDeathCode);
 
     if (placeOfDeathCode) {
       finalApiParams.hospitalId = placeOfDeathCode; 
+      console.log(`PreProcess: Hospital ID set RAW (no explicit encoding): ${finalApiParams.hospitalId}`);
     } else {
       delete finalApiParams.hospitalId;
+      console.log("PreProcess: Hospital ID NOT set because placeOfDeathCode is null or empty.");
     }
 
 
@@ -409,12 +254,14 @@ export const UICustomizations = {
     if (motherName && motherName.trim() !== "") {
       finalApiParams.motherName = motherName.trim();
     }
+    console.log(`Mother's Name processed. finalApiParams.motherName: ${finalApiParams.motherName}`);
 
     // 7. Father's Name
     const fatherName = formValues.FatherName;
     if (fatherName && fatherName.trim() !== "") {
       finalApiParams.fatherName = fatherName.trim();
     }
+    console.log(`Father's Name processed. finalApiParams.fatherName: ${finalApiParams.fatherName}`);
 
 
     // 8. Spouse's Name
@@ -433,6 +280,7 @@ export const UICustomizations = {
 
 
     data.params = finalApiParams;
+    console.log("UICustomization preProcess END - final data.params being sent:", JSON.stringify(data.params, null, 2));
     return data;
   },
 
@@ -441,6 +289,15 @@ export const UICustomizations = {
       const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent("PayAndDownloadButton");
       const tenantId = searchResult?.[0]?.tenantid;
       const counter = row?.counter;
+      console.log("counter", counter);
+      console.log("key", key);
+      console.log("key", key);
+      console.log("value", value);
+      console.log("column", column);
+      console.log("t", t);
+      console.log("searchResult", searchResult);
+      console.log("tenantId", tenantId);
+      console.log("row", row);
 
       
 
@@ -467,4 +324,7 @@ export const UICustomizations = {
       }
     },
   },
+
 };
+
+

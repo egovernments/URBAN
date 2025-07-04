@@ -28,6 +28,7 @@
     "@egovernments/digit-ui-module-dss": "1.7.38",
     "@egovernments/digit-ui-react-components": "1.7.35",
     "@egovernments/digit-ui-module-birth": "0.0.1",
+    "@egovernments/digit-ui-module-death": "0.0.1",
     "@egovernments/digit-ui-components": "0.2.0-beta.12",
     "http-proxy-middleware": "1.0.5",
     "react": "17.0.2",
@@ -39,7 +40,6 @@
   "resolutions": {
     "**/@babel/traverse": "7.25.9",
     "**/styled-components": "5.0.0"
-
   },
   "browserslist": [
     ">0.2%",

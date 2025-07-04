@@ -37,7 +37,7 @@ import { initCustomisationComponents } from "./Customisations";
 import { initCommonPTComponents } from "@egovernments/digit-ui-module-commonpt";
 import { initBillsComponents } from "@egovernments/digit-ui-module-bills";
 // import { initReportsComponents } from "@egovernments/digit-ui-module-reports";
-// import { initDeathComponents } from "@egovernments/digit-ui-module-death";
+import { initDeathComponents } from "@egovernments/digit-ui-module-death";
 import { initBirthComponents } from "@egovernments/digit-ui-module-birth";
 import { UICustomizations } from "./Customisations/UICustomizations";
 initLibraries();
@@ -63,7 +63,7 @@ const enabledModules = [
   "Bills",
   "SW",
   "BillAmendment",
-  // "Death",
+  "Death",
   "Birth"
 ];
 
@@ -98,7 +98,7 @@ initCommonPTComponents();
 initBillsComponents();
 // initReportsComponents();
 // initCustomisationComponents();
-// initDeathComponents();
+initDeathComponents();
 initBirthComponents();
 
 

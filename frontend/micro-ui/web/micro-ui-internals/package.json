@@ -40,6 +40,7 @@
     "dev:ws": "cd packages/modules/ws && yarn start",
     "dev:bills": "cd packages/modules/bills && yarn start",
     "dev:birth": "cd packages/modules/birth && yarn start",
+    "dev:death": "cd packages/modules/death && yarn start",
     "dev:reports": "cd packages/modules/reports && yarn start",
     "dev:example": "cd example && yarn start",
     "build": "run-p build:**",
@@ -53,6 +54,7 @@
     "build:fsm": "cd packages/modules/fsm && yarn build",
     "build:dss": "cd packages/modules/dss && yarn build",
     "build:birth": "cd packages/modules/birth && yarn build",
+    "build:death": "cd packages/modules/death && yarn build",
     "build:mcollect": "cd packages/modules/mCollect && yarn build",
     "build:receipts": "cd packages/modules/receipts && yarn build",
     "build:tl": "cd packages/modules/tl && yarn build",
@@ -90,7 +92,7 @@
     "**/@jridgewell/gen-mapping": "0.3.5",
     "**/polished": "4.2.2",
     "fast-uri": "2.1.0",
-      "**/glob": "^7.2.3",
+    "**/glob": "^7.2.3",
     "**/minimatch": "^3.1.2"
   }
 }
