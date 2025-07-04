@@ -141,6 +141,7 @@ const OBPSEmployeeHomeCard = () => {
         return obj.field !== 'BPA';
       });
     }
+
   
     return checkingForBPARoles || checkingForStakeholderRoles ? <EmployeeModuleCard {...propsForModuleCard} /> : null
   }

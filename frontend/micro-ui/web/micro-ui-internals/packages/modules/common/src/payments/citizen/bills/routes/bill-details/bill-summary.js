@@ -15,7 +15,7 @@ const BillSumary = ({ billAccountDetails, total, businessService, arrears }) => 
   },[billAccountDetails])
   return (
     <React.Fragment>
-      <div className="bill-summary">
+      <div className="bill-summary" style={{ marginTop: "50px" }}>
         {billAccountDetails
           .sort((a, b) => a.order - b.order)
           .map((amountDetails, index) => {

@@ -141,7 +141,37 @@ const SelectPaymentType = (props) => {
     value.length !== 0 && mobileNumberError != "CORE_COMMON_PHONENO_INVALIDMSG" && payersName != "" && payersMobileNumber != "" ? setCanSubmit(true) : setCanSubmit(false);
   };
 
-  const onSubmit = () => {
+  const onSubmit =async () => {
+    let recieptRequest = {
+          Payment: {
+            mobileNumber: bill.mobileNumber,
+            paymentDetails: [
+              {
+                businessService,
+                billId: bill.id,
+                totalDue: bill.totalAmount,
+                totalAmountPaid: bill.totalAmount,
+              },
+            ],
+            tenantId: bill.tenantId,
+            totalDue: bill.totalAmount,
+            totalAmountPaid: bill.totalAmount,
+            paymentMode: "CASH",
+            payerName: bill.payerName,
+            paidBy: "OWNER",
+          },
+        };
+            try {
+              const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+              sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
+              history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
+            } catch (error) {
+              console.log("Error while creating receipt", error);
+              // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
+              // setTimeout(() => setToast(null), 5000);
+              return;
+            }
+
     if(wrkflow === "WNS")
     {
       history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}?workflow=WNS&consumerCode=${stringReplaceAll(consumerCode, "+", "/")}`, {
@@ -150,6 +180,9 @@ const SelectPaymentType = (props) => {
         name: paymentType?.code !== optionSecound?.code && ConsumerName !== "undefined" ? ConsumerName : userInfo ? payersActiveName : payersName,
         mobileNumber: paymentType?.code !== optionSecound?.code ? (bill?.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill?.mobileNumber ) : userInfo ? payersActiveMobileNumber : payersMobileNumber,
       });
+    }
+    else if(wrkflow === "death"){
+       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`)
     }
     else{
     history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {

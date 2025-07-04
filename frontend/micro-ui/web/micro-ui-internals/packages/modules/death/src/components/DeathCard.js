@@ -1,42 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { EmployeeModuleCard, PropertyHouse } from "@egovernments/digit-ui-react-components";
-import { CaseIcon } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 
-const DeathCard = () => {
+const DeathCard = ({userType}) => {  
 
-   if (!Digit.Utils.BnDAccess()) return null;
-
+  console.log("DeathCard");
+  
   const { t } = useTranslation();
 
-  window.localStorage.setItem("Employee.locale", "en_IN");
-  window.localStorage.setItem("locale", "en_IN");
-  window.localStorage.setItem("Employee.tenant-id", Digit.ULBService.getCurrentTenantId());
-  window.localStorage.setItem("tenant-id",Digit.ULBService.getCurrentTenantId());
-
-  const links = [
-    {
-      label: t("DEATH_REGISTRATION"),
-      link: `https://unified-demo.digit.org/employee/death-employee/newRegistration`,
-      hyperlink: true
-
-    },
-    {
-      label: t("SEARCH_DEATH_CERTIFICATE"),
-      link: `https://unified-demo.digit.org/employee/death-common/getCertificate`,
-      hyperlink: true
-
-    },
-  ];
+  // Check URL
+  const isCitizen = window?.location?.pathname?.toLowerCase().includes("citizen");
 
   const propsForModuleCard = {
-    Icon:<CaseIcon/>, 
-    moduleName: t("COMMON_DEATH"),
-    links: links,
-    kpis: [
+    moduleName: isCitizen ? t("ACTION_TEST_DEATH_CERTIFICATE") : t("ACTION_TEST_DEATH_NEW_REGISTRATION"),
+    kpis: [],
+    links: isCitizen ? [
+      {
+        label: t("BND_DEATH_APPLY_CERT"),
+        link: `/${window?.contextPath}/citizen/death/death-common/getCertificate`,
+      },
+      {
+        label: t("BND_MY_REQUESTS"),
+        link: `/${window?.contextPath}/citizen/death/death-citizen/myApplications`,
+      },
+    ] : [
+      {
+        label: t("ACTION_TEST_NEW_REGISTRATION"),
+        link: `/${window?.contextPath}/employee/death/death-common/create-death`,
+      },
+      {
+        label: t("ACTION_TEST_DEATH_SEARCH_CERTIFICATE"),
+        link: `/${window?.contextPath}/employee/death/death-common/getCertificate`,
+      },
     ],
-}
+  };
 
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };

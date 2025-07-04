@@ -7,6 +7,7 @@ import * as pt from "./pt";
 import * as privacy from "./privacy";
 import PDFUtil, { downloadReceipt ,downloadPDFFromLink,downloadBill ,getFileUrl} from "./pdf";
 import getFileTypeFromFileStoreURL from "./fileType";
+import preProcessMDMSConfigInboxSearch from "./preProcessMDMSConfigInboxSearch";
 
 const GetParamFromUrl = (key, fallback, search) => {
   if (typeof window !== "undefined") {
@@ -116,6 +117,10 @@ const didEmployeeHasRole = (role) => {
     if (item.code == role && item.tenantId === tenantId) return true;
   });
   return rolearray?.length;
+};
+
+const didEmployeeHasAtleastOneRole = (roles = []) => {
+  return roles.some((role) => didEmployeeHasRole(role));
 };
 
 const pgrAccess = () => {
@@ -404,6 +409,8 @@ export default {
   wsCitizenAccess,
   NOCCitizenAccess,
   bdCitizenAccess,
+  preProcessMDMSConfigInboxSearch,
+  didEmployeeHasAtleastOneRole,
 
   ...privacy
 };

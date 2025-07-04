@@ -251,6 +251,10 @@ import useWSConfigMDMS from "./ws/useWSConfigMDMS";
 import useFeedBackSearch from "./useFeedBackSearch";
 import useBPAInboxV1 from "./obps/useBPAInboxV1";
 
+import useCustomAPIMutationHook from "./useCustomAPIMutationHook";
+import useWorkflowDetailsV2 from "./useWorkflowDetailsV2";
+import useUpdateCustom from "./useUpdateCustom";
+
 const pgr = {
   useComplaintDetails,
   useComplaintsList,
@@ -268,6 +272,9 @@ const pgr = {
   useComplaintStatusCount,
   useTradeLicenseBillingslab,
   useMDMS: usePGRMDMS,
+  useCustomAPIMutationHook,
+  useWorkflowDetailsV2,
+  useUpdateCustom,
 };
 
 const fsm = {

@@ -18,14 +18,14 @@ export const MyBills = ({ stateCode }) => {
   const { url } = useRouteMatch();
   const location = useLocation();
 
-  const { tenantId } = Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
+  const { tenantId } = location?.state || Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
 
   if (!tenantId && !location?.state?.fromSearchResults) {
     history.replace(`/digit-ui/citizen/login`, { from: url });
   }
 
   const { isLoading, data } = Digit.Hooks.useFetchCitizenBillsForBuissnessService(
-    { businessService },
+    { tenantId,businessService },
     { refetchOnMount: true, enabled: !location?.state?.fromSearchResults }
   );
   const { isLoading: mdmsLoading, data: mdmsBillingData } = Digit.Hooks.useGetPaymentRulesForBusinessServices(tenantId);

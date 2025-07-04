@@ -27,5 +27,8 @@ module.exports = function (app) {
     "/inbox/v2/_search",
     "/inbox/v2/dss/_search",
     "/inbox/v2/elastic/_search",
+    "/birth-death-services",
+    "/billing-service",
+    "/filestore",
   ].forEach((location) => app.use(location, createProxy));
 };

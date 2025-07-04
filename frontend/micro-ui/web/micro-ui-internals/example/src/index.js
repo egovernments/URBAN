@@ -37,8 +37,10 @@ import { initBillsComponents, BillsModule } from "@egovernments/digit-ui-module-
 import { pgrCustomizations, pgrComponents } from "./pgr";
 import { initFirenocComponents } from "@egovernments/digit-ui-module-firenoc";
 import { initBirthComponents } from "@egovernments/digit-ui-module-birth";
-import { initDeathComponents } from "@egovernments/digit-ui-module-death";
+import { initDeathComponents,DeathModule } from "@egovernments/digit-ui-module-death";
 import { initFinanceComponents, FinanceModule } from "@egovernments/digit-ui-module-finance";
+import { UICustomizations } from "./UICustomizations";
+
 
 var Digit = window.Digit || {};
 
@@ -111,7 +113,8 @@ const initDigitUI = () => {
     HRMSModule,
     ReceiptsModule,
     BillsModule,
-    FinanceModule
+    FinanceModule,
+    DeathModule
     // FireNocCard
 
     // TLModule,
@@ -151,6 +154,7 @@ const initDigitUI = () => {
       customiseRenewalCreateFormData: (formData, licenceObject) => licenceObject,
       customiseSendbackFormData: (formData, licenceObject) => licenceObject,
     },
+    commonUiConfig:UICustomizations,
   };
 
   const stateCode = window?.globalConfigs?.getConfig("STATE_LEVEL_TENANT_ID") || "pb";
