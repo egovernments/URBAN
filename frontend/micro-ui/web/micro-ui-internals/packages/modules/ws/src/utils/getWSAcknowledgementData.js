@@ -41,12 +41,12 @@ const getOwnerDetails = (application, t) => {
     };
   }
 };
-const getPropertyAddress = (property) => {
+const getPropertyAddress = (property,t) => {
   const doorNo = property?.doorNo;
   const street = property?.street;
   const landMark = property?.landmark;
   const locality = property?.locality?.name;
-  const city = property?.city;
+  const city = t(`TENANT_TENANTS_${property?.tenantId?.toUpperCase?.()?.replace(".", "_")}`);
   const pinCode = property?.pincode;
   const formattedAddress = `${doorNo ? doorNo + ", " : ""}${street ? street + ", " : ""}${landMark ? landMark + ", " : ""}${locality ? locality + ", " : ""}${city ? city : ""}${pinCode ? ", " + pinCode : ""}`
   return formattedAddress;
@@ -60,7 +60,7 @@ const getPropertyDetails = (application, t) => {
     values: [
       { title: t("WS_PROPERTY_ID_LABEL"), value: t(`${application?.propertyId}`) || t("CS_NA") },
       { title: t("WS_OWN_DETAIL_NAME"), value: names || t("CS_NA") },
-      { title: t("WS_PROPERTY_ADDRESS_LABEL"), value: getPropertyAddress(application?.address) || t("CS_NA") }
+      { title: t("WS_PROPERTY_ADDRESS_LABEL"), value: getPropertyAddress(application?.address,t) || t("CS_NA") }
     ],
   };
 };
