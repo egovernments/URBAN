@@ -171,7 +171,8 @@ const BillDetails = ({ paymentRules, businessService }) => {
       },
     };
 
-        try {
+        if(wrkflow!=="death"){
+          try {
           const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
           sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
           history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=mcollect`);
@@ -182,6 +183,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
           return;
         }
 
+        }
 
     if (wrkflow === "mcollect") {
       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`)
