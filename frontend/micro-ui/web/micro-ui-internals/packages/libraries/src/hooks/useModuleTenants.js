@@ -65,4 +65,5 @@ const useModuleTenants = (module, config = {}) => {
     }
   );
 };
+
 export default useModuleTenants;
