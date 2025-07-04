@@ -272,7 +272,6 @@ const pgr = {
   useComplaintStatusCount,
   useTradeLicenseBillingslab,
   useMDMS: usePGRMDMS,
-  useCustomAPIMutationHook,
   useWorkflowDetailsV2,
   useUpdateCustom,
 };
@@ -536,6 +535,8 @@ const Hooks = {
   useCancelBill,
   useTenantsBills,
   usePrivacyContext,
+  useCustomAPIMutationHook,
+  useRouteSubscription,
   pgr,
   fsm,
   pt,
