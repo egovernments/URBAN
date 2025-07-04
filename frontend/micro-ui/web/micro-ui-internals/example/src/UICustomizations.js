@@ -98,7 +98,7 @@ export const UICustomizations = {
       return false;
     },
   },
-  searchAndDownloadConfig: {
+  searchAndDownloadBirthConfig: {
     // preProcess function to transform form data into API query parameters
     preProcess: (data) => {
       // console.log("BIRTH: UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
@@ -168,8 +168,8 @@ export const UICustomizations = {
 
     // additionalCustomizations for rendering columns in the results table
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      const DownloadButton = Digit.ComponentRegistryService.getComponent("DownloadButton");
-      const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent("PayAndDownloadButton");
+  const DownloadButton = Digit.ComponentRegistryService.getComponent("DownloadBirthButton");
+      const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent("PayAndDownloadBirthButton");
       const colKey = column.key;
       const tenantId = searchResult?.[0]?.tenantid;
       const counter = row?.counter;

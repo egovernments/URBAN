@@ -2,11 +2,11 @@ import _ from "lodash";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components";
 import React, { useState, Fragment, useEffect } from "react";
 
-export const DownloadButton = ({ tenantId, certificateId }) => {
+export const DownloadBirthButton = ({ tenantId, certificateId }) => {
 
-  const usePdfDownloader = Digit.ComponentRegistryService.getComponent("usePdfDownloader");
+  const usePdfBirthDownloader = Digit.ComponentRegistryService.getComponent("usePdfBirthDownloader");
   // console.log(usePdfDownloader, "usePdfDownloaderusePdfDownloaderusePdfDownloader");
-  const { initiateDownload, isDownloading, downloadError } = usePdfDownloader(certificateId);
+  const { initiateDownload, isDownloading, downloadError } = usePdfBirthDownloader(certificateId);
 
   const handleClick = (event) => {
     event.preventDefault();

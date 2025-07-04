@@ -4,7 +4,7 @@ import { Button, Footer } from "@egovernments/digit-ui-components";
 import { useTranslation } from "react-i18next";
 import useBirthConfig from "./config/useBirthConfig";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
-import { usePdfDownloader } from "../../../components/usePdfDownloader";
+import { usePdfBirthDownloader } from "../../../components/usePdfBirthDownloader";
 
 const ViewBirth = () => {
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ const ViewBirth = () => {
 
   const config = useBirthConfig(data);
 
-  const { initiateDownload: initiateFreeDownload } = usePdfDownloader(id);
+  const { initiateDownload: initiateFreeDownload } = usePdfBirthDownloader(id);
   const useBirthDownload = Digit.ComponentRegistryService.getComponent("useBirthDownload");
 //  console.log(useBirthDownload); 
   const { downloadApi } = useBirthDownload();

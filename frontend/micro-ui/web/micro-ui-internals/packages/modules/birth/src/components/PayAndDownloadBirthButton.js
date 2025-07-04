@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { useState, Fragment, useEffect } from "react";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components";
 
-export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) => {
+export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalName }) => {
   const useBirthDownload = Digit.ComponentRegistryService.getComponent("useBirthDownload");
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
