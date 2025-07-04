@@ -1,5 +1,5 @@
 import { CloseSvg, FilterIcon, MultiSelectDropdown, RefreshIcon } from "@egovernments/digit-ui-react-components";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState ,useMemo} from "react";
 import DateRange from "./DateRange";
 import FilterContext from "./FilterContext";
 import Switch from "./Switch";
@@ -46,7 +46,17 @@ const Filters = ({
     setValue({ ...value, filters: { ...value.filters, ulb: ulbs, state: newStates } });
   };
   const selectStFilters = (e, data) => {
-    setValue({ ...value, filters: { ...value.filters, state: e.map((allPropsData) => allPropsData?.[1]?.code) } });
+    // setValue({ ...value, filters: { ...value.filters, state: e.map((allPropsData) => allPropsData?.[1]?.code) } });
+    const selectedStateCodes = e.map((allPropsData) => allPropsData?.[1]?.code);
+    const selectedStateDdrKeys = e.map(item => item[1].ddrKey);
+
+    // Filter the currently selected ULBs to keep only those that belong to the newly selected states
+    const newUlbSelection = (value?.filters?.ulb || []).filter(ulbCode => {
+      const ulb = ulbTenants.ulb.find(u => u.code === ulbCode);
+      return ulb && selectedStateDdrKeys.includes(ulb.ddrKey);
+    });
+    
+    setValue({ ...value, filters: { ...value.filters, state: selectedStateCodes, ulb: newUlbSelection } });
   };
 
   const handleClear = () => {
@@ -55,6 +65,19 @@ const Filters = ({
       range: Digit.Utils.dss.getInitialRange(),
     });
   };
+
+  const ulbOptionsToShow = useMemo(() => {
+    // If no state is selected, return an empty array for ULB options.
+    if (!selectedSt || selectedSt.length === 0) {
+      return [];
+    }
+    const selectedStateDdrKeys = selectedSt.map(state => state.ddrKey);
+    // Filter ULBs whose ddrKey matches one of the selected states' ddrKeys.
+    return ulbTenants?.ulb
+      ?.filter(ulb => selectedStateDdrKeys.includes(ulb.ddrKey))
+      .sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
+  }, [selectedSt, ulbTenants]);
+  
   return (
     <div className={`filters-wrapper ${isOpen ? "filters-modal" : ""}`}>
       <span className="filter-close" onClick={() => closeFilters()}>
