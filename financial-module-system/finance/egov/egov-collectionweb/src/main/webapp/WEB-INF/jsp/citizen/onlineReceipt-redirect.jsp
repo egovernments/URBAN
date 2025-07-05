@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,27 +53,27 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="page.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 	<script type="text/javascript">
 		function onload() {
 			var form = document.createElement("form");
 			form.setAttribute("method", "POST");
 
-			<s:iterator value="paymentRequest.requestParameters">
-		<s:if test='key.equals("paymentGatewayURL")'>
-		   var 	actionvalue =  '<s:property value='value' />';
+			<c:forEach value="paymentRequest.requestParameters">
+		<c:if test='key.equals("paymentGatewayURL")'>
+		   var 	actionvalue =  '<!-- TODO: Manual migration required for custom Struts tag -->';
 		   actionvalue = actionvalue.replace(/&amp;/g,'&');
 			form.setAttribute("action", actionvalue);			
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type","hidden");              
-			hiddenField.setAttribute("name",  "<s:property value='key' />");
-			hiddenField.setAttribute("value", "<s:property value='value' />");
+			hiddenField.setAttribute("name",  "<!-- TODO: Manual migration required for custom Struts tag -->");
+			hiddenField.setAttribute("value", "<!-- TODO: Manual migration required for custom Struts tag -->");
 			form.appendChild(hiddenField);	
 		</s:else>
 			
-	</s:iterator> 
+	</c:forEach> 
    	document.body.appendChild(form);
 	form.submit();
 }

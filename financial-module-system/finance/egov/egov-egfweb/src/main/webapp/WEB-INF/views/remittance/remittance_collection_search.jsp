@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -93,7 +95,7 @@ var fromDateToDateAlertMsg = '<spring:message code="msg.fromDate.must.be.lower.t
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.account.number" text="Account Number"/>:<span class="mandatory"></span></label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="bankAccount" path=""
+								<form:select path="bankAccount" path=""
 									data-first-option="false" id="bankAccountId"
 									cssClass="form-control" onchange="loadMappedService()">
 									<form:option value="0">
@@ -107,7 +109,7 @@ var fromDateToDateAlertMsg = '<spring:message code="msg.fromDate.must.be.lower.t
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.financial.year"  text="Financial Year"/>:<span class="mandatory"></span></label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="financialYear" path=""
+								<form:select path="financialYear" path=""
 									data-first-option="false" id="financialYearId"
 									cssClass="form-control">
 									<form:option value="0">
@@ -124,7 +126,7 @@ var fromDateToDateAlertMsg = '<spring:message code="msg.fromDate.must.be.lower.t
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.fund" text="Fund"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="fund" path=""
+								<form:select path="fund" path=""
 									data-first-option="false" id="fundId"
 									cssClass="form-control">
 									<form:option value="">
@@ -138,7 +140,7 @@ var fromDateToDateAlertMsg = '<spring:message code="msg.fromDate.must.be.lower.t
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.payment.type"  text="Payment Type"/>:<span class="mandatory"></span></label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="instrumentType" path=""
+								<form:select path="instrumentType" path=""
 									data-first-option="false" id="instrumentTypeId"
 									cssClass="form-control">
 									<form:option value="0">
@@ -155,7 +157,7 @@ var fromDateToDateAlertMsg = '<spring:message code="msg.fromDate.must.be.lower.t
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.service" text="Service"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="service" path=""
+								<form:select path="service" path=""
 									data-first-option="false" id="serviceId"
 									cssClass="form-control">
 									<form:option value="">

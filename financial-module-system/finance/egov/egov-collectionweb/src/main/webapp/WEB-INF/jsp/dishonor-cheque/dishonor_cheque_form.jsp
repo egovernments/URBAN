@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -101,7 +103,7 @@ var chequeDDDateMendatoryMessage = "<spring:message code='msg.please.select.cheq
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.bank.branch"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="bankBranch" path="" data-first-option="false"
+								<form:select path="bankBranch" path="" data-first-option="false"
 									id="bankBranch" cssClass="form-control"
 									onchange="loadBankAccount()">
 									<form:option value="">
@@ -116,7 +118,7 @@ var chequeDDDateMendatoryMessage = "<spring:message code='msg.please.select.cheq
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.bank.account"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="accountNumber" path=""
+								<form:select path="accountNumber" path=""
 									data-first-option="false" id="bankAccountId"
 									cssClass="form-control">
 									<form:option value="0">
@@ -131,7 +133,7 @@ var chequeDDDateMendatoryMessage = "<spring:message code='msg.please.select.cheq
 									code="lbl.instrument.mode"/> <span
 								class="mandatory"></span>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="instrumentMode" path="instrumentMode"
+								<form:select path="instrumentMode" path="instrumentMode"
 									data-first-option="false" id="instrumentModeId"
 									cssClass="form-control">
 									<form:option value="">
@@ -246,7 +248,7 @@ var chequeDDDateMendatoryMessage = "<spring:message code='msg.please.select.cheq
 									code="lbl.dishonor.reason" /> <span
 								class="mandatory"></span> </label>
 							<div class="col-sm-5 add-margin">
-								<form:select name="dishonorReason" path=""
+								<form:select path="dishonorReason" path=""
 									data-first-option="false" id="dishonorReasonId"
 									cssClass="form-control">
 									<form:option value="">

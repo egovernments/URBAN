@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 
 <%@ page language="java"%>
@@ -56,13 +58,13 @@
 </head>
 <body>
 			<center><h3><div style="color: red">
-				<s:actionerror />
-				<s:fielderror />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: green">
-				<s:actionmessage />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div></h3>
-			<s:token />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 	
 		<br /><br /> <input type="button" id="Close" value="Close"
 			onclick="javascript:window.close()" class="button" /></center>

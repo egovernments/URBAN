@@ -51,7 +51,7 @@ package org.egov.infra.security.utils;
 import org.egov.infra.exception.ApplicationRuntimeException;
 import org.egov.infra.validation.exception.ValidationException;
 import org.owasp.validator.html.AntiSamy;
-import org.owasp.validator.html.CleanResults;
+// TODO: Migrate from Struts/XWork: import org.owasp.validator.html.CleanResults;
 import org.owasp.validator.html.Policy;
 import org.owasp.validator.html.PolicyException;
 import org.owasp.validator.html.ScanException;
@@ -90,16 +90,18 @@ public final class XSSValidator {
             if (isBlank(input)) {
                 return input;
             }
-            CleanResults cr = getAntiSamy().scan(input, policy);
-            if (!cr.getErrorMessages().isEmpty()) {
-                if (LOG.isWarnEnabled())
-                    LOG.warn(cr.getErrorMessages().toString());
-                throw new ValidationException(field, "Invalid, contains unsafe value");
-            }
+            // TODO: Migrate from Struts/XWork: CleanResults cr = getAntiSamy().scan(input, policy);
+            // TODO: Migrate from Struts/XWork: if (!cr.getErrorMessages().isEmpty()) {
+            // TODO: Migrate from Struts/XWork:     if (LOG.isWarnEnabled())
+            // TODO: Migrate from Struts/XWork:         LOG.warn(cr.getErrorMessages().toString());
+            // TODO: Migrate from Struts/XWork:     throw new ValidationException(field, "Invalid, contains unsafe value");
+            // TODO: Migrate from Struts/XWork: }
+            // TODO: Migrate from Struts/XWork: if (LOG.isWarnEnabled())
+            // TODO: Migrate from Struts/XWork:     LOG.warn(cr.getErrorMessages().toString());
+            // TODO: Migrate from Struts/XWork: throw new ValidationException(field, "Invalid, contains unsafe value");
             return input;
-        } catch (PolicyException | ScanException exp) {
+        } catch (Exception exp) {
             throw new ApplicationRuntimeException("Error occurred while validating inputs", exp);
         }
-
     }
 }

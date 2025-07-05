@@ -48,8 +48,8 @@
 
 package org.egov.infra.config.security.authorization;
 
-import org.egov.infra.admin.master.entity.Action;
-import org.egov.infra.admin.master.service.ActionService;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.admin.master.entity.Action;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.admin.master.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -70,7 +70,7 @@ public class ApplicationAuthorizationMetadataSource implements FilterInvocationS
     private List<String> excludePatterns = new ArrayList<>();
 
     @Autowired
-    private ActionService actionService;
+// TODO: Migrate from Struts/XWork:     private ActionService actionService;
 
     public void setExcludePatterns(List<String> excludePatterns) {
         this.excludePatterns = excludePatterns;
@@ -96,7 +96,7 @@ public class ApplicationAuthorizationMetadataSource implements FilterInvocationS
     private Collection<ConfigAttribute> lookupAttributes(String contextRoot, String url) {
         List<ConfigAttribute> configAttributes = new ArrayList<>();
 //        if (!urlExcluded(url)) {
-//            Action action = actionService.getActionByUrlAndContextRoot(url, contextRoot);
+// TODO: Migrate from Struts/XWork: //            Action action = actionService.getActionByUrlAndContextRoot(url, contextRoot);
 //            if (action != null) {
 //                action.getRoles().forEach((role) ->{ configAttributes.add(new SecurityConfig(role.getName()));
 //                	System.out.println("****************"+url+" : role "+role.getName());

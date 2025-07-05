@@ -201,21 +201,21 @@ public class ScriptService  {
             throw new ApplicationRuntimeException(errMsg);
         }
 
-        Object evalResult = null;
-
         // Set up standard context attributes
         setupContextAttributes(engine, context);
 
         try {
             final CompiledScript compiledScript = script.getCompiledScript();
-            if (engine instanceof Compilable && compiledScript != null)
+            Object evalResult = null;
+            if (engine instanceof Compilable && compiledScript != null) {
                 // Script engine supports compiled scripts.
                 // Execute the compiled script using given context.
                 evalResult = compiledScript.eval(context);
-            else
+            } else {
                 // Script engine doesn't support compiled scripts.
                 // Set the context on engine and execute the script.
                 evalResult = engine.eval(script.getScript(), context);
+            }
 
             handleErrorsIfAny(context.getAttribute("validationErrors"));
 

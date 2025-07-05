@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -48,34 +49,36 @@
 
 package org.egov.infra.web.struts.interceptors;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import org.apache.struts2.dispatcher.HttpParameters;
+// TODO: Migrate from Struts/XWork: // import com.opensymphony.xwork2.ActionInvocation; // TODO: Migrate from Struts/XWork
+// TODO: Migrate from Struts/XWork: // import com.opensymphony.xwork2.interceptor.AbstractInterceptor; // TODO: Migrate from Struts/XWork
+// TODO: Migrate from Struts/XWork: // import org.apache.struts2.dispatcher.HttpParameters; // TODO: Migrate from Struts/XWork
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
+// TODO: Migrate from Struts/XWork: import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 
-public class TrimInterceptor extends AbstractInterceptor {
+public class TrimInterceptor {
 
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public String intercept(ActionInvocation invocation) throws Exception {
-        HttpServletRequest request = (HttpServletRequest) invocation.getInvocationContext().get(HTTP_REQUEST);
-        Map<String, String[]> trimmedParameter = new HashMap<>();
-        for (String fieldName : invocation.getInvocationContext().getParameters().keySet()) {
-        	String[] values = request.getParameterValues(fieldName);
-            if (values != null) {
-            	for (int index = 0; index < values.length; index++) {
-            		values[index] = values[index].trim();
-                }
-            }
-            trimmedParameter.put(fieldName, values);
-        }
-        invocation.getInvocationContext().setParameters(HttpParameters.create(trimmedParameter).build());
-        return invocation.invoke();
+    // TODO: Migrate from Struts/XWork: @Override
+    // TODO: Migrate from Struts/XWork: public String intercept(ActionInvocation invocation) throws Exception {
+    public String intercept(Object invocation) throws Exception {
+        // TODO: Migrate from Struts/XWork: HttpServletRequest request = (HttpServletRequest) invocation.getInvocationContext().get(HTTP_REQUEST);
+        // TODO: Migrate from Struts/XWork: Map<String, String[]> trimmedParameter = new HashMap<>();
+        // TODO: Migrate from Struts/XWork: for (String fieldName : invocation.getInvocationContext().getParameters().keySet()) {
+        // TODO: Migrate from Struts/XWork: 	String[] values = request.getParameterValues(fieldName);
+        // TODO: Migrate from Struts/XWork:     if (values != null) {
+        // TODO: Migrate from Struts/XWork:     	for (int index = 0; index < values.length; index++) {
+        // TODO: Migrate from Struts/XWork:     		values[index] = values[index].trim();
+        // TODO: Migrate from Struts/XWork:         }
+        // TODO: Migrate from Struts/XWork:     }
+        // TODO: Migrate from Struts/XWork:     trimmedParameter.put(fieldName, values);
+        // TODO: Migrate from Struts/XWork: }
+        // TODO: Migrate from Struts/XWork: invocation.getInvocationContext().setParameters(HttpParameters.create(trimmedParameter).build());
+        // TODO: Migrate from Struts/XWork: return invocation.invoke();
+        return null; // TODO: Implement Spring equivalent
     }
 }

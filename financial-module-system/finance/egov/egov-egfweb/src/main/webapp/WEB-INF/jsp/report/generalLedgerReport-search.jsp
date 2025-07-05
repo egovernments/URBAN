@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 
 <html>
 <head>
-<title><s:text name="generalLedger.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -126,65 +128,65 @@ background: #DEDEDE;
 </head>
 
 <body>
-	<s:form name="generalLedgerForm" id="generalLedgerForm"
+	<form:form name="generalLedgerForm" id="generalLedgerForm"
 		action="generalLedgerReport" theme="css_xhtml" validate="true">
-		<s:push value="generalLedgerReport">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="generalLedger.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<input type="hidden" name="functionCodeId" id="functionCodeId">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<div id="myContainer"></div> 
-						<td class="bluebox"><s:text name="generalLedger.accountCode" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
-						<td class="bluebox"><s:textfield id="glCode1" name="glCode1"
+						<td class="bluebox"><form:input id="glCode1" path="glCode1"
 								value="%{glCode1}" autocomplete="off"
 								onfocus='autocompleteAccountCodes(this);'
 								onblur='splitAccountCodes(this);' />
 							 </td>
-						<td class="greybox"><s:text name="generalLedger.accountName" /></td>
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 						<td class="greybox">
-						<s:textfield disabled="true" name="accountName" id="accountName"></s:textfield>
+						<form:input disabled="true" path="accountName" id="accountName"></form:input>
 							 </td>
 					</tr>
 					<tr>
-						<td class="greybox"><s:text name="generalLedger.fund" /><span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
-						<td class="greybox"><s:select name="fund_id" id="fund_id"
+						<td class="greybox"><form:select path="fund_id" id="fund_id"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}" /></td>
 								
-						<td class="greybox"><s:text name="generalLedger.department" /></td>
-						<td class="greybox"><s:select name="departmentCode"
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="greybox"><form:select path="departmentCode"
 								id="departmentCode" list="dropdownData.departmentList"
 								listKey="code" listValue="name" headerKey=""   
 								headerValue="%{getText('lbl.choose.options')}" /></td>
 						
 					</tr>
 					<tr>
-						<td class="bluebox"><s:text name="generalLedger.startDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
 						<td class="bluebox"><s:date name="startDate" var="startDate"
-								format="dd/MM/yyyy" /> <s:textfield id="startDate"
+								format="dd/MM/yyyy" /> <form:input id="startDate"
 								name="startDate" value="%{startDate}" data-date-end-date="0d"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 								data-inputmask="'mask': 'd/m/y'" /></td>
 
 
-						<td class="bluebox"><s:text name="generalLedger.endDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
 						<td class="bluebox"><s:date name="endDate" var="endDate"
-								format="dd/MM/yyyy" /> <s:textfield id="endDate" name="endDate"
+								format="dd/MM/yyyy" /> <form:input id="endDate" path="endDate"
 								value="%{endDate}" data-date-end-date="0d"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -193,13 +195,13 @@ background: #DEDEDE;
 
 					</tr>
 					<tr>
-						<td class="bluebox"><s:text name="generalLedger.function" /></td>
-						<td class="bluebox"><s:textfield id="functionCode"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:input id="functionCode"
 								name="functionCode" value="%{functionCode}" autocomplete="off"
 								onfocus='autocompleteFunction(this);'
 								onblur='splitFunction(this);' /></td>
-						<%-- <td class="greybox"><s:text name="generalLedger.functionary" /></td>
-						<td class="greybox"><s:select name="functionaryId"
+						<%-- <td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="greybox"><form:select path="functionaryId"
 								id="functionaryId" list="dropdownData.functionaryList"
 								listKey="id" listValue="name" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" /></td> --%>
@@ -208,13 +210,13 @@ background: #DEDEDE;
 					<tr>
 						<%-- <td class="greybox"><s:text
 								name="generalLedger.financingSource" /></td>
-						<td class="greybox"><s:select name="fundSource_id"
+						<td class="greybox"><form:select path="fundSource_id"
 								id="fundSource_id" list="dropdownData.fundsourceList"
 								listKey="id" listValue="name" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" /></td> --%>
 						
-						<%-- <td class="bluebox"><s:text name="generalLedger.field" /></td>
-						<td class="bluebox"><s:select name="fieldId" id="fieldId"
+						<%-- <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:select path="fieldId" id="fieldId"
 								list="dropdownData.fieldList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}" /></td>
  --%>
@@ -226,9 +228,9 @@ background: #DEDEDE;
 			<div class="buttonbottom">
 				<table align="center">
 					<tr>
-						<td><input type="button" value="<s:text name='lbl.search'/>" class="buttonsubmit"
+						<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 							onclick="return validate()" /></td>
-						<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+						<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.parent.postMessage('close','*');" class="button" /></td>
 					</tr>
 				</table>
@@ -242,12 +244,12 @@ background: #DEDEDE;
 		</span>
 
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 	var allGlcodes = [];
-	<s:iterator value="allChartOfAccounts">
-		allGlcodes.push("<s:property value="glcode"/> "-" <s:property value="name"/>")
-	</s:iterator>
+	<c:forEach value="allChartOfAccounts">
+		allGlcodes.push("${glcode} "-" ${name}")
+	</c:forEach>
 	YAHOO.example.BasicLocal = function() { 
 		    var oDS = new YAHOO.util.LocalDataSource(allGlcodes); 
 		    // Optional to define fields for single-dimensional array 

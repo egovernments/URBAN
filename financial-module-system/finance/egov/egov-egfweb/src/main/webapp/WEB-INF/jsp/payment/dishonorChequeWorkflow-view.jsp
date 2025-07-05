@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -65,8 +67,8 @@
 
 <script>
 	function fetchDeptId() {
-		var id = '<s:property value="defaultDept"/>';
-		var did = '<s:property value="%{paymentheader.voucherheader.vouchermis.departmentid.id}"/>';
+		var id = '${defaultDept}';
+		var did = '${%{paymentheader.voucherheader.vouchermis.departmentid.id}}';
 		if (id != null && id != '-1' && id != '') {
 			document.getElementById('departmentid').value = id;
 		} else if (did != null && did != '-1' && did != '') {
@@ -81,11 +83,11 @@
 		var modeval = document.getElementById('mode').value;
 		//bootbox.alert("mode value is");
 		if (modeval != null && modeval == 'print') {
-			var reversalVhId = '<s:property value="%{paymentVoucher.id}"/>';
-			var bankChargesVhId = '<s:property value="%{bankChargesReversalVoucher.id}"/>';
+			var reversalVhId = '${%{paymentVoucher.id}}';
+			var bankChargesVhId = '${%{bankChargesReversalVoucher.id}}';
 
-			var reversalAmount = '<s:property value="%{dishonorChequeView.instrumentHeader.instrumentAmount}"/>';
-			var bankChargesAmount = '<s:property value="%{dishonorChequeView.bankChargesAmt}"/>';
+			var reversalAmount = '${%{dishonorChequeView.instrumentHeader.instrumentAmount}}';
+			var bankChargesAmount = '${%{dishonorChequeView.bankChargesAmt}}';
 			window
 					.open(
 							"../brs/DishonoredChequeEntries.do?submitType=beforePrintDishonoredCheque&reversalVhId="
@@ -129,7 +131,7 @@
 	function populateActionName(name) {
 		document.getElementById('actionName').value = name;
 		//bootbox.alert("actionanem"+name);        
-		<s:if test="%{getNextAction()!='END'}">
+		<c:if test="%{getNextAction()!='END'}">
 		var value=document.getElementById("approverDepartment").value;
 		if((name=="Forward" || name=="forward") && value=="-1")
 		{
@@ -150,7 +152,7 @@
 			document.getElementById("approverPositionId").focus();
 			return false;
 	    }
-    </s:if>
+    </c:if>
   
 	}
 </script>
@@ -159,15 +161,15 @@
 
 <body onload="refreshInbox();">
 	<br>
-	<s:form action="dishonorChequeWorkflow" form="dishonorChequeWorkflow"
+	<form:form action="dishonorChequeWorkflow" form="dishonorChequeWorkflow"
 		theme="simple">
-		<s:push value="model">
-			<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<font style='color: red;'>
 				<p id="lblError" style="font: bold"></p>
 			</font>
-			<span class="mandatory"> <s:actionerror /> <s:fielderror />
-				<s:actionmessage />
+			<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 			<div class="formmainbox">
 				<div class="subheadnew">Dishonor Cheque Workflow</div>
@@ -188,8 +190,8 @@
 											name="instrumentDishonorReason"
 											value="%{instrumentDishonorReason}" />
 
-										<s:hidden id="id" name="id" value="%{id}" />
-										<s:hidden id="status" name="status" value="%{status.id}" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 										<s:hidden id="originalVoucherHeader"
 											name="originalVoucherHeader"
 											value="%{originalVoucherHeader.id}" />
@@ -199,7 +201,7 @@
 											value="%{bankchargeGlCodeId.id}" />
 										<s:hidden id="createdBy" name="createdBy"
 											value="%{createdBy.id}" />
-										<s:hidden id="state" name="state" value="%{state.id}" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 										<s:hidden id="modifiedBy" name="modifiedBy"
 											value="%{modifiedBy.id}" />
 										<s:hidden id="createdDate" name="createdDate"
@@ -219,7 +221,7 @@
 										<td width="20%" class="bluebox"><s:date
 												name="dishonorChequeView.originalVoucherHeader.voucherDate"
 												format="dd/MM/yyyy" var="tempVoucherDate" />
-											<s:property value="%{tempVoucherDate}" /></td>
+											${%{tempVoucherDate}}</td>
 									</tr>
 
 									<tr>
@@ -272,7 +274,7 @@
 												Reversal Date</strong> <span class="mandatory">*</span></td>
 										<s:date name='dishonorChequeView.transactionDate'
 											format="dd/MM/yyyy" var="tempTransactionDate" />
-										<td class="bluebox"><s:textfield
+										<td class="bluebox"><form:input
 												name="dishonorChequeView.transactionDate"
 												id="dishonorChequeView.transactionDate"
 												onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -301,10 +303,10 @@
 											<th class="bluebgheadtd" width="16%">Credit&nbsp;Amount(Rs)</th>
 										</tr>
 										<tr>
-											<td width="18%" class="bluebox"><s:if
+											<td width="18%" class="bluebox"><c:if
 													test="%{function!=null}">
-													<s:property value="function.name" />
-												</s:if></td>
+													${function.name}
+												</c:if></td>
 											<td width="17%" class="bluebox"><s:property
 													value="dishonorChequeView.instrumentHeader.bankAccountId.chartofaccounts.glcode" />
 												<s:property
@@ -315,7 +317,7 @@
 													value="%{dishonorChequeView.instrumentHeader.bankAccountId.chartofaccounts.name" /></td>
 											<td width="17%" class="bluebox" style="text-align: right"><s:text
 													name="payment.format.number">
-													<s:param value="%{0.0}" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text></td>
 											<td width="16%" class="bluebox" style="text-align: right"><s:text
 													name="payment.format.number">
@@ -323,35 +325,35 @@
 														value="%{dishonorChequeView.instrumentHeader.instrumentAmount}" />
 												</s:text></td>
 										</tr>
-										<s:set var="totalDebit" value="0" />
-										<s:iterator var="p" value="%{dishonorChequeView.details}"
+										<!-- TODO: Manual migration required for custom Struts tag -->
+										<c:forEach var="p" value="%{dishonorChequeView.details}"
 											status="s">
 											<tr>
-												<td width="18%" class="bluebox"><s:if
+												<td width="18%" class="bluebox"><c:if
 														test="%{function!=null}">
-														<s:property value="function.name" />
-													</s:if></td>
+														${function.name}
+													</c:if></td>
 												<td width="17%" class="bluebox"><s:property
 														value="glcodeId.glcode" /></td>
 												<td width="19%" class="bluebox"><s:property
 														value="glcodeId.name" /></td>
 												<td width="17%" class="bluebox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{debitAmt}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 												<td width="16%" class="bluebox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{0.0}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
-												<s:set var="totalDebit" value="#totalDebit + #p.debitAmt" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</tr>
-										</s:iterator>
+										</c:forEach>
 										<tr>
 											<td class="greybox" style="text-align: right" colspan="3" />Total
 											</td>
 											<td class="greybox" style="text-align: right"><s:text
 													name="payment.format.number">
-													<s:param value="#totalDebit" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text></td>
 											<td class="greybox" style="text-align: right"><s:text
 													name="payment.format.number">
@@ -362,7 +364,7 @@
 									</table>
 
 
-									<s:if
+									<c:if
 										test="dishonorChequeView.bankChargesAmt != null && dishonorChequeView.bankChargesAmt>0">
 										<table border="1" width="100%" cellspacing="0">
 											<tr>
@@ -375,7 +377,7 @@
 														Charges Reason</strong></td>
 												<td width="20%" class="bluebox"><s:hidden
 														name="bankreason" />
-													<s:property value="%{bankreason}" />
+													${%{bankreason}}
 											</tr>
 											<tr>
 												<th colspan="5"><div class="subheadsmallnew">Account
@@ -390,39 +392,39 @@
 											</tr>
 
 											<tr>
-												<td width="18%" class="bluebox"><s:if
+												<td width="18%" class="bluebox"><c:if
 														test="%{function!=null}">
-														<s:property value="function.name" />
-													</s:if></td>
+														${function.name}
+													</c:if></td>
 												<td width="17%" class="bluebox"><s:property
 														value="dishonorChequeView.instrumentHeader.bankAccountId.chartofaccounts.glcode" /></td>
 												<td width="19%" class="bluebox"><s:property
 														value="dishonorChequeView.instrumentHeader.bankAccountId.chartofaccounts.name" /></td>
 												<td width="17%" class="bluebox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{0.0}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 												<td width="16%" class="bluebox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{bankChargesAmt}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 											</tr>
 											<tr>
-												<td width="18%" class="bluebox"><s:if
+												<td width="18%" class="bluebox"><c:if
 														test="%{function!=null}">
-														<s:property value="function.name" />
-													</s:if></td>
+														${function.name}
+													</c:if></td>
 												<td width="17%" class="bluebox"><s:property
 														value="dishonorChequeView.bankchargeGlCodeId.glcode" /></td>
 												<td width="19%" class="bluebox"><s:property
 														value="dishonorChequeView.bankchargeGlCodeId.name" /></td>
 												<td width="17%" class="bluebox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{bankChargesAmt}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 												<td width="16%" class="bluebox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{0.0}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 
 											</tr>
@@ -431,35 +433,35 @@
 												</td>
 												<td class="greybox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{bankChargesAmt}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 												<td class="greybox" style="text-align: right"><s:text
 														name="payment.format.number">
-														<s:param value="%{bankChargesAmt}" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text></td>
 											</tr>
 										</table>
-									</s:if>
+									</c:if>
 									<s:hidden name="nextLevel" id="nextLevel"
 										value="%{getNextAction()}"></s:hidden>
-									<s:hidden name="actionName" id="actionName"></s:hidden>
+									<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 
-									<s:hidden name="mode" id="mode" value="%{mode}"></s:hidden>
+									<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 								</table>
 
-							</div> <s:if test="%{nextLevel!='END'}">
+							</div> <c:if test="%{nextLevel!='END'}">
 								<%@ include file='commonWorkflowMatrix.jsp'%>
-							</s:if>
+							</c:if>
 							<table id="glcodeTable" align="center" border="0" cellpadding="0"
 								cellspacing="0" width="100%">
 								<tr>
-									<s:iterator value="%{getValidActions()}" var="name">
-										<s:if test="%{name!=''}">
+									<c:forEach value="%{getValidActions()}" var="name">
+										<c:if test="%{name!=''}">
 											<s:submit type="submit" cssClass="buttonsubmit"
 												value="%{name}" id="%{name}" name="%{name}" method="save"
 												onclick="return populateActionName('%{name}');" />
-										</s:if>
-									</s:iterator>
+										</c:if>
+									</c:forEach>
 								</tr>
 							</table>
 						</td>
@@ -467,7 +469,7 @@
 				</table>
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 </body>
 
 </html>

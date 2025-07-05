@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -50,7 +52,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="cash.bankRemittance.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 	jQuery.noConflict();
 	var isDatepickerOpened = false;
@@ -218,7 +220,7 @@
 			dom.get("accountselectionerror").style.display = "block";
 			return false;
 		}
-		<s:if test="showRemittanceDate">
+		<c:if test="showRemittanceDate">
 		if (dom.get("remittanceDate") != null
 				&& dom.get("remittanceDate").value == "") {
 			bootbox.alert("Please Enter Date of Remittance");
@@ -238,7 +240,7 @@
 					if (receiptDate != null && receiptDate != '' && remittanceDate!= null && remittanceDate != '') {
 						if (processDate(receiptDate) > processDate(remittanceDate)) {
 							document.getElementById("error_area").style.display="block";
-							document.getElementById("error_area").innerHTML = '<s:text name="bankremittance.before.receiptdate" />'+ '<br>';
+							document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 							window.scroll(0, 0);
 							return false;
 						}
@@ -246,7 +248,7 @@
 				}
 			}
 		}
-		</s:if>
+		</c:if>
 		if(document.getElementById('accountNumberId').options[document.getElementById('accountNumberId').selectedIndex].value != dom.get("remitAccountNumber").value.trim())
 			{
 				 alert("Account number for which search result has displayed and selected account number in search drop down are different. \n Please make sure account number in drop down and account number for which search has done are same.");
@@ -325,7 +327,7 @@
 	}
 
 	function onChangeDeparment(approverDeptId) {
-		var receiptheaderId = '<s:property value="model.id"/>';
+		var receiptheaderId = '${model.id}';
 		if (document.getElementById('designationId')) {
 			populatedesignationId({
 				approverDeptId : approverDeptId,
@@ -432,52 +434,52 @@
 	}
 	function onBodyLoad()
 	{
-		<s:if test="%{isBankCollectionRemitter}">
+		<c:if test="%{isBankCollectionRemitter}">
 			document.getElementById('bankBranchMaster').disabled=true;
-		</s:if>
+		</c:if>
 	}
 </script>
 </head>
 <body>
 	<div class="errorstyle" id="error_area" style="display: none;"></div>
 	<span align="center" style="display: none" id="selectremittanceerror">
-		<li><font size="2" color="red"><b><s:text name="bankremittance.error.norecordselected" /> </b></font></li>
+		<li><font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --> </b></font></li>
 	</span>
 	<span align="center" style="display: none" id="multipleserviceselectionerror">
-		<li><font size="2" color="red"><b><s:text name="bankremittance.error.multipleserviceselectionerror" /> </b></font></li>
+		<li><font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --> </b></font></li>
 	</span>
 	<span align="center" style="display: none" id="bankselectionerror">
-		<li><font size="2" color="red"><b><s:text name="bankremittance.error.nobankselected" /> </b></font></li>
+		<li><font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --> </b></font></li>
 	</span>
 	<span align="center" style="display: none" id="accountselectionerror">
-		<li><font size="2" color="red"><b><s:text name="bankremittance.error.noaccountNumberselected" /> </b></font></li>
+		<li><font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --> </b></font></li>
 	</span>
 	<span align="center" style="display: none" id="approvalSelectionError">
-		<li><font size="2" color="red"><b><s:text name="bankremittance.error.noApproverselected" /> </b></font></li>
+		<li><font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --> </b></font></li>
 	</span>
-	<s:form theme="simple" name="bankRemittanceForm" >
-		<s:push value="model">
-			<s:token />
-			<s:if test="%{hasErrors()}">
+	<form:form theme="simple" name="bankRemittanceForm" >
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<c:if test="%{hasErrors()}">
 				<div id="actionErrorMessages" class="errorstyle">
-					<s:actionerror />
-					<s:fielderror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
-			</s:if>
-			<s:if test="%{hasActionMessages()}">
+			</c:if>
+			<c:if test="%{hasActionMessages()}">
 				<div id="actionMessages" class="messagestyle">
-					<s:actionmessage theme="simple" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
-			</s:if>
+			</c:if>
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="cash.bankRemittance.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div align="center">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width="4%" class="bluebox">&nbsp;</td>
-							<td class="bluebox"><s:text name="bankremittance.accountnumber" /> : <span class="mandatory1">*</span></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> : <span class="mandatory1">*</span></td>
 							<td class="bluebox">
 								<select id="accountNumberId" name="accountNumberId" value="%{accountNumberId}">
 									<option value="-1">Select</option>
@@ -494,26 +496,26 @@
 						</tr>
 						<tr>
 							<td width="4%" class="bluebox">&nbsp;</td>
-							<td class="bluebox"><s:text name="bankremittance.financialyear" />:</td>
-							<td class="bluebox"><s:select headerKey="-1" headerValue="--Select--" list="dropdownData.financialYearList" listKey="id" id="finYearId" listValue="finYearRange" label="finYearRange" name="finYearId" value="%{finYearId}" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+							<td class="bluebox"><form:select headerKey="-1" headerValue="--Select--" list="dropdownData.financialYearList" listKey="id" id="finYearId" listValue="finYearRange" label="finYearRange" path="finYearId" value="%{finYearId}" /></td>
 							<td class="bluebox">&nbsp;</td>
 							<td class="bluebox">&nbsp;</td>
 						</tr>
 						<tr id="dateDiv">
 							<td width="4%" class="bluebox">&nbsp;</td>
-							<td class="bluebox"><s:text name="bankremittance.fromdate" /></td>
-							<s:date name="fromDate" var="fromFormat" format="dd/MM/yyyy" />
-							<td class="bluebox"><s:textfield id="fromDate" name="fromDate" data-inputmask="'mask': 'd/m/y'" value="%{fromFormat}" placeholder="DD/MM/YYYY" /></td>
-							<td class="bluebox"><s:text name="bankremittance.todate" /></td>
-							<s:date name="toDate" var="toFormat" format="dd/MM/yyyy" />
-							<td class="bluebox"><s:textfield id="toDate" name="toDate" value="%{toFormat}" data-inputmask="'mask': 'd/m/y'" placeholder="DD/MM/YYYY" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<td class="bluebox"><form:input id="fromDate" path="fromDate" data-inputmask="'mask': 'd/m/y'" value="%{fromFormat}" placeholder="DD/MM/YYYY" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<td class="bluebox"><form:input id="toDate" path="toDate" value="%{toFormat}" data-inputmask="'mask': 'd/m/y'" placeholder="DD/MM/YYYY" /></td>
 						</tr>
 					</table>
 					</div>
 					<div class="buttonbottom">
 						<input name="search" type="submit" class="buttonsubmit" id="search" value="Search" onclick="return searchDataToRemit()" />
 					</div>
-					<s:if test="%{!resultList.isEmpty()}">
+					<c:if test="%{!resultList.isEmpty()}">
 						<display:table name="resultList" id="currentRow" uid="currentRow" pagesize="${pageSize}" style="border:1px;width:100%" cellpadding="0" cellspacing="0" export="false" requestURI="">
 							<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Select<input type='checkbox' name='selectAllReceipts' value='on' onClick='setCheckboxStatuses(this.checked);'/>" style="width:5%; text-align: center">
 								<c:set var="rowNumber" value="${currentRow_rowNum-1}" ></c:set>
@@ -549,37 +551,37 @@
 				<div align="center">
 					<table>
 						<tr>					
-							<s:if test="showRemittanceDate">
+							<c:if test="showRemittanceDate">
 								<td class="bluebox" colspan="3">&nbsp;</td>
-								<td class="bluebox"><s:text name="bankremittance.remittancedate" /><span class="mandatory" /></td>
-								<td class="bluebox"><s:textfield id="remittanceDate" name="remittanceDate" readonly="true" data-inputmask="'mask': 'd/m/y'" placeholder="DD/MM/YYYY" /></td>
-							</s:if>
-							<td class="bluebox"><s:text name="bankremittance.remittanceamount" /></td>
-							<td class="bluebox"><s:textfield id="remittanceAmount" name="remittanceAmount" readonly="true" /></td>								
-							<td class="bluebox"><s:text name="bankremittance.accountnumber" /></td>
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory" /></td>
+								<td class="bluebox"><form:input id="remittanceDate" path="remittanceDate" readonly="true" data-inputmask="'mask': 'd/m/y'" placeholder="DD/MM/YYYY" /></td>
+							</c:if>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="bluebox"><form:input id="remittanceAmount" path="remittanceAmount" readonly="true" /></td>								
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<td class="bluebox"><input type="text" name="remitAccountNumber" readonly="readonly" id="remitAccountNumber" value="${accountNumberId}" /></td>		
 						</tr>
 					</table>
 				</div>
 					<input type="hidden" name="selectedRowsId"  id ="selectedRowsId" value="${selectedRowsId}" />
 				<div align="left" class="mandatorycoll">
-					<s:text name="common.mandatoryfields" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div class="buttonbottom">
 					<input name="button32" type="submit" class="buttonsubmit" id="button32" value="Remit to Bank" onclick="return validate();" />
 					&nbsp;
 					<input name="buttonClose" type="button" class="button" id="button" value="Close" onclick="window.close()" />
 				</div>
-				</s:if>
-				<s:if test="%{isListData}">
-					<s:if test="%{resultList.isEmpty()}">
+				</c:if>
+				<c:if test="%{isListData}">
+					<c:if test="%{resultList.isEmpty()}">
 						<div class="formmainbox">
 							<table width="90%" border="0" align="center" cellpadding="0"
 								cellspacing="0">
 								<tr>
 									<div>&nbsp;</div>
 									<div class="billhead2">
-										<b><s:text name="bankRemittance.norecordfound" /></b>
+										<b><!-- TODO: Manual migration required for custom Struts tag --></b>
 									</div>
 								</tr>
 							</table>
@@ -588,10 +590,10 @@
 						<div class="buttonbottom">
 							<input name="buttonClose" type="button" class="button" id="buttonClose" value="Close" onclick="window.close()" />
 						</div>
-					</s:if>
-				</s:if>
+					</c:if>
+				</c:if>
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 </body>
 </html>

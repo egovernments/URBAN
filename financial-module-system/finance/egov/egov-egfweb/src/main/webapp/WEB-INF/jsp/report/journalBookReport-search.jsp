@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 
 <html>
 <head>
-<title><s:text name="journalBook.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -121,37 +123,37 @@
 </head>
 
 <body>
-	<s:form name="journalBookForm" id="journalBookForm"
+	<form:form name="journalBookForm" id="journalBookForm"
 		action="journalBookReport" theme="css_xhtml" validate="true">
-		<s:push value="journalBookReport">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="journalBook.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
-				<s:hidden name="fundName" id="fundName" value="%{fundName}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td class="bluebox"><s:text name="journalBook.startDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
 						<td class="bluebox"><s:date name="startDate" var="startDate"
-								format="dd/MM/yyyy" /> <s:textfield id="startDate"
+								format="dd/MM/yyyy" /> <form:input id="startDate"
 								name="startDate" value="%{startDate}" data-date-end-date="0d"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 								data-inputmask="'mask': 'd/m/y'" /></td>
 
 
-						<td class="bluebox"><s:text name="journalBook.endDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
 						<td class="bluebox"><s:date name="endDate" var="endDate"
-								format="dd/MM/yyyy" /> <s:textfield id="endDate" name="endDate"
+								format="dd/MM/yyyy" /> <form:input id="endDate" path="endDate"
 								value="%{endDate}" data-date-end-date="0d"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -159,25 +161,25 @@
 
 					</tr>
 					<tr>
-						<td class="greybox"><s:text name="journalBook.fund" /><span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
-						<td class="greybox"><s:select name="fund_id" id="fund_id"
+						<td class="greybox"><form:select path="fund_id" id="fund_id"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="----Choose----" /></td>
-						<td class="greybox"><s:text name="journalBook.voucherName" /></td>
-						<td class="greybox"><s:select name="voucher_name"
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="greybox"><form:select path="voucher_name"
 								id="voucher_name" list="dropdownData.voucherNameList"
 								headerKey="" headerValue="----Choose----" /></td>
 
 					</tr>
 
 					<tr>
-						<td class="bluebox"><s:text name="journalBook.function" /></td>
-						<td class="bluebox"><s:select name="functionId"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:select path="functionId"
 								id="functionId" list="dropdownData.functionList" listKey="id"
 								listValue="name" headerKey="" headerValue="----Choose----" /></td>
-						<td class="bluebox"><s:text name="journalBook.department" /></td>
-						<td class="bluebox"><s:select name="dept_name" id="dept_name"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:select path="dept_name" id="dept_name"
 								list="dropdownData.departmentList" listKey="code" listValue="name"
 								headerKey="" headerValue="----Choose----" /></td>
 					</tr>
@@ -204,6 +206,6 @@
 		</span>
 
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 </body>
 </html>

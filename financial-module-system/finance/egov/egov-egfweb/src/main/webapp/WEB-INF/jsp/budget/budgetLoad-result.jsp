@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="budgetload" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 	function urlLoad(fileStoreId) {
 		var sUrl = "/services/egi/downloadfile?fileStoreId=" + fileStoreId
@@ -63,51 +65,51 @@
 </script>
 </head>
 <body>
-	<s:form action="budgetLoad" theme="css_xhtml" name="budgetLoad"
+	<form:form action="budgetLoad" theme="css_xhtml" name="budgetLoad"
 		id="budgetLoad" enctype="multipart/form-data" method="post">
 		<div class="formmainbox">
 			<div class="formheading"></div>
 			<div class="subheadnew">
-				<s:text name="budgetload" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<div align="center">
 				<font style='color: red;'>
 					<div id="msg">
-						<s:property value="message" />
+						${message}
 					</div>
 					<p class="error-block" id="lblError"></p>
 				</font>
 			</div>
 			<span class="mandatory1">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div> 
 			</span>
-			<span style="color: green"><s:actionmessage /></span>
+			<span style="color: green"><!-- TODO: Manual migration required for custom Struts tag --></span>
 			<center>
 				<table align="center" width="100%">
 					<tr align="center">
 						<th style="width: 2%; text-align: center" align="center"><a
 							href="#"
-							onclick="urlLoad('<s:property value="%{originalFileStoreId}" />');"
-							id="sourceLink" /> <s:text name="lbl.download.original.file"/> </a></th>
+							onclick="urlLoad('${%{originalFileStoreId}}');"
+							id="sourceLink" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></th>
 
 					</tr>
 					<tr align="center">
 
 						<th style="width: 2%; text-align: center" align="center"><a
 							href="#"
-							onclick="urlLoad('<s:property value="%{outPutFileStoreId}" />');"
-							id="sourceLink" /><s:text name="lbl.download.output.file"/> </a></th>
+							onclick="urlLoad('${%{outPutFileStoreId}}');"
+							id="sourceLink" /><!-- TODO: Manual migration required for custom Struts tag --> </a></th>
 					</tr>
 				</table>
 
 				<div class="buttonbottom" id="buttondiv">
 					<table>
 						<tr>
-							<td><input type="button" value="<s:text name='lbl.close'/>"
+							<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 								onclick="window.parent.postMessage('close','*');window.close();" class="buttonsubmit" /></td>
 						</tr>
 					</table>
@@ -115,6 +117,6 @@
 			</center>
 		</div>
 
-	</s:form>
+	</form:form>
 </body>
 </html>

@@ -75,7 +75,8 @@ public class PaymentWorkflow {
     private String paymentId;
 
     @NotNull
-    private PaymentAction action;
+    // TODO: Migrate from Struts/XWork: private PaymentAction action;
+    private String action;
 
     @SafeHtml
     @NotNull
@@ -114,4 +115,49 @@ public class PaymentWorkflow {
         }
     }
 
+    // Manual getter and setter methods since Lombok is not working properly
+    public String getPaymentId() { return paymentId; }
+    public void setPaymentId(String paymentId) { this.paymentId = paymentId; }
+    
+    public String getAction() { return action; }
+    public void setAction(String action) { this.action = action; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    public String getReason() { return reason; }
+    public void setReason(String reason) { this.reason = reason; }
+    
+    public JsonNode getAdditionalDetails() { return additionalDetails; }
+    public void setAdditionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; }
+    
+    // Builder method
+    public static PaymentWorkflowBuilder builder() {
+        return new PaymentWorkflowBuilder();
+    }
+    
+    // Builder class
+    public static class PaymentWorkflowBuilder {
+        private String paymentId;
+        private String action;
+        private String tenantId;
+        private String reason;
+        private JsonNode additionalDetails;
+        
+        public PaymentWorkflowBuilder paymentId(String paymentId) { this.paymentId = paymentId; return this; }
+        public PaymentWorkflowBuilder action(String action) { this.action = action; return this; }
+        public PaymentWorkflowBuilder tenantId(String tenantId) { this.tenantId = tenantId; return this; }
+        public PaymentWorkflowBuilder reason(String reason) { this.reason = reason; return this; }
+        public PaymentWorkflowBuilder additionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; return this; }
+        
+        public PaymentWorkflow build() {
+            PaymentWorkflow workflow = new PaymentWorkflow();
+            workflow.paymentId = this.paymentId;
+            workflow.action = this.action;
+            workflow.tenantId = this.tenantId;
+            workflow.reason = this.reason;
+            workflow.additionalDetails = this.additionalDetails;
+            return workflow;
+        }
+    }
 }

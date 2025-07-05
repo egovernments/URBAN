@@ -14,9 +14,10 @@ public class CustomUserDetails implements Serializable{
 	private String type;
 	private List<Role> roles;
 	private boolean active;
-	private List<ActionT> actions;
+	// TODO: Migrate from Struts/XWork: private List<ActionT> actions;
 	private String tenantId;
 	private String uuid;
+	
 	public Long getId() {
 		return id;
 	}
@@ -73,12 +74,14 @@ public class CustomUserDetails implements Serializable{
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-	public List<ActionT> getActions() {
-		return actions;
-	}
-	public void setActions(List<ActionT> actions) {
-		this.actions = actions;
-	}
+	
+	// TODO: Migrate from Struts/XWork: public List<ActionT> getActions() {
+	// TODO: Migrate from Struts/XWork:     return actions;
+	// TODO: Migrate from Struts/XWork: }
+	// TODO: Migrate from Struts/XWork: public void setActions(List<ActionT> actions) {
+	// TODO: Migrate from Struts/XWork:     this.actions = actions;
+	// TODO: Migrate from Struts/XWork: }
+	
 	public String getTenantId() {
 		return tenantId;
 	}

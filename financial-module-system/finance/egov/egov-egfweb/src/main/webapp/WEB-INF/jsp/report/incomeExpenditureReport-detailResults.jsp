@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,7 +50,7 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{incomeExpenditureStatement.size()>0}">
+<c:if test="%{incomeExpenditureStatement.size()>0}">
 	<br />
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tr>
@@ -69,98 +71,98 @@
 										format="dd/MM/yyyy" /></strong></td>
 							<td colspan="14">
 								<div class="blueborderfortd" align="right">
-									<strong> <s:text name="report.amount.in.rupees" />
+									<strong> <!-- TODO: Manual migration required for custom Struts tag -->
 										&nbsp;&nbsp;&nbsp;&nbsp;
 									</strong>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th class="bluebgheadtd"><s:text name="report.accountCode" /></th>
-							<th class="bluebgheadtd"><s:text name="report.headOfAccount" /></th>
-							<s:iterator value="incomeExpenditureStatement.funds"
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<c:forEach value="incomeExpenditureStatement.funds"
 								status="stat">
-								<th class="bluebgheadtd"><s:property value="name" /></th>
-							</s:iterator>
-							<th class="bluebgheadtd"><s:text name="report.currentTotals" />:
-								<s:property value="currentYearToDate" /></th>
+								<th class="bluebgheadtd">${name}</th>
+							</c:forEach>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->:
+								${currentYearToDate}</th>
 							<th class="bluebgheadtd"><s:text
 									name="report.previousTotals" />: <s:property
 									value="previousYearToDate" /></th>
 						</tr>
-						<s:iterator value="incomeExpenditureStatement.entries"
+						<c:forEach value="incomeExpenditureStatement.entries"
 							status="stat">
 							<tr>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:if test='%{glCode != ""}'>
-											<s:if test='%{displayBold == true}'>
-												<strong><s:property value="glCode" /></strong>
-											</s:if>
-											<s:else>
-												<s:property value="glCode" />
+										<c:if test='%{glCode != ""}'>
+											<c:if test='%{displayBold == true}'>
+												<strong>${glCode}</strong>
+											</c:if>
+											<c:otherwise>
+												${glCode}
 											</s:else>
-										</s:if>
+										</c:if>
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="left">
-										<s:if test='%{displayBold == true}'>
-											<strong><s:property value="accountName" /></strong>
-										</s:if>
-										<s:else>
-											<s:property value="accountName" />
+										<c:if test='%{displayBold == true}'>
+											<strong>${accountName}</strong>
+										</c:if>
+										<c:otherwise>
+											${accountName}
 										</s:else>
 										&nbsp;
 									</div>
 								</td>
-								<s:iterator value="incomeExpenditureStatement.funds"
+								<c:forEach value="incomeExpenditureStatement.funds"
 									status="stat">
 									<td class="blueborderfortd">
 										<div align="right">
-											<s:property value="fundWiseAmount[name]" />
+											${fundWiseAmount[name]}
 											&nbsp;
 										</div>
 									</td>
-								</s:iterator>
+								</c:forEach>
 								<td class="blueborderfortd">
 									<div align="right">
-										<s:if test='%{displayBold == true}'>
-											<strong><s:if test='%{currentYearTotal != 0}'>
-													<s:property value="currentYearTotal" />
-												</s:if> <s:else>0.00</s:else></strong>
-										</s:if>
-										<s:else>
-											<s:if test='%{currentYearTotal != 0}'>
-												<s:property value="currentYearTotal" />
-											</s:if>
-											<s:else>0.00</s:else>
+										<c:if test='%{displayBold == true}'>
+											<strong><c:if test='%{currentYearTotal != 0}'>
+													${currentYearTotal}
+												</c:if> <c:otherwise>0.00</s:else></strong>
+										</c:if>
+										<c:otherwise>
+											<c:if test='%{currentYearTotal != 0}'>
+												${currentYearTotal}
+											</c:if>
+											<c:otherwise>0.00</s:else>
 										</s:else>
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="right">
-										<s:if test='%{displayBold == true}'>
-											<strong><s:if test='%{previousYearTotal != 0}'>
-													<s:property value="previousYearTotal" />
-												</s:if> <s:else>0.00</s:else></strong>
-										</s:if>
-										<s:else>
-											<s:if test='%{previousYearTotal != 0}'>
-												<s:property value="previousYearTotal" />
-											</s:if>
-											<s:else>0.00</s:else>
+										<c:if test='%{displayBold == true}'>
+											<strong><c:if test='%{previousYearTotal != 0}'>
+													${previousYearTotal}
+												</c:if> <c:otherwise>0.00</s:else></strong>
+										</c:if>
+										<c:otherwise>
+											<c:if test='%{previousYearTotal != 0}'>
+												${previousYearTotal}
+											</c:if>
+											<c:otherwise>0.00</s:else>
 										</s:else>
 										&nbsp;
 									</div>
 								</td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
 		</tr>
 	</table>
-</s:if>
+</c:if>

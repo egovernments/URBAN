@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json" %>
 <%@ taglib prefix="s" uri="/WEB-INF/taglib/struts-tags.tld" %> 
 <%--
@@ -51,17 +53,17 @@
 {
 "ResultSet": {
     "Result":[
-    <s:iterator var="s" value="subledgerDetails" status="status">
-    {"subledgerCode":"<s:property value="businessAccountDetails"/>",
-    "glcodeId":"<s:property value="businessAccountDetails"/>",
-    "detailTypeId":"<s:property value="detailType"/>",
-    "detailTypeName":"<s:property value="detailType"/>",
-    "detailCode":"<s:property value="detailCode"/>",
-    "detailKeyId":"<s:property value="detailKey"/>",
-    "detailKey":"<s:property value="detailKey" />",
-    "amount":"<s:property value="%{amount}" />"
-    }<s:if test="!#status.last">,</s:if>
-    </s:iterator>       
+    <c:forEach var="s" value="subledgerDetails" status="status">
+    {"subledgerCode":"${businessAccountDetails}",
+    "glcodeId":"${businessAccountDetails}",
+    "detailTypeId":"${detailType}",
+    "detailTypeName":"${detailType}",
+    "detailCode":"${detailCode}",
+    "detailKeyId":"${detailKey}",
+    "detailKey":"${detailKey}",
+    "amount":"${%{amount}}"
+    }<c:if test="!#status.last">,</c:if>
+    </c:forEach>       
     ]
   }
 }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%--
@@ -49,9 +51,9 @@
   --%>
 
 { "ResultSet": { "Result":[
-<s:iterator var="s" value="bankAccountList" status="status">  
-    {"Text":"<s:property value="%{accountnumber}" escape="false" />", 
-    "Value":"<s:property value="%{id}" />"
-    }<s:if test="!#status.last">,</s:if>
-</s:iterator>
+<c:forEach var="s" value="bankAccountList" status="status">  
+    {"Text":"<!-- TODO: Manual migration required for custom Struts tag -->", 
+    "Value":"${%{id}}"
+    }<c:if test="!#status.last">,</c:if>
+</c:forEach>
 ] } }

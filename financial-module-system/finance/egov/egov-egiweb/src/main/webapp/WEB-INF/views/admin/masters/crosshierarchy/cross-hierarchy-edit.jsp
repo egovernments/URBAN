@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -111,7 +113,7 @@
                             <div class="row">
                                 <div class="col-xs-5">
                                     <div><spring:message code="lbl.crosshierarchy.location"/></div>
-                                    <form:select path="" multiple="true" size="10" name="from[]"
+                                    <form:select path="" multiple="true" size="10" path="from[]"
                                                  id="multiselect" cssClass="form-control"
                                                  cssErrorClass="form-control error">
                                         <form:options items="${boundaries}" itemValue="id"
@@ -135,7 +137,7 @@
                                 <div class="col-xs-5">
                                     <div><spring:message code="lbl.mapped.location"/></div>
 
-                                    <form:select path="boundaries" multiple="true" size="10" name="to[]"
+                                    <form:select path="boundaries" multiple="true" size="10" path="to[]"
                                                  id="multiselect_to" cssClass="form-control"
                                                  cssErrorClass="form-control error" required="required">
                                         <form:options items="${mappedBoundary}" itemValue="id"

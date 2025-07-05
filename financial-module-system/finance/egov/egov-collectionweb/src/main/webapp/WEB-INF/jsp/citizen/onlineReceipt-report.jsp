@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,16 +54,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="billreceipt.pagetitle" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
-<s:form theme="simple" name="displayReceiptForm">
-	<s:if test="%{hasErrors()}">
-		<div class="errorstyle"><s:actionerror /> <s:fielderror /></div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
-		<div class="messagestyle"><s:actionmessage theme="simple" /></div>
-	</s:if>
+<form:form theme="simple" name="displayReceiptForm">
+	<c:if test="%{hasErrors()}">
+		<div class="errorstyle"><!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
+		<div class="messagestyle"><!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
 	<iframe src="" width="98%"
 		height="70%">
 	<p>Your browser does not support iframes.</p>
@@ -72,9 +74,9 @@
 <!-- 	<input name="buttonBack" type="button" class="button"
 		id="buttonBack" value="Back" onclick="history.back()" /> -->
 	</div>
-</s:form>
+</form:form>
 <script>
-var url="../reportViewer?reportId=<s:property value='reportId'/>"
+var url="../reportViewer?reportId=<!-- TODO: Manual migration required for custom Struts tag -->"
 var mobileurl='https://docs.google.com/viewer?url='+document.location.origin+'/collection'+url.replace("..","");
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 	 window.location=mobileurl;

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 
 
 
-<s:if test="%{budgetVarianceEntries.size()>0}">
+<c:if test="%{budgetVarianceEntries.size()>0}">
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -63,84 +65,84 @@
 								<table width="100%" border="0" cellpadding="0" cellspacing="0"
 									class="tablebottom">
 									<tr>
-										<th class="bluebgheadtd"><s:text name="report.fund"/> </th>
-										<th class="bluebgheadtd"><s:text name="report.function"/></th>
-										<th class="bluebgheadtd"><s:text name="report.department"/></th>
-										<th class="bluebgheadtd"><s:text name="report.budged.head"/></th>
-										<th class="bluebgheadtd"><s:property value="type" /><s:text name="lbl.report.estimate"/></th>
-										<th class="bluebgheadtd"><s:text name="lbl.report.additional.appropriaton"/></th>
-										<th class="bluebgheadtd"><s:text name="lbl.report.total"/></th>
-										<th class="bluebgheadtd"><s:text name="lbl.report.actual"/></th>
-										<th class="bluebgheadtd"><s:text name="lbl.report.variance"/></th>
-										<th class="bluebgheadtd"><s:text name="lbl.report.variance.percentage"/></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd">${type}<!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+										<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 									</tr>
-									<s:iterator value="budgetVarianceEntries" status="stat" var="p">
+									<c:forEach value="budgetVarianceEntries" status="stat" var="p">
 										<tr>
 											<td class="blueborderfortd"><div align="left">
-													<s:property value="fundCode" />
+													${fundCode}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="left">
-													<s:property value="functionCode" />
+													${functionCode}
 												</div>&nbsp;</td>
 											<td class="blueborderfortd"><div align="left">
-													<s:property value="departmentName" />
+													${departmentName}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="left">
-													<s:property value="budgetHead" />
+													${budgetHead}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.estimate != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="estimate" />
+													<c:if test="%{#p.estimate != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-													</s:if>
-													<s:else>0.00</s:else>
+													</c:if>
+													<c:otherwise>0.00</s:else>
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.additionalAppropriation != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="additionalAppropriation" />
+													<c:if test="%{#p.additionalAppropriation != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-													</s:if>
-													<s:else>0.00</s:else>
+													</c:if>
+													<c:otherwise>0.00</s:else>
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.total != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="total" />
+													<c:if test="%{#p.total != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-													</s:if>
-													<s:else>0.00</s:else>
+													</c:if>
+													<c:otherwise>0.00</s:else>
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.actual != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="actual" />
+													<c:if test="%{#p.actual != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-													</s:if>
-													<s:else>0.00</s:else>
+													</c:if>
+													<c:otherwise>0.00</s:else>
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.variance != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="variance" />
+													<c:if test="%{#p.variance != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-														</s:if>
-													<s:else>0.00</s:else>
+														</c:if>
+													<c:otherwise>0.00</s:else>
 												</div></td>
 												<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.variancePercentage != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="variancePercentage" />
+													<c:if test="%{#p.variancePercentage != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-														</s:if>
-													<s:else>0.00</s:else>
+														</c:if>
+													<c:otherwise>0.00</s:else>
 												</div></td>
 										</tr>
-									</s:iterator>
+									</c:forEach>
 								</table>
 							</div>
 						</td>
@@ -151,12 +153,12 @@
 	</table>
 
 	<div class="buttonbottom" align="center">
-		<s:text name="lbl.report.options"/> <label onclick="exportXls()"><a
-			href='javascript:void(0);'><s:text name="lbl.excel"/> </a></label> | <label onclick="exportPdf()"><a
-			href="javascript:void(0);"><s:text name="lbl.pdf"/> </a></label>
+		<!-- TODO: Manual migration required for custom Struts tag --> <label onclick="exportXls()"><a
+			href='javascript:void(0);'><!-- TODO: Manual migration required for custom Struts tag --> </a></label> | <label onclick="exportPdf()"><a
+			href="javascript:void(0);"><!-- TODO: Manual migration required for custom Struts tag --> </a></label>
 
 	</div>
 
-</s:if>
+</c:if>
 
 

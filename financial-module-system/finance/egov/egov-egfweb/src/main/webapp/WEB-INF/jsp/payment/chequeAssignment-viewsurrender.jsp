@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,20 +57,20 @@
 <title>Cheque Assignment View</title>
 </head>
 <body>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Cheque Assignment View" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
-		<span><font color="green"><s:actionmessage /></font></span>
+		<span><font color="green"><!-- TODO: Manual migration required for custom Struts tag --></font></span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="chq.assignment.heading.view" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
-					<s:if test="%{paymentMode=='cheque'}">
+					<c:if test="%{paymentMode=='cheque'}">
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.partycode" /></th>
 
@@ -86,11 +88,11 @@
 								name="chq.assignment.transaction.date" /></th>
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.instrument.status" /></th>
-					</s:if>
+					</c:if>
 
 				</tr>
-				<s:if test="%{paymentMode=='cheque'}">
-					<s:iterator var="p" value="instHeaderList" status="s">
+				<c:if test="%{paymentMode=='cheque'}">
+					<c:forEach var="p" value="instHeaderList" status="s">
 						<tr>
 							<td style="text-align: center" class="blueborderfortdnew"><s:property
 									value="%{payTo}" /></td>
@@ -102,7 +104,7 @@
 									value="%{transactionNumber}" /></td>
 							<td style="text-align: right" class="blueborderfortdnew"><s:text
 									name="format.number">
-									<s:param value="%{instrumentAmount}" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:date
 									name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
@@ -111,8 +113,8 @@
 							<td style="text-align: center" class="blueborderfortdnew"><s:property
 									value="%{statusId.description}" /></td>
 						</tr>
-					</s:iterator>
-				</s:if>
+					</c:forEach>
+				</c:if>
 
 			</table>
 			<br />
@@ -123,6 +125,6 @@
 					onclick="javascript:window.close();window.parent.postMessage('close','*');" class="buttonsubmit" />
 			</div>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

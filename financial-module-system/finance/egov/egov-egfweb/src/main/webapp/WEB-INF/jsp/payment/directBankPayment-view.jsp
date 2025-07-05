@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -155,7 +157,7 @@ var url="../voucher/common-showHistory.action?stateId="+stateId;
 	path="${pageContext.request.contextPath}";
 		var totaldbamt=0,totalcramt=0;
 		var makeVoucherDetailTable = function() {  
-		<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>                
+		<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>                
 		var voucherDetailColumns = [        
 			{key:"functionid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
 			{key:"function",hidden:true,label:'Function Name', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","hidden")},
@@ -167,8 +169,8 @@ var url="../voucher/common-showHistory.action?stateId="+stateId;
 			{key:'Add',label:'Add',formatter:createAddImageFormatter("${pageContext.request.contextPath}","addYUIRow_billDetailTable(this)")},
 			{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}","deleteYUIRow(this)")}
 		];	
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 		var voucherDetailColumns = [ 
    			{key:"functionid",hidden:true,  formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
    			{key:"function",label:'Function Name', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","text")},         
@@ -184,28 +186,28 @@ var url="../voucher/common-showHistory.action?stateId="+stateId;
 	    var voucherDetailDS = new YAHOO.util.DataSource(); 
 		billDetailsTable = new YAHOO.widget.DataTable("billDetailTable",voucherDetailColumns, voucherDetailDS);
 		
-		<s:iterator value="billDetailslist" status="stat">
+		<c:forEach value="billDetailslist" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"functionid":'<s:property value="functionIdDetail"/>',
-					"function":'<s:property value="functionDetail"/>',
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:property value="%{debitAmountDetail}"/>',
-					"creditamount":'<s:property value="%{creditAmountDetail}"/>'
+					"functionid":'${functionIdDetail}',
+					"function":'${functionDetail}',
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'${%{debitAmountDetail}}',
+					"creditamount":'${%{creditAmountDetail}}'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridPJV('functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-				updateGridPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				updateGridPJV('glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGridPJV('glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGridPJV('accounthead',index,'<s:property value="accounthead"/>');
-				updateGridPJV('debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
-				updateGridPJV('creditAmountDetail',index,'<s:property value="creditAmountDetail"/>');
-				totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
-				totalcramt = totalcramt+parseFloat('<s:property value="creditAmountDetail"/>');
+				var index = '${#stat.index}';
+				updateGridPJV('functionIdDetail',index,'${functionIdDetail}');
+				updateGridPJV('functionDetail',index,'${functionDetail}');
+				updateGridPJV('glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGridPJV('glcodeDetail',index,'${glcodeDetail}');
+				updateGridPJV('accounthead',index,'${accounthead}');
+				updateGridPJV('debitAmountDetail',index,'${debitAmountDetail}');
+				updateGridPJV('creditAmountDetail',index,'${creditAmountDetail}');
+				totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
+				totalcramt = totalcramt+parseFloat('${creditAmountDetail}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 				
 
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -225,13 +227,13 @@ var url="../voucher/common-showHistory.action?stateId="+stateId;
 		document.getElementById('totalcramount').value=totalcramt;
         };
 		var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.glcodeList">
-glcodeOptions.push({label: '<s:property value="glcode"/>', value: '<s:property value="id"/>'});
-	</s:iterator>
+		<c:forEach value="dropdownData.glcodeList">
+glcodeOptions.push({label: '${glcode}', value: '${id}'});
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-detailtypeOptions.push({label: '<s:property value="name"/>', value: '<s:property value="id"/>'});
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+detailtypeOptions.push({label: '${name}', value: '${id}'});
+	</c:forEach>
 	
 	
 	
@@ -253,27 +255,27 @@ detailtypeOptions.push({label: '<s:property value="name"/>', value: '<s:property
 		subLedgersTable = new YAHOO.widget.DataTable("subLedgerTable",subledgerColumns, subledgerDS);
 		
 	
-		<s:iterator value="subLedgerlist" status="stat">
+		<c:forEach value="subLedgerlist" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"glcode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKey"/>',
-					"detailKey":'<s:property value="detailKey"/>',
-					"debitAmount":'<s:property value="%{debitAmount}"/>',
-					"creditAmount":'<s:property value="%{creditAmount}"/>'
+					"glcode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKey}',
+					"detailKey":'${detailKey}',
+					"debitAmount":'${%{debitAmount}}',
+					"creditAmount":'${%{creditAmount}}'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridSLDropdownJV('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
-				updateGridSLDropdownJV('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
-				updateSLGridPJV('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGridPJV('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGridPJV('detailKey',index,'<s:property value="detailKey"/>');
-				updateSLGridPJV('amount',index,'<s:property value="amount"/>');
+				var index = '${#stat.index}';
+				updateGridSLDropdownJV('glcode.id',index,'${glcode.id}','${subledgerCode}');
+				updateGridSLDropdownJV('detailType.id',index,'${detailType.id}','${detailTypeName}');
+				updateSLGridPJV('detailCode',index,'${detailCode}');
+				updateSLGridPJV('detailKeyId',index,'${detailKeyId}');
+				updateSLGridPJV('detailKey',index,'${detailKey}');
+				updateSLGridPJV('amount',index,'${amount}');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 
     };
 	function addYUIRow_subLedgersTable(obj)
@@ -316,20 +318,20 @@ function addYUIRow_billDetailTable(obj)
 	}
 		
 		
-	var insuffiecientBankBalance ='<s:text name="insuffiecientBankBalance"/>';
+	var insuffiecientBankBalance ='<!-- TODO: Manual migration required for custom Struts tag -->';
 	
 	
 		function validateAppoveUser(name,value){
 			document.getElementById('lblError').innerHTML ="";
 			document.getElementById("actionName").value= name;
 			
-			<s:if test="%{wfitemstate =='END'}">
+			<c:if test="%{wfitemstate =='END'}">
 				if(value == 'Approve' || value == 'Reject') {
 					document.getElementById("approverUserId").value=-1;
 					return true;
 				}
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				if( (value == 'Approve' || value == 'Forward' ) && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 					document.getElementById('lblError').innerHTML ="Please Select the user";
 					return false;
@@ -341,7 +343,7 @@ function addYUIRow_billDetailTable(obj)
 		}
 function printVoucher(){
 	
-	document.forms[0].action='../report/billPaymentVoucherPrint-print.action?id=<s:property value="paymentheader.id"/>';
+	document.forms[0].action='../report/billPaymentVoucherPrint-print.action?id=${paymentheader.id}';
 	jQuery(document.forms[0]).append(jQuery('<input>', {
         type : 'hidden',
         name : '${_csrf.parameterName}',
@@ -353,9 +355,9 @@ function printVoucher(){
 	</script>
 </head>
 <body>
-	<s:form action="directBankPayment" theme="simple" name="dbpform">
+	<form:form action="directBankPayment" theme="simple" name="dbpform">
 	<div class="formmainbox">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div align="center">
 				<font style='color: red;'>
 					<p class="error-block" id="lblError"></p>
@@ -363,9 +365,9 @@ function printVoucher(){
 			</div>
 			<span class="mandatory1">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
-				</div> <s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</div> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 			<div align="left">
 				<div class="tabber">
@@ -381,15 +383,15 @@ function printVoucher(){
 									<td class="bluebox" width="10%"></td>
 									<td class="bluebox" width="22%"><s:text
 											name="voucher.number" /></td>
-									<td class="bluebox" width="22%"><s:textfield
+									<td class="bluebox" width="22%"><form:input
 											name="voucherNumber" id="voucherNumber" /></td>
-									<s:hidden name="id" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 									<td class="bluebox" width="18%"><s:text
 											name="voucher.date" /><span class="mandatory1">*</span></td>
 									<td class="bluebox" width="38%"><input type="text"
 										name="voucherDate"
 										onkeyup="DateFormat(this,this.value,event,false,'3')"
-										value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+										value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 										href="javascript:show_calendar('cbtbform.voucherDate');"
 										style="text-decoration: none">&nbsp;<img tabIndex="-1"
 											src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A></td>
@@ -421,14 +423,14 @@ function printVoucher(){
 											<table id="chequeTable" align="center" border="0"
 												cellpadding="0" cellspacing="0" width="100%">
 												<tr>
-													<s:if
+													<c:if
 														test="%{paymentheader.type == 'cash' || paymentheader.type == 'Cash' || paymentheader.type == 'Cheque' || paymentheader.type == 'cheque'}">
 														<th class="bluebgheadtdnew">Cheque Number
 														</td>
 														<th class="bluebgheadtdnew">Cheque Date
 														</td>
-													</s:if>
-													<s:else>
+													</c:if>
+													<c:otherwise>
 														<th class="bluebgheadtdnew">RTGS Number
 														</td>
 														<th class="bluebgheadtdnew">RTGS Date
@@ -441,10 +443,10 @@ function printVoucher(){
 													<th class="bluebgheadtdnew">Cheque Status
 													</td>
 												</tr>
-												<s:if test="%{instrumentHeaderList.size()>0}">
-													<s:iterator var="p" value="instrumentHeaderList" status="s">
+												<c:if test="%{instrumentHeaderList.size()>0}">
+													<c:forEach var="p" value="instrumentHeaderList" status="s">
 														<tr>
-															<s:if
+															<c:if
 																test="%{paymentheader.type == 'cash' || paymentheader.type == 'Cash' || paymentheader.type == 'Cheque' || paymentheader.type == 'cheque'}">
 																<td style="text-align: center"
 																	class="blueborderfortdnew"><s:property
@@ -452,8 +454,8 @@ function printVoucher(){
 																<td style="text-align: center"
 																	class="blueborderfortdnew"><s:date
 																		name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
-															</s:if>
-															<s:else>
+															</c:if>
+															<c:otherwise>
 																<td style="text-align: center"
 																	class="blueborderfortdnew"><s:property
 																		value="%{transactionNumber}" /></td>
@@ -465,20 +467,20 @@ function printVoucher(){
 																	value="%{payTo}" /></td>
 															<td style="text-align: right" class="blueborderfortdnew"><s:text
 																	name="format.number">
-																	<s:param value="%{instrumentAmount}" />
+																	<!-- TODO: Manual migration required for custom Struts tag -->
 																</s:text></td>
 															<td style="text-align: center" class="blueborderfortdnew"><s:property
 																	value="%{statusId.description}" /></td>
 														</tr>
-													</s:iterator>
-												</s:if>
+													</c:forEach>
+												</c:if>
 											</table>
-											<s:if
+											<c:if
 												test="%{instrumentHeaderList==null || instrumentHeaderList.size==0}">
 												<div class="bottom" align="center">
-													<s:text name="chq.not.found"></s:text>
+													<!-- TODO: Manual migration required for custom Struts tag --></s:text>
 												</div>
-											</s:if>
+											</c:if>
 										</div>
 									</td>
 								</tr>
@@ -499,12 +501,12 @@ function printVoucher(){
 				</br>
 				</br>
 				</br>
-				<s:if test="%{showApprove}">
+				<c:if test="%{showApprove}">
 				<div class="commentsTab" align="center">
 					<table border="0" width="100%">
 						<tr>
 							<td class="bluebox">Comments</td>
-							<td class="bluebox"><s:textarea name="comments"
+							<td class="bluebox"><form:textarea path="comments"
 									id="comments" cols="150" rows="3" onblur="checkLength(this)"
 									value="%{getComments()}" /></td>
 						</tr>
@@ -519,7 +521,7 @@ function printVoucher(){
 						document.getElementById('viewButton').style.display="none";
 					</script>
 
-				</s:if>
+				</c:if>
 
 
 				<script type="text/javascript">
@@ -565,9 +567,9 @@ function printVoucher(){
 		document.getElementById("wfBtn3").disabled=false;
 		}
 		
-	<s:if test="%{showMode!='view'}" >
+	<c:if test="%{showMode!='view'}" >
 		
-		<s:if test="%{balance=='-1'}">
+		<c:if test="%{balance=='-1'}">
 			for(var i=0;i<document.forms[0].length;i++)
 			{
 				if(document.forms[0].elements[i].id!='closeButtonNew' || document.forms[0].elements[i].id!='comments')
@@ -576,21 +578,21 @@ function printVoucher(){
 			}
 				bootbox.alert("FundFlow Report not Generated to check Bank Balance. Please generate Report First");
 	
-		</s:if>	
-	</s:if>	
+		</c:if>	
+	</c:if>	
 	
 </script>
 
-				<s:if test="%{showApprove}">
-					<s:if test="%{showMode!='create' && showMode!='view' }">
+				<c:if test="%{showApprove}">
+					<c:if test="%{showMode!='create' && showMode!='view' }">
 						<%@ include file='../payment/commonWorkflowMatrix.jsp'%>
 						<%@ include file='../workflow/commonWorkflowMatrix-button.jsp'%>
 						<div class="buttonbottom" id="newbuttondiv" align="center">
 							<s:submit cssClass="button" id="printPreview1"
 								value="Print Preview" onclick="printVoucher()" />
 						</div>
-					</s:if>
-					<s:else>
+					</c:if>
+					<c:otherwise>
 						<div class="buttonbottom" id="newbuttondiv" align="center">
 							<s:submit cssClass="button" id="printPreview1"
 								value="Print Preview" onclick="printVoucher()" />
@@ -600,7 +602,7 @@ function printVoucher(){
 					</s:else>
 					<s:hidden id="paymentid" name="paymentid"
 						value="%{paymentheader.id}" />
-					<s:hidden name="actionname" id="actionName" value="%{action}" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					<script>
 if(document.getElementById('actionName').value!='')
 		{
@@ -614,13 +616,13 @@ if(document.getElementById('actionName').value!='')
 				opener.top.document.getElementById('inboxframe').contentWindow.egovInbox.refresh();
 		}
 		
-		 <s:if test="%{canCheckBalance==true}">
+		 <c:if test="%{canCheckBalance==true}">
 			if(document.getElementById('balanceText'))
 			{
 				document.getElementById('balanceText').style.display='block';
 				document.getElementById('balanceAvl').style.display='block';
 			}
-	    </s:if>	    
+	    </c:if>	    
 	    function onSubmit()
 	    {
 	    	document.forms[0].action='${pageContext.request.contextPath}/payment/directBankPayment-sendForApproval.action';
@@ -632,7 +634,7 @@ if(document.getElementById('actionName').value!='')
     		document.forms[0].submit();
 	    }
 </script>
-				</s:if>
+				</c:if>
 
 				<div class="subheadsmallnew" />
 			</div>
@@ -641,7 +643,7 @@ if(document.getElementById('actionName').value!='')
 
 		</s:push>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 
 

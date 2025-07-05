@@ -48,7 +48,6 @@
 
 package org.egov.infra.admin.master.repository;
 
-import org.egov.infra.admin.master.entity.Action;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,18 +56,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ActionRepository extends JpaRepository<Action, Long> {
-
-    Action findByName(String name);
-
-    Action findByUrlAndContextRootAndQueryParamsIsNull(String url, String contextRoot);
-
-    @Query("select action from Action action where :url like url||'%' and contextRoot =:contextRoot and queryParams is null")
-    List<Action> findByMatchingUrlAndContextRoot(@Param("url") String url, @Param("contextRoot") String contextRoot);
-
-    Action findByUrlAndContextRootAndQueryParams(String url, String contextRoot, String queryParams);
-
-    @Query("select action from  Action action where :url||:queryParams like url||'%' and contextRoot =:contextRoot")
-    List<Action> findByMatchingUrlAndContextRootAndQueryParams(@Param("url") String url, @Param("contextRoot") String contextRoot,
-            @Param("queryParams") String queryParams);
+public interface ActionRepository {
+    // TODO: Define repository methods as needed for Spring Data JPA
 }

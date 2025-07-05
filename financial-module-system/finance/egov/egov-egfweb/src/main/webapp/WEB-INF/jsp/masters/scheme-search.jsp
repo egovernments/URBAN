@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="scheme.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <SCRIPT type="text/javascript">
    
     function validateAndSubmit()
@@ -66,13 +68,13 @@
 		
 
 		if(fundId == "-1"){
-			bootbox.alert("<s:text name='msg.please.select.fund'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 			}
 		
 		 
 		if(!validateDate(fromDate)){
-			bootbox.alert("<s:text name='msg.start.date.is.greater.than.current.date'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		var fdateParts=	fromDate.split("/");
@@ -80,7 +82,7 @@
 		var fdate=new Date(fdateParts[1]+"/"+fdateParts[0]+"/"+fdateParts[2]);
 		var tdate=new Date(tdateParts[1]+"/"+tdateParts[0]+"/"+tdateParts[2]);
 		if (fdate > tdate) {
-			bootbox.alert("<s:text name='msg.start.date.should.be.less.than.end.date'/>")
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->")
 			return false;
 			} 
 
@@ -116,42 +118,42 @@
     </SCRIPT>
 </head>
 <body>
-	<s:form name="schemeForm" action="scheme" theme="simple"
+	<form:form name="schemeForm" action="scheme" theme="simple"
 		validate="true">
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:if test="%{mode=='edit'}">
-					<s:text name="scheme.searchmodify.title" />
-				</s:if>
-				<s:else>
-					<s:text name="scheme.searchview.title" />
+				<c:if test="%{mode=='edit'}">
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</c:if>
+				<c:otherwise>
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</s:else>
 			</div>
-			<s:hidden name="mode" id="mode" value="%{mode}" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td style="width: 10%"></td>
-					<td class="bluebox"><s:text name="scheme.fund" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1"> *</span></td>
-					<td class="bluebox"><s:select name="fund" id="fundId"
+					<td class="bluebox"><form:select path="fund" id="fundId"
 							list="dropdownData.fundDropDownList" listKey="id"
 							listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 							value="scheme.fund.id" /></td>
 				</tr>
 				<tr>
 					<td style="width: 10%"></td>
-					<td class="greybox"><s:text name="scheme.startDate" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:date name="validfrom" var="validfromId"
 							format="dd/MM/yyyy" />
-						<s:textfield id="validfromId" name="validfrom"
+						<form:input id="validfromId" path="validfrom"
 							value="%{validfromId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
 
-					<td class="greybox"><s:text name="scheme.endDate" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:date name="validto" var="validtoId"
-							format="dd/MM/yyyy" /> <s:textfield id="validtoId"
+							format="dd/MM/yyyy" /> <form:input id="validtoId"
 							name="validto" value="%{validtoId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -167,50 +169,50 @@
 		<div class="buttonbottom">
 			<table align="center">
 				<tr>
-					<td><input type="submit" class="buttonsubmit" value="<s:text name='lbl.search'/>"
+					<td><input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 						id="search" name="button" onclick="return validateAndSubmit();" />&nbsp;</td>
-					<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+					<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 						onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" /></td>
 			</table>
 		</div>
 
-		<s:if test="%{schemeList.size!=0}">
+		<c:if test="%{schemeList.size!=0}">
 			<table width="100%" border="1" align="center" cellpadding="0"
 				cellspacing="0" class="setborder" style="border-collapse: inherit;">
 				<tr>
 					<th class="bluebgheadtd" style="width: 2%; text-align: center"
-						align="center"><s:text name="lbl.sl.no"/></th>
+						align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					<th class="bluebgheadtd" style="width: 4%; text-align: center"
-						align="center"><s:text name="lbl.scheme.code"/></th>
+						align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					<th class="bluebgheadtd" style="width: 8%; text-align: center"
-						align="center"><s:text name="lbl.scheme.name"/></th>
+						align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					<th class="bluebgheadtd" style="width: 2%; text-align: center"
-						align="center"><s:text name="scheme.startDate"/></th>
+						align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					<th class="bluebgheadtd" style="width: 4%; text-align: center"
-						align="center"><s:text name="scheme.endDate"/></th>
+						align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					<th class="bluebgheadtd" style="width: 4%; text-align: center"
-						align="center"><s:text name="lbl.isactive"/></th>
+						align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				</tr>
 				<c:set var="trclass" value="greybox" />
-				<s:iterator var="scheme" value="schemeList" status="f">
+				<c:forEach var="scheme" value="schemeList" status="f">
 					<tr>
 
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
-							align="center"><s:property value="#f.index+1" /></td>
+							align="center">${#f.index+1}</td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
 							align="center"><a href="#"
-							onclick="urlLoad('<s:property value="%{id}" />','<s:property value="%{mode}" />');"
-							id="sourceLink" /> <s:label value="%{code}" /> </a></td>
+							onclick="urlLoad('${%{id}}','${%{mode}}');"
+							id="sourceLink" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
-							align="center"><s:property value="name" /></td>
+							align="center">${name}</td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
 							align="center"><s:date name="%{validfrom}"
 								format="dd/MM/yyyy" /></td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
-							align="center"><s:date name="%{validto}" format="dd/MM/yyyy" /></td>
+							align="center"><!-- TODO: Manual migration required for custom Struts tag --></td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
-							align="center"><s:if test="%{isactive==true}"><s:text name="lbl.yes"/></s:if>
-						<s:else><s:text name="lbl.no"/></s:else></td>
+							align="center"><c:if test="%{isactive==true}"><!-- TODO: Manual migration required for custom Struts tag --></c:if>
+						<c:otherwise><!-- TODO: Manual migration required for custom Struts tag --></s:else></td>
 						<c:choose>
 							<c:when test="${trclass=='greybox'}">
 								<c:set var="trclass" value="bluebox" />
@@ -220,22 +222,22 @@
 							</c:when>
 						</c:choose>
 					</tr>
-				</s:iterator>
+				</c:forEach>
 
 			</table>
-		</s:if>
+		</c:if>
 
-		<s:if test="%{schemeList.size==0}">
+		<c:if test="%{schemeList.size==0}">
 			<div id="msgdiv" style="display: block">
 				<table align="center" class="tablebottom" width="80%">
 					<tr>
-						<th class="bluebgheadtd" colspan="7"><s:text name="no.records.found"/>
+						<th class="bluebgheadtd" colspan="7"><!-- TODO: Manual migration required for custom Struts tag -->
 						</td>
 					</tr>
 				</table>
 			</div>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 
 
 	<script type="text/javascript">

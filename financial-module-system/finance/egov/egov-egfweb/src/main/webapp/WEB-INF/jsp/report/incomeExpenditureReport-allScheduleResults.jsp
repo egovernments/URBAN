@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,9 +51,9 @@
 
 <%@ include file="incomeExpenditureReport-detailResults.jsp"%>
 <div class="buttonbottom">
-	<s:text name="report.export.options" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	: <a
-		href='/EGF/report/incomeExpenditureReport-generateScheduleXls.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.fund.id=<s:property value="model.fund.id"/>&majorCode=<s:property value="#parameters['majorCode']" />'>Excel</a>
+		href='/EGF/report/incomeExpenditureReport-generateScheduleXls.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.asOndate=${model.asOndate}&model.fund.id=${model.fund.id}&majorCode=${#parameters['majorCode']}'>Excel</a>
 	<a
-		href='/EGF/report/incomeExpenditureReport-generateSchedulePdf.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.fund.id=<s:property value="model.fund.id"/>&majorCode=<s:property value="#parameters['majorCode']" />'>PDF</a>
+		href='/EGF/report/incomeExpenditureReport-generateSchedulePdf.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.asOndate=${model.asOndate}&model.fund.id=${model.fund.id}&majorCode=${#parameters['majorCode']}'>PDF</a>
 </div>

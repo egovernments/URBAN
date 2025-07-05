@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -70,15 +72,15 @@
 
 
 <body onload="onloadTask();">
-	<s:form action="contraCTB" theme="simple" name="cashDepositForm">
-		<s:push value="model">
+	<form:form action="contraCTB" theme="simple" name="cashDepositForm">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Cash Deposit" />
 			</jsp:include>
 
 			<span class="mandatory"> <font
-				style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-					<s:actionmessage /></font>
+				style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 			<div class="formmainbox">
 				<div class="formheading" />
@@ -92,9 +94,9 @@
 						<table id="boundarytableGrid" border="0" cellSpacing=0
 							cellPadding=0 width="55%" align="center">
 							<tr class="tableheader">
-								<td class="greybox"><s:text name="contra.cashInHand" /></td>
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							</tr>
-							<td class="greybox"><s:textfield
+							<td class="greybox"><form:input
 									name="contraBean.cashInHand" id="cashInHand" readonly="true" /></td>
 							</tr>
 						</table>
@@ -104,12 +106,12 @@
 			</div>
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 	<script>
 
 function onloadTask(){
 	disableControls(0,true);
-	var message = '<s:property value="message"/>';
+	var message = '${message}';
 	if(message != null && message != '')
 		showMessage(message);
 	var element = document.getElementById('accountNumber');
@@ -122,8 +124,8 @@ function onloadTask(){
 }
 
 function showMessage(message){
-	var close = <s:property value="close"/>;
-	var voucherHeaderId = <s:property value="voucherHeader.id"/>;
+	var close = ${close};
+	var voucherHeaderId = ${voucherHeader.id};
 	bootbox.alert(message);
 	if(close == true){
 		self.close();

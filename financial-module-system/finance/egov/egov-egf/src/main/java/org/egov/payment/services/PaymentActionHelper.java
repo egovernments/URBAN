@@ -431,7 +431,7 @@ public class PaymentActionHelper {
                 final String stateValue = FinancialConstants.WORKFLOW_STATE_REJECTED;
                 paymentheader.transition().progressWithStateCopy().withSenderName(user.getName()).withComments(workflowBean.getApproverComments())
                         .withStateValue(stateValue).withDateInfo(currentDate.toDate())
-                        .withOwner(wfInitiator.getPosition()).withNextAction(FinancialConstants.WF_STATE_EOA_Approval_Pending);
+                        .withOwner(wfInitiator.getPosition());
             }
 
         } else if (FinancialConstants.BUTTONAPPROVE.equalsIgnoreCase(workflowBean.getWorkFlowAction())) {
@@ -452,17 +452,23 @@ public class PaymentActionHelper {
                 paymentheader.transition().start().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments())
                         .withStateValue(wfmatrix.getNextState()).withDateInfo(currentDate.toDate()).withOwner(pos)
-                        .withNextAction(wfmatrix.getNextAction());
-            } else if (paymentheader.getCurrentState().getNextAction().equalsIgnoreCase("END"))
+                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME)
+                        .withCreatedBy(user.getId())
+                        .withtLastModifiedBy(user.getId());
+            } else if (paymentheader.getCurrentState().getValue().equalsIgnoreCase("END"))
                 paymentheader.transition().end().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments())
-                        .withDateInfo(currentDate.toDate());
+                        .withStateValue(FinancialConstants.WORKFLOW_STATE_APPROVED)
+                        .withDateInfo(currentDate.toDate())
+                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME);
             else {
                 final WorkFlowMatrix wfmatrix = paymentHeaderWorkflowService.getWfMatrix(paymentheader.getStateType(), null,
                         null, null, paymentheader.getCurrentState().getValue(), null);
                 paymentheader.transition().progressWithStateCopy().withSenderName(user.getName()).withComments(workflowBean.getApproverComments())
                         .withStateValue(wfmatrix.getNextState()).withDateInfo(currentDate.toDate()).withOwner(pos)
-                        .withNextAction(wfmatrix.getNextAction());
+                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME)
+                        .withCreatedBy(user.getId())
+                        .withtLastModifiedBy(user.getId());
             }
         }
     }

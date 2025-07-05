@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="budget.reappropriation.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" href="/services/EGF/resources/css/tabber.css?rnd=${app_release_no}"
 	TYPE="text/css">
 <script type="text/javascript" src="/services/EGF/resources/javascript/tabber.js?rnd=${app_release_no}"></script>
@@ -85,11 +87,11 @@
 		if(typeof preselectSubScheme=='function') preselectSubScheme()
     }
     
-    <s:if test="%{shouldShowHeaderField('scheme') and shouldShowHeaderField('subScheme')}">
+    <c:if test="%{shouldShowHeaderField('scheme') and shouldShowHeaderField('subScheme')}">
 	populateSubSchemes(document.getElementById('budgetReAppropriation_scheme'))
 	function preselectSubScheme(){
 		subSchemes =  document.getElementById('budgetReAppropriation_subScheme');
-		selectedValue="<s:property value='subScheme.id'/>"
+		selectedValue="<!-- TODO: Manual migration required for custom Struts tag -->"
 		for(i=0;i<subSchemes.options.length;i++){
 		  if(subSchemes.options[i].value==selectedValue){
 			subSchemes.selectedIndex=i;
@@ -98,7 +100,7 @@
 		}
 		updateGrid('subScheme.id',document.getElementById('budgetReAppropriation_subScheme').selectedIndex);
 	}
-	</s:if>
+	</c:if>
 </script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/javascript/calenderNew.js"></script>
@@ -155,7 +157,7 @@
 				if(checkUser){
 					document.getElementById("actionName").value = 'forward';
 					if(null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
-						bootbox.alert("<s:text name='msg.please.select.the.user'/>");
+						bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 						return false;
 					}
 				}
@@ -174,30 +176,30 @@
 
 			var validateMandatoryForGetActual =  () => {
 				if(document.getElementById('financialYear').value==0){
-					bootbox.alert("<s:text name='msg.please.select.financial.year'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					return false;
 				}
 				if(document.getElementById('budgetReAppropriation_executingDepartment').value==0){
-					bootbox.alert('<s:text name="msg.please.select.executing.department"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}		
 				for(i=0;i<budgetDetailsTable.getRecordSet().getLength();i++){
 					if(document.getElementById('budgetReAppropriationList['+i+'].budgetDetail.budgetGroup.id').value === '0'){
-						bootbox.alert('<s:text name="msg.please.budget.group"/>');
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 						return false;
 						}
-					<s:if test="%{shouldShowField('function')}">				
+					<c:if test="%{shouldShowField('function')}">				
 					if(document.getElementById('budgetReAppropriationList['+i+'].budgetDetail.function.id').value === '0'){
-						bootbox.alert('<s:text name="msg.please.select.function"/>');
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 						return false;	
 						}
-					</s:if>
-					<s:if test="%{shouldShowField('fund')}">				
+					</c:if>
+					<c:if test="%{shouldShowField('fund')}">				
 					if(document.getElementById('budgetReAppropriationList['+i+'].budgetDetail.fund.id').value === '0'){
-						bootbox.alert('<s:text name="msg.please.select.fund"/>');
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 						return false;
 						}
-					</s:if>
+					</c:if>
 					
 				}
 				return true;
@@ -205,23 +207,23 @@
 
 			function alertMessage(estimate,anticipatory){
 				if(estimate && anticipatory){
-					bootbox.alert('<s:text name="msg.estimate.and.anticipatory.amount.must.be.number"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}else if(estimate){
-					bootbox.alert('<s:text name="msg.estimate.amount.must.be.number"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}else if(anticipatory){
-					bootbox.alert('<s:text name="msg.anticipatory.amount.must.be.number"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 			}
 			function validateMandatoryFields(){
 				if(document.getElementById('financialYear').value==0){
-					bootbox.alert('<s:text name="msg.please.select.financial.year"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				if(document.getElementById('budgetReAppropriation_executingDepartment').value==0){
-					bootbox.alert('<s:text name="msg.please.select.executing.department"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				return true;
@@ -274,22 +276,22 @@
 				};
 			}
 		</script>
-	<s:actionmessage theme="simple" />
-	<s:actionerror />
-	<s:fielderror />
-	<s:form name="budgetDetailForm" action="budgetReAppropriation"
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<form:form name="budgetDetailForm" action="budgetReAppropriation"
 		theme="simple">
-		<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div class="formmainbox">
 			<div class="tabber">
 				<div class="tabbertab">
-					<h2><s:text name="lbl.additional.appropriation"/> </h2>
+					<h2><!-- TODO: Manual migration required for custom Struts tag --> </h2>
 					<span>
 						<table width="60%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td>
 									<div class="subheadnew">
-										<s:text name="budget.reappropriation.title" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</div> <br />
 								</td>
 							</tr>
@@ -297,119 +299,119 @@
 						<table width="50%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td width="10%" class="bluebox">&nbsp;</td>
-								<td class="bluebox"><s:text name="budget.financialYear" /><span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory1">*</span></td>
-								<td class="bluebox"><s:select
+								<td class="bluebox"><form:select
 										list="dropdownData.financialYearList" listKey="id"
 										listValue="finYearRange" name="financialYear.id"
 										value="financialYear.id" id="financialYear" headerKey="0"
-										headerValue="%{getText('lbl.choose.options')}" onchange="getBeRe();"></s:select></td>
-								<td class="bluebox" width="19%"><s:text name="budget.bere" /></td>
-								<td class="bluebox"><s:select name="isBeRe" id="isBeRe"
+										headerValue="%{getText('lbl.choose.options')}" onchange="getBeRe();"></form:select></td>
+								<td class="bluebox" width="19%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+								<td class="bluebox"><form:select path="isBeRe" id="isBeRe"
 										list="#{'BE':'BE','RE':'RE'}" value="beRe" disabled="true" /></td>
 							</tr>
 							<tr>
-								<s:if test="%{shouldShowHeaderField('executingDepartment')}">
+								<c:if test="%{shouldShowHeaderField('executingDepartment')}">
 									<td class="greybox">&nbsp;</td>
 									<td class="greybox"><s:text
-											name="budgetdetail.executingDepartment" /> <s:if
+											name="budgetdetail.executingDepartment" /> <c:if
 											test="%{isFieldMandatory('executingDepartment')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td width="22%" class="greybox"><s:select
+										</c:if></td>
+									<td width="22%" class="greybox"><form:select
 											list="dropdownData.executingDepartmentList" listKey="code"
 											listValue="name" name="budgetDetail.executingDepartment"
 											headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											onchange="updateGrid('budgetDetail.executingDepartment.id',document.getElementById('budgetReAppropriation_executingDepartment').selectedIndex);updateReAppGrid('budgetDetail.executingDepartment.id',document.getElementById('budgetReAppropriation_executingDepartment').selectedIndex);"
 											value="budgetDetail.executingDepartment"
-											id="budgetReAppropriation_executingDepartment"></s:select></td>
-								</s:if>
-								<s:if test="%{shouldShowHeaderField('fund')}">
-									<td class="greybox"><s:text name="fund" /> <s:if
+											id="budgetReAppropriation_executingDepartment"></form:select></td>
+								</c:if>
+								<c:if test="%{shouldShowHeaderField('fund')}">
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 											test="%{isFieldMandatory('fund')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td class="greybox"><s:select list="dropdownData.fundList"
+										</c:if></td>
+									<td class="greybox"><form:select list="dropdownData.fundList"
 											listKey="id" listValue="name" name="budgetDetail.fund.id"
 											headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											onchange="updateGrid('budgetDetail.fund.id',document.getElementById('budgetReAppropriation_fund').selectedIndex);updateReAppGrid('budgetDetail.fund.id',document.getElementById('budgetReAppropriation_fund').selectedIndex)"
-											value="fund.id" id="budgetReAppropriation_fund"></s:select></td>
-								</s:if>
+											value="fund.id" id="budgetReAppropriation_fund"></form:select></td>
+								</c:if>
 							</tr>
 							<tr>
-								<s:if test="%{shouldShowHeaderField('function')}">
+								<c:if test="%{shouldShowHeaderField('function')}">
 									<td class="bluebox">&nbsp;</td>
-									<td class="bluebox"><s:text name="function" /> <s:if
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 											test="%{isFieldMandatory('function')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td class="bluebox"><s:select
+										</c:if></td>
+									<td class="bluebox"><form:select
 											list="dropdownData.functionList" listKey="id"
 											listValue="name" name="budgetDetail.function.id"
 											headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											onchange="updateGrid('budgetDetail.function.id',document.getElementById('budgetReAppropriation_function').selectedIndex);updateReAppGrid('budgetDetail.function.id',document.getElementById('budgetReAppropriation_function').selectedIndex)"
-											value="function.id" id="budgetReAppropriation_function"></s:select></td>
-								</s:if>
-								<s:if test="%{shouldShowHeaderField('functionary')}">
-									<td class="bluebox"><s:text name="functionary" /> <s:if
+											value="function.id" id="budgetReAppropriation_function"></form:select></td>
+								</c:if>
+								<c:if test="%{shouldShowHeaderField('functionary')}">
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 											test="%{isFieldMandatory('functionary')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td class="bluebox"><s:select
+										</c:if></td>
+									<td class="bluebox"><form:select
 											list="dropdownData.functionaryList" listKey="id"
 											listValue="name" headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											name="budgetDetail.functionary.id"
 											onchange="updateGrid('budgetDetail.functionary.id',document.getElementById('budgetReAppropriation_functionary').selectedIndex);updateReAppGrid('budgetDetail.functionary.id',document.getElementById('budgetReAppropriation_functionary').selectedIndex)"
-											value="functionary.id" id="budgetReAppropriation_functionary"></s:select></td>
-								</s:if>
+											value="functionary.id" id="budgetReAppropriation_functionary"></form:select></td>
+								</c:if>
 							</tr>
 							<tr>
-								<s:if test="%{shouldShowHeaderField('scheme')}">
+								<c:if test="%{shouldShowHeaderField('scheme')}">
 									<td width="10%" class="bluebox">&nbsp;</td>
-									<td class="greybox"><s:text name="scheme" /> <s:if
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 											test="%{isFieldMandatory('scheme')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td class="greybox"><s:select
+										</c:if></td>
+									<td class="greybox"><form:select
 											list="dropdownData.schemeList" listKey="id" listValue="name"
 											headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											name="budgetDetail.scheme.id"
 											onchange="updateGrid('budgetDetail.scheme.id',document.getElementById('budgetReAppropriation_scheme').selectedIndex);populateSubSchemes(this);"
-											value="scheme.id" id="budgetReAppropriation_scheme"></s:select></td>
-								</s:if>
-								<s:if test="%{shouldShowHeaderField('subScheme')}">
+											value="scheme.id" id="budgetReAppropriation_scheme"></form:select></td>
+								</c:if>
+								<c:if test="%{shouldShowHeaderField('subScheme')}">
 									<egov:ajaxdropdown id="subScheme" fields="['Text','Value']"
 										dropdownId="budgetReAppropriation_subScheme"
 										url="budget/budgetDetail-ajaxLoadSubSchemes.action"
 										afterSuccess="onHeaderSubSchemePopulation" />
-									<td class="greybox"><s:text name="subscheme" /> <s:if
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 											test="%{isFieldMandatory('subScheme')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td class="greybox"><s:select
+										</c:if></td>
+									<td class="greybox"><form:select
 											list="dropdownData.subSchemeList" listKey="id"
 											listValue="name" headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											name="budgetDetail.subScheme"
 											onchange="updateGrid('budgetDetail.subScheme.id',document.getElementById('budgetReAppropriation_subScheme').selectedIndex);updateReAppGrid('budgetDetail.subScheme.id',document.getElementById('budgetReAppropriation_subScheme').selectedIndex)"
-											value="subScheme.id" id="budgetReAppropriation_subScheme"></s:select></td>
-								</s:if>
+											value="subScheme.id" id="budgetReAppropriation_subScheme"></form:select></td>
+								</c:if>
 
 							</tr>
 							<tr>
-								<s:if test="%{shouldShowHeaderField('boundary')}">
+								<c:if test="%{shouldShowHeaderField('boundary')}">
 									<td width="10%" class="bluebox">&nbsp;</td>
-									<td class="bluebox"><s:text name="field" /> <s:if
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 											test="%{isFieldMandatory('boundary')}">
 											<span class="mandatory1">*</span>
-										</s:if></td>
-									<td class="bluebox"><s:select
+										</c:if></td>
+									<td class="bluebox"><form:select
 											list="dropdownData.boundaryList" listKey="id"
 											listValue="name" headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 											name="budgetDetail.boundary.id"
 											onchange="updateGrid('budgetDetail.boundary.id',document.getElementById('budgetReAppropriation_boundary').selectedIndex)"
-											value="boundary.id" id="budgetReAppropriation_boundary"></s:select></td>
-								</s:if>
-								<s:else>
+											value="boundary.id" id="budgetReAppropriation_boundary"></form:select></td>
+								</c:if>
+								<c:otherwise>
 									<td class="bluebox">&nbsp;</td>
 									<td class="bluebox">&nbsp;</td>
 								</s:else>
@@ -423,13 +425,13 @@
 								<td class="greybox"><input type="text" id="date"
 									name="appropriationMisc.reAppropriationDate"
 									style="width: 100px"
-									value='<s:date name="appropriationMisc.reAppropriationDate" format="dd/MM/yyyy"/>' /><a
+									value='<!-- TODO: Manual migration required for custom Struts tag -->' /><a
 									href="javascript:show_calendar('budgetDetailForm.date');"
 									style="text-decoration: none">&nbsp;<img
 										src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
 								<td class="greybox"><s:text
 										name="budgetReAppropriation.comments" /></td>
-								<td class="greybox"><s:textarea
+								<td class="greybox"><form:textarea
 										id="appropriationMisc.remarks"
 										name="appropriationMisc.remarks" cols="50" /></td>
 								<td class="greybox"></td>
@@ -469,9 +471,9 @@
 			document.getElementById('budgetDetailTable').getElementsByTagName('table')[0].width = "100%";
 			addGridRows();
 			updateAllGridValues()
-			<s:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
+			<c:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
 				setValues();
-			</s:if>
+			</c:if>
 			for(i=0;i<budgetDetailsTable.getRecordSet().getLength();i++){
 				computeAvailable("budgetReAppropriationList",i);
 			}
@@ -484,7 +486,7 @@
 							<tr>
 								<td colspan="9">
 									<div class="subheadsmallnew">
-										<strong><s:text name="budget.reappropriation.add" /></strong>
+										<strong><!-- TODO: Manual migration required for custom Struts tag --></strong>
 									</div>
 								</td>
 							</tr>
@@ -499,16 +501,16 @@
 			document.getElementById('budgetReAppropriationsTable').getElementsByTagName('table')[0].width = "70%";
 			addReAppGridRows();
 			updateAllReAppGridValues()
-			<s:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
+			<c:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
 				setValuesForReAppropriation();
-			</s:if>
+			</c:if>
 		</script>
 					</span>
 					<table width="60%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td>
 								<div class="buttonbottom" style="padding-bottom: 10px;">
-									<input type="submit" value="<s:text name='lbl.save'/>"
+									<input type="submit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 										id="budgetReAppropriation__create" name="method:create"
 										onClick="javascript: return validate(false,'create');"
 										class="buttonsubmit" />
@@ -544,9 +546,9 @@
 
 			</div>
 
-			<s:hidden name="actionName" id="actionName" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:form>
+	</form:form>
 	<div id="beReGrid" style="display: none"></div>
 </body>
 </html>

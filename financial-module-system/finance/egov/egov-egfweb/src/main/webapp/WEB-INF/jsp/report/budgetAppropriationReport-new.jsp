@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -163,7 +165,7 @@ th.bluebgheadtd {
 }
 </style>
 <div id="non-printable">
-	<s:form name="budgetAppropriationReport"
+	<form:form name="budgetAppropriationReport"
 		action="budgetAppropriationReport" theme="simple">
 		<div class="formmainbox">
 			<div class="subheadnew">Budget Addition/Deduction Appropriation
@@ -172,14 +174,14 @@ th.bluebgheadtd {
 
 				<tr>
 					<td class="bluebox" width="4%"></td>
-					<td class="bluebox" width="8%"><s:text name="report.fund" /></td>
-					<td class="bluebox"><s:select name="budgetDetail.fund"
+					<td class="bluebox" width="8%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="budgetDetail.fund"
 							id="fund" list="dropdownData.fundDropDownList" listKey="id"
 							listValue="name" headerKey="" headerValue="----Select----"
 							value="budgetDetail.fund.id" /></td>
 
-					<td class="bluebox"><s:text name="report.department" /></td>
-					<td class="bluebox" width="8%"><s:select
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox" width="8%"><form:select
 							name="budgetDetail.executingDepartment" id="department"
 							list="dropdownData.departmentList" listKey="id" listValue="name"
 							headerKey="" headerValue="----Select----"
@@ -188,16 +190,16 @@ th.bluebgheadtd {
 				</tr>
 				<tr>
 					<td class="greybox" width="4%"></td>
-					<td class="greybox" width="8%"><s:text name="report.function" /></td>
-					<td class="greybox" width="8%"><s:select
+					<td class="greybox" width="8%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox" width="8%"><form:select
 							name="budgetDetail.function" id="function"
 							list="dropdownData.functionList" listKey="id" listValue="name"
 							headerKey="" headerValue="----Select----"
 							value="budgetDetail.function.id" /></td>
 
-					<td class="greybox" width="8%"><s:text name="report.budget" /><span
+					<td class="greybox" width="8%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
-					<td class="greybox"><s:select name="budgetDetail.budget"
+					<td class="greybox"><form:select path="budgetDetail.budget"
 							id="budget" list="dropdownData.budList" listKey="id"
 							listValue="name" headerKey="" headerValue="----Select----"
 							value="%{budgetDetail.budget.id}" /></td>
@@ -205,19 +207,19 @@ th.bluebgheadtd {
 				</tr>
 				<tr>
 					<td class="bluebox" width="4%"></td>
-					<td class="bluebox" width="8%"><s:text name="report.fromdate" /><span
+					<td class="bluebox" width="8%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
 					<td class="bluebox" width="8%"><s:date name="fromDate"
-							format="dd/MM/yyyy" var="fromDateId" /> <s:textfield
+							format="dd/MM/yyyy" var="fromDateId" /> <form:input
 							id="fromDate" name="budgetAppropriationReport.fromDate"
 							value="%{fromDateId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
-					<td class="bluebox" width="8%"><s:text name="report.todate" /><span
+					<td class="bluebox" width="8%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
 					<td class="bluebox"><s:date name="toDate" var="toDateId"
-							format="dd/MM/yyyy" /> <s:textfield id="toDate"
+							format="dd/MM/yyyy" /> <form:input id="toDate"
 							name="budgetAppropriationReport.toDate" value="%{toDateId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -226,7 +228,7 @@ th.bluebgheadtd {
 			</table>
 			<div align="left" class="mandatory1">
 				*
-				<s:text name="report.mandatory.fields" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<div class="buttonbottom" style="padding-bottom: 10px;">
@@ -240,7 +242,7 @@ th.bluebgheadtd {
 			</div>
 
 		</div>
-	</s:form>
+	</form:form>
 </div>
 
 <div id="result"></div>

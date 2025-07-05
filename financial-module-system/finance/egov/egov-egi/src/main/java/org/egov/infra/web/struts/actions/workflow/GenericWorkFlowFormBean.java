@@ -57,26 +57,8 @@ public class GenericWorkFlowFormBean  {
 	protected Integer approverPositionId;
 	protected String additionalRule;
 	protected BigDecimal amountRule;
-	protected String pendingAction;
 	protected String actionName;
 	protected String approverComments;
-
-	public String getPendingAction() {
-		return this.pendingAction;
-	}
-
-	public String getActionName() {
-		return this.actionName;
-	}
-
-	public void setActionName(final String actionName) {
-		this.actionName = actionName;
-	}
-
-	public void setPendingAction(final String pendingAction) {
-		this.pendingAction = pendingAction;
-	}
-
 	protected String workFlowDepartment;
 
 	public String getCurrentState() {

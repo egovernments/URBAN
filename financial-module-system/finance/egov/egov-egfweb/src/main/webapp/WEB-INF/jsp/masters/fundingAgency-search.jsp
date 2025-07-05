@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,26 +55,26 @@
 
 <html>
 <head>
-<title><s:text name="fundingagency.search.funding.agency" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="fundingagency.search.funding.agency" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="fundingAgencyForm" action="fundingAgency" theme="simple">
+		<form:form name="fundingAgencyForm" action="fundingAgency" theme="simple">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="greybox">Code</td>
-					<td class="greybox"><s:textfield id="code" name="code" /></td>
+					<td class="greybox"><form:input id="code" path="code" /></td>
 					<td class="greybox">Name</td>
-					<td class="greybox"><s:textfield id="name" name="name" /></td>
+					<td class="greybox"><form:input id="name" path="name" /></td>
 				</tr>
 
 			</table>
@@ -81,12 +83,12 @@
 			<br />
 
 			<div class="buttonbottom">
-				<s:submit method="search" value="Search" cssClass="buttonsubmit" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="submit" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 
-			<s:if test="%{fundingAgencyList.size!=0}">
+			<c:if test="%{fundingAgencyList.size!=0}">
 				<table width="100%" border="0" align="center" cellpadding="0"
 					cellspacing="0" class="tablebottom">
 
@@ -102,7 +104,7 @@
 							align="center">IsActive</th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
-					<s:iterator var="fa" value="fundingAgencyList" status="f">
+					<c:forEach var="fa" value="fundingAgencyList" status="f">
 						<tr>
 
 							<td class="<c:out value="${trclass}"/>"
@@ -110,8 +112,8 @@
 									value="#f.index+1" /></td>
 							<td class="<c:out value="${trclass}"/>"
 								style="text-align: center" align="center"><a href="#"
-								onclick="urlLoad('<s:property value="id"/>');" id="sourceLink" />
-								<s:property value="code" /> </a></td>
+								onclick="urlLoad('${id}');" id="sourceLink" />
+								${code} </a></td>
 							<td class="<c:out value="${trclass}"/>"
 								style="text-align: center" align="center"><s:property
 									value="name" /></td>
@@ -128,11 +130,11 @@
 								</c:when>
 							</c:choose>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 
 				</table>
-			</s:if>
-			<s:if test="%{fundingAgencyList.size==0}">
+			</c:if>
+			<c:if test="%{fundingAgencyList.size==0}">
 				<div id="msgdiv" style="display: block">
 					<table align="center" class="tablebottom" width="80%">
 						<tr>
@@ -141,9 +143,9 @@
 						</tr>
 					</table>
 				</div>
-			</s:if>
+			</c:if>
 
-		</s:form>
+		</form:form>
 		<script>
 	function urlLoad(id){
 		url = "fundingAgency!beforeEdit.action?id="+id;

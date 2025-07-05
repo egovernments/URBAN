@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,35 +54,35 @@
 
 <html>
 <head>
-<title><s:text name="receipt.payment.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="receipt.payment.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="receiptPaymentReportForm" action="receiptPaymentReport"
+		<form:form name="receiptPaymentReportForm" action="receiptPaymentReport"
 			theme="simple">
 
 
 			<br />
 			<br />
 
-			<s:if test="%{model.entries.size!=0}">
-				<!-- <div align="center" class="extracontent"><h4><s:property value="fundType"/>  <s:property value="budgetType"/></h4></div> 
+			<c:if test="%{model.entries.size!=0}">
+				<!-- <div align="center" class="extracontent"><h4>${fundType}  ${budgetType}</h4></div> 
 		<div align="right" class="extracontent"><b>Amount in Thousands</b></div> -->
 				<table width="100%" border="0" align="center" cellpadding="0"
 					cellspacing="0" class="tablebottom">
 					<tr>
 						<td colspan="8">
 							<div class="subheadsmallnew">
-								<strong><s:property value="header" /></strong>
+								<strong>${header}</strong>
 							</div>
 						</td>
 					</tr>
@@ -90,7 +92,7 @@
 									format="dd/MM/yyyy" /></strong></td>
 						<td colspan="8">
 							<div class="blueborderfortd" align="right">
-								<strong> <s:text name="report.amount.in" /> <s:property
+								<strong> <!-- TODO: Manual migration required for custom Struts tag --> <s:property
 										value="model.currency" />&nbsp;&nbsp;&nbsp;
 								</strong>
 							</div>
@@ -105,57 +107,57 @@
 							align="center">Schedule Number</th>
 						<th class="bluebgheadtd" style="width: 20%; text-align: center"
 							align="center">Glcode</th>
-						<s:if test="%{model.funds.size()>1}">
-							<s:iterator value="model.funds" status="stat">
-								<th class="bluebgheadtd"><s:property value="name" /></th>
-							</s:iterator>
-						</s:if>
+						<c:if test="%{model.funds.size()>1}">
+							<c:forEach value="model.funds" status="stat">
+								<th class="bluebgheadtd">${name}</th>
+							</c:forEach>
+						</c:if>
 						<th class="bluebgheadtd" style="width: 22%; text-align: center"
-							align="center"><s:property value="currentYearToDate" /></th>
+							align="center">${currentYearToDate}</th>
 						<th class="bluebgheadtd" style="width: 22%; text-align: center"
-							align="center"><s:property value="previousYearToDate" /></th>
+							align="center">${previousYearToDate}</th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
-					<s:iterator value="model.entries" status="stat">
+					<c:forEach value="model.entries" status="stat">
 						<tr>
-							<s:if
+							<c:if
 								test='%{accountName == "Sub Total" || accountName == "Grand Total" }'>
 								<td class="blueborderfortd"><strong> <s:property
 											value="accountName" />&nbsp;
 								</strong></td>
-								<td class="blueborderfortd"><s:property value="glCode" />&nbsp;</td>
+								<td class="blueborderfortd">${glCode}&nbsp;</td>
 								<td class="blueborderfortd">&nbsp;</td>
-								<s:if test="%{model.funds.size()>1}">
-									<s:iterator value="model.funds" status="stat">
+								<c:if test="%{model.funds.size()>1}">
+									<c:forEach value="model.funds" status="stat">
 										<td class="blueborderfortd">
 											<div align="right">
-												<strong> <s:property value="fundWiseAmount[code]" />&nbsp;
+												<strong> ${fundWiseAmount[code]}&nbsp;
 												</strong>
 											</div>
 										</td>
-									</s:iterator>
-								</s:if>
+									</c:forEach>
+								</c:if>
 								<td class="blueborderfortd"><strong><s:property
 											value="currentYearTotal" />&nbsp;</strong></td>
 								<td class="blueborderfortd"><strong> <s:property
 											value="previousYearTotal" />&nbsp;
 								</strong></td>
-							</s:if>
-							<s:else>
+							</c:if>
+							<c:otherwise>
 								<td class="blueborderfortd">&nbsp;</td>
 								<td class="blueborderfortd"><strong><s:property
 											value="accountName" />&nbsp;</strong></td>
-								<td class="blueborderfortd"><s:property value="glCode" />&nbsp;</td>
-								<s:if test="%{model.funds.size()>1}">
-									<s:iterator value="model.funds" status="stat">
+								<td class="blueborderfortd">${glCode}&nbsp;</td>
+								<c:if test="%{model.funds.size()>1}">
+									<c:forEach value="model.funds" status="stat">
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:property value="fundWiseAmount[code]" />
+												${fundWiseAmount[code]}
 												&nbsp;
 											</div>
 										</td>
-									</s:iterator>
-								</s:if>
+									</c:forEach>
+								</c:if>
 								<td class="blueborderfortd"><s:property
 										value="currentYearTotal" />&nbsp;</td>
 								<td class="blueborderfortd"><s:property
@@ -163,35 +165,35 @@
 							</s:else>
 						</tr>
 
-					</s:iterator>
+					</c:forEach>
 
 				</table>
 
-			</s:if>
+			</c:if>
 
 			<div class="buttonbottom">
-				<s:text name="report.export.options" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				: <a
 					href='/EGF/report/receiptPaymentReport!exportReceiptPaymentScheduleXls.action?
-showDropDown=false&model.period=<s:property value="model.period"/>
-&model.currency=<s:property value="model.currency"/>
-&model.financialYear.id=<s:property value="model.financialYear.id"/>
-&model.fund.id=<s:property value="model.fund.id"/>
-&model.fromDate=<s:property value="model.fromDate"/>
-&model.toDate=<s:property value="model.toDate"/>
-&scheduleNo=<s:property value="scheduleNo" />'>Excel</a>
+showDropDown=false&model.period=${model.period}
+&model.currency=${model.currency}
+&model.financialYear.id=${model.financialYear.id}
+&model.fund.id=${model.fund.id}
+&model.fromDate=${model.fromDate}
+&model.toDate=${model.toDate}
+&scheduleNo=${scheduleNo}'>Excel</a>
 				| <a
 					href='/EGF/report/receiptPaymentReport!exportReceiptPaymentSchedulePdf.action?
-showDropDown=false&model.period=<s:property value="model.period"/>
-&model.currency=<s:property value="model.currency"/>
-&model.financialYear.id=<s:property value="model.financialYear.id"/>
-&model.fund.id=<s:property value="model.fund.id"/>
-&model.fromDate=<s:property value="model.fromDate"/>
-&model.toDate=<s:property value="model.toDate"/>
-&scheduleNo=<s:property value="scheduleNo" />'>PDF</a>
+showDropDown=false&model.period=${model.period}
+&model.currency=${model.currency}
+&model.financialYear.id=${model.financialYear.id}
+&model.fund.id=${model.fund.id}
+&model.fromDate=${model.fromDate}
+&model.toDate=${model.toDate}
+&scheduleNo=${scheduleNo}'>PDF</a>
 			</div>
 
 
-		</s:form>
+		</form:form>
 </body>
 </html>

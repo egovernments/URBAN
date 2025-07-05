@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,14 +51,14 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html>
 <head>
-<title>  <s:text name="service.master.search.header"></s:text> </title>
+<title>  <!-- TODO: Manual migration required for custom Struts tag --></s:text> </title>
 
 <script>
 function validate(obj){
 	document.getElementById('error_area').innerHTML = '';
 	document.getElementById("error_area").style.display="none"
 	if(document.getElementById('serviceCategoryid').value == -1){
-		document.getElementById("error_area").innerHTML = '<s:text name="error.select.service.category" />';
+		document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		document.getElementById("error_area").style.display="block";
 		return false;
 	}
@@ -68,19 +70,19 @@ function validate(obj){
 </head>
 
 <body>
-<s:form action="serviceDetails" theme="simple" name="serviceDetailsForm" method="post">
+<form:form action="serviceDetails" theme="simple" name="serviceDetailsForm" method="post">
 
 	 <div class="errorstyle" id="error_area" style="display:none;"></div>
 	<div class="formmainbox">
-	<div class="subheadnew"><s:text name="service.master.search.header"></s:text> </div>
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></s:text> </div>
 	
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:960px;margin:0 auto;">
 
 		
 		<tr>
 			<td class="greybox" width="5%">&nbsp;</td>
-			<td class="greybox"><s:text name="service.master.search.category"></s:text> <span class="mandatory1">*</span></td>
-			<td class="greybox"><s:select headerKey="-1"
+			<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></s:text> <span class="mandatory1">*</span></td>
+			<td class="greybox"><form:select headerKey="-1"
 				headerValue="----Choose----"
 				name="serviceCategory" id="serviceCategoryid" cssClass="selectwk"
 				list="dropdownData.serviceCategoryList" listKey="id" listValue="name"
@@ -89,7 +91,7 @@ function validate(obj){
 		
 
 	</table>
-<div align="left" class="mandatorycoll">&nbsp;&nbsp;&nbsp;<s:text name="common.mandatoryfields"/></div>
+<div align="left" class="mandatorycoll">&nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag --></div>
 <br/>
 	</div>
 	
@@ -107,6 +109,6 @@ function validate(obj){
 			</label>			
 		</div>
 
-</s:form>
+</form:form>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -79,14 +81,14 @@
 		}  
 	}
 </script>
-<title> <s:text name="service.master.search.header"></s:text> </title>
+<title> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </title>
 
 </head>  
 
 <body onload="onBodyLoad();loadDropDownCodes();loadGridOnValidationFail();disableAll();">
-<s:form theme="simple" name="serviceDetailsForm" action="serviceDetails" method="post">
-<s:token />
-<s:push value="model">
+<form:form theme="simple" name="serviceDetailsForm" action="serviceDetails" method="post">
+<!-- TODO: Manual migration required for custom Struts tag -->
+<!-- TODO: Manual migration required for custom Struts tag -->
 	
 	<input type="hidden" id="isviewmode" value="true"/>
 	
@@ -99,6 +101,6 @@
 			</label>			
 		</div>
 </s:push>
-</s:form>
+</form:form>
 </body>
 </html>

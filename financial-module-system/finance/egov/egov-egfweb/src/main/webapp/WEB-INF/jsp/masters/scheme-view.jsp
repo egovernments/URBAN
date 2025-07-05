@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 <html>
 <head>
 
-<title><s:text name="scheme.view.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <SCRIPT type="text/javascript">
     function checkuniquenesscode(){
     	document.getElementById('codeuniquecode').style.display ='none';
@@ -73,29 +75,29 @@
     </SCRIPT>
 </head>
 <body>
-	<s:form name="schemeForm" action="scheme" theme="css_xhtml"
+	<form:form name="schemeForm" action="scheme" theme="css_xhtml"
 		validate="true">
 
 		<div class="formmainbox">
 			<div id="viewhead" class="subheadnew">
-				<s:text name="scheme.view.title" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: red">
-				<s:actionerror />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: green">
 
-				<s:actionmessage />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div class="errorstyle" style="display: none" id="codeuniquecode">
-				<s:text name="scheme.code.already.exists" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div class="errorstyle" style="display: none" id="uniquename">
-				<s:text name="scheme.name.already.exists" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
-			<s:hidden name="mode" id="mode" value="%{mode}" />
-			<s:hidden name="id" id="id" value="%{id}" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="greybox">&nbsp;</td>
@@ -111,19 +113,19 @@
 				</tr>
 				<tr>
 					<td class="greybox">&nbsp;</td>
-					<td class="bluebox"><b><s:text name="scheme.fund" /></b></td>
-					<td class="bluebox"><s:property value="%{scheme.fund.name}" /></td>
+					<td class="bluebox"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
+					<td class="bluebox">${%{scheme.fund.name}}</td>
 					<td class="bluebox"><b>IsActive</b></td>
-					<td class="bluebox"><s:property value="%{scheme.isactive}" /></td>
+					<td class="bluebox">${%{scheme.isactive}}</td>
 				</tr>
 				<tr>
 					<td class="greybox">&nbsp;</td>
-					<td class="greybox"><b><s:text name="scheme.startDate" /></b></td>
+					<td class="greybox"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
 					<td class="greybox">
-					<s:date name="scheme.validfrom" format="dd/MM/yyyy"/></td>
+					<!-- TODO: Manual migration required for custom Struts tag --></td>
 
-					<td class="greybox"><b><s:text name="scheme.endDate" /></b></td>
-					<td class="greybox"><s:date name="scheme.validto" format="dd/MM/yyyy"/></td>
+					<td class="greybox"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 				</tr>
 				<tr>
 					<td class="greybox">&nbsp;</td>
@@ -134,12 +136,12 @@
 				</tr>
 			</table>
 		</div>
-	</s:form>
+	</form:form>
 	<br />
 	<div id="viewMode" class="buttonbottom">
 		<table table align="center">
 			<tr>
-				<td><input type="button" name="close" id="Close" value="<s:text name='lbl.close'/>"
+				<td><input type="button" name="close" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.close()" class="button" /></td>
 			</tr>
 		</table>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,12 +53,12 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="userDefCode.create" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 
 						function onLoadTask() {
-							var close = '<s:property value="close"/>';
-							var success = '<s:property value="success"/>';
+							var close = '${close}';
+							var success = '${success}';
 
 							if (success == 'yes') {
 								bootbox.alert("UserDefinedCodes Created Successfully");
@@ -96,14 +98,14 @@
 <body onload="onLoadTask();">
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="userDefCode.create" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionmessage theme="simple" />
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form name="userDefCodeForm" action="userDefinedCodes"
+		<form:form name="userDefCodeForm" action="userDefinedCodes"
 			theme="simple">
 			<%@include file="userDefinedCodes-form.jsp"%>
 			<br />
@@ -113,22 +115,22 @@
 					cssClass="buttonsubmit" onclick="return validate();" />
 				<s:submit name="create" value="Save & Close" method="create"
 					cssClass="buttonsubmit" onclick="validate();setClose();" />
-				<s:hidden name="close" id="close" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="button" id="Close" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 	</div>
-	<s:token />
-	</s:form>
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	</div>
 	<script type="text/javascript">
-		<s:if test="%{clearValues == true}">
+		<c:if test="%{clearValues == true}">
 		document.getElementById('code').value = "";
 		document.getElementById('name').value = "";
 		document.getElementById('narration').value = "";
 		document.getElementById('accEntity.accountdetailtype.id').value = "";
 		document.forms[0].isactive.checked=false;
-		</s:if>
+		</c:if>
 	</script>
 </body>
 </html>

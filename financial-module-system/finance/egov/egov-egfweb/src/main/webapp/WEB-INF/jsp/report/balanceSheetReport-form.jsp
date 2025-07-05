@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,15 +52,15 @@
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <script>
 function showDetails(glcode){           
-		var deptId = '<s:property value="balanceSheet.department.code"/>';
-		var functionaryId = '<s:property value="balanceSheet.functionary.id"/>';
-		var functionName = '<s:property value="functionName"/>';
-		var functionId = '<s:property value="balanceSheet.function.id"/>';
-		var fieldId = '<s:property value="balanceSheet.field.id"/>';	   
-		var fundId='<s:property value="balanceSheet.fund.id"/>';
-		var startDate='<s:date name="%{currentYearfromDate}" format="dd/MM/yyyy"/>';
-        var endDate='<s:date name="%{currentYeartoDate}" format="dd/MM/yyyy"/>';
-        var asOnDate='<s:date name="%{asOnDate}" format="dd/MM/yyyy"/>';
+		var deptId = '${balanceSheet.department.code}';
+		var functionaryId = '${balanceSheet.functionary.id}';
+		var functionName = '${functionName}';
+		var functionId = '${balanceSheet.function.id}';
+		var fieldId = '${balanceSheet.field.id}';	   
+		var fundId='${balanceSheet.fund.id}';
+		var startDate='<!-- TODO: Manual migration required for custom Struts tag -->';
+        var endDate='<!-- TODO: Manual migration required for custom Struts tag -->';
+        var asOnDate='<!-- TODO: Manual migration required for custom Struts tag -->';
         var todayDate = new Date();
 		 var todayMonth = todayDate.getMonth() + 1;
 		 var todayDay = todayDate.getDate();
@@ -84,15 +86,15 @@ function showDetails(glcode){
 	
 function showPreviousYearDetails(glcode)
 {
-		var deptId = '<s:property value="balanceSheet.department.code"/>';
-		var functionaryId = '<s:property value="balanceSheet.functionary.id"/>';
-		var functionName = '<s:property value="functionName"/>';
-		var functionId = '<s:property value="balanceSheet.function.id"/>';
-		var fieldId = '<s:property value="balanceSheet.field.id"/>';	   
-		var fundId='<s:property value="balanceSheet.fund.id"/>';
-        var startDate='<s:date name="%{previousYearfromDate}" format="dd/MM/yyyy"/>';
-        var endDate='<s:date name="%{previousYeartoDate}" format="dd/MM/yyyy"/>';
-        var asOnDate='<s:date name="%{asOnDate}" format="dd/MM/yyyy"/>';
+		var deptId = '${balanceSheet.department.code}';
+		var functionaryId = '${balanceSheet.functionary.id}';
+		var functionName = '${functionName}';
+		var functionId = '${balanceSheet.function.id}';
+		var fieldId = '${balanceSheet.field.id}';	   
+		var fundId='${balanceSheet.fund.id}';
+        var startDate='<!-- TODO: Manual migration required for custom Struts tag -->';
+        var endDate='<!-- TODO: Manual migration required for custom Struts tag -->';
+        var asOnDate='<!-- TODO: Manual migration required for custom Struts tag -->';
          var functionCode1=functionName+"~"+functionId;
          var todayDate = new Date();
 		 var todayMonth = todayDate.getMonth() + 1;
@@ -115,7 +117,7 @@ function showPreviousYearDetails(glcode)
 	
 
 </script>
-<s:if test="%{balanceSheet.size()>0}">
+<c:if test="%{balanceSheet.size()>0}">
 	<br />
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tr>
@@ -153,95 +155,95 @@ function showPreviousYearDetails(glcode)
 													name="report.accountCode" /></th>
 											<th class="bluebgheadtd"><s:text
 													name="report.headOfAccount" /></th>
-											<s:if test="%{balanceSheet.funds.size()>1}">
-												<s:iterator value="balanceSheet.funds" status="stat">
-													<th class="bluebgheadtd"><s:property value="name" /></th>
-												</s:iterator>
-											</s:if>
+											<c:if test="%{balanceSheet.funds.size()>1}">
+												<c:forEach value="balanceSheet.funds" status="stat">
+													<th class="bluebgheadtd">${name}</th>
+												</c:forEach>
+											</c:if>
 											<th class="bluebgheadtd"><s:property
 													value="currentYearToDate" /></th>
 											<th class="bluebgheadtd"><s:property
 													value="previousYearToDate" /></th>
 										</tr>
-										<s:iterator value="balanceSheet.entries" status="stat">
+										<c:forEach value="balanceSheet.entries" status="stat">
 											<tr>
 												<td class="blueborderfortd">
 													<div align="center">
-														<s:if test='%{glCode != ""}'>
-															<s:if test='%{displayBold == true}'>
-																<strong><s:property value="glCode" /></strong>
-															</s:if>
-															<s:else>
-																<s:property value="glCode" />
+														<c:if test='%{glCode != ""}'>
+															<c:if test='%{displayBold == true}'>
+																<strong>${glCode}</strong>
+															</c:if>
+															<c:otherwise>
+																${glCode}
 															</s:else>
-														</s:if>
+														</c:if>
 														&nbsp;
 													</div>
 												</td>
 												<td class="blueborderfortd">
 													<div align="left">
-														<s:if test='%{displayBold == true}'>
-															<strong><s:property value="accountName" /></strong>
-														</s:if>
-														<s:else>
-															<s:property value="accountName" />
+														<c:if test='%{displayBold == true}'>
+															<strong>${accountName}</strong>
+														</c:if>
+														<c:otherwise>
+															${accountName}
 														</s:else>
 														&nbsp;
 													</div>
 												</td>
-												<s:if test="%{balanceSheet.funds.size()>1}">
-													<s:iterator value="balanceSheet.funds" status="stat">
+												<c:if test="%{balanceSheet.funds.size()>1}">
+													<c:forEach value="balanceSheet.funds" status="stat">
 														<td class="blueborderfortd">
 															<div align="right">
-																<s:property value="fundWiseAmount[name]" />
+																${fundWiseAmount[name]}
 																&nbsp;
 															</div>
 														</td>
-													</s:iterator>
-												</s:if>
+													</c:forEach>
+												</c:if>
 												<td class="blueborderfortd">
 													<div align="right">
-														<s:if test='%{displayBold == true}'>
-															<strong><s:if test='%{currentYearTotal != 0}'>
-																	<s:property value="currentYearTotal" />
-																</s:if>
-																<s:else>0.0</s:else></strong>
-														</s:if>
-														<s:else>
-															<s:if test='%{currentYearTotal != 0}'>
+														<c:if test='%{displayBold == true}'>
+															<strong><c:if test='%{currentYearTotal != 0}'>
+																	${currentYearTotal}
+																</c:if>
+																<c:otherwise>0.0</s:else></strong>
+														</c:if>
+														<c:otherwise>
+															<c:if test='%{currentYearTotal != 0}'>
 																<a href="javascript:void(0);"
-																	onclick='return showDetails(<s:property value="glCode"/>)'><s:property
+																	onclick='return showDetails(${glCode})'><s:property
 																		value="currentYearTotal" /></a>
-															</s:if>
-															<s:else>0.0</s:else>
+															</c:if>
+															<c:otherwise>0.0</s:else>
 														</s:else>
 														&nbsp;
 													</div>
 												</td>
 												<td class="blueborderfortd">
 													<div align="right">
-														<s:if test='%{displayBold == true}'>
-															<strong><s:if test='%{previousYearTotal != 0}'>
-																	<s:property value="previousYearTotal" />
-																</s:if>
-																<s:else>0.0</s:else></strong>
-														</s:if>
-														<s:else>
-															<s:if test='%{previousYearTotal != 0}'>
+														<c:if test='%{displayBold == true}'>
+															<strong><c:if test='%{previousYearTotal != 0}'>
+																	${previousYearTotal}
+																</c:if>
+																<c:otherwise>0.0</s:else></strong>
+														</c:if>
+														<c:otherwise>
+															<c:if test='%{previousYearTotal != 0}'>
 																<a href="javascript:void(0);"
-																	onclick='return showPreviousYearDetails(<s:property value="glCode"/>)'><s:property
+																	onclick='return showPreviousYearDetails(${glCode})'><s:property
 																		value="previousYearTotal" /></a>
-															</s:if>
-															<s:else>0.0</s:else>
+															</c:if>
+															<c:otherwise>0.0</s:else>
 														</s:else>
 														&nbsp;
 													</div>
 												</td>
 											</tr>
-										</s:iterator>
+										</c:forEach>
 									</table>
 								</div>
 							</td>
 						</tr>
 					</table>
-					</s:if>
+					</c:if>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,20 +56,20 @@
 <title>Generate PJV</title>
 </head>
 <body>
-	<s:form action="preApprovedVoucher" theme="simple">
+	<form:form action="preApprovedVoucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Generate PJV" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">Generate PJV</div>
 			<br />
 			<div align="left">
-				<s:if test="%{shouldShowHeaderField('department')}">
-					<strong><s:text name="voucher.department" /> : </strong>
-					<s:property value="%{getCurrentDepartment().deptName}" />
-				</s:if>
+				<c:if test="%{shouldShowHeaderField('department')}">
+					<strong><!-- TODO: Manual migration required for custom Struts tag --> : </strong>
+					${%{getCurrentDepartment().deptName}}
+				</c:if>
 			</div>
 			<br />
 			<div id="listid" style="display: block">
@@ -81,20 +83,20 @@
 						<th class="bluebgheadtd">Passed Amount</th>
 						<th class="bluebgheadtd">Expenditure Type</th>
 					</tr>
-					<s:iterator var="p" value="preApprovedVoucherList" status="s">
+					<c:forEach var="p" value="preApprovedVoucherList" status="s">
 						<tr>
-							<td><s:property value="#s.index+1" /></td>
+							<td>${#s.index+1}</td>
 							<td><a
-								href="preApprovedVoucher!voucher.action?billid=<s:property value='%{id}'/>"><s:property
+								href="preApprovedVoucher!voucher.action?billid=<!-- TODO: Manual migration required for custom Struts tag -->"><s:property
 										value="%{billnumber}" /> </a></td>
-							<td><s:date name="%{billdate}" format="dd/MM/yyyy" /></td>
+							<td><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<td style="text-align: right"><s:property
 									value="%{billamount}" /></td>
 							<td style="text-align: right"><s:property
 									value="%{passedamount}" /></td>
-							<td><s:property value="%{expendituretype}" /></td>
+							<td>${%{expendituretype}}</td>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
 			</div>
 			<div class="buttonbottom" id="buttondiv">
@@ -102,6 +104,6 @@
 					onclick="javascript:window.close()" class="button" />
 				</td>
 			</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

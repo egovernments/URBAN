@@ -69,11 +69,9 @@ import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.egov.infra.admin.master.entity.Action.SEQ_ACTION;
-
 @Entity
 @Table(name = "eg_action")
-@SequenceGenerator(name = SEQ_ACTION, sequenceName = SEQ_ACTION, allocationSize = 1)
+@SequenceGenerator(name = Action.SEQ_ACTION, sequenceName = Action.SEQ_ACTION, allocationSize = 1)
 @Cacheable
 public class Action extends AbstractAuditable {
 

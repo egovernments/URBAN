@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 		var serviceName = jQuery("#serviceName").val();
 		if (serviceName != null && serviceName != ''
 				&& !serviceName.match(/[a-z]/i)) {
-			dom.get("error_area").innerHTML = '<s:text name="masters.serviceCategory.serviceCategoryNameValidation" />'
+			dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->'
 					+ '<br>';
 			dom.get("error_area").style.display = "block";
 			dom.get("remerror").style.display = "none";
@@ -72,13 +74,13 @@
 	<br />
 	<table width="100%" border="0" cellspacing="0" cellpadding="0"
 		style="max-width: 960px; margin: 0 auto; border-collapse: separate; border-spacing: 10px;">
-		<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<tr>
 			<td class="greybox">&nbsp;</td>
 			<td class="greybox"><label for="serviceCategoryName"><s:text
 						name="masters.serviceCategory.serviceCategoryName" /><span
 					class="mandatory1">*</span> :</label></td>
-			<td class="greybox"><s:textfield label="serviceCategoryName"
+			<td class="greybox"><form:input label="serviceCategoryName"
 					id="serviceName" name="model.name" /></td>
 		</tr>
 		<tr>
@@ -86,7 +88,7 @@
 			<td class="greybox"><label for="serviceCode"><s:text
 						name="masters.serviceCategory.servicCategoryeCode" /><span
 					class="mandatory1">*</span> :</label></td>
-			<td class="greybox"><s:textfield label="servicCategoryeCode"
+			<td class="greybox"><form:input label="servicCategoryeCode"
 					cssClass="form-control patternvalidation"
 					data-pattern="alphanumericwithspace" name="model.code" /></td>
 		</tr>
@@ -94,7 +96,7 @@
 			<td class="greybox">&nbsp;</td>
 			<td class="greybox"><label for="isActive"><s:text
 						name="masters.serviceCategory.serviceIsEnable/Disable" /> :</label></td>
-			<td class="greybox"><s:checkbox label="ischecked"
+			<td class="greybox"><form:checkbox label="ischecked"
 					name="model.isActive" id="isActive" /></td>
 		</tr>
 	</table>

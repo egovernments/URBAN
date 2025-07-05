@@ -9,7 +9,9 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.StreamUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RestTemplateLoggerInterceptor implements ClientHttpRequestInterceptor {
 
     private static final Logger LOGGER = Logger.getLogger(RestTemplateLoggerInterceptor.class);

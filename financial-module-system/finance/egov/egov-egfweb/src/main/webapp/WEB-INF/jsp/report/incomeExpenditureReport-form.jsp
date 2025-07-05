@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,7 +61,7 @@
 					class="tablebottom" width="100%">
 					<tr>
 						<td class="bluebgheadtd" width="100%"  colspan="12">
-							<s:property value="scheduleheading" /> </strong>
+							${scheduleheading} </strong>
 						</td>
 					</tr>
 					<tr>
@@ -68,7 +70,7 @@
 									format="dd/MM/yyyy" /></strong></td>
 						<td colspan="12">
 							<div class="blueborderfortd" align="right">
-								<strong> <s:text name="report.amount.in" /> <s:property
+								<strong> <!-- TODO: Manual migration required for custom Struts tag --> <s:property
 										value="model.currency" />&nbsp;&nbsp;&nbsp;&nbsp;
 								</strong>
 							</div>
@@ -76,89 +78,89 @@
 					</tr>
 
 					<tr>
-						<th class="bluebgheadtd"><s:text name="report.accountCode" /></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						<th class="bluebgheadtd" width="20%"><s:text
 								name="report.headOfAccount" /></th>
-						<s:iterator value="incomeExpenditureStatement.funds" status="stat">
+						<c:forEach value="incomeExpenditureStatement.funds" status="stat">
 							<th class="bluebgheadtd" colspan="2"><s:property
 									value="name" />(Rs)</th>
-						</s:iterator>
+						</c:forEach>
 					</tr>
 					<tr>
-						<th class="bluebgheadtd"><s:text name="" /></th>
-						<th class="bluebgheadtd"><s:text name="" /></th>
-						<s:iterator value="incomeExpenditureStatement.funds" status="stat">
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<c:forEach value="incomeExpenditureStatement.funds" status="stat">
 							<th class="bluebgheadtd" width="15%" align="center" colspan="1"><s:text
 									name="report.currentTotals" /> <s:property
 									value="currentYearToDate" /></th>
 							<th class="bluebgheadtd" width="15%" align="center" colspan="1"><s:text
 									name="report.previousTotals" /> <s:property
 									value="previousYearToDate" /></th>
-						</s:iterator>
+						</c:forEach>
 					</tr>
 					</tr>
-					<s:iterator value="incomeExpenditureStatement.ieEntries"
+					<c:forEach value="incomeExpenditureStatement.ieEntries"
 						status="stat">
 						<tr>
 							<td class="blueborderfortd">
 								<div align="center">
-									<s:if test='%{glCode != ""}'>
-										<s:if test='%{displayBold == true}'>
-											<strong><s:property value="glCode" /></strong>
-										</s:if>
-										<s:else>
-											<s:property value="glCode" />
+									<c:if test='%{glCode != ""}'>
+										<c:if test='%{displayBold == true}'>
+											<strong>${glCode}</strong>
+										</c:if>
+										<c:otherwise>
+											${glCode}
 										</s:else>
-									</s:if>
+									</c:if>
 									&nbsp;
 								</div>
 							</td>
 							<td class="blueborderfortd">
 								<div align="left">
-									<s:if test='%{displayBold == true}'>
-										<strong><s:property value="accountName" /></strong>
-									</s:if>
-									<s:else>
-										<s:property value="accountName" />
+									<c:if test='%{displayBold == true}'>
+										<strong>${accountName}</strong>
+									</c:if>
+									<c:otherwise>
+										${accountName}
 									</s:else>
 									&nbsp;
 								</div>
 							</td>
-							<s:iterator value="incomeExpenditureStatement.funds"
+							<c:forEach value="incomeExpenditureStatement.funds"
 								status="stat">
-								<s:if
+								<c:if
 									test='%{accountName == "Total" || accountName == "Schedule Total"}'>
 									<td class="blueborderfortd">
 										<div align="right">
-											<strong><s:property value="netAmount[name]" /></strong>
+											<strong>${netAmount[name]}</strong>
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="right">
-											<strong><s:property value="previousYearAmount[name]" /></strong>
+											<strong>${previousYearAmount[name]}</strong>
 										</div>
 									</td>
-								</s:if>
-								<s:else>
+								</c:if>
+								<c:otherwise>
 									<td class="blueborderfortd">
 										<div align="right">
 											<a href="javascript:void(0);"
-												onclick='return showDetail(<s:property value="glCode"/>,"<s:property value="id"/>","<s:property value="currentYearToDate"/>","<s:property value="currentYearFromDate"/>")'><s:property
+												onclick='return showDetail(${glCode},"${id}","${currentYearToDate}","${currentYearFromDate}")'><s:property
 													value="netAmount[name]" /></a>&nbsp;
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="right">
 											<a href="javascript:void(0);"
-												onclick='return showDetail(<s:property value="glCode"/>,"<s:property value="id"/>","<s:property value="previousYearToDate"/>","<s:property value="previousYearFromDate"/>")'><s:property
+												onclick='return showDetail(${glCode},"${id}","${previousYearToDate}","${previousYearFromDate}")'><s:property
 													value="previousYearAmount[name]" /></a>&nbsp;
 										</div>
 									</td>
 								</s:else>
-							</s:iterator>
+							</c:forEach>
 
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
 			</div>
 		</td>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -57,17 +59,17 @@
 <body>
 <div class="subheadnew">
 </div>
-    <s:if test="%{hasErrors()}">
+    <c:if test="%{hasErrors()}">
         <div class="errorstyle">
-          <s:actionerror/>
-          <s:fielderror/>
+          <!-- TODO: Manual migration required for custom Struts tag -->
+          <!-- TODO: Manual migration required for custom Struts tag -->
         </div>
-    </s:if>
-    <s:if test="%{hasActionMessages()}">
+    </c:if>
+    <c:if test="%{hasActionMessages()}">
         <div class="messagestyle">
-        	<s:actionmessage theme="simple"/>        	
+        	<!-- TODO: Manual migration required for custom Struts tag -->        	
         </div>
-    </s:if>
+    </c:if>
 
 </body>
 	

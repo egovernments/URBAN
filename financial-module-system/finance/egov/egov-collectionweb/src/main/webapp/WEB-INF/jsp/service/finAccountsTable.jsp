@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -97,21 +99,21 @@
 			}
 		}
 		
-		<s:iterator value="accountDetails" status="stat">
+		<c:forEach value="accountDetails" status="stat">
 				accountsDetailTable.addRow({SlNo:accountsDetailTable.getRecordSet().getLength()+1,
-					"glcodeid":'<s:property value="glCodeId.id"/>',
-					"glcode":'<s:property value="glCodeId.glcode"/>',
-					"accounthead":'<s:property value="glCodeId.name"/>',
-					"amount":'<s:property value="%{amount}"/>'
+					"glcodeid":'${glCodeId.id}',
+					"glcode":'${glCodeId.glcode}',
+					"accounthead":'${glCodeId.name}',
+					"amount":'${%{amount}}'
 					
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridAccounts('glCodeId.id',index,'<s:property value="glCodeId.id"/>');
-				updateGridAccounts('glCodeId.glcode',index,'<s:property value="glCodeId.glcode"/>');
-				updateGridAccounts('glCodeId.name',index,'<s:property value="glCodeId.name"/>');
-				updateGridAccounts('amount',index,'<s:property value="amount"/>');
+				var index = '${#stat.index}';
+				updateGridAccounts('glCodeId.id',index,'${glCodeId.id}');
+				updateGridAccounts('glCodeId.glcode',index,'${glCodeId.glcode}');
+				updateGridAccounts('glCodeId.name',index,'${glCodeId.name}');
+				updateGridAccounts('amount',index,'${amount}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 
 	}
 	
@@ -165,31 +167,31 @@
 				subLedgersTable.hideColumn('Delete');
 			}
 		}
-		<s:iterator value="subledgerDetails" status="stat">
+		<c:forEach value="subledgerDetails" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"glcode":'<s:property value=".serviceAccountDetail.glCodeId.glcode"/>',
-					"serviceAccountDetail.glCodeId.id":'<s:property value="serviceAccountDetail.glCodeId.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailType.name":'<s:property value="detailType.name" />',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKeyId"/>',
-					"detailKey":'<s:property value="detailKey" />',
-					"amount":'<s:property value="%{amount}"/>'
+					"glcode":'${.serviceAccountDetail.glCodeId.glcode}',
+					"serviceAccountDetail.glCodeId.id":'${serviceAccountDetail.glCodeId.id}',
+					"detailType.id":'${detailType.id}',
+					"detailType.name":'${detailType.name}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKeyId}',
+					"detailKey":'${detailKey}',
+					"amount":'${%{amount}}'
 					
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateSLGrid('serviceAccountDetail.glCodeId.glcode',index,'<s:property value="serviceAccountDetail.glCodeId.glcode"/>');
-				updateSLGrid('serviceAccountDetail.glCodeId.id',index,'<s:property value="serviceAccountDetail.glCodeId.id"/>');
+				var index = '${#stat.index}';
+				updateSLGrid('serviceAccountDetail.glCodeId.glcode',index,'${serviceAccountDetail.glCodeId.glcode}');
+				updateSLGrid('serviceAccountDetail.glCodeId.id',index,'${serviceAccountDetail.glCodeId.id}');
 				 setTimeout(function(){
-					 updateSLDetailDropdown('detailType.id',index,'<s:property value="detailType.id"/>');
+					 updateSLDetailDropdown('detailType.id',index,'${detailType.id}');
 					 }, 1000);
-				updateSLGrid('detailType.name',index,'<s:property value="detailType.name"/>');
-				updateSLGrid('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGrid('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGrid('detailKey',index,'<s:property value="detailKey" />');
-				updateSLGrid('amount',index,'<s:property value="amount"/>');
+				updateSLGrid('detailType.name',index,'${detailType.name}');
+				updateSLGrid('detailCode',index,'${detailCode}');
+				updateSLGrid('detailKeyId',index,'${detailKeyId}');
+				updateSLGrid('detailKey',index,'${detailKey}');
+				updateSLGrid('amount',index,'${amount}');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 		
 	}
 
@@ -239,13 +241,13 @@ success: function(o) {
 		
 			// logic to re-populate the account code in the account code drop down in the subledger table data grid.
 			// basicaly required when validation fails.
-			<s:iterator value="subledgerDetails" status="stat">
-				if('<s:property value="serviceAccountDetail.glCodeId.id"/>' !="" || '<s:property value="serviceAccountDetail.glCodeId.id"/>' !=0){
-					var index = '<s:property value="#stat.index"/>';
-					updateGridSLDropdownGL('serviceAccountDetail.glCodeId.id',index,'<s:property value="serviceAccountDetail.glCodeId.id"/>');
+			<c:forEach value="subledgerDetails" status="stat">
+				if('${serviceAccountDetail.glCodeId.id}' !="" || '${serviceAccountDetail.glCodeId.id}' !=0){
+					var index = '${#stat.index}';
+					updateGridSLDropdownGL('serviceAccountDetail.glCodeId.id',index,'${serviceAccountDetail.glCodeId.id}');
 				}
 				
-			</s:iterator>
+			</c:forEach>
     },
     failure: function(o) {
     	bootbox.alert('failure');
@@ -298,12 +300,12 @@ success: function(o) {
 				d.options[0].value=0;
 			}
 		} 	
-			<s:iterator value="subledgerDetails" status="stat">
-			if('<s:property value="detailType.id"/>' !="" || '<s:property value="detailType.id"/>' !=0){
-				var index = '<s:property value="#stat.index"/>';
-				updateSLDetailDropdown('detailType.id',index,'<s:property value="detailType.id"/>');
+			<c:forEach value="subledgerDetails" status="stat">
+			if('${detailType.id}' !="" || '${detailType.id}' !=0){
+				var index = '${#stat.index}';
+				updateSLDetailDropdown('detailType.id',index,'${detailType.id}');
 			}
-			</s:iterator>
+			</c:forEach>
     },
     failure: function(o) {
     	bootbox.alert('failure');

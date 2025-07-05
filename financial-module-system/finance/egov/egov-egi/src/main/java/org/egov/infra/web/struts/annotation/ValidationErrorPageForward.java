@@ -48,7 +48,7 @@
 
 package org.egov.infra.web.struts.annotation;
 
-import com.opensymphony.xwork2.validator.ValidationInterceptor;
+// TODO: Migrate from Struts/XWork: // import com.opensymphony.xwork2.validator.ValidationInterceptor; // TODO: Migrate from Struts/XWork
 import org.egov.infra.validation.exception.ValidationException;
 
 import java.lang.annotation.ElementType;
@@ -71,13 +71,13 @@ import java.lang.annotation.Target;
  * (f) Method signature should not contain parameter.
  * e.g.
  * <code>
- * @ValidationErrorPageForward(forwarderMethod="getResult")
+// TODO: Migrate from Struts/XWork:  * @ValidationErrorPageForward(forwarderMethod="getResult")
  * public String save() {
  * 		//.......
  * 		//do your code
  * }
  * 
- * public String getResult() {
+// TODO: Migrate from Struts/XWork:  * public String getResult() {
  * 		//.... do your code
  * 		return your result name;
  * }

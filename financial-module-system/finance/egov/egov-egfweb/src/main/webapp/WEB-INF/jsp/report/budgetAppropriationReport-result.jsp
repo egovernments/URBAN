@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,7 +50,7 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{budgetDisplayList.size()>0}">
+<c:if test="%{budgetDisplayList.size()>0}">
 	<div id="result"
 		style="width: 1250px; overflow-x: auto; overflow-y: hidden;">
 		<br />
@@ -60,12 +62,12 @@
 						<br />
 						<tr>
 							<th class="bluebgheadtd" width="100%" colspan="9"><strong
-								style="font-size: 15px;"> <s:property value="heading" /></strong></th>
+								style="font-size: 15px;"> ${heading}</strong></th>
 						</tr>
 						<tr>
 							<td colspan="9">
 								<div class="blueborderfortd" align="right">
-									<strong> <s:text name="report.amount.in.rupees" />
+									<strong> <!-- TODO: Manual migration required for custom Struts tag -->
 										&nbsp;&nbsp;
 									</strong>
 								</div>
@@ -81,97 +83,97 @@
 							class="tablebottom" width="100%">
 							<tr>
 								<th class="bluebgheadtd">Sl No</th>
-								<s:if test='%{isFundSelected == "false"}'>
-									<th class="bluebgheadtd"><s:text name="report.fund" /></th>
-								</s:if>
-								<s:if test='%{isFunctionSelected == "false"}'>
-									<th class="bluebgheadtd"><s:text name="report.function" /></th>
-								</s:if>
-								<s:if test='%{isDepartmentSelected == "false"}'>
-									<th class="bluebgheadtd"><s:text name="report.department" /></th>
-								</s:if>
-								<th class="bluebgheadtd"><s:text name="report.budgetHead" /></th>
+								<c:if test='%{isFundSelected == "false"}'>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								</c:if>
+								<c:if test='%{isFunctionSelected == "false"}'>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								</c:if>
+								<c:if test='%{isDepartmentSelected == "false"}'>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								</c:if>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 								<th class="bluebgheadtd"><s:text
 										name="report.budgetAppropriationNo" /></th>
 								<th class="bluebgheadtd"><s:text
 										name="report.appropriationDate" /></th>
-								<th class="bluebgheadtd"><s:property value="budgetName" /></th>
+								<th class="bluebgheadtd">${budgetName}</th>
 								<th class="bluebgheadtd"><s:text
 										name="report.budgetAdditionalAmount" /></th>
 								<th class="bluebgheadtd"><s:text
 										name="report.budgetDeductionAmount" /></th>
 							</tr>
 							</tr>
-							<s:iterator value="budgetDisplayList" status="stat">
+							<c:forEach value="budgetDisplayList" status="stat">
 								<tr>
 									<td class="blueborderfortd"><s:property
 											value="#stat.index+1" />&nbsp;</td>
-									<s:if test='%{isFundSelected == "false"}'>
+									<c:if test='%{isFundSelected == "false"}'>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="fund" /></td>
-									</s:if>
+												${fund}</td>
+									</c:if>
 
-									<s:if test='%{isFunctionSelected == "false"}'>
+									<c:if test='%{isFunctionSelected == "false"}'>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:property value="function" />
+												${function}
 											</div>
 										</td>
-									</s:if>
+									</c:if>
 
-									<s:if test='%{isDepartmentSelected == "false"}'>
+									<c:if test='%{isDepartmentSelected == "false"}'>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:property value="department" />
+												${department}
 											</div>
 										</td>
-									</s:if>
+									</c:if>
 
 									<td class="blueborderfortd">
 										<div align="left">
-											<s:property value="budgetHead" />
+											${budgetHead}
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="left">
-											<s:property value="budgetAppropriationNo" />
+											${budgetAppropriationNo}
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="center">
-											<s:date name="%{appropriationDate}" format="dd/MM/yyyy" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="right">
-											<s:property value="actualAmount" />
+											${actualAmount}
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="right">
-											<s:property value="additionAmount" />
+											${additionAmount}
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="right">
-											<s:property value="deductionAmount" />
+											${deductionAmount}
 										</div>
 									</td>
 
 
 								</tr>
-							</s:iterator>
+							</c:forEach>
 						</table>
 						<div class="buttonbottom">
-							<s:text name="report.export.options" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 							: <a
-								href='/EGF/report/budgetAppropriationReport-ajaxGenerateReportXls.action?showDropDown=false&model.budgetDetail.executingDepartment.id=<s:property value="model.budgetDetail.executingDepartment.id"/>&model.budgetDetail.fund.id=<s:property value="model.budgetDetail.fund.id"/>&model.budgetDetail.function.id=<s:property value="model.budgetDetail.function.id"/>&model.budgetDetail.budget.id=<s:property value="model.budgetDetail.budget.id"/>&fromDate=<s:property value="fromDate"/>&toDate=<s:property value="toDate"/>&budgetName=<s:property value="budgetName"/>&deptName=<s:property value="deptName"/>&fundName=<s:property value="fundName"/>&functionName=<s:property value="functionName"/>'>
+								href='/EGF/report/budgetAppropriationReport-ajaxGenerateReportXls.action?showDropDown=false&model.budgetDetail.executingDepartment.id=${model.budgetDetail.executingDepartment.id}&model.budgetDetail.fund.id=${model.budgetDetail.fund.id}&model.budgetDetail.function.id=${model.budgetDetail.function.id}&model.budgetDetail.budget.id=${model.budgetDetail.budget.id}&fromDate=${fromDate}&toDate=${toDate}&budgetName=${budgetName}&deptName=${deptName}&fundName=${fundName}&functionName=${functionName}'>
 								Excel</a> | <a
-								href='/EGF/report/budgetAppropriationReport-ajaxGenerateReportPdf.action?showDropDown=false&model.budgetDetail.executingDepartment.id=<s:property value="model.budgetDetail.executingDepartment.id"/>&model.budgetDetail.fund.id=<s:property value="model.budgetDetail.fund.id"/>&model.budgetDetail.function.id=<s:property value="model.budgetDetail.function.id"/>&model.budgetDetail.budget.id=<s:property value="model.budgetDetail.budget.id"/>&fromDate=<s:property value="fromDate"/>&toDate=<s:property value="toDate"/>&budgetName=<s:property value="budgetName"/>&deptName=<s:property value="deptName"/>&fundName=<s:property value="fundName"/>&functionName=<s:property value="functionName"/>'>PDF</a>
+								href='/EGF/report/budgetAppropriationReport-ajaxGenerateReportPdf.action?showDropDown=false&model.budgetDetail.executingDepartment.id=${model.budgetDetail.executingDepartment.id}&model.budgetDetail.fund.id=${model.budgetDetail.fund.id}&model.budgetDetail.function.id=${model.budgetDetail.function.id}&model.budgetDetail.budget.id=${model.budgetDetail.budget.id}&fromDate=${fromDate}&toDate=${toDate}&budgetName=${budgetName}&deptName=${deptName}&fundName=${fundName}&functionName=${functionName}'>PDF</a>
 						</div>
 					</div>
 					</div>
-					</div> </s:if> <s:else>
+					</div> </c:if> <c:otherwise>
 						<tr>
 							<td colspan="7"><div style="color: red" align="center">No
 									record Found.</div></td>

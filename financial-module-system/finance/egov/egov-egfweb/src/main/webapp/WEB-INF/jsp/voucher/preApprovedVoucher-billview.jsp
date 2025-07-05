@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,7 +57,7 @@
 <head>
 <meta http-equiv="Content-Type"
 	content="text/html; charset=windows-1252">
-<title><s:property value="type" /> JV-Create</title>
+<title>${type} JV-Create</title>
 </head>
 <script>
 	function checkBillIdBillview(){
@@ -64,7 +66,7 @@
 		//}else{
  			//document.getElementById('aa_approve').disabled=false;
  		//}
-		if('<s:property value="voucherHeader.id"/>' ==''){
+		if('${voucherHeader.id}' ==''){
 			document.getElementById('print').disabled=true;
 		}else{
 			document.getElementById('print').disabled=false;
@@ -76,23 +78,23 @@
 	function checkLength(obj){
 		if(obj.value.length>1024)
 		{
-			bootbox.alert('<s:text name="msg.max.120.character.are.allowed.remaining.chars.will.truncated"/>')
+			bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->')
 			obj.value = obj.value.substring(1,1024);
 		}
 	}
 	
 	function printEJV(){
-		var id = '<s:property value="voucherHeader.id"/>';
+		var id = '${voucherHeader.id}';
 		window.open("${pageContext.request.contextPath}/report/expenseJournalVoucherPrint-print.action?id="+id,'Print','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 	}
 	function printJV(){
-		var id = '<s:property value="voucherHeader.id"/>';
+		var id = '${voucherHeader.id}';
 		window.open("${pageContext.request.contextPath}/voucher/journalVoucherPrint-print.action?id="+id,'Print','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 	}
 function openSource(){
-	var url = '<s:property value='%{getSourcePath()}' />'
+	var url = '<!-- TODO: Manual migration required for custom Struts tag -->'
 	if(url!=null && url==""){
-		bootbox.alert("<s:text name='msg.source.not.available'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 		return false;
 	}
 	window.open(url,'Source','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')
@@ -111,8 +113,8 @@ if(voucherDate<=cutOffDate)
 	return true;
 }
 else{
-	var msg1='<s:text name="wf.vouchercutoffdate.message"/>';
-	var msg2='<s:text name="wf.cutoffdate.msg"/>';
+	var msg1='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var msg2='<!-- TODO: Manual migration required for custom Struts tag -->';
 	bootbox.alert(msg1+" "+document.getElementById("cutOffDate").value+" "+msg2);
 		return false;
 	}
@@ -129,14 +131,14 @@ function onSubmit()
         }));
 		return true;
 	}else{
-		bootbox.alert("<s:text name='msg.please.select.voucher.date'/> ");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag --> ");
 		return false;
 		}
 }
 
 </script>
 <body onload="checkBillIdBillview()">
-	<s:form action="preApprovedVoucher" theme="simple"
+	<form:form action="preApprovedVoucher" theme="simple"
 		name="preApprovedVoucher" id="preApprovedVoucher">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Bill Voucher -Create" />
@@ -144,28 +146,28 @@ function onSubmit()
 		<font style='color: red;'>
 			<p class="error-block" id="lblError" style="font: bold"></p>
 		</font>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
-		<span style="color: green;"><s:actionmessage /></span>
+		<span style="color: green;"><!-- TODO: Manual migration required for custom Struts tag --></span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-			<s:text name="lbl.generate.voucher.title">
-			<s:param><s:property value="type" /></s:param>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->${type}</s:param>
 			</s:text>
 			</div>
 			<div id="listid" style="display: block">
 				<br />
-				<s:if test="%{isShowVoucherDate()}">
+				<c:if test="%{isShowVoucherDate()}">
 					<div align="center">
 						<table border="0" width="100%" cellspacing="0">
 							<tr>
-								<td class="greybox" width="12%"><s:text name="voucher.date" /><span
+								<td class="greybox" width="12%"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory1">*</span></td>
 								<td class="greybox" width="25%">
 									<div name="daterow">
 										<s:date name="voucherDate" var="voucherDateId"
 											format="dd/MM/yyyy" />
-										<s:textfield id="voucherDate" name="voucherDate"
+										<form:input id="voucherDate" path="voucherDate"
 											class="form-control datepicker" data-date-end-date="0d" />
 									</div>
 								</td>
@@ -174,16 +176,16 @@ function onSubmit()
 							</tr>
 						</table>
 					</div>
-				</s:if>
+				</c:if>
 				<jsp:include page="voucherViewHeader.jsp" />
 
-				<s:hidden id="billid" name="billid" value="%{egBillregister.id}" />
-				<s:hidden id="vhid" name="vhid" value="%{voucherHeader.id}" />
-				<s:hidden id="id" name="id" value="%{voucherHeader.id}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 
 				<table align="center">
 					<tr class="bluebox">
-						<td><a href="#" onclick=" return openSource()"><s:text name="lbl.source"/> </a></td>
+						<td><a href="#" onclick=" return openSource()"><!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 					</tr>
 				</table>
 
@@ -191,38 +193,38 @@ function onSubmit()
 				<div align="center">
 					<table border="1" width="100%">
 						<tr>
-							<td colspan="5"><strong><s:text name="lbl.account.details"/> </strong></td>
+							<td colspan="5"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						</tr>
 						<tr>
-							<th class="bluebgheadtd" width="18%"><s:text name="lbl.function.name"/> </th>
-							<th class="bluebgheadtd" width="17%"><s:text name="account.code"/> </th>
-							<th class="bluebgheadtd" width="19%"><s:text name="lbl.account.head"/> </th>
-							<th class="bluebgheadtd" width="17%"><s:text name="billVoucher.approve.dbtamt" /></th>
-							<th class="bluebgheadtd" width="16%"><s:text name="billVoucher.approve.crdamt" /></th>
+							<th class="bluebgheadtd" width="18%"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+							<th class="bluebgheadtd" width="17%"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+							<th class="bluebgheadtd" width="19%"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+							<th class="bluebgheadtd" width="17%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="16%"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						</tr>
-						<s:iterator var="p" value="%{billDetails.tempList}" status="s">
+						<c:forEach var="p" value="%{billDetails.tempList}" status="s">
 							<tr>
 								<td width="18%" class="bluebox setborder"><s:property
 										value="function" /></td>
 								<td width="17%" style="text-align: center"
-									class="bluebox setborder"><s:property value="glcode" /></td>
+									class="bluebox setborder">${glcode}</td>
 								<td width="19%" class="bluebox setborder"><s:property
 										value="accounthead" /></td>
 								<td width="17%" class="bluebox setborder"
-									style="text-align: right"><s:text name="format.number">
-										<s:param value="%{debitamount}" />
+									style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 								<td width="16%" class="bluebox setborder"
-									style="text-align: right"><s:text name="format.number">
-										<s:param value="%{creditamount}" />
+									style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 								<c:set var="db" value="${db+debitamount}" />
 								<c:set var="cr" value="${cr+creditamount}" />
 							</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td class="greybox setborder" style="text-align: right"
-								colspan="3" /><s:text name="lbl.total"/>
+								colspan="3" /><!-- TODO: Manual migration required for custom Struts tag -->
 							</td>
 							<td class="greybox setborder" style="text-align: right"><fmt:formatNumber
 									value="${db}" pattern="#0.00" /></td>
@@ -230,74 +232,74 @@ function onSubmit()
 									value="${cr}" pattern="#0.00" /></td>
 						</tr>
 					</table>
-					<s:hidden name="actionName" id="actionName" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div align="center">
 					<table border="1" width="100%">
 						<tr>
-							<td colspan="5"><strong><s:text name="lbl.bill.payee.details"/> </strong></td>
+							<td colspan="5"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						</tr>
 						<tr>
-							<th class="bluebgheadtd" width="18%"><s:text name="account.code"/> </th>
-							<th class="bluebgheadtd" width="17%"><s:text name="lbl.detail.type"/> </th>
-							<th class="bluebgheadtd" width="19%"><s:text name="lbl.detail.key"/> </th>
-							<th class="bluebgheadtd" width="17%"><s:text name="billVoucher.approve.dbtamt" /></th>
-							<th class="bluebgheadtd" width="16%"><s:text name="billVoucher.approve.crdamt" /></th>
+							<th class="bluebgheadtd" width="18%"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+							<th class="bluebgheadtd" width="17%"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+							<th class="bluebgheadtd" width="19%"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+							<th class="bluebgheadtd" width="17%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="16%"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						</tr>
-						<s:iterator var="p" value="%{billDetails.payeeList}" status="s">
+						<c:forEach var="p" value="%{billDetails.payeeList}" status="s">
 							<tr>
 								<td width="17%" style="text-align: center"
-									class="bluebox setborder"><s:property value="glcode" /></td>
+									class="bluebox setborder">${glcode}</td>
 								<td width="19%" class="bluebox setborder"><s:property
 										value="detailtype" /></td>
 								<td width="17%" class="bluebox setborder"><s:property
 										value="detailkey" /></td>
 								<td width="16%" class="bluebox setborder"
-									style="text-align: right"><s:text name="format.number">
-										<s:param value="%{debitamount}" />
+									style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 								<td width="16%" class="bluebox setborder"
-									style="text-align: right"><s:text name="format.number">
-										<s:param value="%{creditamount}" />
+									style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
-				<s:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
+				<c:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
 					<%@include file="workflowApproval.jsp"%>
-				</s:if>
+				</c:if>
 				<div align="center">
 					<table border="0" width="100%">
 						<tr>
-							<td class="bluebox"><s:text name="lbl.comments"/> </td>
-							<td class="bluebox"><s:textarea name="comments"
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+							<td class="bluebox"><form:textarea path="comments"
 									id="comments" cols="150" rows="3" onblur="checkLength(this)" /></td>
-							<td><s:hidden id="methodName" name="methodName" value="save"/></td>
+							<td><!-- TODO: Manual migration required for custom Struts tag --></td>
 						</tr>
 						<br />
 					</table>
 				</div>
-				<s:if test="%{!mode.equalsIgnoreCase('save')}">
-					<s:hidden id="cutOffDate" name="cutOffDate" />
+				<c:if test="%{!mode.equalsIgnoreCase('save')}">
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					<%@ include file='../workflow/commonWorkflowMatrix.jsp'%>
 					<%@ include file='../workflow/commonWorkflowMatrix-button.jsp'%>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<div class="buttonbottom" align="center">
-						<input type="button" name="button2" id="button2" value="<s:text name='lbl.close'/>"
+						<input type="button" name="button2" id="button2" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							class="button" onclick="javascript:window.parent.postMessage('close','*');" />
 					</div>
 				</s:else>
 			</div>
 		</div>
-		<s:if test="%{hasErrors()}">
+		<c:if test="%{hasErrors()}">
 			<script>
 document.getElementById('id').value='';
 	</script>
-		</s:if>
-		<s:token />
-	</s:form>
+		</c:if>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 </body>
 
 </html>

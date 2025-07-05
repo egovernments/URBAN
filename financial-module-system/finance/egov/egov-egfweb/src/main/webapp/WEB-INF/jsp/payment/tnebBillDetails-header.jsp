@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -60,15 +62,15 @@
 <th class="bluebgheadtdnew">Net Amount</th>
 <th class="bluebgheadtdnew">Earlier Payment</th>
 <th class="bluebgheadtdnew">Payable Amount</th>
-<s:if test="%{!isFieldMandatory('fund')}">
+<c:if test="%{!isFieldMandatory('fund')}">
 	<th class="bluebgheadtdnew">Fund</th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('department')}">
+</c:if>
+<c:if test="%{shouldShowHeaderField('department')}">
 	<th class="bluebgheadtdnew">Department</th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('function')}">
+</c:if>
+<c:if test="%{shouldShowHeaderField('function')}">
 	<th class="bluebgheadtdnew">Function</th>
-</s:if>
+</c:if>
 <th class="bluebgheadtdnew">Region</th>
 
 

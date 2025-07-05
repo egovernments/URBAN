@@ -5,14 +5,14 @@ import java.util.List;
 public class ActionResponse {
 	
 	private ResponseInfo responseInfo;
-	private List<ActionContract> actions;
+	// TODO: Migrate from Struts/XWork: private List<ActionContract> actions;
 	
-	public ActionResponse(){}
+	// TODO: Migrate from Struts/XWork: public ActionResponse(){}
 
-	public ActionResponse(ResponseInfo responseInfo, List<ActionContract> actions) {
-		this.responseInfo = responseInfo;
-		this.actions = actions;
-	}
+	// TODO: Migrate from Struts/XWork: public ActionResponse(ResponseInfo responseInfo, List<ActionContract> actions) {
+	// 	this.responseInfo = responseInfo;
+	// 	this.actions = actions;
+	// }
 
 	public ResponseInfo getResponseInfo() {
 		return responseInfo;
@@ -22,12 +22,12 @@ public class ActionResponse {
 		this.responseInfo = responseInfo;
 	}
 
-	public List<ActionContract> getActions() {
-		return actions;
-	}
+	// TODO: Migrate from Struts/XWork: public List<ActionContract> getActions() {
+	// 	return actions;
+	// }
 
-	public void setActions(List<ActionContract> actions) {
-		this.actions = actions;
-	}
+	// TODO: Migrate from Struts/XWork: public void setActions(List<ActionContract> actions) {
+	// 	this.actions = actions;
+	// }
 	
 }

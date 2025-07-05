@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="budgetdetail" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" href="/services/EGF/resources/css/tabber.css?rnd=${app_release_no}"
 	TYPE="text/css">
 <script type="text/javascript" src="/services/EGF/resources/javascript/tabber.js?rnd=${app_release_no}"></script>
@@ -64,9 +66,9 @@
 <body>
 
 	<div style="color: red">
-		<s:actionmessage theme="simple" />
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
 
 	<input type="button" value="Close" onclick="javascript:window.close()"

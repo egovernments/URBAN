@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,7 +57,7 @@
 <html>
 <head>
 
-<title><s:text name="bank.branch.create.new" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <SCRIPT type="text/javascript">
     function checkuniquenessmicr(){
     	document.getElementById('micruniquemicr').style.display ='none';
@@ -68,53 +70,53 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="bank.branch.create" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: green">
-			<s:actionmessage theme="simple" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div class="errorstyle" style="display: none" id="micruniquemicr">
-			<s:text name="micr.code.already.exists" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
-		<s:form name="bankBranchForm" action="bankBranch" theme="simple">
-			<s:token />
-			<s:push value="model">
-				<s:hidden id="id" name="id" />
+		<form:form name="bankBranchForm" action="bankBranch" theme="simple">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="bluebox" width="10%"></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.name.select" /><span class="mandatory">*</span></td>
-						<td class="bluebox"><s:select list="dropdownData.bankList"
+						<td class="bluebox"><form:select list="dropdownData.bankList"
 								listKey="id" listValue="name" id="bank" name="bank"
-								headerKey="0" headerValue="--- Select ---" value="%{bank.id}"></s:select>
+								headerKey="0" headerValue="--- Select ---" value="%{bank.id}"></form:select>
 						</td>
 					</tr>
 					<tr>
 						<td class="greybox" width="10%"></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.branch.code" /></td>
-						<td class="greybox" width="46%"><s:textfield
+						<td class="greybox" width="46%"><form:input
 								id="bankBranch.branchcode" name="bankBranch.branchcode" /></td>
 						<td class="greybox" width="2%"><s:text
 								name="bank.create.isactive" /></td>
-						<td class="greybox"><s:checkbox id="isActive" name="isActive"
+						<td class="greybox"><form:checkbox id="isActive" path="isActive"
 								value="%{isActive}" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox" width="10%"></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.branch.name" /></td>
-						<td class="bluebox" width="46%"><s:textfield
+						<td class="bluebox" width="46%"><form:input
 								id="bankBranch.branchname" name="bankBranch.branchname" /></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.branch.micr" /></td>
-						<td class="bluebox" width="46%"><s:textfield id="branchMICR"
+						<td class="bluebox" width="46%"><form:input id="branchMICR"
 								name="branchMICR" onblur="checkuniquenessmicr();" /></td>
 						<egov:uniquecheck id="micruniquemicr" name="micruniquemicr"
 							fieldtoreset="branchMICR" fields="['Value']"
@@ -124,40 +126,40 @@
 						<td class="greybox" width="10%"></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.branch.addres.one" /></td>
-						<td class="greybox" width="46%"><s:textfield
+						<td class="greybox" width="46%"><form:input
 								id="bankBranch.branchaddress1" name="bankBranch.branchaddress1" /></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.branch.pin" /></td>
-						<td class="greybox" width="46%"><s:textfield
+						<td class="greybox" width="46%"><form:input
 								id="bankBranch.branchpin" name="bankBranch.branchpin" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox" width="10%"></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.branch.addres.two" /></td>
-						<td class="bluebox" width="46%"><s:textfield
+						<td class="bluebox" width="46%"><form:input
 								id="bankBranch.branchaddress2" name="bankBranch.branchaddress2" /></td>
 					</tr>
 					<tr>
 						<td class="greybox" width="10%"></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.branch.city" /></td>
-						<td class="greybox" width="46%"><s:textfield
+						<td class="greybox" width="46%"><form:input
 								id="bankBranch.branchcity" name="bankBranch.branchcity" /></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.branch.fax" /></td>
-						<td class="greybox" width="46%"><s:textfield
+						<td class="greybox" width="46%"><form:input
 								id="bankBranch.branchfax" name="bankBranch.branchfax" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox" width="10%"></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.branch.phone" /></td>
-						<td class="bluebox" width="46%"><s:textfield
+						<td class="bluebox" width="46%"><form:input
 								id="bankBranch.branchphone" name="bankBranch.branchphone" /></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.branch.contact.person" /></td>
-						<td class="bluebox" width="46%"><s:textfield
+						<td class="bluebox" width="46%"><form:input
 								id="bankBranch.contactperson" name="bankBranch.contactperson" /></td>
 					</tr>
 
@@ -167,7 +169,7 @@
 						<td class="greybox" width="10%"></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.branch.narration" /></td>
-						<td class="greybox"><s:textarea id="bankBranch.narration"
+						<td class="greybox"><form:textarea id="bankBranch.narration"
 								name="bankBranch.narration" style="width:470px" /></td>
 					</tr>
 
@@ -181,6 +183,6 @@
 						onclick="javascript:window.close()" class="button" />
 				</div>
 			</s:push>
-		</s:form>
+		</form:form>
 </body>
 </html>

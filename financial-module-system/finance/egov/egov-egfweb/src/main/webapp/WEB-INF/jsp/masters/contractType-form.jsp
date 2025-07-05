@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,25 +54,25 @@
 		<td class="bluebox">&nbsp;</td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="contract.code" /><span class="mandatory"></span></strong></td>
-		<td class="bluebox"><s:textfield id="code" name="code"
+		<td class="bluebox"><form:input id="code" path="code"
 				value="%{code}" maxlength="20" /></td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="contract.parent" /></strong></td>
-		<td class="bluebox"><s:select list="dropdownData.typeOfWorkList"
+		<td class="bluebox"><form:select list="dropdownData.typeOfWorkList"
 				id="typeOfWork.parentid.id" listKey="id" listValue="code"
 				name="typeOfWork.parentid.id" headerKey=""
 				headerValue="---- Choose ----" value="parentid.id">
-			</s:select></td>
+			</form:select></td>
 	</tr>
 	<tr>
 		<td class="greybox">&nbsp;</td>
 		<td class="greybox" width="20%"><strong><s:text
 					name="contract.applTo" /><span class="mandatory"></span></strong></td>
-		<td class="greybox"><s:select list="dropdownData.partyTypeList"
+		<td class="greybox"><form:select list="dropdownData.partyTypeList"
 				id="typeOfWork.egPartytype.id" listKey="id" listValue="code"
 				name="typeOfWork.egPartytype.id" headerKey=""
 				headerValue="---- Choose ----" value="egPartytype.id">
-			</s:select></td>
+			</form:select></td>
 		<td class="greybox" width="20%">&nbsp;</td>
 		<td class="greybox">&nbsp;</td>
 	</tr>
@@ -78,7 +80,7 @@
 		<td class="bluebox">&nbsp;</td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="contract.desc" /><span class="mandatory"></span></strong></td>
-		<td class="bluebox"><s:textarea maxlength="1000"
+		<td class="bluebox"><form:textarea maxlength="1000"
 				name="description" id="description" rows="3" cols="60" /></td>
 		<td class="bluebox" width="20%">&nbsp;</td>
 		<td class="bluebox">&nbsp;</td>

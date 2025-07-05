@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -83,7 +85,7 @@
 					<div class="show-row form-group" >
 						<label class="col-sm-3 control-label text-right"><spring:message code="lbl.approverdepartment" text="Approver Department"/><span class="mandatory"></span></label>
 						<div class="col-sm-3 add-margin">
-							<form:select path="approvalDepartment" data-first-option="false" name="approvalDepartment"
+							<form:select path="approvalDepartment" data-first-option="false" path="approvalDepartment"
 								id="approvalDepartment" cssClass="form-control"
 								cssErrorClass="form-control error" required="required">
 								<form:option value="">
@@ -96,7 +98,7 @@
 						<label class="col-sm-2 control-label text-right"><spring:message code="lbl.approverdesignation" text="Approver Designation"/><span class="mandatory"></span></label>
 						<div class="col-sm-3 add-margin">
 						<input type="hidden" id="approvalDesignationValue" value="${approvalDesignation }" />
-							<form:select path="" data-first-option="false" name="approvalDesignation"
+							<form:select path="" data-first-option="false" path="approvalDesignation"
 								id="approvalDesignation" cssClass="form-control" onfocus="callAlertForDepartment();"
 								cssErrorClass="form-control error" required="required">  
 								<form:option value="">
@@ -124,7 +126,7 @@
 					<div class="show-row form-group">
 						<label class="col-sm-3 control-label text-right"><spring:message code="lbl.comments" text="Comments"/></label>
 						<div class="col-sm-8 add-margin">
-							<form:textarea class="form-control" path="approvalComent"  id="approvalComent" name="approvalComent" />
+							<form:textarea class="form-control" path="approvalComent"  id="approvalComent" path="approvalComent" />
 						</div>
 					</div>
 				</div>

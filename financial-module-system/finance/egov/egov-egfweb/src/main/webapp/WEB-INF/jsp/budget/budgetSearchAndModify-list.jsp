@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="budget.search.modify" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
 	<script>
@@ -63,22 +65,22 @@
 	<jsp:include page="budgetHeader.jsp" />
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="budget.search.modify" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form action="budgetSearchAndModify" theme="simple">
-			<s:actionmessage />
+		<form:form action="budgetSearchAndModify" theme="simple">
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<%@ include file='budgetSearch-form.jsp'%>
 			<div class="buttonbottom" style="padding-bottom: 10px;">
-				<s:hidden name="mode" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:submit method="list" value="Search" cssClass="buttonsubmit"
 					onclick="document.getElementById('budgetDetail_budget').disabled = false;" />
-				<s:reset value="Cancel" cssClass="button" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:submit value="Close" onclick="javascript:window.close()"
 					cssClass="button" />
 			</div>
-		</s:form>
+		</form:form>
 
-		<s:if test="%{!budgetList.isEmpty()}">
+		<c:if test="%{!budgetList.isEmpty()}">
 			<div id="detail" width="100%">
 				<table align="center" border="0" cellpadding="0" cellspacing="0"
 					width="100%" class="tablebottom"
@@ -86,7 +88,7 @@
 					<tr>
 						<td colspan="9">
 							<div class="subheadsmallnew">
-								<strong><s:text name="budgetdetail.budget" /></strong>
+								<strong><!-- TODO: Manual migration required for custom Struts tag --></strong>
 							</div>
 						</td>
 					</tr>
@@ -99,45 +101,45 @@
 								name="budget.description" /></th>
 					</tr>
 
-					<s:iterator value="budgetList" status="stat">
+					<c:forEach value="budgetList" status="stat">
 						<tr>
 
 							<td class="blueborderfortd"><a
-								href='<s:url action="budgetSearchAndModify" method="modifyList"><s:param name="mode" value="%{mode}" />
+								href='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag -->
 							</s:url>'><s:property
 										value="name" /></a> &nbsp;</td>
 							<td class="blueborderfortd"><s:property
 									value="financialYear.finYearRange" />&nbsp;</td>
-							<td class="blueborderfortd"><s:property value="description" />&nbsp;</td>
+							<td class="blueborderfortd">${description}&nbsp;</td>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
 			</div>
-		</s:if>
-		<s:if test='%{message != ""}'>
+		</c:if>
+		<c:if test='%{message != ""}'>
 			<div class="error">
-				<s:property value="message" />
+				${message}
 			</div>
-		</s:if>
-		<s:if test="%{disableBudget}">
-			<s:hidden name="budget" id="hidden_budget" />
-		</s:if>
+		</c:if>
+		<c:if test="%{disableBudget}">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+		</c:if>
 		<script>
-			disable = <s:property value="disableBudget"/>;
+			disable = ${disableBudget};
 			if(disable){
 				document.getElementById('budgetDetail_budget').disabled = true;
-				document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>';
+				document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}';
 			}
-			<s:if test="%{showDetails}">
+			<c:if test="%{showDetails}">
 			var functionid="";
-			<s:if test="%{function.id!=0}">
-	   		   functionid=<s:property value="function.id"/>
-   		   </s:if>
-			var params='financialYear=<s:property value="financialYear"/>&department.id=<s:property value="department.id"/>&function='+functionid;
+			<c:if test="%{function.id!=0}">
+	   		   functionid=${function.id}
+   		   </c:if>
+			var params='financialYear=${financialYear}&department.id=${department.id}&function='+functionid;
     		params=params+'&onSaveOrForward=true&type=All';
     		var reportUrl="${pageContext.request.contextPath}/budget/budgetReport!getFunctionwiseReport.action?"+params;
     		window.open(reportUrl,"report");
-			</s:if>
+			</c:if>
 		</script>
 </body>
 </html>

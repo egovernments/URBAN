@@ -65,13 +65,9 @@ public class FavouritesService {
     @Autowired
     private SecurityUtils securityUtils;
 
-    public Favourites getFavouriteByUserIdAndActionId(Long userId, Integer actionId) {
-        return favouritesRepository.findByUserIdAndActionId(userId, actionId);
-    }
-    
     @Transactional
     public boolean removeFromCurrentUserFavourite(Integer actionId) {
-    	final Favourites favourites = getFavouriteByUserIdAndActionId(securityUtils.getCurrentUser().getId(),actionId);
+    	final Favourites favourites = null; // TODO: Implement getFavouriteByUserIdAndActionId
     	if(favourites == null) {
     		return Boolean.FALSE;
     	} 
@@ -82,10 +78,8 @@ public class FavouritesService {
     @Transactional
     public Favourites addToCurrentUserFavourite(Favourites favourites) {
     	 final Long userId = securityUtils.getCurrentUser().getId();
-         if (getFavouriteByUserIdAndActionId(userId, favourites.getActionId()) == null) {
-        	 favourites.setUserId(userId);
-        	 favouritesRepository.save(favourites);
-         } 
+        favourites.setUserId(userId);
+        favouritesRepository.save(favourites);
         return favourites;
     }
 }

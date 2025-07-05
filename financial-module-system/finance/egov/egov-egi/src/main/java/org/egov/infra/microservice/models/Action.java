@@ -55,6 +55,7 @@ public class Action {
 	private String queryParams;
 	private String parentModule;
 	private String serviceCode;
+
 	public Action(String name, String url, String displayName, Integer orderNumber, String queryParams,
 			String parentModule, String serviceCode) {
 		this.name = name;
@@ -65,8 +66,9 @@ public class Action {
 		this.parentModule = parentModule;
 		this.serviceCode = serviceCode;
 	}
-	public Action(){}
-	
+
+	public Action() {}
+
 	public String getName() {
 		return name;
 	}
@@ -122,12 +124,12 @@ public class Action {
 	public void setServiceCode(String serviceCode) {
 		this.serviceCode = serviceCode;
 	}
+
 	@Override
 	public String toString() {
 		return "Action [name=" + name + ", url=" + url + ", displayName=" + displayName + ", orderNumber=" + orderNumber
 				+ ", queryParams=" + queryParams + ", parentModule=" + parentModule + ", serviceCode=" + serviceCode
 				+ "]";
 	}
-
 }
 

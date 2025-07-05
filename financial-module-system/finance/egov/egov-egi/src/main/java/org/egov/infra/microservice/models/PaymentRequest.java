@@ -74,4 +74,31 @@ public class PaymentRequest {
     @JsonProperty("Payment")
     private Payment payment;
 
+    // Manual getter and setter methods since Lombok is not working properly
+    public RequestInfo getRequestInfo() { return requestInfo; }
+    public void setRequestInfo(RequestInfo requestInfo) { this.requestInfo = requestInfo; }
+    
+    public Payment getPayment() { return payment; }
+    public void setPayment(Payment payment) { this.payment = payment; }
+    
+    // Builder method
+    public static PaymentRequestBuilder builder() {
+        return new PaymentRequestBuilder();
+    }
+    
+    // Builder class
+    public static class PaymentRequestBuilder {
+        private RequestInfo requestInfo;
+        private Payment payment;
+        
+        public PaymentRequestBuilder requestInfo(RequestInfo requestInfo) { this.requestInfo = requestInfo; return this; }
+        public PaymentRequestBuilder payment(Payment payment) { this.payment = payment; return this; }
+        
+        public PaymentRequest build() {
+            PaymentRequest request = new PaymentRequest();
+            request.requestInfo = this.requestInfo;
+            request.payment = this.payment;
+            return request;
+        }
+    }
 }

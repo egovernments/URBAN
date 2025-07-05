@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,8 +61,8 @@
 	src="/services/EGF/resources/javascript/ajaxCommonFunctions.js?rnd=${app_release_no}"></script>
 </head>
 <body onload="onLoadTask_reverse">
-	<s:form action="contraBTB" theme="simple" name="cbtbform">
-		<s:push value="model">
+	<form:form action="contraBTB" theme="simple" name="cbtbform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Bank to Bank Transfer" name="heading" />
 			</jsp:include>
@@ -77,25 +79,25 @@
 					<p class="error-block" id="lblError"></p>
 				</font> <span class="mandatory">
 					<div id="Errors">
-						<s:actionerror />
-						<s:fielderror />
-					</div> <s:actionmessage />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
+					</div> <!-- TODO: Manual migration required for custom Struts tag -->
 				</span>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 					<tr>
-						<td width="10%" class="bluebox"><s:if
+						<td width="10%" class="bluebox"><c:if
 								test="%{shouldShowHeaderField('vouchernumber')}">
 								<td class="bluebox" width="22%"><s:text
 										name="voucher.number" /><span class="mandatory">*</span></td>
-								<td class="bluebox" width="22%"><s:textfield
+								<td class="bluebox" width="22%"><form:input
 										name="voucherNumber" id="voucherNumber" /></td>
-							</s:if> <s:hidden name="id" />
-						<td class="bluebox" width="18%"><s:text name="voucher.date" /><span
+							</c:if> <!-- TODO: Manual migration required for custom Struts tag -->
+						<td class="bluebox" width="18%"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory">*</span></td>
 						<td class="bluebox" width="34%"><input type:text
 							name="voucherDate"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
-							value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+							value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 							href="javascript:show_calendar('cbtbform.voucherDate');"
 							style="text-decoration: none">&nbsp;<img tabIndex="-1"
 								src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>(dd/mm/yyyy)</td>
@@ -103,16 +105,16 @@
 					<%@include file="contraBTB-form.jsp"%>
 					<tr>
 						<td class="bluebox"></td>
-						<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+						<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 
-							<td class="bluebox"><s:text name="reversalVoucherNumber" /><span
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory">*</span></td>
-							<td class="bluebox"><s:textfield
+							<td class="bluebox"><form:input
 									name="reversalVoucherNumber" id="reversalVoucherNumber" /></td>
-						</s:if>
-						<td class="bluebox"><s:text name="reversalVoucherDate" /><span
+						</c:if>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory">*</span></td>
-						<td class="bluebox"><s:textfield name="reversalVoucherDate"
+						<td class="bluebox"><form:input path="reversalVoucherDate"
 								id="reversalVoucherDate"
 								onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 							href="javascript:show_calendar('cbtbform.reversalVoucherDate');"
@@ -131,19 +133,19 @@
 			<input type="hidden" id="voucherTypeBean.cgnType"
 				name="voucherTypeBean.cgnType" value="BTB" />
 		</s:push>
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
  function onLoadTask_reverse() {
 		       
-				var button = '<s:property value="button"/>';
+				var button = '${button}';
 				bootbox.alert(button);
 				if (button != null && button != "") {
 				if (document.getElementById("Errors").innerHTML == '') {
-				bootbox.alert('<s:text name="contra.reverse.transaction.success"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 						if (button == "Reverse_Close") {
 							window.close();
 						} else if (button == "Reverse_View") {
-							var vhId = '<s:property value="vhId"/>';
+							var vhId = '${vhId}';
 							document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="
 									+ vhId;
 							document.forms[0].submit();

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <body>
-	<s:form action="budgetAppropriationRegisterReport" theme="simple"
+	<form:form action="budgetAppropriationRegisterReport" theme="simple"
 		name="budgetAppropriationRegister-Result">
 		
 			</br>
@@ -58,37 +60,37 @@
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<td class="greybox">BE - (<s:property value="finYearRange" />)
-							(Rs): <s:if test="%{isBeDefined==true}">
-								<s:text name="format.number">
-									<s:param value="%{beAmount}" />
+						<td class="greybox">BE - (${finYearRange})
+							(Rs): <c:if test="%{isBeDefined==true}">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
-							</s:if> <s:else>
-								<s:text name="report.budget.not.found" />
+							</c:if> <c:otherwise>
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:else></td>
-						<td class="greybox"><s:text name="report.additional.apprn" />
-							<s:if test="%{isBeDefined==true}">
-								<s:text name="format.number">
-									<s:param value="%{addtionalAppropriationForBe}" />
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+							<c:if test="%{isBeDefined==true}">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
-							</s:if> <s:else></s:else></td>
+							</c:if> <c:otherwise></s:else></td>
 						<td class="greybox" align="left">RE - (<s:property
-								value="finYearRange" />) (Rs):<s:if test="%{isReDefined==true}">
-								<s:text name="format.number">
-									<s:param value="%{reAmount}" />
+								value="finYearRange" />) (Rs):<c:if test="%{isReDefined==true}">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
-							</s:if> <s:else></s:else></td>
-						<s:if test="%{shouldShowREAppropriations}">
+							</c:if> <c:otherwise></s:else></td>
+						<c:if test="%{shouldShowREAppropriations}">
 							<td class="greybox"><s:text
 									name="report.additional.apprn.re" /> <s:text
 									name="format.number">
-									<s:param value="%{addtionalAppropriationForRe}" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
-						</s:if>
+						</c:if>
 					</tr>
 				</table>
 
-			<s:if test="%{updatedBdgtAppropriationRegisterList.size()>0}">
+			<c:if test="%{updatedBdgtAppropriationRegisterList.size()>0}">
 				<table width="99%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="bluebox">
@@ -111,80 +113,80 @@
 									<th class="bluebgheadtd">Voucher Date</th>
 									<th class="bluebgheadtd" colspan="3"></th>
 								</tr>
-								<s:iterator value="updatedBdgtAppropriationRegisterList"
+								<c:forEach value="updatedBdgtAppropriationRegisterList"
 									status="stat">
 									<tr>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="serailNumber" />
+												${serailNumber}
 											</div></td>
 										<td class="blueborderfortd"><div align="left">
-												<s:property value="bdgApprNumber" />
+												${bdgApprNumber}
 											</div></td>
 										</div>
-										<s:if test="%{billCreatedDate != null}">
+										<c:if test="%{billCreatedDate != null}">
 											<td class="blueborderfortd"><div align="left">
-													<s:date name="%{billCreatedDate}" format="dd/MM/yyyy" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
 													&nbsp;
 												</div></td>
-										</s:if>
-										<s:else>
+										</c:if>
+										<c:otherwise>
 											<td class="blueborderfortd"><div align="left">
-													<s:date name="%{createdDate}" format="dd/MM/yyyy" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
 													&nbsp;
 												</div></td>
 										</s:else>
 										<td class="blueborderfortd"><div align="left">
-												<s:property value="billNumber" />
+												${billNumber}
 												&nbsp;
 											</div></td>
 										<td class="blueborderfortd"><div align="left">
-												<s:date name="%{billDate}" format="dd/MM/yyyy" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
 												&nbsp;
 											</div></td>
 										<td class="blueborderfortd"><div align="left">
-												<s:property value="VoucherNumber" />
+												${VoucherNumber}
 												&nbsp;
 											</div></td>
 										<td class="blueborderfortd"><div align="left">
-												<s:date name="%{voucherDate}" format="dd/MM/yyyy" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
 												&nbsp;
 											</div></td>
 										<td class="blueborderfortd"><div align="right">
-												<s:text name="format.number">
-													<s:param value="%{billAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 												&nbsp;
 											</div></td>
 										<td class="blueborderfortd"><div align="right">
-												<s:text name="format.number">
-													<s:param value="%{cumulativeAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 												&nbsp;
 											</div></td>
 										<td class="blueborderfortd"><div align="right">
-												<s:text name="format.number">
-													<s:param value="%{balanceAvailableAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 												&nbsp;
 											</div></td>
 									</tr>
-								</s:iterator>
+								</c:forEach>
 							</table>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td align="center"><a
-							href='/services/EGF/report/budgetAppropriationRegisterReport-generatePdf.action?asOnDate=<s:property value="strAsOnDate"/>&department.code=<s:property value="department.code"/>&function.id=<s:property value="function.id"/>&budgetGroup.id=<s:property value="budgetGroup.id"/>&fund.id=<s:property value="fund.id"/>'>PDF
+							href='/services/EGF/report/budgetAppropriationRegisterReport-generatePdf.action?asOnDate=${strAsOnDate}&department.code=${department.code}&function.id=${function.id}&budgetGroup.id=${budgetGroup.id}&fund.id=${fund.id}'>PDF
 								| </a> <a
-							href='/services/EGF/report/budgetAppropriationRegisterReport-generateXls.action?asOnDate=<s:property value="strAsOnDate"/>&department.code=<s:property value="department.code"/>&function.id=<s:property value="function.id"/>&budgetGroup.id=<s:property value="budgetGroup.id"/>&fund.id=<s:property value="fund.id"/>'>Excel</a>
+							href='/services/EGF/report/budgetAppropriationRegisterReport-generateXls.action?asOnDate=${strAsOnDate}&department.code=${department.code}&function.id=${function.id}&budgetGroup.id=${budgetGroup.id}&fund.id=${fund.id}'>Excel</a>
 						</td>
 					</tr>
 					</td>
 					</tr>
 				</table>
-		</s:if>
+		</c:if>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 

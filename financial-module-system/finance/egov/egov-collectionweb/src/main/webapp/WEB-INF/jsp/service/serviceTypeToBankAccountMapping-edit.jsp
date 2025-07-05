@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <html>  
 <head>
 
-     <title><s:text name="serviceCategory.edit.title"/></title> 
+     <title><!-- TODO: Manual migration required for custom Struts tag --></title> 
 <script>
 function onSubmit(obj){
 	document.forms[0].action=obj;
@@ -61,36 +63,36 @@ function onSubmit(obj){
 </script> 
 </head>  
 	<body>  
-	<s:if test="%{hasErrors()}">
+	<c:if test="%{hasErrors()}">
 		<div class="errorstyle">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
-		<font style='color: green; font-weight: bold'> <s:actionmessage />
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
+		<font style='color: green; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag -->
 		</font>
-	</s:if>
+	</c:if>
 		<span>
 		              <font  style='color: red ; font-weight:bold ' size="2">
-                               <s:actionerror/>  
-                               <s:fielderror />
+                               <!-- TODO: Manual migration required for custom Struts tag -->  
+                               <!-- TODO: Manual migration required for custom Struts tag -->
                                </font>
           </span>
 		
-		<s:form action="serviceCategory" theme="simple" >  
+		<form:form action="serviceCategory" theme="simple" >  
 		   		<div class="subheadnew"></div>
-		   		<s:push value="model">
-		   <s:hidden name="id" id="id" value="%{id}"/> 
+		   		<!-- TODO: Manual migration required for custom Struts tag -->
+		   <!-- TODO: Manual migration required for custom Struts tag --> 
 			<div align="left" class="mandatory1"> &nbsp;&nbsp;&nbsp;&nbsp;* Mandatory Fields</div>
 	 		
 	 		<div class="buttonbottom">
-	 			<s:submit name="button1" cssClass="buttonsubmit" id="button32" onclick="return onSubmit('serviceTypeToBankAccountMapping-save.action');" value="Save"/>
+	 			<!-- TODO: Manual migration required for custom Struts tag -->
 				<input name="button2" type="submit" class="buttonsubmit" id="button" onclick="return onSubmit('serviceTypeToBankAccountMapping-list');" value="List"/>
-				<s:reset name="button3" cssClass="button" id="button" value="Reset"/>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input name="button4" type="button" class="button" id="button" onclick="window.close()" value="Close"/>
 			</div>
 			</s:push>
- 		</s:form>  
+ 		</form:form>  
     </body>  
 </html>

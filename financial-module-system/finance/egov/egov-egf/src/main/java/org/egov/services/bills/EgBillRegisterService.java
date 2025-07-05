@@ -202,7 +202,7 @@ public class EgBillRegisterService extends PersistenceService<EgBillregister, Lo
                 billregister.transition().progressWithStateCopy().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments())
                         .withStateValue(stateValue).withDateInfo(currentDate.toDate())
-                        .withOwner(wfInitiator.getPosition()).withNextAction(FinancialConstants.WF_STATE_EOA_Approval_Pending);
+                        .withOwner(wfInitiator.getPosition());
             }
 
         } else if (FinancialConstants.BUTTONAPPROVE.equalsIgnoreCase(workflowBean.getWorkFlowAction())) {
@@ -212,8 +212,7 @@ public class EgBillRegisterService extends PersistenceService<EgBillregister, Lo
             billregister.transition().progressWithStateCopy().withSenderName(user.getName())
                     .withComments(workflowBean.getApproverComments())
                     .withStateValue(wfmatrix.getCurrentDesignation() + " Approved").withDateInfo(currentDate.toDate())
-                    .withOwner(pos)
-                    .withNextAction(wfmatrix.getNextAction());
+                    .withOwner(pos);
 
             EgwStatus egwStatus = egwStatusHibernateDAO.getStatusByModuleAndCode(FinancialConstants.CONTINGENCYBILL_FIN,
                     FinancialConstants.CONTINGENCYBILL_APPROVED_STATUS);
@@ -234,21 +233,23 @@ public class EgBillRegisterService extends PersistenceService<EgBillregister, Lo
             if (null == billregister.getState()) {
                 final WorkFlowMatrix wfmatrix = billRegisterWorkflowService.getWfMatrix(billregister.getStateType(), null,
                         null, null, workflowBean.getCurrentState(), null);
-                billregister.transition().start().withSenderName(user.getName())
+                billregister.transition().start().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(workflowBean.getApproverComments())
                         .withStateValue(wfmatrix.getNextState()).withDateInfo(currentDate.toDate()).withOwner(pos)
-                        .withNextAction(wfmatrix.getNextAction());
-            } else if (billregister.getCurrentState().getNextAction().equalsIgnoreCase("END"))
-                billregister.transition().end().withSenderName(user.getName())
+                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_EXPENSE_BILL_DISPLAYNAME)
+                        .withCreatedBy(user.getId())
+                        .withtLastModifiedBy(user.getId());
+            } else if (billregister.getCurrentState().getValue().equalsIgnoreCase("END"))
+                billregister.transition().end().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(workflowBean.getApproverComments())
-                        .withDateInfo(currentDate.toDate());
+                        .withStateValue(FinancialConstants.WORKFLOW_STATE_CANCELLED).withDateInfo(currentDate.toDate())
+                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_EXPENSE_BILL_DISPLAYNAME);
             else {
                 final WorkFlowMatrix wfmatrix = billRegisterWorkflowService.getWfMatrix(billregister.getStateType(), null,
                         null, null, billregister.getCurrentState().getValue(), null);
                 billregister.transition().progressWithStateCopy().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments())
-                        .withStateValue(wfmatrix.getNextState()).withDateInfo(currentDate.toDate()).withOwner(pos)
-                        .withNextAction(wfmatrix.getNextAction());
+                        .withStateValue(wfmatrix.getNextState()).withDateInfo(currentDate.toDate()).withOwner(pos);
             }
         }
         return billregister;

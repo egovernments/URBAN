@@ -55,5 +55,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FavouritesRepository extends JpaRepository<Favourites, Long> {
 
-    Favourites findByUserIdAndActionId(Long userId, Integer actionId);
+// TODO: Migrate from Struts/XWork:     Favourites findByUserIdAndActionId(Long userId, Integer actionId);
 }

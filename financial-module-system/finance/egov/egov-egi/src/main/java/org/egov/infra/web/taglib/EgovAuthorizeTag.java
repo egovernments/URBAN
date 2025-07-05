@@ -48,9 +48,7 @@
 
 package org.egov.infra.web.taglib;
 
-import org.egov.infra.admin.master.entity.Action;
 import org.egov.infra.admin.master.entity.Role;
-import org.egov.infra.admin.master.service.ActionService;
 import org.egov.infra.security.utils.AuthorizeRule;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -68,7 +66,7 @@ import java.util.Set;
  * 
  * @author sahinab
  */
-public class EgovAuthorizeTag extends  RequestContextAwareTag {
+public class EgovAuthorizeTag extends RequestContextAwareTag {
 
 	/**
 	 * 
@@ -126,7 +124,6 @@ public class EgovAuthorizeTag extends  RequestContextAwareTag {
 	 */
 	@Override
 	public int doStartTagInternal() throws JspTagException {
-		Action action = null;
 		final Set userRoles = this.getPrincipalRoles();
 
 		// no params specified
@@ -140,23 +137,24 @@ public class EgovAuthorizeTag extends  RequestContextAwareTag {
 			 */
 		}
 		//
-		final ActionService rbacService = (ActionService) getRequestContext().getWebApplicationContext().getBean("actionService");
+		// TODO: Implement Spring equivalent for ActionService
+		// final ActionService rbacService = (ActionService) getRequestContext().getWebApplicationContext().getBean("actionService");
 
-		if (this.actionName != null) {
-			action = rbacService.getActionByName(this.actionName);
-		}
-		if (this.actionId != null) {
-			action = rbacService.getActionById(this.actionId);
-		}
-		if (action != null) {
-			// if user's role belongs to action roles
-			final Set actionRoles = action.getRoles();
-			final Set grantedCopy = this.retainAll(userRoles, actionRoles);
-			if (grantedCopy.isEmpty()) {
-				return Tag.SKIP_BODY;
-			}
-
-		}
+		// TODO: Implement action lookup logic
+		// if (this.actionName != null) {
+		//     action = rbacService.getActionByName(this.actionName);
+		// }
+		// if (this.actionId != null) {
+		//     action = rbacService.getActionById(this.actionId);
+		// }
+		// if (action != null) {
+		//     // if user's role belongs to action roles
+		//     final Set actionRoles = action.getRoles();
+		//     final Set grantedCopy = this.retainAll(userRoles, actionRoles);
+		//     if (grantedCopy.isEmpty()) {
+		//         return Tag.SKIP_BODY;
+		//     }
+		// }
 
 		return Tag.EVAL_BODY_INCLUDE;
 	}

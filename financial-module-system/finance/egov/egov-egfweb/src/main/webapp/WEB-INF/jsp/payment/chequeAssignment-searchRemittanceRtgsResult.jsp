@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -64,35 +66,35 @@
 	<script>
 		
 	</script>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading"
 				value="RTGS Ref. No Assignment Search for Auto Remittance Payment" />
 		</jsp:include>
-		<span class="error-msg"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="error-msg"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
 				RTGS Ref.No Assignment Search for Auto Remittance Payment
-				<s:if test="%{(drawingOfficerCode!=null)}"> for the drawingofficer - <s:property
+				<c:if test="%{(drawingOfficerCode!=null)}"> for the drawingofficer - <s:property
 						value="drawingOfficerCode" />
-				</s:if>
+				</c:if>
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0"
 				id="paymentTable">
 				<tr>
 					<th class="bluebgheadtdnew"><s:text
 							name="chq.assignment.select" />
-						<s:checkbox id="selectall" name="selectall"
+						<form:checkbox id="selectall" path="selectall"
 							onclick="checkAll(this)" /></th>
-					<th class="bluebgheadtdnew"><s:text name="Sl No" /></th>
+					<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
 
 					<th class="bluebgheadtdnew"><s:text
 							name="chq.assignment.department.name" /></th>
-					<s:if test="%{(drawingOfficerCode == null)}">
+					<c:if test="%{(drawingOfficerCode == null)}">
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.drawingofficer.name.tan" /></th>
-					</s:if>
+					</c:if>
 					<th class="bluebgheadtdnew"><s:text
 							name="chq.assignment.payment.voucherno" /></th>
 					<th class="bluebgheadtdnew"><s:text
@@ -101,14 +103,14 @@
 							name="chq.assignment.partycode" /></th>
 					<th class="bluebgheadtdnew"><s:text
 							name="chq.assignment.payment.amount" /></th>
-					<s:if test="%{nonSubledger == true}">
+					<c:if test="%{nonSubledger == true}">
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.voucher.details" /></th>
-					</s:if>
+					</c:if>
 
 				</tr>
-				<s:set var="counter" value="0" />
-				<s:iterator value="accountNoAndRemittanceRtgsEntryMap" status="stat">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<c:forEach value="accountNoAndRemittanceRtgsEntryMap" status="stat">
 					<tr>
 						<td class="greybox"><s:property
 								value="key.bankAccount.bankbranch.bank.name" /> - <s:property
@@ -124,69 +126,69 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<s:if test="%{nonSubledger == true}">
+						<c:if test="%{nonSubledger == true}">
 							<td></td>
-						</s:if>
+						</c:if>
 					</tr>
 					<tr>
 
-						<s:iterator value="value" status="s">
+						<c:forEach value="value" status="s">
 
 							<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 									id="voucherHeaderId"
 									name="rtgsList[%{#counter}].voucherHeaderId"
-									value="%{voucherHeaderId}" /> <s:checkbox
+									value="%{voucherHeaderId}" /> <form:checkbox
 									name="rtgsList[%{#counter}].isSelected"
 									id="isSelected%{#counter}" onclick="update(this)" /></td>
 							<td align="left" style="text-align: center"
-								class="blueborderfortdnew"><s:property value="#s.index+1" />
+								class="blueborderfortdnew">${#s.index+1}
 							</td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 									id="departmentName" name="rtgsList[%{#counter}].departmentName"
 									value="%{departmentName}" />
-								<s:property value="%{departmentName}" /></td>
-							<s:if test="%{(drawingOfficerCode == null)}">
+								${%{departmentName}}</td>
+							<c:if test="%{(drawingOfficerCode == null)}">
 								<td style="text-align: center" class="blueborderfortdnew">
 									<s:hidden id="drawingOfficerNameTAN"
 										name="rtgsList[%{#counter}].drawingOfficerNameTAN"
 										value="%{drawingOfficerNameTAN}" /> <s:property
 										value="%{drawingOfficerNameTAN}" />
 								</td>
-							</s:if>
+							</c:if>
 							<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 									id="voucherNumber" name="rtgsList[%{#counter}].voucherNumber"
 									value="%{voucherNumber}" /><a href="javascript:void(0);"
-								onclick='viewVoucher(<s:property value="voucherHeaderId"/>);'><s:property
+								onclick='viewVoucher(${voucherHeaderId});'><s:property
 										value="%{voucherNumber}" /></a>&nbsp;</td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 									id="voucherDate" name="rtgsList[%{#counter}].voucherDate"
 									value="%{voucherDate}" />
 								<s:date name="%{voucherDate}" var="tempPaymentDate"
 									format="dd/MM/yyyy" />
-								<s:date name="%{voucherDate}" format="dd/MM/yyyy" /> <s:hidden
+								<!-- TODO: Manual migration required for custom Struts tag --> <s:hidden
 									name="rtgsList[%{#counter}].tempPaymentDate"
 									value="%{tempPaymentDate}"></s:hidden></td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 									id="paidTo" name="rtgsList[%{#counter}].paidTo"
 									value="%{paidTo}" />
-								<s:property value="%{paidTo}" /></td>
+								${%{paidTo}}</td>
 							<td style="text-align: right" class="blueborderfortdnew"><s:hidden
 									id="paidAmount" name="rtgsList[%{#counter}].paidAmount"
 									value="%{paidAmount}" />
-								<s:text name="format.number">
-									<s:param value="%{paidAmount}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 							<s:hidden id="bankAccountId"
 								name="rtgsList[%{#counter}].bankAccountId"
 								value="%{bankAccountId}" />
-							<s:set var="counter" value="%{#counter+1}" />
-							<s:if test="%{nonSubledger == true}">
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<c:if test="%{nonSubledger == true}">
 								<td style="text-align: center" class="blueborderfortdnew"><a
 									href="javascript:void(0);"
-									onclick='viewReceiptDetails(<s:property value="voucherHeaderId"/>);'><s:text
+									onclick='viewReceiptDetails(${voucherHeaderId});'><s:text
 											name="chq.assignment.voucher.details" /></a>&nbsp;</td>
-							</s:if>
-						</s:iterator>
+							</c:if>
+						</c:forEach>
 					<tr>
 						<td></td>
 						<td></td>
@@ -194,15 +196,15 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<s:if test="%{ paymentMode=='rtgs'}">
-							<td class="greybox"><s:text name="chq.assignment.rtgs.date" /><span
-								class="mandatory">*</span> <s:textfield
+						<c:if test="%{ paymentMode=='rtgs'}">
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
+								class="mandatory">*</span> <form:input
 									id="rtgsdateMap[%{#count}]" name="rtgsdateMap[%{#count}]"
 									value="%{rtgsdateMap[#count]}" onchange="updateDate(this)"
 									onkeyup="DateFormat(this,this.value,event,false,'3')" /></td>
-						</s:if>
+						</c:if>
 					</tr>
-				</s:iterator>
+				</c:forEach>
 				</tr>
 			</table>
 			<div class="subheadsmallnew" id="noRecordsDiv"
@@ -214,7 +216,7 @@
 					value="%{selectedRows}" />
 				<s:hidden id="rtgsContractorAssignment"
 					name="rtgsContractorAssignment" value="%{rtgsContractorAssignment}" />
-				<s:hidden id="paymentMode" name="paymentMode" value="%{paymentMode}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 
 
 				<s:submit id="assignChequeBtn" method="update" value="Assign Cheque"
@@ -223,8 +225,8 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</div>
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script>
 			function update(obj)
 			{
@@ -255,9 +257,9 @@
 					return false;
 				}
 				
-				<s:if test="%{paymentMode=='rtgs'}">
+				<c:if test="%{paymentMode=='rtgs'}">
 					//result= validateForRtgsMode();  
-				</s:if>    
+				</c:if>    
 				
 								 
 				return true;                   
@@ -268,15 +270,15 @@
 				var chkCount=0;     
 				var index;
 				var isSelected=0;
-				<s:set var="listCount" value="0"/>
-				var chequeSize='<s:property value ="%{accountNoAndRtgsEntryMap.size()}"/>';
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				
-					<s:iterator value="accountNoAndRtgsEntryMap" status="stat">
-					<s:set var="accountId" value="key.bankAccount.id"/>
+					<c:forEach value="accountNoAndRtgsEntryMap" status="stat">
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				
-					<s:iterator value="value" status="s">
-					index='<s:property value="%{#listCount}"/>';       
-					chequeDate='<s:property value="%{rtgsdateMap[#accountId]}"/>';     
+					<c:forEach value="value" status="s">
+					index='${%{#listCount}}';       
+					chequeDate='${%{rtgsdateMap[#accountId]}}';     
 					var paymentDate= document.getElementsByName("value["+index+"].tempPaymentDate")[0].value; 
 						if(document.getElementById('isSelected'+index).checked){
 							chkCount++;                 
@@ -290,16 +292,16 @@
 								//bootbox.alert("hi"); 
 								return true;}                      
 						}                               
-					<s:set var="listCount" value="%{#listCount+1}"/>                      
-					</s:iterator>          
-				</s:iterator>
+					<!-- TODO: Manual migration required for custom Struts tag -->                      
+					</c:forEach>          
+				</c:forEach>
 				return true;           
 			}
 		
 			                
 			function checkAll(obj)
 			{        
-				var listSize='<s:property value ="%{#counter}"/>';                              
+				var listSize='<!-- TODO: Manual migration required for custom Struts tag -->';                              
 				if(obj.checked)
 				{                     
 					for(var j=0;j<listSize;j++)  {     

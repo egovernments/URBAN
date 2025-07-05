@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="bill.salarybill.register" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link href="/services/EGF/css/commonegov.css?rnd=${app_release_no}" rel="stylesheet" type="text/css" />
 <style type="text/css">
 #codescontainer {
@@ -156,8 +158,8 @@
 	src="${pageContext.request.contextPath}/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
 <SCRIPT type="text/javascript">
 	function onLoadTask(){
-		var close = '<s:property value="close"/>';
-		var message = '<s:property value="message"/>';
+		var close = '${close}';
+		var message = '${message}';
 		if(message!=""){
 			bootbox.alert(message);
 		}
@@ -168,12 +170,12 @@
 	</SCRIPT>
 </head>
 <body onload="onLoadTask();loadDropDownCodesFunction();">
-	<s:form action="salaryBillRegister" theme="simple" name="salaryBill">
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+	<form:form action="salaryBillRegister" theme="simple" name="salaryBill">
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bill.salarybill.register" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<%@ include file='salaryBillRegister-form.jsp'%>
 			<div class="buttonbottom">
@@ -187,6 +189,6 @@
 					value="Close" class="button" />
 			</div>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

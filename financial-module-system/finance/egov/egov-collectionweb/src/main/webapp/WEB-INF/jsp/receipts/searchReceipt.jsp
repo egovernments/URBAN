@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -51,7 +53,7 @@
 <%@ taglib prefix="egov-authz" uri="/WEB-INF/taglib/egov-authz.tld" %> 
 <link rel="stylesheet" type="text/css" href="<egov:url path='/yui/assets/skins/sam/autocomplete.css'/>" />
 <head>
-	<title><s:text name="searchreceipts.title"/></title>
+	<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script  >
 
 jQuery.noConflict();
@@ -250,7 +252,7 @@ function validate()
 	var valSuccess = true;
 	/* if(null!= document.getElementById('serviceClass') && document.getElementById('serviceClass').value == '-1'){
 		dom.get("error_area").style.display="block";
-		dom.get("error_area").innerHTML = '<s:text name="service.servictype.null" />' + '<br>';
+		dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		window.scroll(0,0);
 		valSuccess=false;
 		return false;
@@ -259,7 +261,7 @@ function validate()
 	if(serviceType==-1){
 		valSuccess=false;
 		dom.get("error_area").style.display="block";
-		dom.get("error_area").innerHTML = '<s:text name="service.servictype.null" />' + '<br>';
+		dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		window.scroll(0,0);
 		return false;
 	}
@@ -345,118 +347,118 @@ function onChangeServiceClass(obj)
 <div class="errorstyle" id="error_area" style="display:none;"></div>
 <span align="center" style="display: none" id="pendingreceiptcancellationerror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.pendingreceipt.cancellation"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="instrumentbouncedreceiptcancellationerror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.instrumentbouncedreceipt.cancellation"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="remittedreceiptcancellationerror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.remittedreceipt.cancellation"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="onlinereceiptcancellationerror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.onlinereceipt.cancellation"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="selectprinterror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.print.nomultipleprintreceipts"/>  </b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag -->  </b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="selectcancelerror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.print.nomultiplecancelreceipts"/>  </b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag -->  </b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="norecordselectederror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.norecordselected"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="selectedcancelledreceiptserror">
   <li>
-     <font size="2" color="red"><b><s:text name="error.selectedcancelledreceiptserror"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="invaliddateformat">
   <li>
      <font size="2" color="red"><b>
-		<s:text name="common.dateformat.errormessage"/>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</b></font>
   </li>
 </span>
 <span align="center" style="display: none" id="comparedatemessage">
   <li>
      <font size="2" color="red"><b>
-		<s:text name="common.comparedate.errormessage"/>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</b></font>
   </li>
 </span>
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
 	<div align="center">
 	    <div id="actionErrorMessages" class="alert alert-danger">
-	      <s:actionerror/>
-	      <s:fielderror/>	      
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+	      <!-- TODO: Manual migration required for custom Struts tag -->	      
 	    </div>
 	</div>
-</s:if>
-<s:form theme="simple" name="searchReceiptForm" action="searchReceipt-search.action">
-<div class="formmainbox"><div class="subheadnew"><s:text name="searchreceipts.title"/>
+</c:if>
+<form:form theme="simple" name="searchReceiptForm" action="searchReceipt-search.action">
+<div class="formmainbox"><div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag -->
 </div>
-<div class="subheadsmallnew"><span class="subheadnew"><s:text name="searchreceipts.criteria"/></span></div>
+<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 	    <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td class="bluebox"><s:text name="service.master.classification"/> <span class="mandatory"></td>
+	      <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory"></td>
 			<td class="bluebox"> 
-				<%-- <s:select list="serviceClassMap" headerKey="-1" headerValue="%{getText('miscreceipt.select')}"
-				name="serviceClass" id="serviceClass" onchange="onChangeServiceClass(this);"></s:select> --%>
-				<s:select name='type' list="#{'type':'MISCELLANEOUS' }"></s:select>
+				<%-- <form:select list="serviceClassMap" headerKey="-1" headerValue="%{getText('miscreceipt.select')}"
+				name="serviceClass" id="serviceClass" onchange="onChangeServiceClass(this);"></form:select> --%>
+				<form:select name='type' list="#{'type':'MISCELLANEOUS' }"></form:select>
 			</td>
 			<%--  <egov:ajaxdropdown id="serviceTypeDropdown" fields="['Text','Value']" dropdownId='serviceType'
                 url='receipts/ajaxReceiptCreate-ajaxLoadServiceByClassification.action' /> --%>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.servicetype"/> <span class="mandatory"></td>
-	      <td width="24%" class="bluebox"><s:select headerKey="-1"  headerValue="%{getText('searchreceipts.servicetype.select')}"  name="serviceTypeId" id="serviceType" cssClass="selectwk" list="dropdownData.serviceTypeList" listKey="code" listValue="businessService" value="%{serviceTypeId}" /> </td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory"></td>
+	      <td width="24%" class="bluebox"><form:select headerKey="-1"  headerValue="%{getText('searchreceipts.servicetype.select')}"  path="serviceTypeId" id="serviceType" cssClass="selectwk" list="dropdownData.serviceTypeList" listKey="code" listValue="businessService" value="%{serviceTypeId}" /> </td>
 	      
-	      <%-- <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.counter"/></td>
-	      <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('searchreceipts.counter.select')}" name="counterId" id="counter" cssClass="selectwk" list="dropdownData.counterList" listKey="id" listValue="name" value="%{counterId}" /> </td> --%>
+	      <%-- <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('searchreceipts.counter.select')}" path="counterId" id="counter" cssClass="selectwk" list="dropdownData.counterList" listKey="id" listValue="name" value="%{counterId}" /> </td> --%>
 	    </tr>
 	     <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.fromdate"/></td>
-		  <s:date name="fromDate" var="cdFormat" format="dd/MM/yyyy"/>
-		  <td width="24%" class="bluebox"><s:textfield id="fromDate" name="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width: 80px">DD/MM/YYYY</div></td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.todate"/></td>
-	      <s:date name="toDate" var="cdFormat1" format="dd/MM/yyyy"/>
-		  <td width="30%" class="bluebox"><s:textfield id="toDate" name="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width: 80px">DD/MM/YYYY</div></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		  <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td width="24%" class="bluebox"><form:input id="fromDate" path="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width: 80px">DD/MM/YYYY</div></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td width="30%" class="bluebox"><form:input id="toDate" path="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width: 80px">DD/MM/YYYY</div></td>
 	    </tr>
 	    <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.receiptno"/></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 	      <td width="24%" class="bluebox">
-	      <div class="yui-skin-sam"><s:textfield id="receiptNumber" type="text" name="receiptNumber"/></td>
-	     <%--  <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.user"/></td>
-	      <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('searchreceipts.user.select')}" name="userId" id="user" cssClass="selectwk" list="dropdownData.userList" listKey="id" listValue="name" value="%{userId}" /> </td>
+	      <div class="yui-skin-sam"><form:input id="receiptNumber" type="text" path="receiptNumber"/></td>
+	     <%--  <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('searchreceipts.user.select')}" path="userId" id="user" cssClass="selectwk" list="dropdownData.userList" listKey="id" listValue="name" value="%{userId}" /> </td>
 	    --%>
 	    </tr>	    
 	 <%--    <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.status"/></td>
-	      <td width="24%" class="bluebox"><s:select id="searchStatus" name="searchStatus" headerKey="-1" headerValue="%{getText('searchreceipts.status.select')}" cssClass="selectwk" list="%{receiptStatuses}" value="%{searchStatus}" listKey="id" listValue="description" /> </td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.paymenttype"/></td>
-	      <td width="30%" class="bluebox"><s:select headerKey="" headerValue="%{getText('searchreceipts.paymenttype.select')}" name="instrumentType" id="instrumentType" cssClass="selectwk" list="dropdownData.instrumentTypeList" listKey="type" listValue="type" value="%{instrumentType}" /> </td>	
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox"><form:select id="searchStatus" path="searchStatus" headerKey="-1" headerValue="%{getText('searchreceipts.status.select')}" cssClass="selectwk" list="%{receiptStatuses}" value="%{searchStatus}" listKey="id" listValue="description" /> </td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="30%" class="bluebox"><form:select headerKey="" headerValue="%{getText('searchreceipts.paymenttype.select')}" path="instrumentType" id="instrumentType" cssClass="selectwk" list="dropdownData.instrumentTypeList" listKey="type" listValue="type" value="%{instrumentType}" /> </td>	
 	    </tr>
 	    <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.manual.receiptno"/></td>
-	      <td width="24%" class="bluebox"><s:textfield id="manualReceiptNumber" type="text" name="manualReceiptNumber"/></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox"><form:input id="manualReceiptNumber" type="text" path="manualReceiptNumber"/></td>
 	      <td width="21%" class="bluebox"> &nbsp; </td>
 	      <td width="30%" class="bluebox"> &nbsp; </td>   
 	    </tr> --%>
@@ -464,15 +466,15 @@ function onChangeServiceClass(obj)
 	    <tr>
 					<td>
 						<div class="subheadsmallnew"><span class="subheadnew">
-											<s:text name="bankcollection.title" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 						</span>		
 						</div>
 					</td>
 		</tr>
 	     <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.bankbranch"/></td>
-	      <td width="24%" class="bluebox"><s:select headerKey="-1"
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox"><form:select headerKey="-1"
 								headerValue="Select Bank Branch" name="branchId" id="branchId"
 								cssClass="selectwk" list="dropdownData.bankBranchList"
 								listKey="id" listValue="branchname"
@@ -482,37 +484,37 @@ function onChangeServiceClass(obj)
 	    </tr> --%>
 	    </table>
 		<%-- <div align="left" class="mandatory1">
-		              <s:text name="report.bankbranch.note"/>
+		              <!-- TODO: Manual migration required for custom Struts tag -->
 		</div> --%>
 </div>
 <div id="loadingMask" style="display: none; overflow: hidden; text-align: center"><img src="/services/collection/resources/images/bar_loader.gif"/> <span style="color: red">Please wait....</span></div>
     <div class="buttonbottom">
-      <label><s:submit type="submit" cssClass="buttonsubmit" id="button" key="lbl.search" onclick="return validate();"/></label>
-      <label><s:submit type="submit" cssClass="button" key="lbl.reset" onclick="document.searchReceiptForm.action='searchReceipt-reset.action'"/></label>
-      <s:if test="%{results.isEmpty()}">
-      	<input name="closebutton" type="button" class="button" id="closebutton" value="<s:text name='lbl.close'/>" onclick="window.close();"/>
-      </s:if>
+      <label><!-- TODO: Manual migration required for custom Struts tag --></label>
+      <label><!-- TODO: Manual migration required for custom Struts tag --></label>
+      <c:if test="%{results.isEmpty()}">
+      	<input name="closebutton" type="button" class="button" id="closebutton" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.close();"/>
+      </c:if>
       
 </div>
-<s:if test='%{resultList.isEmpty()}'>
+<c:if test='%{resultList.isEmpty()}'>
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
 		<tr> 
 			<div>&nbsp;</div>
-			<div class="subheadnew"><s:text name="searchresult.norecord"/></div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		</tr>
 		</table>
-</s:if>
-<s:if test='%{!resultList.isEmpty()}'>
+</c:if>
+<c:if test='%{!resultList.isEmpty()}'>
 
 <div align="center">		
 <display:table name="searchResult" uid="currentRow"  style="width:100%;border-left: 1px solid #DFDFDF;" cellpadding="0" cellspacing="0" export="false" requestURI="">
 <display:caption media="pdf">&nbsp;</display:caption>
 <display:column headerClass="bluebgheadtd"  class="blueborderfortd" style="width:3%">
-<s:if test='%{collectionVersion eq "V2"}'>
+<c:if test='%{collectionVersion eq "V2"}'>
 <input name="selectedReceipts" type="checkbox" id="selectedReceipts"
 				value="${currentRow.paymentId}"/>
-</s:if>
-<s:else>
+</c:if>
+<c:otherwise>
 <input name="selectedReceipts" type="checkbox" id="selectedReceipts"
 				value="${currentRow.receiptnumber}"/>
 </s:else>
@@ -530,14 +532,14 @@ function onChangeServiceClass(obj)
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Amount (Rs.)" property="totalAmount" style="width:8%; text-align: right" format="{0, number, #,##0.00}" />
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Mode of Payment" style="width:8%"  property="modOfPayment"/>
 <%-- <div align="center">
-<s:set var="instrtype" value="" />
-<s:iterator status="stat1" value="#attr.currentRow.receiptInstrument">
-<s:if test="instrumentType.type!=null">
-<s:property value="instrumentType.type"/>
-<s:set var="instrtype" value="%{instrumentType.type}" />
-</s:if>
-<s:if test="!#stat1.last">, </s:if>
-</s:iterator>&nbsp;
+<!-- TODO: Manual migration required for custom Struts tag -->
+<c:forEach status="stat1" value="#attr.currentRow.receiptInstrument">
+<c:if test="instrumentType.type!=null">
+${instrumentType.type}
+<!-- TODO: Manual migration required for custom Struts tag -->
+</c:if>
+<c:if test="!#stat1.last">, </c:if>
+</c:forEach>&nbsp;
 </div>
 <input type="hidden" name="instrumenttype" id="instrumenttype" value="${instrtype}" />
 </display:column> --%>
@@ -552,10 +554,10 @@ function onChangeServiceClass(obj)
    <%-- <egov-authz:authorize actionName="CancelReceipt">
   <input name="button32" type="button" class="buttonsubmit" id="button32" value="Cancel Receipt" onclick="return checkcancelforselectedrecord()"/>
   </egov-authz:authorize> --%>
-  <input name="button32" type="button" class="button" id="button32" value="<s:text name='lbl.close'/>" onclick="window.parent.postMessage('close','*');window.close();"/>
+  <input name="button32" type="button" class="button" id="button32" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.parent.postMessage('close','*');window.close();"/>
 </div>
-</s:if>
-</s:form>
+</c:if>
+</form:form>
 </body>
 
 	

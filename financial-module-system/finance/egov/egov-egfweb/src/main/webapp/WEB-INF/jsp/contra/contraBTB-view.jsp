@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,8 +61,8 @@
 	src="/services/EGF/resources/javascript/ajaxCommonFunctions.js?rnd=${app_release_no}"></script>
 </head>
 <body onload="onloadTask_view()">
-	<s:form action="contraBTB" theme="simple" name="cbtbform">
-		<s:push value="model">
+	<form:form action="contraBTB" theme="simple" name="cbtbform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Bank to Bank Transfer" name="heading" />
 			</jsp:include>
@@ -74,23 +76,23 @@
 				<div align="center">
 					<font style='color: red;'>
 						<p class="error-block" id="lblError"></p>
-					</font> <span class="mandatory1"> <s:actionerror /> <s:fielderror />
-						<s:actionmessage />
+					</font> <span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</span>
 					<table border="0" width="100%" cellspacing="0" cellpadding="0">
 						<tr>
 							<td class="bluebox" width="10%"></td>
 							<td class="bluebox" width="22%"><s:text
 									name="voucher.number" /></td>
-							<td class="bluebox" width="22%"><s:textfield
+							<td class="bluebox" width="22%"><form:input
 									name="voucherNumber" id="voucherNumber" /></td>
-							<s:hidden name="id" />
-							<td class="bluebox" width="18%"><s:text name="voucher.date" /><span
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<td class="bluebox" width="18%"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory1">*</span></td>
 							<td class="bluebox" width="38%"><input type="text"
 								name="voucherDate"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
-								value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+								value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 								href="javascript:show_calendar('cbtbform.voucherDate');"
 								style="text-decoration: none">&nbsp;<img tabIndex="-1"
 									src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>(dd/mm/yyyy)</td>
@@ -114,12 +116,12 @@
 					name="voucherTypeBean.cgnType" value="BTB" />
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
 		function onloadTask_view() {
 
-			var srcFund = '<s:property value="contraBean.fromFundId"/>'
-			var desFund = '<s:property value="contraBean.toFundId"/>'
+			var srcFund = '${contraBean.fromFundId}'
+			var desFund = '${contraBean.toFundId}'
 			if (srcFund == desFund) {
 				document.getElementById("interFundRow").style.visibility = "hidden";
 			} else {

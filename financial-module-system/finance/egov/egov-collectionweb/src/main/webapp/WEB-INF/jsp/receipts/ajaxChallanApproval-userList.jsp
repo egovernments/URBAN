@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <%--
@@ -51,11 +53,11 @@
 {
 "ResultSet": {
     "Result":[
-	<s:iterator var="s" value="postionUserList" status="status">  
-    {"Value":"<s:property value="%{position.id}" />",
-    "Text":"<s:property value="%{name}" />-<s:property value="%{position.name}" />"
-    }<s:if test="!#status.last">,</s:if>
-    </s:iterator>       
+	<c:forEach var="s" value="postionUserList" status="status">  
+    {"Value":"${%{position.id}}",
+    "Text":"${%{name}}-${%{position.name}}"
+    }<c:if test="!#status.last">,</c:if>
+    </c:forEach>       
     ]
   }
 }

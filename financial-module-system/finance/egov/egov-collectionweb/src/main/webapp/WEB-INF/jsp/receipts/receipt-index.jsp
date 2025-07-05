@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -55,7 +57,7 @@
 <title>Cancel Receipt</title>
 </head>
 <body >
-<s:form theme="simple" name="searchReceiptForm" action="searchReceipt">
+<form:form theme="simple" name="searchReceiptForm" action="searchReceipt">
 
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0" class="main" align="center">
@@ -65,45 +67,45 @@
 	<td align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="tablebottom">
 		<tr align="center">
 			<font size="2" color="red"><b>
-			<s:if test="target=='view'">
-				<div align="center"><s:text name="billreceipt.payement.confirmatiommessage"/></div>
-			</s:if>		
-			<s:else >
-				<div align="center"><s:text name="billreceipt.cancel.confirmatiommessage"/></div>
+			<c:if test="target=='view'">
+				<div align="center"><!-- TODO: Manual migration required for custom Struts tag --></div>
+			</c:if>		
+			<!-- TODO: Manual migration required for custom Struts tag -->
+				<div align="center"><!-- TODO: Manual migration required for custom Struts tag --></div>
 			</s:else>
 			</b></font>
 		</tr>
-		<s:iterator value="%{receiptHeaderValues}"> 
+		<c:forEach value="%{receiptHeaderValues}"> 
 		<tr>
-			<s:if test="%{receipttype=='B'}">
-			<th class="bluebgheadtd" width="20%" ><s:text name="billreceipt.billnumber.confirmation"/></th>
-			</s:if>
-			<s:if test="%{receipttype=='C'}">
-			<th class="bluebgheadtd" width="20%" ><s:text name="billreceipt.challannumber.confirmation"/></th>
-			</s:if>
+			<c:if test="%{receipttype=='B'}">
+			<th class="bluebgheadtd" width="20%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if test="%{receipttype=='C'}">
+			<th class="bluebgheadtd" width="20%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
 			
-			<th class="bluebgheadtd" width="30%" ><s:text name="billreceipt.receiptnumber.confirmation"/></th>
-			<th class="bluebgheadtd" width="25%" ><s:text name="billreceipt.receiptdate.confirmation"/></th>
-			<th class="bluebgheadtd" width="25%" ><s:text name="billreceipt.receiptstatus.confirmation"/></th>
+			<th class="bluebgheadtd" width="30%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="25%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="25%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
 		</tr>
 		<tr>
-			<s:if test="%{receipttype=='B'}">
-			<td class="blueborderfortd"><div align="center"><s:property value="%{referencenumber}" /></div></td>
-			</s:if>
-			<s:if test="%{receipttype=='C'}">
-			<td class="blueborderfortd"><div align="center"><s:property value="%{challan.challanNumber}" /></div></td>
-			</s:if>
-			<td class="blueborderfortd"><div align="center"><s:property value="%{receiptnumber}" /></div></td>
-			<td class="blueborderfortd"><div align="center"><s:date name="createdDate" var="cdFormat" format="dd/MM/yyyy"/><s:property value="%{cdFormat}" /></div></td>
-			<td class="blueborderfortd"><div align="center"><s:property value="%{status.description}" /></div></td>
+			<c:if test="%{receipttype=='B'}">
+			<td class="blueborderfortd"><div align="center">${%{referencenumber}}</div></td>
+			</c:if>
+			<c:if test="%{receipttype=='C'}">
+			<td class="blueborderfortd"><div align="center">${%{challan.challanNumber}}</div></td>
+			</c:if>
+			<td class="blueborderfortd"><div align="center">${%{receiptnumber}}</div></td>
+			<td class="blueborderfortd"><div align="center"><!-- TODO: Manual migration required for custom Struts tag -->${%{cdFormat}}</div></td>
+			<td class="blueborderfortd"><div align="center">${%{status.description}}</div></td>
 		</tr>
-		</s:iterator>
+		</c:forEach>
 	</table></td>
 </table>
 <br/>
 <div class="buttonbottom">
-<input name="button2" type="button" class="button" id="button" onclick="window.close()" value="<s:text name='lbl.close'/>"/>
+<input name="button2" type="button" class="button" id="button" onclick="window.close()" value="<!-- TODO: Manual migration required for custom Struts tag -->"/>
 </div>
-</s:form>
+</form:form>
 </body>
 </html>

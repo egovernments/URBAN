@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 <%@ page import="org.egov.budget.model.*"%>
 <html>
 <head>
-<title><s:text name="budgetReAppropriation.modify" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" href="/services/EGF/resources/css/tabber.css?rnd=${app_release_no}"
 	TYPE="text/css">
 <script type="text/javascript" src="/services/EGF/resources/javascript/tabber.js?rnd=${app_release_no}"></script>
@@ -151,124 +153,124 @@
 		</script>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="budgetReAppropriation.modify" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:actionmessage theme="simple" />
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 
-		<s:form name="budgetReAppropriationForm"
+		<form:form name="budgetReAppropriationForm"
 			action="budgetReAppropriationModify" theme="simple">
 			<div class="formmainbox">
 				<div class="formheading"></div>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td width="10%" class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="budget.financialYear" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory">*</span></td>
-						<td class="bluebox"><s:select list="dropdownData.finYearList"
+						<td class="bluebox"><form:select list="dropdownData.finYearList"
 								listKey="id" listValue="finYearRange" name="financialYear.id"
 								value="financialYear.id" id="financialYear" headerKey="0"
-								headerValue="--- Select ---"></s:select></td>
-						<td class="bluebox"><s:text name="budget.bere" /></td>
-						<td class="bluebox"><s:select name="isBeRe" id="isBeRe"
+								headerValue="--- Select ---"></form:select></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:select path="isBeRe" id="isBeRe"
 								list="#{'BE':'BE','RE':'RE'}" value="beRe" /></td>
 					</tr>
 					<tr>
-						<s:if test="%{shouldShowHeaderField('fund')}">
+						<c:if test="%{shouldShowHeaderField('fund')}">
 							<td class="greybox">&nbsp;</td>
-							<td class="greybox"><s:text name="budgetdetail.fund" /> <s:if
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 									test="%{isFieldMandatory('fund')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td class="greybox"><s:select list="dropdownData.fundList"
+								</c:if></td>
+							<td class="greybox"><form:select list="dropdownData.fundList"
 									listKey="id" listValue="name" name="budgetDetail.fund.id"
 									headerKey="0" headerValue="--- Select ---" value="fund.id"
-									id="budgetReAppropriation_fund"></s:select></td>
-						</s:if>
-						<s:if test="%{shouldShowHeaderField('executingDepartment')}">
+									id="budgetReAppropriation_fund"></form:select></td>
+						</c:if>
+						<c:if test="%{shouldShowHeaderField('executingDepartment')}">
 							<td class="greybox">&nbsp;</td>
 							<td class="greybox"><s:text
-									name="budgetdetail.executingDepartment" /> <s:if
+									name="budgetdetail.executingDepartment" /> <c:if
 									test="%{isFieldMandatory('executingDepartment')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td width="22%" class="greybox"><s:select
+								</c:if></td>
+							<td width="22%" class="greybox"><form:select
 									list="dropdownData.executingDepartmentList" listKey="id"
 									listValue="deptName" name="budgetDetail.executingDepartment.id"
 									headerKey="0" headerValue="--- Select ---"
 									value="budgetDetail.executingDepartment.id"
-									id="budgetReAppropriation_executingDepartment"></s:select></td>
-						</s:if>
+									id="budgetReAppropriation_executingDepartment"></form:select></td>
+						</c:if>
 					</tr>
 					<tr>
-						<s:if test="%{shouldShowField('function')}">
+						<c:if test="%{shouldShowField('function')}">
 							<td class="bluebox">&nbsp;</td>
-							<td class="bluebox"><s:text name="budgetdetail.function" />
-								<s:if test="%{isFieldMandatory('function')}">
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+								<c:if test="%{isFieldMandatory('function')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td class="bluebox"><s:select
+								</c:if></td>
+							<td class="bluebox"><form:select
 									list="dropdownData.functionList" listKey="id" listValue="name"
 									name="budgetDetail.function.id" headerKey="0"
 									headerValue="--- Select ---" value="function.id"
-									id="budgetReAppropriation_function"></s:select></td>
-						</s:if>
-						<s:if test="%{shouldShowHeaderField('functionary')}">
-							<td class="bluebox"><s:text name="budgetdetail.functionary" />
-								<s:if test="%{isFieldMandatory('functionary')}">
+									id="budgetReAppropriation_function"></form:select></td>
+						</c:if>
+						<c:if test="%{shouldShowHeaderField('functionary')}">
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+								<c:if test="%{isFieldMandatory('functionary')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td class="bluebox"><s:select
+								</c:if></td>
+							<td class="bluebox"><form:select
 									list="dropdownData.functionaryList" listKey="id"
 									listValue="name" headerKey="0" headerValue="--- Select ---"
 									name="budgetDetail.functionary.id" value="functionary.id"
-									id="budgetReAppropriation_functionary"></s:select></td>
-						</s:if>
+									id="budgetReAppropriation_functionary"></form:select></td>
+						</c:if>
 					</tr>
 					<tr>
-						<s:if test="%{shouldShowHeaderField('scheme')}">
+						<c:if test="%{shouldShowHeaderField('scheme')}">
 							<td width="10%" class="bluebox">&nbsp;</td>
-							<td class="greybox"><s:text name="budgetdetail.scheme" /> <s:if
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 									test="%{isFieldMandatory('scheme')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td class="greybox"><s:select list="dropdownData.schemeList"
+								</c:if></td>
+							<td class="greybox"><form:select list="dropdownData.schemeList"
 									listKey="id" listValue="name" headerKey="0"
 									headerValue="--- Select ---" name="budgetDetail.scheme.id"
 									onchange="populateSubSchemes(this);" value="scheme.id"
-									id="budgetReAppropriation_scheme"></s:select></td>
-						</s:if>
-						<s:if test="%{shouldShowHeaderField('subScheme')}">
+									id="budgetReAppropriation_scheme"></form:select></td>
+						</c:if>
+						<c:if test="%{shouldShowHeaderField('subScheme')}">
 							<egov:ajaxdropdown id="subScheme" fields="['Text','Value']"
 								dropdownId="budgetReAppropriation_subScheme"
 								url="budget/budgetDetail!ajaxLoadSubSchemes.action"
 								afterSuccess="onHeaderSubSchemePopulation" />
-							<td class="greybox"><s:text name="budgetdetail.subScheme" />
-								<s:if test="%{isFieldMandatory('subScheme')}">
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+								<c:if test="%{isFieldMandatory('subScheme')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td class="greybox"><s:select
+								</c:if></td>
+							<td class="greybox"><form:select
 									list="dropdownData.subSchemeList" listKey="id" listValue="name"
 									headerKey="0" headerValue="--- Select ---"
 									name="budgetDetail.subScheme" value="subScheme.id"
-									id="budgetReAppropriation_subScheme"></s:select></td>
-						</s:if>
+									id="budgetReAppropriation_subScheme"></form:select></td>
+						</c:if>
 
 					</tr>
 					<tr>
-						<s:if test="%{shouldShowHeaderField('boundary')}">
-							<td class="bluebox"><s:text name="budgetdetail.field" /> <s:if
+						<c:if test="%{shouldShowHeaderField('boundary')}">
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 									test="%{isFieldMandatory('boundary')}">
 									<span class="mandatory">*</span>
-								</s:if></td>
-							<td class="bluebox"><s:select
+								</c:if></td>
+							<td class="bluebox"><form:select
 									list="dropdownData.boundaryList" listKey="id" listValue="name"
 									headerKey="0" headerValue="--- Select ---"
 									name="budgetDetail.boundary.id" value="boundary.id"
-									id="budgetReAppropriation_boundary"></s:select></td>
-						</s:if>
-						<s:else>
+									id="budgetReAppropriation_boundary"></form:select></td>
+						</c:if>
+						<c:otherwise>
 							<td class="bluebox">&nbsp;</td>
 							<td class="bluebox">&nbsp;</td>
 						</s:else>
@@ -276,11 +278,11 @@
 				</table>
 			</div>
 			<script>
-<s:if test="%{shouldShowField('scheme') and shouldShowField('subScheme')}">
+<c:if test="%{shouldShowField('scheme') and shouldShowField('subScheme')}">
 populateSubSchemes(document.getElementById('budgetReAppropriation_scheme'))
 function preselectSubScheme(){
 	subSchemes =  document.getElementById('budgetReAppropriation_subScheme');
-	selectedValue="<s:property value='subScheme.id'/>"
+	selectedValue="<!-- TODO: Manual migration required for custom Struts tag -->"
 	for(i=0;i<subSchemes.options.length;i++){
 	  if(subSchemes.options[i].value==selectedValue){
 		subSchemes.selectedIndex=i;
@@ -289,7 +291,7 @@ function preselectSubScheme(){
 	}
 	updateGridForTable('subScheme.id',document.getElementById('budgetReAppropriation_subScheme').selectedIndex);
 }
-</s:if>
+</c:if>
 </script>
 			<div class="buttonbottom" style="padding-bottom: 10px;">
 				<input type="submit" value="Search"
@@ -301,7 +303,7 @@ function preselectSubScheme(){
 			</div>
 			<br />
 			<br />
-			<s:if test="%{not savedBudgetReAppropriationList.empty}">
+			<c:if test="%{not savedBudgetReAppropriationList.empty}">
 				<div align="left">
 					<br />
 					<div class="tabber">
@@ -315,43 +317,43 @@ function preselectSubScheme(){
 								</div> <script>
 							var BUDGETDETAILLIST='savedBudgetReAppropriationList';
 							function addGridRows(){
-								<s:iterator value="savedBudgetReAppropriationList" status="stat">
+								<c:forEach value="savedBudgetReAppropriationList" status="stat">
 									budgetDetailsTable.addRow({SlNo:budgetDetailsTable.getRecordSet().getLength()+1,
-										"budgetDetail.id":'<s:property value="budgetDetail.id"/>',
-										"budgetDetail.budgetGroup.name":'<s:property value="budgetDetail.budgetGroup.name"/>',
-										<s:if test="%{shouldShowField('executingDepartment')}">				
-											"budgetDetail.executingDepartment.deptName":'<s:property value="budgetDetail.executingDepartment.deptName"/>',
-										</s:if>
-										<s:if test="%{shouldShowField('functionary')}">				
-											"budgetDetail.functionary.name":'<s:property value="budgetDetail.functionary.name"/>',
-										</s:if>
-										<s:if test="%{shouldShowField('function')}">				
-											"budgetDetail.function.name":'<s:property value="budgetDetail.function.name"/>',
-										</s:if>
-										<s:if test="%{shouldShowField('scheme')}">				
-											"budgetDetail.scheme.name":'<s:property value="budgetDetail.scheme.name"/>',
-										</s:if>
-										<s:if test="%{shouldShowField('subScheme')}">				
-											"budgetDetail.subScheme.name":'<s:property value="budgetDetail.subScheme.name"/>',
-										</s:if>
-										<s:if test="%{shouldShowField('fund')}">				
-											"budgetDetail.fund.name":'<s:property value="budgetDetail.fund.name"/>',
-										</s:if>
-										<s:if test="%{shouldShowField('boundary')}">				
-											"budgetDetail.boundary.name":'<s:property value="budgetDetail.boundary.name"/>',
-										</s:if>
-										"sequenceNumber":'<s:property value="sequenceNumber"/>',
-										"approved":'<s:property value="approvedAmount"/>',
-										"appropriation":'<s:property value="appropriatedAmount"/>',
-										"actuals":'<s:property value="actuals"/>',
-										"available":'<s:property value="availableAmount"/>',
-										"changeRequestType":'<s:property value="changeRequestType"/>',
-										"amount":'<s:property value="deltaAmount"/>',
-										<s:if test="%{enableApprovedAmount}">
-										"approved_amount":'<s:property value="approvedDeltaAmount"/>'
-										</s:if>
+										"budgetDetail.id":'${budgetDetail.id}',
+										"budgetDetail.budgetGroup.name":'${budgetDetail.budgetGroup.name}',
+										<c:if test="%{shouldShowField('executingDepartment')}">				
+											"budgetDetail.executingDepartment.deptName":'${budgetDetail.executingDepartment.deptName}',
+										</c:if>
+										<c:if test="%{shouldShowField('functionary')}">				
+											"budgetDetail.functionary.name":'${budgetDetail.functionary.name}',
+										</c:if>
+										<c:if test="%{shouldShowField('function')}">				
+											"budgetDetail.function.name":'${budgetDetail.function.name}',
+										</c:if>
+										<c:if test="%{shouldShowField('scheme')}">				
+											"budgetDetail.scheme.name":'${budgetDetail.scheme.name}',
+										</c:if>
+										<c:if test="%{shouldShowField('subScheme')}">				
+											"budgetDetail.subScheme.name":'${budgetDetail.subScheme.name}',
+										</c:if>
+										<c:if test="%{shouldShowField('fund')}">				
+											"budgetDetail.fund.name":'${budgetDetail.fund.name}',
+										</c:if>
+										<c:if test="%{shouldShowField('boundary')}">				
+											"budgetDetail.boundary.name":'${budgetDetail.boundary.name}',
+										</c:if>
+										"sequenceNumber":'${sequenceNumber}',
+										"approved":'${approvedAmount}',
+										"appropriation":'${appropriatedAmount}',
+										"actuals":'${actuals}',
+										"available":'${availableAmount}',
+										"changeRequestType":'${changeRequestType}',
+										"amount":'${deltaAmount}',
+										<c:if test="%{enableApprovedAmount}">
+										"approved_amount":'${approvedDeltaAmount}'
+										</c:if>
 									});
-								</s:iterator>
+								</c:forEach>
 							}
 						
 						
@@ -359,27 +361,27 @@ function preselectSubScheme(){
 								var budgetDetailColumns = [ 
 									{key:"budgetDetail.id",label:'',hidden:true,formatter:getReadOnlyTextFieldFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.id')},		                   		
 									{key:"budgetDetail.budgetGroup.name",label:'Budget Group',width:150,sortable:true, formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.budgetGroup.name')},
-									<s:if test="%{shouldShowField('executingDepartment')}">				
+									<c:if test="%{shouldShowField('executingDepartment')}">				
 										{key:"budgetDetail.executingDepartment.deptName", label:'Executing Department',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.executingDepartment.deptName')},				
-									</s:if>
-									<s:if test="%{shouldShowField('functionary')}">				
+									</c:if>
+									<c:if test="%{shouldShowField('functionary')}">				
 										{key:"budgetDetail.functionary.name",label:'Functionary',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.functionary.name')} ,
-									</s:if>
-									<s:if test="%{shouldShowField('function')}">				
+									</c:if>
+									<c:if test="%{shouldShowField('function')}">				
 										{key:"budgetDetail.function.name",label:'Function',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.function.name')} ,
-									</s:if>
-									<s:if test="%{shouldShowField('scheme')}">				
+									</c:if>
+									<c:if test="%{shouldShowField('scheme')}">				
 										{key:"budgetDetail.scheme.name",label:'Scheme',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.scheme.name')} ,
-									</s:if>
-									<s:if test="%{shouldShowField('subScheme')}">				
+									</c:if>
+									<c:if test="%{shouldShowField('subScheme')}">				
 										{key:"budgetDetail.subScheme.name",label:'Sub Scheme',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.subScheme.name')} ,
-									</s:if>
-									<s:if test="%{shouldShowField('fund')}">				
+									</c:if>
+									<c:if test="%{shouldShowField('fund')}">				
 										{key:"budgetDetail.fund.name",label:'Fund',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.fund.name')} ,
-									</s:if>
-									<s:if test="%{shouldShowField('boundary')}">				
+									</c:if>
+									<c:if test="%{shouldShowField('boundary')}">				
 										{key:"budgetDetail.boundary.name",label:'Field',width:90,sortable:true,formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.budgetDetail.boundary.name')} ,
-									</s:if>
+									</c:if>
 									{key:"sequenceNumber",label:'Sequence Number',width:120, sortable:true,formatter:getReadOnlyTextFieldFormatter('budgetDetailsTable',BUDGETDETAILLIST,".sequenceNumber")},
 									{key:"approved",label:'Sanctioned Budget(Rs)',width:125, formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,".approvedAmount")},
 									{key:"appropriation",label:'Added/Released(Rs)',width:120, formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,".approvedAmount")},
@@ -387,9 +389,9 @@ function preselectSubScheme(){
 									{key:"available",label:'Balance Available(Rs)',width:125, formatter:getLabelFormatter('budgetDetailsTable',BUDGETDETAILLIST,".availableAmount")},
 									{key:"changeRequestType",label:'Change Requested',width:105,formatter:getReadOnlyTextFieldFormatter('budgetDetailsTable',BUDGETDETAILLIST,'.changeRequestType')} ,
 									{key:"amount",label:'Addition/Deduction<br/>Amount(Rs)',width:"50em", formatter:createTextFieldFormatterWithOnBlur('budgetDetailsTable',BUDGETDETAILLIST,".deltaAmount")},
-									<s:if test="%{enableApprovedAmount}">
+									<c:if test="%{enableApprovedAmount}">
 									{key:"approved_amount",label:'Approved Addition/<br/>Deduction Amount(Rs)',width:"50em", formatter:createTextFieldFormatterWithOnBlur('budgetDetailsTable',BUDGETDETAILLIST,".approvedDeltaAmount")},
-									</s:if>
+									</c:if>
 									{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 								];
 							    var budgetDetailDS = new YAHOO.util.DataSource(); 
@@ -428,7 +430,7 @@ function preselectSubScheme(){
 					</div>
 				</div>
 				<div class="buttonbottom" style="padding-bottom: 10px">
-					<s:hidden name="actionName" value="forward" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					<input type="submit" value="Update"
 						id="budgetReAppropriationModify__update" name="method:update"
 						onClick="javascript: return validateAmount();"
@@ -439,14 +441,14 @@ function preselectSubScheme(){
 					<s:submit value="Close" onclick="javascript: self.close()"
 						cssClass="button" />
 				</div>
-			</s:if>
+			</c:if>
 
-			<s:if test='%{message != ""}'>
+			<c:if test='%{message != ""}'>
 				<div class="error">
-					<s:property value="message" />
+					${message}
 				</div>
-			</s:if>
+			</c:if>
 			<div id="beReGrid"></div>
-		</s:form>
+		</form:form>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -74,103 +76,103 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td width="10%" class="bluebox">&nbsp;</td>
-			<td class="bluebox"><s:text name="budget.financialYear" /><span
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 				class="mandatory1">*</span>
-			<td width="22%" class="bluebox"><s:select
+			<td width="22%" class="bluebox"><form:select
 					list="dropdownData.financialYearList" listKey="id"
 					listValue="finYearRange" name="budget.financialYear.id"
-					id="financialYearRange" onchange="populateBudgets(this);"></s:select></td>
+					id="financialYearRange" onchange="populateBudgets(this);"></form:select></td>
 		</tr>
 		<tr>
 			<td width="10%" class="greybox">&nbsp;</td>
 			<egov:ajaxdropdown id="budget" fields="['Text','Value']"
 				dropdownId="budgetDetail_budget"
 				url="budget/budgetSearch-ajaxLoadBudget.action" />
-			<td class="greybox"><s:text name="budgetdetail.budget" />
-			<td width="22%" class="greybox"><s:select
+			<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+			<td width="22%" class="greybox"><form:select
 					list="dropdownData.budgetList" listKey="id" listValue="name"
 					name="budget.id" value="model.budget.id" id="budgetDetail_budget"
 					disabled="%{headerDisabled}" headerKey="0"
-					headerValue="%{getText('lbl.choose.options')}"></s:select></td>
-			<s:if
+					headerValue="%{getText('lbl.choose.options')}"></form:select></td>
+			<c:if
 				test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
 				<td class="greybox"><s:text
 						name="budgetdetail.executingDepartment" /></td>
-				<td width="22%" class="greybox"><s:select
+				<td width="22%" class="greybox"><form:select
 						list="dropdownData.executingDepartmentList" listKey="code"
 						listValue="name" name="executingDepartment" headerKey="0"
 						headerValue="%{getText('lbl.choose.options')}"
 						onchange="updateGrid('executingDepartment',document.getElementById('budgetDetail_executingDepartment').selectedIndex)"
 						value="model.executingDepartment"
-						id="budgetDetail_executingDepartment"></s:select></td>
-			</s:if>
+						id="budgetDetail_executingDepartment"></form:select></td>
+			</c:if>
 		</tr>
 		<tr>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
 				<td class="bluebox">&nbsp;</td>
-				<td class="bluebox"><s:text name="budgetdetail.fund" /></td>
-				<td class="bluebox"><s:select list="dropdownData.fundList"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select list="dropdownData.fundList"
 						listKey="id" listValue="name" name="fund.id" headerKey="0"
 						headerValue="%{getText('lbl.choose.options')}"
 						onchange="updateGrid('fund.id',document.getElementById('budgetDetail_fund').selectedIndex)"
-						value="fund.id" id="budgetDetail_fund"></s:select></td>
-			</s:if>
-			<s:if
+						value="fund.id" id="budgetDetail_fund"></form:select></td>
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
-				<td class="bluebox"><s:text name="budgetdetail.function" /></td>
-				<td class="bluebox"><s:select list="dropdownData.functionList"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select list="dropdownData.functionList"
 						listKey="id" listValue="name" name="function.id" headerKey="0"
 						headerValue="%{getText('lbl.choose.options')}"
 						onchange="updateGrid('function.id',document.getElementById('budgetDetail_function').selectedIndex)"
-						value="function.id" id="budgetDetail_function"></s:select></td>
-			</s:if>
+						value="function.id" id="budgetDetail_function"></form:select></td>
+			</c:if>
 		</tr>
 		<tr>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
 				<td width="10%" class="bluebox">&nbsp;</td>
-				<td class="greybox"><s:text name="budgetdetail.scheme" /></td>
-				<td class="greybox"><s:select list="dropdownData.schemeList"
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="greybox"><form:select list="dropdownData.schemeList"
 						listKey="id" listValue="name" headerKey="0"
 						headerValue="%{getText('lbl.choose.options')}" name="scheme"
 						onchange="updateGrid('scheme.id',document.getElementById('budgetDetail_scheme').selectedIndex);populateSubSchemes(this);"
-						value="scheme.id" id="budgetDetail_scheme"></s:select></td>
-			</s:if>
-			<s:if
+						value="scheme.id" id="budgetDetail_scheme"></form:select></td>
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
 				<egov:ajaxdropdown id="subScheme" fields="['Text','Value']"
 					dropdownId="budgetDetail_subScheme"
 					url="budget/budgetDetail-ajaxLoadSubSchemes.action"
 					afterSuccess="onHeaderSubSchemePopulation" />
-				<td class="greybox"><s:text name="budgetdetail.subScheme" /></td>
-				<td class="greybox"><s:select list="dropdownData.subSchemeList"
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="greybox"><form:select list="dropdownData.subSchemeList"
 						listKey="id" listValue="name" headerKey="0"
 						headerValue="%{getText('lbl.choose.options')}" name="subScheme"
 						onchange="updateGrid('subScheme.id',document.getElementById('budgetDetail_subScheme').selectedIndex)"
-						value="subScheme.id" id="budgetDetail_subScheme"></s:select></td>
-			</s:if>
+						value="subScheme.id" id="budgetDetail_subScheme"></form:select></td>
+			</c:if>
 		</tr>
 		<tr>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">
-				<td class="bluebox"><s:text name="budgetdetail.functionary" /></td>
-				<td class="bluebox"><s:select
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select
 						list="dropdownData.functionaryList" listKey="id" listValue="name"
 						headerKey="0" headerValue="%{getText('lbl.choose.options')}" name="functionary"
 						onchange="updateGrid('functionary.id',document.getElementById('budgetDetail_functionary').selectedIndex)"
-						value="functionary.id" id="budgetDetail_functionary"></s:select></td>
-			</s:if>
-			<s:if
+						value="functionary.id" id="budgetDetail_functionary"></form:select></td>
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
-				<td class="bluebox"><s:text name="budgetdetail.field" /></td>
-				<td class="bluebox"><s:select list="dropdownData.boundaryList"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select list="dropdownData.boundaryList"
 						listKey="id" listValue="name" headerKey="0"
 						headerValue="%{getText('lbl.choose.options')}" name="boundary"
 						onchange="updateGrid('boundary.id',document.getElementById('budgetDetail_boundary').selectedIndex)"
-						value="boundary.id" id="budgetDetail_boundary"></s:select></td>
-			</s:if>
-			<s:else>
+						value="boundary.id" id="budgetDetail_boundary"></form:select></td>
+			</c:if>
+			<c:otherwise>
 				<td class="bluebox">&nbsp;</td>
 				<td class="bluebox">&nbsp;</td>
 			</s:else>
@@ -178,11 +180,11 @@
 	</table>
 
 <script>
-<s:if test="%{(shouldShowHeaderField('scheme') and shouldShowHeaderField('subScheme')) or (shouldShowGridField('scheme') and shouldShowGridField('subScheme'))}">
+<c:if test="%{(shouldShowHeaderField('scheme') and shouldShowHeaderField('subScheme')) or (shouldShowGridField('scheme') and shouldShowGridField('subScheme'))}">
 populateSubSchemes(document.getElementById('budgetDetail_scheme'))
 function preselectSubScheme(){
 	subSchemes =  document.getElementById('budgetDetail_subScheme');
-	selectedValue="<s:property value='subScheme.id'/>"
+	selectedValue="<!-- TODO: Manual migration required for custom Struts tag -->"
 	for(i=0;i<subSchemes.options.length;i++){
 	  if(subSchemes.options[i].value==selectedValue){
 		subSchemes.selectedIndex=i;
@@ -190,6 +192,6 @@ function preselectSubScheme(){
 	  }
 	}
 }
-</s:if>
+</c:if>
 
 </script>

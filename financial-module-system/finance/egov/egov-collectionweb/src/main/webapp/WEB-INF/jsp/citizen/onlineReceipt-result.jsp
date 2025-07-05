@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="onlineReceipts.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 function onBodyLoad(){
 	
@@ -60,30 +62,30 @@ function onBodyLoad(){
 </script>
 </head>
 <body>
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
     <div class="errorstyle">
-      <s:actionerror/>
-      <s:fielderror/>
+      <!-- TODO: Manual migration required for custom Struts tag -->
+      <!-- TODO: Manual migration required for custom Struts tag -->
     </div>
-</s:if>
+</c:if>
 <div class="text-center">
-<s:else>
+<c:otherwise>
 	<!-- <tr>RECEIVED SUCCESS RESPONSE FROM PAYMENT GATEWAY</tr>
 	<tr>
-			<td>Bill Number : <s:property value="%{onlinePaymentReceiptHeader.referencenumber}" /> </td>
+			<td>Bill Number : ${%{onlinePaymentReceiptHeader.referencenumber}} </td>
 	</tr>
 	<tr>
-			<td>Receipt Number : <s:property value="%{onlinePaymentReceiptHeader.receiptnumber}" /> </td>
+			<td>Receipt Number : ${%{onlinePaymentReceiptHeader.receiptnumber}} </td>
 	</tr>
 	<tr>
-			<td>Transaction Amount : <s:property value="%{onlinePaymentReceiptHeader.onlinePayment.transactionAmount}" /></td>
+			<td>Transaction Amount : ${%{onlinePaymentReceiptHeader.onlinePayment.transactionAmount}}</td>
 	</tr> 
 	<tr>
-			<td>Transaction Number : <s:property value="%{onlinePaymentReceiptHeader.onlinePayment.transactionNumber}" /></td>
+			<td>Transaction Number : ${%{onlinePaymentReceiptHeader.onlinePayment.transactionNumber}}</td>
 	</tr> -->
 	
-	<div id="paymentInfo" style="text-align: center;padding-bottom: 15px;">Your payment of Amount &#8377; <s:property value="%{onlinePaymentReceiptHeader.totalAmount}" /> has been received. The Reference Number is <s:property value="%{onlinePaymentReceiptHeader.referencenumber}" />. Please click on <span>Generate Receipt to print the receipt</span></div>
-    <a href='${pageContext.request.contextPath}/citizen/onlineReceipt-view.action?receiptId=<s:property value='%{onlinePaymentReceiptHeader.id}'/>' class="btn btn-primary" id="btnGenerateReceipt">Generate Receipt</a>&nbsp;
+	<div id="paymentInfo" style="text-align: center;padding-bottom: 15px;">Your payment of Amount &#8377; ${%{onlinePaymentReceiptHeader.totalAmount}} has been received. The Reference Number is ${%{onlinePaymentReceiptHeader.referencenumber}}. Please click on <span>Generate Receipt to print the receipt</span></div>
+    <a href='${pageContext.request.contextPath}/citizen/onlineReceipt-view.action?receiptId=<!-- TODO: Manual migration required for custom Struts tag -->' class="btn btn-primary" id="btnGenerateReceipt">Generate Receipt</a>&nbsp;
 </s:else>
 </div>
 
@@ -95,9 +97,9 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 		jQuery('#btnGenerateReceipt').text('Download Receipt');
 		jQuery('#btnGenerateReceipt').attr('href','javascript:void(0);');
 		jQuery('#paymentInfo').find('span').html('Download Receipt');
-		CitizenApp.showSnackBar('Your payment of Amount Rs.<s:property value="%{onlinePaymentReceiptHeader.totalAmount}" /> has been received. The Reference Number is <s:property value="%{onlinePaymentReceiptHeader.referencenumber}" />.');
+		CitizenApp.showSnackBar('Your payment of Amount Rs.${%{onlinePaymentReceiptHeader.totalAmount}} has been received. The Reference Number is ${%{onlinePaymentReceiptHeader.referencenumber}}.');
 		jQuery('#btnGenerateReceipt').click(function(e){
-			CitizenApp.downloadReceipt('<s:property value="%{onlinePaymentReceiptHeader.receiptnumber}" />', '<s:property value="%{onlinePaymentReceiptHeader.consumerCode}" />');
+			CitizenApp.downloadReceipt('${%{onlinePaymentReceiptHeader.receiptnumber}}', '${%{onlinePaymentReceiptHeader.consumerCode}}');
 		});
 	}
 }

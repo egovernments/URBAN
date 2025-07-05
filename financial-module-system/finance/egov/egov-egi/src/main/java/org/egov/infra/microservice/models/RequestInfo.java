@@ -99,14 +99,6 @@ public class RequestInfo {
         this.ts = ts;
     }
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(final String action) {
-        this.action = action;
-    }
-
     public String getDid() {
         return did;
     }

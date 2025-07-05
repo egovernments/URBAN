@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -54,7 +56,7 @@
 <body>
 
 <%@ include file="challan-createReceipt.jsp" %>
-<s:hidden id="challanNumber" name="challanNumber" value="%{model[0].receiptHeader.challan.challanNumber}"/>
+<!-- TODO: Manual migration required for custom Struts tag -->
 </body>
 
 

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,19 +53,19 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="lbl.add.detailed.chart.of.accounts"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 		function validateAndSubmit(){
 			if(document.getElementById('glCode').value == null || document.getElementById('glCode').value==''){
-				bootbox.alert("<s:text name='msg.please.enter.parent.glcode'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			if(document.getElementById('model.name').value == null || document.getElementById('model.name').value==''){
-				bootbox.alert("<s:text name='msg.please.enter.name'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			if(document.getElementById('newGlcode').value == null || document.getElementById('newGlcode').value==''){
-				bootbox.alert("<s:text name='msg.please.enter.account.code'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			document.chartOfAccountsForm.action = '${pageContext.request.contextPath}/masters/chartOfAccounts-create.action';
@@ -102,12 +104,12 @@
 </head>
 <body class="yui-skin-sam">
 	<jsp:include page="../budget/budgetHeader.jsp" />
-	<s:actionmessage theme="simple" />
-	<s:actionerror />
-	<s:fielderror />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<div class="formmainbox">
-		<div class="subheadnew"><s:text name="lbl.add.detailed.chart.of.accounts"/></div>
-		<s:form name="chartOfAccountsForm" action="chartOfAccounts"
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
+		<form:form name="chartOfAccountsForm" action="chartOfAccounts"
 			theme="simple">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="chartOfAccountsTable">
@@ -127,7 +129,7 @@
 					<td class="bluebox" width="10%"><input type="text"
 						readonly="readonly" name="generatedGlcode" id="generatedGlcode"
 						size="10" /> <input type="text" name="newGlcode" id="newGlcode"
-						size="2" maxlength='<s:property value="glCodeLengths[4l]"/>' /></td>
+						size="2" maxlength='${glCodeLengths[4l]}' /></td>
 				</tr>
 				<tr>
 					<td width="20%" class="greybox">&nbsp;</td>
@@ -149,48 +151,48 @@
 					<td width="20%" class="bluebox">&nbsp;</td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.purpose" />:</strong></td>
-					<td class="bluebox"><s:select list="dropdownData.purposeList"
+					<td class="bluebox"><form:select list="dropdownData.purposeList"
 							listKey="id" listValue="name" name="purposeId" headerKey=""
-							headerValue="%{getText('lbl.choose.options')}" value="model.purpose"></s:select></td>
+							headerValue="%{getText('lbl.choose.options')}" value="model.purpose"></form:select></td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.accountDetailType" />:</strong></td>
-					<td width="22%"><s:select
+					<td width="22%"><form:select
 							list="dropdownData.accountDetailTypeList" listKey="id"
 							listValue="name" name="accountDetailTypeList" multiple="true"
-							size="5" value="%{accountDetailTypeList.{id}}"></s:select></td>
+							size="5" value="%{accountDetailTypeList.{id}}"></form:select></td>
 				</tr>
 				<tr>
 					<td width="20%" class="greybox">&nbsp;</td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.functionRequired" />:</strong></td>
-					<td width="22%" class="greybox"><s:checkbox
-							name="functionRequired"></s:checkbox></td>
+					<td width="22%" class="greybox"><form:checkbox
+							name="functionRequired"></form:checkbox></td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.budgetRequired" />:</strong></td>
-					<td class="greybox"><s:checkbox name="budgetCheckRequired"></s:checkbox></td>
+					<td class="greybox"><form:checkbox path="budgetCheckRequired"></form:checkbox></td>
 				</tr>
 				<tr>
 					<td width="20%" class="bluebox">&nbsp;</td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.activeForPosting" />:</strong></td>
-					<td class="bluebox"><s:checkbox name="activeForPosting"></s:checkbox></td>
+					<td class="bluebox"><form:checkbox path="activeForPosting"></form:checkbox></td>
 				</tr>
 			</table>
 			<br />
 			<br />
 			<div class="buttonbottom">
-				<input type="submit" class="buttonsubmit" value='<s:text name="lbl.save"/>' id="Save"
+				<input type="submit" class="buttonsubmit" value='<!-- TODO: Manual migration required for custom Struts tag -->' id="Save"
 					name="Save" onclick="return validateAndSubmit();" /> <input
-					type="button" value="<s:text name="lbl.close"/>" onclick="javascript:window.parent.postMessage('close','*');"
+					type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="javascript:window.parent.postMessage('close','*');"
 					class="button" />
 			</div>
-			<s:token />
-		</s:form>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+		</form:form>
 		<script type="text/javascript">
 	var allGlcodes = [];
-	<s:iterator value="allChartOfAccounts">
-		allGlcodes.push("<s:property value="glcode"/>-<s:property value="name.replaceAll('\n',' ')"/>")
-	</s:iterator>
+	<c:forEach value="allChartOfAccounts">
+		allGlcodes.push("${glcode}-${name.replaceAll('\n',' ')}")
+	</c:forEach>
 	YAHOO.example.BasicLocal = function() { 
 		    var oDS = new YAHOO.util.LocalDataSource(allGlcodes); 
 		    // Optional to define fields for single-dimensional array 

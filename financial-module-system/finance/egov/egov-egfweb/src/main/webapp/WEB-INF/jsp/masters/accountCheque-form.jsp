@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,15 +51,15 @@
 <table border="0" width="100%">
 	<tr>
 		<td class="greybox"></td>
-		<td class="greybox"><s:text name='lbl.fund'/> <span class="mandatory1">*</span></td>
-		<td class="greybox"><s:select name="fundId" id="fundId"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
+		<td class="greybox"><form:select path="fundId" id="fundId"
 				list="dropdownData.fundList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				onChange="loadBank(this);" /></td>
 		<egov:ajaxdropdown id="bankbranchId" fields="['Text','Value']"
 			dropdownId="bankbranchId" url="voucher/common-ajaxLoadBanks.action" />
-		<td class="greybox"><s:text name='lbl.bank'/> <span class="mandatory1">*</span></td>
-		<td class="greybox"><s:select name="bankbranchId"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
+		<td class="greybox"><form:select path="bankbranchId"
 				id="bankbranchId" list="dropdownData.bankList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				onChange="loadBankAccount(this);" /></td>
@@ -67,12 +69,12 @@
 		<egov:ajaxdropdown id="bankAccId" fields="['Text','Value']"
 			dropdownId="bankAccId"
 			url="voucher/common-ajaxLoadBankAccounts.action" />
-		<td class="bluebox"><s:text name='lbl.account.number'/><span class="mandatory1">*</span></td>
-		<td class="bluebox"><s:select name="bankAccId" id="bankAccId"
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+		<td class="bluebox"><form:select path="bankAccId" id="bankAccId"
 				list="dropdownData.accNumList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
-		<td class="greybox"><s:text name='lbl.financial.year'/><span class="mandatory1">*</span></td>
-		<td class="greybox"><s:select name="financialYearId" id="financialYearId"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+		<td class="greybox"><form:select path="financialYearId" id="financialYearId"
 				list="dropdownData.financialYearList" listKey="id" listValue="finYearRange"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}"/></td>
 
@@ -120,20 +122,20 @@
 	function validate() {
 		if (document.getElementById("fundId").value == -1) {
 
-			document.getElementById("lblError").innerHTML = "<s:text name='msg.please.select.fund'/>";
+			document.getElementById("lblError").innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 		} else if (document.getElementById("bankbranchId").value == -1) {
 
-			document.getElementById("lblError").innerHTML = "<s:text name='msg.please.select.bank'/>";
+			document.getElementById("lblError").innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 		} else if (document.getElementById("bankAccId").value == -1) {
 
-			document.getElementById("lblError").innerHTML = "<s:text name='msg.please.select.bank.account.number'/>";
+			document.getElementById("lblError").innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 		}
 		else if (document.getElementById("financialYearId").value == -1) {
 
-			document.getElementById("lblError").innerHTML = "<s:text name='msg.please.select.financial.year'/>";
+			document.getElementById("lblError").innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 		}
 	}

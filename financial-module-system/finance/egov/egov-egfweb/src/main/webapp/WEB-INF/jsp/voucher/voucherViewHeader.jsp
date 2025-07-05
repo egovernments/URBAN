@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,27 +55,27 @@
 	<c:set var="tdclass" value="bluebox" scope="request" />
 	<table border="0" width="100%" cellspacing="0">
 		<tr>
-			<s:if test="%{shouldShowHeaderField('fund')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.fund"/>:</td>
+			<c:if test="%{shouldShowHeaderField('fund')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
 				<td width="25%" class="<c:out value='${tdclass}' />"><s:property
 						value="%{getMasterName('fund')}" /></td>
 
-			</s:if>
-			<s:if test="%{shouldShowHeaderField('scheme')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.scheme"/> :
+			</c:if>
+			<c:if test="%{shouldShowHeaderField('scheme')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :
 					&nbsp;</td>
 				<td width="25%" class="<c:out value='${tdclass}' />"><s:property
 						value="%{getMasterName('scheme')}" /></td>
-			</s:if>
-			<s:if
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('fund') && shouldShowHeaderField('scheme')}" />
 			<s:elseif
 				test="%{!shouldShowHeaderField('fund') && !shouldShowHeaderField('scheme')}" />
-			<s:else>
+			<c:otherwise>
 				<td width="10%" class="<c:out value='${tdclass}' />"></td>
 				<td width="25%" class="<c:out value='${tdclass}' />"></td>
 			</s:else>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('fund') || shouldShowHeaderField('scheme')}">
 				<c:choose>
 					<c:when test="${tdclass == 'bluebox'}">
@@ -83,30 +85,30 @@
 						<c:set var="tdclass" value="bluebox" scope="request" />
 					</c:otherwise>
 				</c:choose>
-			</s:if>
+			</c:if>
 		</tr>
 		<tr>
-			<s:if test="%{shouldShowHeaderField('subscheme')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.subscheme"/> :
+			<c:if test="%{shouldShowHeaderField('subscheme')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :
 					&nbsp;</td>
 				<td width="25%" class="<c:out value='${tdclass}' />"><s:property
 						value="%{getMasterName('subscheme')}" /></td>
-			</s:if>
-			<s:if test="%{shouldShowHeaderField('fundsource')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.financingSource"/> : &nbsp;</td>
+			</c:if>
+			<c:if test="%{shouldShowHeaderField('fundsource')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> : &nbsp;</td>
 				<td width="25%" class="<c:out value='${tdclass}' />"><s:property
 						value="%{getMasterName('fundsource')}" /></td>
 
-			</s:if>
-			<s:if
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('fundsource') && shouldShowHeaderField('subscheme')}" />
 			<s:elseif
 				test="%{!shouldShowHeaderField('fundsource') && !shouldShowHeaderField('subscheme')}" />
-			<s:else>
+			<c:otherwise>
 				<td width="10%" class="<c:out value='${tdclass}' />"></td>
 				<td width="25%" class="<c:out value='${tdclass}' />"></td>
 			</s:else>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('fundsource') || shouldShowHeaderField('subscheme')}">
 				<c:choose>
 					<c:when test="${tdclass == 'bluebox'}">
@@ -116,28 +118,28 @@
 						<c:set var="tdclass" value="bluebox" scope="request" />
 					</c:otherwise>
 				</c:choose>
-			</s:if>
+			</c:if>
 		</tr>
 		<tr>
-			<s:if test="%{shouldShowHeaderField('department')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.department"/> :</td>
-				<td width="25%" class="<c:out value='${tdclass}' />"><s:property value="%{getMasterName('department')}" /></td>
-			</s:if>
-			<s:if test="%{shouldShowHeaderField('functionary')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.functionary"/> :
+			<c:if test="%{shouldShowHeaderField('department')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :</td>
+				<td width="25%" class="<c:out value='${tdclass}' />">${%{getMasterName('department')}}</td>
+			</c:if>
+			<c:if test="%{shouldShowHeaderField('functionary')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :
 					&nbsp;</td>
 				<td width="25%" class="<c:out value='${tdclass}' />"><s:property
 						value="%{getMasterName('functionary')}" /></td>
-			</s:if>
-			<s:if
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('department') && shouldShowHeaderField('functionary')}" />
 			<s:elseif
 				test="%{!shouldShowHeaderField('department') && !shouldShowHeaderField('functionary')}" />
-			<s:else>
+			<c:otherwise>
 				<td width="10%" class="<c:out value='${tdclass}' />"></td>
 				<td width="25%" class="<c:out value='${tdclass}' />"></td>
 			</s:else>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('department') || shouldShowHeaderField('functionary')}">
 				<c:choose>
 					<c:when test="${tdclass == 'bluebox'}">
@@ -147,12 +149,12 @@
 						<c:set var="tdclass" value="bluebox" scope="request" />
 					</c:otherwise>
 				</c:choose>
-			</s:if>
+			</c:if>
 		</tr>
 
 		<tr>
-			<s:if test="%{shouldShowHeaderField('field')}">
-				<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.field"/> :
+			<c:if test="%{shouldShowHeaderField('field')}">
+				<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :
 					&nbsp;</td>
 				<td width="25%" class="<c:out value='${tdclass}' />"><s:property
 						value="%{getMasterName('field')}" /></td>
@@ -166,11 +168,11 @@
 						<c:set var="tdclass" value="bluebox" scope="request" />
 					</c:otherwise>
 				</c:choose>
-			</s:if>
+			</c:if>
 		</tr>
 
 		<tr>
-			<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.narration"/> :
+			<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :
 				&nbsp;</td>
 			<td colspan="3" class="<c:out value='${tdclass}' />"><s:property
 					value="%{getMasterName('narration')}" /></td>
@@ -186,7 +188,7 @@
 		</tr>
 		
 		<tr>
-			<td width="10%" class="<c:out value='${tdclass}' />"><s:text name="voucher.ban.number"/> :
+			<td width="10%" class="<c:out value='${tdclass}' />"><!-- TODO: Manual migration required for custom Struts tag --> :
 				&nbsp;</td>
 			<td colspan="3" class="<c:out value='${tdclass}' />"><s:property
 					value="%{getMasterName('budgetaryAppnumber')}" /></td>

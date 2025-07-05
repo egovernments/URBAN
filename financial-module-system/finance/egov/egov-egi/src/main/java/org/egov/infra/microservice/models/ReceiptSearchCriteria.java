@@ -68,16 +68,16 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class ReceiptSearchCriteria {
-    Set<String>  ids;
-    Set<String> status;
-    Set<String> businessCodes;
-    Date fromDate;
-    Date toDate;
-    Set<String>receiptNumbers;
-    String fund;
-    String department;
-    String classification;
-    String tenantId;
+    private Set<String>  ids;
+    private Set<String> status;
+    private Set<String> businessCodes;
+    private Date fromDate;
+    private Date toDate;
+    private Set<String> receiptNumbers;
+    private String fund;
+    private String department;
+    private String classification;
+    private String tenantId;
     
     public void toPayemntSerachCriteriaContract(PaymentSearchCriteria contract){
 //        contract.setIds(this.ids);
@@ -88,5 +88,81 @@ public class ReceiptSearchCriteria {
 //        contract.setReceiptNumbers(this.receiptNumbers);
         contract.setIds(this.receiptNumbers);
         contract.setTenantId(this.tenantId);
+    }
+    
+    // Manual getter and setter methods since Lombok is not working properly
+    public Set<String> getIds() { return ids; }
+    public void setIds(Set<String> ids) { this.ids = ids; }
+    
+    public Set<String> getStatus() { return status; }
+    public void setStatus(Set<String> status) { this.status = status; }
+    
+    public Set<String> getBusinessCodes() { return businessCodes; }
+    public void setBusinessCodes(Set<String> businessCodes) { this.businessCodes = businessCodes; }
+    
+    public Date getFromDate() { return fromDate; }
+    public void setFromDate(Date fromDate) { this.fromDate = fromDate; }
+    
+    public Date getToDate() { return toDate; }
+    public void setToDate(Date toDate) { this.toDate = toDate; }
+    
+    public Set<String> getReceiptNumbers() { return receiptNumbers; }
+    public void setReceiptNumbers(Set<String> receiptNumbers) { this.receiptNumbers = receiptNumbers; }
+    
+    public String getFund() { return fund; }
+    public void setFund(String fund) { this.fund = fund; }
+    
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
+    
+    public String getClassification() { return classification; }
+    public void setClassification(String classification) { this.classification = classification; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    // Builder method
+    public static ReceiptSearchCriteriaBuilder builder() {
+        return new ReceiptSearchCriteriaBuilder();
+    }
+    
+    // Builder class
+    public static class ReceiptSearchCriteriaBuilder {
+        private Set<String> ids;
+        private Set<String> status;
+        private Set<String> businessCodes;
+        private Date fromDate;
+        private Date toDate;
+        private Set<String> receiptNumbers;
+        private String fund;
+        private String department;
+        private String classification;
+        private String tenantId;
+        
+        public ReceiptSearchCriteriaBuilder ids(Set<String> ids) { this.ids = ids; return this; }
+        public ReceiptSearchCriteriaBuilder status(Set<String> status) { this.status = status; return this; }
+        public ReceiptSearchCriteriaBuilder businessCodes(Set<String> businessCodes) { this.businessCodes = businessCodes; return this; }
+        public ReceiptSearchCriteriaBuilder fromDate(Date fromDate) { this.fromDate = fromDate; return this; }
+        public ReceiptSearchCriteriaBuilder toDate(Date toDate) { this.toDate = toDate; return this; }
+        public ReceiptSearchCriteriaBuilder receiptNumbers(Set<String> receiptNumbers) { this.receiptNumbers = receiptNumbers; return this; }
+        public ReceiptSearchCriteriaBuilder fund(String fund) { this.fund = fund; return this; }
+        public ReceiptSearchCriteriaBuilder department(String department) { this.department = department; return this; }
+        public ReceiptSearchCriteriaBuilder classification(String classification) { this.classification = classification; return this; }
+        public ReceiptSearchCriteriaBuilder tenantId(String tenantId) { this.tenantId = tenantId; return this; }
+        
+        public ReceiptSearchCriteria build() {
+            ReceiptSearchCriteria criteria = new ReceiptSearchCriteria();
+            criteria.ids = this.ids;
+            criteria.status = this.status;
+            criteria.businessCodes = this.businessCodes;
+            criteria.fromDate = this.fromDate;
+            criteria.toDate = this.toDate;
+            criteria.receiptNumbers = this.receiptNumbers;
+            criteria.fund = this.fund;
+            criteria.department = this.department;
+            criteria.classification = this.classification;
+            criteria.tenantId = this.tenantId;
+            return criteria;
+        }
     }
 }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -98,7 +100,7 @@
 	background: #FFFFCC;
 }
 </style>
-<title><s:text name="rtgs.issueregister.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <script>
@@ -158,30 +160,30 @@
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/autocomplete-debug.js"></script>
 <body>
-	<s:form action="rtgsIssueRegisterReport" name="rtgsIssueRegisterReport"
+	<form:form action="rtgsIssueRegisterReport" name="rtgsIssueRegisterReport"
 		theme="simple" method="post">
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<font style='color: red; font-weight: bold'>
 			<p class="error-block" id="lblError"></p>
 		</font>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="rtgs.issue.report" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="voucher.fund" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
-					<td class="bluebox"><s:select name="fundId" id="fundId"
+					<td class="bluebox"><form:select path="fundId" id="fundId"
 							list="dropdownData.fundList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="%{getText('lbl.choose.options')}" 
 							onChange="loadBank(this);" value="%{fundId.id}" /></td>
-					<td class="bluebox"><s:text name="voucher.department" />
-					<td class="bluebox"><s:select name="departmentcode"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="bluebox"><form:select path="departmentcode"
 							id="departmentcode" list="dropdownData.departmentList" listKey="code"
 							listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" 
 							onChange="alertWhileSelectingDepartment(this);"
@@ -189,17 +191,17 @@
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="greybox"><s:text name="report.rtgsassignedfromdate" />:</td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
 					<td class="greybox"><s:date name="fromDate" var="fromDateId"
-							format="dd/MM/yyyy" /> <s:textfield id="rtgsAssignedFromDate"
+							format="dd/MM/yyyy" /> <form:input id="rtgsAssignedFromDate"
 							name="rtgsAssignedFromDate" value="%{fromDateId}"
 							data-date-end-date="0d"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
-					<td class="greybox"><s:text name="report.rtgsassignedtodate" />:</td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
 					<td class="greybox"><s:date name="toDate" var="toDateId"
-							format="dd/MM/yyyy" /> <s:textfield id="rtgsAssignedToDate"
+							format="dd/MM/yyyy" /> <form:input id="rtgsAssignedToDate"
 							name="rtgsAssignedToDate" value="%{toDateId}"
 							data-date-end-date="0d"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -211,16 +213,16 @@
 					<egov:ajaxdropdown id="bank" fields="['Text','Value']"
 						dropdownId="bank"
 						url="voucher/common-ajaxLoadAllBanksByFund.action" />
-					<td class="bluebox"><s:text name="bank" />:</td>
-					<td class="bluebox"><s:select name="bank" id="bank"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="bluebox"><form:select path="bank" id="bank"
 							list="dropdownData.bankList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="%{getText('lbl.choose.options')}" 
 							onclick="validateFund()" onChange="populateBankBranch(this);" /></td>
 					<egov:ajaxdropdown id="bankbranch" fields="['Text','Value']"
 						dropdownId="bankbranch"
 						url="voucher/common-ajaxLoadBankBranchFromBank.action" />
-					<td class="bluebox"><s:text name="bankbranch" />:</td>
-					<td class="bluebox"><s:select name="bankbranch.id"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="bluebox"><form:select path="bankbranch.id"
 							id="bankbranch" list="dropdownData.bankBranchList" listKey="id"
 							listValue="branchname" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" 
@@ -231,12 +233,12 @@
 					<egov:ajaxdropdown id="bankaccount" fields="['Text','Value']"
 						dropdownId="bankaccount"
 						url="voucher/common-ajaxLoadBankAccFromBranch.action" />
-					<td class="greybox"><s:text name="bankaccount" />:</td>
-					<td class="greybox"><s:select name="bankaccount.id"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select path="bankaccount.id"
 							id="bankaccount" list="dropdownData.accNumList" listKey="id"
 							listValue="accountnumber" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}"  /></td>
-					<td class="greybox"><s:text name="report.rtgsnumber" />:</td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
 					<td class="greybox"><input type="text" name="instrumentnumber"
 						id="instrumentnumber" autocomplete="off"
 						onfocus='autocompleteRTGSNumbers(this);' /></td>
@@ -250,19 +252,19 @@
 					cssClass="buttonsubmit" onclick="return submitForm('exportPdf')" />
 				<s:submit key="lbl.save.as.excel" 
 					cssClass="buttonsubmit" onclick="return submitForm('exportXls')" />
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 
 			</div>
 			<br>
-			<s:if test="%{searchResult}">
+			<c:if test="%{searchResult}">
 				<logic:empty name="rtgsDisplayList">
 					<blink>Nothing found to display.</blink>
 				</logic:empty>
-			</s:if>
+			</c:if>
 			<div id="codescontainer" />
 		</div>
-	</s:form>
+	</form:form>
 
 	<script>
 		function validateFund() {

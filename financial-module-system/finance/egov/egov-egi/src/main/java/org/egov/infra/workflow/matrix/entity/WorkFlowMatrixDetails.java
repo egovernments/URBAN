@@ -81,7 +81,6 @@ public class WorkFlowMatrixDetails {
     private Long rejectApproverNo;
     private String[] rejectDesignation;
     private String rejectState;
-    private String rejectAction;
     private String rejectStatus;
     private String[] rejectButtons;
     private List<WorkFlowMatrixDetails> matrixdetails = new ArrayList<>();
@@ -108,14 +107,6 @@ public class WorkFlowMatrixDetails {
 
     public void setRejectState(final String rejectState) {
         this.rejectState = rejectState;
-    }
-
-    public String getRejectAction() {
-        return rejectAction;
-    }
-
-    public void setRejectAction(final String rejectAction) {
-        this.rejectAction = rejectAction;
     }
 
     public String getRejectStatus() {
@@ -254,7 +245,6 @@ public class WorkFlowMatrixDetails {
     }
 
     public Date getFromDate() {
-
         return fromDate;
     }
 
@@ -263,7 +253,6 @@ public class WorkFlowMatrixDetails {
     }
 
     public String getFromDateString() {
-
         return toDefaultDateFormat(fromDate);
     }
 
@@ -328,54 +317,54 @@ public class WorkFlowMatrixDetails {
     }
 
     public String getDesignationString() {
-        final StringBuilder str = new StringBuilder();
-        if (getDesignation() != null) {
-            for (final String designationname : getDesignation()) {
-                str.append(designationname);
-                str.append(",");
+        if (designation != null && designation.length > 0) {
+            final StringBuilder designationString = new StringBuilder();
+            for (int i = 0; i < designation.length; i++) {
+                designationString.append(designation[i]);
+                if (i < designation.length - 1)
+                    designationString.append(",");
             }
-            final String designationString = str.toString();
-            return designationString.substring(0, designationString.length() - 1);
-        } else
-            return "";
+            return designationString.toString();
+        }
+        return "";
     }
 
     public String getButtonString() {
-        final StringBuilder str = new StringBuilder();
-        if (getButtons() != null) {
-            for (final String buttonname : getButtons()) {
-                str.append(buttonname);
-                str.append(",");
+        if (buttons != null && buttons.length > 0) {
+            final StringBuilder buttonString = new StringBuilder();
+            for (int i = 0; i < buttons.length; i++) {
+                buttonString.append(buttons[i]);
+                if (i < buttons.length - 1)
+                    buttonString.append(",");
             }
-            final String buttonsString = new String(str);
-            return buttonsString.substring(0, buttonsString.length() - 1);
-        } else
-            return "";
+            return buttonString.toString();
+        }
+        return "";
     }
 
     public String getRejectdesignationString() {
-        final StringBuilder str = new StringBuilder();
-        if (getRejectDesignation() != null) {
-            for (final String designationname : getRejectDesignation()) {
-                str.append(designationname);
-                str.append(",");
+        if (rejectDesignation != null && rejectDesignation.length > 0) {
+            final StringBuilder rejectdesignationString = new StringBuilder();
+            for (int i = 0; i < rejectDesignation.length; i++) {
+                rejectdesignationString.append(rejectDesignation[i]);
+                if (i < rejectDesignation.length - 1)
+                    rejectdesignationString.append(",");
             }
-            final String designationString = new String(str);
-            return designationString.substring(0, designationString.length() - 1);
-        } else
-            return "";
+            return rejectdesignationString.toString();
+        }
+        return "";
     }
 
     public String getRejectbuttonString() {
-        final StringBuilder str = new StringBuilder();
-        if (getRejectButtons() != null) {
-            for (final String buttonname : getRejectButtons()) {
-                str.append(buttonname);
-                str.append(",");
+        if (rejectButtons != null && rejectButtons.length > 0) {
+            final StringBuilder rejectbuttonString = new StringBuilder();
+            for (int i = 0; i < rejectButtons.length; i++) {
+                rejectbuttonString.append(rejectButtons[i]);
+                if (i < rejectButtons.length - 1)
+                    rejectbuttonString.append(",");
             }
-            final String buttonsString = new String(str);
-            return buttonsString.substring(0, buttonsString.length() - 1);
-        } else
-            return "";
+            return rejectbuttonString.toString();
+        }
+        return "";
     }
 }

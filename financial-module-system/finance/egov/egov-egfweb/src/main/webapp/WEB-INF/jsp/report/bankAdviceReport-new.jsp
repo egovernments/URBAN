@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -61,7 +63,7 @@ table.its th {
 	text-align: left;
 }
 </style>
-<title><s:text name="bank.advice.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <script>
@@ -88,32 +90,32 @@ table.its th {
 	}
 </script>
 <body>
-	<s:form action="bankAdviceReport" name="bankAdviceReport"
+	<form:form action="bankAdviceReport" name="bankAdviceReport"
 		theme="simple" method="post" onsubmit="javascript:doAfterSubmit()">
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<font style='color: red; font-weight: bold'>
 			<p class="error-block" id="lblError"></p>
 		</font>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bank.advice.report" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="bluebox" width="10%"><s:text name="lbl.bank.name" />:<span
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory"></span></span></td>
-					<td class="bluebox"><s:select name="bank.id" id="bank.id"
+					<td class="bluebox"><form:select path="bank.id" id="bank.id"
 							list="dropdownData.bankList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 							onChange="populateBankBranch(this);" /></td>
 					<egov:ajaxdropdown id="bankbranch" fields="['Text','Value']"
 						dropdownId="bankbranch"
 						url="voucher/common-ajaxLoadBankBranchFromBank.action" />
-					<td class="bluebox" width="10%"><s:text name="bankbranch" />:<span
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory"></span></span></td>
-					<td class="bluebox"><s:select name="bankbranch.id"
+					<td class="bluebox"><form:select path="bankbranch.id"
 							id="bankbranch" list="dropdownData.bankBranchList" listKey="id"
 							listValue="branchname" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}"
@@ -123,9 +125,9 @@ table.its th {
 						url="voucher/common-ajaxLoadBankAccFromBranch.action" />
 				</tr>
 				<tr>
-					<td class="bluebox" width="10%"><s:text name="lbl.account.number" />:<span
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory"></span></span></td>
-					<td class="bluebox"><s:select name="bankaccount.id"
+					<td class="bluebox"><form:select path="bankaccount.id"
 							id="bankaccount" list="dropdownData.bankAccountList" listKey="id"
 							listValue="accountnumber" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}"
@@ -133,9 +135,9 @@ table.its th {
 					<egov:ajaxdropdown id="instrumentnumber" fields="['Text','Value']"
 						dropdownId="instrumentnumber"
 						url="voucher/common-ajaxLoadRTGSChequeFromBankAcc.action" />
-					<td class="bluebox" width="10%"><s:text name="report.rtgsnumber" />:<span
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory"></span></span></td>
-					<td class="bluebox"><s:select name="instrumentnumber.id"
+					<td class="bluebox"><form:select path="instrumentnumber.id"
 							id="instrumentnumber" list="dropdownData.chequeNumberList"
 							listKey="id" listValue="transactionNumber" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" /></td>
@@ -147,14 +149,14 @@ table.its th {
 			<div class="buttonbottom">
 				<s:submit  key="lbl.search" cssClass="buttonsubmit"
 					onclick="return validate();" />
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 
 			</div>
 			<br>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-				<s:if test="%{bankAdviseResultList.size>0}">
+				<c:if test="%{bankAdviseResultList.size>0}">
 					<tr align="center">
 
 						<th class="bluebgheadtd" width="30%">Party Name</th>
@@ -163,17 +165,17 @@ table.its th {
 						<th class="bluebgheadtd" width="10%">IFSC Code</th>
 						<th class="bluebgheadtd" width="10%">Amount(Rs.)</th>
 					</tr>
-					<s:iterator value="bankAdviseResultList" status="stat" var="p">
+					<c:forEach value="bankAdviseResultList" status="stat" var="p">
 						<tr>
-							<td class="blueborderfortd" style="text-align: center"><s:property value="partyName" /></td>
-							<td class="blueborderfortd" style="text-align: center"><s:property value="bank" /></td>
+							<td class="blueborderfortd" style="text-align: center">${partyName}</td>
+							<td class="blueborderfortd" style="text-align: center">${bank}</td>
 							<td class="blueborderfortd" style="text-align: center"><s:property
 									value="accountNumber" /></td>
-							<td class="blueborderfortd" style="text-align: center"><s:property value="ifscCode" /></td>
+							<td class="blueborderfortd" style="text-align: center">${ifscCode}</td>
 							<td class="blueborderfortd" style="text-align: right"><s:property
 									value="amount" /></td>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 					<tr>
 						<td class="blueborderfortd" colspan="5">
 					</tr>
@@ -205,8 +207,8 @@ table.its th {
 					</td>
 					</tr>
 
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<!-- <tr>
 						<td colspan="7" align="center"><font color="red">No
 								record Found.</font></td>
@@ -215,7 +217,7 @@ table.its th {
 				</s:else>
 			</table>
 		</div>
-	</s:form>
+	</form:form>
 
 	<script>
 		function validate() {

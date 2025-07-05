@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,9 +56,9 @@
 <title>Create budget proposal (BE)</title>
 <SCRIPT type="text/javascript">
     function onLoadTask(){
-    	showMessage = '<s:property value="showMessage"/>';
-    	if(showMessage == 'true' && '<s:property value="actionMessage"/>' != ''){
-    		bootbox.alert('<s:property value="actionMessage"/>');
+    	showMessage = '${showMessage}';
+    	if(showMessage == 'true' && '${actionMessage}' != ''){
+    		bootbox.alert('${actionMessage}');
     		document.forms[0].action = "${pageContext.request.contextPath}/budget/budgetDetail.action";
 			document.forms[0].submit();
     	}
@@ -96,11 +98,11 @@
 	<div class="formmainbox">
 		<div class="subheadnew">Create budget proposal (BE)</div>
 	</div>
-	<s:actionmessage theme="simple" />
-	<s:actionerror />
-	<s:fielderror />
-	<s:form name="budgetDetailForm" action="budgetDetail" theme="simple">
-		<s:token />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<form:form name="budgetDetailForm" action="budgetDetail" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<%@ include file='budgetDetail-form.jsp'%>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			id="budgetDetailFormTable">
@@ -109,10 +111,10 @@
 			</tr>
 			<tr>
 				<td width="10%" class="bluebox">&nbsp;</td>
-				<td class="bluebox"><s:text name="budgetdetail.budget.asOnDate" /></td>
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 				<td class="bluebox"><input type="text" id="asOnDate"
 					name="asOnDate" style="width: 100px"
-					value='<s:date name="asOnDate" format="dd/MM/yyyy"/>' /><a
+					value='<!-- TODO: Manual migration required for custom Struts tag -->' /><a
 					href="javascript:show_calendar('budgetDetailForm.asOnDate');"
 					style="text-decoration: none">&nbsp;<img
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
@@ -134,14 +136,14 @@
 			addGridRows();
 			hideColumns();
 			updateAllGridValues()
-			<s:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
+			<c:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
 				setValues();
-			</s:if>
+			</c:if>
 		</script>
 		<br />
 		<br />
 		<div class="buttonbottom" style="padding-bottom: 10px;">
-			<s:hidden name="budget" id="hidden_budget" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="submit" value="Save" id="budgetDetail__create"
 				name="method:create" onClick="javascript: return validate();"
 				class="buttonsubmit" />
@@ -149,13 +151,13 @@
 				cssClass="buttonsubmit" />
 		</div>
 		<div id="savedDataGrid">
-			<s:if test="%{savedbudgetDetailList.size()>0}">
+			<c:if test="%{savedbudgetDetailList.size()>0}">
 				<%@ include file='budgetDetailList.jsp'%>
-			</s:if>
+			</c:if>
 		</div>
 		<script>
-				document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>'
+				document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}'
 		</script>
-	</s:form>
+	</form:form>
 </body>
 </html>

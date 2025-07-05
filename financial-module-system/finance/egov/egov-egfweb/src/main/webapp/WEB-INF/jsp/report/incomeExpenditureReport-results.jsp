@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -72,7 +74,7 @@
 							<tr>
 								<td colspan="12">
 									<div class="subheadsmallnew">
-										<strong><s:property value="statementheading" /></strong>
+										<strong>${statementheading}</strong>
 									</div>
 								</td>
 							</tr>
@@ -82,79 +84,79 @@
 											format="dd/MM/yyyy" /></strong></td>
 								<td colspan="11">
 									<div class="blueborderfortd" align="right">
-										<strong> <s:text name="report.amount.in" /> <s:property
+										<strong> <!-- TODO: Manual migration required for custom Struts tag --> <s:property
 												value="model.currency" />&nbsp;&nbsp;&nbsp;&nbsp;
 										</strong>
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<th class="bluebgheadtd"><s:text name="report.accountCode" /></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 								<th class="bluebgheadtd"><s:text
 										name="report.headOfAccount" /></th>
-								<th class="bluebgheadtd"><s:text name="report.scheduleNo" /></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 								<%--<th class="bluebgheadtd"><s:text
 										name="report.revisedestimate" />
 									<s:property
 										value="incomeExpenditureStatement.financialYear.finYearRange" /></th> --%>
-								<s:iterator value="incomeExpenditureStatement.funds"
+								<c:forEach value="incomeExpenditureStatement.funds"
 									status="stat">
 									<th class="bluebgheadtd" width="30%" colspan="2"><s:property
 											value="name" />(Rs)</th>
-								</s:iterator>
+								</c:forEach>
 							</tr>
 							<tr>
-								<th class="bluebgheadtd"><s:text name="" /></th>
-								<th class="bluebgheadtd"><s:text name="" /></th>
-								<th class="bluebgheadtd"><s:text name="" /></th>
-								<%--<th class="bluebgheadtd"><s:text name="" /></th> --%>
-								<s:if test="%{incomeExpenditureStatement.getFunds().size()==1}">
-									<s:iterator value="incomeExpenditureStatement.funds"
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<%--<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th> --%>
+								<c:if test="%{incomeExpenditureStatement.getFunds().size()==1}">
+									<c:forEach value="incomeExpenditureStatement.funds"
 										status="stat">
 										<th class="bluebgheadtd" width="15%" align="center"
-											colspan="1"><s:property value="currentYearToDate" />(Rs)</th>
+											colspan="1">${currentYearToDate}(Rs)</th>
 										<th class="bluebgheadtd" width="15%" align="center"
-											colspan="1"><s:property value="previousYearToDate" />(Rs)</th>
-									</s:iterator>
-								</s:if>
-								<s:else>
-									<s:iterator value="incomeExpenditureStatement.funds"
+											colspan="1">${previousYearToDate}(Rs)</th>
+									</c:forEach>
+								</c:if>
+								<c:otherwise>
+									<c:forEach value="incomeExpenditureStatement.funds"
 										status="stat">
 										<th class="bluebgheadtd" width="15%" align="center"
-											colspan="1"><s:text name="report.currentTotals" />
-											<s:property value="currentYearToDate" /></th>
+											colspan="1"><!-- TODO: Manual migration required for custom Struts tag -->
+											${currentYearToDate}</th>
 										<th class="bluebgheadtd" width="15%" align="center"
-											colspan="1"><s:text name="report.previousTotals" />
-											<s:property value="previousYearToDate" /></th>
-									</s:iterator>
+											colspan="1"><!-- TODO: Manual migration required for custom Struts tag -->
+											${previousYearToDate}</th>
+									</c:forEach>
 								</s:else>
 							</tr>
 							</tr>
-							<s:iterator value="incomeExpenditureStatement.ieEntries"
+							<c:forEach value="incomeExpenditureStatement.ieEntries"
 								status="stat">
 								<tr>
 									<td class="blueborderfortd">
 										<div align="center">
-											<s:if test='%{glCode != ""}'>
-												<s:if test='%{displayBold == true}'>
+											<c:if test='%{glCode != ""}'>
+												<c:if test='%{displayBold == true}'>
 
-													<strong><s:property value="glCode" /></strong>
+													<strong>${glCode}</strong>
 
-												</s:if>
-												<s:else>
-													<s:property value="glCode" />
+												</c:if>
+												<c:otherwise>
+													${glCode}
 												</s:else>
-											</s:if>
+											</c:if>
 											&nbsp;
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="left">
-											<s:if test='%{scheduleNo == ""}'>
-												<strong><s:property value="accountName" /></strong>
-											</s:if>
-											<s:else>
-												<s:property value="accountName" />
+											<c:if test='%{scheduleNo == ""}'>
+												<strong>${accountName}</strong>
+											</c:if>
+											<c:otherwise>
+												${accountName}
 											</s:else>
 											&nbsp;
 										</div>
@@ -163,59 +165,59 @@
 									<td class="blueborderfortd">
 										<div align="center">
 											<a href="javascript:void(0);"
-												onclick="return showSchedule('<s:property value="glCode"/>','<s:property value="scheduleNo"/>')"><s:property
+												onclick="return showSchedule('${glCode}','${scheduleNo}')"><s:property
 													value="scheduleNo" /></a>&nbsp;
 										</div>
 									</td>
 									<%--<td class="blueborderfortd">
 										<div align="right">
-											<s:if test='%{displayBold == true}'>
-												<strong><s:property value="budgetAmount" /></strong>
-											</s:if>
-											<s:else>
-												<s:property value="budgetAmount" />
+											<c:if test='%{displayBold == true}'>
+												<strong>${budgetAmount}</strong>
+											</c:if>
+											<c:otherwise>
+												${budgetAmount}
 											</s:else>
 											&nbsp;
 										</div>
 									</td> --%>
-									<s:iterator value="incomeExpenditureStatement.funds"
+									<c:forEach value="incomeExpenditureStatement.funds"
 										status="stat">
 										<td class="blueborderfortd">
 											<div align="right">
 
-												<s:if test='%{displayBold == true}'>
-													<strong><s:property value="netAmount[name]" />&nbsp;</strong>
-												</s:if>
-												<s:else>
-													<s:property value="netAmount[name]" />&nbsp;</s:else>
+												<c:if test='%{displayBold == true}'>
+													<strong>${netAmount[name]}&nbsp;</strong>
+												</c:if>
+												<c:otherwise>
+													${netAmount[name]}&nbsp;</s:else>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:if test='%{displayBold == true}'>
+												<c:if test='%{displayBold == true}'>
 													<strong><s:property
 															value="previousYearAmount[name]" />&nbsp;</strong>
-												</s:if>
-												<s:else>
-													<s:property value="previousYearAmount[name]" />&nbsp;</s:else>
+												</c:if>
+												<c:otherwise>
+													${previousYearAmount[name]}&nbsp;</s:else>
 											</div>
 										</td>
 
 										</td>
-									</s:iterator>
+									</c:forEach>
 
 								</tr>
-							</s:iterator>
+							</c:forEach>
 						</table>
 					</div>
 				</td>
 			</tr>
 		</table>
 		<div class="buttonbottom" id="ieReport">
-			<s:text name="report.export.options" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			: <a
-				href='/services/EGF/report/incomeExpenditureReport-generateIncomeExpenditureXls.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.fund.id=<s:property value="model.fund.id"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.field.id=<s:property value="model.field.id"/>'>Excel</a>
+				href='/services/EGF/report/incomeExpenditureReport-generateIncomeExpenditureXls.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.asOndate=${model.asOndate}&model.fund.id=${model.fund.id}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.field.id=${model.field.id}'>Excel</a>
 			| <a
-				href='/services/EGF/report/incomeExpenditureReport-generateIncomeExpenditurePdf.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.fund.id=<s:property value="model.fund.id"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.field.id=<s:property value="model.field.id"/>'>PDF</a>
+				href='/services/EGF/report/incomeExpenditureReport-generateIncomeExpenditurePdf.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.asOndate=${model.asOndate}&model.fund.id=${model.fund.id}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.field.id=${model.field.id}'>PDF</a>
 		</div>
 	</div>

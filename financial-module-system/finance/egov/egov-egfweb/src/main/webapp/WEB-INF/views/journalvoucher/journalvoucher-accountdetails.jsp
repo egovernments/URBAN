@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -80,10 +82,10 @@
 							<input type="text" id="accountDetails[0].accountHead" name="accountDetails[0].accountHead" class="form-control accountglname" disabled>  
 						</td>
 						<td>
-							<form:input path="accountDetails[0].debitAmount" name="accountDetails[0].debitAmount" id="accountDetails[0].debitAmount"  data-errormsg="Debit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right debitAmount" onblur="calculateDebitAmount(this);" maxlength="12"  />
+							<form:input path="accountDetails[0].debitAmount" path="accountDetails[0].debitAmount" id="accountDetails[0].debitAmount"  data-errormsg="Debit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right debitAmount" onblur="calculateDebitAmount(this);" maxlength="12"  />
 						</td> 
 						<td>
-							<form:input path="accountDetails[0].creditAmount" name="accountDetails[0].creditAmount" id="accountDetails[0].creditAmount"  data-errormsg="Credit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right creditAmount" onblur="calculateCreditAmount(this);"  maxlength="12"  />
+							<form:input path="accountDetails[0].creditAmount" path="accountDetails[0].creditAmount" id="accountDetails[0].creditAmount"  data-errormsg="Credit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right creditAmount" onblur="calculateCreditAmount(this);"  maxlength="12"  />
 						</td> 
 						<td class="text-center"><span style="cursor:pointer;" onclick="addAccountDetailsRow();"><i class="fa fa-plus" aria-hidden="true"></i></span>
 						 <span class="add-padding accountdetail-delete-row" onclick="deleteAccountDetailsRow(this);"><i class="fa fa-trash"  aria-hidden="true" data-toggle="tooltip" title="" data-original-title="Delete!"></i></span> </td>
@@ -99,10 +101,10 @@
 							<input type="text" id="accountDetails[1].accountHead" name="accountDetails[1].accountHead" class="form-control accountglname" disabled>  
 						</td>
 						<td>
-							<form:input path="accountDetails[1].debitAmount" name="accountDetails[1].debitAmount" id="accountDetails[1].debitAmount"  data-errormsg="Debit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right debitAmount" onblur="calculateDebitAmount(this);" maxlength="12"  />
+							<form:input path="accountDetails[1].debitAmount" path="accountDetails[1].debitAmount" id="accountDetails[1].debitAmount"  data-errormsg="Debit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right debitAmount" onblur="calculateDebitAmount(this);" maxlength="12"  />
 						</td> 
 						<td>
-							<form:input path="accountDetails[1].creditAmount" name="accountDetails[1].creditAmount" id="accountDetails[1].creditAmount"  data-errormsg="Credit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right creditAmount" onblur="calculateCreditAmount(this);"  maxlength="12"  />
+							<form:input path="accountDetails[1].creditAmount" path="accountDetails[1].creditAmount" id="accountDetails[1].creditAmount"  data-errormsg="Credit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right creditAmount" onblur="calculateCreditAmount(this);"  maxlength="12"  />
 						</td> 
 						<td class="text-center"><span style="cursor:pointer;" onclick="addAccountDetailsRow();"><i class="fa fa-plus" aria-hidden="true"></i></span>
 						 <span class="add-padding accountdetail-delete-row" onclick="deleteAccountDetailsRow(this);"><i class="fa fa-trash"  aria-hidden="true" data-toggle="tooltip" title="" data-original-title="Delete!"></i></span> </td>
@@ -121,10 +123,10 @@
 								<input type="text" id="accountDetails[${item.index }].accountHead" name="accountDetails[${item.index }].accountHead" class="form-control accountglname" value="${accountDeatils.glcodeId.name }" disabled>  
 							</td>
 							<td>
-								<form:input path="accountDetails[${item.index }].debitAmount" name="accountDetails[${item.index }].debitAmount" id="accountDetails[${item.index }].debitAmount"  data-errormsg="Debit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right debitAmount" onblur="calculateDebitAmount(this);"  value="${accountDeatils.debitAmount }" maxlength="12"  />
+								<form:input path="accountDetails[${item.index }].debitAmount" path="accountDetails[${item.index }].debitAmount" id="accountDetails[${item.index }].debitAmount"  data-errormsg="Debit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right debitAmount" onblur="calculateDebitAmount(this);"  value="${accountDeatils.debitAmount }" maxlength="12"  />
 							</td> 
 								<td>
-								<form:input path="accountDetails[${item.index }].creditAmount" name="accountDetails[${item.index }].creditAmount" id="accountDetails[${item.index }].creditAmount"  data-errormsg="Credit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right creditAmount" onblur="calculateCreditAmount(this);"  value="${accountDeatils.creditAmount }"  maxlength="12"  />
+								<form:input path="accountDetails[${item.index }].creditAmount" path="accountDetails[${item.index }].creditAmount" id="accountDetails[${item.index }].creditAmount"  data-errormsg="Credit Amount is mandatory!" onkeyup="decimalvalue(this);" data-pattern="decimalvalue" data-idx="0" data-optional="0" class="form-control table-input text-right creditAmount" onblur="calculateCreditAmount(this);"  value="${accountDeatils.creditAmount }"  maxlength="12"  />
 							</td> 
 							<td class="text-center"><span style="cursor:pointer;" onclick="addAccountDetailsRow();"><i class="fa fa-plus" aria-hidden="true"></i></span>
 							 <span class="add-padding accountdetail-delete-row" onclick="deleteAccountDetailsRow(this);"><i class="fa fa-trash"  aria-hidden="true" data-toggle="tooltip" title="" data-original-title="Delete!"></i></span> </td>

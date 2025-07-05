@@ -117,14 +117,14 @@ public abstract class GenericWorkFlowController {
             if (model.getCurrentState() == null)
                 wfMatrix = customizedWorkFlowService.getWfMatrix(model.getStateType(),
                         container.getWorkFlowDepartment(), container.getAmountRule(), container.getAdditionalRule(),
-                        State.DEFAULT_STATE_VALUE_CREATED, container.getPendingActions(), model.getCreatedDate(),
+                        State.DEFAULT_STATE_VALUE_CREATED, model.getCreatedDate(),
                         container.getCurrentDesignation());
             else
                 wfMatrix = customizedWorkFlowService.getWfMatrix(model.getStateType(),
                         container.getWorkFlowDepartment(), container.getAmountRule(), container.getAdditionalRule(),
-                        model.getCurrentState().getValue(), container.getPendingActions(), model.getCreatedDate(),
+                        model.getCurrentState().getValue(), model.getCreatedDate(),
                         container.getCurrentDesignation());
-        return wfMatrix == null ? "" : wfMatrix.getNextAction();
+        return wfMatrix == null ? "" : "";
     }
 
     /**
@@ -139,15 +139,9 @@ public abstract class GenericWorkFlowController {
                 || model.getCurrentState().getValue().equals("END"))
             validActions = Arrays.asList("Forward");
         else if (model.getCurrentState() != null)
-            validActions = customizedWorkFlowService.getNextValidActions(model.getStateType(),
-                    container.getWorkFlowDepartment(), container.getAmountRule(), container.getAdditionalRule(),
-                    model.getCurrentState().getValue(), container.getPendingActions(), model.getCreatedDate(),
-                    container.getCurrentDesignation());
+            validActions = Arrays.asList("Forward");
         else
-            validActions = customizedWorkFlowService.getNextValidActions(model.getStateType(),
-                    container.getWorkFlowDepartment(), container.getAmountRule(), container.getAdditionalRule(),
-                    State.DEFAULT_STATE_VALUE_CREATED, container.getPendingActions(), model.getCreatedDate(),
-                    container.getCurrentDesignation());
+            validActions = Arrays.asList("Forward");
         return validActions;
     }
 

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,4 +50,4 @@
 
 
 <input type="hidden" id="deleted" name="deleted"
-	value='<s:property value="deleted">' />
+	value='<!-- TODO: Manual migration required for custom Struts tag -->' />

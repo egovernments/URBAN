@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,16 +56,16 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="bank.modify.new" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" type="text/css"
 	href="/services/EGF/resources/css/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="../resources/css/jquery/ui.jqgrid.css" />
 <script>
-    var fundJson = "<s:property value='getFundsJSON()'/>";
-    var accTypeJson = <s:property value='getAccountTypesJSON()' escapeHtml='false'/>;
-    var bankAccTypeJson = "<s:property value='getBankAccountTypesJSON()'/>";
-    var autoBankGLCode =  "<s:property value='isAutoBankAccountGLCodeEnabled()'/>";
+    var fundJson = "<!-- TODO: Manual migration required for custom Struts tag -->";
+    var accTypeJson = <!-- TODO: Manual migration required for custom Struts tag -->;
+    var bankAccTypeJson = "<!-- TODO: Manual migration required for custom Struts tag -->";
+    var autoBankGLCode =  "<!-- TODO: Manual migration required for custom Struts tag -->";
 	</script>
 <style>
 .EditTable td {
@@ -81,7 +83,7 @@
 
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="bank.view.new" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<jsp:include page="bank-form.jsp"></jsp:include>
 	</div>

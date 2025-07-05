@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -50,13 +51,15 @@ package org.egov.infra.web.struts.interceptors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts2.ServletActionContext;
+// TODO: Migrate from Struts/XWork: // import org.apache.struts2.ServletActionContext; // TODO: Migrate from Struts/XWork
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.HTTPUtilities;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+// TODO: Migrate from Struts/XWork: // import com.opensymphony.xwork2.ActionInvocation; // TODO: Migrate from Struts/XWork
+// TODO: Migrate from Struts/XWork: // import com.opensymphony.xwork2.interceptor.AbstractInterceptor; // TODO: Migrate from Struts/XWork
 
+// TODO: Migrate this interceptor to Spring HandlerInterceptor if needed.
+/*
 public class CacheControlInterceptor extends AbstractInterceptor {
 
     private static final long serialVersionUID = 1L;
@@ -65,13 +68,14 @@ public class CacheControlInterceptor extends AbstractInterceptor {
     public String intercept(final ActionInvocation invocation) throws Exception {
         final HttpServletResponse response = ServletActionContext.getResponse();
         if (response != null) {
-			HTTPUtilities httpUtilities = ESAPI.httpUtilities();
-			httpUtilities.addHeader(response, "Cache-control", "no-cache, no-store, must-revalidate");
-        	httpUtilities.addHeader(response, "Pragma", "no-cache");
-        	httpUtilities.addHeader(response, "Expires", "-1");
-        	httpUtilities.addHeader(response, "Vary", "*");
+            HTTPUtilities httpUtilities = ESAPI.httpUtilities();
+            httpUtilities.addHeader(response, "Cache-control", "no-cache, no-store, must-revalidate");
+            httpUtilities.addHeader(response, "Pragma", "no-cache");
+            httpUtilities.addHeader(response, "Expires", "-1");
+            httpUtilities.addHeader(response, "Vary", "*");
         }
         return invocation.invoke();
     }
 
 }
+*/

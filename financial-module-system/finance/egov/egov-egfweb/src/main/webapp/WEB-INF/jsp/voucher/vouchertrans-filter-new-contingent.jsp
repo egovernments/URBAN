@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,100 +53,100 @@
 <%@ taglib prefix="egov" tagdir="/WEB-INF/tags"%>
 <tr>
 	<td class="greybox"></td>
-	<s:if test="%{shouldShowHeaderField('fund')}">
-		<td class="greybox"><s:text name="voucher.fund" /> <s:if
+	<c:if test="%{shouldShowHeaderField('fund')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fund')}">
 				<span class="bluebox"><span class="mandatory1">*</span></span>
-			</s:if></td>
-		<td class="greybox"><s:select name="fundId" id="fundId"
+			</c:if></td>
+		<td class="greybox"><form:select path="fundId" id="fundId"
 				list="dropdownData.fundList" listKey="id" listValue="name"
 				headerKey="" headerValue="----Choose----"
 				onChange="populateSchemes(this);loadBank(this);"
 				value="%{fundId.id}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('fundsource')}">
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('fundsource')}">
 		<egov:ajaxdropdown id="fundsource" fields="['Text','Value']"
 			dropdownId="fundsourceId"
 			url="voucher/common-ajaxLoadFundSource.action" />
-		<td class="bluebox"><s:text name="voucher.fundsource" /> <s:if
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fundsource')}">
 				<span class="bluebox"><span class="mandatory1">*</span></span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="vouchermis.fundsource"
+			</c:if></td>
+		<td class="bluebox"><form:select path="vouchermis.fundsource"
 				id="fundsourceId" list="dropdownData.fundsourceList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="----Choose----"
 				value="voucherHeader.vouchermis.fundsource.id" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="bluebox"></td>
-	<s:if test="%{shouldShowHeaderField('scheme')}">
+	<c:if test="%{shouldShowHeaderField('scheme')}">
 		<egov:ajaxdropdown id="scheme" fields="['Text','Value']"
 			dropdownId="schemeid" url="voucher/common-ajaxLoadSchemes.action" />
 
-		<td class="greybox"><s:text name="voucher.scheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('scheme')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select list="dropdownData.schemeList"
+			</c:if></td>
+		<td class="greybox"><form:select list="dropdownData.schemeList"
 				name="vouchermis.schemeid" id="schemeid" listKey="id"
 				listValue="name" headerKey="-1" headerValue="----Choose----"
 				onChange="populatesubSchemes(this)"
 				value="voucherHeader.vouchermis.schemeid.id" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('subscheme')}">
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('subscheme')}">
 		<egov:ajaxdropdown id="subscheme" fields="['Text','Value']"
 			dropdownId="subschemeid"
 			url="voucher/common-ajaxLoadSubSchemes.action" />
-		<td class="bluebox"><s:text name="voucher.subscheme" /> <s:if
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('subscheme')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="vouchermis.subschemeid"
+			</c:if></td>
+		<td class="bluebox"><form:select path="vouchermis.subschemeid"
 				id="subschemeid" list="dropdownData.subschemeList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="----Choose----"
 				value="voucherHeader.vouchermis.subschemeid.id"
 				onChange="populateFundSource(this)" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="greybox"></td>
-	<s:if test="%{shouldShowHeaderField('department')}">
-		<td class="greybox"><s:text name="voucher.department" /> <s:if
+	<c:if test="%{shouldShowHeaderField('department')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('department')}">
 				<span class="bluebox"><span class="mandatory1">*</span></span>
-			</s:if></td>
-		<td class="greybox"><s:select name="vouchermis.departmentid"
+			</c:if></td>
+		<td class="greybox"><form:select path="vouchermis.departmentid"
 				id="vouchermis.departmentid" list="dropdownData.billDepartmentList"
 				listKey="id" listValue="name" headerKey="-1"
 				headerValue="----Choose----"
 				value="voucherHeader.vouchermis.departmentid.id" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('field')}">
-		<td class="greybox"><s:text name="voucher.field" /> <s:if
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('field')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('field')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="vouchermis.divisionid"
+			</c:if></td>
+		<td class="greybox"><form:select path="vouchermis.divisionid"
 				id="vouchermis.divisionid" list="dropdownData.fieldList"
 				listKey="id" listValue="name" headerKey="-1"
 				headerValue="----Choose----"
 				value="voucherHeader.vouchermis.divisionid.id" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="bluebox"></td>
-	<s:if test="%{shouldShowHeaderField('functionary')}">
-		<td class="bluebox"><s:text name="voucher.functionary" /> <s:if
+	<c:if test="%{shouldShowHeaderField('functionary')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('functionary')}">
 				<span class="bluebox"><span class="mandatory1">*</span></span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="vouchermis.functionary"
+			</c:if></td>
+		<td class="bluebox"><form:select path="vouchermis.functionary"
 				id="vouchermis.functionary" list="dropdownData.functionaryList"
 				listKey="id" listValue="name" headerKey="-1"
 				headerValue="----Choose----"
 				value="voucherHeader.vouchermis.functionary.id" /></td>
-	</s:if>
+	</c:if>
 
 </tr>
 
@@ -171,77 +173,77 @@ function populateFundSource(subSchemeId){
 function validateMIS(){
 	// Javascript validation of the MIS Manadate attributes.
 	
-			<s:if test="%{isFieldMandatory('vouchernumber')}"> 
+			<c:if test="%{isFieldMandatory('vouchernumber')}"> 
 				 if(null != document.getElementById('voucherNumber') && document.getElementById('voucherNumber').value.trim().length == 0 ){
 
 					document.getElementById('lblError').innerHTML = "Please enter a voucher number";
 					return false;
 				 }
-			 </s:if>
-		 <s:if test="%{isFieldMandatory('voucherdate')}"> 
+			 </c:if>
+		 <c:if test="%{isFieldMandatory('voucherdate')}"> 
 				 if(null != document.getElementById('voucherDate') && document.getElementById('voucherDate').value.trim().length == 0){
 
 					document.getElementById('lblError').innerHTML = "Please enter a voucher date";
 					return false;
 				 }
-			 </s:if>
-		 <s:if test="%{isFieldMandatory('fund')}"> 
+			 </c:if>
+		 <c:if test="%{isFieldMandatory('fund')}"> 
 				 if(null != document.getElementById('fundId') && document.getElementById('fundId').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please Select a fund";
 					return false;
 				 }
-			 </s:if>
-			<s:if test="%{isFieldMandatory('department')}"> 
+			 </c:if>
+			<c:if test="%{isFieldMandatory('department')}"> 
 				 if(null!= document.getElementById('vouchermis.departmentid') && document.getElementById('vouchermis.departmentid').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please select a department";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('scheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('scheme')}"> 
 				 if(null!=document.getElementById('schemeid') &&  document.getElementById('schemeid').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please select a scheme";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('subscheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('subscheme')}"> 
 				 if(null!= document.getElementById('subschemeid') && document.getElementById('subschemeid').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please select a subscheme";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('functionary')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('functionary')}"> 
 				 if(null!=document.getElementById('vouchermis.functionary') &&  document.getElementById('vouchermis.functionary').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please select a functionary";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('fundsource')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('fundsource')}"> 
 				 if(null !=document.getElementById('fundsourceId') &&  document.getElementById('fundsourceId').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please select a fundsource";
 					return false;
 				}
-			</s:if>
-			<s:if test="%{isFieldMandatory('field')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('field')}"> 
 				 if(null!= document.getElementById('vouchermis.divisionid') && document.getElementById('vouchermis.divisionid').value ==""){
 
 					document.getElementById('lblError').innerHTML = "Please select a field";
 					return false;
 				 }
-			</s:if>
+			</c:if>
 			
-			<s:if test="%{isFieldMandatory('function')}">                        
+			<c:if test="%{isFieldMandatory('function')}">                        
 			 if(null != document.getElementById('vouchermis.function') && document.getElementById('vouchermis.function').value == -1){
 
 				document.getElementById('lblError').innerHTML = "Please Select a function";
 				return false;
 			 }
-		 </s:if>
+		 </c:if>
 			return  true;
 }
 function populateApproverDept(dept){
@@ -256,11 +258,11 @@ function populateApproverDept(dept){
 			
 		}
 if(null != document.getElementById('departmentid')){
-		<s:if test="%{isFieldMandatory('department')}"> 
+		<c:if test="%{isFieldMandatory('department')}"> 
 				
 				populateUser();
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			populateDesg();
 		</s:else>
 	}

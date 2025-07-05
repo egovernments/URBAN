@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -113,7 +115,7 @@
 	path="${pageContext.request.contextPath}";
 		var totaldbamt=0,totalcramt=0;
 		var makeVoucherDetailTable = function() {
-		<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>
+		<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>
 		var voucherDetailColumns = [                     
 			{key:"functionid",hidden:true,width:90, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
 			{key:"function",hidden:true,label:'Function Name',width:90, formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","hidden")},
@@ -125,8 +127,8 @@
 			{key:'Add',label:'Add',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
 			{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 		];
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 		var voucherDetailColumns = [ 
    			{key:"functionid",hidden:true,width:90,  formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
    			{key:"function",label:'Function Name',width:90, formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","text")},         
@@ -167,28 +169,28 @@
 			        
 		}
 		);
-		<s:iterator value="billDetailslist" status="stat">
+		<c:forEach value="billDetailslist" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"functionid":'<s:property value="functionIdDetail"/>',
-					"function":'<s:property value="functionDetail"/>',
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:property value="%{debitAmountDetail}"/>',
-					"creditamount":'<s:property value="%{creditAmountDetail}"/>'
+					"functionid":'${functionIdDetail}',
+					"function":'${functionDetail}',
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'${%{debitAmountDetail}}',
+					"creditamount":'${%{creditAmountDetail}}'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridPJV('functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-				updateGridPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				updateGridPJV('glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGridPJV('glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGridPJV('accounthead',index,'<s:property value="accounthead"/>');
-				updateGridPJV('debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
-				updateGridPJV('creditAmountDetail',index,'<s:property value="creditAmountDetail"/>');
-				totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
-				totalcramt = totalcramt+parseFloat('<s:property value="creditAmountDetail"/>');
+				var index = '${#stat.index}';
+				updateGridPJV('functionIdDetail',index,'${functionIdDetail}');
+				updateGridPJV('functionDetail',index,'${functionDetail}');
+				updateGridPJV('glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGridPJV('glcodeDetail',index,'${glcodeDetail}');
+				updateGridPJV('accounthead',index,'${accounthead}');
+				updateGridPJV('debitAmountDetail',index,'${debitAmountDetail}');
+				updateGridPJV('creditAmountDetail',index,'${creditAmountDetail}');
+				totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
+				totalcramt = totalcramt+parseFloat('${creditAmountDetail}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 				
 
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -208,13 +210,13 @@
 		document.getElementById('totalcramount').value=totalcramt; 
 		}
 		var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+		<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	
 	
 	
@@ -257,41 +259,41 @@
 			}        
 		});
 	
-		<s:iterator value="subLedgerlist" status="stat">
+		<c:forEach value="subLedgerlist" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"subledgerCode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKey"/>',
-					"detailKey":'<s:property value="detailKey"/>',
-					"debitAmount":'<s:property value="%{debitAmount}"/>',
-					"creditAmount":'<s:property value="%{creditAmount}"/>'
-				});'<s:property value="glcode.id"/>'
-				var index = '<s:property value="#stat.index"/>';
-				updateGridSLDropdownJV('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
-				updateGridSLDropdownJV('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
-				updateSLGridPJV('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGridPJV('subledgerCode',index,'<s:property value="subledgerCode"/>');
-				updateSLGridPJV('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGridPJV('detailKey',index,'<s:property value="detailKey"/>');
-				updateSLGridPJV('amount',index,'<s:property value="amount"/>');
+					"subledgerCode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKey}',
+					"detailKey":'${detailKey}',
+					"debitAmount":'${%{debitAmount}}',
+					"creditAmount":'${%{creditAmount}}'
+				});'${glcode.id}'
+				var index = '${#stat.index}';
+				updateGridSLDropdownJV('glcode.id',index,'${glcode.id}','${subledgerCode}');
+				updateGridSLDropdownJV('detailType.id',index,'${detailType.id}','${detailTypeName}');
+				updateSLGridPJV('detailCode',index,'${detailCode}');
+				updateSLGridPJV('subledgerCode',index,'${subledgerCode}');
+				updateSLGridPJV('detailKeyId',index,'${detailKeyId}');
+				updateSLGridPJV('detailKey',index,'${detailKey}');
+				updateSLGridPJV('amount',index,'${amount}');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 	
 	}
-	var amountshouldbenumeric='<s:text  name="amount.should.be.numeric"/>';
-	var succesMessage='<s:text name="directbank.transaction.succcess"/>';
-	var totalsnotmatchingamount='<s:text name="totals.not.matching.amount"/>';
-	var 	button='<s:property value="button"/>';
+	var amountshouldbenumeric='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var succesMessage='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var totalsnotmatchingamount='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var 	button='${button}';
 	</script>
 </head>
 <body
 	onload="onLoadTask_edit();loadDropDownCodesExcludingCashAndBank();loadDropDownCodesFunction();">
-	<s:form action="directBankPayment" theme="css_xhtml" name="dbpform"
+	<form:form action="directBankPayment" theme="css_xhtml" name="dbpform"
 		validate="true">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Bank to Bank Transfer" name="heading" />
 			</jsp:include>
@@ -309,15 +311,15 @@
 			</div>
 			<span class="mandatory">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
-				</div> <s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</div> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 			<table border="0" width="100%" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="bluebox" width="10%"></td>
-					<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-						<td class="bluebox" width="22%"><s:text name="voucher.number" />
+					<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+						<td class="bluebox" width="22%"><!-- TODO: Manual migration required for custom Struts tag -->
 							<span class="mandatory">*</span></td>
 						<td class="bluebox" width="22%">
 							<table width="100%">
@@ -332,10 +334,10 @@
 							</table>
 						</td>
 
-						<s:hidden name="voucherNumber" id="voucherNumber" />
-					</s:if>
-					<s:else>
-						<td class="bluebox" width="22%"><s:text name="voucher.number" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+					</c:if>
+					<c:otherwise>
+						<td class="bluebox" width="22%"><!-- TODO: Manual migration required for custom Struts tag -->
 							<span class="mandatory">*</span></td>
 						<td class="bluebox" width="22%">
 							<table width="100%">
@@ -349,13 +351,13 @@
 								</tr>
 							</table>
 						</td>
-						<s:hidden name="voucherNumber" id="voucherNumber" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</s:else>
-					<s:hidden name="id" />
-					<td class="bluebox" width="18%%"><s:text name="voucher.date" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="bluebox" width="18%%"><!-- TODO: Manual migration required for custom Struts tag -->
 						<span class="mandatory">*</span></td>
 					<td class="bluebox" width="34%"><s:date name='voucherDate'
-							var="voucherDateId" format='dd/MM/yyyy' /> <s:textfield
+							var="voucherDateId" format='dd/MM/yyyy' /> <form:input
 							name="voucherDate" id="voucherDate" value='%{voucherDateId}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 						href="javascript:show_calendar('dbpform.voucherDate');"
@@ -374,20 +376,20 @@
 				<tr>
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox"><strong>Comments</strong></td>
-					<td class="bluebox" colspan="4"><s:textarea name="comments"
+					<td class="bluebox" colspan="4"><form:textarea path="comments"
 							id="comments" cols="100" rows="3" onblur="checkLength(this)"
 							value="%{getComments()}" /></td>
 				</tr>
 			</table>
 			<table align="center">
 				<tr class="buttonbottom" id="buttondiv" style="align: middle">
-					<s:hidden name="actionname" id="actionName" value="%{action}" />
-					<s:iterator value="%{getValidActions()}" var="p" status="s">
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<c:forEach value="%{getValidActions()}" var="p" status="s">
 						<td><s:submit type="submit" cssClass="buttonsubmit"
 								value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 								method="edit"
 								onclick="return validate('%{name}','%{description}')" /></td>
-					</s:iterator>
+					</c:forEach>
 					<td><s:submit method="cancelPayment" value="Cancel Payment"
 							cssClass="buttonsubmit" id="updatebtnid"
 							onclick="document.getElementById('actionName').value='canccelPayment';" /></td>
@@ -399,15 +401,15 @@
 			<div class="mandatory" align="left">* Mandatory Fields</div>
 			</div>
 		</s:push>
-		<s:if test="%{validateUser('balancecheck')}">
+		<c:if test="%{validateUser('balancecheck')}">
 			<script>
 			if(document.getElementById('balanceText'))
 			{
 				document.getElementById('bankbalanceRow').style.visibility='visible';
-				//document.getElementById('balance').innerHTML='<s:property value="%{balance}"/>'
+				//document.getElementById('balance').innerHTML='${%{balance}}'
 			}
 		</script>
-		</s:if>
+		</c:if>
 		<script>
 		{
 			if(opener && opener.top && opener.top.document.getElementById('inboxframe'))
@@ -415,19 +417,19 @@
 		}
 	</script>
 
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
 function validateAppoveUser(name,value){
 			//document.getElementById('lblError').innerHTML ="";
 			document.getElementById("actionName").value= name;
 
-			<s:if test="%{wfitemstate =='END'}">
+			<c:if test="%{wfitemstate =='END'}">
 				if(value == 'Approve' || value == 'Reject') {
 					document.getElementById("approverUserId").value=-1;
 					return true;
 				}
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				if( (value == 'Approve' || value == 'Forward' || value=='Save And Forward' ) && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 					bootbox.alert("please select User");
 					//document.getElementById('lblError').innerHTML ="Please Select the user";
@@ -439,8 +441,8 @@ function validateAppoveUser(name,value){
 		}
 		
 function onLoadTask_edit() {
-			   var tempVoucherNumber='<s:property value="voucherHeader.voucherNumber"/>';
-			   var prefixLength='<s:property value="voucherNumberPrefixLength"/>';
+			   var tempVoucherNumber='${voucherHeader.voucherNumber}';
+			   var prefixLength='${voucherNumberPrefixLength}';
 			   document.getElementById('voucherNumberPrefix').value=tempVoucherNumber.substring(0,prefixLength);
 			   document.getElementById('voucherNumberRest').value=tempVoucherNumber.substring(prefixLength,tempVoucherNumber.length-1);
 			   updateVoucherNumber();
@@ -450,7 +452,7 @@ function onLoadTask_edit() {
 					   if (button == "Save_Close") {
 							window.close();
 						} else if (button == "Save_View") {
-							var vhId = '<s:property value="voucherHeader.id"/>';
+							var vhId = '${voucherHeader.id}';
 							document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="
 									+ vhId;
 							document.forms[0].submit();

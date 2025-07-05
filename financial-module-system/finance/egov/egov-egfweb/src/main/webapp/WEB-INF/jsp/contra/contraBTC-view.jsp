@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -73,8 +75,8 @@
 
 </head>
 <body onload="onloadTask();">
-	<s:form action="contraBTC" theme="simple" name="cbtcform">
-		<s:push value="model">
+	<form:form action="contraBTC" theme="simple" name="cbtcform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Cash Withdrawal" name="heading" />
 			</jsp:include>
@@ -86,11 +88,11 @@
 				<div align="center">
 					<font style='color: red;'><p class="error-block"
 							id="lblError"></p></font>
-					<s:if test="%{not close}">
-						<span class="mandatory"> <s:actionerror /> <s:fielderror />
-							<s:actionmessage />
+					<c:if test="%{not close}">
+						<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</span>
-					</s:if>
+					</c:if>
 				</div>
 				<%@include file="contraBTC-form.jsp"%>
 		</s:push>
@@ -103,11 +105,11 @@
 		</div>
 		<div id="resultGrid"></div>
 		</div>
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
 function onloadTask(){
 	disableControls(0,true);
-	var message = '<s:property value="message"/>';
+	var message = '${message}';
 	if(message != null && message != '')
 		showMessage(message);
 	var element = document.getElementById('accountNumber');
@@ -120,8 +122,8 @@ function onloadTask(){
 }
 
 function showMessage(message){
-	var close = <s:property value="close"/>;
-	var voucherHeaderId = <s:property value="voucherHeader.id"/>;
+	var close = ${close};
+	var voucherHeaderId = ${voucherHeader.id};
 	bootbox.alert(message);
 	if(close == true){
 		self.close();

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,29 +52,29 @@
 <%@ include file="/includes/taglibs.jsp" %> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="coc.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 
 </script>
 </head>
 <body>
-<s:form name="onlinePaytDetails" action="/citizen/onlineReceipt.action">
+<form:form name="onlinePaytDetails" action="/citizen/onlineReceipt.action">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" border="1">
 	<tr>
 		<td>Receipt Id : </td>
-		<td><s:textfield name="testReceiptId" id="testReceiptId" value="" /></td>
+		<td><form:input path="testReceiptId" id="testReceiptId" value="" /></td>
 	</tr>
 	<tr>
 		<td>Authorisation Status Code : </td>
-		<td><s:textfield name="testAuthStatusCode" id="testAuthStatusCode" value="" /></td>
+		<td><form:input path="testAuthStatusCode" id="testAuthStatusCode" value="" /></td>
 	</tr>
 	</table>
 
 <br/>
 <div class="buttonbottom">
-	<s:submit type="button" value="Test Online Payment Message" method="acceptMessageFromPaymentGateway" align="left"/>
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<input name="button2" type="button" class="button" id="button" onclick="window.close()" value="Close"/>
 </div>
-</s:form>
+</form:form>
 </body>
 </html>

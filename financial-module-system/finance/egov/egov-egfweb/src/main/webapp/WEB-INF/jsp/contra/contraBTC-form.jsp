@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,34 +51,34 @@
 
 <table border="0" width="100%">
 	<tr>
-		<s:if
+		<c:if
 			test="%{shouldShowHeaderField('vouchernumber') || showMode.equalsIgnoreCase('reverse')}">
-			<td class="greybox" width="30%"><s:text name="voucher.number" /><span
+			<td class="greybox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --><span
 				class="mandatory">*</span></td>
-			<td class="greybox"><s:textfield
+			<td class="greybox"><form:input
 					name="voucherHeader.voucherNumber" id="voucherNumber"
 					maxlength="25" /></td>
-		</s:if>
-		<td class="greybox" width="30%"><s:text name="voucher.date" /><span
+		</c:if>
+		<td class="greybox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory">*</span></td>
 		<td class="greybox"><input type="text" id="voucherDate"
 			name="voucherHeader.voucherDate" style="width: 100px"
-			value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+			value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 			href="javascript:show_calendar('cashWithDrawalForm.voucherDate',null,null,'DD/MM/YYYY');"
 			style="text-decoration: none">&nbsp;<img tabIndex=-1
 				src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)
 		</td>
 	</tr>
 	<tr>
-		<td class="bluebox" width="30%"><s:text name="payin.bank" /> <span
+		<td class="bluebox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --> <span
 			class="bluebox"><span class="mandatory">*</span></span></td>
-		<td class="bluebox"><s:select name="contraBean.bankBranchId"
+		<td class="bluebox"><form:select path="contraBean.bankBranchId"
 				id="bankId" list="dropdownData.bankList" listKey="bankBranchId"
 				listValue="bankBranchName" headerKey="-1"
 				headerValue="----Choose----" onChange="populateAccNum(this);" /></td>
-		<td class="bluebox" width="30%"><s:text name="contra.amount" /><span
+		<td class="bluebox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory">*</span></td>
-		<td class="bluebox"><s:textfield name="contraBean.amount"
+		<td class="bluebox"><form:input path="contraBean.amount"
 				id="amount" onkeyup="validateAmountFormat()"
 				cssStyle="text-align:right" /></td>
 
@@ -84,45 +86,45 @@
 	<tr>
 		<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 			dropdownId="accountNumber" url="voucher/common!ajaxLoadAccNum.action" />
-		<td class="greybox"><s:text name="payin.accountNum" /><span
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="bluebox"><span class="mandatory">*</span></span></td>
-		<td class="greybox"><s:select name="contraBean.accountNumberId"
+		<td class="greybox"><form:select path="contraBean.accountNumberId"
 				id="accountNumber" list="dropdownData.accNumList" listKey="id"
 				listValue="accountnumber" headerKey="-1"
 				headerValue="----Choose----"
 				onChange="populateNarration(this);populateAvailableBalance(this);" />
-			<s:textfield name="contraBean.accnumnar" id="accnumnar"
+			<form:input path="contraBean.accnumnar" id="accnumnar"
 				value="%{contraBean.accnumnar}" /></td>
-		<td class="greybox"><s:text name="balance.available" /></td>
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 		<td class="greybox"><input type="text" id="availableBalance"
 			readonly="readonly" style="text-align: right" /></td>
 	</tr>
 	<tr>
-		<td class="bluebox"><s:text name="cheque.date" /><span
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory">*</span></td>
 		<td class="bluebox"><input type="text" id="chequeDate"
 			name="contraBean.chequeDate" style="width: 100px"
-			value='<s:property value="contraBean.chequeDate"/>' /> <a
+			value='${contraBean.chequeDate}' /> <a
 			href="javascript:show_calendar('cashWithDrawalForm.chequeDate',null,null,'DD/MM/YYYY');"
 			style="text-decoration: none">&nbsp;<img tabIndex=-1
 				src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)
 		</td>
-		<s:if test="%{showChequeNumber()}">
-			<td class="bluebox"><s:text name="cheque.number" /><span
+		<c:if test="%{showChequeNumber()}">
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 				class="greybox"><span class="mandatory">*</span></span></td>
-			<td class="bluebox"><s:textfield name="contraBean.chequeNumber"
+			<td class="bluebox"><form:input path="contraBean.chequeNumber"
 					id="chequeNumber" maxlength="25" />
-		</s:if>
+		</c:if>
 	</tr>
 	<jsp:include page="../voucher/vouchertrans-filter.jsp" />
 	<tr>
 		<td class="greybox">Narration &nbsp;</td>
-		<td class="greybox"><s:textarea rows="4" cols="60"
+		<td class="greybox"><form:textarea rows="4" cols="60"
 				name="narration" onkeydown="textCounter('narration',250)"
 				onkeyup="textCounter('narration',250)"
 				onblur="textCounter('narration',250)" id="narration" /></td>
-		<td class="greybox"><s:text name="contra.cashInHand" /></td>
-		<td class="greybox"><s:textfield name="contraBean.cashInHand"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox"><form:input path="contraBean.cashInHand"
 				id="cashInHand" readonly="true" /></td>
 	</tr>
 </table>

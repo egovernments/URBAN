@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -68,7 +70,7 @@
 	    if ((name=="Reject" || name=="reject")) {
 	    	var approverComments = document.getElementById("approverComments").value;
 	    	if (approverComments == null || approverComments == "") {
-	    		bootbox.alert("<s:text name='msg.please.enter.approver.remarks'/> ");
+	    		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag --> ");
 				return false;
 	    	}
 		}
@@ -76,13 +78,13 @@
 	    if ((name=="Cancel" || name=="cancel")) {
 	    	var approverComments = document.getElementById("approverComments").value;
 	    	if (approverComments == null || approverComments == "") {
-	    		bootbox.alert("<s:text name='msg.please.enter.approver.remarks'/>");
+	    		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 	    	}
 		}
-		<s:if test="%{getNextAction()!='END'}">
+		<c:if test="%{getNextAction()!='END'}">
 	    if((name=="Forward" || name=="forward") && approverPosId && (approverPosId.value == -1 || approverPosId.value == "")) {
-	    	bootbox.alert("<s:text name='msg.please.select.approver'/>");
+	    	bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 	    }
 	    if((name=="Create And Approve")) {
@@ -91,25 +93,25 @@
 	    		return false;
 	    }
 	   
-	    </s:if>
+	    </c:if>
 	    return  onSubmit();
 	}
 </script>
 <div class="buttonbottom">
-	<s:hidden id="workFlowAction" name="workFlowAction" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<div class="row text-center">
 		<div class="col-md-2 col-sm-2"></div>
-		<s:iterator value="%{getValidActions()}" var="validAction">
+		<c:forEach value="%{getValidActions()}" var="validAction">
 			<div class="col-md-2 col-sm-2">
-				<s:if test="%{validAction!=''}">
+				<c:if test="%{validAction!=''}">
 					<s:submit type="submit" cssClass="buttonsubmit"
 						value="%{validAction}" id="%{validAction}" name="%{validAction}"
 						onclick="return validateWorkFlowApprover('%{validAction}','jsValidationErrors');" />
-				</s:if>
+				</c:if>
 			</div>
-		</s:iterator>
+		</c:forEach>
 		<div class="col-md-1 col-sm-2">
-			<input type="button" name="button2" id="button2" value="<s:text name='lbl.close'/>"
+			<input type="button" name="button2" id="button2" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				class="button" onclick="window.parent.postMessage('close','*');window.close();" />
 		</div>
 	</div>

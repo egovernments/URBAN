@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -70,15 +72,15 @@
 
 
 <body onload="onloadtask();">
-	<s:form action="contraCTB" theme="simple" name="cashDepositForm">
-		<s:push value="model">
+	<form:form action="contraCTB" theme="simple" name="cashDepositForm">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Cash Deposit" />
 			</jsp:include>
 
 			<span class="mandatory"> <font
-				style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-					<s:actionmessage /></font>
+				style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 			<div class="formmainbox">
 				<div class="formheading" />
@@ -93,22 +95,22 @@
 						<%@include file="contraCTB-form.jsp"%>
 						<table border="0" width="100%">
 							<tr>
-								<td class="bluebox"><s:text name="contra.cashInHand" /> <s:textfield
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <form:input
 										name="contraBean.cashInHand" id="cashInHand" readonly="true" /></td>
 							</tr>
 						</table>
 
 						<table border="0" width="100%">
 							<tr>
-								<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-									<td class="greybox"><s:text name="reversalVoucherNumber" /><span
+								<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory">*</span></td>
-									<td class="greybox"><s:textfield
+									<td class="greybox"><form:input
 											name="reversalVoucherNumber" id="reversalVoucherNumber" /></td>
-								</s:if>
-								<td class="greybox"><s:text name="reversalVoucherDate" /><span
+								</c:if>
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
-								<td class="greybox"><s:textfield name="reverseVoucherDate"
+								<td class="greybox"><form:input path="reverseVoucherDate"
 										id="reversalVoucherDate"
 										onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 									href="javascript:show_calendar('cashDepositForm.reversalVoucherDate');"
@@ -148,15 +150,15 @@
 			<input type="hidden" id="voucherTypeBean.cgnType"
 				name="voucherTypeBean.cgnType" value="CTB" />
 			<input type="hidden" id="voucherHeader.id" name="voucherHeader.id"
-				value='<s:property value="voucherHeader.id"/>' />
-			<s:hidden name="contraBean.saveMode" id="saveMode" />
-			<s:hidden name="contraBean.result" id="result" />
-			<s:hidden name="contraBean.mode" id="mode" />
-			<s:hidden id="cgn" name="cgn"></s:hidden>
+				value='${voucherHeader.id}' />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 			<s:hidden id="vouchermis.sourcePath" name="vouchermis.sourcePath"
 				value="../contra/contraCTB!loadCTBVoucher.action?vhid="></s:hidden>
 		</s:push>
-	</s:form>
+	</form:form>
 	<script>
 
 function populateAccNum(branch){

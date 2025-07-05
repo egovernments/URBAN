@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="dishonorcheque.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <sj:head jqueryui="true" jquerytheme="redmond" loadAtOnce="true" />
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/helper.js?rnd=${app_release_no}"></script>
@@ -207,7 +209,7 @@
 	        	jQuery(this).prop('checked', true);
 	        }
 	    });
-	    var accNum = '<s:property value="accountNumber"/>';
+	    var accNum = '${accountNumber}';
 	    jQuery.when(getAccountNumbers(dom.get('bankBranchId').value)).then(function(){
 	        console.log("All done");
 	    });
@@ -218,13 +220,13 @@
 </script>
 </head>
 <body>
-	<s:form name="dishonorForm" action="dishonoredCheque" theme="simple"
+	<form:form name="dishonorForm" action="dishonoredCheque" theme="simple"
 		validate="true">
 		<div style="color: green">
-			<s:actionmessage />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
 			<div class="errorstyle" style="display: none" id="errorDiv"></div>
@@ -232,7 +234,7 @@
 		<div class="formmainbox">
 			<div class="formheading">
 				<div class="subheadnew">
-					<s:text name="dishonorcheque.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 			</div>
 			<br />
@@ -240,8 +242,8 @@
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="dishonorcheque.bankbranch" />:</td>
-					<td class="greybox"><s:select name="bankBranchId"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select path="bankBranchId"
 							id="bankBranchId" list="dropdownData.bankBranchList"
 							headerKey="-1" headerValue="---Choose---"
 							listKey="bank.id + '-' + id"
@@ -253,7 +255,7 @@
 							selectedValue="%{bank.id + '-' + id}" /></td>
 					<td class="greybox"><s:text
 							name="dishonorcheque.accountnumber" />:</td>
-					<td class="greybox"><s:select name="accountNumber"
+					<td class="greybox"><form:select path="accountNumber"
 							id="accountNumber" list="dropdownData.accountNumberList"
 							headerKey="-1" headerValue="---Choose---" listKey="id"
 							listValue='name' value="%{accountNumber}" /></td>
@@ -263,7 +265,7 @@
 					<td class="bluebox"></td>
 					<td class="bluebox"><s:text
 							name="dishonorcheque.instrumentmode" />:<span class="mandatory1">*</span></td>
-					<td class="bluebox"><s:select headerValue="--Select--"
+					<td class="bluebox"><form:select headerValue="--Select--"
 							headerKey="-1" list="instrumentModesMap" listKey="key"
 							id="instrumentMode" listValue="value" label="instrumentMode"
 							name="instrumentMode" /></td>
@@ -274,14 +276,14 @@
 					<td class="greybox"><s:text
 							name="dishonorcheque.cheque.dd.number" />:<span
 						class="mandatory1">*</span></td>
-					<td class="greybox"><s:textfield name="chequeNumber"
+					<td class="greybox"><form:input path="chequeNumber"
 							style="width: 200px;" id="chequeNumber" value="%{chequeNumber}"
 							maxlength="6" cssClass="patternvalidation" data-pattern="number" /></td>
 
 					<td class="greybox"><s:text
 							name="dishonorcheque.cheque.dd.date" />:<span class="mandatory1">*</span></td>
-					<s:date name="chequeDate" var="chqDate" format="dd/MM/yyyy" />
-					<td class="greybox"><s:textfield id="chequeDate"
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:input id="chequeDate"
 							name="chequeDate" value="%{chqDate}" placeholder="DD/MM/YYYY"
 							cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
@@ -302,7 +304,7 @@
 			</table>
 		</div>
 
-		<s:if test="%{searchResult.fullListSize != 0}">
+		<c:if test="%{searchResult.fullListSize != 0}">
 			<table align="center">
 				<tr>
 					<td colspan="4">
@@ -331,7 +333,7 @@
 												class="blueborderfortd" title="Voucher Number"
 												style="width:30%;text-align:left">
 												<a href="#"
-													onclick="openVoucher(<s:property value='%{#attr.currentRowObject.voucherHeaderId}'/>);"><s:property
+													onclick="openVoucher(<!-- TODO: Manual migration required for custom Struts tag -->);"><s:property
 														value="%{#attr.currentRowObject.voucherNumber}" /> </a>
 											</display:column>
 
@@ -372,14 +374,14 @@
 											<display:column headerClass="bluebgheadtd"
 												class="blueborderfortd" title="Reference No"
 												style="width:20%;text-align:center">
-												<s:textfield name="referenceNum"    style="width: 200px;"
+												<form:input path="referenceNum"    style="width: 200px;"
 													maxlength="20" id="referenceNum" cssClass="form-control" />
 											</display:column>
 
 											<display:column headerClass="bluebgheadtd"
 												class="blueborderfortd" title="Select"
 												style="width:3%;text-align:center">
-												<s:checkbox class="check" id="selectedCheque"
+												<form:checkbox class="check" id="selectedCheque"
 													name="selectedCheque" />
 											</display:column>
 										</display:table></td>
@@ -394,13 +396,13 @@
 					id="process" name="button"
 					onclick="return processDishonorCheque();" /></td>
 			</div>
-		</s:if>
-		<s:elseif test="%{searchResult.fullListSize == 0}">
+		</c:if>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<tr>
 				<td align="center"><font color="red">No record Found.</font></td>
 
 			</tr>
 		</s:elseif>
-	</s:form>
+	</form:form>
 </body>
 </html>

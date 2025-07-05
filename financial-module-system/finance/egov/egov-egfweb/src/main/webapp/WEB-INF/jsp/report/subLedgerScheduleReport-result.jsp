@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,10 +52,10 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 
-<font style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-	<s:actionmessage /></font>
+<font style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag --></font>
 
-<s:if test="%{subLedgerScheduleDisplayList.size!=0 }">
+<c:if test="%{subLedgerScheduleDisplayList.size!=0 }">
 	<display:table name="subLedgerScheduleDisplayList"
 		id="currentRowObject" uid="currentRowObject" class="tablebottom"
 		style="width:100%;" cellpadding="0" cellspacing="0" export="true"
@@ -62,7 +64,7 @@
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<tr>
 					<th class="bluebgheadtd" width="100%" colspan="5"><strong
-						style="font-size: 15px;"> <s:property value="%{heading}" /></strong></th>
+						style="font-size: 15px;"> ${%{heading}}</strong></th>
 				</tr>
 			</table>
 		</display:caption>
@@ -78,8 +80,8 @@
 			class="blueborderfortd" title="Name"
 			style="width:10%;text-align:center">
 			<a href="#"
-				onclick="return viewSubLedger('<s:property value="#attr.currentRowObject.name"/>','<s:property value="#attr.currentRowObject.accEntityId"/>','<s:property value="#attr.currentRowObject.accEntityKey"/>')">
-				<s:property value="#attr.currentRowObject.name" />
+				onclick="return viewSubLedger('${#attr.currentRowObject.name}','${#attr.currentRowObject.accEntityId}','${#attr.currentRowObject.accEntityKey}')">
+				${#attr.currentRowObject.name}
 			</a>
 		</display:column>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -97,7 +99,7 @@
 
 		<display:caption media="pdf">
 			<div align="left" style="text-align: left;">
-				<s:property value="%{titleName}" /><s:property value="%{heading}" />
+				${%{titleName}}${%{heading}}
 			</div>
 		</display:caption>
 		<display:caption media="excel">
@@ -114,4 +116,4 @@
 		<display:setProperty name="export.xml" value="false" />
 	</display:table>
 
-</s:if>
+</c:if>

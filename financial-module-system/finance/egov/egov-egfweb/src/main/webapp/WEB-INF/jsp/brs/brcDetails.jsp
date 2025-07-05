@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
@@ -27,68 +29,68 @@
 <html>
 <table id="example" class="display" style="width:100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
         <thead>
-        <s:if test='actionName.equals("CHEQUE_DD_ISSUED_NP_IN_BANK") or actionName.equals("CHEQUE_DEPOSITED_NOT_CLEARED")'>
+        <c:if test='actionName.equals("CHEQUE_DD_ISSUED_NP_IN_BANK") or actionName.equals("CHEQUE_DEPOSITED_NOT_CLEARED")'>
             <tr>
-                <th class="bluebgheadtd"><s:text name="label.srNumber" /></th>
-                <th class="bluebgheadtd"><s:text name="label.chequeDDNumber" /></th>
-                <th class="bluebgheadtd"><s:text name="label.chequeDate" /></th>
-                <th class="bluebgheadtd"><s:text name="label.amount" /></th>
-                <th class="bluebgheadtd"><s:text name="label.payto" /></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
             </tr>
-        </s:if>
-        <s:if test='actionName.equals("OTHER_INSTRUMENT_ISSUED_NP_IN_BANK")'>
+        </c:if>
+        <c:if test='actionName.equals("OTHER_INSTRUMENT_ISSUED_NP_IN_BANK")'>
             <tr>
-                <th class="bluebgheadtd"><s:text name="label.srNumber" /></th>
-                <th class="bluebgheadtd"><s:text name="label.txnNumber" /> </th>
-                <th class="bluebgheadtd"><s:text name="label.txnDate" /></th>
-                <th class="bluebgheadtd"><s:text name="label.amount" /></th>
-                <th class="bluebgheadtd"><s:text name="label.payto" /></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
             </tr>
-        </s:if>
-        <s:if test='actionName.equals("RECEIPT_BRS_ENTRIES") or actionName.equals("PAYMENT_BRS_ENTRIES")'>
+        </c:if>
+        <c:if test='actionName.equals("RECEIPT_BRS_ENTRIES") or actionName.equals("PAYMENT_BRS_ENTRIES")'>
             <tr>
-                <th class="bluebgheadtd"><s:text name="label.srNumber" /></th>
-                <th class="bluebgheadtd"><s:text name="label.referenceNumber" /></th>
-                <th class="bluebgheadtd"><s:text name="label.instrumentType" /></th>
-                <th class="bluebgheadtd"><s:text name="label.txnDate" /></th>
-                <th class="bluebgheadtd"><s:text name="label.amount" /></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+                <th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
             </tr>
-        </s:if>
+        </c:if>
         </thead>
         <tbody>
-        <s:iterator value="chequDDNotPresentInBank"  var="item" status="stat">
+        <c:forEach value="chequDDNotPresentInBank"  var="item" status="stat">
             <tr>
-                <td class="blueborderfortd"><s:property value="#stat.index+1"/></td>
-                <s:if test='actionName.equals("CHEQUE_DD_ISSUED_NP_IN_BANK")'>
-                <td class="blueborderfortd"><s:property value="%{instrumentNumber}"/> (<s:property value="%{instrumentType.type}"/>) </td>
-                <td class="blueborderfortd"><s:date name="%{instrumentDate}" format="dd/MM/yyyy"/> </td>
-                </s:if>
-                <s:if test='actionName.equals("OTHER_INSTRUMENT_ISSUED_NP_IN_BANK")'>
-                <td class="blueborderfortd"><s:property value="%{transactionNumber}"/> (<s:property value="%{instrumentType.type}"/>) </td>
-                <td class="blueborderfortd"><s:date name="%{transactionDate}" format="dd/MM/yyyy"/> </td>
-                </s:if>
-                <td class="blueborderfortd" style="text-align: right;"><s:property value="%{instrumentAmount}" /></td>
-                <td class="blueborderfortd"><s:property value="%{payTo}"/></td>
+                <td class="blueborderfortd">${#stat.index+1}</td>
+                <c:if test='actionName.equals("CHEQUE_DD_ISSUED_NP_IN_BANK")'>
+                <td class="blueborderfortd">${%{instrumentNumber}} (${%{instrumentType.type}}) </td>
+                <td class="blueborderfortd"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+                </c:if>
+                <c:if test='actionName.equals("OTHER_INSTRUMENT_ISSUED_NP_IN_BANK")'>
+                <td class="blueborderfortd">${%{transactionNumber}} (${%{instrumentType.type}}) </td>
+                <td class="blueborderfortd"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+                </c:if>
+                <td class="blueborderfortd" style="text-align: right;">${%{instrumentAmount}}</td>
+                <td class="blueborderfortd">${%{payTo}}</td>
             </tr>
-        </s:iterator>
-         <s:iterator value="unReconciledDepositedInst"  var="item" status="stat">
+        </c:forEach>
+         <c:forEach value="unReconciledDepositedInst"  var="item" status="stat">
             <tr>
-                <td class="blueborderfortd"><s:property value="#stat.index+1"/></td>
-                <td class="blueborderfortd"><s:property value="%{transactionNumber}"/> (<s:property value="%{instrumentType.name}"/>) </td>
-                <td class="blueborderfortd"><s:date name="%{transactionDate}" format="dd/MM/yyyy"/> </td>
-                <td class="blueborderfortd" style="text-align: right;"><s:property value="%{amount}" /></td>
-                <td class="blueborderfortd"><s:property value="%{payee}"/></td>
+                <td class="blueborderfortd">${#stat.index+1}</td>
+                <td class="blueborderfortd">${%{transactionNumber}} (${%{instrumentType.name}}) </td>
+                <td class="blueborderfortd"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+                <td class="blueborderfortd" style="text-align: right;">${%{amount}}</td>
+                <td class="blueborderfortd">${%{payee}}</td>
             </tr>
-        </s:iterator>
-        <s:iterator value="unReconciledBrsEntries"  var="item" status="stat">
+        </c:forEach>
+        <c:forEach value="unReconciledBrsEntries"  var="item" status="stat">
             <tr>
-                <td class="blueborderfortd"><s:property value="#stat.index+1"/></td>
-                <td class="blueborderfortd"><s:property value="%{refNo}"/>  </td>
-                <td class="blueborderfortd"><s:property value="%{type}"/>  </td>
-                <td class="blueborderfortd"><s:date name="%{txnDate}" format="dd/MM/yyyy"/> </td>
-                <td class="blueborderfortd" style="text-align: right;"><s:property value="%{txnAmount}"/></td>
+                <td class="blueborderfortd">${#stat.index+1}</td>
+                <td class="blueborderfortd">${%{refNo}}  </td>
+                <td class="blueborderfortd">${%{type}}  </td>
+                <td class="blueborderfortd"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+                <td class="blueborderfortd" style="text-align: right;">${%{txnAmount}}</td>
             </tr>
-        </s:iterator>
+        </c:forEach>
           </tbody>
 </table>
 

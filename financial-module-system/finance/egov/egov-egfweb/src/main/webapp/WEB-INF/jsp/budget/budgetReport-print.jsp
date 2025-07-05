@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -96,17 +98,17 @@
 <body>
 	<div id="container">
 		<iframe id="report" name="report"
-			src='/services/EGF/budget/budgetReport-ajaxGenerateDepartmentWiseHtml.action?model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.code=<s:property value="model.department.code"/>&model.type=<s:property value="model.type"/>'></iframe>
+			src='/services/EGF/budget/budgetReport-ajaxGenerateDepartmentWiseHtml.action?model.financialYear.id=${model.financialYear.id}&model.department.code=${model.department.code}&model.type=${model.type}'></iframe>
 	</div>
 
-	<s:form name="budgetDetailReportForm" action="budgetReport"
+	<form:form name="budgetDetailReportForm" action="budgetReport"
 		theme="simple">
 		<input type="hidden" name="model.financialYear.id"
-			value='<s:property value="model.financialYear.id"/>' />
+			value='${model.financialYear.id}' />
 		<input type="hidden" name="model.department.id"
-			value='<s:property value="model.department.id"/>' />
+			value='${model.department.id}' />
 		<input type="hidden" name="model.type"
-			value='<s:property value="model.type"/>' />
+			value='${model.type}' />
 		<div id="buttons" class="buttonbottom">
 			<input type="button" id="btnPrint"
 				onclick="javascript:report.print();" value="PRINT"
@@ -119,7 +121,7 @@
 				cssClass="buttonsubmit" />
 			<input type="button" name="button2" id="button2" value="Close" class="btn btn-default" onclick="window.parent.postMessage('close','*');window.close();">
 		</div>
-	</s:form>
+	</form:form>
 	<script>
 		function submitForm(method) {
 			document.budgetDetailReportForm.action = "/services/EGF/budget/budgetReport-"

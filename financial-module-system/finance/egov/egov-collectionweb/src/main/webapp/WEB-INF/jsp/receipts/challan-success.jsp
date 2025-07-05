@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -53,55 +55,55 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="challan.title.workflowsuccess" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
 
-<s:form theme="simple" name="challan">
-<s:push value="model">
+<form:form theme="simple" name="challan">
+<!-- TODO: Manual migration required for custom Struts tag -->
 	<div class="subheadnew">
-	<s:if test="%{sourcePage=='cancelReceipt'}">
+	<c:if test="%{sourcePage=='cancelReceipt'}">
 	
 				  <!--  copy from receipt index start -->
 				 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tablebottom">
 					<tr align="center">
 					<font size="2" color="red"><b>
-						<div align="center"><s:text name="billreceipt.cancel.confirmatiommessage"/></div>
+						<div align="center"><!-- TODO: Manual migration required for custom Struts tag --></div>
 					</b></font>
 					</tr>
 					<tr>
-						<th class="bluebgheadtd" width="20%" ><s:text name="billreceipt.challannumber.confirmation"/></th>
-						<th class="bluebgheadtd" width="30%" ><s:text name="billreceipt.receiptnumber.confirmation"/></th>
-						<th class="bluebgheadtd" width="25%" ><s:text name="billreceipt.receiptdate.confirmation"/></th>
-						<th class="bluebgheadtd" width="25%" ><s:text name="billreceipt.receiptstatus.confirmation"/></th>
+						<th class="bluebgheadtd" width="20%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd" width="30%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd" width="25%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd" width="25%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
 					</tr>
 					<tr>
-						<td class="blueborderfortd"><div align="center"><s:property value="%{challan.challanNumber}" /></div></td>
-						<td class="blueborderfortd"><div align="center"><s:property value="%{receiptnumber}" /></div></td>
-						<td class="blueborderfortd"><div align="center"><s:date name="createdDate" var="cdFormat" format="dd/MM/yyyy"/><s:property value="%{cdFormat}" /></div></td>
-						<td class="blueborderfortd"><div align="center"><s:property value="%{status.description}" /></div></td>
+						<td class="blueborderfortd"><div align="center">${%{challan.challanNumber}}</div></td>
+						<td class="blueborderfortd"><div align="center">${%{receiptnumber}}</div></td>
+						<td class="blueborderfortd"><div align="center"><!-- TODO: Manual migration required for custom Struts tag -->${%{cdFormat}}</div></td>
+						<td class="blueborderfortd"><div align="center">${%{status.description}}</div></td>
 					</tr>
 				</table>
 				 <!--  copy end -->
-	</s:if>
-		<s:hidden id="sourcePage" name="sourcePage" value="%{sourcePage}"/>
-    <s:if test="%{sourcePage==null || sourcePage=='inbox' }"> 
-		<s:if test="%{challan.state.value=='CHECKED'}">
-			<s:text name="challan.checksuccess.message" />
-		</s:if> 
-		<s:elseif test="%{challan.state.value=='APPROVED'}">
-			<s:text name="challan.approvesucces.message" />
+	</c:if>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+    <c:if test="%{sourcePage==null || sourcePage=='inbox' }"> 
+		<c:if test="%{challan.state.value=='CHECKED'}">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+		</c:if> 
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</s:elseif>
-		<s:elseif test="%{challan.state.value=='END'  && challan.status.code=='VALIDATED' && sourcePage!='cancelReceipt'}">
-			<s:text name="challan.validatesuccess.message" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</s:elseif> 
-		<s:elseif test="%{challan.state.value=='REJECTED'}">
-			<s:text name="challan.rejectsuccess.message" /> <s:property value="%{approverName}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --> ${%{approverName}}
 		</s:elseif>
-		<s:elseif test="%{challan.state.value=='END' && challan.status.code=='CANCELLED'}">
-			<s:text name="challan.cancelsuccess.message" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</s:elseif>
-		</s:if>
+		</c:if>
 		
 	</div>
 	<br />
@@ -111,7 +113,7 @@
 		id="buttonClose" value="Close" onclick="window.close()" />
 	</div>
 </s:push>
-</s:form>
+</form:form>
 <script src="<cdn:url value='/resources/global/js/egov/inbox.js?rnd=${app_release_no}' context='/services/egi'/>"></script>
 </body>
 </html>

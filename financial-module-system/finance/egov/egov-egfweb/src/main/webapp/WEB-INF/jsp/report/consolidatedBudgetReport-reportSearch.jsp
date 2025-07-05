@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,17 +55,17 @@
 
 <html>
 <head>
-<title><s:text name="consolidate.budget.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="consolidate.budget.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
-		<s:form name="consolidatedBudgetReportForm"
+		<form:form name="consolidatedBudgetReportForm"
 			action="consolidatedBudgetReport" theme="simple">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
@@ -71,15 +73,15 @@
 					<td class="bluebox" width="15%"><s:text
 							name="report.financialYear.report" /><span class="mandatory"></span>
 					</td>
-					<td class="bluebox"><s:select
+					<td class="bluebox"><form:select
 							list="dropdownData.financialYearList" listKey="id"
 							listValue="finYearRange" name="financialYear.id" headerKey="0"
 							headerValue="--- Select ---" value="financialYear.id"
-							id="financialYear"></s:select></td>
+							id="financialYear"></form:select></td>
 					<td class="bluebox" width="15%"></td>
 					<td class="bluebox" width="15%"><s:text
 							name="report.fund.type" /><span class="mandatory"></span></td>
-					<td class="bluebox" width="15%"><s:select name="fundType"
+					<td class="bluebox" width="15%"><form:select path="fundType"
 							id="fundType"
 							list="#{'Select':'---Choose---','REVENUE':'REVENUE','CAPITAL':'CAPITAL'}"
 							value="%{fundType}" /></td>
@@ -89,7 +91,7 @@
 					<td class="bluebox" width="15%"></td>
 					<td class="bluebox" width="15%"><s:text
 							name="report.budget.type" /><span class="mandatory"></span></td>
-					<td class="bluebox" width="15%"><s:select name="budgetType"
+					<td class="bluebox" width="15%"><form:select path="budgetType"
 							id="budgetType"
 							list="#{'Select':'---Choose---','RECEIPTS':'RECEIPTS','EXPENDITURE':'EXPENDITURE'}"
 							value="%{budgetType}" /></td>
@@ -103,8 +105,8 @@
 			<div class="buttonbottom">
 				<s:submit method="search" value="Search" cssClass="buttonsubmit"
 					onclick="return validate();" />
-				<!--<s:submit method="generatePdf" value="Save As Pdf" cssClass="buttonsubmit" id="generatePdf" />
-			<s:submit method="generateXls" value="Save As Xls" cssClass="buttonsubmit" id="generateXls" />-->
+				<!--<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->-->
 				<input type="button" class="buttonsubmit" value="EXPORT PDF"
 					id="exportpdf" name="exportpdf" onclick="return exportPDF();" /> <input
 					type="button" class="buttonsubmit" value="EXPORT EXCEL"
@@ -113,11 +115,11 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 	</div>
-	<s:if test="%{bpBeanMajList.size!=0}">
+	<c:if test="%{bpBeanMajList.size!=0}">
 		<div align="center" class="extracontent">
 			<h4>
-				<s:property value="fundType" />
-				<s:property value="budgetType" />
+				${fundType}
+				${budgetType}
 			</h4>
 		</div>
 		<div align="right" class="extracontent">
@@ -134,27 +136,27 @@
 					align="center">Account Head</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Actuals<br />
-				<s:property value="prevFinYearRange" />
+				${prevFinYearRange}
 				</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Budget Estimate<br />
-				<s:property value="currentFinYearRange" />
+				${currentFinYearRange}
 				</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Revised Estimate<br />
-				<s:property value="currentFinYearRange" />
+				${currentFinYearRange}
 				</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Budget Estimate<br />
-				<s:property value="nextFinYearRange" />
+				${nextFinYearRange}
 				</th>
 			</tr>
 			<c:set var="trclass" value="greybox" />
-			<s:iterator var="bp" value="bpBeanMajList" status="f">
-				<s:if test="%{rowType=='detail'}">
+			<c:forEach var="bp" value="bpBeanMajList" status="f">
+				<c:if test="%{rowType=='detail'}">
 					<tr>
-						<td class="blueborderfortd"><s:property value="#f.index+1" />&nbsp;</td>
-						<td class="blueborderfortd"><s:property value="budgetGroup" />&nbsp;</td>
+						<td class="blueborderfortd">${#f.index+1}&nbsp;</td>
+						<td class="blueborderfortd">${budgetGroup}&nbsp;</td>
 						<td class="blueborderfortd" style="text-align: right"><s:property
 								value="previousYearActuals" />&nbsp;</td>
 						<td class="blueborderfortd" style="text-align: right"><s:property
@@ -164,51 +166,51 @@
 						<td class="blueborderfortd" style="text-align: right"><s:property
 								value="approvedBE" />&nbsp;</td>
 					</tr>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<tr>
 						<td class="blueborderfortd"></td>
 						<td class="blueborderfortd">
 							<h4>
-								<s:property value="budgetGroup" />
+								${budgetGroup}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="previousYearActuals" />
+								${previousYearActuals}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="currentYearBE" />
+								${currentYearBE}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="approvedRE" />
+								${approvedRE}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="approvedBE" />
+								${approvedBE}
 								&nbsp;
 							</h4>
 						</td>
 					</tr>
 				</s:else>
 
-			</s:iterator>
+			</c:forEach>
 
 		</table>
-	</s:if>
+	</c:if>
 
 	<br></br>
 
-	<s:if test="%{bpBeanDetList.size!=0}">
+	<c:if test="%{bpBeanDetList.size!=0}">
 		<table width="100%" border="0" align="center" cellpadding="0"
 			cellspacing="0" class="tablebottom">
 
@@ -220,27 +222,27 @@
 					align="center">Account Head</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Actuals<br />
-				<s:property value="prevFinYearRange" />
+				${prevFinYearRange}
 				</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Budget Estimate<br />
-				<s:property value="currentFinYearRange" />
+				${currentFinYearRange}
 				</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Revised Estimate<br />
-				<s:property value="currentFinYearRange" />
+				${currentFinYearRange}
 				</th>
 				<th class="bluebgheadtd" style="width: 13%; text-align: center"
 					align="center">Budget Estimate<br />
-				<s:property value="nextFinYearRange" />
+				${nextFinYearRange}
 				</th>
 			</tr>
 			<c:set var="trclass" value="greybox" />
-			<s:iterator var="bp" value="bpBeanDetList" status="f">
-				<s:if test="%{rowType=='detail'}">
+			<c:forEach var="bp" value="bpBeanDetList" status="f">
+				<c:if test="%{rowType=='detail'}">
 					<tr>
-						<td class="blueborderfortd"><s:property value="accountCode" />&nbsp;</td>
-						<td class="blueborderfortd"><s:property value="budgetGroup" />&nbsp;</td>
+						<td class="blueborderfortd">${accountCode}&nbsp;</td>
+						<td class="blueborderfortd">${budgetGroup}&nbsp;</td>
 						<td class="blueborderfortd" style="text-align: right"><s:property
 								value="previousYearActuals" />&nbsp;</td>
 						<td class="blueborderfortd" style="text-align: right"><s:property
@@ -250,52 +252,52 @@
 						<td class="blueborderfortd" style="text-align: right"><s:property
 								value="approvedBE" />&nbsp;</td>
 					</tr>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<tr>
 						<td class="blueborderfortd">
 							<h4>
-								<s:property value="accountCode" />
+								${accountCode}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd">
 							<h4>
-								<s:property value="budgetGroup" />
+								${budgetGroup}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="previousYearActuals" />
+								${previousYearActuals}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="currentYearBE" />
+								${currentYearBE}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="approvedRE" />
+								${approvedRE}
 								&nbsp;
 							</h4>
 						</td>
 						<td class="blueborderfortd" style="text-align: right">
 							<h4>
-								<s:property value="approvedBE" />
+								${approvedBE}
 								&nbsp;
 							</h4>
 						</td>
 					</tr>
 				</s:else>
-			</s:iterator>
+			</c:forEach>
 
 		</table>
-	</s:if>
-	<s:if test="%{bpBeanMajList.size==1}">
+	</c:if>
+	<c:if test="%{bpBeanMajList.size==1}">
 		<div id="msgdiv" style="display: block">
 			<table align="center" class="tablebottom" width="80%">
 				<tr>
@@ -304,10 +306,10 @@
 				</tr>
 			</table>
 		</div>
-	</s:if>
+	</c:if>
 
 
-	</s:form>
+	</form:form>
 	<script>
 
 	function validate(){

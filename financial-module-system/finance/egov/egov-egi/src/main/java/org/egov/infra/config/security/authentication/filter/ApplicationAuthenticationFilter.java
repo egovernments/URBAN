@@ -84,7 +84,7 @@ public class ApplicationAuthenticationFilter extends UsernamePasswordAuthenticat
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain filterChain, Authentication authResult) throws IOException, ServletException {
+                                          FilterChain filterChain, Authentication authResult) throws IOException, ServletException {
         String location = request.getParameter(SecurityConstants.LOCATION_FIELD);
         HttpSession session = request.getSession();
         if (isNotBlank(location))

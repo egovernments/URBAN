@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -70,15 +72,15 @@
 
 
 <body onload="onloadtask();">
-	<s:form action="contraCTB" theme="simple" name="cashDepositForm">
-		<s:push value="model">
+	<form:form action="contraCTB" theme="simple" name="cashDepositForm">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Cash Deposit" />
 			</jsp:include>
 
 			<span class="mandatory"> <font
-				style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-					<s:actionmessage /></font>
+				style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 			<div class="formmainbox">
 				<div class="formheading" />
@@ -92,7 +94,7 @@
 						<%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 						<table border="0" width="100%">
 							<tr>
-								<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+								<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 									<td class="bluebox" width="22%"><s:text
 											name="voucher.number" /><span class="mandatory">*</span></td>
 									<td class="bluebox" width="22%">
@@ -101,23 +103,23 @@
 												<td style="width: 25%"><input type="text"
 													name="voucherNumberPrefix" id="voucherNumberPrefix"
 													readonly="true" style="width: 100%" /></td>
-												<td style="width: 75%"><s:textfield
+												<td style="width: 75%"><form:input
 														name="voucherNumber" id="voucherNumber" /></td>
 											</tr>
 										</table>
 									</td>
 
-								</s:if>
-								<s:else>
-									<td class="bluebox"><s:text name="payin.number" /><span
+								</c:if>
+								<c:otherwise>
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory">*</span></td>
-									<td class="bluebox"><s:textfield name="voucherNumber"
+									<td class="bluebox"><form:input path="voucherNumber"
 											id="voucherNumber" readonly="true" /></td>
 								</s:else>
-								<td class="bluebox"><s:text name="voucher.date" /><span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
 								<td class="bluebox"><s:date name="voucherDate"
-										var="voucherDateId" format="dd/MM/yyyy" /> <s:textfield
+										var="voucherDateId" format="dd/MM/yyyy" /> <form:input
 										name="voucherDate" id="voucherDate" value="%{voucherDateId}"
 										maxlength="10"
 										onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
@@ -127,9 +129,9 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="greybox"><s:text name="payin.bank" /> <span
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 									class="greybox"><span class="mandatory">*</span></span></td>
-								<td class="greybox" colspan="3"><s:select
+								<td class="greybox" colspan="3"><form:select
 										name="contraBean.bankBranchId" id="bankId"
 										list="dropdownData.bankList" listKey="bankBranchId"
 										listValue="bankBranchName" headerKey="-1"
@@ -139,20 +141,20 @@
 								<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 									dropdownId="accountNumber"
 									url="voucher/common!ajaxLoadAccNum.action" />
-								<td class="bluebox"><s:text name="payin.accountNum" /> <span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 									class="bluebox"><span class="mandatory">*</span></span></td>
-								<td class="bluebox"><s:select
+								<td class="bluebox"><form:select
 										name="contraBean.accountNumberId" id="accountNumber"
 										list="dropdownData.accNumList" listKey="id"
 										listValue="accountnumber" headerKey="-1"
 										headerValue="----Choose----"
-										onChange="populateNarration(this);" /> <s:textfield
+										onChange="populateNarration(this);" /> <form:input
 										name="contraBean.accnumnar" id="accnumnar"
 										value="%{contraBean.accnumnar}" readonly="true" tabindex="-1" />
 								</td>
-								<td class="bluebox"><s:text name="contra.amount" /> <span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 									class="bluebox"><span class="mandatory">*</span></span></td>
-								<td class="bluebox"><s:textfield name="contraBean.amount"
+								<td class="bluebox"><form:input path="contraBean.amount"
 										id="amount" onkeyup="amountFormat()"
 										cssStyle="text-align:right" /></td>
 							</tr>
@@ -162,12 +164,12 @@
 								<td class="greybox"><span id="mdcNumber"><s:text
 											name="contra.refNumber" /></span> <span class="greybox"><span
 										class="mandatory">*</span></span></td>
-								<td class="greybox"><s:textfield
+								<td class="greybox"><form:input
 										name="contraBean.chequeNumber" id="documentNum"
 										value="%{contraBean.chequeNumber}" /></td>
 								<td class="greybox"><span id="mdcDate"><s:text
 											name="contra.refDate" /></span></td>
-								<td class="greybox"><s:textfield
+								<td class="greybox"><form:input
 										name="contraBean.chequeDate" id="documentDate"
 										onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 									href="javascript:show_calendar('cashDepositForm.documentDate');"
@@ -178,7 +180,7 @@
 							<tr>
 
 								<td width="30%" class="bluebox">Narration &nbsp;</td>
-								<td colspan="10" class="bluebox"><s:textarea
+								<td colspan="10" class="bluebox"><form:textarea
 										maxlength="250" rows="4" cols="60" name="narration" /></td>
 							</tr>
 						</table>
@@ -188,7 +190,7 @@
 							<tr>
 								<td class="greybox" width="25%"><s:text
 										name="contra.cashInHand" /></td>
-								<td class="greybox" width="25%"><s:textfield
+								<td class="greybox" width="25%"><form:input
 										name="contraBean.cashInHand" id="cashInHand" tabindex="-1"
 										readonly="true" /></td>
 								<td class="greybox" width="25%"></td>
@@ -233,36 +235,36 @@
 				name="voucherTypeBean.voucherNumType" value="Contra" />
 			<input type="hidden" id="voucherTypeBean.cgnType"
 				name="voucherTypeBean.cgnType" value="CTB" />
-			<s:hidden name="contraBean.saveMode" id="saveMode" />
-			<s:hidden name="contraBean.result" id="result" />
-			<s:hidden name="contraBean.mode" id="mode" />
-			<s:hidden id="cgn" name="cgn"></s:hidden>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 			<s:hidden id="vouchermis.sourcePath" name="vouchermis.sourcePath"
 				value="../contra/contraCTB!loadCTBVoucher.action?vhid="></s:hidden>
 		</s:push>
-	</s:form>
+	</form:form>
 	<script>
 
 function onloadtask(){
 document.getElementById('fundId').disabled =true;
-var saveMode='<s:property value="contraBean.saveMode"/>';
-	var result='<s:property value="contraBean.result"/>';
+var saveMode='${contraBean.saveMode}';
+	var result='${contraBean.result}';
 	if(result == 'success'){
-	var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
+	var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 		if(saveMode == 'saveclose'){
 			bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber);
 				window.close();
 		} else if(saveMode == 'saveview'){
 				bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber );
-				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<s:property value='%{voucherHeader.id}'/>','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
+				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<!-- TODO: Manual migration required for custom Struts tag -->','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
 			}
 	}		
-			   <s:if test="%{shouldShowHeaderField('vouchernumber')}">
-			   var tempVoucherNumber='<s:property value="voucherHeader.voucherNumber"/>';
-			   var prefixLength='<s:property value="voucherNumberPrefixLength"/>';
+			   <c:if test="%{shouldShowHeaderField('vouchernumber')}">
+			   var tempVoucherNumber='${voucherHeader.voucherNumber}';
+			   var prefixLength='${voucherNumberPrefixLength}';
 			   document.getElementById('voucherNumberPrefix').value=tempVoucherNumber.substring(0,prefixLength);
 			   document.getElementById('voucherNumber').value=tempVoucherNumber.substring(prefixLength,tempVoucherNumber.length);
-			</s:if>
+			</c:if>
 }
 	function validateInput(saveMode)
 	{
@@ -353,8 +355,8 @@ function amountFormat(){
 				document.getElementById('accnumnar').value="";
 				document.getElementById('amount').value=0;
 			}	
-			var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
-			var cgn = '<s:property value='%{cgn}'/>' ;
+			var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
+			var cgn = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 			
 			if(dom.get('result').value=='sucess')
 			{
@@ -362,7 +364,7 @@ function amountFormat(){
 				if(dom.get('saveMode').value=='saveclose'){
 					window.close();
 				}else if(dom.get('saveMode').value=='saveview'){
-					var vhId='<s:property value='%{voucherHeader.id}'/>';
+					var vhId='<!-- TODO: Manual migration required for custom Struts tag -->';
 					document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="+vhId;
 					document.forms[0].submit();
 					

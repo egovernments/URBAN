@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -58,34 +60,34 @@ function resetPage(){
 </head>
 <div class="formmainbox">
 	<div class="formheading"></div>
-	<s:if test="%{mode == 'deduction' }">
-	<div class="subheadnew"><s:text name="lbl.deduction.deailes.report" /></div>
-	</s:if>
-	<s:else>
+	<c:if test="%{mode == 'deduction' }">
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<c:otherwise>
 	<div class="subheadnew">
-	<s:text name="lbl.deduction.remittance.summary" /></div>
+	<!-- TODO: Manual migration required for custom Struts tag --></div>
 	</s:else>
 
-	<s:form action="pendingTDSReport" theme="simple"
+	<form:form action="pendingTDSReport" theme="simple"
 		name="pendingTDSReport">
 		<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td class="greybox" width="10%"><s:text name="lbl.recovery.code" />:<span
+				<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 					class="mandatory1">*</span></td>
-				<td class="greybox"><s:select name="recovery" id="recovery"
+				<td class="greybox"><form:select path="recovery" id="recovery"
 						list="dropdownData.recoveryList" listKey="id" listValue="type"
 						headerKey="-1" headerValue="%{getText('lbl.choose.options')}"/></td>
 				<td class="greybox" width="10%">Fund:<span class="mandatory1">*</span></td>
-				<td class="greybox"><s:select name="fund" id="fund"
+				<td class="greybox"><form:select path="fund" id="fund"
 						list="dropdownData.fundList" listKey="id" listValue="name"
 						headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
 
 			</tr>
 			<tr>
-				<td class="bluebox" width="10%"><s:text name="from.date" /><span
+				<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory1"></span></td>
-				<td class="bluebox"><s:textfield name="fromDate" id="fromDate"
+				<td class="bluebox"><form:input path="fromDate" id="fromDate"
 						cssStyle="width:100px" value='%{getFormattedDate(fromDate)}'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 					href="javascript:show_calendar('pendingTDSReport.fromDate');"
@@ -93,9 +95,9 @@ function resetPage(){
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)<br />
 				</td>
 
-				<td class="bluebox" width="10%"><s:text name="lbl.as.on.date" />:<span
+				<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 					class="mandatory1">*</span></td>
-				<td class="bluebox"><s:textfield name="asOnDate" id="asOnDate"
+				<td class="bluebox"><form:input path="asOnDate" id="asOnDate"
 						cssStyle="width:100px" value='%{getFormattedDate(asOnDate)}'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 					href="javascript:show_calendar('pendingTDSReport.asOnDate');"
@@ -104,12 +106,12 @@ function resetPage(){
 				</td>
 			</tr>
 			<tr>
-				<td class="greybox" width="10%"><s:text name="lbl.department" />:</td>
-				<td class="greybox"><s:select name="department" id="department"
+				<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+				<td class="greybox"><form:select path="department" id="department"
 						list="dropdownData.departmentList" listKey="code"
 						listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"/>
 				</td>
-				<td class="greybox" width="10%"><s:text name="lbl.partyname" />:</td>
+				<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
 				<td class="greybox"><input type="text" name="partyName"
 					id="partyName" onclick="loadEntities()" autocomplete="off"
 					onkeyup="autocompleteEntities(this,event)"
@@ -118,8 +120,8 @@ function resetPage(){
 			</tr>
 			<tr>
 				<td class="bluebox" width="10%"><span
-					id="showRemittedEntrieslabel"><s:text name="lbl.show.remitted.records" />:</span></td>
-				<td class="bluebox"><s:checkbox name="showRemittedEntries"
+					id="showRemittedEntrieslabel"><!-- TODO: Manual migration required for custom Struts tag -->:</span></td>
+				<td class="bluebox"><form:checkbox path="showRemittedEntries"
 						id="showRemittedEntries" /></td>
 				<td class="bluebox">&nbsp;</td>
 				<td class="bluebox">&nbsp;</td>
@@ -127,15 +129,15 @@ function resetPage(){
 		</table>
 		<br />
 		<div class="buttonbottom">
-			<input type="button" value="<s:text name='lbl.search'/>"  class="buttonsubmit"
+			<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"  class="buttonsubmit"
 				onclick="return getData()" /> &nbsp;
 			<s:reset name="button" type="submit" cssClass="button" id="button"
 				key="lbl.reset" onclick="resetPage();"/>
-			<input type="button" value="<s:text name='lbl.close'/>" onclick="window.parent.postMessage('close','*');window.close();"
+			<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.parent.postMessage('close','*');window.close();"
 				Class="button" />
 		</div>
-		<s:hidden name="detailKey" id="detailKey"></s:hidden>
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
+	</form:form>
 </div>
 
 <div id="results"></div>

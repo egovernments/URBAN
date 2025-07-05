@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,12 +57,12 @@
 
 </head>
 <body onload="refreshInbox()">
-	<s:form action="preApprovedVoucher" theme="simple">
+	<form:form action="preApprovedVoucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Remittance Recovery -Approval" />
 		</jsp:include>
 		<div align="center">
-			<span class="mandatory1" style="color: green"> <s:actionmessage />
+			<span class="mandatory1" style="color: green"> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 		</div>
 		<br />
@@ -70,7 +72,7 @@
 			<input type="submit" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 	<script>
 		function refreshInbox() {
 
@@ -79,7 +81,7 @@
 						.refresh();
 		}
 		function printVoucher() {
-			document.forms[0].action = '../report/billPaymentVoucherPrint-print.action?id=<s:property value="paymentheader.id"/>';
+			document.forms[0].action = '../report/billPaymentVoucherPrint-print.action?id=${paymentheader.id}';
 			jQuery(document.forms[0]).append(
                     jQuery('<input>', {
                         type: 'hidden',

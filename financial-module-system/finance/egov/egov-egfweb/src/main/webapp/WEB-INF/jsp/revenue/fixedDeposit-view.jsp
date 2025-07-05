@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 
 <html>
 <head>
-<title><s:text name="Fixed Search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <script type="text/javascript">
@@ -66,19 +68,19 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="Search Fixed Deposit" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<body onload="onLoadTask(this);">
 			<br />
 			<br />
 
-			<s:form name="fixedDepositForm" action="fixedDeposit" theme="simple">
-				<s:hidden name="mode" id="mode" value="%{mode}"></s:hidden>
+			<form:form name="fixedDepositForm" action="fixedDeposit" theme="simple">
+				<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td class="greybox" width="15%">&nbsp;</td>
 						<td class="greybox" width="10%">From Date:</td>
-						<td class="greybox"><s:textfield name="fromDate"
+						<td class="greybox"><form:input path="fromDate"
 								id="fromDate" cssStyle="width:100px"
 								value='%{getFormattedDate(this.value)}'
 								onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -88,7 +90,7 @@
 						</td>
 
 						<td class="greybox" width="10%">To Date</td>
-						<td class="greybox"><s:textfield name="toDate" id="toDate"
+						<td class="greybox"><form:input path="toDate" id="toDate"
 								cssStyle="width:100px" value='%{getFormattedDate()}'
 								onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 							href="javascript:show_calendar('concurrenceReport.toDate');"
@@ -102,22 +104,22 @@
 				<br />
 
 				<div class="buttonbottom">
-					<s:submit method="search" value="Search" cssClass="buttonsubmit" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					<input type="button" value="Close"
 						onclick="javascript:window.close()" class="button" />
 				</div>
 
 
-				<s:if test="%{fixedDepositList.size()>0}">
+				<c:if test="%{fixedDepositList.size()>0}">
 					<jsp:include page="../revenue/fixedDeposit-modifyForm.jsp"></jsp:include>
 					<div align="center" class="buttonbottom">
 						<input type="button" value="Close"
 							onclick="javascript:window.close()" class="button" />
 						<s:submit value="Export Excel" method="exportXls"
 							cssClass="button" />
-						<s:submit value="Export Pdf" method="exportPdf" cssClass="button" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</div>
-					<s:else>
+					<c:otherwise>
 						<div id="msgdiv" style="display: block">
 							<table align="center" class="tablebottom" width="80%">
 								<tr>
@@ -128,7 +130,7 @@
 						</div>
 
 					</s:else>
-				</s:if>
+				</c:if>
 				<script>
 		for ( var i = 0; i < document.forms[0].length; i++) {
 		//bootbox.alert(document.forms[0].elements[i].name);
@@ -141,6 +143,6 @@
 			}
 		}
 		</script>
-			</s:form>
+			</form:form>
 		</body>
 </html>

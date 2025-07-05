@@ -416,7 +416,6 @@ public class SupplierBillService {
                     .withComments(approvalComent)
                     .withStateValue(stateValue).withDateInfo(currentDate.toDate())
                     .withOwner(wfInitiator.getPosition())
-                    .withNextAction("")
                     .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_SBILL_DISPLAYNAME);
         } else {
             // if (null != approvalPosition && approvalPosition != -1 && !approvalPosition.equals(Long.valueOf(0)))
@@ -451,7 +450,6 @@ public class SupplierBillService {
                 egBillregister.transition().start().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
                         .withStateValue(stateValue).withDateInfo(new Date()).withOwner(owenrPos)
-                        .withNextAction(wfmatrix.getNextAction())
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_SBILL_DISPLAYNAME)
                         .withCreatedBy(user.getId())
                         .withtLastModifiedBy(user.getId());
@@ -460,7 +458,6 @@ public class SupplierBillService {
                 egBillregister.transition().end().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
                         .withStateValue(stateValue).withDateInfo(currentDate.toDate())
-                        .withNextAction("")
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_SBILL_DISPLAYNAME);
             } else if (FinancialConstants.BUTTONAPPROVE.equalsIgnoreCase(workFlowAction)) {
                 wfmatrix = egBillregisterRegisterWorkflowService.getWfMatrix(egBillregister.getStateType(), null,
@@ -472,7 +469,6 @@ public class SupplierBillService {
                 egBillregister.transition().end().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
                         .withStateValue(stateValue).withDateInfo(new Date())
-                        .withNextAction(wfmatrix.getNextAction())
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_SBILL_DISPLAYNAME);
             } else {
                 if (designation != null
@@ -488,7 +484,6 @@ public class SupplierBillService {
                 egBillregister.transition().progressWithStateCopy().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
                         .withStateValue(stateValue).withDateInfo(new Date()).withOwner(owenrPos)
-                        .withNextAction(wfmatrix.getNextAction())
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_SBILL_DISPLAYNAME);
             }
         }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -76,7 +78,7 @@
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.majorcode" text="Major Code"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="majorCodeId" path=""
+								<form:select path="majorCodeId" path=""
 									data-first-option="false" id="majorCode"
 									cssClass="form-control">
 									<form:option value="">
@@ -90,7 +92,7 @@
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.minorcode" text="Minor code"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="minorCodeId" path=""
+								<form:select path="minorCodeId" path=""
 									data-first-option="false" id="minorCode"
 									cssClass="form-control">
 									<form:option value="">
@@ -116,7 +118,7 @@
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.purpose" text="Purpose"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="purposeId" path="" data-first-option="false"
+								<form:select path="purposeId" path="" data-first-option="false"
 									id="purposeId" cssClass="form-control">
 									<form:option value="">
 										<spring:message code="lbls.select" text="Select"/>
@@ -144,7 +146,7 @@
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.accountdetailtype" text="Account detail type"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="detailTypeId" path=""
+								<form:select path="detailTypeId" path=""
 									data-first-option="false" id="detailTypeId"
 									cssClass="form-control">
 									<form:option value="">

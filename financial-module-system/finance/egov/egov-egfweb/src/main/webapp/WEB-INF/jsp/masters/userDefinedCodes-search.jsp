@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 
 <html>
 <head>
-<title><s:text name="userDefCode.search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 	function validate(){
 		if(document.getElementById('accEntity.accountdetailtype.id').value == "" 
@@ -68,30 +70,30 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="userDefCode.search" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
-		<s:form name="userDefCodeForm" action="userDefinedCodes"
+		<form:form name="userDefCodeForm" action="userDefinedCodes"
 			theme="simple">
-			<s:hidden name="showMode" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td class="greybox"><s:text name="subCodeFor" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory"></span></td>
-					<td class="greybox"><s:select
+					<td class="greybox"><form:select
 							list="dropdownData.userDefCodeList"
 							id="accEntity.accountdetailtype.id" listKey="id" listValue="name"
 							name="accEntity.accountdetailtype.id" headerKey=""
 							headerValue="---- Choose ----"
-							value="accEntity.accountdetailtype.id"></s:select></td>
+							value="accEntity.accountdetailtype.id"></form:select></td>
 					<td class="greybox">&nbsp;</td>
 					<td class="greybox">&nbsp;</td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="userDefCode.code" /></td>
-					<td class="greybox"><s:textfield id="code" name="code" /></td>
-					<td class="greybox"><s:text name="userDefCode.name" /></td>
-					<td class="greybox"><s:textfield id="name" name="name" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input id="code" path="code" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input id="name" path="name" /></td>
 				</tr>
 
 			</table>
@@ -104,7 +106,7 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 	</div>
-	<s:if test="%{searchList.size!=0}">
+	<c:if test="%{searchList.size!=0}">
 		<table width="100%" border="0" align="center" cellpadding="0"
 			cellspacing="0" class="tablebottom">
 
@@ -122,22 +124,22 @@
 					align="center">IsActive</th>
 			</tr>
 			<c:set var="trclass" value="greybox" />
-			<s:iterator var="sa" value="searchList" status="s">
+			<c:forEach var="sa" value="searchList" status="s">
 				<tr>
 
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="#s.index+1" /></td>
+						align="center">${#s.index+1}</td>
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
 						align="center"><a href="#"
-						onclick="urlLoad('<s:property value="%{id}" />','<s:property value="%{showMode}" />');"
-						id="sourceLink" /> <s:label value="%{code}" /> </a></td>
+						onclick="urlLoad('${%{id}}','${%{showMode}}');"
+						id="sourceLink" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="name" /></td>
+						align="center">${name}</td>
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="accountdetailtype.name" /></td>
+						align="center">${accountdetailtype.name}</td>
 
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="isactive" /></td>
+						align="center">${isactive}</td>
 					<c:choose>
 						<c:when test="${trclass=='greybox'}">
 							<c:set var="trclass" value="bluebox" />
@@ -147,11 +149,11 @@
 						</c:when>
 					</c:choose>
 				</tr>
-			</s:iterator>
+			</c:forEach>
 
 		</table>
-	</s:if>
-	<s:if test="%{searchList.size==0}">
+	</c:if>
+	<c:if test="%{searchList.size==0}">
 		<div id="msgdiv" style="display: block">
 			<table align="center" class="tablebottom" width="80%">
 				<tr>
@@ -160,9 +162,9 @@
 				</tr>
 			</table>
 		</div>
-	</s:if>
+	</c:if>
 
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 	function urlLoad(id,showMode) {
 		if(showMode=='edit')

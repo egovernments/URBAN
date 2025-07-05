@@ -80,7 +80,6 @@ public class WorkFlowAdditionalRule extends AbstractPersistable<Long> {
     private String states;
     private String status;
     private String buttons;
-    private String workFlowActions;
 
     @Override
     public Long getId() {
@@ -130,14 +129,6 @@ public class WorkFlowAdditionalRule extends AbstractPersistable<Long> {
 
     public void setButtons(String buttons) {
         this.buttons = buttons;
-    }
-
-    public String getWorkFlowActions() {
-        return this.workFlowActions;
-    }
-
-    public void setWorkFlowActions(String workFlowActions) {
-        this.workFlowActions = workFlowActions;
     }
 
 }

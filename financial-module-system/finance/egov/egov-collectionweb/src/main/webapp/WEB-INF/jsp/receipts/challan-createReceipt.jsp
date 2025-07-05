@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -292,7 +294,7 @@ function verifyChequeDetails(table,len1)
 	    	instrNo = trimAll(instrNo);
 	    	if(instrNo==null || instrNo=="" || isNaN(instrNo) || instrNo.length!=6){
 	    		if(instrNoErrMsg==""){
-	    		    instrNoErrMsg='<s:text name="billreceipt.invalidchequenumber.errormessage" />' + '<br>';
+	    		    instrNoErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("challan_error_area").innerHTML+=instrNoErrMsg;
 	    		}
 	    		check=false;
@@ -304,7 +306,7 @@ function verifyChequeDetails(table,len1)
 	    	var bankName=getControlInBranch(table.rows[j],'bankName').value;
 	    	if(bankName==null || bankName==""){
 	    		if(bankNameErrMsg==""){
-	    		    bankNameErrMsg='<s:text name="billreceipt.missingbankid.errormessage" />' + '<br>';
+	    		    bankNameErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("challan_error_area").innerHTML+=bankNameErrMsg;
 	    		}
 	    		check=false;
@@ -316,7 +318,7 @@ function verifyChequeDetails(table,len1)
 	    	var instrDate=getControlInBranch(table.rows[j],'instrumentDate');
 	    	if(instrDate.value==null || instrDate.value=="" || instrDate.value=="DD/MM/YYYY"){
 	    		if(instrDateErrMsg==""){
-	    		    instrDateErrMsg='<s:text name="billreceipt.missingchequedate.errormessage" />' + '<br>';
+	    		    instrDateErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("challan_error_area").innerHTML+=instrDateErrMsg;
 	    		}
 	    		check=false;
@@ -325,7 +327,7 @@ function verifyChequeDetails(table,len1)
 		   	   	 if(receiptDate !=null && receiptDate != '' && instrDate.value != null && instrDate.value!= '' && check==true ){
 		   				if(process(instrDate.value) > process(receiptDate)){
 		   		    		document.getElementById("challan_error_area").innerHTML+=
-		   						'<s:text name="miscreceipt.error.instrumentdate.greaterthan.receiptdate" />'+ '<br>';   	
+		   						'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';   	
 		   					window.scroll(0,0);
 		   					check=false;
 		   		 	   	}
@@ -339,7 +341,7 @@ function verifyChequeDetails(table,len1)
 				var chequeamount=getControlInBranch(table.rows[j],'instrumentChequeAmount').value;
 				if(chequeamount==null || chequeamount=="" || isNaN(chequeamount) || chequeamount<0 || chequeamount.startsWith('+')){
 					if(instrAmountInvalidErrMsg==""){
-						instrAmountInvalidErrMsg='<s:text name="billreceipt.invalidchequeamount.errormessage" />' + '<br>';
+						instrAmountInvalidErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    				document.getElementById("challan_error_area").innerHTML+=instrAmountInvalidErrMsg;
 	    				check=false;
 	    			}
@@ -348,7 +350,7 @@ function verifyChequeDetails(table,len1)
 					chequeamount=eval(chequeamount);
 					if(chequeamount==0){
 	    				if(instrAmountErrMsg==""){
-	    		    		instrAmountErrMsg='<s:text name="billreceipt.missingchequeamount.errormessage" />' + '<br>';
+	    		    		instrAmountErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    					document.getElementById("challan_error_area").innerHTML+=instrAmountErrMsg;
 	    					check=false;
 	    				}
@@ -371,7 +373,7 @@ function checkForCurrentDate(obj)
 	   {
 	       dom.get("challan_dateerror_area").style.display="block";
 	       document.getElementById("challan_dateerror_area").innerHTML+=
-					'<s:text name="billreceipt.datelessthanreceiptdate.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 	       return false;
 	   }
    }
@@ -379,7 +381,7 @@ function checkForCurrentDate(obj)
 
 function onBodyLoad()
 {
-	<s:if test='%{model.id!=null && model.status.code=="PENDING" && model.challan.status.code=="VALIDATED"}'>
+	<c:if test='%{model.id!=null && model.status.code=="PENDING" && model.challan.status.code=="VALIDATED"}'>
 		loadDropDownCodesBank();
 	
 		// To hide delete button in cheque grid on page load
@@ -404,7 +406,7 @@ function onBodyLoad()
 		displayPaytModes();
 		displayPaymentDetails();
 		loadchequedetails();
-	</s:if>
+	</c:if>
 }
 
 function checkreset()
@@ -419,15 +421,15 @@ function checkreset()
 	clearCardDetails();
 	clearChequeDDDetails();
 	displayPaytModes();
-	var paidby =  '<s:property value="%{payeeName}" escapeJavaScript="true"/>';
+	var paidby =  '<!-- TODO: Manual migration required for custom Struts tag -->';
 	paidby = paidby.replace('&amp;','&');
 	document.getElementById('paidBy').value=paidby;
-	<s:if test="%{isBillSourcemisc()}"> 
+	<c:if test="%{isBillSourcemisc()}"> 
 		//To load the account codes if only a misc receipt request
 		if(resetMisc){
 			resetMisc();
 		}
-	</s:if>
+	</c:if>
 }
 
 function validate()
@@ -457,7 +459,7 @@ function validate()
 			cashamount=dom.get("instrHeaderCash.instrumentAmount").value;
 			if(cashamount==null || cashamount=="" || isNaN(cashamount) || cashamount<0 || cashamount.startsWith('+')){
 				document.getElementById("challan_error_area").innerHTML+=
-				'<s:text name="billreceipt.invalidcashamount.errormessage" />'+ '<br>';
+				'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else
@@ -465,7 +467,7 @@ function validate()
 			    cashamount=eval(cashamount);
 				if(cashamount==0){
 					document.getElementById("challan_error_area").innerHTML+=
-					'<s:text name="billreceipt.missingcashamount.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					validation = false;
 				}
 				collectiontotal=collectiontotal+cashamount;
@@ -477,27 +479,27 @@ function validate()
 		if(dom.get("instrHeaderCard.transactionNumber")!=null){
 	    	var transNo=dom.get("instrHeaderCard.transactionNumber").value;
 		    if(transNo==null || transNo==""){
-		    	document.getElementById("challan_error_area").innerHTML+='<s:text name="billreceipt.missingcardtransactionno.errormessage" /> ' + '<br>';
+		    	document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag --> ' + '<br>';
 		    	validation=false;
 		    }
 		}
 		if(dom.get("instrHeaderCard.instrumentNumber")!=null){
 		    var cardNo=dom.get("instrHeaderCard.instrumentNumber").value;
 		    if(cardNo==null || isNaN(cardNo) || cardNo.length < 4){
-		    	document.getElementById("challan_error_area").innerHTML+='<s:text name="billreceipt.missingcardno.errormessage" />' + '<br>';
+		    	document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		    	validation=false;
 		    }
 		}
 		if(dom.get("instrHeaderCard.instrumentAmount")!=null){
 			cardamount=dom.get("instrHeaderCard.instrumentAmount").value;
 			if(cardamount==null || cardamount=="" || isNaN(cardamount) || cardamount<0 || cardamount.startsWith('+')){
-				document.getElementById("challan_error_area").innerHTML+='<s:text name="billreceipt.invalidcardamount.errormessage" />'+ '<br>';
+				document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else{
 				cardamount=eval(cardamount);
 				if(cardamount==0){
-					document.getElementById("challan_error_area").innerHTML+='<s:text name="billreceipt.missingcardamount.errormessage" />'+ '<br>';
+					document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					validation = false;
 				}
 				collectiontotal=collectiontotal+cardamount;
@@ -525,12 +527,12 @@ function validate()
 	if(collectiontotal!=0){
 		if(collectiontotal!=billingtotal)
 		{
-			document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.wrong.collectionamount.error" />' + '<br>';
+			document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 			validation=false;
 		}
 	}
 	if(document.getElementById("receiptdate")!=null && document.getElementById("receiptdate").value==""){
-		document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.error.receiptdate" />' + '<br>';
+		document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		validation=false;
 	}
     
@@ -555,7 +557,7 @@ function validate()
 
 
 </script>
-<title><s:text name="challan.pagetitle" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body onload="onBodyLoad();">
 
@@ -573,21 +575,21 @@ function validate()
 						name="common.lastrow.error" /></b></font></li>
 	</span>
 
-	<s:if test="%{hasErrors()}">
+	<c:if test="%{hasErrors()}">
 		<div id="actionErrors" class="errorstyle">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
 		<div id="actionMessages" class="messagestyle">
-			<s:actionmessage theme="simple" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
+	</c:if>
 
-	<s:form theme="simple" name="challanReceiptForm">
-		<s:token />
-		<s:push value="model">
+	<form:form theme="simple" name="challanReceiptForm">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 
 			<s:hidden label="cashAllowed" id="cashAllowed" value="%{cashAllowed}"
 				name="cashAllowed" />
@@ -599,18 +601,18 @@ function validate()
 				name="bankAllowed" />
 			<s:hidden label="ddAllowed" id="ddAllowed" value="%{ddAllowed}"
 				name="ddAllowed" />
-			<s:hidden label="onlineAllowed" id="onlineAllowed" value="%{onlineAllowed}" name="onlineAllowed"/>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				
-			<s:hidden id="receiptId" name="receiptId" value='%{model.id}' />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 
 			<div class="subheadnew">
-				<s:text name="challan.title.createReceipt" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<div class="formmainbox">
 
 
-				<s:if test="%{sourcePage!='cancelReceipt'}">
+				<c:if test="%{sourcePage!='cancelReceipt'}">
 					<div class="subheadsmallnew">
 						<span class="subheadnew"><s:text
 								name="challan.title.findChallan" /></span>
@@ -620,7 +622,7 @@ function validate()
 							cellspacing="0">
 							<tr>
 								<td class="bluebox" style="text-align: center;"><s:text
-										name="challan.challanNumber" /> &nbsp;&nbsp; <s:textfield
+										path="challan.challanNumber" /> &nbsp;&nbsp; <form:input
 										name="challanNumber" id="challanNumber"
 										value="%{challanNumber}" onblur="getReceipt();" /></td>
 							</tr>
@@ -634,12 +636,12 @@ function validate()
 							</tr>
 						</table>
 						<div class="highlight2">
-							<s:text name="challan.findchallan.message" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</div>
 					</div>
 
-				</s:if>
-				<s:if
+				</c:if>
+				<c:if
 					test='%{model.id!=null && model.status.code=="PENDING" && model.challan.status.code=="VALIDATED"}'>
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<!-- main table -->
@@ -658,10 +660,10 @@ function validate()
 							</tr>
 							<tr>
 								<div class="billhead2" align="center">
-									<td class="bluebox"><s:text name="viewReceipt.receiptdate" /><span
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory" /> <s:date name="receiptdate"
 											var="cdFormat" format="dd/MM/yyyy" />
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:textfield id="receiptdate"
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <form:input id="receiptdate"
 											name="receiptdate" value="%{cdFormat}"
 											data-inputmask="'mask': 'd/m/y'" /></td>
 								</div>
@@ -670,21 +672,21 @@ function validate()
 							<tr>
 								<td>
 									<div class="subheadsmallnew">
-										<s:text name="challan.receipt.payment.details" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<div class="billhead2">
-										<s:text name="billreceipt.payment.totalamt.tobereceived" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 										<span class="bold"> <input
 											style="border: 0px; background-color: #FFFFCC; font-weight: bold;"
 											type="label" name="totalamounttobepaid"
 											id="totalamounttobepaid" readonly="readonly"
-											value='<s:property value="%{totalAmount}" />'>
+											value='${%{totalAmount}}'>
 										</span>
-										<s:text name="billreceipt.payment.totalamt.received" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 										<span> <input
 											style="border: 0px; background-color: #FFFFCC; font-weight: bold;"
 											type="label" name="totalamountdisplay"
@@ -727,13 +729,13 @@ function validate()
 						<label><input align="center" type="button"
 							class="buttonsubmit" id="button2" value="Pay"
 							onclick="return validate();" /></label> &nbsp;
-						<!--     <s:submit type="submit" cssClass="buttonsubmit" id="button" value="Reset" method="resetChallanReceipt" /> -->
+						<!--     <!-- TODO: Manual migration required for custom Struts tag --> -->
 						<input name="button" type="button" class="button" id="button"
 							value="Reset" onclick="checkreset();" /> &nbsp; <input
 							name="button" type="button" class="button" id="button"
 							value="Close" onclick="window.close();" />
 					</div>
-				</s:if>
+				</c:if>
 			</div>
 
 
@@ -750,5 +752,5 @@ bobexample.init()
 jQuery(":input").inputmask();
 </script>
 		</s:push>
-	</s:form>
+	</form:form>
 </body>

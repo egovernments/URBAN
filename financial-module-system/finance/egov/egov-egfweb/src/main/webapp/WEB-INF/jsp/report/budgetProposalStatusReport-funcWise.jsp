@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -63,50 +65,50 @@
 							<tr>
 								<td colspan="12">
 									<div class="subheadsmallnew">
-										<strong><s:property value="statementheading" /></strong>
+										<strong>${statementheading}</strong>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<td class="bluebox" colspan="4"><strong><s:text
 											name="report.run.date" />:</strong>
-								<s:date name="todayDate" format="dd/MM/yyyy" /></td>
+								<!-- TODO: Manual migration required for custom Struts tag --></td>
 							</tr>
 							<tr>
-								<th class="bluebgheadtd"><s:text name="report.function" /></th>
-								<th class="bluebgheadtd"><s:text name="report.asstadmin" /></th>
-								<th class="bluebgheadtd"><s:text name="report.smadmin" /></th>
-								<th class="bluebgheadtd"><s:text name="report.hod" /></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							</tr>
 							</tr>
-							<s:iterator value="budgetProposalStatusFuncList" status="stat">
+							<c:forEach value="budgetProposalStatusFuncList" status="stat">
 								<tr>
 									<td class="blueborderfortd">
 										<div align="center">
-											<s:property value="function.name" />
+											${function.name}
 											&nbsp;
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="center">
-											<s:property value="asstAdmin" />
+											${asstAdmin}
 											&nbsp;
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="center">
-											<s:property value="smAdmin" />
+											${smAdmin}
 											&nbsp;
 										</div>
 									</td>
 									<td class="blueborderfortd">
 										<div align="center">
-											<s:property value="hod" />
+											${hod}
 											&nbsp;
 										</div>
 									</td>
 								</tr>
-							</s:iterator>
+							</c:forEach>
 						</table>
 					</div>
 				</td>

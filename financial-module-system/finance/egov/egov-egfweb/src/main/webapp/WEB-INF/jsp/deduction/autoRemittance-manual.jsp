@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -60,26 +62,26 @@
 	src="/services/EGF/resources/javascript/dateValidation.js?rnd=${app_release_no}"></script>
 <meta http-equiv="Content-Type"
 	content="text/html; charset=windows-1252">
-<title><s:text name="auto.remit.schedule.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 
 
 </script>
 </head>
 <body>
-	<s:form action="autoRemittance" theme="simple"
+	<form:form action="autoRemittance" theme="simple"
 		name="autoRemittanceForm">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value='Manual Scheduling ' />
 		</jsp:include>
 
 		<span class="mandatory"> <font
-			style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-				<s:actionmessage /></font>
+			style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag --></font>
 		</span>
 		<div class="formheading" />
 		<div class="subheadnew">
-			<s:text name="remit.recovery.new.title" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<br />
 		<div align="center">
@@ -89,17 +91,17 @@
 			<table border="0" width="100%">
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="search.code" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:select name="glcode" id="glcode"
+					<td class="greybox"><form:select path="glcode" id="glcode"
 							list="coaMap" headerKey="-1" headerValue="----Choose----"
 							onchange="loadLastRundate(this)" /></td>
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="lastrundate" /></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="bluebox"><s:date name="lastRunDate"
-							var="lastRunDate" format="dd/MM/yyyy" /> <s:textfield
+							var="lastRunDate" format="dd/MM/yyyy" /> <form:input
 							name="lastRunDate" id="lastRunDate" value="%{lastRunDate}"
 							maxlength="10"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" />**? <a
@@ -111,8 +113,8 @@
 
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="department" />
-					<td class="greybox"><s:select name="dept" id="dept"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:select path="dept" id="dept"
 							list="dropdownData.departmentList" listKey="id"
 							listValue="name" headerKey="" headerValue="----Choose----"
 							onChange="loadDrawingOfficer(this);" /></td>
@@ -121,8 +123,8 @@
 				</tr>
 				<tr>
 					<td class="greybox"></td>
-					<td class="bluebox"><s:text name="drawingofficer" /></td>
-					<td><s:textfield name="drawingOfficer" id="drawingOfficer"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td><form:input path="drawingOfficer" id="drawingOfficer"
 							size="50" /></td>
 				</tr>
 			</table>
@@ -140,24 +142,24 @@
 			<script>
 function loadDrawingOfficer(obj)
 {
-	<s:iterator value="deptDOList" var="s">
-	if(obj.value=='<s:property value="%{department.id}"/>')                                              
+	<c:forEach value="deptDOList" var="s">
+	if(obj.value=='${%{department.id}}')                                              
 	{
-	document.getElementById("drawingOfficer").value='<s:property value="%{drawingOfficer.name}"/>';
+	document.getElementById("drawingOfficer").value='${%{drawingOfficer.name}}';
 	}
-	</s:iterator>
+	</c:forEach>
 
 }
 
 function loadLastRundate(obj)
 {
 	//bootbox.alert(obj.value);
-	<s:iterator value="lastRunDateMap" var="s">
-	if(obj.value=='<s:property value="%{key}"/>')
+	<c:forEach value="lastRunDateMap" var="s">
+	if(obj.value=='${%{key}}')
 	{
-	document.getElementById("lastRunDate").value='<s:property value="%{value}"/>';
+	document.getElementById("lastRunDate").value='${%{value}}';
 	}
-	</s:iterator>
+	</c:forEach>
 
 }
 </script>
@@ -167,6 +169,6 @@ function loadLastRundate(obj)
 				date search for generating remittance payment for already triggered
 				and cancelled remittance payments <br />
 			</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,20 +55,20 @@
 
 <html>
 <head>
-<title><s:text name="receipt.payment.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body onload="bodyOnLoad();">
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="receipt.payment.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="receiptPaymentReportForm" action="receiptPaymentReport"
+		<form:form name="receiptPaymentReportForm" action="receiptPaymentReport"
 			theme="simple">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
@@ -74,14 +76,14 @@
 					<td class="bluebox" width="15%"><s:text
 							name="report.financialYear.report" /><span class="mandatory">*</span>
 					</td>
-					<td class="bluebox"><s:select
+					<td class="bluebox"><form:select
 							list="dropdownData.financialYearList" listKey="id"
 							listValue="finYearRange" name="financialYear.id" headerKey="0"
 							headerValue="--- Select ---" value="%{model.financialYear.id}"
-							id="financialYear"></s:select></td>
-					<td class="bluebox" width="15%"><s:text name="report.period" /><span
+							id="financialYear"></form:select></td>
+					<td class="bluebox" width="15%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="bluebox" width="15%"><s:select name="period"
+					<td class="bluebox" width="15%"><form:select path="period"
 							id="period" onchange="checkSelected(this)"
 							list="#{'Yearly':'Yearly','Date Range':'Date Range'}"
 							headerKey="0" headerValue="--- Select ---"
@@ -90,14 +92,14 @@
 
 				<tr>
 					<td class="greybox" width="15%"></td>
-					<td class="greybox" width="15%"><s:text name="report.fund" />
+					<td class="greybox" width="15%"><!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
-					<td class="greybox"><s:select list="dropdownData.fundList"
+					<td class="greybox"><form:select list="dropdownData.fundList"
 							listKey="id" listValue="name" name="fund.id" headerKey="0"
-							headerValue="--- Select ---" value="%{model.fund.id}" id="fund"></s:select></td>
-					<td class="greybox" width="15%"><s:text name="report.rupees" /><span
+							headerValue="--- Select ---" value="%{model.fund.id}" id="fund"></form:select></td>
+					<td class="greybox" width="15%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="greybox" width="15%"><s:select name="currency"
+					<td class="greybox" width="15%"><form:select path="currency"
 							id="currency"
 							list="#{'Rupees':'Rupees','Thousands':'Thousands','Lakhs':'Lakhs'}"
 							headerKey="0" headerValue="--- Select ---"
@@ -108,7 +110,7 @@
 					<td class="greybox" width="15%">&nbsp;</td>
 					<td class="greybox" width="10%">From Date:<span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:textfield name="fromDate" id="fromDate"
+					<td class="greybox"><form:input path="fromDate" id="fromDate"
 							cssStyle="width:100px" value='%{model.fromDate}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('receiptPaymentReportForm.fromDate');"
@@ -118,7 +120,7 @@
 
 					<td class="greybox" width="10%">To Date:<span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:textfield name="toDate" id="toDate"
+					<td class="greybox"><form:input path="toDate" id="toDate"
 							cssStyle="width:100px" value='%{model.toDate}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('receiptPaymentReportForm.toDate');"
@@ -142,15 +144,15 @@
 				<input type="button" value="Close"
 					onclick="javascript: self.close()" Class="button" />
 			</div>
-			<s:if test="%{model.entries.size!=0}">
-				<!-- <div align="center" class="extracontent"><h4><s:property value="fundType"/>  <s:property value="budgetType"/></h4></div> 
+			<c:if test="%{model.entries.size!=0}">
+				<!-- <div align="center" class="extracontent"><h4>${fundType}  ${budgetType}</h4></div> 
 		<div align="right" class="extracontent"><b>Amount in Thousands</b></div> -->
 				<table width="100%" border="0" align="center" cellpadding="0"
 					cellspacing="0" class="tablebottom">
 					<tr>
 						<td colspan="12">
 							<div class="subheadsmallnew">
-								<strong><s:property value="header" /></strong>
+								<strong>${header}</strong>
 							</div>
 						</td>
 					</tr>
@@ -160,7 +162,7 @@
 									format="dd/MM/yyyy" /></strong></td>
 						<td colspan="11">
 							<div class="blueborderfortd" align="right">
-								<strong> <s:text name="report.amount.in" /> <s:property
+								<strong> <!-- TODO: Manual migration required for custom Struts tag --> <s:property
 										value="model.currency" />&nbsp;&nbsp;&nbsp;&nbsp;
 								</strong>
 							</div>
@@ -175,81 +177,81 @@
 						<th class="bluebgheadtd" style="width: 13%; text-align: center"
 							align="center">Schedule No</th>
 
-						<s:if test="%{model.funds.size()>1}">
-							<s:iterator value="model.funds" status="stat">
-								<th class="bluebgheadtd"><s:property value="name" /></th>
-							</s:iterator>
-						</s:if>
+						<c:if test="%{model.funds.size()>1}">
+							<c:forEach value="model.funds" status="stat">
+								<th class="bluebgheadtd">${name}</th>
+							</c:forEach>
+						</c:if>
 						<th class="bluebgheadtd" style="width: 13%; text-align: center"
-							align="center"><s:property value="currentYearToDate" /></th>
+							align="center">${currentYearToDate}</th>
 						<th class="bluebgheadtd" style="width: 13%; text-align: center"
-							align="center"><s:property value="previousYearToDate" /></th>
+							align="center">${previousYearToDate}</th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
-					<s:iterator value="model.entries" status="stat">
+					<c:forEach value="model.entries" status="stat">
 						<tr>
-							<s:if
+							<c:if
 								test='%{accountName == "Operating Payment" || accountName == "Payments"|| accountName == "Operating Receipt" || accountName == "Receipts"}'>
 								<td class="blueborderfortd">&nbsp;</td>
 								<td class="blueborderfortd"><strong><s:property
 											value="accountName" />&nbsp;</strong></td>
 								<td class="blueborderfortd">&nbsp;</td>
-								<s:if test="%{model.funds.size()>1}">
-									<s:iterator value="model.funds" status="stat">
+								<c:if test="%{model.funds.size()>1}">
+									<c:forEach value="model.funds" status="stat">
 										<td class="blueborderfortd">
 											<div align="right">&nbsp;</div>
 										</td>
-									</s:iterator>
-								</s:if>
+									</c:forEach>
+								</c:if>
 								<td class="blueborderfortd">&nbsp;</td>
 								<td class="blueborderfortd">&nbsp;</td>
-							</s:if>
-							<s:elseif test='%{accountName == "Grand Total"}'>
+							</c:if>
+							<!-- TODO: Manual migration required for custom Struts tag -->
 								<td class="blueborderfortd">&nbsp;</td>
 								<td class="blueborderfortd"><strong><s:property
 											value="accountName" />&nbsp;</strong></td>
 								<td class="blueborderfortd">&nbsp;</td>
-								<s:if test="%{model.funds.size()>1}">
-									<s:iterator value="model.funds" status="stat">
+								<c:if test="%{model.funds.size()>1}">
+									<c:forEach value="model.funds" status="stat">
 										<td class="blueborderfortd">
 											<div align="right">
-												<strong><s:property value="fundWiseAmount[code]" />&nbsp;</strong>
+												<strong>${fundWiseAmount[code]}&nbsp;</strong>
 											</div>
 										</td>
-									</s:iterator>
-								</s:if>
+									</c:forEach>
+								</c:if>
 								<td class="blueborderfortd"><strong><s:property
 											value="currentYearTotal" />&nbsp;</strong></td>
 								<td class="blueborderfortd"><strong><s:property
 											value="previousYearTotal" />&nbsp;</strong></td>
 							</s:elseif>
-							<s:else>
+							<c:otherwise>
 								<td class="blueborderfortd">&nbsp;</td>
-								<td class="blueborderfortd"><s:property value="accountName" />&nbsp;</td>
+								<td class="blueborderfortd">${accountName}&nbsp;</td>
 								<td class="blueborderfortd"><a href="#"
-									onclick="urlLoad('<s:property value="scheduleNo"/>');"
-									id="sourceLink" /> <s:property value="scheduleNo" />&nbsp; </a></td>
-								<s:if test="%{model.funds.size()>1}">
-									<s:iterator value="model.funds" status="stat">
+									onclick="urlLoad('${scheduleNo}');"
+									id="sourceLink" /> ${scheduleNo}&nbsp; </a></td>
+								<c:if test="%{model.funds.size()>1}">
+									<c:forEach value="model.funds" status="stat">
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:property value="fundWiseAmount[code]" />
+												${fundWiseAmount[code]}
 												&nbsp;
 											</div>
 										</td>
-									</s:iterator>
-								</s:if>
+									</c:forEach>
+								</c:if>
 								<td class="blueborderfortd"><s:property
 										value="currentYearTotal" />&nbsp;</td>
 								<td class="blueborderfortd"><s:property
 										value="previousYearTotal" />&nbsp;</td>
 							</s:else>
 						</tr>
-					</s:iterator>
-					</s:if>
+					</c:forEach>
+					</c:if>
 
 				</table>
-		</s:form>
+		</form:form>
 		<script>
 
 	function validate(){
@@ -278,7 +280,7 @@
 
 	function bodyOnLoad(){
 		//bootbox.alert("hi");
-		var period='<s:property value="model.period"/>';
+		var period='${model.period}';
 		//bootbox.alert("period >> "+period);  
 		if(period == 'Date Range')
 			document.getElementById('dateran').style.display ="inline";

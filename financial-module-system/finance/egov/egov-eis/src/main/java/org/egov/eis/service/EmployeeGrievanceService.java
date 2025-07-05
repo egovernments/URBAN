@@ -160,7 +160,7 @@ public class EmployeeGrievanceService {
                 employeeGrievance.transition()
                         .start()
                         .withStateValue("Registered")
-                        .withOwner(assigneePosition).withNextAction(wfmatrix.getNextAction()).withDateInfo(DateUtils.now())
+                        .withOwner(assigneePosition).withDateInfo(DateUtils.now())
                         .withNatureOfTask(EisConstants.EMPLOYEE_GRIEVANCE).withInitiator(assigneePosition)
                         .withSenderName(user.getUsername() + ":" + user.getName());
             }
@@ -178,7 +178,6 @@ public class EmployeeGrievanceService {
                         .withComments("")
                         .withStateValue(stateValue).withDateInfo(DateUtils.now())
                         .withOwner(assigneePosition)
-                        .withNextAction(wfmatrix.getNextAction())
                         .withNatureOfTask(EisConstants.EMPLOYEE_GRIEVANCE);
 
             }
@@ -193,14 +192,12 @@ public class EmployeeGrievanceService {
                 employeeGrievance.transition().end().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments("")
                         .withStateValue(stateValue).withDateInfo(DateUtils.now())
-                        .withNextAction(wfmatrix.getNextAction())
                         .withNatureOfTask(EisConstants.EMPLOYEE_GRIEVANCE);
             } else if (employeeGrievance.getStatus().equals(EmployeeGrievanceStatus.REJECTED)) {
                 stateValue = EisConstants.WORKFLOW_STATE_CANCELLED;
                 employeeGrievance.transition().end().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments("")
                         .withStateValue(stateValue).withDateInfo(DateUtils.now())
-                        .withNextAction("")
                         .withNatureOfTask(EisConstants.EMPLOYEE_GRIEVANCE);
             }
     }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json"%><%@ taglib prefix="s"	uri="/WEB-INF/tags/struts-tags.tld"%><%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -44,4 +46,4 @@
   ~
   ~   In case of any queries, you can reach eGovernments Foundation at contact@egovernments.org.
   ~
-  --%><s:iterator var="s"	value="accountCodesForDetailTypeList" status="status"><s:property value="%{glcode}" />`-`<s:property value="%{name}" />`~`<s:property		value="%{id}" /><s:if test="%{chartOfAccountDetails.size()>0}">`-`true</s:if>+</s:iterator>^
+  --%><c:forEach var="s"	value="accountCodesForDetailTypeList" status="status">${%{glcode}}`-`${%{name}}`~`${%{id}}<c:if test="%{chartOfAccountDetails.size()>0}">`-`true</c:if>+</c:forEach>^

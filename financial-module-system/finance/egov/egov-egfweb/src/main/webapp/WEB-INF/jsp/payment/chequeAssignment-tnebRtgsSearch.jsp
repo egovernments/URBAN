@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,22 +57,22 @@
 <title>RTGS Ref. No Assignment Search</title>
 </head>
 <body>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="RTGS Ref. No. Assignment Search" />
 		</jsp:include>
-		<span class="mandatory" id="errorSpan"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory" id="errorSpan"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="chq.rtgs.assignment.search.heading" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="bluebox" width="30%"><s:text
 							name="chq.assignment.paymentvoucherdatefrom" /></td>
-					<td class="bluebox"><s:textfield name="fromDate" id="fromDate"
+					<td class="bluebox"><form:input path="fromDate" id="fromDate"
 							maxlength="20" value="%{fromDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].fromDate');"
@@ -78,7 +80,7 @@
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a><br />(dd/mm/yyyy)</td>
 					<td class="bluebox" width="30%"><s:text
 							name="chq.assignment.paymentvoucherdateto" /></td>
-					<td class="bluebox"><s:textfield name="toDate" id="toDate"
+					<td class="bluebox"><form:input path="toDate" id="toDate"
 							maxlength="20" value="%{toDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].toDate');"
@@ -86,45 +88,45 @@
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="payment.mode" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="greybox"><s:radio id="paymentMode"
 							name="paymentMode" list="#{'rtgs':'RTGS'}"
 							onchange="enableOrDisableBillType(this)" value="%{paymentMode}" /></td>
 					<td class="greybox"><s:text
 							name="chq.assignment.paymentvoucherno" /></td>
-					<td class="greybox"><s:textfield name="voucherNumber"
+					<td class="greybox"><form:input path="voucherNumber"
 							id="voucherNumber" value="%{voucherNumber}" /></td>
 				</tr>
 				<tr>
-					<td class="bluebox"><s:text name="payment.expendituretype" /></td>
-					<td class="bluebox"><s:property value="%{billType}" /></td>
-					<td class="bluebox"><s:text name="payment.tneb.bill.region" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox">${%{billType}}</td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="bluebox"><s:select name="region" id="region"
+					<td class="bluebox"><form:select path="region" id="region"
 							list="dropdownData.regionsList" headerKey=""
 							headerValue="----Choose----" /></td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="voucher.fund" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:property
 							value="%{voucherHeader.fundId.name}" /></td>
-					<td class="greybox"><s:text name="voucher.function" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:property
 							value="%{voucherHeader.vouchermis.function.name}" /></td>
 				</tr>
 				<tr>
-					<td class="bluebox"><s:text name="voucher.department" /></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="bluebox"><s:property
 							value="%{voucherHeader.vouchermis.departmentid.deptName}" /></td>
 					<td class="bluebox"></td>
 					<td class="bluebox"></td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="chq.assignment.bank" /></td>
-					<td class="greybox"><s:property value="%{bank_branch}" /></td>
-					<td class="greybox"><s:text name="chq.assignment.bankaccount" /></td>
-					<td class="greybox"><s:property value="%{bank_account}" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox">${%{bank_branch}}</td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox">${%{bank_account}}</td>
 
 				</tr>
 
@@ -136,15 +138,15 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</div>
-		<s:hidden name="bankbranch" id="bankbranch" />
-		<s:hidden name="bank_branch" id="bank_branch" />
-		<s:hidden name="bank_account" id="bank_account" />
-		<s:hidden name="bankaccount" id="bankaccount" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<s:hidden name="rtgsContractorAssignment"
 			id="rtgsContractorAssignment" />
-		<s:hidden name="billSubType" id="billSubType" value="%{billSubType}" />
-		<s:hidden name="region" id="region" value="%{region}" />
-		<s:hidden name="billType" id="billType" value="%{billType}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<s:hidden name="voucherHeader.fundId.id" id="voucherHeader.fundId.id"
 			value="%{voucherHeader.fundId.id}" />
 		<s:hidden name="voucherHeader.vouchermis.function.id"
@@ -153,7 +155,7 @@
 		<s:hidden name="voucherHeader.vouchermis.departmentid.id"
 			id="voucherHeader.vouchermis.departmentid.id"
 			value="%{voucherHeader.vouchermis.departmentid.id}" />
-	</s:form>
+	</form:form>
 	<script>
 		function validateSearch(){
 			var region = document.getElementById('region').value;
@@ -165,11 +167,11 @@
 			
 		}
 		</script>
-	<s:if test="%{!validateUser('chequeassignment')}">
+	<c:if test="%{!validateUser('chequeassignment')}">
 		<script>
 					document.getElementById('searchBtn').disabled=true;
-					document.getElementById('errorSpan').innerHTML='<s:text name="chq.assignment.invalid.user"/>'
+					document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->'
 				</script>
-	</s:if>
+	</c:if>
 </body>
 </html>

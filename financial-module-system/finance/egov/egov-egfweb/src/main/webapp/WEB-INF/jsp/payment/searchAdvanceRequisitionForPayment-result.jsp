@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,20 +61,20 @@
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td colspan="6" align="left"><div class="subheadsmallnew">
-								<s:text name='search.result' />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</div></td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 	</table>
-	<s:if test="%{searchResult.fullListSize != 0 && !hasErrors()}">
-		<s:text id="slNo" name="%{getText('label.slno')}"></s:text>
-		<s:text id="select" name="%{getText('label.select')}"></s:text>
-		<s:text id="arfnumber" name="%{getText('arf.arfnumber')}"></s:text>
-		<s:text id="arfdate" name="%{getText('arf.arfdate')}"></s:text>
-		<s:text id="advanceamount" name="%{getText('arf.advanceamount')}"></s:text>
-		<s:text id="department" name="%{getText('arf.department')}"></s:text>
+	<c:if test="%{searchResult.fullListSize != 0 && !hasErrors()}">
+		<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:text>
 
 		<display:table name="searchResult" pagesize="30" uid="currentRow"
 			cellpadding="0" cellspacing="0" requestURI=""
@@ -80,20 +82,20 @@
 			<display:column headerClass="bluebgheadtdnew"
 				class="blueborderfortdnew" title="${select}" style="width:5%;">
 				<input name="radio" type="radio" id="radio"
-					value="<s:property value='%{#attr.currentRow.id}'/>" />
-				<s:hidden id="arfId" name="arfId" value="%{#attr.currentRow.id}" />
+					value="<!-- TODO: Manual migration required for custom Struts tag -->" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</display:column>
 			<display:column headerClass="bluebgheadtdnew"
 				class="blueborderfortdnew" title="${slNo}"
 				style="width:5%;text-align:left">
-				<s:property value="#attr.currentRow_rowNum + (page-1)*pageSize" />
+				${#attr.currentRow_rowNum + (page-1)*pageSize}
 			</display:column>
 			<display:column headerClass="bluebgheadtdnew"
 				class="blueborderfortdnew" title="${arfnumber}"
 				style="width:20%;text-align:left">
 				<a href="#"
-					onclick="viewARF('<s:property value='%{#attr.currentRow.egAdvanceReqMises.sourcePath}'/>')">
-					<s:property value="#attr.currentRow.advanceRequisitionNumber" />
+					onclick="viewARF('<!-- TODO: Manual migration required for custom Struts tag -->')">
+					${#attr.currentRow.advanceRequisitionNumber}
 				</a>
 			</display:column>
 			<display:column headerClass="bluebgheadtdnew"
@@ -105,7 +107,7 @@
 			<display:column headerClass="bluebgheadtdnew"
 				class="blueborderfortdnew" title="${advanceamount}"
 				style="width:10%;text-align:right">
-				<s:text name="payment.format.number">
+				<!-- TODO: Manual migration required for custom Struts tag -->
 					<s:param name="advanceRequisitionAmount"
 						value='%{#attr.currentRow.advanceRequisitionAmount}' />
 				</s:text>
@@ -123,8 +125,8 @@
 				name="createAdvancePaymentButton"
 				onclick="goToCreateAdvancePayment();" align="center" />
 		</P>
-	</s:if>
-	<s:elseif test="%{searchResult.fullListSize == 0 && !hasErrors()}">
+	</c:if>
+	<!-- TODO: Manual migration required for custom Struts tag -->
 		<div>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -163,7 +165,7 @@
 		}
 		else{
 			dom.get("searchAdvanceRequisition_error").style.display='';
-			document.getElementById("searchAdvanceRequisition_error").innerHTML='<s:text name="advance.payment.create.select.arf.validate" />';
+			document.getElementById("searchAdvanceRequisition_error").innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			window.scroll(0, 0);
 			return false;
 		  }

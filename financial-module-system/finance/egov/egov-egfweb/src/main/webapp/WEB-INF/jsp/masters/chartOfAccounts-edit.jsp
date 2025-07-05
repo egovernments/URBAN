@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="chartOfAccount.modify" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/chartofaccountsHelper.js"></script>
 <script type="text/javascript">
@@ -82,11 +84,11 @@
 	<jsp:include page="../budget/budgetHeader.jsp" />
 
 	<div class="subheadnew">
-		<s:text name="chartOfAccount.modify" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<span style="color: red"> <s:actionmessage /> <s:actionerror />
-		<s:fielderror /></span>
-	<s:form name="chartOfAccountsForm" action="chartOfAccounts"
+	<span style="color: red"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></span>
+	<form:form name="chartOfAccountsForm" action="chartOfAccounts"
 		theme="simple">
 		<div class="formmainbox">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
@@ -96,76 +98,76 @@
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.accountCode" />:</strong></td>
 					<td width="22%" class="bluebox"><input type="text"
-						name="glcode" value='<s:property value="model.glcode"/>'
+						name="glcode" value='${model.glcode}'
 						id="chartOfAccounts_glcode" style="border: 0px;" readOnly="true" /></td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.name" />:<span class="mandatory1">*</span></strong></td>
 					<td class="bluebox"><input type="text" name="name"
-						value='<s:property value="model.name"/>' id="chartOfAccounts_name" /></td>
+						value='${model.name}' id="chartOfAccounts_name" /></td>
 				</tr>
 				<tr>
 					<td width="20%" class="greybox">&nbsp;</td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.description" />:</strong></td>
-					<td width="22%" class="greybox"><s:textfield name="desc" /></td>
+					<td width="22%" class="greybox"><form:input path="desc" /></td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.type" />:</strong></td>
-					<td class="greybox"><s:if test="model.type == 'I'">
+					<td class="greybox"><c:if test="model.type == 'I'">
 							<input type="text" name="type"
-								value='<s:text name="chartOfAccount.income"/>'
+								value='<!-- TODO: Manual migration required for custom Struts tag -->'
 								id="chartOfAccounts_type" style="border: 0px;" readOnly="true" />
-						</s:if> <s:if test="model.type == 'E'">
+						</c:if> <c:if test="model.type == 'E'">
 							<input type="text" name="type"
-								value='<s:text name="chartOfAccount.expense"/>'
+								value='<!-- TODO: Manual migration required for custom Struts tag -->'
 								id="chartOfAccounts_type" style="border: 0px;" readOnly="true" />
-						</s:if> <s:if test="model.type == 'A'">
+						</c:if> <c:if test="model.type == 'A'">
 							<input type="text" name="type"
-								value='<s:text name="chartOfAccount.asset"/>'
+								value='<!-- TODO: Manual migration required for custom Struts tag -->'
 								id="chartOfAccounts_type" style="border: 0px;" readOnly="true" />
-						</s:if> <s:if test="model.type == 'L'">
+						</c:if> <c:if test="model.type == 'L'">
 							<input type="text" name="type"
-								value='<s:text name="chartOfAccount.liability"/>'
+								value='<!-- TODO: Manual migration required for custom Struts tag -->'
 								id="chartOfAccounts_type" style="border: 0px;" readOnly="true" />
-						</s:if></td>
+						</c:if></td>
 				</tr>
 				<tr>
 					<td width="20%" class="bluebox">&nbsp;</td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.purpose" />:</strong></td>
-					<td class="bluebox"><s:select list="dropdownData.purposeList"
+					<td class="bluebox"><form:select list="dropdownData.purposeList"
 							listKey="id" listValue="name" name="accountcodePurpose.id"
 							headerKey="0" headerValue="%{getText('lbl.choose.options')}"
-							value="accountcodePurpose.id"></s:select></td>
+							value="accountcodePurpose.id"></form:select></td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.classification" />:</strong></td>
-					<td width="22%" class="bluebox"><s:if
+					<td width="22%" class="bluebox"><c:if
 							test="%{model.classification == 1}">
-							<s:text name="chartOfAccount.majorCode" />
-						</s:if> <s:elseif test="%{model.classification == 2}">
-							<s:text name="chartOfAccount.minorCode" />
-						</s:elseif> <s:elseif test="%{model.classification == 4}">
-							<s:text name="chartOfAccount.detailedCode" />
-						</s:elseif> <s:else>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</s:elseif> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</s:elseif> <c:otherwise>
 						</s:else></td>
 				</tr>
 				<tr>
 					<td width="20%" class="bluebox">&nbsp;</td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.functionRequired" />:</strong></td>
-					<td width="22%" class="bluebox"><s:if
+					<td width="22%" class="bluebox"><c:if
 							test="%{getFunctionReqd() == true}">
-							<s:checkbox name="functionRequired" value="functionReqd"
-								checked="checked"></s:checkbox>
-						</s:if> <s:else>
-							<s:checkbox name="functionRequired" value="functionReqd"></s:checkbox>
+							<form:checkbox path="functionRequired" value="functionReqd"
+								checked="checked"></form:checkbox>
+						</c:if> <c:otherwise>
+							<form:checkbox path="functionRequired" value="functionReqd"></form:checkbox>
 						</s:else></td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.budgetRequired" />:</strong></td>
-					<td class="bluebox"><s:if test="%{budgetCheckReq() == true}">
-							<s:checkbox name="budgetCheckRequired" value="budgetCheckReq"
-								checked="checked"></s:checkbox>
-						</s:if> <s:else>
-							<s:checkbox name="budgetCheckRequired" value="budgetCheckReq"></s:checkbox>
+					<td class="bluebox"><c:if test="%{budgetCheckReq() == true}">
+							<form:checkbox path="budgetCheckRequired" value="budgetCheckReq"
+								checked="checked"></form:checkbox>
+						</c:if> <c:otherwise>
+							<form:checkbox path="budgetCheckRequired" value="budgetCheckReq"></form:checkbox>
 						</s:else></td>
 				</tr>
 				<tr>
@@ -173,12 +175,12 @@
 
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.activeForPosting" />:</strong></td>
-					<td class="greybox"><s:if
+					<td class="greybox"><c:if
 							test="%{getIsActiveForPosting() == true}">
-							<s:checkbox name="activeForPosting" value="isActiveForPosting"
-								checked="checked"></s:checkbox>
-						</s:if> <s:else>
-							<s:checkbox name="activeForPosting" value="isActiveForPosting"></s:checkbox>
+							<form:checkbox path="activeForPosting" value="isActiveForPosting"
+								checked="checked"></form:checkbox>
+						</c:if> <c:otherwise>
+							<form:checkbox path="activeForPosting" value="isActiveForPosting"></form:checkbox>
 						</s:else></td>
 
 				</tr>
@@ -187,7 +189,7 @@
 		<br />
 		<br />
 		<div class="formmainbox">
-			<div class="subheadnew"><s:text name="lbl.account.detail.type.mapping"/> </div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			<table>
 				<tr>
 					<td width="10%" class="greybox">
@@ -206,9 +208,9 @@
 				<tr>
 					<td width="13%" class="greybox">
 					<td width="20%"><div class="col-xs-10">
-							<s:select list="dropdownData.accountDetailTypeList" listKey="id"
+							<form:select list="dropdownData.accountDetailTypeList" listKey="id"
 								listValue="name" id="accountDetailType" multiple="true"
-								cssClass="form-control" size="5"></s:select>
+								cssClass="form-control" size="5"></form:select>
 						</div></td>
 					<td width="5%"><div class="col-xs-10">
 							<div>&nbsp;</div>
@@ -224,10 +226,10 @@
 						</div></td>
 
 					<td width="20%"><div class="col-xs-10">
-							<s:select list="dropdownData.mappedAccountDetailTypeList"
+							<form:select list="dropdownData.mappedAccountDetailTypeList"
 								listKey="id" listValue="name" name="accountDetailTypeList"
 								id="accountDetailTypeAss" multiple="true" size="5"
-								cssClass="form-control" value="accountDetailTypeList"></s:select>
+								cssClass="form-control" value="accountDetailTypeList"></form:select>
 						</div></td>
 				</tr>
 			</table>
@@ -235,11 +237,11 @@
 			<br /> <br />
 		</div>
 		<div class="buttonbottom">
-			<input type="hidden" name="model.id" value='<s:property value="model.id"/>' />
-		    <input type="button" class="buttonsubmit" value="<s:text name='lbl.save'/>" id="Search" name="Search" onclick="return validateAndSubmit();" /> 
-			<input type="button" value="<s:text name='lbl.close'/>" onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />
+			<input type="hidden" name="model.id" value='${model.id}' />
+		    <input type="button" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->" id="Search" name="Search" onclick="return validateAndSubmit();" /> 
+			<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />
 		</div>
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 </body>
 </html>

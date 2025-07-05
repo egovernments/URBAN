@@ -212,7 +212,6 @@ public class FinanceController {
 		Pagination page = new Pagination();
 		page.setOffSet(fundRequest.getOffset());
 		page.setPageSize(fundRequest.getPageSize());
-		page.setTotalResults(fundlist.size());
 
 		return new FundResponse(responseInfo, fundlist, page);
 	}
@@ -235,7 +234,6 @@ public class FinanceController {
 		Pagination page = new Pagination();
 		page.setOffSet(funRequest.getOffset());
 		page.setPageSize(funRequest.getPageSize());
-		page.setTotalResults(funList.size());
 
 		return new FunctionResponse(responseInfo, funList, page);
 	}
@@ -259,7 +257,6 @@ public class FinanceController {
 		Pagination page = new Pagination();
 		page.setOffSet(fyRequest.getOffset());
 		page.setPageSize(fyRequest.getPageSize());
-		page.setTotalResults(fyList.size());
 
 		return new FinancialYearResponse(responseInfo, fyList, page);
 
@@ -282,7 +279,6 @@ public class FinanceController {
 		Pagination page = new Pagination();
 		page.setOffSet(bankRequest.getOffset());
 		page.setPageSize(bankRequest.getPageSize());
-		page.setTotalResults(bankList.size());
 
 		return new BankResponse(responseInfo, bankList, page);
 	}
@@ -340,7 +336,6 @@ public class FinanceController {
 		Pagination page = new Pagination();
 		page.setOffSet(branchRequest.getOffset());
 		page.setPageSize(branchRequest.getPageSize());
-		page.setTotalResults(branchList.size());
 
 		return new BankBranchResponse(responseInfo, branchList, page);
 	}

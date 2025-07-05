@@ -70,8 +70,7 @@ public class MSCommController {
 		final List<String> workflowDesignations = new ArrayList<>();
 		if (!SELECT.equals(params.get("departmentRule").trim())) {
 			final WorkFlowMatrix wfmatrix = workflowService.getWfMatrix(params.get("type"),
-					params.get("departmentRule").trim(), null, params.get("additionalRule"), params.get("currentState"),
-					params.get("pendingAction"));
+					params.get("departmentRule").trim(), null, params.get("additionalRule"), params.get("currentState"));
 			if (wfmatrix.getCurrentDesignation() != null) {
 				workflowDesignations.addAll(Arrays.asList(wfmatrix.getCurrentDesignation().split(",")));
 			}

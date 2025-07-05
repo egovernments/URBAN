@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -57,13 +59,13 @@
 	<script type="text/javascript">
 		function onloadtask() 
 		{
-			<s:iterator value="getActionErrors()" >
+			<c:forEach value="getActionErrors()" >
 			  document.getElementById("search").style.display="none";
 			  document.getElementById("Reset").style.display="none";
-			</s:iterator>
-			<s:if test="%{isFieldMandatory('department')}"> 
+			</c:forEach>
+			<c:if test="%{isFieldMandatory('department')}"> 
 				// document.getElementById("departmentid").disabled=true;
-			</s:if>
+			</c:if>
 		}
 	
 	
@@ -72,7 +74,7 @@
 			var expType=document.getElementById('expType').value;
 			if(expType == "-1")
 			{
-				bootbox.alert("<s:text name='msg.please.select.bill.type'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			
@@ -102,41 +104,41 @@
 </head>
 
 <body onload="onloadtask();">
-	<s:form action="billVoucher" theme="simple" name="billVoucher">
+	<form:form action="billVoucher" theme="simple" name="billVoucher">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Journal voucher search" />
 		</jsp:include>
 		<div class="formmainbox">
 			<div class="formheading">
-				<div class="subheadnew"><s:text name="lbl.create.voucher.from.bill"/> </div>
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			</div>
 			<div id="listid" style="display: block">
 				<br />
 				<div align="left">
 					<font style='color: red; font-weight: bold'>
 						<p class="error-block" id="lblError"></p>
-					</font> <span class="mandatory1"> <font style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-							<s:actionmessage />
+					</font> <span class="mandatory1"> <font style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
 					</font>
 					</span>
 					<table border="0" width="100%">
 						<tr>
-							<td class="bluebox"><s:text name="lbl.bill.type"/> <span class="bluebox"><span class="mandatory1">*</span></span></td>
-							<td class="bluebox"><s:select name="expType" id="expType" list="dropdownData.expTypeList" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
-							<td class="bluebox" id="deptLabel"><s:text name="voucher.department" /></td>
-							<td class="bluebox"><s:select name="vouchermis.departmentcode" id="departmentid" list="dropdownData.departmentList" listKey="code" listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" value="voucherHeader.vouchermis.departmentcode" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="bluebox"><span class="mandatory1">*</span></span></td>
+							<td class="bluebox"><form:select path="expType" id="expType" list="dropdownData.expTypeList" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
+							<td class="bluebox" id="deptLabel"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="bluebox"><form:select path="vouchermis.departmentcode" id="departmentid" list="dropdownData.departmentList" listKey="code" listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" value="voucherHeader.vouchermis.departmentcode" /></td>
 
 						</tr>
 
 						<tr>
-							<td class="greybox"><s:text name="from.date"/></td>
-							<td class="greybox"><s:textfield id="voucherDateFrom" name="voucherTypeBean.voucherDateFrom" data-date-end-date="0d" onkeyup="DateFormat(this,this.value,event,false,'3')" placeholder="DD/MM/YYYY" class="form-control datepicker" data-inputmask="'mask': 'd/m/y'"  autocomplete="off"/></td>
-							<td class="greybox"><s:text name="to.date"/> </td>
-							<td class="greybox"><s:textfield id="voucherDateTo" name="voucherTypeBean.voucherDateTo" data-date-end-date="0d" onkeyup="DateFormat(this,this.value,event,false,'3')" placeholder="DD/MM/YYYY" class="form-control datepicker" data-inputmask="'mask': 'd/m/y'"  autocomplete="off"/>
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="greybox"><form:input id="voucherDateFrom" path="voucherTypeBean.voucherDateFrom" data-date-end-date="0d" onkeyup="DateFormat(this,this.value,event,false,'3')" placeholder="DD/MM/YYYY" class="form-control datepicker" data-inputmask="'mask': 'd/m/y'"  autocomplete="off"/></td>
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+							<td class="greybox"><form:input id="voucherDateTo" path="voucherTypeBean.voucherDateTo" data-date-end-date="0d" onkeyup="DateFormat(this,this.value,event,false,'3')" placeholder="DD/MM/YYYY" class="form-control datepicker" data-inputmask="'mask': 'd/m/y'"  autocomplete="off"/>
 						</tr>
 						<tr>
-							<td class="bluebox"><s:text name="bill.Number" /></td>
-							<td class="bluebox"><s:textfield name="billNumber" id="billNumber" maxlength="50" value="%{billNumber}" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="bluebox"><form:input path="billNumber" id="billNumber" maxlength="50" value="%{billNumber}" /></td>
 							<td class="bluebox"></td>
 							<td class="bluebox"></td>
 						</tr>
@@ -151,43 +153,43 @@
 				<table align="center">
 					<tr>
 
-						<td><s:submit key="lbl.search"  onclick="return validate()" cssClass="buttonsubmit" />&nbsp;</td>
-						<td><input type="button" value='<s:text name="lbl.reset"/>'  class="button" onclick="return resetForm();" />&nbsp;</td>
-						<td><input type="button" value='<s:text name="lbl.close"/>' onclick="window.parent.postMessage('close','*');window.close();" class="button" />&nbsp;</td>
+						<td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;</td>
+						<td><input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->'  class="button" onclick="return resetForm();" />&nbsp;</td>
+						<td><input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->' onclick="window.parent.postMessage('close','*');window.close();" class="button" />&nbsp;</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		<s:if
+		<c:if
 			test="%{preApprovedVoucherList.size!=0 && preApprovedVoucherList!=null}">
 			<div id="listid" style="display: block">
 				<table width="100%" align="center" class="tablebottom">
 					<tr>
-						<th class="bluebgheadtd"><s:text name="lbl.sr.no"/> </th>
-						<th class="bluebgheadtd"><s:text name="bill.Number"/></th>
-						<th class="bluebgheadtd"><s:text name="bill.Date"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.bill.amount"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.passed.amount"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.expenditure.type"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.department"/></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					</tr>
-					<s:iterator var="p" value="preApprovedVoucherList" status="s">
+					<c:forEach var="p" value="preApprovedVoucherList" status="s">
 						<tr class="setborder">
-							<td class="bluebox setborder"><s:property value="#s.index+1" />
+							<td class="bluebox setborder">${#s.index+1}
 							</td>
-							<td class="bluebox setborder" style="text-align: center"><a href="preApprovedVoucher-voucher.action?billid=<s:property value='%{id}'/>"><s:property value="%{billnumber}" /> </a></td>
-							<td class="bluebox setborder" style="text-align: center"><s:date name="%{billdate}" format="dd/MM/yyyy" /></td>
-							<td class="bluebox setborder" style="text-align: right"><s:text name="format.number"> <s:param value="%{billamount}" /> </s:text></td>
-							<td class="bluebox setborder" style="text-align: right"><s:text name="format.number"> <s:param value="%{passedamount}" /> </s:text></td>
-							<td class="bluebox setborder" style="text-align: center"><s:property value="%{expendituretype}" /></td>
-							<td class="bluebox setborder" style="text-align: center"><s:property value="%{egBillregistermis.departmentName}" /></td>
+							<td class="bluebox setborder" style="text-align: center"><a href="preApprovedVoucher-voucher.action?billid=<!-- TODO: Manual migration required for custom Struts tag -->">${%{billnumber}} </a></td>
+							<td class="bluebox setborder" style="text-align: center"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="bluebox setborder" style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> </s:text></td>
+							<td class="bluebox setborder" style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> </s:text></td>
+							<td class="bluebox setborder" style="text-align: center">${%{expendituretype}}</td>
+							<td class="bluebox setborder" style="text-align: center">${%{egBillregistermis.departmentName}}</td>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
 			</div>
-		</s:if>
+		</c:if>
 
-	</s:form>
+	</form:form>
 </body>
 
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,90 +53,90 @@
 <%@ page language="java"%>
 <tr>
 	<td width="10%" class="bluebox">&nbsp;</td>
-	<td class="bluebox"><s:text name="budget.financialYear" /><span
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="mandatory">*</span></td>
-	<td class="bluebox"><s:select list="dropdownData.finYearList"
+	<td class="bluebox"><form:select list="dropdownData.finYearList"
 			listKey="id" listValue="finYearRange" name="financialYear.id"
 			value="financialYear.id" id="financialYear" headerKey="0"
-			headerValue="%{getText('lbl.choose.options')}"></s:select></td>
-	<td class="bluebox"><s:text name="budget.bere" /></td>
-	<td class="bluebox"><s:select name="isBeRe" id="isBeRe"
+			headerValue="%{getText('lbl.choose.options')}"></form:select></td>
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox"><form:select path="isBeRe" id="isBeRe"
 			list="#{'BE':'BE','RE':'RE'}" name="budgetDetail.budget.isbere"
 			value="budgetDetail.budget.isbere" /></td>
 </tr>
 <tr>
-	<s:if
+	<c:if
 		test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
 		<td class="greybox">&nbsp;</td>
-		<td class="greybox"><s:text name="fund" /></td>
-		<td class="greybox"><s:select list="dropdownData.fundList"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox"><form:select list="dropdownData.fundList"
 				listKey="id" listValue="name" name="budgetDetail.fund.id"
 				headerKey="0" headerValue="%{getText('lbl.choose.options')}" value="fund.id"
-				id="budgetReAppropriation_fund"></s:select></td>
-	</s:if>
-	<s:if
+				id="budgetReAppropriation_fund"></form:select></td>
+	</c:if>
+	<c:if
 		test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
 		<td class="greybox"><s:text
 				name="budgetdetail.executingDepartment" /></td>
-		<td width="22%" class="greybox"><s:select
+		<td width="22%" class="greybox"><form:select
 				list="dropdownData.executingDepartmentList" listKey="id"
 				listValue="name" name="budgetDetail.executingDepartment.id"
 				headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 				value="budgetDetail.executingDepartment.id"
-				id="budgetReAppropriation_executingDepartment"></s:select></td>
-	</s:if>
+				id="budgetReAppropriation_executingDepartment"></form:select></td>
+	</c:if>
 </tr>
 <tr>
-	<s:if
+	<c:if
 		test="%{shouldShowField('function') || shouldShowGridField('function')}">
 		<td class="bluebox">&nbsp;</td>
-		<td class="bluebox"><s:text name="function" /></td>
-		<td class="bluebox"><s:select list="dropdownData.functionList"
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="bluebox"><form:select list="dropdownData.functionList"
 				listKey="id" listValue="name" name="budgetDetail.function.id"
 				headerKey="0" headerValue="%{getText('lbl.choose.options')}" value="function.id"
-				id="budgetReAppropriation_function"></s:select></td>
-	</s:if>
-	<s:if
+				id="budgetReAppropriation_function"></form:select></td>
+	</c:if>
+	<c:if
 		test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">
-		<td class="bluebox"><s:text name="functionary" /></td>
-		<td class="bluebox"><s:select list="dropdownData.functionaryList"
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="bluebox"><form:select list="dropdownData.functionaryList"
 				listKey="id" listValue="name" headerKey="0"
 				headerValue="%{getText('lbl.choose.options')}" name="budgetDetail.functionary.id"
-				value="functionary.id" id="budgetReAppropriation_functionary"></s:select></td>
-	</s:if>
+				value="functionary.id" id="budgetReAppropriation_functionary"></form:select></td>
+	</c:if>
 </tr>
 <tr>
-	<s:if
+	<c:if
 		test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
 		<td width="10%" class="bluebox">&nbsp;</td>
-		<td class="greybox"><s:text name="scheme" /></td>
-		<td class="greybox"><s:select list="dropdownData.schemeList"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox"><form:select list="dropdownData.schemeList"
 				listKey="id" listValue="name" headerKey="0"
 				headerValue="%{getText('lbl.choose.options')}" name="budgetDetail.scheme.id"
 				onchange="populateSubSchemes(this);" value="scheme.id"
-				id="budgetReAppropriation_scheme"></s:select></td>
-	</s:if>
-	<s:if
+				id="budgetReAppropriation_scheme"></form:select></td>
+	</c:if>
+	<c:if
 		test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
 		<egov:ajaxdropdown id="subScheme" fields="['Text','Value']"
 			dropdownId="budgetReAppropriation_subScheme"
 			url="budget/budgetDetail!ajaxLoadSubSchemes.action"
 			afterSuccess="onHeaderSubSchemePopulation" />
-		<td class="greybox"><s:text name="subscheme" /></td>
-		<td class="greybox"><s:select list="dropdownData.subSchemeList"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox"><form:select list="dropdownData.subSchemeList"
 				listKey="id" listValue="name" headerKey="0"
 				headerValue="%{getText('lbl.choose.options')}" name="budgetDetail.subScheme"
-				value="subScheme.id" id="budgetReAppropriation_subScheme"></s:select></td>
-	</s:if>
+				value="subScheme.id" id="budgetReAppropriation_subScheme"></form:select></td>
+	</c:if>
 
 </tr>
 <tr>
-	<s:if
+	<c:if
 		test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
-		<td class="bluebox"><s:text name="field" /></td>
-		<td class="bluebox"><s:select list="dropdownData.boundaryList"
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="bluebox"><form:select list="dropdownData.boundaryList"
 				listKey="id" listValue="name" headerKey="0"
 				headerValue="%{getText('lbl.choose.options')}" name="budgetDetail.boundary.id"
-				value="boundary.id" id="budgetReAppropriation_boundary"></s:select></td>
-	</s:if>
+				value="boundary.id" id="budgetReAppropriation_boundary"></form:select></td>
+	</c:if>
 </tr>

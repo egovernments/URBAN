@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -56,20 +58,20 @@
    var chequeDetailsMap = new Map();
 	var makeChequeDetailsGridTable = function() {    
     var chequeDetailsGridColumns = [ 
-	{key:"fromChqNo",label:'<s:text name="lbl.from.cheque.number"/>', formatter:createTextField(CHQDETAILSLIST,".fromChqNo")},
+	{key:"fromChqNo",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createTextField(CHQDETAILSLIST,".fromChqNo")},
 	{key:"isExhaustedH",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".isExhusted","hidden")},
-	{key:"toChqNo",label:'<s:text name="lbl.to.cheque.number"/>', formatter:createTextField(CHQDETAILSLIST,".toChqNo")},
+	{key:"toChqNo",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createTextField(CHQDETAILSLIST,".toChqNo")},
 	{key:"chequeDeptId",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".chequeDeptId","hidden")},
-	{key:"deptName",label:'<s:text name="lbl.department"/>', formatter:createLabelSamll(CHQDETAILSLIST,".deptName")},
+	{key:"deptName",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelSamll(CHQDETAILSLIST,".deptName")},
 	{key:"deptCode",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".deptCode","hidden")},
-	{key:"receivedDateL",label:'<s:text name="lbl.recieve.date"/>', formatter:createLabelSamll(CHQDETAILSLIST,".receivedDateL")},
+	{key:"receivedDateL",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelSamll(CHQDETAILSLIST,".receivedDateL")},
 	{key:"receivedDateH",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".receivedDate","hidden")},
-	{key:"serialNoL",label:'<s:text name="lbl.financial.year"/>', formatter:createLabelSamll(CHQDETAILSLIST,".serialNoL")},
+	{key:"serialNoL",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelSamll(CHQDETAILSLIST,".serialNoL")},
 	{key:"serialNoH",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".serialNo","hidden")},
-   	{key:"isExhaustedL",label:'<s:text name="lbl.exhausted"/>', formatter:createLabelSamll(CHQDETAILSLIST,".isExhustedL")},
+   	{key:"isExhaustedL",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelSamll(CHQDETAILSLIST,".isExhustedL")},
 	{key:"nextChqPresent",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".nextChqPresent","hidden")},
 	{key:"accountChequeId",hidden:true,formatter:createHiddenField(CHQDETAILSLIST,".accountChequeId","hidden")},
-        {key:'Delete',label:'<s:text name="lbl.delete"/>',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
+        {key:'Delete',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 	];
 		
 		var chqueDetailsGridDS = new YAHOO.util.DataSource(); 
@@ -102,45 +104,45 @@
 			
            });
 	
-	<s:iterator value="chequeDetailsList" status="stat">
+	<c:forEach value="chequeDetailsList" status="stat">
 		chequeDetailsGridTable.addRow({
-			"fromChqNo":'<s:property value="fromChqNo"/>',
-			"toChqNo":'<s:property value="toChqNo"/>',
-			"deptName":'<s:property value="deptName"/>',
-			"deptCode":'<s:property value="deptCode"/>',
-			"receivedDateL":'<s:property value="receivedDate"/>',
-			"receivedDateH":'<s:property value="receivedDate"/>',
-			"serialNoL":'<s:property value="serialNoH"/>',
-			"serialNoH":'<s:property value="serialNo"/>',
-			"isExhustedL":'<s:property value="isExhusted"/>',
-			"isExhustedH":'<s:property value="isExhusted"/>',
-			"nextChqPresent":'<s:property value="nextChqPresent"/>',
-			"accountChequeId":'<s:property value="accountChequeId"/>',
-			"chequeDeptId":'<s:property value="chequeDeptId"/>'
+			"fromChqNo":'${fromChqNo}',
+			"toChqNo":'${toChqNo}',
+			"deptName":'${deptName}',
+			"deptCode":'${deptCode}',
+			"receivedDateL":'${receivedDate}',
+			"receivedDateH":'${receivedDate}',
+			"serialNoL":'${serialNoH}',
+			"serialNoH":'${serialNo}',
+			"isExhustedL":'${isExhusted}',
+			"isExhustedH":'${isExhusted}',
+			"nextChqPresent":'${nextChqPresent}',
+			"accountChequeId":'${accountChequeId}',
+			"chequeDeptId":'${chequeDeptId}'
 		});
-		updateFieldChq('fromChqNo',chqDetailsIndex,'<s:property value="fromChqNo"/>','<s:property value="nextChqPresent"/>','<s:property value="isExhusted"/>');
-		updateFieldChq('toChqNo',chqDetailsIndex,'<s:property value="toChqNo"/>','<s:property value="nextChqPresent"/>','<s:property value="isExhusted"/>');
-		updateLabel('deptName',chqDetailsIndex,'<s:property value="deptName"/>');
-		updateField('deptCode',chqDetailsIndex,'<s:property value="deptCode"/>');
-		updateLabel('receivedDateL',chqDetailsIndex,'<s:property value="receivedDate"/>');
-		updateField('receivedDate',chqDetailsIndex,'<s:property value="receivedDate"/>');
-		updateLabel('serialNoL',chqDetailsIndex,'<s:property value="serialNoH"/>');
-		updateField('serialNo',chqDetailsIndex,'<s:property value="serialNo"/>');
-		updateLabel('isExhustedL',chqDetailsIndex,'<s:property value="isExhusted"/>');
-		updateField('isExhusted',chqDetailsIndex,'<s:property value="isExhusted"/>');
-		updateField('accountChequeId',chqDetailsIndex,'<s:property value="accountChequeId"/>');
-		updateField('chequeDeptId',chqDetailsIndex,'<s:property value="chequeDeptId"/>');
-		updateField('nextChqPresent',chqDetailsIndex,'<s:property value="nextChqPresent"/>');
+		updateFieldChq('fromChqNo',chqDetailsIndex,'${fromChqNo}','${nextChqPresent}','${isExhusted}');
+		updateFieldChq('toChqNo',chqDetailsIndex,'${toChqNo}','${nextChqPresent}','${isExhusted}');
+		updateLabel('deptName',chqDetailsIndex,'${deptName}');
+		updateField('deptCode',chqDetailsIndex,'${deptCode}');
+		updateLabel('receivedDateL',chqDetailsIndex,'${receivedDate}');
+		updateField('receivedDate',chqDetailsIndex,'${receivedDate}');
+		updateLabel('serialNoL',chqDetailsIndex,'${serialNoH}');
+		updateField('serialNo',chqDetailsIndex,'${serialNo}');
+		updateLabel('isExhustedL',chqDetailsIndex,'${isExhusted}');
+		updateField('isExhusted',chqDetailsIndex,'${isExhusted}');
+		updateField('accountChequeId',chqDetailsIndex,'${accountChequeId}');
+		updateField('chequeDeptId',chqDetailsIndex,'${chequeDeptId}');
+		updateField('nextChqPresent',chqDetailsIndex,'${nextChqPresent}');
 		chqDetailsIndex = chqDetailsIndex + 1;
-		var chequeRowDetails = "<s:property value='fromChqNo'/>~<s:property value='toChqNo'/>~<s:property value='deptCode'/>~<s:property value='receivedDate'/>~<s:property value='serialNo'/>~<s:property value='isExhusted'/>~<s:property value='nextChqPresent'/>~<s:property value='accountChequeId'/>;";
-		var key = "<s:property value='fromChqNo'/>~<s:property value='toChqNo'/>~<s:property value='deptCode'/>~<s:property value='serialNo'/>";
+		var chequeRowDetails = "<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->;";
+		var key = "<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->~<!-- TODO: Manual migration required for custom Struts tag -->";
 		chequeDetailsMap.set(key,chequeRowDetails);
-		var chequeRange = '<s:property value="fromChqNo"/>'+"-"+'<s:property value="toChqNo"/>'+"-"+'<s:property value="deptCode"/>'+"-"+'<s:property value="serialNo"/>';
+		var chequeRange = '${fromChqNo}'+"-"+'${toChqNo}'+"-"+'${deptCode}'+"-"+'${serialNo}';
 		if(chequeRangeArray.indexOf(chequeRange) == -1){
 			chequeRangeArray.push(chequeRange);
 		}
 		
-        </s:iterator>
+        </c:forEach>
         document.getElementById('chequeDetailsRowId').value =[ ...chequeDetailsMap.values() ];
 }
 

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,11 +53,11 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:if test="%{showMode=='edit'}">
-		<s:text name="userDefCode.modify" />
-	</s:if> <s:if test="%{showMode=='view'}">
-		<s:text name="userDefCode.view" />
-	</s:if></title>
+<title><c:if test="%{showMode=='edit'}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if> <c:if test="%{showMode=='view'}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if></title>
 <script type="text/javascript">
 						
 	function disableControls(isDisable) {
@@ -65,11 +67,11 @@
 	}	
 	
 	function onLoadTask() {
-		var close = '<s:property value="close"/>';
-		var isactive = '<s:property value="isactive"/>';
-		var showMode = '<s:property value="showMode"/>';
-		var clearVal = '<s:property value="clearValues"/>';
-		var success = '<s:property value="success"/>';
+		var close = '${close}';
+		var isactive = '${isactive}';
+		var showMode = '${showMode}';
+		var clearVal = '${clearValues}';
+		var success = '${success}';
 
 		if (success == 'yes') {
 			bootbox.alert("UserDefinedCodes Modified Successfully");
@@ -128,40 +130,40 @@
 <body onload="onLoadTask();">
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:if test="%{showMode=='edit'}">
-				<s:text name="userDefCode.modify" />
-			</s:if>
-			<s:if test="%{showMode=='view'}">
-				<s:text name="userDefCode.view" />
-			</s:if>
+			<c:if test="%{showMode=='edit'}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
+			<c:if test="%{showMode=='view'}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
 		</div>
 	</div>
 
 	<div style="color: red">
-		<s:actionmessage theme="simple" />
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
 
-	<s:form name="userDefCodeForm" action="userDefinedCodes" theme="simple">
+	<form:form name="userDefCodeForm" action="userDefinedCodes" theme="simple">
 
-		<s:push value="model">
-			<s:hidden name="showMode" />
-			<s:hidden name="id" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<%@include file="userDefinedCodes-form.jsp"%>
 			<div class="buttonbottom">
-				<s:if test="%{showMode=='edit'}">
+				<c:if test="%{showMode=='edit'}">
 					<s:submit name="edit" value="Modify And View" method="edit"
 						cssClass="buttonsubmit" onclick="javascript: return validate();" />
 					<s:submit name="edit" value="Modify And Close" method="edit"
 						cssClass="buttonsubmit" onclick="validate();setClose();" />
-					<s:hidden name="close" id="close" />
-				</s:if>
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</c:if>
 				<input type="button" id="Close" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</s:push>
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 </body>
 </html>

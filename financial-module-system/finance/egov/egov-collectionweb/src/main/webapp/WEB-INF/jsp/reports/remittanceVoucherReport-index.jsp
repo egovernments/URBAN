@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -48,7 +50,7 @@
   --%>
   
 <head>
-<title><s:text name="remittanceVoucherReport.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" type="text/css" href="/collection/resources/commonyui/yui2.8/assets/skins/sam/autocomplete.css" />
 
 <script>
@@ -91,7 +93,7 @@ function validate()
 		} 
 		if (!valid) {
 			document.getElementById("report_error_area").style.display = "block";
-			document.getElementById("report_error_area").innerHTML += '<s:text name="remittanceVoucher.atleast.one.criteria" />'
+			document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 					+ '<br>';
 			return false;
 		} 
@@ -109,10 +111,10 @@ var receiptNumberSelectionHandler = function(sType, arguments) {
 </head>
 <body>
 <div class="errorstyle" id="report_error_area" style="display:none;"></div>
-<s:form theme="simple" name="remittanceVoucherReportForm"
+<form:form theme="simple" name="remittanceVoucherReportForm"
 	action="remittanceVoucherReport-report.action">
 	<div class="formmainbox">
-	<div class="subheadnew"><s:text name="remittanceVoucherReport.title" /></div>
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 	<div class="subheadsmallnew"><span class="subheadnew"><s:text
 		name="collectionReport.criteria" /></span></div>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -123,7 +125,7 @@ var receiptNumberSelectionHandler = function(sType, arguments) {
 			<td width="24%" class="bluebox">
 			   <div class="yui-skin-sam">
                    <div id="receiptNumber_autocomplete">
-                      <div><s:textfield id="receiptNumber" type="text" name="receiptNumber"/>
+                      <div><form:input id="receiptNumber" type="text" path="receiptNumber"/>
                       </div><span id="receiptNumberResults"></span>
                     </div>
                 </div>
@@ -135,18 +137,18 @@ var receiptNumberSelectionHandler = function(sType, arguments) {
 			</td>
 			<td width="21%" class="bluebox"> <s:text
 				name="remittanceVoucher.criteria.remittanceno" /> </td>
-			<td width="24%" class="bluebox"><s:textfield id="remittanceNumber" type="text" name="remittanceNumber"/></td>
+			<td width="24%" class="bluebox"><form:input id="remittanceNumber" type="text" path="remittanceNumber"/></td>
 		</tr>
 		  <tr>
 			<td width="4%" class="bluebox">&nbsp;</td>
 			<td width="21%" class="bluebox"><s:text
 				name="remittanceVoucher.criteria.remittance.voucherno" /></td>
-			<td width="24%" class="bluebox"><s:textfield id="voucherNumber" type="text" name="voucherNumber"/>
+			<td width="24%" class="bluebox"><form:input id="voucherNumber" type="text" path="voucherNumber"/>
 			</td>
 			<td width="21%" class="bluebox"><s:text
 				name="remittanceVoucher.criteria.remittancedate" /></td>
-			<s:date name="remittanceDate" var="cdFormat" format="dd/MM/yyyy" />
-			<td width="24%" class="bluebox"><s:textfield id="remittanceDate"
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<td width="24%" class="bluebox"><form:input id="remittanceDate"
 				name="remittanceDate" value="%{cdFormat}"
 				onfocus="javascript:vDateType='3';"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -163,7 +165,7 @@ var receiptNumberSelectionHandler = function(sType, arguments) {
 		 <td width="4%" class="bluebox">&nbsp;</td>
 			<td width="21%" class="bluebox2"><s:text
 								name="remittanceVoucher.criteria.remittance.branchName" />:</td>
-						<td width="24%" class="bluebox"><s:select
+						<td width="24%" class="bluebox"><form:select
 								headerValue="--Select--" headerKey="-1"
 								list="dropdownData.bankBranchList" listKey="id"
 								id="bankBranchMaster" listValue="branchname"
@@ -176,7 +178,7 @@ var receiptNumberSelectionHandler = function(sType, arguments) {
 								selectedValue="%{bankAccountId}" /></td>
 		            	<td width="21%" class="bluebox2"><s:text
 								name="collectionReport.criteria.bankaccount" />:</td>
-						<td width="24%" class="bluebox"><s:select
+						<td width="24%" class="bluebox"><form:select
 								headerValue="--Select--" headerKey="-1"
 								list="dropdownData.accountNumberList" listKey="id"
 								id="bankAccountId" listValue="accountnumber"
@@ -203,10 +205,10 @@ var receiptNumberSelectionHandler = function(sType, arguments) {
 			</label>&nbsp;
 			<label>
 				<input type="button" class="button" id="buttonClose"
-					value="<s:text name='common.buttons.close'/>"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.close()" />
 			</label>
 		</div>
-</s:form>
+</form:form>
 </body>
 </html>

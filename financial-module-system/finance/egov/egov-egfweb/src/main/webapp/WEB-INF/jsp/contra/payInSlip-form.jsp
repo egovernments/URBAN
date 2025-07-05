@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -73,28 +75,28 @@ path="${pageContext.request.contextPath}";
 	    var voucherDetailDS = new YAHOO.util.DataSource(); 
 		billDetailsTable = new YAHOO.widget.DataTable("billDetailTable",voucherDetailColumns, voucherDetailDS);
 		
-		<s:iterator value="iHeaderList" status="stat">
+		<c:forEach value="iHeaderList" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"serialNo":'<s:property value="serialNo"/>',
-					"chequeNo":'<s:property value="instrumentNumber"/>',
-					"chequeDate":'<s:property value="instrumentDate"/>',
-					"voucherNumber":'<s:property value="voucherNumber"/>',
-					"voucherDate":'<s:property value="voucherDate"/>',
-					"amount":'<s:property value="instrumentAmount"/>',
-					"instrumentId":'<s:property value="instId"/>',
-					"selectChq":'<s:property value="selectChq"/>'
+					"serialNo":'${serialNo}',
+					"chequeNo":'${instrumentNumber}',
+					"chequeDate":'${instrumentDate}',
+					"voucherNumber":'${voucherNumber}',
+					"voucherDate":'${voucherDate}',
+					"amount":'${instrumentAmount}',
+					"instrumentId":'${instId}',
+					"selectChq":'${selectChq}'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridPayInSlip('serialNo',index,'<s:property value="serialNo"/>');
-				updateGridPayInSlip('chequeNo',index,'<s:property value="instrumentNumber"/>');
-				updateGridPayInSlip('chequeDate',index,'<s:property value="instrumentDate"/>');
-				updateGridPayInSlip('voucherNumber',index,'<s:property value="voucherNumber"/>');
-				updateGridPayInSlip('voucherDate',index,'<s:property value="voucherDate"/>');
-				updateGridPayInSlip('amount',index,'<s:property value="instrumentAmount"/>');
-				updateGridPayInSlip('instrumentId',index,'<s:property value="instId"/>');
-				updatecheckBox('selectChq',index,'<s:property value="selectChq"/>');
+				var index = '${#stat.index}';
+				updateGridPayInSlip('serialNo',index,'${serialNo}');
+				updateGridPayInSlip('chequeNo',index,'${instrumentNumber}');
+				updateGridPayInSlip('chequeDate',index,'${instrumentDate}');
+				updateGridPayInSlip('voucherNumber',index,'${voucherNumber}');
+				updateGridPayInSlip('voucherDate',index,'${voucherDate}');
+				updateGridPayInSlip('amount',index,'${instrumentAmount}');
+				updateGridPayInSlip('instrumentId',index,'${instId}');
+				updatecheckBox('selectChq',index,'${selectChq}');
 				updateInstrTableIndex();
-			</s:iterator>
+			</c:forEach>
 				
 	
 		}
@@ -105,9 +107,9 @@ path="${pageContext.request.contextPath}";
 <tr>
 	<egov:ajaxdropdown id="bankId" fields="['Text','Value']"
 		dropdownId="bankId" url="voucher/common!ajaxLoadBanks.action" />
-	<td class="greybox"><s:text name="payin.bank" /> <span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="bluebox"><span class="mandatory">*</span></span></td>
-	<td class="greybox"><s:select name="contraBean.bankBranchId"
+	<td class="greybox"><form:select path="contraBean.bankBranchId"
 			id="bankId" list="dropdownData.bankList" listKey="bankBranchId"
 			listValue="bankBranchName" headerKey="-1"
 			headerValue="----Choose----" onChange="populateAccNum(this);"
@@ -115,33 +117,33 @@ path="${pageContext.request.contextPath}";
 	<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 		dropdownId="accountNumber"
 		url="voucher/common!ajaxLoadAccountNumbers.action" />
-	<td class="greybox"><s:text name="payin.accountNum" /> <span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="bluebox"><span class="mandatory">*</span></span></td>
-	<td class="greybox"><s:select name="contraBean.accountNumberId"
+	<td class="greybox"><form:select path="contraBean.accountNumberId"
 			id="accountNumber" list="dropdownData.accNumList" listKey="id"
 			listValue="accountnumber" headerKey="-1" headerValue="----Choose----"
-			onChange="populateNarration(this);" /> <s:textfield name="accnumnar"
+			onChange="populateNarration(this);" /> <form:input path="accnumnar"
 			id="accnumnar" value="%{accnumnar}" /></td>
 </tr>
 
 <tr id="voucherNumId">
-	<td class="bluebox"><s:text name="payin.vouchernumfrom" /></td>
-	<td class="bluebox"><s:textfield
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox"><form:input
 			name="voucherTypeBean.voucherNumFrom" id="voucherNumFrom" /></td>
-	<td class="bluebox"><s:text name="payin.vouchernumto" /></td>
-	<td class="bluebox"><s:textfield
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox"><form:input
 			name="voucherTypeBean.voucherNumTo" id="voucherNumTo" /></td>
 </tr>
 <tr id="voucherDateId">
-	<td class="greybox"><s:text name="payin.voucherDateFrom" /></td>
-	<td class="greybox"><s:textfield
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="greybox"><form:input
 			name="voucherTypeBean.voucherDateFrom" id="voucherDateFrom"
 			onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 		href="javascript:show_calendar('payinform.voucherDateFrom');"
 		style="text-decoration: none">&nbsp;<img tabIndex=-1
 			src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
-	<td class="greybox"><s:text name="payin.voucherDateTo" /></td>
-	<td class="greybox"><s:textfield
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="greybox"><form:input
 			name="voucherTypeBean.voucherDateTo" id="voucherDateTo"
 			onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 		href="javascript:show_calendar('payinform.voucherDateTo');"
@@ -149,23 +151,23 @@ path="${pageContext.request.contextPath}";
 			src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
 </tr>
 <tr>
-	<td class="bluebox"><s:text name="payin.chequeInHand" /></td>
-	<td class="bluebox"><s:textfield name="contraBean.chequeInHand"
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox"><form:input path="contraBean.chequeInHand"
 			id="chequeInHand" readonly="true" /></td>
-	<td class="bluebox"><s:text name="narration" /></td>
-	<td colspan="10" class="bluebox"><s:textarea maxlength="250"
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td colspan="10" class="bluebox"><form:textarea maxlength="250"
 			rows="4" cols="60" name="narration" />
 </tr>
 <tr id="reversenumanddate">
-	<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-		<td class="greybox"><s:text name="reversalVoucherNumber" /><span
+	<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory">*</span></td>
-		<td class="greybox"><s:textfield name="reversalVoucherNumber"
+		<td class="greybox"><form:input path="reversalVoucherNumber"
 				id="reversalVoucherNumber" /></td>
-	</s:if>
-	<td class="greybox"><s:text name="reversalVoucherDate" /><span
+	</c:if>
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="mandatory">*</span></td>
-	<td class="greybox"><s:textfield name="reversalVoucherDate"
+	<td class="greybox"><form:input path="reversalVoucherDate"
 			id="reversalVoucherDate"
 			onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 		href="javascript:show_calendar('payinform.reversalVoucherDate');"
@@ -225,12 +227,12 @@ function validateCheque(saveMode)
 {
 	document.getElementById('saveMode').value=saveMode;
 	document.getElementById('lblError').innerHTML = "";
-	<s:if test="%{isFieldMandatory('vouchernumber')}"> 
+	<c:if test="%{isFieldMandatory('vouchernumber')}"> 
 	if(null != document.getElementById('payinNumber') && document.getElementById('payinNumber').value.trim().length == 0){
 		document.getElementById('lblError').innerHTML = "Please enter  payinslip number ";
 		return false;
 	}
-	</s:if>
+	</c:if>
 	if(document.getElementById('voucherDate').value.trim().length == 0){
 		document.getElementById('lblError').innerHTML = "Please enter  payinslip date ";
 		return false;

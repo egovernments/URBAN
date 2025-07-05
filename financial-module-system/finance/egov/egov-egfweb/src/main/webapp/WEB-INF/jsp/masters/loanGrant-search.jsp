@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 
 <html>
 <head>
-<title><s:text name="masters.loangrant.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
 <style type="text/css">
@@ -109,42 +111,42 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="masters.loangrant.search.title" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 	</div>
 	<br />
 	<br />
 
-	<s:form name="loanGrantSearchForm" action="loanGrant" theme="simple">
+	<form:form name="loanGrantSearchForm" action="loanGrant" theme="simple">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="bluebox"><s:text
-						name="masters.subscheme.search.fund" /> <s:if
+						name="masters.subscheme.search.fund" /> <c:if
 						test="%{defaultFundId==-1}">
 						<span class="mandatory">*</span>
-					</s:if></td>
-				<td class="bluebox"><s:select name="fundId" id="fundId"
+					</c:if></td>
+				<td class="bluebox"><form:select path="fundId" id="fundId"
 						list="dropdownData.fundList" listKey="id" listValue="name"
 						headerKey="-1" headerValue="----Choose----"
 						onchange="loadChanges(this)" value="%{fundId.id}" /></td>
-				<s:if test="%{defaultFundId!=-1}">
+				<c:if test="%{defaultFundId!=-1}">
 					<script>
-		document.getElementById("fundId").value='<s:property value="defaultFundId"/>';
+		document.getElementById("fundId").value='${defaultFundId}';
 		</script>
-				</s:if>
+				</c:if>
 			</tr>
 			<tr>
 				<td class="greybox"><s:text
 						name="masters.subscheme.search.scheme" /><span class="mandatory">*</span></td>
-				<s:hidden name="schemeId" id="schemeId" />
-				<td class="greybox"><s:textfield
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<td class="greybox"><form:input
 						value="%{subScheme.scheme.name}" name="subScheme.scheme.name"
 						id="subScheme.scheme.name" autocomplete='off'
 						onFocus="autocompleteSchemeBy20LG();"
 						onBlur="splitSchemeCode(this)" /></td>
-				<td class="greybox"><s:text name="masters.subscheme.search" /></td>
-				<s:hidden name="subSchemeId" id="subSchemeId" />
-				<td class="greybox"><s:textfield value="%{subScheme.name}"
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<td class="greybox"><form:input value="%{subScheme.name}"
 						name="subScheme.name" id="subScheme.name" autocomplete='off'
 						onFocus="autocompleteSubSchemeBy20LG();"
 						onBlur="splitSubSchemeCode(this);checkuniquenesscode();" /> <egov:uniquecheck
@@ -152,7 +154,7 @@
 						fieldtoreset="subSchemeId" fields="['Value']"
 						url='masters/loanGrant!codeUniqueCheckCode.action' /></td>
 			</tr>
-			<s:hidden name="mode" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</table>
 		<div id="codescontainer"></div>
 		<br />
@@ -165,7 +167,7 @@
 				onclick="javascript:window.close()" class="button" />
 		</div>
 
-		<s:if test="%{loanGrantHeaderList.size!=0}">
+		<c:if test="%{loanGrantHeaderList.size!=0}">
 			<table width="40%" border="0" align="center" cellpadding="0"
 				cellspacing="0" class="tablebottom">
 
@@ -177,15 +179,15 @@
 						align="center">Sub Scheme</th>
 				</tr>
 				<c:set var="trclass" value="greybox" />
-				<s:iterator var="hl" value="loanGrantHeaderList" status="f">
+				<c:forEach var="hl" value="loanGrantHeaderList" status="f">
 					<tr>
 
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
-							align="center"><s:property value="#f.index+1" /></td>
+							align="center">${#f.index+1}</td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
 							align="center"><a href="#"
-							onclick="urlLoad('<s:property value="id"/>');" id="sourceLink" />
-							<s:property value="subScheme.name" /> </a></td>
+							onclick="urlLoad('${id}');" id="sourceLink" />
+							${subScheme.name} </a></td>
 
 						<c:choose>
 							<c:when test="${trclass=='greybox'}">
@@ -196,11 +198,11 @@
 							</c:when>
 						</c:choose>
 					</tr>
-				</s:iterator>
+				</c:forEach>
 
 			</table>
-		</s:if>
-		<s:if test="%{loanGrantHeaderList.size==0}">
+		</c:if>
+		<c:if test="%{loanGrantHeaderList.size==0}">
 			<div id="msgdiv" style="display: block">
 				<table align="center" class="tablebottom" width="80%">
 					<tr>
@@ -209,11 +211,11 @@
 					</tr>
 				</table>
 			</div>
-		</s:if>
+		</c:if>
 
-	</s:form>
+	</form:form>
 	<script>
-   var mode='<s:property value="mode"/>';
+   var mode='${mode}';
 	function urlLoad(id){
    var url="";
    var windowName="";

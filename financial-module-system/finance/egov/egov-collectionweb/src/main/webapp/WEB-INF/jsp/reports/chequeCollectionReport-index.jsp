@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
  <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,7 +50,7 @@
 
 <%@ include file="/includes/taglibs.jsp" %>
 <head>
-	<title><s:text name="chequeCollectionReport.title"/></title>
+	<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 <jsp:useBean id="now" class="java.util.Date" />
 
@@ -65,14 +67,14 @@ function validate()
 
 		if (fromdate == "") {
 			document.getElementById("report_error_area").style.display = "block";
-			document.getElementById("report_error_area").innerHTML += '<s:text name="common.datemandatory.fromdate" />'
+			document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 					+ '<br>';
 			valSuccess = false;
 		}
 
 		if (todate == "") {
 			document.getElementById("report_error_area").style.display = "block";
-			document.getElementById("report_error_area").innerHTML += '<s:text name="common.datemandatory.todate" />'
+			document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 					+ '<br>';
 			valSuccess = false;
 		}
@@ -80,19 +82,19 @@ function validate()
 		if (fromdate != "" && todate != "" && fromdate != todate) {
 			if (!checkFdateTdate(fromdate, todate)) {
 				document.getElementById("report_error_area").style.display = "block";
-				document.getElementById("report_error_area").innerHTML += '<s:text name="common.comparedate.errormessage" />'
+				document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 						+ '<br>';
 				valSuccess = false;
 			}
 			if (!validateNotFutureDate(fromdate, currDate)) {
 				document.getElementById("report_error_area").style.display = "block";
-				document.getElementById("report_error_area").innerHTML += '<s:text name="reports.fromdate.futuredate.message" />'
+				document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 						+ '<br>';
 				valSuccess = false;
 			}
 			if (!validateNotFutureDate(todate, currDate)) {
 				document.getElementById("report_error_area").style.display = "block";
-				document.getElementById("report_error_area").innerHTML += '<s:text name="reports.todate.futuredate.message" />'
+				document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 						+ '<br>';
 				valSuccess = false;
 			}
@@ -104,38 +106,38 @@ function validate()
 </head>
 <body>
 <div class="errorstyle" id="report_error_area" style="display:none;"></div>
-<s:form theme="simple" name="chequeCollectionForm" action="chequeCollectionReport-report.action">
-<div class="formmainbox"><div class="subheadnew"><s:text name="chequeCollectionReport.title"/></div>
-<div class="subheadsmallnew"><span class="subheadnew"><s:text name="collectionReport.criteria"/></span></div>
+<form:form theme="simple" name="chequeCollectionForm" action="chequeCollectionReport-report.action">
+<div class="formmainbox"><div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
+<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 	   
 	     <tr>
 	      <td class="bluebox">&nbsp;</td>
-	      <td class="bluebox"><s:text name="collectionReport.criteria.fromdate"/><span class="mandatory1">*</span></td>
-		  <s:date name="fromDate" var="cdFormat" format="dd/MM/yyyy"/>
-		  <td class="bluebox"><s:textfield id="fromDate" name="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
-	      <td class="bluebox"><s:text name="collectionReport.criteria.todate"/><span class="mandatory1">*</span></td>
-	      <s:date name="toDate" var="cdFormat1" format="dd/MM/yyyy"/>
-		  <td class="bluebox"><s:textfield id="toDate" name="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
+	      <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+		  <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td class="bluebox"><form:input id="fromDate" path="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
+	      <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td class="bluebox"><form:input id="toDate" path="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
 	    </tr>
 	    <tr>
 	      <td class="bluebox">&nbsp;</td>
-	      <td class="bluebox"><s:text name="collectionReport.criteria.counter"/></td>
-	      <td class="bluebox"><s:select headerKey="-1" headerValue="%{getText('collectionReport.counter.all')}" name="counterId" id="counter" cssClass="selectwk" list="dropdownData.counterList" listKey="id" listValue="name" value="%{counterId}" /> </td>
-		  <td class="bluebox"><s:text name="collectionReport.criteria.user"/></td>
-	      <td class="bluebox"><s:select headerKey="-1" headerValue="%{getText('collectionReport.user.all')}" name="userId" id="user" cssClass="selectwk" list="dropdownData.receiptCreatorList" listKey="id" listValue="name" value="%{userId}" /> </td>
+	      <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td class="bluebox"><form:select headerKey="-1" headerValue="%{getText('collectionReport.counter.all')}" path="counterId" id="counter" cssClass="selectwk" list="dropdownData.counterList" listKey="id" listValue="name" value="%{counterId}" /> </td>
+		  <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td class="bluebox"><form:select headerKey="-1" headerValue="%{getText('collectionReport.user.all')}" path="userId" id="user" cssClass="selectwk" list="dropdownData.receiptCreatorList" listKey="id" listValue="name" value="%{userId}" /> </td>
 	    </tr>
 		<tr>
 	      <td class="bluebox">&nbsp;</td>
-	      <td class="bluebox"><s:text name="collectionReport.criteria.zone"/></td>
-	      <td class="bluebox"><s:select headerKey="-1" headerValue="%{getText('collectionReport.zone.all')}" name="boundaryId" id="boundaryId" cssClass="selectwk" list="dropdownData.activeZoneList" listKey="id" listValue="localName" value="%{boundaryId}" /> </td>
+	      <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td class="bluebox"><form:select headerKey="-1" headerValue="%{getText('collectionReport.zone.all')}" path="boundaryId" id="boundaryId" cssClass="selectwk" list="dropdownData.activeZoneList" listKey="id" listValue="localName" value="%{boundaryId}" /> </td>
 		  <td class="bluebox">&nbsp;</td>
 	      <td class="bluebox">&nbsp;</td>
 	    </tr>
 	   
 	    </table>
-<div align="left" class="mandatorycoll"><s:text name="common.mandatoryfields"/></div>
+<div align="left" class="mandatorycoll"><!-- TODO: Manual migration required for custom Struts tag --></div>
 <br/>
 </div>
     <div class="buttonbottom">
@@ -151,23 +153,23 @@ function validate()
 			</label>
 			<label>
 				<input type="button" class="button" id="buttonClose"
-					value="<s:text name='common.buttons.close'/>"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.close()" />
 			</label>
 		</div>
 
 
-<s:if test="%{results.isEmpty()}">
-	<s:if test="target=='searchresult'">
+<c:if test="%{results.isEmpty()}">
+	<c:if test="target=='searchresult'">
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
 		<tr> 
 			<div>&nbsp;</div>
-			<div class="subheadnew"><s:text name="searchresult.norecord"/></div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		</tr>
 		</table>
-	</s:if>
-</s:if>
-</s:form>
+	</c:if>
+</c:if>
+</form:form>
 </body>
 </html>
 	

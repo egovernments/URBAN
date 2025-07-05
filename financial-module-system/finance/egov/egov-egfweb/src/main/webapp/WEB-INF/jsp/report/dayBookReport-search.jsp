@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 
 <html>
 <head>
-<title><s:text name="dayBook.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -129,37 +131,37 @@
 	}
 </script>
 <body>
-	<s:form name="dayBookForm" id="dayBookForm" action="dayBookReport"
+	<form:form name="dayBookForm" id="dayBookForm" action="dayBookReport"
 		theme="css_xhtml" validate="true">
 
 		<div class="formmainbox">
-			<s:push value="dayBookReport">
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<div class="subheadnew">
-					<s:text name="dayBook.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<table width="100%" border="1" cellspacing="0" cellpadding="0">
 
 					<tr>
 						<td style="width: 5%"></td>
-						<td class="bluebox"><s:text name="dayBook.startDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="bluebox"><s:textfield id="startDate"
+						<td class="bluebox"><form:input id="startDate"
 								name="startDate" value="%{currentDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 								data-inputmask="'mask': 'd/m/y'" /></td>
 
 
-						<td class="bluebox"><s:text name="dayBook.endDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="bluebox"><s:textfield id="endDate" name="endDate"
+						<td class="bluebox"><form:input id="endDate" path="endDate"
 								value="%{currentDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -167,9 +169,9 @@
 					</tr>
 					<tr>
 						<td style="width: 5%"></td>
-						<td class="greybox"><s:text name="dayBook.fund" /><span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="greybox"><s:select name="fundId" id="fundId"
+						<td class="greybox"><form:select path="fundId" id="fundId"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}" /></td>
 						<td class="greybox"></td>
@@ -183,10 +185,10 @@
 				<div class="buttonbottom">
 					<table align="center">
 						<tr>
-							<td><input type="button" value="<s:text name='lbl.search'/>" class="buttonsubmit"
+							<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 								onclick="return validate()" /></td>
 							<td>&nbsp;&nbsp;<input type="button" id="Close"
-								value="<s:text name='lbl.close'/>" onclick="javascript:window.parent.postMessage('close','*');" class="button" /></td>
+								value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="javascript:window.parent.postMessage('close','*');" class="button" /></td>
 						</tr>
 					</table>
 				</div>
@@ -200,6 +202,6 @@
 		</span>
 		<div id="codescontainer" />
 
-	</s:form>
+	</form:form>
 </body>
 </html>

@@ -67,7 +67,7 @@ import java.util.Map;
  * methods {@code ReportFormAction#getReportTemplateName()} and {@code
  * ReportFormAction#criteria()}
  */
-public abstract class ReportFormAction extends BaseFormAction {
+public abstract class ReportFormAction {
 
 	private static final long serialVersionUID = 1L;
 
@@ -112,7 +112,7 @@ public abstract class ReportFormAction extends BaseFormAction {
 	 * (non-Javadoc)
 	 * @see com.opensymphony.xwork2.ModelDriven#getModel()
 	 */
-	@Override
+	// TODO: Migrate from Struts/XWork: @Override
 	public Object getModel() {
 		return null;
 	}

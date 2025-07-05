@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="bankreconciliation" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	var fileformats = [ 'xls' ];
@@ -65,7 +67,7 @@ jQuery(document).ready(function() {
 		if (jQuery.inArray(ext, fileformats) > -1) {
 			//do something    
 		} else {
-			bootbox.alert(ext + "<s:text name='msg.file.format.not.allowed'/>");
+			bootbox.alert(ext + "<!-- TODO: Manual migration required for custom Struts tag -->");
 			jQuery(this).val("");
 			return;
 		}
@@ -77,19 +79,19 @@ jQuery(document).ready(function() {
 	document.getElementById("Errors").innerHTML="";
 	
 		if (document.getElementById("bankId").value == "") {
-			bootbox.alert("<s:text name='msg.please.select.bank'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		if (document.getElementById("branchId").value == "") {
-			bootbox.alert("<s:text name='msg.please.select.bank.branch'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		if (document.getElementById("accountId").value == "") {
-			bootbox.alert("<s:text name='msg.please.select.bank.account'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		if (document.getElementById("bankStatmentInXls").value == "") {
-			bootbox.alert("<s:text name='msg.please.select.file.to.upload'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		
@@ -125,7 +127,7 @@ jQuery(document).ready(function() {
 </script>
 </head>
 <body>
-	<s:form action="autoReconciliation" theme="css_xhtml" name="arform"
+	<form:form action="autoReconciliation" theme="css_xhtml" name="arform"
 		enctype="multipart/form-data" method="post">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param value="Auto Bank Reconciliation" name="heading" />
@@ -133,13 +135,13 @@ jQuery(document).ready(function() {
 		<div class="formmainbox">
 			<div class="formheading"></div>
 			<div class="subheadnew">
-				<s:text name="autobankreconciliation" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 		
 		<div align="center">
 			<font style='color: blue;'>
 				<div id="msg">
-					<s:property value="message" />
+					${message}
 				</div>
 				<p class="error-block" id="lblError"></p>
 			</font>
@@ -149,38 +151,38 @@ jQuery(document).ready(function() {
 		</div>
 		<span class="mandatory1">
 			<div id="Errors">
-				<s:actionerror />
-				<s:fielderror />
-			</div> <s:actionmessage />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</div> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<center>
 			<table border="0" width="100%" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="bank" /> <span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="greybox"><span class="mandatory1">*</span></span></td>
 					<egov:ajaxdropdown id="branchId" fields="['Text','Value']"
 						dropdownId="branchId"
 						url="/voucher/common-ajaxLoadBankBranchesByBank.action" />
-					<td class="greybox"><s:select name="bankId" id="bankId"
+					<td class="greybox"><form:select path="bankId" id="bankId"
 							list="dropdownData.bankList" listKey="id" listValue="name"
 							headerKey="" headerValue="%{getText('lbl.choose.options')}"
 							onchange="populatebranch(this);" /></td>
-					<td class="greybox"><s:text name="bankbranch" /> <span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="greybox"><span class="mandatory1">*</span></span></td>
 					<egov:ajaxdropdown id="accountId" fields="['Text','Value']"
 						dropdownId="accountId"
 						url="/voucher/common-ajaxLoadBankAccountsByBranch.action" />
-					<td class="greybox"><s:select name="branchId" id="branchId"
+					<td class="greybox"><form:select path="branchId" id="branchId"
 							list="dropdownData.branchList" listKey="id"
 							listValue="branchname" headerKey="" headerValue="%{getText('lbl.choose.options')}"
 							onchange="populateaccount(this);" /></td>
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="bankaccount" /> <span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:select name="accountId" id="accountId"
+					<td class="bluebox"><form:select path="accountId" id="accountId"
 							list="dropdownData.accountList" listKey="id"
 							listValue="chartofaccounts.glcode+'-'+accountnumber" headerKey=""
 							headerValue="%{getText('lbl.choose.options')}" /></td>
@@ -188,13 +190,13 @@ jQuery(document).ready(function() {
 				</tr>
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="upload" /> <span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="greybox"><span class="mandatory1">*</span></span></td>
 					<td class="greybox"><s:file name="bankStatmentInXls"
 							id="bankStatmentInXls" /></td>
                   
 					<td class="greybox" colspan="2">
-                    <a href="/services/EGF/resources/app/formats/brs_format.xls"><s:text name="lbl.download.template"/> </a>
+                    <a href="/services/EGF/resources/app/formats/brs_format.xls"><!-- TODO: Manual migration required for custom Struts tag --> </a>
 					</td>
 				</tr>
 
@@ -204,62 +206,62 @@ jQuery(document).ready(function() {
 				<table>
 					<tr>
 						<td><input type="button" Class="buttonsubmit"
-								value="<s:text name='lbl.upload'/>" name="upload" 
+								value="<!-- TODO: Manual migration required for custom Struts tag -->" name="upload" 
 								onclick="validate();" /></td>
-						<td><input type="button" value="<s:text name='lbl.close'/>"
+						<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.close()" class="buttonsubmit" /></td>
 					</tr>
 				</table>
 			</div>
 		</center>
     </div>
-	</s:form>
+	</form:form>
 	<div>
 	<center>
-			<s:if test="%{(uploadedFileStoreId neq null) or (errorFileStoreId neq null)}">
+			<c:if test="%{(uploadedFileStoreId neq null) or (errorFileStoreId neq null)}">
 				<table width="100%">
 					<tr>
 						<th style="text-align: center" align="center"
-							colspan="2"><s:text name="uplaoded.status.label"/></th>
+							colspan="2"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					</tr>
 					<tr>
 						<th class="bluebgheadtd" style="text-align: center"
-							align="center"><s:text name="successfully.uploaded.file"/></th>
+							align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						<th class="bluebgheadtd" style="text-align: center"
-							align="center"><s:text name="error.records.file"/></th>
+							align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					</tr>
 					<tr>
-					<s:if test="%{uploadedFileStoreId neq null}">
+					<c:if test="%{uploadedFileStoreId neq null}">
 						<td style="text-align: center" align="center"><a href="#"
-							onclick="urlLoad('<s:property value="%{uploadedFileStoreId}" />');"
-							id="originalFileId"> <s:property value="%{uploadedXlsFileName}"/>
+							onclick="urlLoad('${%{uploadedFileStoreId}}');"
+							id="originalFileId"> ${%{uploadedXlsFileName}}
 						</a>
 						</td>
-					</s:if>
-					<s:else>
-					<td style="text-align: center" align="center"><s:text name="no.records.uploaded"/> </td>
+					</c:if>
+					<c:otherwise>
+					<td style="text-align: center" align="center"><!-- TODO: Manual migration required for custom Struts tag --> </td>
 					</s:else>
-					<s:if test="%{errorFileStoreId neq null}">
+					<c:if test="%{errorFileStoreId neq null}">
 						<td style="text-align: center" align="center"><a href="#"
-							onclick="urlLoad('<s:property value="%{errorFileStoreId}" />');"
-							id="outputFileId"> <s:property value="%{errorXlsFileName}" />
+							onclick="urlLoad('${%{errorFileStoreId}}');"
+							id="outputFileId"> ${%{errorXlsFileName}}
 						</a></td>
-					</s:if>
-					<s:else>
-					<td style="text-align: center" align="center"><s:text name="no.error.recorded"/> </td>
+					</c:if>
+					<c:otherwise>
+					<td style="text-align: center" align="center"><!-- TODO: Manual migration required for custom Struts tag --> </td>
 					</s:else>
 					</tr>
 
 				</table>
-			</s:if>
+			</c:if>
 			
 	</center>
 	</div>
    <div class="mandatory1">
   Note:
   <ol>
-  <li><s:text name="autoreconciliation.upload.footnote"/></li>
-  <li><s:text name="autoreconciliation.upload.footnote.nextline"/></li>
+  <li><!-- TODO: Manual migration required for custom Struts tag --></li>
+  <li><!-- TODO: Manual migration required for custom Struts tag --></li>
   </ol>
   </div>
 </body>

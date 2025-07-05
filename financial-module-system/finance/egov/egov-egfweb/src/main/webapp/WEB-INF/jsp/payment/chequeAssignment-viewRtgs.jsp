@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -56,12 +58,12 @@
 <title>Cheque Assignment View</title>
 </head>
 <body>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="RTGS Ref. No Assignment View" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">RTGS Ref. No Assignment View</div>
@@ -81,35 +83,35 @@
 
 				</tr>
 
-				<s:set var="PreRtgsNumber" value="" />
-				<s:iterator var="p" value="instVoucherList" status="s">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<c:forEach var="p" value="instVoucherList" status="s">
 					<s:set var="rtgsNumber"
 						value="%{instrumentHeaderId.transactionNumber}" />
-					<s:if test="%{#rtgsNumber!=#PreRtgsNumber}">
+					<c:if test="%{#rtgsNumber!=#PreRtgsNumber}">
 						<tr>
 							<td style="text-align: center" class="blueborderfortdnew"><strong><s:property
 										value='%{instrumentHeaderId.transactionNumber}' /></strong> <a
 								href="#"
-								onclick="generateReport('pdf','<s:property value='%{instrumentHeaderId.id}'/>',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}" />'); ">Generate
+								onclick="generateReport('pdf','<!-- TODO: Manual migration required for custom Struts tag -->',
+							'${%{instrumentHeaderId.bankAccountId.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}}'); ">Generate
 									pdf,</a> <a href="#"
-								onclick="generateReport('xls','<s:property value='%{instrumentHeaderId.id}'/>',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}" />'); ">Generate
-									xls</a> <s:if test='%{billSubType.equalsIgnoreCase("TNEB")}'>
+								onclick="generateReport('xls','<!-- TODO: Manual migration required for custom Struts tag -->',
+							'${%{instrumentHeaderId.bankAccountId.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}}'); ">Generate
+									xls</a> <c:if test='%{billSubType.equalsIgnoreCase("TNEB")}'>
 									<a href="#"
-										onclick="generateReport('text','<s:property value='%{instrumentHeaderId.id}'/>',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}" />'); ">Download
+										onclick="generateReport('text','<!-- TODO: Manual migration required for custom Struts tag -->',
+							'${%{instrumentHeaderId.bankAccountId.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}}'); ">Download
 										text</a>
-								</s:if> <!-- <a href="#" onclick="generateReport('xls','<s:property value='%{instrumentHeaderId.id}'/>',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.id}" />',
-							'<s:property value="%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}" />');">Generate Excel</a> -->
+								</c:if> <!-- <a href="#" onclick="generateReport('xls','<!-- TODO: Manual migration required for custom Struts tag -->',
+							'${%{instrumentHeaderId.bankAccountId.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.id}}',
+							'${%{instrumentHeaderId.bankAccountId.bankbranch.bank.id}}');">Generate Excel</a> -->
 							</td>
 							<td></td>
 							<td></td>
@@ -118,7 +120,7 @@
 						</tr>
 						<s:set var="PreRtgsNumber"
 							value="instVoucherList[0].instrumentHeaderId.transactionNumber" />
-					</s:if>
+					</c:if>
 
 					<tr>
 
@@ -136,18 +138,18 @@
 							value="%{instrumentHeaderId.transactionNumber}" />
 					</tr>
 
-				</s:iterator>
+				</c:forEach>
 
 			</table>
 			<br />
-			<s:hidden name="billSubType" id="billSubType" value="%{billSubType}" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div id="buttons" class="buttonbottom">
 				<input type="button" value="Close"
 					onclick="javascript:window.close()" class="buttonsubmit" />
 			</div>
 		</div>
 		</div>
-	</s:form>
+	</form:form>
 	<script>   
 function generateReport(type,instrumentnumber,bankaccount,bankbranch,bank){
 	if(type=='pdf'){
@@ -165,7 +167,7 @@ function generateReport(type,instrumentnumber,bankaccount,bankbranch,bank){
 	}
 	 window.open(url,'','height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');
 }
-// <a href="#" onclick="openVoucher('<s:property value='%{#attr.currentRowObject.id}'/>','<s:property value="%{#attr.currentRowObject.vouchernumber}" />','<s:date name="%{#attr.currentRowObject.voucherdate}" format="dd/MM/yyyy"/>');"><s:property value="%{#attr.currentRowObject.vouchernumber}" /> </display:column>
+// <a href="#" onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->','${%{#attr.currentRowObject.vouchernumber}}','<!-- TODO: Manual migration required for custom Struts tag -->');">${%{#attr.currentRowObject.vouchernumber}} </display:column>
 </script>
 </body>
 </html>

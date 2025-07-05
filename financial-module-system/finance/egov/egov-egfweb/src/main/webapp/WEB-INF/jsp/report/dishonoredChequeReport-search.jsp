@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 
 <html>
 <head>
-<title><s:text name="dishonoredCheque.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -121,54 +123,54 @@
 </head>
 
 <body onload="return onBodyLoad()">
-	<s:form name="dishonoredChequeForm" id="dishonoredChequeForm"
+	<form:form name="dishonoredChequeForm" id="dishonoredChequeForm"
 		action="dishonoredChequeReport" theme="css_xhtml" validate="true">
-		<s:push value="dishonoredChequeReport">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="dishonoredCheque.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
-				<s:hidden name="showMode" value="%{showMode}" id="showMode" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 					<tr>
 						<td class="bluebox"><s:text
 								name="dishonoredCheque.chequeOrDDNumber" /></td>
-						<td class="bluebox"><s:textfield name="chequeNo"
+						<td class="bluebox"><form:input path="chequeNo"
 								id="chequeNo" /></td>
 						<td class="bluebox"></td>
 						<td class="bluebox"></td>
 					</tr>
 					<tr>
-						<td class="greybox"><s:text name="dishonoredCheque.fund" /></td>
-						<td class="greybox"><s:select name="fundLst" id="fundLst"
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="greybox"><form:select path="fundLst" id="fundLst"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="----Choose----" /></td>
 						<td class="greybox"><s:text
 								name="dishonoredCheque.modeofPaymentorReceipt" /><span
 							class="mandatory">*</span></td>
-						<td class="greybox"><s:select name="mode" id="mode"
+						<td class="greybox"><form:select path="mode" id="mode"
 								list="#{'1':'DD','2':'Cheque'}" headerKey=""
 								headerValue="----Choose----" /></td>
 
 					</tr>
 					<tr>
-						<td class="bluebox"><s:text name="dishonoredCheque.startDate" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory">*</span></td>
-						<td class="bluebox"><s:textfield name="startDate"
+						<td class="bluebox"><form:input path="startDate"
 								id="startDate" cssStyle="width:100px" value='%{startDate}'
 								onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 							href="javascript:show_calendar('dishonoredChequeForm.startDate');"
 							style="text-decoration: none"><img
 								src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
-						<td class="bluebox"><s:text name="dishonoredCheque.endDate" /></td>
-						<td class="bluebox"><s:textfield name="endDate" id="endDate"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:input path="endDate" id="endDate"
 								cssStyle="width:100px" value='%{endDate}'
 								onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 							href="javascript:show_calendar('dishonoredChequeForm.endDate');"
@@ -202,6 +204,6 @@
 		</span>
 
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 </body>
 </html>

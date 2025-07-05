@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -92,7 +94,7 @@ jQuery(function () {
 		var bankAccId=jQuery("#bankAccId").val();
         var url= "/services/EGF/brs/bankReconciliationDetails.action";
 	jQuery("#issuedChequAndDDId").click(function () {
-		opt.title="<s:text name='msg.cheque.dd.issued.but.not.present.in.bank'/>";
+		opt.title="<!-- TODO: Manual migration required for custom Struts tag -->";
 		jQuery.ajax({
             type: "POST",
             url:url,
@@ -106,7 +108,7 @@ jQuery(function () {
     });
 
 	jQuery("#issuedOtherInstrumentsId").click(function () {
-		opt.title="<s:text name='msg.other.instruments.issued.but.not.presented.in.bank'/>";
+		opt.title="<!-- TODO: Manual migration required for custom Struts tag -->";
 		jQuery.ajax({
             type: "POST",
             url: url,
@@ -120,7 +122,7 @@ jQuery(function () {
     });
 
 	jQuery("#unReconciledCrBrsEntryId").click(function () {
-		opt.title="<s:text name='msg.credit.given.by.bank.either.for.insterest.or.for.any.other.account'/>";
+		opt.title="<!-- TODO: Manual migration required for custom Struts tag -->";
 		jQuery.ajax({
             type: "POST",
             url: url,
@@ -134,7 +136,7 @@ jQuery(function () {
     });
 
 	jQuery("#unReconciledDrBrsEntryId").click(function () {
-		opt.title="<s:text name='msg.service.charge.bank.cherges.or.any.other.charge.levied.by.bank'/>";
+		opt.title="<!-- TODO: Manual migration required for custom Struts tag -->";
 		jQuery.ajax({
             type: "POST",
             url:url,
@@ -148,7 +150,7 @@ jQuery(function () {
     });
 
     jQuery("#unReconciledDrId").click(function () {
-		opt.title="<s:text name='msg.cheques.deposited.but.not.cleared'/>";
+		opt.title="<!-- TODO: Manual migration required for custom Struts tag -->";
 		jQuery.ajax({
             type: "POST",
             url: url,
@@ -167,11 +169,11 @@ jQuery(function () {
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="Reconciliation Summary" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form name="brsDetails" action="brsDetails" theme="simple">
+		<form:form name="brsDetails" action="brsDetails" theme="simple">
 
-			<%-- <s:iterator value="bankReconList" status="stat" var="p">  --%>
+			<%-- <c:forEach value="bankReconList" status="stat" var="p">  --%>
 			<table width="99%" border="0" cellspacing="0" cellpadding="0">
 
 				<tr>
@@ -182,14 +184,14 @@ jQuery(function () {
 				</tr>
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="bluebox"><s:text name="lbl.bank"/> :<span class="bluebox"><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> :<span class="bluebox"><span
 							class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:textfield name="bank" id="bank"
-							readonly="true" /><s:hidden name="bankAccount.id" id="bankAccId"></s:hidden>
+					<td class="bluebox"><form:input path="bank" id="bank"
+							readonly="true" /><!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 							</td>
-					<td class="bluebox"><s:text name="lbl.bank.branch"/> : <span class="bluebox"><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> : <span class="bluebox"><span
 							class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:textfield name="branch" id="branch"
+					<td class="bluebox"><form:input path="branch" id="branch"
 							readonly="true" /></td>
 
 
@@ -199,23 +201,23 @@ jQuery(function () {
 
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="bluebox"><s:text name="lbl.account.number"/> :<span class="bluebox"><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> :<span class="bluebox"><span
 							class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:textfield name="accountNum"
+					<td class="bluebox"><form:input path="accountNum"
 							id="accountNum" readonly="true" /></td>
-					<td class="bluebox"><s:text name="lbl.bank.statement.balance"/> :<span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> :<span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:textfield name="balanceAsPerStatement"
+					<td class="bluebox"><form:input path="balanceAsPerStatement"
 							id="balanceAsPerStatement" readonly="true" /></td>
 
 				</tr>
 
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="bluebox"><s:text name="lbl.bank.statement.date"/> :<span class="bluebox"><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> :<span class="bluebox"><span
 							class="mandatory1">*</span></span></td>
-					<s:date name="bankStmtDate" format="dd/MM/yyyy" var="formtDate" />
-					<td class="greybox"><s:textfield name="bankStmtDate"
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:input path="bankStmtDate"
 							id="bankStmtDate" readonly="true" cssStyle="width:100px"
 							value='%{formtDate}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -230,58 +232,58 @@ jQuery(function () {
 
 				<tr>
 					<td colspan=3 width="70%" class="blueborderfortd"
-						style="font-weight: bold;"><div align="center"><s:text name="lbl.particulars"/> </div></td>
+						style="font-weight: bold;"><div align="center"><!-- TODO: Manual migration required for custom Struts tag --> </div></td>
 					<td width="15%" class="blueborderfortd" style="font-weight: bold;"><div
-							align="center"><s:text name="lbl.amount"/>  (Rs) </div></td>
+							align="center"><!-- TODO: Manual migration required for custom Struts tag -->  (Rs) </div></td>
 					<td width="15%" class="blueborderfortd" style="font-weight: bold;"><div
-							align="center"><s:text name="lbl.amount"/> (Rs)</div></td>
+							align="center"><!-- TODO: Manual migration required for custom Struts tag --> (Rs)</div></td>
 				</tr>
 
 				<tr>
 					<td colspan=3 class="blueborderfortd" valign="center"
-						style="font-weight: bold;">&nbsp;&nbsp;&nbsp;<s:text name="lbl.balance.as.per.bank.book"/> </td>
+						style="font-weight: bold;">&nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag --> </td>
 					<td class="blueborderfortd" align="right"></td>
 					<td class="blueborderfortd" align="right"><div align="right">
-							<s:property value="accountBalance" />
+							${accountBalance}
 						</div></td>
 				</tr>
 				<tr>
-					<td colspan=3 class=blueborderfortd valign="center">&nbsp;&nbsp;&nbsp;<s:text name="lbl.cheque.dd.issued.but.not.presented.in.bank"/> </td>
+					<td colspan=3 class=blueborderfortd valign="center">&nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag --> </td>
 					<td class="blueborderfortd"><div align="right"
 							name="addAmountDebit" id="addAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="addAmountCredit" id="addAmountCredit"  readOnly>
-							<s:if test='unReconciledCr != 0'>
-								<a href="#"  id="issuedChequAndDDId"><s:property value="unReconciledCr" /></a>
-							</s:if>
-							<s:else><s:property value="unReconciledCr" /></s:else>
+							<c:if test='unReconciledCr != 0'>
+								<a href="#"  id="issuedChequAndDDId">${unReconciledCr}</a>
+							</c:if>
+							<c:otherwise>${unReconciledCr}</s:else>
 						</div></td>
 				</tr>
 
 				<tr>
-					<td colspan=3 class="blueborderfortd" valign="center">&nbsp;&nbsp;&nbsp;<s:text name="lbl.other.instrument.issued.but.not.presented.in.bank"/> </td>
+					<td colspan=3 class="blueborderfortd" valign="center">&nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag --> </td>
 					<td class="blueborderfortd"><div align="right"
 							name="addAmountDebit" id="addAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="addAmountCredit" id="addAmountCredit" readOnly>
-							<s:if test='unReconciledCrOthers != 0'>
-								<a href="#"  id="issuedOtherInstrumentsId"><s:property value="unReconciledCrOthers" /></a>
-							</s:if>
-							<s:else><s:property value="unReconciledCrOthers" /></s:else>
+							<c:if test='unReconciledCrOthers != 0'>
+								<a href="#"  id="issuedOtherInstrumentsId">${unReconciledCrOthers}</a>
+							</c:if>
+							<c:otherwise>${unReconciledCrOthers}</s:else>
 						</div></td>
 				</tr>
 				<tr>
-					<td colspan=3 class="blueborderfortd" valign="center">&nbsp;&nbsp;&nbsp;<s:text name="lbl.credit.given.by.bank.either.for.interest.or.for.any.other.account"/> <br>&nbsp;&nbsp;&nbsp;
-						<s:text name="lbl.not.accounted.for.in.bank.book"/>
+					<td colspan=3 class="blueborderfortd" valign="center">&nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag --> <br>&nbsp;&nbsp;&nbsp;
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 					<td class="blueborderfortd"><div align="right"
 							name="addOthersAmountDebit" id="addOthersAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="addOthersAmountCredit" id="addOthersAmountCredit" readOnly>
-							<s:if test='unReconciledCrBrsEntry != 0'>
-								<a href="#"  id="unReconciledCrBrsEntryId"><s:property value="unReconciledCrBrsEntry" /></a>
-							</s:if>
-							<s:else><s:property value="unReconciledCrBrsEntry" /></s:else>
+							<c:if test='unReconciledCrBrsEntry != 0'>
+								<a href="#"  id="unReconciledCrBrsEntryId">${unReconciledCrBrsEntry}</a>
+							</c:if>
+							<c:otherwise>${unReconciledCrBrsEntry}</s:else>
 							
 						</div></td>
 				</tr>
@@ -296,49 +298,49 @@ jQuery(function () {
 							name="subTotalAmountDebit" id="subTotalAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="subTotalAmountCredit" id="subTotalAmountCredit" readOnly>
-							<s:property value="subTotal" />
+							${subTotal}
 						</div></td>
 				</tr>
 				<tr>
 					<td colspan=3 class="blueborderfortd" valign="center">&nbsp;&nbsp;&nbsp;
-						<s:text name="lbl.less.cheque.deposited.but.not.cleared"/> </td>
+						<!-- TODO: Manual migration required for custom Struts tag --> </td>
 					<td class="blueborderfortd"><div align="right"
 							name="lessAmountDebit" id="lessAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="lessAmountCredit" id="lessAmountCredit" readOnly>
-							<s:if test='unReconciledDr != 0'>
-								<a href="#" id="unReconciledDrId"><s:property value="unReconciledDr" /></a>
-							</s:if>
-							<s:else><s:property value="unReconciledDr" /></s:else>
+							<c:if test='unReconciledDr != 0'>
+								<a href="#" id="unReconciledDrId">${unReconciledDr}</a>
+							</c:if>
+							<c:otherwise>${unReconciledDr}</s:else>
 						</div></td>
 				</tr>
 
 				<tr>
 					<td colspan=3 class="blueborderfortd" valign="center">&nbsp;&nbsp;&nbsp;
-						<s:text name="lbl.less.other.instruments.deposited.but.not.cleared"/> </td>
+						<!-- TODO: Manual migration required for custom Struts tag --> </td>
 					<td class="blueborderfortd"><div align="right"
 							name="lessAmountDebit" id="lessAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="lessAmountCredit" id="lessAmountCredit" readOnly>
-							<s:if test='unReconciledDrOthers != 0'>
-								<a href="#" id="unReconciledDrOthersId"><s:property value="unReconciledDrOthers" /></a>
-							</s:if>
-							<s:else><s:property value="unReconciledDrOthers" /></s:else>
+							<c:if test='unReconciledDrOthers != 0'>
+								<a href="#" id="unReconciledDrOthersId">${unReconciledDrOthers}</a>
+							</c:if>
+							<c:otherwise>${unReconciledDrOthers}</s:else>
 						</div></td>
 				</tr>
 				<tr>
 					<td colspan=3 class="blueborderfortd" valign="center">
-						&nbsp;&nbsp;&nbsp; <s:text name="lbl.lest.service.bank.charges.or.any.other.charges.levied.by.bank"/><br> &nbsp;&nbsp;&nbsp;&nbsp;<s:text name="lbl.not.accounted.for.in.bank.book"/>
+						&nbsp;&nbsp;&nbsp; <!-- TODO: Manual migration required for custom Struts tag --><br> &nbsp;&nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 					<td class="blueborderfortd"><div align="right"
 							name="lessOthersAmountDebit" id="lessOthersAmountDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="lessOthersAmountCredit" id="lessOthersAmountCredit"
 							readOnly>
-							<s:if test='unReconciledDrBrsEntry != 0'>
-								<a href="#"  id="unReconciledDrBrsEntryId"><s:property value="unReconciledDrBrsEntry" /></a>
-							</s:if>
-							<s:else><s:property value="unReconciledDrBrsEntry" /></s:else>
+							<c:if test='unReconciledDrBrsEntry != 0'>
+								<a href="#"  id="unReconciledDrBrsEntryId">${unReconciledDrBrsEntry}</a>
+							</c:if>
+							<c:otherwise>${unReconciledDrBrsEntry}</s:else>
 						</div></td>
 				</tr>
 
@@ -354,36 +356,36 @@ jQuery(function () {
 					<td class="blueborderfortd"><div align="right"
 							name="totalAmountCredit" id="totalAmountCredit" readOnly>
 							<div align="right">
-								<s:property value="netTotal" />
+								${netTotal}
 							</div></td>
 				</tr>
 				<tr>
 					<td colspan=3 class="blueborderfortd" valign="center"
-						style="font-weight: bold;">&nbsp;&nbsp;&nbsp; <s:text name="lbl.bank.bal.as.per.bank.statement"/> </td>
+						style="font-weight: bold;">&nbsp;&nbsp;&nbsp; <!-- TODO: Manual migration required for custom Struts tag --> </td>
 					<td class="blueborderfortd"><div align="right"
 							name="bankBalanceDebit" id="bankBalanceDebit" readOnly>&nbsp;</div></td>
 					<td class="blueborderfortd"><div align="right"
 							name="bankBalanceCredit" id="bankBalanceCredit" readOnly>
-							<s:property value="balanceAsPerStatement" />
+							${balanceAsPerStatement}
 						</div></td>
 				</tr>
 
 			</table>
-			<%-- </s:iterator>  --%>
+			<%-- </c:forEach>  --%>
 
 			<br>
 			<br>
 			<table align=center>
 				<tr id="hideRow1" class="row1">
 
-					<td><input type="button" id="Close" value='<s:text name="lbl.close"/>'
+					<td><input type="button" id="Close" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 						onclick="javascript:window.close()" class="button" /></td>
 					<td><input name="button" type="button" class="buttonsubmit"
-						id="button1" value='<s:text name="lbl.print"/>' onclick="window.print()" />&nbsp;</td>
+						id="button1" value='<!-- TODO: Manual migration required for custom Struts tag -->' onclick="window.print()" />&nbsp;</td>
 				</tr>
 			</table>
 			<div id="dialog" style="display: none">
-		</s:form>
+		</form:form>
 	</div>
 </body>
 </html>

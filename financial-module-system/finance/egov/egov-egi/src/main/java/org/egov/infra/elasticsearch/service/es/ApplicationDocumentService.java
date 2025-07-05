@@ -623,11 +623,11 @@ public class ApplicationDocumentService {
     private Map<String, Long> getAggregationWiseApplicationCounts(ApplicationIndexRequest applicationIndexRequest, Date fromDate,
             Date toDate,
             String aggregationName, String status, String aggregationField, int size) {
-        Map<String, Long> aggregationResults = new HashMap<>();
         ValueCount valueCount;
         Aggregations aggregation = getDocumentCounts(applicationIndexRequest, fromDate, toDate, aggregationName, status,
                 aggregationField, size);
         StringTerms cityAggr = aggregation.get(aggregationName);
+        Map<String, Long> aggregationResults = new HashMap<>();
         for (Terms.Bucket entry : cityAggr.getBuckets()) {
             valueCount = entry.getAggregations().get(TOTAL_COUNT);
             aggregationResults.put(String.valueOf(entry.getKey()), valueCount.getValue());
@@ -1199,8 +1199,7 @@ public class ApplicationDocumentService {
         for (final Map.Entry<String, Long> entry : aggregationResults.entrySet()) {
             serviceDetails = new ServiceDetails();
             serviceDetails.setServiceName(entry.getKey());
-            serviceDetails
-                    .setBeyondSLA(aggregationResults.get(entry.getKey()) == null ? 0 : aggregationResults.get(entry.getKey()));
+            serviceDetails.setBeyondSLA(aggregationResults.get(entry.getKey()) == null ? 0 : aggregationResults.get(entry.getKey()));
             serviceDetailsList.add(serviceDetails);
         }
 

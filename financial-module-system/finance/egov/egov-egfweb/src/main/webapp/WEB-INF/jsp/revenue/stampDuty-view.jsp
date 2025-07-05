@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -65,18 +67,18 @@
 </head>
 
 <body>
-	<s:form action="stampDuty" theme="simple" name="stampDutyform">
+	<form:form action="stampDuty" theme="simple" name="stampDutyform">
 		<jsp:include page="../revenue/common-grant.jsp"></jsp:include>
 		<div align="center" class="buttonbottom">
 			<input type="button" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-		<s:if test="%{grantsList.size()>0}">
+		<c:if test="%{grantsList.size()>0}">
 			<div class="buttonbottom">
-				<s:submit value="Export Excel" method="exportXls" cssClass="button" />
-				<s:submit value="Export Pdf" method="exportPdf" cssClass="button" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 </body>
 </html>

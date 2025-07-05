@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="bill.salarybill.register" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link href="/services/EGF/css/commonegov.css?rnd=${app_release_no}" rel="stylesheet" type="text/css" />
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
@@ -82,12 +84,12 @@
 					key = funcArray[i].split("~")[1].replace("`","");
 					map[key] = value;
 				}
-				for(var i=0;i< <s:property value="earningsList.size"/>;i++){
+				for(var i=0;i< ${earningsList.size};i++){
 					if(document.getElementById('earningsList['+i+'].functionid').value != "" && document.getElementById('earningsList['+i+'].functionid').value != 'undefined' && document.getElementById('earningsList['+i+'].functionid').value!=null){
 						document.getElementById('earningsList['+i+'].functionDetail').value=map[document.getElementById('earningsList['+i+'].functionid').value];
 					}
 				}
-				for(var i=0;i< <s:property value="deductionsList.size"/>;i++){
+				for(var i=0;i< ${deductionsList.size};i++){
 					if(document.getElementById('deductionsList['+i+'].functionid').value != "" && document.getElementById('deductionsList['+i+'].functionid').value != 'undefined' && document.getElementById('deductionsList['+i+'].functionid').value!=null){
 						document.getElementById('deductionsList['+i+'].functionDetail').value=map[document.getElementById('deductionsList['+i+'].functionid').value];
 					}
@@ -103,13 +105,13 @@
 		var total = 0;
 		var earningsTotal = 0;
 		var deductionsTotal = 0;
-		for(var i=0;i< <s:property value="earningsList.size"/>;i++){
+		for(var i=0;i< ${earningsList.size};i++){
 			if(document.getElementById('earningsList['+i+'].debitamount').value != "" && document.getElementById('earningsList['+i+'].debitamount').value != 'undefined' && document.getElementById('earningsList['+i+'].debitamount').value!=null){
 				earningsTotal = earningsTotal + parseInt(document.getElementById('earningsList['+i+'].debitamount').value);
 			}
 		}
 		document.getElementById('totaldramount').value = earningsTotal;
-		for(var i=0;i< <s:property value="deductionsList.size"/>;i++){
+		for(var i=0;i< ${deductionsList.size};i++){
 			if(document.getElementById('deductionsList['+i+'].creditamount').value != "" && document.getElementById('deductionsList['+i+'].creditamount').value != 'undefined' && document.getElementById('deductionsList['+i+'].creditamount').value!=null){
 				deductionsTotal = deductionsTotal + parseInt(document.getElementById('deductionsList['+i+'].creditamount').value);
 			}
@@ -118,7 +120,7 @@
 		document.getElementById('netPayList[0].creditamount').value = earningsTotal - deductionsTotal;
 		var subledgerCreditTotal = 0;
 		var subledgerDebitTotal = 0;
-		for(var i=0;i< <s:property value="subledgerList.size"/>;i++){
+		for(var i=0;i< ${subledgerList.size};i++){
 			if(document.getElementById('subledgerList['+i+'].creditAmount').value != "" && document.getElementById('subledgerList['+i+'].creditAmount').value != 'undefined' && document.getElementById('subledgerList['+i+'].creditAmount').value!=null){
 				subledgerCreditTotal = subledgerCreditTotal + parseInt(document.getElementById('subledgerList['+i+'].creditAmount').value);
 			}
@@ -131,26 +133,26 @@
 	}
 	
 	function onLoadTask(){
-		document.getElementById('month').selectedIndex = <s:property value="billregistermis.month"/>;
-		<s:iterator value="subledgerList" status="stat">
-			//document.getElementById('subledgerList[<s:property value="#stat.index"/>].glcode.id').selectedIndex = <s:property value="egBilldetailsId.glcodeid"/>;
-			//document.getElementById('subledgerList[<s:property value="#stat.index"/>].detailType.id').selectedIndex = ;
-			//document.getElementById('subledgerList[<s:property value="#stat.index"/>].detailCode').selectedIndex = ;
-			//document.getElementById('subledgerList[<s:property value="#stat.index"/>].detailKey').selectedIndex = <s:property value="debitAmount"/>;
-			document.getElementById('subledgerList[<s:property value="#stat.index"/>].debitAmount').value = <s:property value="debitAmount"/>;
-			document.getElementById('subledgerList[<s:property value="#stat.index"/>].creditAmount').value = <s:property value="creditAmount"/>;
-		</s:iterator>
+		document.getElementById('month').selectedIndex = ${billregistermis.month};
+		<c:forEach value="subledgerList" status="stat">
+			//document.getElementById('subledgerList[${#stat.index}].glcode.id').selectedIndex = ${egBilldetailsId.glcodeid};
+			//document.getElementById('subledgerList[${#stat.index}].detailType.id').selectedIndex = ;
+			//document.getElementById('subledgerList[${#stat.index}].detailCode').selectedIndex = ;
+			//document.getElementById('subledgerList[${#stat.index}].detailKey').selectedIndex = ${debitAmount};
+			document.getElementById('subledgerList[${#stat.index}].debitAmount').value = ${debitAmount};
+			document.getElementById('subledgerList[${#stat.index}].creditAmount').value = ${creditAmount};
+		</c:forEach>
 	}
 	</script>
 </head>
 <body
 	onload="disableControls(0, true);onLoadTask();populateFunctionName();computeTotal();">
-	<s:form action="salaryBillRegister" theme="simple" name="salaryBill">
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+	<form:form action="salaryBillRegister" theme="simple" name="salaryBill">
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bill.salarybill.register" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<%@ include file='salaryBillRegister-form.jsp'%>
 		</div>
@@ -158,6 +160,6 @@
 			<s:submit value="Close" onclick="javascript: self.close()"
 				cssClass="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

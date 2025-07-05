@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,51 +55,51 @@
 
 <html>
 <head>
-<title><s:text name="budget.proposal.status.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="budget.proposal.status.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="budgetProposalStatusReportForm"
+		<form:form name="budgetProposalStatusReportForm"
 			action="budgetProposalStatusReport" theme="simple">
-			<s:hidden id="mode" name="mode" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<s:if test="%{mode=='function'}">
+				<c:if test="%{mode=='function'}">
 					<tr>
 						<td class="bluebox" width="15%"></td>
 						<td class="bluebox" width="15%"><s:text
 								name="report.Department.report" /><span class="mandatory">*</span>
 						</td>
-						<td class="bluebox"><s:select
+						<td class="bluebox"><form:select
 								list="dropdownData.departmentList" listKey="id"
 								listValue="name" name="department.id" headerKey="0"
 								headerValue="--- Select ---" value="department.id"
-								id="department"></s:select></td>
+								id="department"></form:select></td>
 						<td class="bluebox" width="15%"></td>
 						<td class="bluebox" width="15%"></td>
 						<td class="bluebox" width="15%"></td>
 					</tr>
-				</s:if>
+				</c:if>
 				<tr>
 					<td class="bluebox" width="15%"></td>
 					<td class="bluebox" width="15%"><s:text
 							name="report.fund.type" /><span class="mandatory">*</span></td>
-					<td class="bluebox" width="15%"><s:select name="fundType"
+					<td class="bluebox" width="15%"><form:select path="fundType"
 							id="fundType"
 							list="#{'Select':'---Choose---','REVENUE':'REVENUE','CAPITAL':'CAPITAL'}"
 							value="%{fundType}" /></td>
 					<td class="bluebox" width="15%"></td>
 					<td class="bluebox" width="15%"><s:text
 							name="report.budget.type" /><span class="mandatory">*</span></td>
-					<td class="bluebox" width="15%"><s:select name="budgetType"
+					<td class="bluebox" width="15%"><form:select path="budgetType"
 							id="budgetType"
 							list="#{'Select':'---Choose---','RECEIPTS':'RECEIPTS','EXPENDITURE':'EXPENDITURE'}"
 							value="%{budgetType}" /></td>
@@ -111,20 +113,20 @@
 			<div class="buttonbottom">
 				<s:submit method="search" value="Show Status"
 					cssClass="buttonsubmit" onclick="return validate();" />
-				<!--<s:submit method="generatePdf" value="Save As Pdf" cssClass="buttonsubmit" id="generatePdf" />
-			<s:submit method="generateXls" value="Save As Xls" cssClass="buttonsubmit" id="generateXls" />-->
+				<!--<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->-->
 				<!-- <input type="button" class="buttonsubmit" value="EXPORT PDF" id="exportpdf" name="exportpdf" onclick="return exportPDF();"/>
 			<input type="button" class="buttonsubmit" value="EXPORT EXCEL" id="exportpdf" name="exportpdf" onclick="return exportExcel();"/>  -->
 				<input type="submit" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 
-			<s:if test="%{mode=='function'}">
-				<s:if test="%{budgetProposalStatusFuncList.size!=0}">
+			<c:if test="%{mode=='function'}">
+				<c:if test="%{budgetProposalStatusFuncList.size!=0}">
 					<div align="center" class="extracontent">
 						<h4>
-							<s:property value="fundType" />
-							<s:property value="budgetType" />
+							${fundType}
+							${budgetType}
 						</h4>
 					</div>
 					<table width="100%" border="0" align="center" cellpadding="0"
@@ -133,30 +135,30 @@
 						<tr>
 							<td colspan="12">
 								<div class="subheadsmallnew">
-									<strong><s:property value="statementheading" /></strong>
+									<strong>${statementheading}</strong>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="bluebox" colspan="4"><strong><s:text
 										name="report.run.date" />:</strong>
-							<s:date name="todayDate" format="dd/MM/yyyy" /></td>
+							<!-- TODO: Manual migration required for custom Struts tag --></td>
 						</tr>
 
 						<tr>
 							<th class="bluebgheadtd" style="width: 5%; text-align: center"
 								align="center"></th>
 							<th class="bluebgheadtd" style="width: 50%; text-align: center"
-								align="center"><s:text name="report.function" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 15%; text-align: center"
-								align="center"><s:text name="report.asstadmin" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 15%; text-align: center"
-								align="center"><s:text name="report.smadmin" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 15%; text-align: center"
-								align="center"><s:text name="report.hod" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						</tr>
 						<c:set var="trclass" value="greybox" />
-						<s:iterator var="bp" value="budgetProposalStatusFuncList"
+						<c:forEach var="bp" value="budgetProposalStatusFuncList"
 							status="f">
 							<tr>
 								<td class="blueborderfortd">
@@ -164,39 +166,39 @@
 								</td>
 								<td class="blueborderfortd">
 									<div align="left">
-										<s:property value="function.name" />
+										${function.name}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="asstAdmin" />
+										${asstAdmin}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="smAdmin" />
+										${smAdmin}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="hod" />
+										${hod}
 										&nbsp;
 									</div>
 								</td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 
 					</table>
-				</s:if>
-			</s:if>
+				</c:if>
+			</c:if>
 
 			<br></br>
 
-			<s:if test="%{mode=='department'}">
-				<s:if test="%{budgetProposalStatusDeptList.size!=0}">
+			<c:if test="%{mode=='department'}">
+				<c:if test="%{budgetProposalStatusDeptList.size!=0}">
 					<table width="100%" border="0" align="center" cellpadding="0"
 						cellspacing="0" class="tablebottom">
 
@@ -204,20 +206,20 @@
 							<th class="bluebgheadtd" style="width: 10%; text-align: center"
 								align="center"></th>
 							<th class="bluebgheadtd" style="width: 50%; text-align: center"
-								align="center"><s:text name="report.department" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 10%; text-align: center"
-								align="center"><s:text name="report.hod" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 10%; text-align: center"
-								align="center"><s:text name="report.asstbud" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 10%; text-align: center"
-								align="center"><s:text name="report.smbud" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 10%; text-align: center"
-								align="center"><s:text name="report.aobud" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<th class="bluebgheadtd" style="width: 10%; text-align: center"
-								align="center"><s:text name="report.caobud" /></th>
+								align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						</tr>
 						<c:set var="trclass" value="greybox" />
-						<s:iterator var="bp" value="budgetProposalStatusDeptList"
+						<c:forEach var="bp" value="budgetProposalStatusDeptList"
 							status="f">
 							<tr>
 								<td class="blueborderfortd">
@@ -225,49 +227,49 @@
 								</td>
 								<td class="blueborderfortd">
 									<div align="left">
-										<s:property value="department.deptName" />
+										${department.deptName}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="hod" />
+										${hod}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="asstBud" />
+										${asstBud}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="smBud" />
+										${smBud}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="aoBud" />
+										${aoBud}
 										&nbsp;
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="caoBud" />
+										${caoBud}
 										&nbsp;
 									</div>
 								</td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 
 					</table>
-				</s:if>
-			</s:if>
+				</c:if>
+			</c:if>
 
 
-		</s:form>
+		</form:form>
 		<script>
 
 	function validate(){

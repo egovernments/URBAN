@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -74,13 +76,13 @@
 					<tr id="subledgerrow">
 
 						<td>
-							<form:select path="subLedgerDetails[0].generalLedgerId.glcodeId" data-first-option="false"  name="subLedgerDetails[0].generalLedgerId.glcodeId" id="subLedgerDetails[0].generalLedgerId.glcodeId" class="form-control subLedgerAccountCode" >
+							<form:select path="subLedgerDetails[0].generalLedgerId.glcodeId" data-first-option="false"  path="subLedgerDetails[0].generalLedgerId.glcodeId" id="subLedgerDetails[0].generalLedgerId.glcodeId" class="form-control subLedgerAccountCode" >
 								<form:option value=""> <spring:message code="lbl.select" /> </form:option>
 							</form:select>
 						</td>
 
 						<td>
-							<form:select path="subLedgerDetails[0].detailTypeId" data-first-option="false" name="subLedgerDetails[0].detailTypeId" id="subLedgerDetails[0].detailTypeId" class="form-control subLedgerAccountDetailType" >
+							<form:select path="subLedgerDetails[0].detailTypeId" data-first-option="false" path="subLedgerDetails[0].detailTypeId" id="subLedgerDetails[0].detailTypeId" class="form-control subLedgerAccountDetailType" >
 								<form:option value=""> <spring:message code="lbl.select" /> </form:option>
 							</form:select>
 						</td>
@@ -113,13 +115,13 @@
 						<tr id="subledgerrow">
 
 							<td>
-								<form:select path="subLedgerDetails[${item.index }].generalLedgerId.glcodeId" data-first-option="false" name="subLedgerDetails[${item.index }].generalLedgerId.glcodeId" id="subLedgerDetails[${item.index }].generalLedgerId.glcodeId" class="form-control subLedgerAccountCode" value="${subLedgerDetail.generalLedgerId.glcodeId.id }">
+								<form:select path="subLedgerDetails[${item.index }].generalLedgerId.glcodeId" data-first-option="false" path="subLedgerDetails[${item.index }].generalLedgerId.glcodeId" id="subLedgerDetails[${item.index }].generalLedgerId.glcodeId" class="form-control subLedgerAccountCode" value="${subLedgerDetail.generalLedgerId.glcodeId.id }">
 									<form:option value=""> <spring:message code="lbl.select" /> </form:option>
 								</form:select>
 							</td>
 
 							<td>
-								<form:select path="subLedgerDetails[${item.index }].detailTypeId" data-first-option="false" name="subLedgerDetails[${item.index }].detailTypeId" id="subLedgerDetails[${item.index }].detailTypeId" class="form-control subLedgerAccountDetailType" value="${subLedgerDetail.detailTypeId.id }">
+								<form:select path="subLedgerDetails[${item.index }].detailTypeId" data-first-option="false" path="subLedgerDetails[${item.index }].detailTypeId" id="subLedgerDetails[${item.index }].detailTypeId" class="form-control subLedgerAccountDetailType" value="${subLedgerDetail.detailTypeId.id }">
 									<form:option value=""> <spring:message code="lbl.select" /> </form:option>
 								</form:select>
 							</td>

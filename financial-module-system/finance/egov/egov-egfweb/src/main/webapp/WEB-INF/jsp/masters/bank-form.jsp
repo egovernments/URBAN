@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,29 +52,29 @@
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 
 <div style="color: red">
-	<s:actionerror />
-	<s:fielderror />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </div>
 <div style="color: green">
-	<s:actionmessage />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </div>
 
-<s:form name="bankForm" action="bank" theme="simple">
-	<s:token name="%{tokenName()}" />
-	<s:push value="model">
-		<s:hidden id="bank_id" name="id" />
-		<s:hidden id="created" name="created" />
+<form:form name="bankForm" action="bank" theme="simple">
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="bluebox">&nbsp;</td>
-				<td class="bluebox"><s:text name="bank.create.name" /><span
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory1"> *</span></td>
-				<s:if test="%{mode.equals('VIEW')}">
-					<td class="bluebox"><s:textfield id="name" name="name"
+				<c:if test="%{mode.equals('VIEW')}">
+					<td class="bluebox"><form:input id="name" path="name"
 							readonly="true" /></td>
-				</s:if>
-				<s:else>
-					<td class="bluebox"><s:textfield id="name" name="name"
+				</c:if>
+				<c:otherwise>
+					<td class="bluebox"><form:input id="name" path="name"
 							onblur="checkUniqueBankName(this);" /> <span
 						style="display: none; color: red" id="nameuniquename"> <s:text
 								name="bank.name.already.exists" />
@@ -83,14 +85,14 @@
 			</tr>
 			<tr>
 				<td class="bluebox">&nbsp;</td>
-				<td class="bluebox"><s:text name="bank.create.code" /><span
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory1"> *</span></td>
-				<s:if test="%{mode.equals('VIEW')}">
-					<td class="bluebox"><s:textfield id="code" name="code"
+				<c:if test="%{mode.equals('VIEW')}">
+					<td class="bluebox"><form:input id="code" path="code"
 							readonly="true" /></td>
-				</s:if>
-				<s:else>
-					<td class="bluebox"><s:textfield id="code" name="code"
+				</c:if>
+				<c:otherwise>
+					<td class="bluebox"><form:input id="code" path="code"
 							onblur="checkUniqueBankCode(this);" /> <span
 						style="display: none; color: red" id="codeuniquecode"> <s:text
 								name="bank.code.already.exists" />
@@ -100,14 +102,14 @@
 			</tr>
 			<tr>
 				<td class="bluebox"></td>
-				<td class="bluebox"><s:text name="bank.create.isactive" /></td>
-				<s:if test="%{mode.equals('VIEW')}">
-					<td class="bluebox" colspan="2"><s:checkbox id="isActive"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<c:if test="%{mode.equals('VIEW')}">
+					<td class="bluebox" colspan="2"><form:checkbox id="isActive"
 							name="isActive" value="%{isActive}" disabled="disabled"
 							checked="checked" /></td>
-				</s:if>
-				<s:else>
-					<td class="bluebox" colspan="2"><s:checkbox id="isActive"
+				</c:if>
+				<c:otherwise>
+					<td class="bluebox" colspan="2"><form:checkbox id="isActive"
 							name="isActive" value="%{isActive}" /></td>
 
 				</s:else>
@@ -115,28 +117,28 @@
 
 			<tr>
 				<td class="greybox"></td>
-				<td class="greybox"><s:text name="bank.create.remarks" /></td>
-				<s:if test="%{mode.equals('VIEW')}">
-					<td class="greybox" colspan="2"><s:textarea id="narration"
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<c:if test="%{mode.equals('VIEW')}">
+					<td class="greybox" colspan="2"><form:textarea id="narration"
 							name="narration" cols="80" rows="5" readonly="true" /></td>
-				</s:if>
-				<s:else>
-					<td class="greybox" colspan="2"><s:textarea id="narration"
+				</c:if>
+				<c:otherwise>
+					<td class="greybox" colspan="2"><form:textarea id="narration"
 							name="narration" cols="80" rows="5" /></td>
 
 				</s:else>
 			</tr>
 		</table>
 		<br />
-		<s:if test="%{id != null}">
+		<c:if test="%{id != null}">
 			<div class="center">
 				<table id="listsg11"></table>
 				<div id="pagersg11"></div>
 			</div>
-		</s:if>
+		</c:if>
 		<br />
 	</s:push>
 
 
-</s:form>
+</form:form>
 <script src="../resources/javascript/bank.js" type="text/javascript"></script>

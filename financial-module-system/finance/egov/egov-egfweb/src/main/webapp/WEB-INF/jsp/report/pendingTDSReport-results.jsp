@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,35 +51,35 @@
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <span class="mandatory1"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span>
 <%-- <table width="99%" border="0" cellspacing="0" cellpadding="0">
 
 	<tr>
-		<s:if test="%{fromDate!=null}">
+		<c:if test="%{fromDate!=null}">
 			<th class="bluebgheadtd" width="100%" colspan="7"><strong
 				style="font-size: 15px;">Deduction detailed report for <s:property
-						value="type" /> from <s:property value="fromDate" /> to <s:property
+						value="type" /> from ${fromDate} to <s:property
 						value="asOnDate" />
 			</strong></th>
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 
 			<th class="bluebgheadtd" width="100%" colspan="7"><strong
 				style="font-size: 15px;">Deduction detailed report for <s:property
-						value="type" /> as on <s:property value="asOnDate" /></strong></th>
+						value="type" /> as on ${asOnDate}</strong></th>
 			</td>
 		</s:else>
 	</tr>
 </table> --%>
-<s:if test="%{pendingTDS.size()>0}">
+<c:if test="%{pendingTDS.size()>0}">
 	<br />
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 		<tr>
 			<th class="bluebgheadtd" width="100%" colspan="5"><strong
-				style="font-size: 15px;"> <s:text name='lbl.pending.deduction'/></strong></th>
+				style="font-size: 15px;"> <!-- TODO: Manual migration required for custom Struts tag --></strong></th>
 		</tr>
 	</table>
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
@@ -99,49 +101,49 @@
 							<th class="bluebgheadtd">Paid(Rs)</th> -->
 							<th class="bluebgheadtd">Pending(Rs)</th>
 						</tr>
-						<s:iterator value="pendingTDS" status="stat" var="p">
+						<c:forEach value="pendingTDS" status="stat" var="p">
 							<tr>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="#stat.index+1" />
+										${#stat.index+1}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherName" />
+										${voucherName}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherNumber" />
+										${voucherNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherDate" />
+										${voucherDate}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="partyName" />
+										${partyName}
 										&nbsp;
 									</div></td>
 								<%-- <td class="blueborderfortd"><div align="left">
-										<s:property value="panNo" />
+										${panNo}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:text name="format.number">
-											<s:param name="value" value="deductionAmount" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text>
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:text name="format.number">
-											<s:param name="value" value="earlierPayment" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text>
 									</div></td> --%>
 								<td class="blueborderfortd"><div align="right">
-										<s:text name="format.number">
-											<s:param name="value" value="Amount" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text>
 									</div></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -150,8 +152,8 @@
 	</td>
 	</tr>
 	</table>
-</s:if>
-<s:if test="%{ inWorkflowTDS.size()>0}">
+</c:if>
+<c:if test="%{ inWorkflowTDS.size()>0}">
 	<br />
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
@@ -182,64 +184,64 @@
 							<th class="bluebgheadtd">Drawn On</th>
 							<th class="bluebgheadtd">Cheque Amount(Rs)</th>
 						</tr>
-						<s:iterator value="inWorkflowTDS" status="stat" var="p">
+						<c:forEach value="inWorkflowTDS" status="stat" var="p">
 							<tr>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="#stat.index+1" />
+										${#stat.index+1}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="natureOfDeduction" />
+										${natureOfDeduction}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherNumber" />
+										${voucherNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherDate" />
+										${voucherDate}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="partyName" />
+										${partyName}
 										&nbsp;
 									</div></td>
 								<%-- <td class="blueborderfortd"><div align="left">
-										<s:property value="panNo" />
+										${panNo}
 										&nbsp;
 									</div></td> --%>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="paymentVoucherNumber" />
+										${paymentVoucherNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="remittedOn" />
+										${remittedOn}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:text name="format.number">
-											<s:param name="value" value="amount" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text>
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="chequeNumber" />
+										${chequeNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="drawnOn" />
+										${drawnOn}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:if test="%{#p.chequeAmount != null}">
-											<s:text name="format.number">
-												<s:param name="value" value="chequeAmount" />
+										<c:if test="%{#p.chequeAmount != null}">
+											<!-- TODO: Manual migration required for custom Struts tag -->
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</s:text>&nbsp;
-						</s:if>
-										<s:else>0.00</s:else>
+						</c:if>
+										<c:otherwise>0.00</s:else>
 									</div></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -248,8 +250,8 @@
 	</td>
 	</tr>
 	</table>
-</s:if>
-<s:if test="%{showRemittedEntries==true && remittedTDS.size()>0}">
+</c:if>
+<c:if test="%{showRemittedEntries==true && remittedTDS.size()>0}">
 	<br />
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
@@ -278,64 +280,64 @@
 							<th class="bluebgheadtd">Drawn On</th>
 							<th class="bluebgheadtd">Cheque Amount(Rs)</th>
 						</tr>
-						<s:iterator value="remittedTDS" status="stat" var="p">
+						<c:forEach value="remittedTDS" status="stat" var="p">
 							<tr>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="#stat.index+1" />
+										${#stat.index+1}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="natureOfDeduction" />
+										${natureOfDeduction}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherNumber" />
+										${voucherNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="voucherDate" />
+										${voucherDate}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="partyName" />
+										${partyName}
 										&nbsp;
 									</div></td>
 								<%-- <td class="blueborderfortd"><div align="left">
-										<s:property value="panNo" />
+										${panNo}
 										&nbsp;
 									</div></td> --%>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="paymentVoucherNumber" />
+										${paymentVoucherNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="remittedOn" />
+										${remittedOn}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:text name="format.number">
-											<s:param name="value" value="amount" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text>
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="chequeNumber" />
+										${chequeNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="left">
-										<s:property value="drawnOn" />
+										${drawnOn}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:if test="%{#p.chequeAmount != null}">
-											<s:text name="format.number">
-												<s:param name="value" value="chequeAmount" />
+										<c:if test="%{#p.chequeAmount != null}">
+											<!-- TODO: Manual migration required for custom Struts tag -->
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</s:text>&nbsp;
-						</s:if>
-										<s:else>0.00</s:else>
+						</c:if>
+										<c:otherwise>0.00</s:else>
 									</div></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -344,16 +346,16 @@
 	</td>
 	</tr>
 	</table>
-</s:if>
-<s:if
+</c:if>
+<c:if
 	test="%{pendingTDS.size()<=0  && remittedTDS.size()<=0 && inWorkflowTDS.size()<=0}">
-	<s:text name='lbl.no.deduction.found'/>
-</s:if>
-<s:if
+	<!-- TODO: Manual migration required for custom Struts tag -->
+</c:if>
+<c:if
 	test="%{pendingTDS.size()>0 || (showRemittedEntries==true && remittedTDS.size()>0) || inWorkflowTDS.size()>0 }">
 	<div class="buttonbottom" align="center">
 		Export Options: <label onclick="exportXls()"><a
 			href='javascript:void(0);'>Excel</a></label> | <label onclick="exportPdf()"><a
 			href="javascript:void(0);">PDF</a></label>
 	</div>
-</s:if>
+</c:if>

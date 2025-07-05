@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -70,19 +72,19 @@
 <body
 	onload="loadDropDownCodes();loadDropDownCodesFunction();onloadtask()">
 
-	<s:form action="journalVoucher" theme="simple" name="jvcreateform">
-		<s:token />
+	<form:form action="journalVoucher" theme="simple" name="jvcreateform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Journal voucher Create" />
 		</jsp:include>
 
 		<span class="mandatory1"> <font
-			style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-				<s:actionmessage /></font>
+			style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag --></font>
 		</span>
 		<div class="formmainbox">
-			<div class="subheadnew"><s:text name="lbl.journal.voucher"/></div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 			<div id="listid" style="display: block">
 				<div align="center">
 					<font style='color: red; font-weight: bold'>
@@ -92,23 +94,23 @@
 					<table border="0" width="100%">
 						<tr>
 							<td style="width: 5%"></td>
-							<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-								<td class="greybox"><s:text name="voucher.number" /><span
+							<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory1">*</span></td>
-								<td class="greybox"><s:textfield name="voucherNumber"
+								<td class="greybox"><form:input path="voucherNumber"
 										id="voucherNumber" maxlength="30" /></td>
-							</s:if>
-							<td class="greybox"><s:text name="voucher.date" /><span
+							</c:if>
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory1">*</span></td>
 
 							<td class="bluebox"><s:date name="voucherDate"
-									var="voucherDateId" format="dd/MM/yyyy" /> <s:textfield
+									var="voucherDateId" format="dd/MM/yyyy" /> <form:input
 									id="voucherDate" name="voucherDate" value="%{voucherDateId}"
 									data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 									data-inputmask="'mask': 'd/m/y'" /></td>
-							<s:else>
+							<c:otherwise>
 								<td class="greybox">&nbsp;</td>
 								<td class="greybox">&nbsp;</td>
 							</s:else>
@@ -121,8 +123,8 @@
 
 						<tr>
 							<td style="width: 5%"></td>
-							<td class="greybox"><s:text name="voucher.narration" /></td>
-							<td class="greybox" colspan="3"><s:textarea id="narration"
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="greybox" colspan="3"><form:textarea id="narration"
 									name="description" cols="100" rows="3"
 									onblur="checkVoucherNarrationLen(this)" /></td>
 						</tr>
@@ -132,7 +134,7 @@
 				<br />
 				<div id="labelAD" align="center">
 					<table width="80%" border=0 id="labelid">
-						<th><s:text name="lbl.account.details"/> </th>
+						<th><!-- TODO: Manual migration required for custom Struts tag --> </th>
 					</table>
 				</div>
 				<div class="yui-skin-sam" align="center">
@@ -146,7 +148,7 @@
 				<br />
 				<div id="labelSL" align="center">
 					<table width="80%" border=0 id="labelid">
-						<th><s:text name="lbl.subledger.details"/> </th>
+						<th><!-- TODO: Manual migration required for custom Struts tag --> </th>
 					</table>
 				</div>
 
@@ -161,8 +163,8 @@
 		</script>
 				<br />
 				<div class="subheadsmallnew" /></div>
-				<s:hidden id="voucherDate" name="voucherDate" />
-				<s:hidden id="cutOffDate" name="cutOffDate" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<%@ include file='../workflow/commonWorkflowMatrix.jsp'%>
 				<%@ include file='../workflow/commonWorkflowMatrix-button.jsp'%>
 				<br />
@@ -170,7 +172,7 @@
 		</div>
 
 		<div id="codescontainer"></div>
-		<s:hidden name="actionName" id="actionName" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<input type="hidden" id="voucherTypeBean.voucherName"
 			name="voucherTypeBean.voucherName"
 			value="${voucherTypeBean.voucherName}" />
@@ -183,11 +185,11 @@
 			name="voucherTypeBean.cgnType" value="JVG" />
 		<input type="hidden" id="buttonValue" name="buttonValue" />
 
-	</s:form>
+	</form:form>
 
-	<s:hidden name="targetvalue" value="%{target}" id="targetvalue" />
-	<s:hidden name="functionValue" id="functionValue" />
-	<s:hidden name="functionId" id="functionId" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<script type="text/javascript">
 		
 			if(dom.get('targetvalue').value=='success')
@@ -226,9 +228,9 @@
 				//bootbox.alert("action name"+name);     
 				document.getElementById("actionName").value= name;
 				//bootbox.alert("button value"+value);  
-				<s:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
+				<c:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
 					if(!validateUser(name,value)){ return false; }
-				</s:if>
+				</c:if>
 				return true;
 			}
 	function onSubmit()
@@ -255,8 +257,8 @@
 		return true;
 	}
 	else{
-		var msg1='<s:text name="wf.vouchercutoffdate.message"/>';
-		var msg2='<s:text name="wf.cutoffdate.msg"/>';
+		var msg1='<!-- TODO: Manual migration required for custom Struts tag -->';
+		var msg2='<!-- TODO: Manual migration required for custom Struts tag -->';
 		bootbox.alert(msg1+" "+document.getElementById("cutOffDate").value+" "+msg2);
 			return false;
 		}
@@ -275,12 +277,12 @@
 		console.log(vhType);
 		
 		if(vhType =='-1' )	{
-			document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.voucher.sub.type'/> ";
+			document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag --> ";
 			document.getElementById('voucherDate').focus();
 			return false;
 		}
 		if(vhDate == '' )	{
-			document.getElementById('lblError').innerHTML = "<s:text name='msg.please.enter.voucher.date'/> ";
+			document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag --> ";
 			document.getElementById('voucherDate').focus();
 			return false;
 		}
@@ -291,13 +293,13 @@
 	    var voucherDate = new Date(voucheryear, vouchermonth - 1, voucherdate);
 	    var today = new Date();
 	    if (voucherDate > today) {
-	        bootbox.alert("<s:text name='msg.voucher.date.greater.than.today.date'/> ");
+	        bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag --> ");
 	        return false
 	    }
 		var vVoucherSubType = document.getElementById('vType').value;
 		if(vVoucherSubType != 'JVGeneral' && vVoucherSubType != '-1' )	{
 			if(document.getElementById('voucherTypeBean.partyName').value == '' ) {
-				document.getElementById('lblError').innerHTML = "<s:text name='msg.please.enter.party.name'/> ";
+				document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag --> ";
 				document.getElementById('voucherTypeBean.partyName').focus();
 				return false;
 			}
@@ -309,7 +311,7 @@
 	    var myBillDate = new Date(year, month - 1, date);
 
 	    if (myBillDate > today) {
-	        bootbox.alert("<s:text name='msg.bill.date.greater.than.today.date'/> ");
+	        bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag --> ");
 	        return false
 	    }
 	    var partyBillDate = document.getElementById("partyBillDate").value;
@@ -319,84 +321,84 @@
 	    var myPartyBillDate = new Date(partyyear, partymonth - 1, partydate);
 
 	    if (myPartyBillDate > today) {
-	        bootbox.alert("<s:text name='msg.party.bill.date.greater.than.today.date'/> ");
+	        bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag --> ");
 	        return false
 	    }
 		
 	// Javascript validation of the MIS Manadate attributes.
-		<s:if test="%{isFieldMandatory('vouchernumber')}"> 
+		<c:if test="%{isFieldMandatory('vouchernumber')}"> 
 			 if(null != document.getElementById('voucherNumber') && document.getElementById('voucherNumber').value.trim().length == 0 ){
 
-				document.getElementById('lblError').innerHTML = "<s:text name='msg.please.enter.voucher.number'/>";
+				document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 				return false;
 			 }
-		 </s:if>
-		 <s:if test="%{isFieldMandatory('voucherdate')}"> 
+		 </c:if>
+		 <c:if test="%{isFieldMandatory('voucherdate')}"> 
 				 if(null != document.getElementById('voucherDate') && document.getElementById('voucherDate').value.trim().length == 0){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.enter.voucher.date'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			 </s:if>    
-		 	<s:if test="%{isFieldMandatory('fund')}"> 
+			 </c:if>    
+		 	<c:if test="%{isFieldMandatory('fund')}"> 
 				 if(null != document.getElementById('fundId') && document.getElementById('fundId').value == -1){
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.fund'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }    
-			 </s:if>   
-			 <s:if test="%{isFieldMandatory('function')}">                        
+			 </c:if>   
+			 <c:if test="%{isFieldMandatory('function')}">                        
 			 if(null != document.getElementById('vouchermis.function') && document.getElementById('vouchermis.function').value == -1){
 
-				document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.function'/>";
+				document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 				return false;
 			 }
-		 </s:if>
-			<s:if test="%{isFieldMandatory('department')}"> 
+		 </c:if>
+			<c:if test="%{isFieldMandatory('department')}"> 
 				 if(null!= document.getElementById('vouchermis.departmentid') && document.getElementById('vouchermis.departmentid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.department'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('scheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('scheme')}"> 
 				 if(null!=document.getElementById('schemeid') &&  document.getElementById('schemeid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.scheme'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('subscheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('subscheme')}"> 
 				 if(null!= document.getElementById('subschemeid') && document.getElementById('subschemeid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.sub.scheme'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('functionary')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('functionary')}"> 
 				 if(null!=document.getElementById('vouchermis.functionary') &&  document.getElementById('vouchermis.functionary').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.functionary'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('fundsource')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('fundsource')}"> 
 				 if(null !=document.getElementById('fundsourceId') &&  document.getElementById('fundsourceId').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.fundsource'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				}
-			</s:if>
-			<s:if test="%{isFieldMandatory('field')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('field')}"> 
 				 if(null!= document.getElementById('vouchermis.divisionid') && document.getElementById('vouchermis.divisionid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.field'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
+			</c:if>
 
 			if(null!= document.getElementById('vouchermis.divisionid') && document.getElementById('vouchermis.divisionid').value == -1){
 
-				document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.field'/>";
+				document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 				return false;
 			 }	
 			
@@ -407,11 +409,11 @@
 	}
 function onloadtask(){
 //autocompleteEntities1By20();
-	var VTypeFromBean = '<s:property value="voucherTypeBean.voucherSubType"/>';
+	var VTypeFromBean = '${voucherTypeBean.voucherSubType}';
 	if(VTypeFromBean == "") 
 		VTypeFromBean = '-1';
 	document.getElementById('vType').value = VTypeFromBean;
-	if('<s:property value="voucherTypeBean.voucherSubType"/>' == 'JVGeneral' || '<s:property value="voucherTypeBean.voucherSubType"/>'== ""){
+	if('${voucherTypeBean.voucherSubType}' == 'JVGeneral' || '${voucherTypeBean.voucherSubType}'== ""){
 		document.getElementById('voucherTypeBean.partyBillNum').readOnly=true;
 		document.getElementById('voucherTypeBean.partyName').readOnly=true;
 		document.getElementById('partyBillDate').readOnly=true;
@@ -420,25 +422,25 @@ function onloadtask(){
 	}
 	//document.getElementById('vouchermis.function').style.display="none";
 	//document.getElementById('functionnametext').style.display="none";
-	var message = '<s:property value="message"/>';
+	var message = '${message}';
 	if(message != null && message != '')
 		showMessage(message);
-	<s:if test="%{voucherTypeBean.voucherNumType == null}">
+	<c:if test="%{voucherTypeBean.voucherNumType == null}">
 		document.getElementById('voucherTypeBean.voucherNumType').value ="Journal";
-	</s:if>
-	<s:if test="%{voucherTypeBean.voucherName == null}">
+	</c:if>
+	<c:if test="%{voucherTypeBean.voucherName == null}">
 		document.getElementById('voucherTypeBean.voucherName').value ="JVGeneral";
-	</s:if>
-	<s:if test="%{voucherTypeBean.voucherSubType == null}">
+	</c:if>
+	<c:if test="%{voucherTypeBean.voucherSubType == null}">
 		document.getElementById('voucherTypeBean.voucherSubType').value = "JVGeneral";
-	</s:if>
+	</c:if>
 	if(message == null || message == '')
 		populateslDropDown(); // to load the subledger detils when page loads, required when validation fails.
 	if(document.getElementById('approverDepartment'))
 		document.getElementById('approverDepartment').value = "-1";
   }
 function showMessage(message){
-	var buttonValue = '<s:property value="buttonValue"/>';
+	var buttonValue = '${buttonValue}';
 	for(var i=0;i<document.forms[0].length;i++)
 	{
 		if( document.forms[0].elements[i].id!='Close')
@@ -446,7 +448,7 @@ function showMessage(message){
 	} 
 	//bootbox.alert(message);
 	bootbox.alert(message, function() {
-		var voucherHeaderId = '<s:property value="voucherHeader.id"/>';
+		var voucherHeaderId = '${voucherHeader.id}';
 		document.forms[0].action = "/services/EGF/voucher/preApprovedVoucher-loadvoucherview.action?vhid="+voucherHeaderId;
 		document.forms[0].submit(); 
 	});
@@ -456,7 +458,7 @@ function showMessage(message){
 
 function printJV()
 {		
-		var voucherHeaderId = '<s:property value="voucherHeader.id"/>';
+		var voucherHeaderId = '${voucherHeader.id}';
 		window.location="${pageContext.request.contextPath}/voucher/journalVoucherPrint-print.action?id="+voucherHeaderId;		
 		//document.forms[0].submit();
 }

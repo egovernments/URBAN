@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
  <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html>
 <head>
-<title><s:text name="pendingChallansReport.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 function clearErrors()
 {
@@ -110,11 +112,11 @@ function validate()
 </span>
 </head>
 <body>
-	<s:form theme="simple" name="pendingChallansReportForm"
+	<form:form theme="simple" name="pendingChallansReportForm"
 		action="pendingChallansReport!report.action">
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="pendingChallansReport.title" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div class="subheadsmallnew">
 				<span class="subheadnew"><s:text
@@ -125,8 +127,8 @@ function validate()
 			<td width="4%" class="bluebox">&nbsp;</td>
 			<td width="21%" class="bluebox"><s:text
 				name="collectionReport.criteria.fromdate" /><span class="mandatory">*</span></td>
-			<s:date name="fromDate" var="cdFormat" format="dd/MM/yyyy" />
-			<td width="24%" class="bluebox"><s:textfield id="fromDate"
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<td width="24%" class="bluebox"><form:input id="fromDate"
 				name="fromDate" value="%{cdFormat}"
 				onfocus="javascript:vDateType='3';"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -139,8 +141,8 @@ function validate()
 			</td>
 			<td width="21%" class="bluebox"><s:text
 				name="collectionReport.criteria.todate" /><span class="mandatory">*</span></td>
-			<s:date name="toDate" var="cdFormat1" format="dd/MM/yyyy" />
-			<td width="30%" class="bluebox"><s:textfield id="toDate"
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<td width="30%" class="bluebox"><form:input id="toDate"
 				name="toDate" value="%{cdFormat1}"
 				onfocus="javascript:vDateType='3';"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -157,18 +159,18 @@ function validate()
 						&nbsp;
 					</td>
 					<td width="21%" class="bluebox2">
-						<s:text name="collectionReport.criteria.dept" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 					<td width="24%" class="bluebox2">
-						<s:select name="deptId" id="dept" cssClass="selectwk"
+						<form:select path="deptId" id="dept" cssClass="selectwk"
 							list="dropdownData.departmentList" listKey="id"
 							listValue="deptName" value="%{deptId}" />
 					</td>
 					<td width="21%" class="bluebox2">
-						<s:text name="collectionReport.criteria.service" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 					<td width="30%" class="bluebox2">
-						<s:select headerKey="-1"
+						<form:select headerKey="-1"
 							headerValue="%{getText('collectionReport.service.all')}"
 							name="challanServiceId" id="counter" cssClass="selectwk"
 							list="dropdownData.serviceList" listKey="id" listValue="serviceName"
@@ -176,7 +178,7 @@ function validate()
 					</td>
 				</tr>
 			</table>
-			<div align="left" class="mandatorycoll"><s:text name="common.mandatoryfields"/></div>
+			<div align="left" class="mandatorycoll"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		</div>
 		<div class="buttonbottom">
 			<label>
@@ -189,10 +191,10 @@ function validate()
 			</label>&nbsp;
 			<label>
 				<input type="button" class="button" id="buttonClose"
-					value="<s:text name='common.buttons.close'/>"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.close()" />
 			</label>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

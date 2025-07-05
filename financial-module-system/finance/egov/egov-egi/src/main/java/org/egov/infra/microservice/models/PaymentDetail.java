@@ -123,4 +123,46 @@ public class PaymentDetail {
     @JsonProperty("auditDetails")
     private AuditDetails auditDetails;
 
+    // Manual getter and setter methods since Lombok is not working properly
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    public BigDecimal getTotalDue() { return totalDue; }
+    public void setTotalDue(BigDecimal totalDue) { this.totalDue = totalDue; }
+    
+    public BigDecimal getTotalAmountPaid() { return totalAmountPaid; }
+    public void setTotalAmountPaid(BigDecimal totalAmountPaid) { this.totalAmountPaid = totalAmountPaid; }
+    
+    public String getReceiptNumber() { return receiptNumber; }
+    public void setReceiptNumber(String receiptNumber) { this.receiptNumber = receiptNumber; }
+    
+    public String getManualReceiptNumber() { return manualReceiptNumber; }
+    public void setManualReceiptNumber(String manualReceiptNumber) { this.manualReceiptNumber = manualReceiptNumber; }
+    
+    public Long getManualReceiptDate() { return manualReceiptDate; }
+    public void setManualReceiptDate(Long manualReceiptDate) { this.manualReceiptDate = manualReceiptDate; }
+    
+    public Long getReceiptDate() { return receiptDate; }
+    public void setReceiptDate(Long receiptDate) { this.receiptDate = receiptDate; }
+    
+    public String getReceiptType() { return receiptType; }
+    public void setReceiptType(String receiptType) { this.receiptType = receiptType; }
+    
+    public String getBusinessService() { return businessService; }
+    public void setBusinessService(String businessService) { this.businessService = businessService; }
+    
+    public String getBillId() { return billId; }
+    public void setBillId(String billId) { this.billId = billId; }
+    
+    public BillV2 getBill() { return bill; }
+    public void setBill(BillV2 bill) { this.bill = bill; }
+    
+    public JsonNode getAdditionalDetails() { return additionalDetails; }
+    public void setAdditionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; }
+    
+    public AuditDetails getAuditDetails() { return auditDetails; }
+    public void setAuditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; }
 }

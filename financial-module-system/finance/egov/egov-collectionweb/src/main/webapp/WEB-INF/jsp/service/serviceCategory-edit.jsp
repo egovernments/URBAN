@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,24 +53,24 @@
 <html>
 <head>
 
-<title><s:text name="serviceCategory.edit.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <body>
 	<div class="errorstyle" id="error_area" style="display: none;"></div>
 	<span id="remerror"> <font style='color: red; font-weight: bold'
-		size="2"> <s:actionerror /> <s:fielderror />
+		size="2"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 	</font>
 	</span>
 
 
 
-	<s:form action="serviceCategory" theme="simple">
+	<form:form action="serviceCategory" theme="simple">
 		<div class="subheadnew">
-			<s:text name="serviceCategory.edit.title" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:push value="model">
-			<s:hidden name="id" id="id" value="%{id}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<%@ include file='serviceCategory-form.jsp'%>
 			<div align="left" class="mandatory1">&nbsp;&nbsp;&nbsp;&nbsp;*
 				Mandatory Fields</div>
@@ -85,6 +87,6 @@
 					onclick="window.close()" value="Close" />
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 </body>
 </html>

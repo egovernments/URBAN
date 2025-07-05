@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -80,31 +82,31 @@ function populateBudgetHead(obj) {
 
 
 function validateFields() {
-	<s:if test="%{isFieldMandatory('fund')}">
+	<c:if test="%{isFieldMandatory('fund')}">
 	if(document.getElementById('fund').value == '0') {
-		bootbox.alert("<s:text name='voucher.fund.mandatory'/>")
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->")
 		return false;
 	}
-	</s:if>
-	<s:if test="%{isFieldMandatory('executingDepartment')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('executingDepartment')}">
 		if(document.getElementById('department').value == '0') {
-			bootbox.alert("<s:text name='voucher.department.mandatory'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
-	</s:if>
+	</c:if>
 
-	<s:if test="%{isFieldMandatory('function')}">
+	<c:if test="%{isFieldMandatory('function')}">
 	if(document.getElementById('functions').value == '0') {
-		bootbox.alert("<s:text name='budget.function.mandatory'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 		return false;
 	}
-	</s:if>
+	</c:if>
 	if(document.getElementById('budgetHeadId').value == '0') {
-		bootbox.alert("<s:text name='msg.please.select.budget.head'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 		return false;
 	}
 	if(document.getElementById('asOnDate').value == '' ) {
-		bootbox.alert("<s:text name='msg.please.enter.as.onDate'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 		return false;
 	}
 
@@ -135,36 +137,36 @@ function generateReport(){
 <body>
 	<div class="formmainbox">
 		<div class="formheading"></div>
-		<div class="subheadnew"><s:text name="lbl.budget.watch.register.report"/> </div>
-		<br /> <span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
+		<br /> <span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
-		<s:form action="budgetAppropriationRegisterReport" theme="simple"
+		<form:form action="budgetAppropriationRegisterReport" theme="simple"
 			name="budgetAppropriationRegister">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="report.fund" /> <s:if
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 							test="%{isFieldMandatory('fund')}">
 							<span class="mandatory1">*</span>
-						</s:if></td>
-					<td class="bluebox"><s:select list="dropdownData.fundList"
+						</c:if></td>
+					<td class="bluebox"><form:select list="dropdownData.fundList"
 							listKey="id" listValue="name" name="fund.id" headerKey="0"
 							headerValue="%{getText('lbl.choose.options')}" value="fund.id" id="fund"
-							onChange="populateDepartment(this);"></s:select></td>
+							onChange="populateDepartment(this);"></form:select></td>
 
 					<egov:ajaxdropdown id="department" fields="['Text','Value']"
 						dropdownId="department"
 						url="voucher/common-ajaxLoadEstimateBudgetDetailsByFundId.action" />
-					<td class="bluebox"><s:text name="report.department" /> <s:if
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 							test="%{isFieldMandatory('executingDepartment')}">
 							<span class="mandatory1">*</span>
-						</s:if></td>
-					<td class="bluebox"><s:select
+						</c:if></td>
+					<td class="bluebox"><form:select
 							list="dropdownData.executingDepartmentList" listKey="code"
 							listValue="name" name="department.code" headerKey="0"
 							headerValue="%{getText('lbl.choose.options')}" value="department.code"
-							id="department" onChange="populateFunction(this);"></s:select></td>
+							id="department" onChange="populateFunction(this);"></form:select></td>
 
 
 				</tr>
@@ -173,31 +175,31 @@ function generateReport(){
 					<egov:ajaxdropdown id="functions" fields="['Text','Value']"
 						dropdownId="functions"
 						url="voucher/common-ajaxLoadEstimateBudgetDetailsByDepartmentId.action" />
-					<td class="greybox"><s:text name="report.function.center" />
-						<s:if test="%{isFieldMandatory('function')}">
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+						<c:if test="%{isFieldMandatory('function')}">
 							<span class="mandatory1">*</span>
-						</s:if></td>
-					<td class="greybox"><s:select list="dropdownData.functionList"
+						</c:if></td>
+					<td class="greybox"><form:select list="dropdownData.functionList"
 							listKey="id" listValue="name" name="function.id" headerKey="0"
 							headerValue="%{getText('lbl.choose.options')}" value="function.id" id="functions"
-							onChange="populateBudgetHead(this)"></s:select></td>
+							onChange="populateBudgetHead(this)"></form:select></td>
 					<egov:ajaxdropdown id="budgetHeadId" fields="['Text','Value']"
 						dropdownId="budgetHeadId"
 						url="voucher/common-ajaxLoadEstimateBudgetDetailsByFuncId.action" />
-					<td class="bluebox"><s:text name="report.budged.head" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
-					<td class="bluebox"><s:select
+					<td class="bluebox"><form:select
 							list="dropdownData.budgetGroupList" listKey="id" listValue="name"
 							name="budgetGroup.id" headerKey="0" headerValue="%{getText('lbl.choose.options')}"
-							value="budgetGroup.id" id="budgetHeadId"></s:select></td>
+							value="budgetGroup.id" id="budgetHeadId"></form:select></td>
 					<td class="bluebox">&nbsp;</td>
 				</tr>
 
 				<tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="greybox"><s:text name="report.asOnDate"/> :<span class="mandatory1">*</span></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> :<span class="mandatory1">*</span></td>
 					<td class="greybox"><s:date name="asOnDate" var="asOnDate"
-							format="dd/MM/yyyy" /> <s:textfield id="asOnDate"
+							format="dd/MM/yyyy" /> <form:input id="asOnDate"
 							name="asOnDate" value="%{strAsOnDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -207,17 +209,17 @@ function generateReport(){
 			</table>
 
 			<div class="buttonbottom">
-				<input type="submit" value="<s:text name='lbl.search'/>" class="buttonsubmit"
+				<input type="submit" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 					onclick="return generateReport()" /> &nbsp;
 				<s:reset name="button" type="submit" cssClass="button" id="button"
 					key="lbl.reset"/>
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.parent.postMessage('close','*');window.close();" class="button" />
 			</div>
 			<input type="hidden" name="accountNumber.id" id="accountNumber.id" />
 	</div>
 
-	</s:form>
+	</form:form>
 	<div id="results"><jsp:include
 			page="./budgetAppropriationRegisterReport-result.jsp"></jsp:include>
 

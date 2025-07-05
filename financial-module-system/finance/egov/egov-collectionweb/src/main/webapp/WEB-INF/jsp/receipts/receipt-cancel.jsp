@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -52,7 +54,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="cancelreceipt.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 
 jQuery.noConflict();
@@ -91,63 +93,63 @@ function warningInfo()
 <body >
 <span align="center" style="display:none" id="cancellationreasonerror">
   <li>
-     <font size="2" color="red"><b><s:text name="cancellationreason.error"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
-<s:form theme="simple" name="searchReceiptForm" action="searchReceipt">
+<form:form theme="simple" name="searchReceiptForm" action="searchReceipt">
 <div class="formmainbox">
-	<div class="subheadnew"><s:text name="cancelreceipt.title"/></div>
-	<s:iterator value="%{receipts}">
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
+	<c:forEach value="%{receipts}">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			<s:hidden label="oldReceiptId" id="oldReceiptId" name="oldReceiptId" value="%{id}"/>
-			<s:hidden label="cancelreceiptno" id="cancelreceiptno" name="cancelreceiptno" value="%{receiptnumber}"/>
-			<%-- <s:hidden label="payeeDetailsId" id="payeeDetailsId" name="payeeDetailsId" value="%{receiptPayeeDetails.id}"/> --%>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<%-- <!-- TODO: Manual migration required for custom Struts tag --> --%>
 			
 			<tr>
 				<td width="4%" class="bluebox2">&nbsp;</td>
-				<td width="21%" class="bluebox2"><s:text name="viewReceipt.receiptno"/></td>
-				<td width="24%" class="bluebox2"><b><s:property value="receiptnumber" /></b></td>
-				<td width="21%" class="bluebox2"><s:text name="viewReceipt.receiptdate"/></td>
+				<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td width="24%" class="bluebox2"><b>${receiptnumber}</b></td>
+				<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
 				<td width="30%" class="bluebox2"><b> 
 				<fmt:formatDate value="${receiptDate}" var="receiptDate" pattern="dd-MM-yyyy"/>
 				<c:out value="${receiptDate}"></c:out></b></td>
 			</tr>
 			<tr>
 				<td width="4%" class="bluebox">&nbsp;</td>
-				<td width="21%" class="bluebox"><s:text name="viewReceipt.nameaddress"/></td>
-				<td width="75%" class="bluebox" colspan="3"><s:property value="payeeName" /><br/><s:property value="payeeName" /></td>
+				<td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td width="75%" class="bluebox" colspan="3">${payeeName}<br/>${payeeName}</td>
 			</tr>
 			<tr>
 				<td width="4%" class="bluebox2">&nbsp;</td>
-				<td width="21%" class="bluebox2"><s:text name="viewReceipt.billdetails"/></td>
+				<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
 				<td width="75%" class="bluebox2" colspan="3">
 					<table align="left" cellpadding="0" cellspacing="0" border="0" width="100%" class="subtable">
-					<s:if test="referencenumber!=null">
-						<tr><td><s:text name="viewReceipt.billno"/>&nbsp;<s:property value="referencenumber" /></td></tr>
-					</s:if>
-					<s:if test="receiptMisc.fund!=null">
-						<tr><td><s:text name="viewReceipt.fund"/>&nbsp;<s:property value="receiptMisc.fund.name" /></td></tr>
-					</s:if>
-					<s:if test="receiptMisc.department!=null">
-						<tr><td><s:text name="viewReceipt.department"/>&nbsp;<s:property value="receiptMisc.department.name" /></td></tr>
-					</s:if>
-					<s:if test="receiptMisc.fundsource!=null">
-						<tr><td><s:text name="viewReceipt.fundsource"/>&nbsp;<s:property value="receiptMisc.fundsource.name" /></td></tr>
-					</s:if>
-					<s:if test="receiptMisc.functionary!=null">
-						<tr><td><s:text name="viewReceipt.functionary"/>&nbsp;<s:property value="receiptMisc.functionary.name" /></td></tr>
-					</s:if>
-					<s:if test="receiptMisc.scheme!=null">
-						<tr><td><s:text name="viewReceipt.scheme"/>&nbsp;<s:property value="receiptMisc.scheme.name" /></td></tr>
-					</s:if>
-					<s:if test="receiptMisc.subscheme!=null">
-						<tr><td><s:text name="viewReceipt.subscheme"/>&nbsp;<s:property value="receiptMisc.subscheme.name" /></td></tr>
-					</s:if>
-						<tr><td><s:text name="viewReceipt.servicename"/>&nbsp;<s:property value="service.name" /></td></tr>
-					<s:if test="referenceDesc!=null">
-						<tr><td><s:text name="viewReceipt.description"/>&nbsp;<s:property value="referenceDesc" /></td></tr>
-					</s:if>
-						<tr><td><s:text name="billreceipt.counter.paidby"/>&nbsp;<s:property value="paidBy" /></td></tr>
+					<c:if test="referencenumber!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${referencenumber}</td></tr>
+					</c:if>
+					<c:if test="receiptMisc.fund!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptMisc.fund.name}</td></tr>
+					</c:if>
+					<c:if test="receiptMisc.department!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptMisc.department.name}</td></tr>
+					</c:if>
+					<c:if test="receiptMisc.fundsource!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptMisc.fundsource.name}</td></tr>
+					</c:if>
+					<c:if test="receiptMisc.functionary!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptMisc.functionary.name}</td></tr>
+					</c:if>
+					<c:if test="receiptMisc.scheme!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptMisc.scheme.name}</td></tr>
+					</c:if>
+					<c:if test="receiptMisc.subscheme!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptMisc.subscheme.name}</td></tr>
+					</c:if>
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${service.name}</td></tr>
+					<c:if test="referenceDesc!=null">
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${referenceDesc}</td></tr>
+					</c:if>
+						<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${paidBy}</td></tr>
 					</table>
 				</td>
 			</tr>
@@ -155,63 +157,63 @@ function warningInfo()
 				<td colspan="5">
 					<table cellspacing="0" cellpadding="0" align="center" width="100%" class="tablebottom no-border" style="empty-cells:show;">
 						<tr><td>
-						<div class="subheadsmallnew"><span class="subheadnew"><s:text name="billreceipt.billdetails.Credit"/></span></div>
+						<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 						</td></tr>
 						
 						<tr>
 						 <td>
 						 <table width="100%" class="tablebottom">
 						 <tr>
-							<th class="bluebgheadtd" width="30%"><s:text name="viewReceipt.function"/></th>
-							<th class="bluebgheadtd" width="25%"><s:text name="viewReceipt.accountcode"/></th>
-							<th class="bluebgheadtd" width="30%"><s:text name="viewReceipt.accounthead.desc"/></th>
-							<th class="bluebgheadtd" width="25%"><s:text name="viewReceipt.accounthead.amt"/>&nbsp;(<s:text name="viewReceipt.amt.denom"/>)</th>
+							<th class="bluebgheadtd" width="30%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="25%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="30%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="25%"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;(<!-- TODO: Manual migration required for custom Struts tag -->)</th>
 						</tr>
 <%! int rebateaccountavalailable=0;%>
-						<s:iterator value="%{receiptDetails}" >
+						<c:forEach value="%{receiptDetails}" >
 
-						<s:if test="cramount!=0">
+						<c:if test="cramount!=0">
 						<tr>
-							<td class="blueborderfortd"><div align="center"><s:property value="%{function.name}" /></div></td>
-							<td class="blueborderfortd"><div align="center"><s:property value="%{accounthead.glcode}" /></div></td>
-							<td class="blueborderfortd"><div align="center"><s:property value="%{description}" /></div></td>						<fmt:formatNumber var="newcramount" value='${cramount}' pattern='#0.00' />
+							<td class="blueborderfortd"><div align="center">${%{function.name}}</div></td>
+							<td class="blueborderfortd"><div align="center">${%{accounthead.glcode}}</div></td>
+							<td class="blueborderfortd"><div align="center">${%{description}}</div></td>						<fmt:formatNumber var="newcramount" value='${cramount}' pattern='#0.00' />
 							<td class="blueborderfortd"><div align="center">${newcramount}</div></td>
 						</tr>
-						</s:if>
-						<s:if test="dramount!=0 && !isRevenueAccountHead(accounthead)">
+						</c:if>
+						<c:if test="dramount!=0 && !isRevenueAccountHead(accounthead)">
 						<% rebateaccountavalailable=1; %>
-						</s:if>
+						</c:if>
 						
-						</s:iterator>
+						</c:forEach>
 						</table>
 						</td>
 						</tr>
 						
 						<%if(rebateaccountavalailable==1){ %>
 						<tr><td>
-						<div class="subheadsmallnew"><span class="subheadnew"><s:text name="billreceipt.billdetails.Rebate"/></span></div>
+						<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 						</td></tr>
 						<tr><td>
 						<table cellspacing="0" cellpadding="0" align="center" width="100%" class="tablebottom" style="empty-cells:show;">
 						<tr>
-							<th class="bluebgheadtd" width="30%"><s:text name="viewReceipt.function"/></th>
-							<th class="bluebgheadtd" width="25%"><s:text name="viewReceipt.accountcode"/></th>
-							<th class="bluebgheadtd" width="30%"><s:text name="viewReceipt.accounthead.desc"/></th>
-							<th class="bluebgheadtd" width="25%"><s:text name="viewReceipt.accounthead.amt"/>&nbsp;(<s:text name="viewReceipt.amt.denom"/>)</th>
+							<th class="bluebgheadtd" width="30%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="25%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="30%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd" width="25%"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;(<!-- TODO: Manual migration required for custom Struts tag -->)</th>
 						</tr>
 						<%} %>
-						<s:iterator value="%{receiptDetails}" >
-						<s:if test="dramount!=0 && !isRevenueAccountHead(accounthead)">
+						<c:forEach value="%{receiptDetails}" >
+						<c:if test="dramount!=0 && !isRevenueAccountHead(accounthead)">
 						<tr>
-							<td class="blueborderfortd"><div align="center"><s:property value="%{function.name}" /></div></td>
-							<td class="blueborderfortd"><div align="center"><s:property value="%{accounthead.glcode}" /></div></td>
-							<td class="blueborderfortd"><div align="center"><s:property value="%{description}" /></div></td>						<fmt:formatNumber var="newdramount" value='${dramount}' pattern='#0.00' />
+							<td class="blueborderfortd"><div align="center">${%{function.name}}</div></td>
+							<td class="blueborderfortd"><div align="center">${%{accounthead.glcode}}</div></td>
+							<td class="blueborderfortd"><div align="center">${%{description}}</div></td>						<fmt:formatNumber var="newdramount" value='${dramount}' pattern='#0.00' />
 							<td class="blueborderfortd"><div align="center">${newdramount}</div></td>
 						</tr>
 						
 						
-						</s:if>
-						</s:iterator>
+						</c:if>
+						</c:forEach>
 						<tr>
 						    <td colspan="2" class="blueborderfortd">&nbsp;</td>
 							<td class="blueborderfortd"><div align="right"><b>Total&nbsp;&nbsp;</b></div></td>							<fmt:formatNumber var="newtotalamount" value='${amount}' pattern='#0.00' />	
@@ -230,70 +232,70 @@ function warningInfo()
 					<table cellspacing="0" cellpadding="0" align="center" width="100%" class="tablebottom">
 						<tr>
 							<td width="4%" class="bluebox2">&nbsp;</td>
-							<td width="21%" class="bluebox2"><b><s:text name="viewReceipt.amtinwords"/></b></td>
-							<td width="75%" class="bluebox2" colspan="7"><u><b><s:property value="amountInWords(amount)" /> </b></u></td>
+							<td width="21%" class="bluebox2"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
+							<td width="75%" class="bluebox2" colspan="7"><u><b>${amountInWords(amount)} </b></u></td>
 						</tr>
 						<tr>
 							<td width="4%" class="bluebox">&nbsp;</td>
-							<td width="21%" class="bluebox"><s:text name="viewReceipt.payee.name"/></td>
-							<td width="75%" class="bluebox" colspan="7"><s:property value="payeeName" /></td>
+							<td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="75%" class="bluebox" colspan="7">${payeeName}</td>
 						</tr>
 
-						<s:iterator value='%{getInstruments("cash")}' >
+						<c:forEach value='%{getInstruments("cash")}' >
 
 						<tr>
 							<td width="4%" class="bluebox2">&nbsp;</td>
-							<td width="21%" class="bluebox2"><s:text name="viewReceipt.cashReceived"/></td>
+							<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<fmt:formatNumber var="totalRecievedAmount" value='${amount}' pattern='#0.00' />
 							<td width="75%" class="bluebox2" colspan="7">${totalRecievedAmount}</td>
 						</tr>
 
-						</s:iterator>
+						</c:forEach>
 
-						<s:iterator value='%{getInstruments("cheque")}' >
+						<c:forEach value='%{getInstruments("cheque")}' >
 						<tr>
 							<td width="4%" class="bluebox2">&nbsp;</td>
-							<td width="15%" class="bluebox2"><s:text name="viewReceipt.chequedate"/></td>
-							<td width="21%" class="bluebox2"><s:property value="%{instrumentNumber}"/>&nbsp;-&nbsp;<s:date name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
-							<td width="10%" class="bluebox2"><s:text name="viewReceipt.chequeamount"/></td>
+							<td width="15%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="21%" class="bluebox2">${%{instrumentNumber}}&nbsp;-&nbsp;<!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="10%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<fmt:formatNumber var="chequeAmount" value='${instrumentAmount}' pattern='#0.00' />
 							<td width="15%" class="bluebox2">${chequeAmount}</td>
-							<td width="10%" class="bluebox2"><s:text name="viewReceipt.bankbranch"/></td>
-							<td width="25%" class="bluebox2"><s:property value="%{bankId.name}"/>&nbsp;-&nbsp;<s:property value="%{bankBranchName}" /></td>
+							<td width="10%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="25%" class="bluebox2">${%{bankId.name}}&nbsp;-&nbsp;${%{bankBranchName}}</td>
 						</tr>
-						</s:iterator>
+						</c:forEach>
 
-						<s:iterator value='%{getInstruments("dd")}' >
+						<c:forEach value='%{getInstruments("dd")}' >
 						<tr>
 							<td width="4%" class="bluebox2">&nbsp;</td>
-							<td width="21%" class="bluebox2"><s:text name="viewReceipt.dddate"/></td>
-							<td width="15%" class="bluebox2"><s:property value="%{instrumentNumber}"/>&nbsp;-&nbsp;<s:date name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
-							<td width="10%" class="bluebox2"><s:text name="viewReceipt.ddamount"/></td>
+							<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="15%" class="bluebox2">${%{instrumentNumber}}&nbsp;-&nbsp;<!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="10%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<fmt:formatNumber var="chequeAmount" value='${instrumentAmount}' pattern='#0.00' />
 							<td width="15%" class="bluebox2">${chequeAmount}</td>
-							<td width="10%" class="bluebox2"><s:text name="viewReceipt.bankbranch"/></td>
-							<td width="25%" class="bluebox2"><s:property value="%{bankId.name}"/>
-							<s:if test="bankBranchName!=null">
-							&nbsp;-&nbsp;<s:property value="%{bankBranchName}" />
-							</s:if>
+							<td width="10%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="25%" class="bluebox2">${%{bankId.name}}
+							<c:if test="bankBranchName!=null">
+							&nbsp;-&nbsp;${%{bankBranchName}}
+							</c:if>
 							</td>
 						</tr>
 						
-						</s:iterator>
+						</c:forEach>
 
-						<s:iterator value='%{getInstruments("card")}' >
+						<c:forEach value='%{getInstruments("card")}' >
 						<tr>
 							<td width="4%" class="bluebox2">&nbsp;</td>
-							<td width="21%" class="bluebox2"><s:text name="viewReceipt.creditcardno"/></td>
-							<td width="24%" class="bluebox2" colspan="3"><s:property value="%{instrumentNumber}" /></td>
+							<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td width="24%" class="bluebox2" colspan="3">${%{instrumentNumber}}</td>
 						</tr>
-						</s:iterator>
+						</c:forEach>
 
 						
 						<tr>
 							<td width="4%" class="bluebox2">&nbsp;</td>
-							<td width="21%" class="bluebox2"><s:text name="billreceipt.reasonforcancellation"/><span class="mandatory1">*</span></td>
-							<td width="24%" class="bluebox2" colspan="7"><s:textarea id="reasonForCancellation" label="reasonforcancellation" cols="90" rows="8" name="reasonForCancellation"/></td>
+							<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+							<td width="24%" class="bluebox2" colspan="7"><form:textarea id="reasonForCancellation" label="reasonforcancellation" cols="90" rows="8" path="reasonForCancellation"/></td>
 						</tr>
 					</table>
 			</tr>	
@@ -303,17 +305,17 @@ function warningInfo()
 
 		   <div id="loadingMask" style="display:none;overflow:hidden;text-align: center"><img src="/services/collection/resources/images/bar_loader.gif"/> <span style="color: red">Please wait....</span></div>
 		   
-		<div align="left" class="mandatorycoll"><s:text name="common.mandatoryfields"/></div>
+		<div align="left" class="mandatorycoll"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		<div class="buttonbottom">
-		<s:if test="isReceiptCancelEnable">
+		<c:if test="isReceiptCancelEnable">
 		<input name="button32" type="button" class="buttonsubmit" id="button32"  value="Cancel Receipt" onclick="return warningInfo()"/>
-		</s:if>
+		</c:if>
 		<input name="button2" type="button" class="button" id="button" onclick="window.close()" value="Close"/>
 		<input name="buttonBack" type="button" class="button" id="buttonBack" value="Back" onclick="window.location='${pageContext.request.contextPath}/receipts/searchReceipt.action';"  /> 
 		</div>
-	</s:iterator>
+	</c:forEach>
 </div>
-</s:form>
+</form:form>
 </body>
 </html>
 

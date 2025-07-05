@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,17 +54,17 @@
 <%@ page import="org.egov.budget.model.*"%>
 <html>
 <head>
-<title><s:text name="budgetReAppropriation.modify" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="budgetReAppropriation.modify" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 	</div>
-	<s:actionmessage theme="simple" />
-	<s:actionerror />
-	<s:fielderror />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<div class="buttonbottom">
 		<input type="button" value="Close" onclick="javascript: self.close()"
 			class="button" />

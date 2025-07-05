@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -135,7 +137,7 @@ function validateVoucherDate(obj)
 			  {
 				  document.getElementById("receipt_dateerror_area").style.display="block";
 			      document.getElementById("receipt_dateerror_area").innerHTML+=
-							'<s:text name="billreceipt.receipt.futuredate.errormessage" />'+'<br/>';
+							'<!-- TODO: Manual migration required for custom Struts tag -->'+'<br/>';
 				  jQuery(obj).val('');
 				  scrolltop();
 				  return false;
@@ -151,7 +153,7 @@ function validateVoucherDate(obj)
 		if(!validateNotFutureDate(obj.value,currDate)){
 		   document.getElementById("receipt_dateerror_area").style.display="block";
 	       document.getElementById("receipt_dateerror_area").innerHTML+=
-					'<s:text name="billreceipt.manualreceipt.futuredate.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 	       obj.value = "";
 	       // obj.focus();
 	       obj.tabIndex="-1";
@@ -199,7 +201,7 @@ function resetMisc(){
     document.getElementById("subLedgerlist[0].amount").value=0;
     document.getElementById("totalcramount").value=0;
     document.getElementById("totaldbamount").value=0;
-    var paidby = '<s:property value="%{paidBy}"/>';
+    var paidby = '${%{paidBy}}';
     paidby = paidby.replace("\'","'");
     document.getElementById('paidBy').value=paidby;
     if(dom.get("actionErrorMessages")!=null){
@@ -221,7 +223,7 @@ function onBodyLoadMiscReceipt()
     updatetotalAmount();
    // document.getElementById('paidBy').readOnly=true;
     check();
-    /* var paidby = '<s:property value="%{paidBy}"/>';
+    /* var paidby = '${%{paidBy}}';
     paidby = paidby.replace("\'","'");
     document.getElementById('paidBy').value=paidby; */
 }
@@ -231,7 +233,7 @@ function checkfund()
 
     if(tempfund=="-1"){
         document.getElementById("receipt_error_area").innerHTML="";
-        document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingfund.errormessage" />'+ '<br>';
+        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
         dom.get("receipt_error_area").style.display="block";
         return false;
     }
@@ -241,7 +243,7 @@ function checkscheme()
     var tempscheme=document.getElementById("schemeId").value;
     if(tempscheme=="-1"){
         document.getElementById("receipt_error_area").innerHTML="";
-        document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingscheme.errormessage" />'+ '<br>';
+        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
         dom.get("receipt_error_area").style.display="block";
         return false;
     }
@@ -343,10 +345,10 @@ if(dom.get("actionMessages")!=null){
     dom.get("actionMessages").style.display="none";}
 var valid=true;
      // Javascript validation of the MIS Manadate attributes.
-     <s:if test="%{isFieldMandatory('voucherdate')}"> 
+     <c:if test="%{isFieldMandatory('voucherdate')}"> 
                  if(null != document.getElementById('voucherDate') && document.getElementById('voucherDate').value.trim().length == 0){
 
-                    document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.receiptdate.errormessage" />'+ "<br>";
+                    document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
                     valid=false;
                 }
                   var currDate = "${currDate}";
@@ -354,92 +356,92 @@ var valid=true;
                     if(vhDate.trim().length != 0){
                         if(!checkFdateTdate(vhDate,currDate))
                         {
-                            document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.receiptdate.incorrectmessage" />'+ "<br>";
+                            document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
                             valid=false;
                         }
                     }
-             </s:if>
-            <s:if test="%{isFieldMandatory('vouchernumber')}"> 
+             </c:if>
+            <c:if test="%{isFieldMandatory('vouchernumber')}"> 
                  if(null != document.getElementById('voucherNum') && document.getElementById('voucherNum').value.trim().length == 0 ){
-                    document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.vouchernumber.errormessage" />'+  "<br>";
+                    document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
                     valid=false;
                  }
                  else if(!validateAlphaNumeric(document.getElementById('voucherNum').value)){
-                    document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.vouchernumber.incorrectformatmessage" />'+  "<br>";
+                    document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
                     valid=false;
                  }
                  
-             </s:if>
+             </c:if>
              
-         <s:if test="%{isFieldMandatory('fund')}"> 
+         <c:if test="%{isFieldMandatory('fund')}"> 
              if(null != document.getElementById('fundId') && document.getElementById('fundId').value == -1){
             
-                    document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.fundcode.errormessage" />'+  "<br>";
+                    document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
                     valid=false;
              }
-                </s:if>
-         <s:if test="%{isFieldMandatory('field')}">
+                </c:if>
+         <c:if test="%{isFieldMandatory('field')}">
            	if(null != document.getElementById('boundaryId')) && document.getElementById('boundaryId').value==-1){
-           		document.getElementByid("receipt_error_area").innerHTML+='<s:text name="miscreceipt.field.errormessage"/>'+ "<br>";
+           		document.getElementByid("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
            		valid=false;
            	}
-          </s:if>
+          </c:if>
          	
-          <s:if test="%{isFieldMandatory('department')}"> 
+          <c:if test="%{isFieldMandatory('department')}"> 
                  if(null!= document.getElementById('deptId') && document.getElementById('deptId').value == -1){
 
-                        document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.deptcode.errormessage" />'+ '<br>';
+                        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
                         valid=false;
                  }
                   
-            </s:if>
-            <s:if test="%{isFieldMandatory('scheme')}"> 
+            </c:if>
+            <c:if test="%{isFieldMandatory('scheme')}"> 
                  if(null!=document.getElementById('schemeId') &&  document.getElementById('schemeId').value == -1){
 
-                        document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.schemeId.errormessage" />'+ '<br>';
+                        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
                         valid=false;
                  }
                 
-            </s:if>
-            <s:if test="%{isFieldMandatory('subscheme')}"> 
+            </c:if>
+            <c:if test="%{isFieldMandatory('subscheme')}"> 
                  if(null!= document.getElementById('subschemeId') && document.getElementById('subschemeId').value == -1){
 
-                        document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.subschemeId.errormessage" />'+ '<br>';
+                        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
                         valid=false;
                  }
                 
-            </s:if>
-            <s:if test="%{isFieldMandatory('functionary')}"> 
+            </c:if>
+            <c:if test="%{isFieldMandatory('functionary')}"> 
                  if(null!=document.getElementById('receiptMisc.idFunctionary.id') &&  document.getElementById('receiptMisc.idFunctionary.id').value == -1){
 
-                        document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.functionarycode.errormessage" />'+ '<br>';
+                        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
                         valid=false;
                  }
                  
-            </s:if>
-            <s:if test="%{isFieldMandatory('fundsource')}"> 
+            </c:if>
+            <c:if test="%{isFieldMandatory('fundsource')}"> 
                  if(null !=document.getElementById('receiptMisc.fundsource.id') &&  document.getElementById('receiptMisc.fundsource.id').value == -1){
 
-                        document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.fundsourcecode.errormessage" />'+ '<br>';
+                        document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
                         valid=false;
                 
                 }
-            </s:if>
-            <s:if test="%{isFieldMandatory('function')}">                     
+            </c:if>
+            <c:if test="%{isFieldMandatory('function')}">                     
 			 if(null!= document.getElementById('functionId') && document.getElementById('functionId').value == -1){
-				 document.getElementById("receipt_error_area").innerHTML+='<s:text name="miscreceipt.functioncode.errormessage" />'+ '<br>';                                
+				 document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';                                
 				valid=false;
 			 }            
-			</s:if>
+			</c:if>
 
             if(null != document.getElementById('serviceCategoryid') && document.getElementById('serviceCategoryid').value == -1){
 
-                document.getElementById("receipt_error_area").innerHTML+='<s:text name="error.select.service.category" />'+ "<br>";
+                document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
                 valid=false;
             }
             if(null != document.getElementById('serviceId') && document.getElementById('serviceId').value == -1){
 
-                document.getElementById("receipt_error_area").innerHTML+='<s:text name="error.select.service.type" />'+ "<br>";
+                document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
                 valid=false;
             }
             
@@ -472,22 +474,22 @@ var totaldbamt=0,totalcramt=0;
             var record = this.getRecord(target);
             var column = this.getColumn(target);
         });
-        <s:iterator value="billCreditDetailslist" status="stat">
+        <c:forEach value="billCreditDetailslist" status="stat">
                 billCreditDetailsTable.addRow({SlNo:billCreditDetailsTable.getRecordSet().getLength()+1,
-                    "glcodeid":'<s:property value="glcodeIdDetail"/>',
-                    "accounthead":'<s:property value="accounthead"/>',
-                    "creditamount":'<s:property value="getText(\'format.amount\',{creditAmountDetail})"/>',
-                    "amounttype":'<s:property value="amountType"/>'
+                    "glcodeid":'${glcodeIdDetail}',
+                    "accounthead":'${accounthead}',
+                    "creditamount":'${getText(\'format.amount\',{creditAmountDetail})}',
+                    "amounttype":'${amountType}'
                 });
-                var index = '<s:property value="#stat.index"/>';
-                updateGridMisc(VOUCHERCREDITDETAILLIST,'glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-                updateGridMisc(VOUCHERCREDITDETAILLIST,'accounthead',index,'<s:property value="accounthead"/>');
-                updateGridMisc(VOUCHERCREDITDETAILLIST,'creditAmountDetail',index,'<s:property value="getText(\'format.amount\',{creditAmountDetail})"/>');
-                //updateGridMisc(VOUCHERCREDITDETAILLIST,'isdebit',index,'<s:property value="isDebit"/>');
-                updateSpanMisc(VOUCHERCREDITDETAILLIST,'amounttype',index,'<s:property value="amountType"/>');
-                totalcramt = totalcramt+parseInt('<s:property value="getText(\'format.amount\',{creditAmountDetail})"/>');
+                var index = '${#stat.index}';
+                updateGridMisc(VOUCHERCREDITDETAILLIST,'glcodeIdDetail',index,'${glcodeIdDetail}');
+                updateGridMisc(VOUCHERCREDITDETAILLIST,'accounthead',index,'${accounthead}');
+                updateGridMisc(VOUCHERCREDITDETAILLIST,'creditAmountDetail',index,'${getText(\'format.amount\',{creditAmountDetail})}');
+                //updateGridMisc(VOUCHERCREDITDETAILLIST,'isdebit',index,'${isDebit}');
+                updateSpanMisc(VOUCHERCREDITDETAILLIST,'amounttype',index,'${amountType}');
+                totalcramt = totalcramt+parseInt('${getText(\'format.amount\',{creditAmountDetail})}');
                 updateAccountTableIndex();  
-            </s:iterator>
+            </c:forEach>
                 
     
         var tfoot = billCreditDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -562,25 +564,25 @@ var totaldbamt=0,totalcramt=0;
             
              
         });
-            <s:iterator value="billRebateDetailslist" status="stat">
+            <c:forEach value="billRebateDetailslist" status="stat">
             rebateDetailsTable.addRow({SlNo:rebateDetailsTable.getRecordSet().getLength()+1,
-                    "functionid":'<s:property value="functionIdDetail"/>',
-                    "function":'<s:property value="functionDetail"/>',
-                    "glcodeid":'<s:property value="glcodeIdDetail"/>',
-                    "glcode":'<s:property value="glcodeDetail"/>',
-                    "accounthead":'<s:property value="accounthead"/>',
-                    "debitamount":'<s:property value="%{debitAmountDetail}"/>'
+                    "functionid":'${functionIdDetail}',
+                    "function":'${functionDetail}',
+                    "glcodeid":'${glcodeIdDetail}',
+                    "glcode":'${glcodeDetail}',
+                    "accounthead":'${accounthead}',
+                    "debitamount":'${%{debitAmountDetail}}'
                 });
-        var index = '<s:property value="#stat.index"/>';
-                updateGridMisc(VOUCHERREBATEDETAILLIST,'functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-                updateGridMisc(VOUCHERREBATEDETAILLIST,'functionDetail',index,'<s:property value="functionDetail"/>');
-                updateGridMisc(VOUCHERREBATEDETAILLIST,'glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-                updateGridMisc(VOUCHERREBATEDETAILLIST,'glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-                updateGridMisc(VOUCHERREBATEDETAILLIST,'accounthead',index,'<s:property value="accounthead"/>');
-                updateGridMisc(VOUCHERREBATEDETAILLIST,'debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
-                totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
+        var index = '${#stat.index}';
+                updateGridMisc(VOUCHERREBATEDETAILLIST,'functionIdDetail',index,'${functionIdDetail}');
+                updateGridMisc(VOUCHERREBATEDETAILLIST,'functionDetail',index,'${functionDetail}');
+                updateGridMisc(VOUCHERREBATEDETAILLIST,'glcodeIdDetail',index,'${glcodeIdDetail}');
+                updateGridMisc(VOUCHERREBATEDETAILLIST,'glcodeDetail',index,'${glcodeDetail}');
+                updateGridMisc(VOUCHERREBATEDETAILLIST,'accounthead',index,'${accounthead}');
+                updateGridMisc(VOUCHERREBATEDETAILLIST,'debitAmountDetail',index,'${debitAmountDetail}');
+                totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
                 updateRebateDetailTableIndex();
-        </s:iterator>
+        </c:forEach>
                 
     
         var tfoot = rebateDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -617,17 +619,17 @@ var totaldbamt=0,totalcramt=0;
     
     
     var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-    <s:iterator value="dropdownData.glcodeList">
-        glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-    </s:iterator>
+    <c:forEach value="dropdownData.glcodeList">
+        glcodeOptions.push({label:'${glcode}', value:'${id}'})
+    </c:forEach>
     var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-    <s:iterator value="dropdownData.detailTypeList">
-        detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-    </s:iterator>
+    <c:forEach value="dropdownData.detailTypeList">
+        detailtypeOptions.push({label:'${name}', value:'${id}'})
+    </c:forEach>
     var detailCodeOptions=[{label:"--- Select ---", value:"0"}];
-    <s:iterator value="dropdownData.detailCodeList">
-        detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-    </s:iterator>
+    <c:forEach value="dropdownData.detailCodeList">
+        detailtypeOptions.push({label:'${name}', value:'${id}'})
+    </c:forEach>
     var makeSubLedgerTable = function() {
         var subledgerColumns = [ 
             {key:"glcode",hidden:true, formatter:createSLTextFieldFormatter(SUBLEDGERLIST,".subledgerCode","hidden")},
@@ -665,27 +667,27 @@ var totaldbamt=0,totalcramt=0;
                 }
             }        
         });
-        <s:iterator value="subLedgerlist" status="stat">
+        <c:forEach value="subLedgerlist" status="stat">
                 subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-                    "glcode":'<s:property value="subledgerCode"/>',
-                    "glcode.id":'<s:property value="glcode.id"/>',
-                    "detailType.id":'<s:property value="detailType.id"/>',
-                    "detailTypeName":'<s:property value="detailTypeName"/>',
-                    "detailCode":'<s:property value="detailCode"/>',
-                    "detailKeyId":'<s:property value="detailKey"/>',
-                    "detailKey":'<s:property value="detailKey"/>',
-                    "debitAmount":'<s:property value="%{debitAmount}"/>',
-                    "creditAmount":'<s:property value="%{creditAmount}"/>'
+                    "glcode":'${subledgerCode}',
+                    "glcode.id":'${glcode.id}',
+                    "detailType.id":'${detailType.id}',
+                    "detailTypeName":'${detailTypeName}',
+                    "detailCode":'${detailCode}',
+                    "detailKeyId":'${detailKey}',
+                    "detailKey":'${detailKey}',
+                    "debitAmount":'${%{debitAmount}}',
+                    "creditAmount":'${%{creditAmount}}'
                 });
-                var index = '<s:property value="#stat.index"/>';
-                updateGridSLDropdown('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
-                updateGridSLDropdown('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
-                updateSLGrid('detailCode',index,'<s:property value="detailCode"/>');
-                updateSLGrid('detailKeyId',index,'<s:property value="detailKeyId"/>');
-                updateSLGrid('detailKey',index,'<s:property value="detailKey"/>');
-                updateSLGrid('amount',index,'<s:property value="amount"/>');
+                var index = '${#stat.index}';
+                updateGridSLDropdown('glcode.id',index,'${glcode.id}','${subledgerCode}');
+                updateGridSLDropdown('detailType.id',index,'${detailType.id}','${detailTypeName}');
+                updateSLGrid('detailCode',index,'${detailCode}');
+                updateSLGrid('detailKeyId',index,'${detailKeyId}');
+                updateSLGrid('detailKey',index,'${detailKey}');
+                updateSLGrid('amount',index,'${amount}');
                 updateSLTableIndex();
-            </s:iterator>
+            </c:forEach>
         
     }
     
@@ -701,19 +703,19 @@ var totaldbamt=0,totalcramt=0;
         if(selected == -1){
 			return;
         }
-        <s:iterator value="serviceCategoryNames" var="obj">
-        var serTypeKey = '<s:property value="#obj.key"/>';
-        var serTypeValue = '<s:property value="serviceTypeMap[#obj.key]"/>';
+        <c:forEach value="serviceCategoryNames" var="obj">
+        var serTypeKey = '${#obj.key}';
+        var serTypeValue = '${serviceTypeMap[#obj.key]}';
         if(selected == serTypeKey && serTypeValue != ''){
         	isServiceTypeExist = true;
         	addServiceTypeDropdown('serviceTable');
- 			<s:iterator value="serviceTypeMap[#obj.key]" status="stat" var="names">
- 				var stKey = '<s:property value="#names.key"/>';
- 				var stValue = '<s:property value="#names.value"/>';
- 				document.getElementById('serviceId').options[<s:property value="#stat.index+1"/>]= new Option(stValue,stKey);
-			</s:iterator>
+ 			<c:forEach value="serviceTypeMap[#obj.key]" status="stat" var="names">
+ 				var stKey = '${#names.key}';
+ 				var stValue = '${#names.value}';
+ 				document.getElementById('serviceId').options[${#stat.index+1}]= new Option(stValue,stKey);
+			</c:forEach>
         }
-		 </s:iterator>
+		 </c:forEach>
 		 if(!isServiceTypeExist){
 			 loadFinDetails(this);
 		 }
@@ -727,7 +729,7 @@ var totaldbamt=0,totalcramt=0;
         cell1.width="45%";
         cell2.className='bluebox';
         cell2.width="50%";
-        cell1.innerHTML = '<s:text name="miscreceipt.service" /><span class="mandatory"/>';
+        cell1.innerHTML = '<!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/>';
         cell2.innerHTML = '<select name="serviceId" id="serviceId" onchange="loadFinDetails(this)"/>';
 		document.getElementById('serviceId').options.length=0;
 		document.getElementById('serviceId').options[0]= new Option('--------Choose--------','0');
@@ -743,44 +745,44 @@ var totaldbamt=0,totalcramt=0;
  
      <tr>
           <td width="4%" class="bluebox">&nbsp;</td>
-         <td width="21%" class="bluebox"><s:text name="viewReceipt.receiptdate" /><span class="mandatory"/></td>
-                  <s:date name="voucherDate" var="cdFormat" format="dd/MM/yyyy"/>
+         <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/></td>
+                  <!-- TODO: Manual migration required for custom Struts tag -->
           <td width="24%" class="bluebox">
-                <s:textfield id="voucherDate" name="voucherDate" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"  onblur="validateVoucherDate(this)" data-inputmask="'mask': 'd/m/y'"/>
+                <form:input id="voucherDate" path="voucherDate" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"  onblur="validateVoucherDate(this)" data-inputmask="'mask': 'd/m/y'"/>
                 <div class="highlight2" style="width:80px">DD/MM/YYYY</div>             
           </td>
-            <td width="21%" class="bluebox"><s:text name="challan.narration"/></td>
-		    <td width="24%" class="bluebox"><s:textarea name="referenceDesc" id="referenceDesc" value="%{referenceDesc}" cols="18" rows="1" maxlength="125" onkeyup="return ismaxlength(this)"/></td>
+            <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		    <td width="24%" class="bluebox"><form:textarea path="referenceDesc" id="referenceDesc" value="%{referenceDesc}" cols="18" rows="1" maxlength="125" onkeyup="return ismaxlength(this)"/></td>
           </tr>
 	       <tr> <td width="4%" class="bluebox2">&nbsp;</td>
-		   <td class="bluebox" width="21%"><s:text name="billreceipt.counter.paidby"/><span class="mandatory1">*</span></td>
-		   <td class="bluebox"><s:textfield label="paidBy" id="paidBy" maxlength="64" name="paidBy" value="%{payeeName}" /></td>
-		   <td width="21%" class="bluebox2"><s:text name="challan.payeeAddress"/></td>
-		   <td width="24%" class="bluebox2"><s:textarea name="payeeAddress" id="payeeAddress" value="%{payeeAddress}" cols="18" rows="1" maxlength="255" onkeyup="return ismaxlength(this)"/></td>
+		   <td class="bluebox" width="21%"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+		   <td class="bluebox"><form:input label="paidBy" id="paidBy" maxlength="64" path="paidBy" value="%{payeeName}" /></td>
+		   <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		   <td width="24%" class="bluebox2"><form:textarea path="payeeAddress" id="payeeAddress" value="%{payeeAddress}" cols="18" rows="1" maxlength="255" onkeyup="return ismaxlength(this)"/></td>
 	    </tr>
 	  <tr> 
-           <s:if test="%{shouldShowHeaderField('field')}">
-           <td width="21%" class="bluebox"><s:text name="miscreceipt.field"/><s:if test="%{isFieldMandatory('field')}"><span class="bluebox"><span class="mandatory"/></s:if></td>
-          <td width="24%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="boundaryId" id="boundaryId" cssClass="selectwk" list="dropdownData.fieldList" listKey="id" listValue="name"  /> </td>
-            </s:if>
-           <s:else>
+           <c:if test="%{shouldShowHeaderField('field')}">
+           <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('field')}"><span class="bluebox"><span class="mandatory"/></c:if></td>
+          <td width="24%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="boundaryId" id="boundaryId" cssClass="selectwk" list="dropdownData.fieldList" listKey="id" listValue="name"  /> </td>
+            </c:if>
+           <c:otherwise>
             <td colspan=2 class="bluebox"></td>
             </s:else>
          
-           <s:if test="%{shouldShowHeaderField('vouchernumber')}">
-           <td width="21%" class="bluebox"><s:text name="miscreceipt.voucher.number"/><span class="mandatory"/></td>
-        <td width="30%" class="bluebox"><s:textfield name="voucherNum" id="voucherNum" maxlength="16"/></td>
-        </s:if>
-        <s:else>
+           <c:if test="%{shouldShowHeaderField('vouchernumber')}">
+           <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/></td>
+        <td width="30%" class="bluebox"><form:input path="voucherNum" id="voucherNum" maxlength="16"/></td>
+        </c:if>
+        <c:otherwise>
         <td colspan=2 class="bluebox"></td>
         </s:else>
         
         <tr>
         <td width="4%" class="bluebox">&nbsp;</td>
          
-        <td width="21%" class="bluebox"><s:text name="miscreceipt.service.category" /><span class="mandatory"/> </td>
+        <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/> </td>
         <td width="30%" class="bluebox">
-        	<s:select headerKey="-1" headerValue="----Choose----" name="serviceCategory" id="serviceCategoryid" cssClass="selectwk" list="serviceCategoryNames" value="%{service.serviceCategory}" onChange="populateServiceType(this.value);" />
+        	<form:select headerKey="-1" headerValue="----Choose----" path="serviceCategory" id="serviceCategoryid" cssClass="selectwk" list="serviceCategoryNames" value="%{service.serviceCategory}" onChange="populateServiceType(this.value);" />
        	</td>
        	<td class="bluebox" colspan='2'>
        	<table width="100%" id='serviceTable'>
@@ -790,8 +792,8 @@ var totaldbamt=0,totalcramt=0;
     </table>
   </td></tr>
   <tr><td>
-      <s:hidden label="misctotalAmount" id="misctotalAmount"  name="misctotalAmount" value="0"/>
-    <div class="subheadsmallnew"><span class="subheadnew"><s:text name="billreceipt.billdetails.Credit"/></span></div>
+      <!-- TODO: Manual migration required for custom Struts tag -->
+    <div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
     
     <div class="yui-skin-sam" align="center">
        <div id="creditDetailTable"></div>
@@ -805,7 +807,7 @@ var totaldbamt=0,totalcramt=0;
      <!-- <div id="codescontainer"></div>
      <br/>
      <div id="rebateDetails">
-    <div class="subheadsmallnew"><span class="subheadnew"><s:text name="billreceipt.billdetails.Rebate"/></span></div>
+    <div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
     
     <div class="yui-skin-sam" align="center">
        <div id="rebateDetailTable"></div>
@@ -818,7 +820,7 @@ var totaldbamt=0,totalcramt=0;
      <div id="rebatecodescontainer"></div>
      <br/>
      </div>
-     <div class="subheadsmallnew"><span class="subheadnew"><s:text name="billreceipt.billdetails.SubLedger"/></span></div>
+     <div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
     
         
         <div class="yui-skin-sam" align="center">

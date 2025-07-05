@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -130,33 +132,33 @@ return true;
 	</jsp:include>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="loan.outstanding.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 	</div>
 	<div style="color: red" id="errors">
-		<s:actionmessage theme="simple" />
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<s:form name="gantContribution" action="loanGrantReport" theme="simple">
+	<form:form name="gantContribution" action="loanGrantReport" theme="simple">
 		<table align="center" width="100%" cellpadding="0" cellspacing="0">
 			<tr>
-				<td class="bluebox"><s:text name="voucher.fund" /> <s:if
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 						test="%{defaultFundId==-1}">
 						<span class="mandatory">*</span>
-					</s:if></td>
-				<td class="bluebox"><s:select name="fundId" id="fundId"
+					</c:if></td>
+				<td class="bluebox"><form:select path="fundId" id="fundId"
 						list="dropdownData.fundList" listKey="id" listValue="name"
 						headerKey="-1" headerValue="----Choose----" value="%{fundId.id}" /></td>
-				<td class="bluebox"><s:text name="funding.agency" /></td>
-				<td class="bluebox"><s:select name="agencyId" id="agencyId"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select path="agencyId" id="agencyId"
 						list="dropdownData.agencyList" listKey="id" listValue="name"
 						headerKey="-1" headerValue="----Choose----" /></td>
 			</tr>
 			<tr>
-				<td class="greybox"><s:text name="voucher.scheme" /> <span
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 					class="mandatory">*</span></td>
-				<s:hidden name="schemeId" id="schemeId" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<td class="greybox"><input type="text"
 					name="subScheme.scheme.name" id="subScheme.scheme.name"
 					autocomplete="off" onFocus="autocompleteSchemeBy20(this);"
@@ -188,12 +190,12 @@ return true;
 
 			</tr>
 		</table>
-		<s:if test="%{defaultFundId!=-1}">
+		<c:if test="%{defaultFundId!=-1}">
 			<script>
-      document.getElementById("fundId").value='<s:property value="defaultFundId"/>';
+      document.getElementById("fundId").value='${defaultFundId}';
       </script>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 
 </body>
 </html>

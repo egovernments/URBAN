@@ -79,4 +79,116 @@ public class PaymentSearchCriteria {
     private Long toDate;
     private Integer offset;
     private Integer limit;
+    
+    // Manual getter and setter methods since Lombok is not working properly
+    public Set<String> getIds() { return ids; }
+    public void setIds(Set<String> ids) { this.ids = ids; }
+    
+    public Set<String> getBillIds() { return billIds; }
+    public void setBillIds(Set<String> billIds) { this.billIds = billIds; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    public Set<String> getReceiptNumbers() { return receiptNumbers; }
+    public void setReceiptNumbers(Set<String> receiptNumbers) { this.receiptNumbers = receiptNumbers; }
+    
+    public Set<String> getStatus() { return status; }
+    public void setStatus(Set<String> status) { this.status = status; }
+    
+    public Set<String> getInstrumentStatus() { return instrumentStatus; }
+    public void setInstrumentStatus(Set<String> instrumentStatus) { this.instrumentStatus = instrumentStatus; }
+    
+    public Set<String> getPaymentModes() { return paymentModes; }
+    public void setPaymentModes(Set<String> paymentModes) { this.paymentModes = paymentModes; }
+    
+    public List<String> getPayerIds() { return payerIds; }
+    public void setPayerIds(List<String> payerIds) { this.payerIds = payerIds; }
+    
+    public Set<String> getConsumerCodes() { return consumerCodes; }
+    public void setConsumerCodes(Set<String> consumerCodes) { this.consumerCodes = consumerCodes; }
+    
+    public Set<String> getBusinessServices() { return businessServices; }
+    public void setBusinessServices(Set<String> businessServices) { this.businessServices = businessServices; }
+    
+    public String getTransactionNumber() { return transactionNumber; }
+    public void setTransactionNumber(String transactionNumber) { this.transactionNumber = transactionNumber; }
+    
+    public String getMobileNumber() { return mobileNumber; }
+    public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
+    
+    public Long getFromDate() { return fromDate; }
+    public void setFromDate(Long fromDate) { this.fromDate = fromDate; }
+    
+    public Long getToDate() { return toDate; }
+    public void setToDate(Long toDate) { this.toDate = toDate; }
+    
+    public Integer getOffset() { return offset; }
+    public void setOffset(Integer offset) { this.offset = offset; }
+    
+    public Integer getLimit() { return limit; }
+    public void setLimit(Integer limit) { this.limit = limit; }
+    
+    // Builder method
+    public static PaymentSearchCriteriaBuilder builder() {
+        return new PaymentSearchCriteriaBuilder();
+    }
+    
+    // Builder class
+    public static class PaymentSearchCriteriaBuilder {
+        private Set<String> ids;
+        private Set<String> billIds;
+        private String tenantId;
+        private Set<String> receiptNumbers;
+        private Set<String> status;
+        private Set<String> instrumentStatus;
+        private Set<String> paymentModes;
+        private List<String> payerIds;
+        private Set<String> consumerCodes;
+        private Set<String> businessServices;
+        private String transactionNumber;
+        private String mobileNumber;
+        private Long fromDate;
+        private Long toDate;
+        private Integer offset;
+        private Integer limit;
+        
+        public PaymentSearchCriteriaBuilder ids(Set<String> ids) { this.ids = ids; return this; }
+        public PaymentSearchCriteriaBuilder billIds(Set<String> billIds) { this.billIds = billIds; return this; }
+        public PaymentSearchCriteriaBuilder tenantId(String tenantId) { this.tenantId = tenantId; return this; }
+        public PaymentSearchCriteriaBuilder receiptNumbers(Set<String> receiptNumbers) { this.receiptNumbers = receiptNumbers; return this; }
+        public PaymentSearchCriteriaBuilder status(Set<String> status) { this.status = status; return this; }
+        public PaymentSearchCriteriaBuilder instrumentStatus(Set<String> instrumentStatus) { this.instrumentStatus = instrumentStatus; return this; }
+        public PaymentSearchCriteriaBuilder paymentModes(Set<String> paymentModes) { this.paymentModes = paymentModes; return this; }
+        public PaymentSearchCriteriaBuilder payerIds(List<String> payerIds) { this.payerIds = payerIds; return this; }
+        public PaymentSearchCriteriaBuilder consumerCodes(Set<String> consumerCodes) { this.consumerCodes = consumerCodes; return this; }
+        public PaymentSearchCriteriaBuilder businessServices(Set<String> businessServices) { this.businessServices = businessServices; return this; }
+        public PaymentSearchCriteriaBuilder transactionNumber(String transactionNumber) { this.transactionNumber = transactionNumber; return this; }
+        public PaymentSearchCriteriaBuilder mobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; return this; }
+        public PaymentSearchCriteriaBuilder fromDate(Long fromDate) { this.fromDate = fromDate; return this; }
+        public PaymentSearchCriteriaBuilder toDate(Long toDate) { this.toDate = toDate; return this; }
+        public PaymentSearchCriteriaBuilder offset(Integer offset) { this.offset = offset; return this; }
+        public PaymentSearchCriteriaBuilder limit(Integer limit) { this.limit = limit; return this; }
+        
+        public PaymentSearchCriteria build() {
+            PaymentSearchCriteria criteria = new PaymentSearchCriteria();
+            criteria.ids = this.ids;
+            criteria.billIds = this.billIds;
+            criteria.tenantId = this.tenantId;
+            criteria.receiptNumbers = this.receiptNumbers;
+            criteria.status = this.status;
+            criteria.instrumentStatus = this.instrumentStatus;
+            criteria.paymentModes = this.paymentModes;
+            criteria.payerIds = this.payerIds;
+            criteria.consumerCodes = this.consumerCodes;
+            criteria.businessServices = this.businessServices;
+            criteria.transactionNumber = this.transactionNumber;
+            criteria.mobileNumber = this.mobileNumber;
+            criteria.fromDate = this.fromDate;
+            criteria.toDate = this.toDate;
+            criteria.offset = this.offset;
+            criteria.limit = this.limit;
+            return criteria;
+        }
+    }
 }

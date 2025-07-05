@@ -97,20 +97,31 @@
         <repository>
             <id>repo.egovernments.org</id>
             <name>eGov ERP Releases Repository</name>
-            <url>http://repo.egovernments.org/nexus/content/repositories/releases/</url>
+            <url>https://nexus-repo.digit.org/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>repo.egovernments.org</id>
             <name>eGov ERP Snapshots Repository</name>
-            <url>http://repo.egovernments.org/nexus/content/repositories/snapshots/</url>
+            <url>https://nexus-repo.digit.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
     <repositories>
         <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>repo.egovernments.org</id>
             <name>eGov Public Repository Group</name>
-            <url>http://repo.egovernments.org/nexus/content/groups/public/</url>
+            <url>https://nexus-repo.digit.org/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -133,7 +144,7 @@
         <pluginRepository>
             <id>repo.egovernments.org</id>
             <name>eGov Public Repository Group</name>
-            <url>http://repo.egovernments.org/nexus/content/groups/public/</url>
+            <url>https://nexus-repo.digit.org/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -219,7 +230,7 @@
         <jython-version>2.7.1b3</jython-version>
         <flyway-core-version>9.22.3</flyway-core-version>
         <junit-version>4.12</junit-version>
-        <mockito-all-version>1.10.19</mockito-all-version>
+        <mockito-version>5.8.0</mockito-version>
         <springockito-version>1.0.9</springockito-version>
         <easymock-version>3.5</easymock-version>
         <easymockclassextension-version>3.2</easymockclassextension-version>
@@ -268,6 +279,11 @@
 
     <dependencyManagement>
         <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.3.31</version>
+    </dependency>
             <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
@@ -373,38 +389,7 @@
             </dependency>
             <!-- SERVLET SPEC JBOSS DEPENDENCIES END -->
 
-            <!-- STRUTS2 DEPENDENCIES START -->
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-core</artifactId>
-                <version>${struts2-version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.javassist</groupId>
-                        <artifactId>javassist</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-json-plugin</artifactId>
-                <version>${struts2-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-spring-plugin</artifactId>
-                <version>${struts2-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-convention-plugin</artifactId>
-                <version>${struts2-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jgeppert.struts2.jquery</groupId>
-                <artifactId>struts2-jquery-plugin</artifactId>
-                <version>${struts2-jquery-version}</version>
-            </dependency>
+              
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
@@ -751,12 +736,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-email</artifactId>
                 <version>${commons-email-version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.activation</groupId>
-                        <artifactId>activation</artifactId>
-                    </exclusion>
-                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
             </dependency>
             <dependency>
                 <groupId>commons-collections</groupId>
@@ -931,8 +915,8 @@
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>${mockito-all-version}</version>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito-version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -1077,6 +1061,11 @@
     </dependencyManagement>
 
     <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.3.31</version>
+    </dependency>
         <!-- SERVLET SPEC JBOSS DEPENDENCIES START -->
         <dependency>
             <groupId>org.jboss.spec.javax.servlet</groupId>
@@ -1175,10 +1164,22 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -1324,7 +1325,7 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.kubek2k</groupId>
@@ -1413,10 +1414,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${mvn.compiler.plugin.version}</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
+                    <release>17</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -1513,7 +1522,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${mvn.surefire.plugin.version}</version>
+                <version>3.2.5</version>
+                <configuration>
+                    <argLine>-Xmx1024m --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED</argLine>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.flywaydb</groupId>

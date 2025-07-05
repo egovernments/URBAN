@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,56 +55,56 @@
 
 <html>
 <head>
-<title><s:text name="contract.search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="contract.search" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="contractForm" action="contractType" theme="simple">
-			<s:hidden name="showMode" />
+		<form:form name="contractForm" action="contractType" theme="simple">
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox" width="20%"><strong><s:text
 								name="contract.code" /></strong></td>
-					<td class="bluebox"><s:textfield id="code" name="code" /></td>
+					<td class="bluebox"><form:input id="code" path="code" /></td>
 					<td class="bluebox" width="20%"><strong><s:text
 								name="contract.parent" /></strong></td>
-					<td class="bluebox"><s:select
+					<td class="bluebox"><form:select
 							list="dropdownData.typeOfWorkList" id="typeOfWork.parentid.id"
 							listKey="id" listValue="code" name="typeOfWork.parentid.id"
 							headerKey="" headerValue="---- Choose ----">
-						</s:select></td>
+						</form:select></td>
 				</tr>
 				<tr>
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox" width="20%"><strong><s:text
 								name="contract.desc" /></strong></td>
-					<td class="bluebox"><s:textarea name="description"
+					<td class="bluebox"><form:textarea path="description"
 							id="description" rows="3" cols="60" /></td>
 					<td class="bluebox" width="20%"><strong><s:text
 								name="contract.applTo" /></strong></td>
-					<td class="bluebox"><s:select
+					<td class="bluebox"><form:select
 							list="dropdownData.partyTypeList" id="typeOfWork.egPartytype.id"
 							listKey="id" listValue="code" name="typeOfWork.egPartytype.id"
 							headerKey="" headerValue="---- Choose ----">
-						</s:select></td>
+						</form:select></td>
 				</tr>
 			</table>
 
 			<div class="buttonbottom">
-				<s:submit method="search" value="Search" cssClass="buttonsubmit" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="submit" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 	</div>
-	<s:if test="%{typeOfWorkList.size!=0}">
+	<c:if test="%{typeOfWorkList.size!=0}">
 		<table width="100%" border="0" align="center" cellpadding="0"
 			cellspacing="0" class="tablebottom">
 
@@ -111,32 +113,32 @@
 				<th class="bluebgheadtd" style="width: 2%; text-align: center"
 					align="center">Sl No.</th>
 				<th class="bluebgheadtd" style="width: 4%; text-align: center"
-					align="center"><s:text name="contract.code" /></th>
+					align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				<th class="bluebgheadtd" style="width: 4%; text-align: center"
-					align="center"><s:text name="contract.parent" /></th>
+					align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				<th class="bluebgheadtd" style="width: 8%; text-align: center"
-					align="center"><s:text name="contract.desc" /></th>
+					align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				<th class="bluebgheadtd" style="width: 8%; text-align: center"
-					align="center"><s:text name="contract.applTo" /></th>
+					align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 
 			</tr>
 			<c:set var="trclass" value="greybox" />
-			<s:iterator var="tow" value="typeOfWorkList" status="t">
+			<c:forEach var="tow" value="typeOfWorkList" status="t">
 				<tr>
 
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="#t.index+1" /></td>
+						align="center">${#t.index+1}</td>
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
 						align="center"><a href="#"
-						onclick="urlLoad('<s:property value="%{id}" />','<s:property value="%{showMode}" />');"
-						id="sourceLink" /> <s:label value="%{code}" /> </a></td>
+						onclick="urlLoad('${%{id}}','${%{showMode}}');"
+						id="sourceLink" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="parentid.code" /></td>
+						align="center">${parentid.code}</td>
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="description" /></td>
+						align="center">${description}</td>
 
 					<td class="<c:out value="${trclass}"/>" style="text-align: center"
-						align="center"><s:property value="egPartytype.code" /></td>
+						align="center">${egPartytype.code}</td>
 					<c:choose>
 						<c:when test="${trclass=='greybox'}">
 							<c:set var="trclass" value="bluebox" />
@@ -146,11 +148,11 @@
 						</c:when>
 					</c:choose>
 				</tr>
-			</s:iterator>
+			</c:forEach>
 
 		</table>
-	</s:if>
-	<s:if test="%{typeOfWorkList.size==0}">
+	</c:if>
+	<c:if test="%{typeOfWorkList.size==0}">
 		<div id="msgdiv" style="display: block">
 			<table align="center" class="tablebottom" width="80%">
 				<tr>
@@ -159,9 +161,9 @@
 				</tr>
 			</table>
 		</div>
-	</s:if>
+	</c:if>
 
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 	function urlLoad(id,showMode) {
 		if(showMode=='edit')

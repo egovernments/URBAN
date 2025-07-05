@@ -95,7 +95,7 @@ public class AjaxWorkFlowController {
         List<Designation> designationList = designationService.getDesignationsByNames(
                 customizedWorkFlowService.getNextDesignations(type,
                         departmentRule, null, additionalRule, currentState,
-                        pendingAction, new Date()));
+                        new Date()));
         if (designationList.isEmpty())
             designationList = designationService.getAllDesignationByDepartment(approvalDepartment, new Date());
         return designationList;
@@ -113,7 +113,7 @@ public class AjaxWorkFlowController {
         return designationService.getDesignationsByNames(
                 customizedWorkFlowService.getNextDesignations(type,
                         departmentRule, null, additionalRule, currentState,
-                        pendingAction, new Date()));
+                        new Date()));
     }
     
 
@@ -129,7 +129,7 @@ public class AjaxWorkFlowController {
                 .getDesignationsByActiveAssignmentAndDesignationNames(
                         customizedWorkFlowService.getNextDesignationsForActiveAssignments(type,
                                 departmentRule, null, additionalRule, currentState,
-                                pendingAction, new Date()));
+                                new Date()));
         if (designationList.isEmpty())
             designationList = designationService.getAllDesignationByDepartment(approvalDepartment, new Date());
         return designationList;
@@ -148,7 +148,7 @@ public class AjaxWorkFlowController {
                 .getDesignationsByActiveAssignmentAndDesignationNames(
                         customizedWorkFlowService.getNextDesignationsForActiveAssignments(type,
                                 departmentRule, null, additionalRule, currentState,
-                                pendingAction, new Date()));
+                                new Date()));
 
     }
 
@@ -164,7 +164,7 @@ public class AjaxWorkFlowController {
         List<Designation> designationList = assignmentService
                 .getDesignationsByActiveAssignmentAndDesignationNames(customizedWorkFlowService.getNextDesignationsForActiveAssignments(type,
                         departmentRule, null, additionalRule, currentState,
-                        pendingAction, new Date(), currentDesignation));
+                        new Date(), currentDesignation));
         if (designationList.isEmpty())
             designationList = designationService.getAllDesignationByDepartment(approvalDepartment, new Date());
         return designationList;
@@ -184,7 +184,7 @@ public class AjaxWorkFlowController {
                 .getDesignationsByActiveAssignmentAndDesignationNames(
                         customizedWorkFlowService.getNextDesignationsForActiveAssignments(type,
                                 departmentRule, null, additionalRule, currentState,
-                                pendingAction, new Date(), currentDesignation));
+                                new Date(), currentDesignation));
 
     }
 
@@ -199,7 +199,7 @@ public class AjaxWorkFlowController {
 
         List<Designation> designationList = designationService.getDesignationsByNames(customizedWorkFlowService.getNextDesignations(type,
                 departmentRule, null, additionalRule, currentState,
-                pendingAction, new Date(), currentDesignation));
+                new Date(), currentDesignation));
         if (designationList.isEmpty())
             designationList = designationService.getAllDesignationByDepartment(approvalDepartment, new Date());
         return designationList;
@@ -217,7 +217,7 @@ public class AjaxWorkFlowController {
 
         return designationService.getDesignationsByNames(customizedWorkFlowService.getNextDesignations(type,
                 departmentRule, null, additionalRule, currentState,
-                pendingAction, new Date(), currentDesignation));
+                new Date(), currentDesignation));
 
     }
 
@@ -249,7 +249,7 @@ public class AjaxWorkFlowController {
         return designationService
                 .getDesignationsByNames(customizedWorkFlowService.getNextDesignations(type,
                         departmentRule, null, additionalRule, currentState,
-                        pendingAction, DateUtils.getDate(date, "yyyy-MM-dd"), currentDesignation));
+                        DateUtils.getDate(date, "yyyy-MM-dd"), currentDesignation));
 
     }
 

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <div class="buttonbottom">
 	<table border="0" width="100" cellspacing="0" align="center">
 		<tr>
-			<td><s:hidden name="button" id="button" /> <s:submit
+			<td><!-- TODO: Manual migration required for custom Struts tag --> <s:submit
 					cssClass="buttonsubmit" name="Save_New" id="Save_New" key="lbl.save"
 					onclick="document.getElementById('button').value='Save_New';return validate();"
 					method="create" /></td>
@@ -63,7 +65,7 @@
 					id="Save_Close" name="Save_Close" value="Save & Close"
 					onclick="document.getElementById('button').value='Save_Close';return validate();"
 					method="create" /></td> --%>
-			<td><input type="button" id="closeButton" value="<s:text name='lbl.close'/>"
+			<td><input type="button" id="closeButton" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				onclick="javascript:window.parent.postMessage('close','*');" class="button" /></td>
 		</tr>
 	</table>

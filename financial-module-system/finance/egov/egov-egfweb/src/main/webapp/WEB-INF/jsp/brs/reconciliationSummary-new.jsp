@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,13 +54,13 @@
 
 <html>
 <head>
-<title><s:text name="Reconciliation Summary" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 	
 		function validateBank(){
 		var bank = document.getElementById('bank').value;
 		if(bank == -1){
-			bootbox.alert("<s:text name='msg.please.select.bank'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		return true;
@@ -74,29 +76,29 @@
 	  
 	  if(bank== "")
 	  {
-		bootbox.alert("<s:text name='msg.please.select.bank'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 	  if(bankBranch== "")
 	  {
-		bootbox.alert("<s:text name='msg.please.select.bank.branch'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 	  if(bankAccount== "")
 	  {
-			bootbox.alert("<s:text name='msg.please.select.bank.account'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 
 	  if(amount=="")
 	  {
-		  bootbox.alert("<s:text name='msg.enter.bank.statement.balance'/>");
+		  bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		
 		if(stmtDate == "")
 		{
-			bootbox.alert("<s:text name='msg.enter.bank.statement.date'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		
@@ -130,13 +132,13 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="Reconciliation Summary" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form name="bankReconciliation" action="bankReconciliation"
+		<form:form name="bankReconciliation" action="bankReconciliation"
 			theme="simple">
 
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -145,21 +147,21 @@
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="bank" /> <span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
 					<egov:ajaxdropdown id="branchId" fields="['Text','Value']"
 						dropdownId="branchId"
 						url="/voucher/common-ajaxLoadBankBranchesByBank.action" />
-					<td class="bluebox"><s:select name="bankId" id="bankId"
+					<td class="bluebox"><form:select path="bankId" id="bankId"
 							list="dropdownData.bankList" listKey="id" listValue="name"
 							headerKey="" headerValue="%{getText('lbl.choose.options')}"
 							onchange="populatebranch(this);" /></td>
-					<td class="bluebox"><s:text name="bankbranch" /> <span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
 					<egov:ajaxdropdown id="accountId" fields="['Text','Value']"
 						dropdownId="accountId"
 						url="/voucher/common-ajaxLoadBankAccountsByBranch.action" />
-					<td class="bluebox"><s:select name="branchId" id="branchId"
+					<td class="bluebox"><form:select path="branchId" id="branchId"
 							list="dropdownData.branchList" listKey="id"
 							listValue="branchname" headerKey="" headerValue="%{getText('lbl.choose.options')}"
 							onchange="populateaccount(this);" /></td>
@@ -167,23 +169,23 @@
 				<tr>
 
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="bankaccount" /> <span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:select name="accountId" id="accountId"
+					<td class="bluebox"><form:select path="accountId" id="accountId"
 							list="dropdownData.accountList" listKey="id"
 							listValue="chartofaccounts.glcode+'-'+accountnumber" headerKey=""
 							headerValue="%{getText('lbl.choose.options')}" /></td>
-					<td class="bluebox"><s:text name="lbl.bank.statement.balance"/>:<span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:textfield name="bankStBalance"
+					<td class="bluebox"><form:input path="bankStBalance"
 							id="bankStBalance" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/></td>
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="lbl.bank.statement.date"/>:<span class="bluebox"><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span class="bluebox"><span
 							class="mandatory1">*</span></span></td>
-					<s:date name="bankStmtDate" format="dd/MM/yyyy" var="BSdate" />
-					<td class="greybox"><s:textfield id="bankStmtDate"
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:input id="bankStmtDate"
 							name="bankStmtDate" value="%{BSdate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -195,14 +197,14 @@
 	</div>
 	<div class="buttonbottom" style="padding-bottom: 10px;">
 
-		<input type="button" class="buttonsubmit" value='<s:text name="lbl.view.summary"/>'
+		<input type="button" class="buttonsubmit" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 			id="search" name="Search" onclick="return validateAndSubmit();" />
-		<input type="button" id="Close" value='<s:text name="lbl.close"/>'
+		<input type="button" id="Close" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 			onclick="javascript:window.close()" class="button" />
 	</div>
 
 
-	</s:form>
+	</form:form>
 
 </body>
 

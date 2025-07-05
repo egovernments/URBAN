@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,21 +56,21 @@
 <head>
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/fundFlow.js?rnd=${app_release_no}"></script>
-<title><s:text name="fundflowreport" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 
 <script type="text/javascript">
     function onloadFundFlow()
     {
-    <s:if test="%{mode=='edit'}">
+    <c:if test="%{mode=='edit'}">
        document.getElementById("search").name="method:beforeEdit";
-    </s:if>
-	<s:if test="receiptList!=null && receiptList.size()>0">
+    </c:if>
+	<c:if test="receiptList!=null && receiptList.size()>0">
     calculateFunds(document.getElementById('receiptList[0].openingBalance'));
-    </s:if>
-    <s:if test="paymentList!=null && paymentList.size()>0">
+    </c:if>
+    <c:if test="paymentList!=null && paymentList.size()>0">
     calculateFundsForPayment(document.getElementById('paymentList[0].openingBalance'));
-    </s:if>
+    </c:if>
     }
     function validateFundFlow()
     {
@@ -92,19 +94,19 @@
 </head>
 <body onload="onloadFundFlow()">
 	<div class="subheadnew">Fund Flow Analysis Report</div>
-	<s:form name="fundFlowReport" action="fundFlow" theme="simple">
+	<form:form name="fundFlowReport" action="fundFlow" theme="simple">
 		<%@include file="fundFlow-form.jsp"%>
 
-		<s:if
+		<c:if
 			test="(receiptList!=null && receiptList.size()>0) ||( paymentList!=null && paymentList.size()>0) ">
 
 
 			<div class="buttonbottom">
-				<s:submit value="Export Excel" method="exportXls" cssClass="button" />
-				<s:submit value="Export Pdf" method="exportPdf" cssClass="button" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 </body>
 </html>
 

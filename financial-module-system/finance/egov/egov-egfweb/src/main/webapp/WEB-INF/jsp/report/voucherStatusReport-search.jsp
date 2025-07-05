@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,20 +57,20 @@
 <html>
 <head>
 
-<title><s:text name="voucher.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <body onload="activeModeOfPayment()">
-	<s:form action="voucherStatusReport" name="voucherStatusReport"
+	<form:form action="voucherStatusReport" name="voucherStatusReport"
 		theme="simple">
 
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="voucher.title" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
@@ -79,21 +81,21 @@
 				<br />
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="greybox"><s:text name="voucher.type" /></td>
-					<td class="greybox"><s:select name="type" id="type"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="type" id="type"
 							list="dropdownData.typeList" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}"
 							onchange="loadVoucherNames(this.value);activeModeOfPayment()" /></td>
-					<td class="greybox"><s:text name="voucher.name" /></td>
-					<td class="greybox"><s:select name="name" id="name"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="name" id="name"
 							list="%{nameMap}" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
 
 				</tr>
 
 				<tr id="modeofpayment">
 					<td style="width: 5%"></td>
-					<td class="bluebox"><s:text name="voucher.modeOfPayment" /></td>
-					<td class="bluebox"><s:select name="modeOfPayment"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="modeOfPayment"
 							id="modeOfPayment" list="dropdownData.modeOfPaymentList"
 							headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
 					<td class="bluebox"></td>
@@ -101,20 +103,20 @@
 				</tr>
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="greybox"><s:text name="voucher.fromdate" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
-					<s:date name="fromDate" format="dd/MM/yyyy" var="tempFromDate" />
-					<td class="greybox"><s:textfield name="fromDate" id="fromDate"
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:input path="fromDate" id="fromDate"
 							maxlength="20"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							value="%{tempFromDate}" autocomplete="off"/><a
 						href="javascript:show_calendar('forms[0].fromDate');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a></td>
-					<td class="greybox"><s:text name="voucher.todate" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1">*</span></td>
-					 <s:date name="toDate" format="dd/MM/yyyy" var="tempToDate" />  
-					<td class="greybox"><s:textfield name="toDate" id="toDate"
+					 <!-- TODO: Manual migration required for custom Struts tag -->  
+					<td class="greybox"><form:input path="toDate" id="toDate"
 							maxlength="20"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							value="%{tempToDate}" autocomplete="off"/><a
@@ -124,8 +126,8 @@
 				</tr>
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="greybox"><s:text name="voucher.status" /></td>
-					<td class="greybox"><s:select name="status" id="status"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="status" id="status"
 							list="%{statusMap}" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 							value="%{status}" /></td>
 					<td class="greybox"></td>
@@ -137,14 +139,14 @@
 					onclick="return validateSearch();" />
 				<s:submit method="beforeSearch" key="lbl.reset" cssClass="button"
 					onclick="return resetAndSubmit();" />
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 
 			</div>
 
 
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<s:if test="%{pagedResults!=null}">
+				<c:if test="%{pagedResults!=null}">
 					<tr>
 						<td width="100%"><display:table name="pagedResults"
 								uid="currentRowObject" cellpadding="0" cellspacing="0"
@@ -156,45 +158,45 @@
 								</display:column>
 								<display:column title="Department Name"
 									style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.deptName}" />
+									${%{#attr.currentRowObject.deptName}}
 								</display:column>
 								<display:column title="Voucher Number"
 									style="text-align:center;">
 
 									<a href="#"
-										onclick="openVoucher('<s:property value='%{#attr.currentRowObject.id}'/>');"><s:property
+										onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->');"><s:property
 											value="%{#attr.currentRowObject.vouchernumber}" />
 								</display:column>
 
 								<display:column title="Voucher Type" style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.type}" />
+									${%{#attr.currentRowObject.type}}
 								</display:column>
 								<display:column title="Voucher Name" style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.name}" />
+									${%{#attr.currentRowObject.name}}
 								</display:column>
 								<display:column title="Voucher Date" style="text-align:center;">
 									<s:date name="%{#attr.currentRowObject.voucherdate}"
 										format="dd/MM/yyyy" />
 								</display:column>
 								<display:column title="Bank Account" style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.accountNumber}" />
+									${%{#attr.currentRowObject.accountNumber}}
 								</display:column>	
 								<display:column title="Source" style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.source}" />
+									${%{#attr.currentRowObject.source}}
 								</display:column>
 								<display:column title="Total Amount" style="text-align:right;">
-									<s:property value="%{#attr.currentRowObject.amount}" />
+									${%{#attr.currentRowObject.amount}}
 								</display:column>
 								<display:column title="Owner" style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.owner}" />
+									${%{#attr.currentRowObject.owner}}
 								</display:column>
 								<display:column title="Status" style="text-align:center;">
-									<s:property value="%{#attr.currentRowObject.status}" />
+									${%{#attr.currentRowObject.status}}
 								</display:column>
 
 							</display:table></td>
 					<tr>
-						<td><s:if test="%{#attr.currentRowObject.size!=0}">
+						<td><c:if test="%{#attr.currentRowObject.size!=0}">
 								<div id="exportButton" class="buttonbottom">
 									<input type="button" method="generatePdf" value="Save As Pdf"
 										Class="buttonsubmit" id="generatePdf"
@@ -203,10 +205,10 @@
 										Class="buttonsubmit" id="generateXls"
 										onclick="return generateXlsSubmit();" />
 								</div>
-							</s:if></td>
+							</c:if></td>
 					</tr>
 
-				</s:if>
+				</c:if>
 			</table>
 
 
@@ -222,18 +224,18 @@
 				document.getElementById('name').options.length=0;
 				document.getElementById('name').options[0]= new Option('--------Choose--------','0');
 				}
-		<s:iterator value="voucherTypes" var="obj">
-		  s='<s:property value="#obj"/>';
+		<c:forEach value="voucherTypes" var="obj">
+		  s='${#obj}';
 		 if(selected==s)
 		 {
 		document.getElementById('name').options.length=0;
 		document.getElementById('name').options[0]= new Option('--------Choose--------','0');
 		
-		 <s:iterator value="voucherNames[#obj]" status="stat" var="names">
-		 document.getElementById('name').options[<s:property value="#stat.index+1"/>]= new Option('<s:property value="#names"/>','<s:property value="#names"/>');
-		 </s:iterator>   
+		 <c:forEach value="voucherNames[#obj]" status="stat" var="names">
+		 document.getElementById('name').options[${#stat.index+1}]= new Option('${#names}','${#names}');
+		 </c:forEach>   
 		 }
-		 </s:iterator>
+		 </c:forEach>
 			  
 			
 		}
@@ -311,7 +313,7 @@
 		}
 		</script>
 		</div>
-	</s:form>
+	</form:form>
 
 </body>
 </html>

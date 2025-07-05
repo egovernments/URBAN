@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 <%@ include file="/includes/taglibs.jsp" %>
 <link rel="stylesheet" type="text/css" href="<egov:url path='/yui/assets/skins/sam/autocomplete.css'/>" />
 <head>
-	<title><s:text name="searchOnlineReceipts.title"/></title>
+	<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 
 function onBodyLoad(){
@@ -117,7 +119,7 @@ function transitionStates(){
 	    if(paymentstatus[i].value=='To Be Refunded'){
 	    	if(!(statuscode[i].value==-1 || statuscode[i].value=='ONLINE_STATUS_SUCCESS' || statuscode[i].value=='ONLINE_STATUS_REFUNDED')){
 	    		if(valErrorMsg1==""){
-	    		    valErrorMsg1='<s:text name="onlinereceipt.manualrecon.toberefunded.errormsg" />' + '<br>';
+	    		    valErrorMsg1='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    		}
 	    	    // dom.get("stateerror"+(i+1)).style.display='';
 	    	    document.getElementById("stateerror"+(i+1)).style.display = "block";
@@ -130,7 +132,7 @@ function transitionStates(){
 	    if(paymentstatus[i].value=='Refunded'){
 	    	if(statuscode[i].value!=-1){
 	    		if(valErrorMsg2==""){
-	    		    valErrorMsg2='<s:text name="onlinereceipt.manualrecon.refunded.errormsg" />' + '<br>';
+	    		    valErrorMsg2='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    		}
 	    		//dom.get("stateerror"+(i+1)).style.display='';
 	    		document.getElementById("stateerror"+(i+1)).style.display = "block";
@@ -145,7 +147,7 @@ function transitionStates(){
 	    	    statuscode[i].value=='ONLINE_STATUS_REFUNDED' || 
 	    	    statuscode[i].value=='TO_BE_REFUNDED')){
 	    			if(valErrorMsg3==""){ 
-	    		    	valErrorMsg3='<s:text name="onlinereceipt.manualrecon.pending.errormsg" />' + '<br>';
+	    		    	valErrorMsg3='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			}
 	    			//dom.get("stateerror"+(i+1)).style.display='';
 	    			document.getElementById("stateerror"+(i+1)).style.display = "block";
@@ -160,7 +162,7 @@ function transitionStates(){
 	    if(statuscode[i].value=='ONLINE_STATUS_SUCCESS'){
 	        if(txId[i].value==null || txId[i].value==""){
 	            if(valErrorMsg4==""){ 
-	                valErrorMsg4='<s:text name="onlinereceipt.manualrecon.transactionid.mandatory.errormsg" />' + '<br>';
+	                valErrorMsg4='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	            }
 	        	//dom.get("transactionIdError"+(i+1)).style.display=''; 
 	        	document.getElementById("transactionIdError"+(i+1)).style.display = "block";
@@ -171,7 +173,7 @@ function transitionStates(){
 	        }
 	        if(txDate[i].value==null || txDate[i].value==""){
 	            if(valErrorMsg5==""){ 
-	                valErrorMsg5='<s:text name="onlinereceipt.manualrecon.transactiondate.mandatory.errormsg" />' + '<br>';
+	                valErrorMsg5='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	            }
 	        	//dom.get("transactionDateError"+(i+1)).style.display=''; 
 	        	document.getElementById("transactionDateError"+(i+1)).style.display = "block";
@@ -190,7 +192,7 @@ function transitionStates(){
 	document.getElementById("onlinepayt_error_area").innerHTML+=valErrorMsg1 + valErrorMsg2 + valErrorMsg3 + valErrorMsg4 + valErrorMsg5;
 	
 	if(selected==false){ 
-	    document.getElementById("onlinepayt_error_area").innerHTML+='<s:text name="onlinereceipt.manualrecon.no.transaction.selected.errormsg" />' + '<br>';
+	    document.getElementById("onlinepayt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    validation=false;
 	}
 	
@@ -226,48 +228,48 @@ function transitionStates(){
 <span align="center" style="display:none" id="comparedatemessage">
   <li>
      <font size="2" color="red"><b>
-		<s:text name="common.comparedate.errormessage"/>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</b></font>
   </li>
 </span>
-<s:form theme="simple" name="searchOnlineReceiptForm" action="searchOnlineReceipt-search">
-<div class="formmainbox"><div class="subheadnew"><s:text name="searchOnlineReceipts.title"/>
+<form:form theme="simple" name="searchOnlineReceiptForm" action="searchOnlineReceipt-search">
+<div class="formmainbox"><div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag -->
 </div>
-<div class="subheadsmallnew"><span class="subheadnew"><s:text name="searchOnlineReceipts.criteria"/></span></div>
+<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	    <tr>
 	      <td width="4%" class="bluebox2">&nbsp;</td>
-	      <td width="21%" class="bluebox2"><s:text name="searchOnlineReceipts.criteria.servicetype"/></td>
-	      <td width="24%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('searchOnlineReceipts.servicetype.select')}" name="serviceTypeId" id="serviceType" cssClass="selectwk" list="dropdownData.serviceTypeList" listKey="id" listValue="name" value="%{serviceTypeId}" /> </td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('searchOnlineReceipts.servicetype.select')}" path="serviceTypeId" id="serviceType" cssClass="selectwk" list="dropdownData.serviceTypeList" listKey="id" listValue="name" value="%{serviceTypeId}" /> </td>
 	      <td width="21%" class="bluebox2">&nbsp;</td>
 	      <td width="30%" class="bluebox2">&nbsp;</td>
 	    </tr>
 	     <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchOnlineReceipts.criteria.fromdate"/></td>
-		  <s:date name="fromDate" var="cdFormat" format="dd/MM/yyyy"/>
-		  <td width="24%" class="bluebox"><s:textfield id="fromDate" name="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
-	      <td width="21%" class="bluebox"><s:text name="searchOnlineReceipts.criteria.todate"/></td>
-	      <s:date name="toDate" var="cdFormat1" format="dd/MM/yyyy"/>
-		  <td width="30%" class="bluebox"><s:textfield id="toDate" name="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		  <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td width="24%" class="bluebox"><form:input id="fromDate" path="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td width="30%" class="bluebox"><form:input id="toDate" path="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/collection/resources/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
 	    </tr>
 	    <tr>
 	      <td width="4%" class="bluebox2">&nbsp;</td>
-	      <td width="21%" class="bluebox2"><s:text name="searchOnlineReceipts.criteria.referenceid"/></td>
-	      <td width="24%" class="bluebox2"><s:textfield id="referenceId" type="text" name="referenceId"/></td>
-	      <td width="21%" class="bluebox2"><s:text name="searchOnlineReceipts.transaction.status"/></td>
-	      <td width="30%" class="bluebox2"><s:select id="searchTransactionStatus" name="searchTransactionStatus" headerKey="-1" headerValue="%{getText('searchOnlineReceipts.default.transaction.status')}" cssClass="selectwk" list="%{onlineReceiptStatuses}" value="%{searchTransactionStatus}" listKey="id" listValue="description" /> </td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox2"><form:input id="referenceId" type="text" path="referenceId"/></td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="30%" class="bluebox2"><form:select id="searchTransactionStatus" path="searchTransactionStatus" headerKey="-1" headerValue="%{getText('searchOnlineReceipts.default.transaction.status')}" cssClass="selectwk" list="%{onlineReceiptStatuses}" value="%{searchTransactionStatus}" listKey="id" listValue="description" /> </td>
 	    </tr>	    
 	    </table>
 	    <br/>
 </div>
     <div class="buttonbottom">
-      <label><s:submit type="submit" cssClass="buttonsubmit" id="button" value="Search" onclick="return validate();"/></label>&nbsp;
-      <label><s:submit type="submit" cssClass="button" value="Reset" onclick="document.searchOnlineReceiptForm.action='searchOnlineReceipt-reset.action'"/></label>&nbsp;
-      <s:if test="%{results.isEmpty()}">
+      <label><!-- TODO: Manual migration required for custom Struts tag --></label>&nbsp;
+      <label><!-- TODO: Manual migration required for custom Struts tag --></label>&nbsp;
+      <c:if test="%{results.isEmpty()}">
       	<input name="closebutton" type="button" class="button" id="closebutton" value="Close" onclick="window.close();"/>
-      </s:if>
+      </c:if>
       
 </div>
 
@@ -275,11 +277,11 @@ function transitionStates(){
 <span align="center" style="display:none" id="invaliddateformat">
   <li>
      <font size="2" color="red"><b>
-		<s:text name="common.dateformat.errormessage"/>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</b></font>
   </li>
 </span>
-<s:if test="%{!results.isEmpty()}">
+<c:if test="%{!results.isEmpty()}">
 <div style="overflow:auto; margin-left: 8px;margin-right: 8px;">
 <div align="center">		
 
@@ -298,7 +300,7 @@ function transitionStates(){
 	<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Service Type" property="receiptHeader.service.name" style="width:10%; text-align: right" />
 	<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Status" property="status.description" style="width:8%" />  
 	<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Change Status" style="width:8%">
-		<s:select name="statusCode" id="statusCode" cssClass="selectwk" headerKey="-1" headerValue="%{getText('searchOnlineReceipts.default.transition.transaction.status')}" 
+		<form:select path="statusCode" id="statusCode" cssClass="selectwk" headerKey="-1" headerValue="%{getText('searchOnlineReceipts.default.transition.transaction.status')}" 
      		 list="%{onlineReceiptTransitionStatuses}" listKey="code" listValue="description" value="%{code}" />
      	<span id="stateerror${currentRow_rowNum}" style='display:none;color:red;font-weight:bold'>&nbsp;x</span>     		
 	</display:column> 
@@ -326,20 +328,20 @@ function transitionStates(){
 </div>
 </div>	
 				
-</s:if>
-    <s:if test="%{results.isEmpty()}">
-	<s:if test="target=='searchresult'">
+</c:if>
+    <c:if test="%{results.isEmpty()}">
+	<c:if test="target=='searchresult'">
 	
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
 		<tr> 
 			<div>&nbsp;</div>
-			<div class="subheadnew"><s:text name="searchresult.norecord"/></div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		</tr>
 		</table>
 	
-	</s:if>
-</s:if>
-</s:form>
+	</c:if>
+</c:if>
+</form:form>
 <script type="text/javascript">
 onBodyLoad();
 </script>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -152,28 +154,28 @@
 			        
 		}
 		);
-		<s:iterator value="billDetailslist" status="stat">
+		<c:forEach value="billDetailslist" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"functionid":'<s:property value="functionIdDetail"/>',
-					"function":'<s:property value="functionDetail"/>',
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:text name="format.number" ><s:param value="%{debitAmountDetail}"/></s:text>',
-					"creditamount":'<s:text name="format.number" ><s:param value="%{creditAmountDetail}"/></s:text>'
+					"functionid":'${functionIdDetail}',
+					"function":'${functionDetail}',
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>',
+					"creditamount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridPJV('functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-				updateGridPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				updateGridPJV('glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGridPJV('glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGridPJV('accounthead',index,'<s:property value="accounthead"/>');
-				updateGridPJV('debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
-				updateGridPJV('creditAmountDetail',index,'<s:property value="creditAmountDetail"/>');
-				totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
-				totalcramt = totalcramt+parseFloat('<s:property value="creditAmountDetail"/>');
+				var index = '${#stat.index}';
+				updateGridPJV('functionIdDetail',index,'${functionIdDetail}');
+				updateGridPJV('functionDetail',index,'${functionDetail}');
+				updateGridPJV('glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGridPJV('glcodeDetail',index,'${glcodeDetail}');
+				updateGridPJV('accounthead',index,'${accounthead}');
+				updateGridPJV('debitAmountDetail',index,'${debitAmountDetail}');
+				updateGridPJV('creditAmountDetail',index,'${creditAmountDetail}');
+				totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
+				totalcramt = totalcramt+parseFloat('${creditAmountDetail}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 				
 
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -193,13 +195,13 @@
 		document.getElementById('totalcramount').value=totalcramt.toFixed(2);; 
 		}
 		var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+		<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	
 	
 	
@@ -242,39 +244,39 @@
 			}        
 		});
 	
-		<s:iterator value="subLedgerlist" status="stat">
+		<c:forEach value="subLedgerlist" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"subledgerCode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKey"/>',
-					"detailKey":'<s:property value="detailKey"/>',
-					"debitAmount":'<s:text name="format.number" ><s:param value="%{debitAmount}"/></s:text>',
-					"creditAmount":'<s:text name="format.number" ><s:param value="%{creditAmount}"/></s:text>'
-				});'<s:property value="glcode.id"/>'
-				var index = '<s:property value="#stat.index"/>';
-				updateGridSLDropdownJV('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
-				updateGridSLDropdownJV('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
-				updateSLGridPJV('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGridPJV('subledgerCode',index,'<s:property value="subledgerCode"/>');
-				updateSLGridPJV('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGridPJV('detailKey',index,'<s:property value="detailKey"/>');
-				updateSLGridPJV('amount',index,'<s:text name="format.number" ><s:param value="%{amount}"/></s:text>');
+					"subledgerCode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKey}',
+					"detailKey":'${detailKey}',
+					"debitAmount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>',
+					"creditAmount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
+				});'${glcode.id}'
+				var index = '${#stat.index}';
+				updateGridSLDropdownJV('glcode.id',index,'${glcode.id}','${subledgerCode}');
+				updateGridSLDropdownJV('detailType.id',index,'${detailType.id}','${detailTypeName}');
+				updateSLGridPJV('detailCode',index,'${detailCode}');
+				updateSLGridPJV('subledgerCode',index,'${subledgerCode}');
+				updateSLGridPJV('detailKeyId',index,'${detailKeyId}');
+				updateSLGridPJV('detailKey',index,'${detailKey}');
+				updateSLGridPJV('amount',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 	
 	}
-	var amountCannotBeNegetive='<s:text name="amount.cannotbe.negetive"/>';
-	var succesMessage='<s:text name="directbank.transaction.succcess"/>';
-	var 	button='<s:property value="button"/>';
+	var amountCannotBeNegetive='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var succesMessage='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var 	button='${button}';
 	</script>
 </head>
 <body onload="onLoadTask_reverse();">
-	<s:form action="directBankPayment" theme="css_xhtml" name="dbpform"
+	<form:form action="directBankPayment" theme="css_xhtml" name="dbpform"
 		validate="true">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Bank to Bank Transfer" name="heading" />
 			</jsp:include>
@@ -292,23 +294,23 @@
 			</div>
 			<span class="mandatory">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
-				</div> <s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</div> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 			<table border="0" width="100%" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="bluebox" width="10%"></td>
-					<td class="bluebox" width="22%"><s:text name="voucher.number" /></td>
-					<td class="bluebox" width="22%"><s:textfield
+					<td class="bluebox" width="22%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox" width="22%"><form:input
 							name="voucherNumber" id="voucherNumber" /></td>
-					<s:hidden name="id" />
-					<td class="bluebox" width="18%"><s:text name="voucher.date" /><span
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="bluebox" width="18%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="bluebox" width="38%"><input type="text"
 						name="voucherDate"
 						onkeyup="DateFormat(this,this.value,event,false,'3')"
-						value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+						value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 						href="javascript:show_calendar('cbtbform.voucherDate');"
 						style="text-decoration: none">&nbsp;<img tabIndex="-1"
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A></td>
@@ -318,16 +320,16 @@
 
 					<tr>
 						<td class="bluebox" width="10%"></td>
-						<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+						<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 
 							<td class="bluebox" width="22%"><s:text
 									name="reversalVoucherNumber" /><span class="mandatory">*</span></td>
-							<td class="bluebox" width="22%"><s:textfield
+							<td class="bluebox" width="22%"><form:input
 									name="reversalVoucherNumber" id="reversalVoucherNumber" /></td>
-						</s:if>
+						</c:if>
 						<td class="bluebox" width="18%"><s:text
 								name="reversalVoucherDate" /><span class="mandatory">*</span></td>
-						<td class="bluebox" width="38%"><s:textfield
+						<td class="bluebox" width="38%"><form:input
 								name="reversalVoucherDate" id="reversalVoucherDate"
 								onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 							href="javascript:show_calendar('dbpform.reversalVoucherDate');"
@@ -342,7 +344,7 @@
 			<div class="mandatory" align="left">* Mandatory Fields</div>
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 
 	<SCRIPT type="text/javascript">
  function onLoadTask_reverse() {
@@ -352,7 +354,7 @@
 						if (button == "Reverse_Close") {
 							window.close();
 						} else if (button == "Reverse_View") {
-							var vhId = '<s:property value="voucherHeader.id"/>';
+							var vhId = '${voucherHeader.id}';
 							document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="
 									+ vhId;
 							document.forms[0].submit();

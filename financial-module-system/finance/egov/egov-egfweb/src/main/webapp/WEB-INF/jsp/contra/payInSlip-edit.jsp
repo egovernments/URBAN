@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -69,8 +71,8 @@
 
 <body onload="onbodyload();">
 
-	<s:form action="payInSlip" theme="simple" name="payinform">
-		<s:push value="model">
+	<form:form action="payInSlip" theme="simple" name="payinform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="PayInSlip" />
 			</jsp:include>
@@ -82,14 +84,14 @@
 					<div align="center">
 						<font style='color: red;'>
 							<p class="error-block" id="lblError"></p>
-						</font> <span class="mandatory"> <s:actionerror /> <s:fielderror />
-							<s:actionmessage />
+						</font> <span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</span>
 						<table border="0" width="100%">
 							<tr>
 
 
-								<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+								<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 									<td class="bluebox" width="22%"><s:text
 											name="voucher.number" /><span class="mandatory">*</span></td>
 									<td class="bluebox" width="22%">
@@ -98,25 +100,25 @@
 												<td style="width: 25%"><input type="text"
 													name="voucherNumberPrefix" id="voucherNumberPrefix"
 													readonly="true" style="width: 100%" /></td>
-												<td style="width: 75%"><s:textfield
+												<td style="width: 75%"><form:input
 														name="voucherNumber" id="payinNumber" /></td>
 											</tr>
 										</table>
 									</td>
 
-								</s:if>
-								<s:else>
-									<td class="bluebox"><s:text name="payin.number" /><span
+								</c:if>
+								<c:otherwise>
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory">*</span></td>
-									<td class="bluebox"><s:textfield name="voucherNumber"
+									<td class="bluebox"><form:input path="voucherNumber"
 											id="payinNumber" readonly="true" /></td>
 								</s:else>
-								<td class="bluebox"><s:text name="payin.date" /><span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
 								<td class="bluebox" width="34%"><input type=text
 									name="voucherDate" id="voucherDate"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
-									value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+									value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 									href="javascript:show_calendar('payinform.voucherDate');"
 									style="text-decoration: none">&nbsp;<img tabIndex="-1"
 										src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>(dd/mm/yyyy)</td>
@@ -144,7 +146,7 @@
 								<tr>
 									<td width="455"></td>
 									<td>Total Amount</td>
-									<td><s:textfield name="totalAmount" id="totalAmount" /></td>
+									<td><form:input path="totalAmount" id="totalAmount" /></td>
 									</td>
 								</tr>
 							</table>
@@ -175,21 +177,21 @@
 								name="selectedInstr" /> <input type="hidden" id="name"
 								name="name" value="Pay In Slip" /> <input type="hidden"
 								id="type" name="type" value="Contra" />
-							<s:hidden name="contraBean.saveMode" id="saveMode" />
-							<s:hidden id="cgn" name="cgn"></s:hidden>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 						</div>
 					</div>
 				</div>
 		</s:push>
-	</s:form>
+	</form:form>
 
 	<script>
 	
 function onbodyload(){
-<s:iterator value="iHeaderList" status="stat">
+<c:forEach value="iHeaderList" status="stat">
 	document.getElementById("chequeDetails").style.display="block";
 	document.getElementById("billDetailTable").style.display="block";
-</s:iterator>
+</c:forEach>
 	document.getElementById("reversenumanddate").style.display="none";
 	document.getElementById("fundId").disabled=true;
 	document.getElementById("vouchermis.departmentid").disabled=true;
@@ -204,24 +206,24 @@ function onbodyload(){
 	document.getElementById("voucherDateId").style.display="none";
 	
 	
-	var saveMode='<s:property value="contraBean.saveMode"/>';
-	var result='<s:property value="contraBean.result"/>';
+	var saveMode='${contraBean.saveMode}';
+	var result='${contraBean.result}';
 	if(result == 'success'){
-	var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
+	var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 		if(saveMode == 'saveclose'){
 			bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber);
 				window.close();
 		} else if(saveMode == 'saveview'){
 				bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber );
-				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<s:property value='%{voucherHeader.id}'/>','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
+				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<!-- TODO: Manual migration required for custom Struts tag -->','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
 			}
 	}		
-			   <s:if test="%{shouldShowHeaderField('vouchernumber')}">
-			   var tempVoucherNumber='<s:property value="voucherHeader.voucherNumber"/>';
-			   var prefixLength='<s:property value="voucherNumberPrefixLength"/>';
+			   <c:if test="%{shouldShowHeaderField('vouchernumber')}">
+			   var tempVoucherNumber='${voucherHeader.voucherNumber}';
+			   var prefixLength='${voucherNumberPrefixLength}';
 			   document.getElementById('voucherNumberPrefix').value=tempVoucherNumber.substring(0,prefixLength);
 			   document.getElementById('payinNumber').value=tempVoucherNumber.substring(prefixLength,tempVoucherNumber.length);
-			</s:if>
+			</c:if>
 	}
 	
 </script>

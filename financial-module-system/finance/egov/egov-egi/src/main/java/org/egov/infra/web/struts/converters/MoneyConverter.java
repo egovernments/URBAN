@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -48,14 +49,10 @@
 
 package org.egov.infra.web.struts.converters;
 
-import org.apache.struts2.util.StrutsTypeConverter;
 import org.egov.infra.persistence.entity.component.Money;
-
 import java.util.Map;
 
-public class MoneyConverter extends StrutsTypeConverter {
-
-	@Override
+public class MoneyConverter {
 	public Object convertFromString(final Map context, final String[] value, final Class toClass) {
 		if (value == null || value.length == 0 || value[0] == null || "".equals(value[0].trim())) {
 			return new Money(0.0);
@@ -63,9 +60,7 @@ public class MoneyConverter extends StrutsTypeConverter {
 		return new Money(Double.parseDouble(value[0]));
 	}
 
-	@Override
 	public String convertToString(final Map context, final Object money) {
 		return money.toString();
 	}
-
 }

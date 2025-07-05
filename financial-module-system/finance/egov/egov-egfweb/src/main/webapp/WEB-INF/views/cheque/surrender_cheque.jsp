@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -77,7 +79,7 @@
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.fund" text="Fund"/>:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="fundId" path=""
+								<form:select path="fundId" path=""
 									data-first-option="false" id="fund"
 									cssClass="form-control" onchange="loadBankBranch()">
 									<form:option value="0">
@@ -91,7 +93,7 @@
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.bank.branch"  text="Bank Branch"/></label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="bankBranch" path=""
+								<form:select path="bankBranch" path=""
 									data-first-option="false" id="bankBranch"
 									cssClass="form-control" onchange="loadBankAccount()">
 									<form:option value="">
@@ -107,7 +109,7 @@
 							<label class="col-sm-3 control-label text-right"><spring:message
 									code="lbl.bankAccount" text="Bank Account" />:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="bankAccountId" path=""
+								<form:select path="bankAccountId" path=""
 									data-first-option="false" id="bankAccountId"
 									cssClass="form-control">
 									<form:option value="0">
@@ -118,7 +120,7 @@
 							<label class="col-sm-2 control-label text-right"><spring:message
 									code="lbl.reason.for.surrender" text="Reason For Surrender" />:</label>
 							<div class="col-sm-3 add-margin">
-								<form:select name="surrenderReason" path=""
+								<form:select path="surrenderReason" path=""
 									data-first-option="false" id="surrenderReason"
 									cssClass="form-control">
 									<form:option value="">

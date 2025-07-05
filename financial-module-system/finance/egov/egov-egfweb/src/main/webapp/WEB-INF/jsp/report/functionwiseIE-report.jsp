@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,12 +57,12 @@
 <title>Functionwise Income/Expense Subsidary Report</title>
 </head>
 <body>
-	<s:form action="functionwiseIE" theme="simple">
+	<form:form action="functionwiseIE" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading"
 				value="Functionwise Income/Expense Subsidary Report" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="formheading"></div>
@@ -68,21 +70,21 @@
 				<tr>
 					<td class="bluebox" width="30%"><s:text
 							name="report.income.expense" /><span class="mandatory">*</span></td>
-					<td class="bluebox"><s:select name="incExp" id="incExp"
+					<td class="bluebox"><form:select path="incExp" id="incExp"
 							list="#{'-1':'---Select---','I':'Income','E':'Expenditure'}" />
 					</td>
 				</tr>
 				<tr>
-					<td class="greybox" width="30%"><s:text name="report.fromdate" /><span
+					<td class="greybox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:textfield name="startDate"
+					<td class="greybox"><form:input path="startDate"
 							id="startDate" maxlength="20" /><a
 						href="javascript:show_calendar('forms[0].startDate');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a><br />(dd/mm/yyyy)</td>
-					<td class="greybox" width="30%"><s:text name="report.todate" /><span
+					<td class="greybox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:textfield name="endDate" id="endDate"
+					<td class="greybox"><form:input path="endDate" id="endDate"
 							maxlength="20" /><a
 						href="javascript:show_calendar('forms[0].endDate');"
 						style="text-decoration: none">&nbsp;<img
@@ -98,6 +100,6 @@
 				</tr>
 			</table>
 			<br />
-	</s:form>
+	</form:form>
 </body>
 </html>

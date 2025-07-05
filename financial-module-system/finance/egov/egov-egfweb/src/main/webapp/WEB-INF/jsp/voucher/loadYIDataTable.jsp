@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -61,9 +63,9 @@
 		   
 		
 		var makeVoucherDetailTable = function() {
-			var OneFunctionCenter= <s:property value="isRestrictedtoOneFunctionCenter"/>; 
+			var OneFunctionCenter= ${isRestrictedtoOneFunctionCenter}; 
 		//	bootbox.alert("HHiii"+OneFunctionCenter+"<<<>>>>>") ;                             
-				<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>                                                   
+				<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>                                                   
 				//bootbox.alert(OneFunctionCenter);                  
 				var voucherDetailColumns = [                                       
 				{key:"functionid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},         
@@ -76,8 +78,8 @@
 				{key:'Add',label:'Add',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
 				{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 			];
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 			var voucherDetailColumns = [   
  				{key:"glcodeid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeIdDetail","hidden")},
  				{key:"glcode",label:'Account Code <span class="mandatory1">*</span>', formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeDetail","text")},
@@ -143,50 +145,50 @@
 			}
 		});
 		
-		<s:iterator value="billDetailslist" status="stat">
-			<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>
+		<c:forEach value="billDetailslist" status="stat">
+			<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"functionid":'<s:property value="functionIdDetail"/>',
-					"function":'<s:property value="functionDetail"/>',
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:property value="%{debitAmountDetail}"/>',
-					"creditamount":'<s:property value="%{creditAmountDetail}"/>'
+					"functionid":'${functionIdDetail}',
+					"function":'${functionDetail}',
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'${%{debitAmountDetail}}',
+					"creditamount":'${%{creditAmountDetail}}'
 				});
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:property value="%{debitAmountDetail}"/>',
-					"creditamount":'<s:property value="%{creditAmountDetail}"/>'
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'${%{debitAmountDetail}}',
+					"creditamount":'${%{creditAmountDetail}}'
 				});
 			</s:else>
-				var index = '<s:property value="#stat.index"/>';
-				<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>
-				updateGridPJV('functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-				updateGridPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				</s:if>
-				updateGridPJV('glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGridPJV('glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGridPJV('accounthead',index,'<s:property value="accounthead"/>');
-				updateGridPJV('debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
-				updateGridPJV('creditAmountDetail',index,'<s:property value="creditAmountDetail"/>');
-				totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
-				totalcramt = totalcramt+parseFloat('<s:property value="creditAmountDetail"/>');
+				var index = '${#stat.index}';
+				<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>
+				updateGridPJV('functionIdDetail',index,'${functionIdDetail}');
+				updateGridPJV('functionDetail',index,'${functionDetail}');
+				</c:if>
+				updateGridPJV('glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGridPJV('glcodeDetail',index,'${glcodeDetail}');
+				updateGridPJV('accounthead',index,'${accounthead}');
+				updateGridPJV('debitAmountDetail',index,'${debitAmountDetail}');
+				updateGridPJV('creditAmountDetail',index,'${creditAmountDetail}');
+				totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
+				totalcramt = totalcramt+parseFloat('${creditAmountDetail}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 				
 	
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
 		var tr = tfoot.insertRow(-1);
 		var th = tr.appendChild(document.createElement('th'));
-		<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>
+		<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>
 		th.colSpan = 4;
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 		th.colSpan = 3;
 		</s:else>
 		
@@ -208,19 +210,19 @@
 		td.style.borderTop = "1px solid #84B1AD";
 	}         
 	var glcodeOptions=[{label:"---Select---", value:"0"}];
-	<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"---Select---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	var funcOptions=[{label:"---Select---", value:"0"}];
-	var OneFunctionCenter= <s:property value="isRestrictedtoOneFunctionCenter"/>;       
+	var OneFunctionCenter= ${isRestrictedtoOneFunctionCenter};       
 	var makeSubLedgerTable = function() {
-		//var OneFunctionCenter= <s:property value="isRestrictedtoOneFunctionCenter"/>;  
+		//var OneFunctionCenter= ${isRestrictedtoOneFunctionCenter};  
 		//bootbox.alert("OneFunctionCenter"+OneFunctionCenter);        
-		<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>                                    
+		<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>                                    
 		var subledgerColumns = [                         
 		    {key:"functionDetail",label:'Function Name',hidden:true, formatter:createSLDropdownFormatterFuncJV(SUBLEDGERLIST,".functionDetail"),dropdownOptions:funcOptions},
 			{key:"glcode",hidden:true, formatter:createSLTextFieldFormatterJV(SUBLEDGERLIST,".subledgerCode","hidden")},
@@ -234,8 +236,8 @@
 			{key:'Add',label:'Add',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
 			{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 		];   
-		</s:if>
-		<s:else>    
+		</c:if>
+		<c:otherwise>    
 		var subledgerColumns = [      
 		{key:"glcode",hidden:true, formatter:createSLTextFieldFormatterJV(SUBLEDGERLIST,".subledgerCode","hidden")},
 		{key:"glcode.id",label:'Account Code <span class="mandatory1">*</span>', formatter:createDropdownFormatterJV(SUBLEDGERLIST,"loaddropdown(this)"),  dropdownOptions:glcodeOptions},
@@ -301,46 +303,46 @@
 			}
 		});
 		
-		<s:iterator value="subLedgerlist" status="stat">
-			<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>  
+		<c:forEach value="subLedgerlist" status="stat">
+			<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>  
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"functionDetail":'<s:property value="functionDetail"/>',
-					"glcode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName" />',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKeyId"/>',
-					"detailKey":'<s:property value="detailKeyEscSpecChar" />',
-					"debitAmount":'<s:property value="%{debitAmount}"/>',
-					"creditAmount":'<s:property value="%{creditAmount}"/>'
+					"functionDetail":'${functionDetail}',
+					"glcode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKeyId}',
+					"detailKey":'${detailKeyEscSpecChar}',
+					"debitAmount":'${%{debitAmount}}',
+					"creditAmount":'${%{creditAmount}}'
 				});
-			</s:if>
-			<s:else>    
+			</c:if>
+			<c:otherwise>    
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"glcode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName" />',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKeyId"/>',
-					"detailKey":'<s:property value="detailKeyEscSpecChar" />',
-					"debitAmount":'<s:property value="%{debitAmount}"/>',
-					"creditAmount":'<s:property value="%{creditAmount}"/>'
+					"glcode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKeyId}',
+					"detailKey":'${detailKeyEscSpecChar}',
+					"debitAmount":'${%{debitAmount}}',
+					"creditAmount":'${%{creditAmount}}'
 				});
 			</s:else>    
-				var index = '<s:property value="#stat.index"/>';
-				<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>  
-				updateGridSLDropdownPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				</s:if>
-				updateSLGridPJV('subledgerCode',index,'<s:property value="subledgerCode"/>');
-				updateSLGridPJV('detailTypeName',index,'<s:property value="detailTypeName"/>');
-				updateSLGridPJV('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGridPJV('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGridPJV('detailKey',index,'<s:property value="detailKeyEscSpecChar" />');
-				updateSLGridPJV('amount',index,'<s:property value="amount"/>');
+				var index = '${#stat.index}';
+				<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>  
+				updateGridSLDropdownPJV('functionDetail',index,'${functionDetail}');
+				</c:if>
+				updateSLGridPJV('subledgerCode',index,'${subledgerCode}');
+				updateSLGridPJV('detailTypeName',index,'${detailTypeName}');
+				updateSLGridPJV('detailCode',index,'${detailCode}');
+				updateSLGridPJV('detailKeyId',index,'${detailKeyId}');
+				updateSLGridPJV('detailKey',index,'${detailKeyEscSpecChar}');
+				updateSLGridPJV('amount',index,'${amount}');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 		
 	}
 	
@@ -393,13 +395,13 @@ success: function(o) {
 		
 			// logic to re-populate the account code in the account code drop down in the subledger table data grid.
 			// basicaly required when validation fails.
-			<s:iterator value="subLedgerlist" status="stat">
-				if('<s:property value="glcode.id"/>' !="" || '<s:property value="glcode.id"/>' !=0){
-					var index = '<s:property value="#stat.index"/>';
-					updateGridSLDropdownGL('glcode.id',index,'<s:property value="glcode.id"/>');
+			<c:forEach value="subLedgerlist" status="stat">
+				if('${glcode.id}' !="" || '${glcode.id}' !=0){
+					var index = '${#stat.index}';
+					updateGridSLDropdownGL('glcode.id',index,'${glcode.id}');
 				}
 				
-			</s:iterator>
+			</c:forEach>
 	loadSlFunction();// load the functions in the SL grid after validation fails.
     },
     failure: function(o) {
@@ -450,16 +452,16 @@ success: function(o) {
 				d.options[0].value=0;
 			}
 		} 
-			<s:iterator value="subLedgerlist" status="stat">
-			if('<s:property value="detailType.id"/>' !="" || '<s:property value="detailType.id"/>' !=0){
-				var index = '<s:property value="#stat.index"/>';
-				updateSLDetailDropdown('detailType.id',index,'<s:property value="detailType.id"/>');
-				<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>  
-				updateGridSLDropdownPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				</s:if>
+			<c:forEach value="subLedgerlist" status="stat">
+			if('${detailType.id}' !="" || '${detailType.id}' !=0){
+				var index = '${#stat.index}';
+				updateSLDetailDropdown('detailType.id',index,'${detailType.id}');
+				<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>  
+				updateGridSLDropdownPJV('functionDetail',index,'${functionDetail}');
+				</c:if>
 			}
 				
-			</s:iterator>
+			</c:forEach>
 		
 		
     },

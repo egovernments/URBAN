@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -75,7 +77,7 @@
 	<jsp:include page="../budget/budgetHeader.jsp">
 		<jsp:param name="heading" value="Account Cheque Create" />
 	</jsp:include>
-	<s:form theme="simple" name="chequeMaster">
+	<form:form theme="simple" name="chequeMaster">
 
 		<div class="formmainbox" />
 		<div class="subheadnew">Cheque Master - Search</div>
@@ -88,12 +90,12 @@
 		<div class="buttonbottom" style="padding-bottom: 10px;">
 			<input type="button" id="Close" value="View Cheque"
 				onclick="viewChq();" class="buttonsubmit" />
-			<s:reset id="Reset" value="Cancel" cssClass="buttonsubmit" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="button" id="Close" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
 		</div>
-	</s:form>
+	</form:form>
 
 </body>
 </html>

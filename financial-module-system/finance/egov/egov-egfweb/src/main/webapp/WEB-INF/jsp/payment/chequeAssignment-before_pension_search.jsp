@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,22 +57,22 @@
 <title>Cheque Assignment Search for Pension Payments</title>
 </head>
 <body>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Cheque Assignment Search" />
 		</jsp:include>
-		<span id="errorSpan"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span id="errorSpan"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="chq.assignment.heading.pension.search" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td style="width: 5%"></td>
 					<td class="greybox"><s:text
 							name="chq.assignment.paymentvoucherdatefrom" /></td>
-					<td class="greybox"><s:textfield name="fromDate" id="fromDate"
+					<td class="greybox"><form:input path="fromDate" id="fromDate"
 							maxlength="20" value="%{fromDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].fromDate');"
@@ -78,7 +80,7 @@
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a><br />(dd/mm/yyyy)</td>
 					<td class="greybox"><s:text
 							name="chq.assignment.paymentvoucherdateto" /></td>
-					<td class="greybox"><s:textfield name="toDate" id="toDate"
+					<td class="greybox"><form:input path="toDate" id="toDate"
 							maxlength="20" value="%{toDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].toDate');"
@@ -87,14 +89,14 @@
 				</tr>
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="bluebox"><s:text name="payment.mode" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory"></span></td>
 					<td class="bluebox"><s:radio id="paymentMode"
 							name="paymentMode" list="%{modeOfPaymentMap}"
 							value="%{paymentMode}" /></td>
 					<td class="bluebox"><s:text
 							name="chq.assignment.paymentvoucherno" /></td>
-					<td class="bluebox"><s:textfield name="voucherNumber"
+					<td class="bluebox"><form:input path="voucherNumber"
 							id="voucherNumber" value="%{voucherNumber}" /></td>
 				</tr>
 				<jsp:include page="../voucher/vouchertrans-filter.jsp" />
@@ -103,18 +105,18 @@
 					<egov:ajaxdropdown id="bank_branch" fields="['Text','Value']"
 						dropdownId="bank_branch"
 						url="voucher/common!ajaxLoadBanksWithApprovedPensionPayments.action" />
-					<td class="greybox"><s:text name="chq.assignment.bank" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory"></span></td>
-					<td class="greybox"><s:select name="bank_branch"
+					<td class="greybox"><form:select path="bank_branch"
 							id="bank_branch" list="bankBranchMap" headerKey="-1"
 							headerValue="----Choose----" onchange="loadBankAccount(this)"
 							value="%{bank_branch}" /></td>
 					<egov:ajaxdropdown id="bankaccount" fields="['Text','Value']"
 						dropdownId="bankaccount"
 						url="voucher/common!ajaxLoadBankAccountsWithApprovedPensionPayments.action" />
-					<td class="greybox"><s:text name="chq.assignment.bankaccount" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory"></span></td>
-					<td class="greybox" colspan="2"><s:select name="bankaccount"
+					<td class="greybox" colspan="2"><form:select path="bankaccount"
 							id="bankaccount" list="dropdownData.bankaccountList" listKey="id"
 							listValue="chartofaccounts.glcode+'--'+accountnumber+'---'+accounttype"
 							headerKey="-1" headerValue="----Choose----"
@@ -124,7 +126,7 @@
 					<td style="width: 5%"></td>
 					<td class="bluebox"><s:text
 							name="chq.assignment.re-assignsurrendercheque" /></td class="bluebox">
-					<td class="bluebox"><s:checkbox id="reassignSurrenderChq"
+					<td class="bluebox"><form:checkbox id="reassignSurrenderChq"
 							name="reassignSurrenderChq" /></td class="bluebox">
 				</tr>
 			</table>
@@ -135,19 +137,19 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</div>
-		<s:hidden name="bankbranch" id="bankbranch" />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script>
-				var date='<s:date name="currentDate" format="dd/MM/yyyy"/>';
+				var date='<!-- TODO: Manual migration required for custom Struts tag -->';
 				function loadBank(obj)
 				{
-				var vTypeOfAccount = '<s:property value="%{typeOfAccount}"/>';
+				var vTypeOfAccount = '${%{typeOfAccount}}';
 						if(obj.options[obj.selectedIndex].value!=-1)
 						populatebank_branch({fundId:obj.options[obj.selectedIndex].value+'&asOnDate='+date});
 				}
 				function loadBankAccount(obj)
 				{
-					var vTypeOfAccount = '<s:property value="%{typeOfAccount}"/>';
+					var vTypeOfAccount = '${%{typeOfAccount}}';
 					var fund = document.getElementById('fundId');
 					if(obj.options[obj.selectedIndex].value!=-1)
 					{
@@ -158,11 +160,11 @@
 					
 				}
 			</script>
-	<s:if test="%{!validateUser('chequeassignment')}">
+	<c:if test="%{!validateUser('chequeassignment')}">
 		<script>
 					document.getElementById('searchBtn').disabled=true;
-					document.getElementById('errorSpan').innerHTML='<s:text name="chq.assignment.invalid.user"/>'
+					document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->'
 				</script>
-	</s:if>
+	</c:if>
 </body>
 </html>

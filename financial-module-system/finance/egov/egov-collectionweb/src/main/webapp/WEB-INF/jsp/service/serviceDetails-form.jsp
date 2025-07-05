@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -68,77 +70,77 @@ function validate(){
 	dom.get('error_area').innerHTML = '';
 	dom.get("error_area").style.display="none"
 	if(dom.get('serviceCode').value.trim() == ""){
-		dom.get("error_area").innerHTML = '<s:text name="service.code.null" />' + '<br>';
+		dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("error_area").style.display="block";
 		valid=false;
 	}
 	if(dom.get('name').value.trim()== ""){
-		dom.get("error_area").innerHTML = '<s:text name="service.name.null" />' + '<br>';
+		dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("error_area").style.display="block";
 		valid=false;
 	}
 	if(null!= document.getElementById('serviceType') && document.getElementById('serviceType').value == -1){
-		dom.get("error_area").innerHTML = '<s:text name="service.servictype.null" />' + '<br>';
+		dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("error_area").style.display="block";
 		valid=false;
 	}
-	 <s:if test="%{isFieldMandatory('fund')}"> 
+	 <c:if test="%{isFieldMandatory('fund')}"> 
      if(null != document.getElementById('fundId') && document.getElementById('fundId').value == -1){
-            document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.fundcode.errormessage" />'+  "<br>";
+            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
             dom.get("error_area").style.display="block";
             valid=false;
      }
-     </s:if>
-	     <s:if test="%{isFieldMandatory('department')}"> 
+     </c:if>
+	     <c:if test="%{isFieldMandatory('department')}"> 
 	     if(null!= document.getElementById('deptId') && document.getElementById('deptId').value == -1){
-	            document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.deptcode.errormessage" />'+ '<br>';
+	            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 	            dom.get("error_area").style.display="block";
 	            valid=false;
 	     }
-		</s:if>
-		<s:if test="%{isFieldMandatory('scheme')}"> 
+		</c:if>
+		<c:if test="%{isFieldMandatory('scheme')}"> 
 		     if(null!=document.getElementById('schemeId') &&  document.getElementById('schemeId').value == -1){
-		            document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.schemeId.errormessage" />'+ '<br>';
+		            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 		            dom.get("error_area").style.display="block";
 		            valid=false;
 		     }
-		</s:if>
-		<s:if test="%{isFieldMandatory('subscheme')}"> 
+		</c:if>
+		<c:if test="%{isFieldMandatory('subscheme')}"> 
 		     if(null!= document.getElementById('subschemeId') && document.getElementById('subschemeId').value == -1){
-		            document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.subschemeId.errormessage" />'+ '<br>';
+		            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 		            dom.get("error_area").style.display="block";
 		            valid=false;
 		     }
-		</s:if>
-		<s:if test="%{isFieldMandatory('functionary')}"> 
+		</c:if>
+		<c:if test="%{isFieldMandatory('functionary')}"> 
 		     if(null!=document.getElementById('receiptMisc.idFunctionary.id') &&  document.getElementById('receiptMisc.idFunctionary.id').value == -1){
-		            document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.functionarycode.errormessage" />'+ '<br>';
+		            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 		            dom.get("error_area").style.display="block";
 		            valid=false;
 		     }
-		</s:if>
-		<s:if test="%{isFieldMandatory('fundsource')}"> 
+		</c:if>
+		<c:if test="%{isFieldMandatory('fundsource')}"> 
 		     if(null !=document.getElementById('receiptMisc.fundsource.id') &&  document.getElementById('receiptMisc.fundsource.id').value == -1){
-		            document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.fundsourcecode.errormessage" />'+ '<br>';
+		            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 		            dom.get("error_area").style.display="block";
 		            valid=false;
 		    }
-		</s:if>
-		<s:if test="%{isFieldMandatory('function')}">                     
+		</c:if>
+		<c:if test="%{isFieldMandatory('function')}">                     
 		 if(null!= document.getElementById('functionId') && document.getElementById('functionId').value == -1){
-			 document.getElementById("error_area").innerHTML+='<s:text name="miscreceipt.functioncode.errormessage" />'+ '<br>';
+			 document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 			 dom.get("error_area").style.display="block";                                
 			 valid=false;
 		 }            
-		</s:if>
+		</c:if>
 		if(document.getElementById('serviceType').value =="P" ){
 	        if(document.getElementById('serviceUrl').value =="" ){       
-	        document.getElementById("error_area").innerHTML+='<s:text name="service.serviceurl.null" />'+  "<br>";
+	        document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
 	        dom.get("error_area").style.display="block";
 	        valid=false;
 	    }
 	        if(document.getElementById('callBackurl').value ==""){       
-	            document.getElementById("error_area").innerHTML+='<s:text name="service.callbackurl.null" />'+  "<br>";
+	            document.getElementById("error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
 	            dom.get("error_area").style.display="block";
 	            valid=false;
 	        }
@@ -152,7 +154,7 @@ function uniqueCheckCode(){
 	dom.get('error_area').innerHTML = '';
 	dom.get("error_area").style.display="none"
 	var serviceCode = dom.get("serviceCode").value.trim();
-	 var serviceCodeInitVal ='<s:property value="%{code}" />';
+	 var serviceCodeInitVal ='${%{code}}';
     if(serviceCode !="" && serviceCodeInitVal.trim() != serviceCode){
 		populateCodeUnique({code:dom.get('serviceCode').value});
    }
@@ -179,169 +181,169 @@ function enableUrl(obj) {
 <div class="errorstyle" id="error_area" style="display:none;"></div>
 	 <span align="center" style="display:none" id="CodeUnique">
  		<font  style='color: red ; font-weight:bold '> 
-         	<s:text name="service.code.already.exists"/>
+         	<!-- TODO: Manual migration required for custom Struts tag -->
  		 </font>
 	</span>
 		<span class="mandatory1">
 			<font  style='color: red ; font-weight:bold '> 
-				<s:actionerror/>  
-				<s:fielderror />
-				<s:actionmessage /></font>
+				<!-- TODO: Manual migration required for custom Struts tag -->  
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 
 <div class="formmainbox">
 	 
-	<div class="subheadnew"><s:text name="service.master.create.header"></s:text> </div>
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></s:text> </div>
 
 	<div class="subheadsmallnew">
-				<span class="subheadnew"> <s:text name="service.create.details.header"></s:text> </span>
+				<span class="subheadnew"> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </span>
 			</div>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 		    <td width="3%" class="bluebox"> &nbsp; </td>
-			<td width="20%" class="bluebox"> <s:text name="service.master.search.category"></s:text> </td>
-			<td width="25%" class="bluebox"><s:property value="serviceCategory.name"/></td>
+			<td width="20%" class="bluebox"> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </td>
+			<td width="25%" class="bluebox">${serviceCategory.name}</td>
 			<td width="25%" class="bluebox"> </td><td width="25%" class="bluebox"> </td>
 		</tr>
-		<s:set var="serviceCodeInitVal" value="%{code}"></s:set>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:set>
 		<tr>
 		    <td></td>
 			<egov:uniquecheck id="CodeUnique" fields="['Value']" url='/service/serviceDetails-codeUniqueCheck.action'
 			 key='service.code.already.exists' />
-			<td class="bluebox"> <s:text name="service.create.code"></s:text><span class="mandatory1">*</span></td>
-			<td class="bluebox"><s:textfield name="code" cssClass="form-control patternvalidation" data-pattern="alphanumericwithspace" id="serviceCode" maxlength="12"
-			 onblur="uniqueCheckCode();clearCodeIfExists();"></s:textfield> </td>
-			<td class="bluebox"> <s:text name="service.create.name"></s:text><span class="mandatory1">*</span></td>
-			<td class="bluebox"> <s:textfield name="name" id="name" maxlength="100" ></s:textfield> </td>
+			<td class="bluebox"> <!-- TODO: Manual migration required for custom Struts tag --></s:text><span class="mandatory1">*</span></td>
+			<td class="bluebox"><form:input path="code" cssClass="form-control patternvalidation" data-pattern="alphanumericwithspace" id="serviceCode" maxlength="12"
+			 onblur="uniqueCheckCode();clearCodeIfExists();"></form:input> </td>
+			<td class="bluebox"> <!-- TODO: Manual migration required for custom Struts tag --></s:text><span class="mandatory1">*</span></td>
+			<td class="bluebox"> <form:input path="name" id="name" maxlength="100" ></form:input> </td>
 		</tr>
 		<tr>
             <td></td>
-			<td class="bluebox"> <s:text name="service.master.enable"></s:text> </td>
-			<td class="bluebox"><s:checkbox name="isEnabled" /></td>
-			<td class="bluebox"><s:text name="service.master.classification"/> <span class="mandatory"></td>
+			<td class="bluebox"> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </td>
+			<td class="bluebox"><form:checkbox path="isEnabled" /></td>
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory"></td>
 			<td class="bluebox"> 
-				<s:select list="serviceTypeMap" headerKey="-1" headerValue="%{getText('miscreceipt.select')}"
-				name="serviceType" id="serviceType" onchange="return enableUrl(this)"></s:select>
+				<form:select list="serviceTypeMap" headerKey="-1" headerValue="%{getText('miscreceipt.select')}"
+				name="serviceType" id="serviceType" onchange="return enableUrl(this)"></form:select>
 			</td>
 		</tr>
 		<tr>
 		    <td></td>
-			<td class="bluebox"> <s:text name="service.master.isvouchertobecreated"></s:text> </td>
+			<td class="bluebox"> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </td>
 			<td class="bluebox" >
-			<s:if test="%{isVoucherOnReceiptAndStatusDisplay}">
-			<s:checkbox name="voucherCreation" id="voucherCreation" onclick="return EnableVoucherDetails(this)"/>
-			</s:if> 
-			<s:else>
-			   <s:checkbox name="voucherCreation" id="voucherCreation" onclick ="return false;" />
+			<c:if test="%{isVoucherOnReceiptAndStatusDisplay}">
+			<form:checkbox path="voucherCreation" id="voucherCreation" onclick="return EnableVoucherDetails(this)"/>
+			</c:if> 
+			<c:otherwise>
+			   <form:checkbox path="voucherCreation" id="voucherCreation" onclick ="return false;" />
 			</s:else>
 			</td>
 		</tr>
 		<tr id="voucherApprovedDetails">
 		<td></td>
-		<td class="bluebox"><s:text name="service.master.isvouchertobeapproved" ></s:text> </td>
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></s:text> </td>
 			<td class="bluebox">
-			<s:select list="#{'true':'Approved','false':'Pre-Approved'}" 
-				name="isVoucherApproved" id="isVoucherApproved"></s:select>
+			<form:select list="#{'true':'Approved','false':'Pre-Approved'}" 
+				name="isVoucherApproved" id="isVoucherApproved"></form:select>
 			</td>
 			<td class="bluebox"></td>
 			<td class="bluebox"></td>
 		</tr>
 		<tr id="urlDetails">
 			<td></td>
-			<td class="bluebox"><s:text name="service.create.serviceurl"></s:text><span
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></s:text><span
 				class="mandatory1">*</span></td>
-			<td class="bluebox"><s:textarea name="serviceUrl"
+			<td class="bluebox"><form:textarea path="serviceUrl"
 					id="serviceUrl" value="%{serviceUrl}" cols="18" rows="1"
 					maxlength="255" onkeyup="return ismaxlength(this)" /></td>
-			<td class="bluebox"><s:text name="service.create.callbackurl"></s:text><span
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></s:text><span
 				class="mandatory1">*</span></td>
-			<td class="bluebox"><s:textarea name="callBackurl"
+			<td class="bluebox"><form:textarea path="callBackurl"
 					id="callBackurl" value="%{callBackurl}" cols="18" rows="1"
 					maxlength="255" onkeyup="return ismaxlength(this)" /></td>
 		</tr>
 		<tr >
-			<td colspan="5"><div class="subheadsmallnew"><s:text name="service.create.findetails.header"></s:text></div></td>
+			<td colspan="5"><div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></s:text></div></td>
 		</tr>
-		<s:if test="%{shouldShowHeaderField('fund') || shouldShowHeaderField('department')}">
+		<c:if test="%{shouldShowHeaderField('fund') || shouldShowHeaderField('department')}">
          <tr>
           <td width="4%" class="bluebox">&nbsp;</td>
-           <s:if test="%{shouldShowHeaderField('fund')}">
-          <td width="21%" class="bluebox"><s:text name="miscreceipt.fund"/><s:if test="%{isFieldMandatory('fund')}"><span class="bluebox"><span class="mandatory"/></s:if></td>
-          <td width="24%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="fund" id="fundId" cssClass="selectwk" onChange="setFundId();getSchemelist(this);getBankBranchList(this);" list="dropdownData.fundList" listKey="id" listValue="name" value="%{fund.id}" />
+           <c:if test="%{shouldShowHeaderField('fund')}">
+          <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('fund')}"><span class="bluebox"><span class="mandatory"/></c:if></td>
+          <td width="24%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="fund" id="fundId" cssClass="selectwk" onChange="setFundId();getSchemelist(this);getBankBranchList(this);" list="dropdownData.fundList" listKey="id" listValue="name" value="%{fund.id}" />
           <egov:ajaxdropdown id="bankBranchMasterDropdown" fields="['Text','Value']" dropdownId='bankBranchMaster'
                 url='receipts/ajaxBankRemittance-bankBranchList.action' selectedValue="%{bankbranch.id}"/> 
           <egov:ajaxdropdown id="schemeIdDropdown" fields="['Text','Value']" dropdownId='schemeId' url='receipts/ajaxReceiptCreate-ajaxLoadSchemes.action' />
           </td>
-          </s:if>
-           <s:else>
+          </c:if>
+           <c:otherwise>
             <td colspan=2 class="bluebox"></td>
             </s:else>
-              <s:if test="%{shouldShowHeaderField('department')}">
-           <td width="21%" class="bluebox"><s:text name="miscreceipt.department"/><s:if test="%{isFieldMandatory('department')}"><span class="bluebox"><span class="mandatory"/></s:if></td>
-          <td width="24%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="deptId" id="deptId" cssClass="selectwk" list="dropdownData.departmentList" listKey="id" listValue="name" value="%{deptId}" /> </td>
-            </s:if>
-           <s:else>
+              <c:if test="%{shouldShowHeaderField('department')}">
+           <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('department')}"><span class="bluebox"><span class="mandatory"/></c:if></td>
+          <td width="24%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="deptId" id="deptId" cssClass="selectwk" list="dropdownData.departmentList" listKey="id" listValue="name" value="%{deptId}" /> </td>
+            </c:if>
+           <c:otherwise>
             <td colspan=2 class="bluebox"></td>
             </s:else>
          </tr>
-         </s:if>
-          <s:if test="%{shouldShowHeaderField('function')}">
+         </c:if>
+          <c:if test="%{shouldShowHeaderField('function')}">
          <tr>
-         <s:if test="%{shouldShowHeaderField('function')}">
+         <c:if test="%{shouldShowHeaderField('function')}">
          <td width="4%" class="bluebox">&nbsp;</td>
-           <td width="21%" class="bluebox"><s:text name="miscreceipt.function"/><s:if test="%{isFieldMandatory('function')}"><span class="bluebox"><span class="mandatory"/></s:if></td>
-          <td width="24%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="function" id="functionId" cssClass="selectwk" list="dropdownData.functionList" listKey="id" listValue="name"  value="%{function.id}"/> </td>
-            </s:if>
-           <s:else>
+           <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('function')}"><span class="bluebox"><span class="mandatory"/></c:if></td>
+          <td width="24%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="function" id="functionId" cssClass="selectwk" list="dropdownData.functionList" listKey="id" listValue="name"  value="%{function.id}"/> </td>
+            </c:if>
+           <c:otherwise>
             <td colspan=2 class="bluebox"></td>
             </s:else>
          </tr>
-         </s:if>
-          <s:if test="%{shouldShowHeaderField('fundsource') || shouldShowHeaderField('functionary')}">
+         </c:if>
+          <c:if test="%{shouldShowHeaderField('fundsource') || shouldShowHeaderField('functionary')}">
         <tr>
           <td width="4%" class="bluebox">&nbsp;</td>
-          <s:if test="%{shouldShowHeaderField('fundsource')}">
-           <td width="21%" class="bluebox"><s:text name="miscreceipt.fundingsource"/> <s:if test="%{isFieldMandatory('fundsource')}"><span class="bluebox"><span class="mandatory"/></s:if></td>
-         <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="fundSourceId" id="fundSourceId" onclick="checkfund()" onchange="setFundSourceId();" cssClass="selectwk" list="dropdownData.fundsourceList" listKey="id" listValue="name"  /></td>
-         <s:hidden label="receiptMisc.fundsource.id" id="receiptMisc.fundsource.id"  name="receiptMisc.fundsource.id"/>
-         </s:if>
-         <s:else>
+          <c:if test="%{shouldShowHeaderField('fundsource')}">
+           <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if test="%{isFieldMandatory('fundsource')}"><span class="bluebox"><span class="mandatory"/></c:if></td>
+         <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="fundSourceId" id="fundSourceId" onclick="checkfund()" onchange="setFundSourceId();" cssClass="selectwk" list="dropdownData.fundsourceList" listKey="id" listValue="name"  /></td>
+         <!-- TODO: Manual migration required for custom Struts tag -->
+         </c:if>
+         <c:otherwise>
         <td colspan=2 class="bluebox"></td>
         </s:else>
-        <s:if test="%{shouldShowHeaderField('functionary')}">
-          <td width="21%" class="bluebox"><s:text name="miscreceipt.functionary"/>  <s:if test="%{isFieldMandatory('functionary')}"><span class="bluebox"><span class="mandatory"/></s:if> </td>
-         <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="receiptMisc.idFunctionary.id" id="receiptMisc.idFunctionary.id" cssClass="selectwk" list="dropdownData.functionaryList" listKey="id" listValue="name"  /></td>
+        <c:if test="%{shouldShowHeaderField('functionary')}">
+          <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->  <c:if test="%{isFieldMandatory('functionary')}"><span class="bluebox"><span class="mandatory"/></c:if> </td>
+         <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="receiptMisc.idFunctionary.id" id="receiptMisc.idFunctionary.id" cssClass="selectwk" list="dropdownData.functionaryList" listKey="id" listValue="name"  /></td>
          
-         </s:if>
-         <s:else>
+         </c:if>
+         <c:otherwise>
         <td colspan=2 class="bluebox"></td>
         </s:else>
         </tr>
-        </s:if>
-          <s:if test="%{shouldShowHeaderField('scheme')}">
+        </c:if>
+          <c:if test="%{shouldShowHeaderField('scheme')}">
           <tr>
           <td width="4%" class="bluebox">&nbsp;</td>
-          <td width="21%" class="bluebox"><s:text name="miscreceipt.scheme"/> <s:if test="%{isFieldMandatory('scheme')}"><span class="mandatory"/></s:if>  </td>
+          <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if test="%{isFieldMandatory('scheme')}"><span class="mandatory"/></c:if>  </td>
           <td width="24%" class="bluebox">
-          <s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="schemeId" id="schemeId" onclick="checkfund()" onchange="setSchemeId();getSubSchemelist(this)" cssClass="selectwk" list="dropdownData.schemeList" listKey="id" listValue="name"  value="%{scheme.id}" /> 
+          <form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="schemeId" id="schemeId" onclick="checkfund()" onchange="setSchemeId();getSubSchemelist(this)" cssClass="selectwk" list="dropdownData.schemeList" listKey="id" listValue="name"  value="%{scheme.id}" /> 
           <egov:ajaxdropdown id="subschemeId" fields="['Text','Value']" dropdownId='subschemeId' url='receipts/ajaxReceiptCreate-ajaxLoadSubSchemes.action' />
-          <s:hidden label="receiptMisc.scheme.id" id="receiptMisc.scheme.id"  name="receiptMisc.scheme.id"/>
+          <!-- TODO: Manual migration required for custom Struts tag -->
           </td>
           
-          <td width="21%" class="bluebox"><s:text name="miscreceipt.subscheme"/> <s:if test="%{isFieldMandatory('subscheme')}"><span class="mandatory"/></s:if>  </td>
+          <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if test="%{isFieldMandatory('subscheme')}"><span class="mandatory"/></c:if>  </td>
 
          <td width="30%" class="bluebox">
-          <s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="subschemeId" id="subschemeId" onchange="setSubSchemeId();getFundSourcelist(this)" onclick="checkscheme()" cssClass="selectwk" list="dropdownData.subschemeList" listKey="id" listValue="name"  /></td>
+          <form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="subschemeId" id="subschemeId" onchange="setSubSchemeId();getFundSourcelist(this)" onclick="checkscheme()" cssClass="selectwk" list="dropdownData.subschemeList" listKey="id" listValue="name"  /></td>
           <egov:ajaxdropdown id="fundSourceId" fields="['Text','Value']" dropdownId='fundSourceId'
            url='../../EGF/voucher/common-ajaxLoadFundSource.action'  />
-           <s:hidden label="receiptMisc.subscheme.id" id="receiptMisc.subscheme.id"  name="receiptMisc.subscheme.id"/>
+           <!-- TODO: Manual migration required for custom Struts tag -->
          
         </tr>
-        </s:if>
-		<s:hidden name="serviceCategory.id" id="serviceCategory.id"></s:hidden>
-		<s:hidden name="id"></s:hidden>
-		<s:hidden name="serviceCategory.name" id="serviceCategory.name"></s:hidden>
-		<s:hidden name="isVoucherOnReceiptAndStatusDisplay" id="isVoucherOnReceiptAndStatusDisplay"></s:hidden>
+        </c:if>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 	</table>
 	<jsp:include page="finAccountsTable.jsp"/>
 
@@ -374,7 +376,7 @@ function enableUrl(obj) {
 <div id="subledgercodescontainer"></div> 
 
 <br/>
-<div align="left" class="mandatorycoll"> &nbsp;&nbsp;&nbsp;<s:text name="common.mandatoryfields"/></div>
+<div align="left" class="mandatorycoll"> &nbsp;&nbsp;&nbsp;<!-- TODO: Manual migration required for custom Struts tag --></div>
 <br/>
 </div>
 

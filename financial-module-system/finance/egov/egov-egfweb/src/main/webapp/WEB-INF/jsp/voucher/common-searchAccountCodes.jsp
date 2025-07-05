@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -63,7 +65,7 @@ function goToParent(glcode,coaid) {
 
 </head>
 <body>
-	<s:form action="common">
+	<form:form action="common">
 		<table width="100%" border="0" align="center" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -83,21 +85,21 @@ function goToParent(glcode,coaid) {
 					<div style="overflow: auto; width: 370px; height: 380px;">
 						<table width="100%" border="0" align="center" cellpadding="0"
 							cellspacing="0">
-							<s:iterator var="s" value="accountCodesList" status="status">
+							<c:forEach var="s" value="accountCodesList" status="status">
 								<tr>
 									<td align="left" width="40%">&nbsp;&nbsp;<a href="#"
-										onclick="goToParent('<s:property value="%{glcode}" />','<s:property value="%{id}" />');"><s:property
+										onclick="goToParent('${%{glcode}}','${%{id}}');"><s:property
 												value="%{glcode}" /></a></td>
 									<td align="left" width="60%">&nbsp;&nbsp;<s:property
 											value="%{name}" /></td>
 								</tr>
-							</s:iterator>
-							<s:if test="accountCodesList == null || accountCodesList.size==0">
+							</c:forEach>
+							<c:if test="accountCodesList == null || accountCodesList.size==0">
 								<tr>
 									<td colspan="2"><div class="subheadsmallnew">No
 											Records Found</div></td>
 								</tr>
-							</s:if>
+							</c:if>
 						</table>
 					</div>
 				</td>
@@ -108,6 +110,6 @@ function goToParent(glcode,coaid) {
 			<input type="submit" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

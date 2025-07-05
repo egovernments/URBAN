@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -106,10 +108,10 @@
 		<div class="row text-center">
 			<div class="add-margin">
 			<c:if test="${mode == 'view'}">
-				<a href="javascript:void(0)" class="btn btn-default" onclick="self.close()"><s:text name='lbl.close'/></a>
+				<a href="javascript:void(0)" class="btn btn-default" onclick="self.close()"><!-- TODO: Manual migration required for custom Struts tag --></a>
 			</c:if>
 			<c:if test="${mode == 'create'}">
-				<a href="javascript:void(0)" class="btn btn-default" onclick="javascript:window.parent.postMessage('close','*');"><s:text name='lbl.close'/></a>
+				<a href="javascript:void(0)" class="btn btn-default" onclick="javascript:window.parent.postMessage('close','*');"><!-- TODO: Manual migration required for custom Struts tag --></a>
 			</c:if>	
 			</div>
 		</div>

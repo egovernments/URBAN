@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -68,7 +70,7 @@
 	src="/services/EGF/resources/javascript/tabber2.js?rnd=${app_release_no}"></script>
 <script type="text/javascript"
 	src="<cdn:url value='/resources/global/js/egov/inbox.js?rnd=${app_release_no}' context='/services/egi'/>"> </script>
-<title><s:text name="remit.recovery.create.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 
 function showHistory(stateId)
@@ -110,7 +112,7 @@ function populateAccNum(branch){
 	var bankId = bankbranchId.substring(0,index);
 	var brId=bankbranchId.substring(index+1,bankbranchId.length);
 	
-	var vTypeOfAccount = '<s:property value="%{typeOfAccount}"/>';
+	var vTypeOfAccount = '${%{typeOfAccount}}';
 	
 	populateaccountNumber({fundId: fundObj.options[fundObj.selectedIndex].value,bankId:bankId,branchId:brId,typeOfAccount:vTypeOfAccount})
 }
@@ -138,7 +140,7 @@ function populateUser(){
 }
 
 function printVoucher(){
-	document.forms[0].action='../report/billPaymentVoucherPrint-print.action?id=<s:property value="paymentheader.id"/>';
+	document.forms[0].action='../report/billPaymentVoucherPrint-print.action?id=${paymentheader.id}';
 	jQuery(document.forms[0]).append(
             jQuery('<input>', {
                 type: 'hidden',
@@ -160,7 +162,7 @@ function printVoucher(){
 			if(parseFloat(document.getElementById('totalAmount').value) > parseFloat(document.getElementById('availableBalance').value))
 				{
 
-				var insuffiecientBankBalance ='<s:text name="insuffiecientBankBalance"/>';
+				var insuffiecientBankBalance ='<!-- TODO: Manual migration required for custom Struts tag -->';
 					bootbox.alert(insuffiecientBankBalance);
 					return false;
 				}
@@ -191,28 +193,28 @@ function printVoucher(){
 </script>
 </head>
 <body>
-	<s:form action="remitRecovery" theme="simple" name="remittanceForm"
+	<form:form action="remitRecovery" theme="simple" name="remittanceForm"
 		id="remittanceForm">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Remittance Recovery" />
 			</jsp:include>
-			<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-				<s:actionmessage />
+			<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<div align="center" class="error-block" id="lblError"
 					style="font: bold; text-align: center"></div>
 			</span>
 			
 			<font style='color: red;' size="2">
 				
-			<s:if test="%{finanicalYearAndClosedPeriodCheckIsClosed}">
-				<s:text name="financialyear.closedperiod.closed" ></s:text>
-				</s:if>
+			<c:if test="%{finanicalYearAndClosedPeriodCheckIsClosed}">
+				<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+				</c:if>
 				</font>
 
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="remit.recovery.view.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div id="budgetSearchGrid"
 					style="display: block; width: 100%; border-top: 1px solid #ccc;">
@@ -227,7 +229,7 @@ function printVoucher(){
 												<div class="tabber">
 													<div class="tabbertab" id="searchtab">
 														<h2>
-															<s:text name="remit.recovery.header" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</h2>
 														<span>
 															<table width="100%" border="0" cellspacing="0"
@@ -239,9 +241,9 @@ function printVoucher(){
 																</tr>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
-																	<td class="bluebox"><s:text name="voucher.number" /><span
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 																		class="mandatory1">*</span></td>
-																	<td class="bluebox"><s:textfield
+																	<td class="bluebox"><form:input
 																			name="voucherNumber" id="vouchernumber" /></td>
 																	<td class="bluebox" width="18%"><s:text
 																			name="voucher.date" /><span class="mandatory1">*</span></td>
@@ -249,7 +251,7 @@ function printVoucher(){
 																		format='dd/MM/yyyy' />
 																	<td class="bluebox" width="34%">
 																		<div name="daterow">
-																			<s:textfield name="voucherDate" id="voucherDate"
+																			<form:input path="voucherDate" id="voucherDate"
 																				maxlength="10"
 																				onkeyup="DateFormat(this,this.value,event,false,'3')"
 																				size="15" value="%{voucherDateId}" />
@@ -268,12 +270,12 @@ function printVoucher(){
 																</tr>
 																<tr>
 																	<td class="greybox"></td>
-																	<td class="greybox"><s:text name="bank" /> <span
+																	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 																		class="greybox"><span class="mandatory1">*</span></span></td>
 																	<egov:ajaxdropdown id="bankId"
 																		fields="['Text','Value']" dropdownId="bankId"
 																		url="/voucher/common-ajaxLoadBanksByFundAndType.action" />
-																	<td class="greybox"><s:select
+																	<td class="greybox"><form:select
 																			name="commonBean.bankId" id="bankId"
 																			list="dropdownData.bankList" listKey="bankBranchId"
 																			listValue="bankBranchName" headerKey=""
@@ -285,13 +287,13 @@ function printVoucher(){
 																	<td class="greybox" width="22%"><s:text
 																			name="account.number" /><span class="bluebox"><span
 																			class="mandatory1">*</span></span></td>
-																	<td class="greybox" width="22%"><s:select
+																	<td class="greybox" width="22%"><form:select
 																			name="commonBean.accountNumberId" id="accountNumber"
 																			list="dropdownData.accNumList" listKey="id"
 																			listValue="chartofaccounts.glcode+'--'+accountnumber+'--'+accounttype"
 																			headerKey="" headerValue="----Choose----"
 																			onChange="populateNarration(this);populateAvailableBalance(this);" />
-																		<s:textfield name="commonBean.accnumnar"
+																		<form:input path="commonBean.accnumnar"
 																			id="accnumnar" readonly="true" tabindex="-1" /></td>
 																</tr>
 																<tr>
@@ -306,7 +308,7 @@ function printVoucher(){
 																		style="display: none" width="18%"><s:text
 																			name="balance.available" /></td>
 																	<td class="bluebox" id="balanceAvl"
-																		style="display: none" width="32%"><s:textfield
+																		style="display: none" width="32%"><form:input
 																			name="commonBean.availableBalance"
 																			id="availableBalance" readonly="readonly"
 																			style="text-align:right"
@@ -323,10 +325,10 @@ function printVoucher(){
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
 																	<td class="bluebox">Narration:</td>
-																	<td class="bluebox" colspan="4"><s:textarea
+																	<td class="bluebox" colspan="4"><form:textarea
 																			name="description" id="description"
 																			value="%{voucherHeader.description}" type="text"
-																			style="width:580px;"></s:textarea>
+																			style="width:580px;"></form:textarea>
 																	<td></td>
 																</tr>
 															</table>
@@ -334,14 +336,14 @@ function printVoucher(){
 													</div>
 													<div class="tabbertab" id="contractortab">
 														<h2>
-															<s:text name="remit.recovery.detais" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</h2>
 														<span>
 															<table align="center" border="0" cellpadding="0"
 																cellspacing="0" class="newtable">
 																<tr>
 																	<td colspan="6"><div class="subheadsmallnew">
-																			<s:text name="remit.recovery.detais" />
+																			<!-- TODO: Manual migration required for custom Struts tag -->
 																		</div></td>
 																</tr>
 																<tr>
@@ -349,7 +351,7 @@ function printVoucher(){
 																		<div style="float: left; width: 100%;">
 
 																			<jsp:include page="remitRecoveryPayment-form.jsp" />
-																			<s:hidden name="remittanceBean.recoveryId" />
+																			<!-- TODO: Manual migration required for custom Struts tag -->
 																			<div class="yui-skin-sam" align="center">
 																				<div id="recoveryDetailsTableNew"></div>
 																			</div>
@@ -363,7 +365,7 @@ function printVoucher(){
 																				<tr>
 																					<td width="80%"></td>
 																					<td>Total Amount</td>
-																					<td><s:textfield
+																					<td><form:input
 																							name="remittanceBean.totalAmount"
 																							id="totalAmount" size="10"
 																							style='text-align:right' readonly="true"
@@ -392,14 +394,14 @@ function printVoucher(){
 																			<table id="chequeTable" align="center" border="0"
 																				cellpadding="0" cellspacing="0" width="100%">
 																				<tr>
-																					<s:if
+																					<c:if
 																						test="%{paymentheader.type == 'cash' || paymentheader.type == 'Cash' || paymentheader.type == 'Cheque' || paymentheader.type == 'cheque'}">
 																						<th class="bluebgheadtdnew">Cheque Number
 																						</td>
 																						<th class="bluebgheadtdnew">Cheque Date
 																						</td>
-																					</s:if>
-																					<s:else>
+																					</c:if>
+																					<c:otherwise>
 																						<th class="bluebgheadtdnew">RTGS Number
 																						</td>
 																						<th class="bluebgheadtdnew">RTGS Date
@@ -413,11 +415,11 @@ function printVoucher(){
 																					<th class="bluebgheadtdnew">Cheque Status
 																					</td>
 																				</tr>
-																				<s:if test="%{instrumentHeaderList.size()>0}">
-																					<s:iterator var="p" value="instrumentHeaderList"
+																				<c:if test="%{instrumentHeaderList.size()>0}">
+																					<c:forEach var="p" value="instrumentHeaderList"
 																						status="s">
 																						<tr>
-																							<s:if
+																							<c:if
 																								test="%{paymentheader.type == 'cash' || paymentheader.type == 'Cash' || paymentheader.type == 'Cheque' || paymentheader.type == 'cheque'}">
 																								<td style="text-align: center"
 																									class="blueborderfortdnew"><s:property
@@ -425,8 +427,8 @@ function printVoucher(){
 																								<td style="text-align: center"
 																									class="blueborderfortdnew"><s:date
 																										name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
-																							</s:if>
-																							<s:else>
+																							</c:if>
+																							<c:otherwise>
 																								<td style="text-align: center"
 																									class="blueborderfortdnew"><s:property
 																										value="%{transactionNumber}" /></td>
@@ -440,21 +442,21 @@ function printVoucher(){
 																							<td style="text-align: right"
 																								class="blueborderfortdnew"><s:text
 																									name="format.number">
-																									<s:param value="%{instrumentAmount}" />
+																									<!-- TODO: Manual migration required for custom Struts tag -->
 																								</s:text></td>
 																							<td style="text-align: center"
 																								class="blueborderfortdnew"><s:property
 																									value="%{statusId.description}" /></td>
 																						</tr>
-																					</s:iterator>
-																				</s:if>
+																					</c:forEach>
+																				</c:if>
 																			</table>
-																			<s:if
+																			<c:if
 																				test="%{instrumentHeaderList==null || instrumentHeaderList.size==0}">
 																				<div class="bottom" align="center">
-																					<s:text name="chq.not.found"></s:text>
+																					<!-- TODO: Manual migration required for custom Struts tag --></s:text>
 																				</div>
-																			</s:if>
+																			</c:if>
 																		</div>
 																	</td>
 																</tr>
@@ -473,22 +475,22 @@ function printVoucher(){
 
 			</div>
 			<div class="buttonbottom" id="buttondiv">
-				<s:hidden type="hidden" id="selectedRows" name="selectedRows" />
-				<s:hidden name="paymentid" value="%{paymentheader.id}" />
-				<s:hidden name="actionname" id="actionName" value="%{action}" />
-				<s:if test="%{showMode!='view'}">
-				<s:if test="%{!finanicalYearAndClosedPeriodCheckIsClosed}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<c:if test="%{showMode!='view'}">
+				<c:if test="%{!finanicalYearAndClosedPeriodCheckIsClosed}">
 					<%@ include file='../payment/commonWorkflowMatrix.jsp'%>
 					<%@ include file='../workflow/commonWorkflowMatrix-button.jsp'%>
 					<s:submit cssClass="button" id="printPreview" value="Print Preview"
 						onclick="printVoucher()" />
-						</s:if>
-						<s:else>
+						</c:if>
+						<c:otherwise>
 				<input type="button" name="button2" id="button2" value="Close"
 						class="button" onclick="window.parent.postMessage('close','*');window.close();" />
 				</s:else>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<s:submit cssClass="button" id="printPreview" value="Print Preview"
 						onclick="printVoucher()" />
 					<input type="button" name="button2" id="button2" value="Close"
@@ -496,7 +498,7 @@ function printVoucher(){
 				</s:else>
 			</div>
 			<script type="text/javascript">
-	//bootbox.alert('<s:property value="fund.id"/>');                               
+	//bootbox.alert('${fund.id}');                               
 	calcTotalForPayment();
 	</script>
 		</s:push>
@@ -555,9 +557,9 @@ function printVoucher(){
 		if(document.getElementById("button2"))
 			document.getElementById("button2").disabled=false;		
 			  	
-	<s:if test="%{showMode!='view'}">	
+	<c:if test="%{showMode!='view'}">	
 		
-	 <s:if test="%{canCheckBalance==true}">
+	 <c:if test="%{canCheckBalance==true}">
 			if(document.getElementById('balanceText'))
 			{
 				document.getElementById('balanceText').style.display='block';
@@ -566,15 +568,15 @@ function printVoucher(){
 				x=parseFloat(x);
 				document.getElementById('availableBalance').value=x.toFixed(2);
 			}
-	</s:if>	
-	<s:if test="%{balance=='-1'}">
+	</c:if>	
+	<c:if test="%{balance=='-1'}">
 	
 	bootbox.alert("FundFlow Report not Generated to check Bank Balance. Please generate Report First");
 	for(var i=0;i<document.forms[0].length;i++)
 	if(document.forms[0].elements[i].id!='closeButtonNew')
 		document.forms[0].elements[i].disabled =true;
-	</s:if>
-	</s:if>
+	</c:if>
+	</c:if>
 		
 		
 		if(document.getElementById("wfBtn0"))
@@ -592,7 +594,7 @@ function printVoucher(){
 		
 		
 </SCRIPT>
-	</s:form>
+	</form:form>
 
 </body>
 

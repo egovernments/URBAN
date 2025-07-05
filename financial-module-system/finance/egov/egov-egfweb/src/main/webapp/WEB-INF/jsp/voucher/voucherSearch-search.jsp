@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,12 +56,12 @@
 
 <html>
 <head>
-<title><s:text name="lbl.voucher.search"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <base target="_self" />
 <script type="text/javascript">
 	function disableTypeForEditMode()
 	{
-		var showMode='<s:property value="showMode" />';
+		var showMode='${showMode}';
 		if(showMode=='edit' )
 			{ 
 			document.getElementById("type").disabled=true;
@@ -76,57 +78,57 @@
 	</script>
 </head>
 <body onload="disableTypeForEditMode()">
-	<s:form action="voucherSearch" theme="simple">
+	<form:form action="voucherSearch" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Voucher Search" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
-			<s:if test="%{showMode=='nonbillPayment'}">
-				<div class="subheadnew"><s:text name="msg.no.bill.payment.search"/> </div>
-			</s:if>
-			<s:else>
-				<div class="subheadnew"><s:text name="lbl.voucher.search"/> </div>
+			<c:if test="%{showMode=='nonbillPayment'}">
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
+			</c:if>
+			<c:otherwise>
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			</s:else>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="greybox"><s:text name="voucher.number" /></td>
-					<td class="greybox"><s:textfield name="voucherNumber"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input path="voucherNumber"
 							id="voucherNumber" maxlength="25" value="%{voucherNumber}"  onblur="changeField();" /></td>
 					<td class="greybox"></td>
 					<td class="greybox"></td>
 				</tr>
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="bluebox"><s:text name="voucher.type" /></td>
-					<td class="bluebox"><s:select name="type" id="type"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="type" id="type"
 							list="dropdownData.typeList" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}"
 							onchange="loadVoucherNames(this.value)" /></td>
-					<td class="bluebox"><s:text name="voucher.name" /></td>
-					<td class="bluebox"><s:select name="name" id="name"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="name" id="name"
 							list="%{nameList}" headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
 				</tr>
 				<tr>
 					<td style="width: 5%"></td>
-					<td class="greybox"><s:text name="voucher.fromdate" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1" id="disableFromDateCheck">*</span></td>
-					<s:date name="fromDate" format="dd/MM/yyyy" var="tempFromDate" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					<td class="greybox">
-							<s:textfield id="fromDate" name="fromDate"
+							<form:input id="fromDate" path="fromDate"
 							value="%{tempFromDate}"  data-date-end-date="0d" 
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" autocomplete="off"/>
 							</td>
-					<s:date name="toDate" format="dd/MM/yyyy" var="tempToDate" />
-					<td class="greybox"><s:text name="voucher.todate" /><span
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1" id="disableToDateCheck">*</span></td>
 					<td class="greybox">
-							<s:textfield id="toDate" name="toDate"
+							<form:input id="toDate" path="toDate"
 							value="%{tempToDate}"  data-date-end-date="0d" 
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -139,93 +141,93 @@
 				</tr>
 				<!-- tr>
 					<td style="width: 5%"></td>
-					<td class="greybox"><s:text name="voucher.source" /></td>
-					<td class="greybox"><s:select name="moduleId" id="moduleId"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="moduleId" id="moduleId"
 							list="sourceMap" headerKey="-1" headerValue="----Choose----" /></td>
 				</tr>  -->
-				<s:hidden name="mode" value="%{mode}" id="mode" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</table>
 			<br />
 			<div class="subheadsmallnew"></div>
-			<div align="left" class="mandatory1"><s:text name="msg.either.voucher.number.or.mendatory.field.required"/> </div>
+			<div align="left" class="mandatory1"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 		</div>
 	
 		<div align="center" class="buttonbottom">
 			<s:submit key="lbl.search" onclick="return validateAndSubmit()"
 				cssClass="buttonsubmit" />
-			<input type="button" value='<s:text name="lbl.close"/>'
+			<input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 				onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 		</div>
 		<br />
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			<s:if test="%{pagedResults!=null}">
+			<c:if test="%{pagedResults!=null}">
 				<tr>
 					<td width="100%"><display:table name="pagedResults"	uid="currentRowObject" cellpadding="0" cellspacing="0"
 							requestURI="" class="its" style=" border-left: 1px solid #C5C5C5; border-top: 1px solid #C5C5C5;border-right: 1px solid #C5C5C5;border-bottom: 1px solid #C5C5C5;">
 							<display:column title=" Sl No" style="text-align:center;">
-								<s:property	value="%{#attr.currentRowObject_rowNum+ (page-1)*pageSize}" />
+								${%{#attr.currentRowObject_rowNum+ (page-1)*pageSize}}
 							</display:column>
 							<display:column title="Voucher Number" style="text-align:center;">
-								<a href="#"	onclick="openVoucher('<s:property value='%{#attr.currentRowObject.id}'/>','<s:property value="%{#attr.currentRowObject.vouchernumber}" />','<s:date name="%{#attr.currentRowObject.voucherdate}" format="dd/MM/yyyy"/>');"><s:property
+								<a href="#"	onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->','${%{#attr.currentRowObject.vouchernumber}}','<!-- TODO: Manual migration required for custom Struts tag -->');"><s:property
 										value="%{#attr.currentRowObject.vouchernumber}" />
 							</display:column>
 
 							</a>
 
 							<display:column title="Voucher Type" style="text-align:center;">
-								<s:property value="%{#attr.currentRowObject.type}" />
+								${%{#attr.currentRowObject.type}}
 							</display:column>
 							<display:column title="Voucher Name" style="text-align:center;">
-								<s:property value="%{#attr.currentRowObject.name}" />
+								${%{#attr.currentRowObject.name}}
 							</display:column>
 							<display:column title="Voucher Date" style="text-align:center;">
 								<s:date name="%{#attr.currentRowObject.voucherdate}"
 									format="dd/MM/yyyy" />
 							</display:column>
 							<display:column title="Fund Name" style="text-align:center;">
-								<s:property value="%{#attr.currentRowObject.fundname}" />
+								${%{#attr.currentRowObject.fundname}}
 							</display:column>
 							<display:column title="Department Name"
 								style="text-align:center;">
-								<s:property value="%{#attr.currentRowObject.deptName}" />
+								${%{#attr.currentRowObject.deptName}}
 							</display:column>
 							<display:column title="Total Amount" style="text-align:right;">
-								<s:property value="%{#attr.currentRowObject.amount}" />
+								${%{#attr.currentRowObject.amount}}
 							</display:column>
 							<display:column title="Status" style="text-align:center;">
-								<s:property value="%{#attr.currentRowObject.status}" />
+								${%{#attr.currentRowObject.status}}
 							</display:column>
 
 						</display:table></td>
 				<tr>
 
 				</tr>
-			</s:if>
-			<s:elseif test="%{voucherList.size!=0 || voucherList!=null}">
+			</c:if>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<div id="listid" style="display: none">
 					<table width="100%" border="0" align="center" cellpadding="0"
 						cellspacing="0" class="tablebottom">
 						<tr>
-							<th class="bluebgheadtd"><s:text name="lbl.sr.no"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.voucher.number"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.type"/>Type</th>
-							<th class="bluebgheadtd"><s:text name="lbl.name"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.voucher.date"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.fund.name"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.department.name"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.amount"/></th>
-							<th class="bluebgheadtd"><s:text name="lbl.status"/></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->Type</th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							<!-- <th class="bluebgheadtd">Source</th> -->
 						</tr>
 						<c:set var="trclass" value="greybox" />
 
-						<s:iterator var="p" value="voucherList" status="s">
+						<c:forEach var="p" value="voucherList" status="s">
 							<tr>
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="#s.index+1" /></td>
 								<td align="left" class="<c:out value="${trclass}"/>"><a
 									href="#"
-									onclick="openVoucher(<s:property value='%{id}'/>,'<s:text name="%{name}.%{showMode}" />','<s:property value="%{vouchernumber}" /> ' ,'<s:date name="%{voucherdate}" format="dd/MM/yyyy"/>');"><s:property
+									onclick="openVoucher(<!-- TODO: Manual migration required for custom Struts tag -->,'<!-- TODO: Manual migration required for custom Struts tag -->','${%{vouchernumber}} ' ,'<!-- TODO: Manual migration required for custom Struts tag -->');"><s:property
 											value="%{vouchernumber}" /> </a></td>
 								<td align="left" class="<c:out value="${trclass}"/>"><s:property
 										value="%{type}" /></td>
@@ -240,7 +242,7 @@
 								<td style="text-align: right"
 									class="<c:out value="${trclass}"/>"><s:text
 										name="format.number">
-										<s:param value="%{amount}" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 								<td class="<c:out value="${trclass}"/>"><s:text
 										name="%{status}" /></td>
@@ -255,8 +257,8 @@
 									</c:when>
 								</c:choose>
 							</tr>
-						</s:iterator>
-						<s:hidden name="targetvalue" value="%{target}" id="targetvalue" />
+						</c:forEach>
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</table>
 				</div>
 			</s:elseif>
@@ -264,8 +266,8 @@
 		<br />
 		<br />
 		<br />
-		<s:hidden name="showMode" id="showMode" />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 
 	<script>
 		
@@ -275,21 +277,21 @@
 			if(selected==-1)
 				{
 				document.getElementById('name').options.length=0;
-				document.getElementById('name').options[0]= new Option('<s:text name="lbl.choose.options"/>','0');
+				document.getElementById('name').options[0]= new Option('<!-- TODO: Manual migration required for custom Struts tag -->','0');
 				}
-		<s:iterator value="voucherTypes" var="obj">
-		  s='<s:property value="#obj"/>';
+		<c:forEach value="voucherTypes" var="obj">
+		  s='${#obj}';
 		 if(selected==s)
 		 {
 		document.getElementById('name').options.length=0;
-		document.getElementById('name').options[0]= new Option('<s:text name="lbl.choose.options"/>','0');
+		document.getElementById('name').options[0]= new Option('<!-- TODO: Manual migration required for custom Struts tag -->','0');
 
-		 <s:iterator value="voucherNames[#obj]" status="stat" var="names">
-		 document.getElementById('name').options[<s:property value="#stat.index+1"/>]= new Option('<s:property value="#names"/>','<s:property value="#names"/>');
-		 </s:iterator>   
+		 <c:forEach value="voucherNames[#obj]" status="stat" var="names">
+		 document.getElementById('name').options[${#stat.index+1}]= new Option('${#names}','${#names}');
+		 </c:forEach>   
 		 }
-		 </s:iterator>
-		 document.getElementById('name').value='<s:property value="name"/>' ;   
+		 </c:forEach>
+		 document.getElementById('name').value='${name}' ;   
 			
 		}
 		function openVoucher(vid,url,voucherNumber,voucherDate){
@@ -363,17 +365,17 @@
 			if(!DateValidation(fromDate,toDate))
 				return false;
 			if(fromDate == "" && voucherNumber!=""){
-				bootbox.alert("<s:text name='msg.please.select.from.date'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 				}
 			
 			if(toDate == "" && voucherNumber==""){
-				bootbox.alert("<s:text name='msg.please.select.to.date'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 				}
 
 			if(fundId == "-1" && voucherNumber==""){
-				bootbox.alert("<s:text name='msg.please.select.fund'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 				}
 			
@@ -392,7 +394,7 @@
 			{
 			document.getElementById('type').disabled=true;
 			}
-			document.title="<s:text name='msg.no.bill.payment.search'/>";
+			document.title="<!-- TODO: Manual migration required for custom Struts tag -->";
 		}
 		
 		function changeField()

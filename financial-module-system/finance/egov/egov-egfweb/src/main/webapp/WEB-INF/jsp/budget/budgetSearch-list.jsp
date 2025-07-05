@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="budget.search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <STYLE type="text/css">
 .tabbertab {
 	border: 1px solid #CCCCCC;
@@ -79,25 +81,25 @@
 			
 		</script>
 	<jsp:include page="budgetHeader.jsp" />
-	<s:form action="budgetSearch" theme="simple">
+	<form:form action="budgetSearch" theme="simple">
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="budget.search" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<%@ include file='budgetSearch-form.jsp'%>
 			<div class="buttonbottom" style="padding-bottom: 10px;">
 				<input type="button" value="Search" class="buttonsubmit"
 					  onclick="return validateAndSubmit()" />
-				<s:reset value="Reset" cssClass="button" /> 
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<!-- TODO: Manual migration required for custom Struts tag --> 
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.parent.postMessage('close','*');window.close();" class="button" />
 			</div>
 			<h5 style="color:red">
-			<s:actionerror/>
-			<s:actionmessage/></h5>
-	</s:form>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --></h5>
+	</form:form>
 
-	<s:if test="%{!budgetList.isEmpty()}">
+	<c:if test="%{!budgetList.isEmpty()}">
 		<div id="detail">
 			<table align="center" border="0" cellpadding="0" cellspacing="0"
 				width="100%" class="tablebottom"
@@ -117,21 +119,21 @@
 					<th class="bluebgheadtd" width="10%"><s:text
 							name="budget.description" /></th>
 				</tr>
-				<s:iterator value="budgetList" status="stat">
+				<c:forEach value="budgetList" status="stat">
 					<tr>
 						<td class="blueborderfortd">
 						<a
-							href='<s:url action="budgetSearch-groupedBudgetDetailList">
-							<s:param name="budget.id" value="%{id}" />
-							<s:param name="skipPrepare" value="true"/>
-							</s:url>'><s:property value="name" /></a>  &nbsp;</td>
-						<td class="blueborderfortd"><s:property value="parent.name" />&nbsp;</td>
-						<td class="blueborderfortd"><s:property value="description" />&nbsp;</td>
+							href='<!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							</s:url>'>${name}</a>  &nbsp;</td>
+						<td class="blueborderfortd">${parent.name}&nbsp;</td>
+						<td class="blueborderfortd">${description}&nbsp;</td>
 					</tr>
-				</s:iterator>
+				</c:forEach>
 			</table>
 		</div>
-	</s:if>
+	</c:if>
 	
 </body>
 </html>

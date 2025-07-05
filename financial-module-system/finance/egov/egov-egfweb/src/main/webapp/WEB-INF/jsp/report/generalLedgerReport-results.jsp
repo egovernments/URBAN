@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,10 +53,10 @@
 <%@ page language="java"%>
 
 <span class="mandatory1"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span>
-<s:if test="%{generalLedgerDisplayList.size!=0}">
+<c:if test="%{generalLedgerDisplayList.size!=0}">
 	<display:table name="generalLedgerDisplayList" id="currentRowObject"
 		uid="currentRowObject" class="tablebottom" style="width:100%;"
 		cellpadding="0" cellspacing="0" export="true"
@@ -63,13 +65,13 @@
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<tr>
 					<th class="bluebgheadtd" width="100%" colspan="5"><strong
-						style="font-size: 15px;"> <s:property value="%{heading}" /></strong></th>
+						style="font-size: 15px;"> ${%{heading}}</strong></th>
 				</tr>
 			</table>
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<tr>
-					<th class="bluebgheadtd"><s:text name="generalLedger.debit" /></th>
-					<th class="bluebgheadtd"><s:text name="generalLedger.credit" /></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				</tr>
 			</table>
 		</display:caption>
@@ -82,12 +84,12 @@
 		<display:column media="html" headerClass="bluebgheadtd"
 			class="blueborderfortd" title="Voucher Date"
 			style="width:5%;text-align:center">
-			<s:if
+			<c:if
 				test="%{ #attr.currentRowObject.voucherdate == 'Opening Balance' || #attr.currentRowObject.voucherdate == 'Closing Balance' || #attr.currentRowObject.voucherdate == 'Total'}">
-				<b><s:property value="#attr.currentRowObject.voucherdate" /></b>
-			</s:if>
-			<s:else>
-				<s:property value="#attr.currentRowObject.voucherdate" />
+				<b>${#attr.currentRowObject.voucherdate}</b>
+			</c:if>
+			<c:otherwise>
+				${#attr.currentRowObject.voucherdate}
 			</s:else>
 		</display:column>
 		<display:column media="pdf" headerClass="bluebgheadtd"
@@ -100,8 +102,8 @@
 			class="blueborderfortd" title="Voucher Number"
 			style="width:8%;text-align:center">
 			<a href="#"
-				onclick="return viewVoucher('<s:property value="#attr.currentRowObject.vhId"/>')">
-				<s:property value="#attr.currentRowObject.vouchernumber" />
+				onclick="return viewVoucher('${#attr.currentRowObject.vhId}')">
+				${#attr.currentRowObject.vouchernumber}
 			</a>
 		</display:column>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -116,12 +118,12 @@
 		<display:column media="html" headerClass="bluebgheadtd"
 			class="blueborderfortd" title="Amount"
 			style="width:6%;text-align:right">
-			<s:if
+			<c:if
 				test="%{ #attr.currentRowObject.voucherdate == 'Opening Balance' || #attr.currentRowObject.voucherdate == 'Closing Balance' || #attr.currentRowObject.voucherdate == 'Total'}">
-				<b><s:property value="#attr.currentRowObject.debitamount" /></b>
-			</s:if>
-			<s:else>
-				<s:property value="#attr.currentRowObject.debitamount" />
+				<b>${#attr.currentRowObject.debitamount}</b>
+			</c:if>
+			<c:otherwise>
+				${#attr.currentRowObject.debitamount}
 			</s:else>
 		</display:column>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -137,8 +139,8 @@
 			class="blueborderfortd" title="Voucher Number"
 			style="width:8%;text-align:center">
 			<a href="#"
-				onclick="return viewVoucher('<s:property value="#attr.currentRowObject.vhId"/>')">
-				<s:property value="#attr.currentRowObject.creditvouchernumber" />
+				onclick="return viewVoucher('${#attr.currentRowObject.vhId}')">
+				${#attr.currentRowObject.creditvouchernumber}
 			</a>
 		</display:column>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -153,24 +155,24 @@
 		<display:column media="html" headerClass="bluebgheadtd"
 			class="blueborderfortd" title="Amount"
 			style="width:6%;text-align:right">
-			<s:if
+			<c:if
 				test="%{ #attr.currentRowObject.voucherdate == 'Opening Balance' || #attr.currentRowObject.voucherdate == 'Closing Balance' || #attr.currentRowObject.voucherdate == 'Total'}">
-				<b><s:property value="#attr.currentRowObject.creditamount" /></b>
-			</s:if>
-			<s:else>
-				<s:property value="#attr.currentRowObject.creditamount" />
+				<b>${#attr.currentRowObject.creditamount}</b>
+			</c:if>
+			<c:otherwise>
+				${#attr.currentRowObject.creditamount}
 			</s:else>
 		</display:column>
 		<display:caption media="pdf" >
 			<div align="left" style="text-align: left;">
-				<s:property value="%{titleName}" />
-				<s:property value="%{generalLedgerReportBean.heading}" />
+				${%{titleName}}
+				${%{generalLedgerReportBean.heading}}
 			</div>
 		</display:caption>
 		<display:caption media="excel">
 		<div align="left">
-				<s:property value="%{titleName}" />
-				<s:property value="%{generalLedgerReportBean.heading}" />
+				${%{titleName}}
+				${%{generalLedgerReportBean.heading}}
 		</div>
 		</display:caption>
 		<display:setProperty name="export.pdf" value="true" />
@@ -183,4 +185,4 @@
 		<display:setProperty name="export.xml" value="false" />
 	</display:table>
 
-</s:if>
+</c:if>

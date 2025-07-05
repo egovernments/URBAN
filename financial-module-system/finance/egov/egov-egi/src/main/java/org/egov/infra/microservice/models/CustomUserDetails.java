@@ -61,7 +61,7 @@ public class CustomUserDetails implements Serializable{
 	private String type;
 	private List<Role> roles;
 	private boolean active;
-	private List<Action> actions;
+	// TODO: Migrate from Struts/XWork: private List<Action> actions;
 	private String tenantId;
 	private String uuid;
 
@@ -78,13 +78,13 @@ public class CustomUserDetails implements Serializable{
 //		this.active = secureUser.getUser().isActive();
 //		this.tenantId = secureUser.getUser().getTenantId();
 //		this.uuid = secureUser.getUser().getUuid();
-//		this.actions = userDetail.getActions().stream().map(Action::new).collect(Collectors.toList());
+// TODO: Migrate from Struts/XWork: //		this.actions = userDetail.getActions().stream().map(Action::new).collect(Collectors.toList());
 //	}
 	
 	public CustomUserDetails(){}
 
 	public CustomUserDetails(Long id, String userName, String name, String mobileNumber, String emailId, String locale,
-			String type, List<Role> roles, boolean active, List<Action> actions, String tenantId, String uuid) {
+			String type, List<Role> roles, boolean active, String tenantId, String uuid) {
 		this.id = id;
 		this.userName = userName;
 		this.name = name;
@@ -94,7 +94,7 @@ public class CustomUserDetails implements Serializable{
 		this.type = type;
 		this.roles = roles;
 		this.active = active;
-		this.actions = actions;
+		// TODO: Migrate from Struts/XWork: this.actions = actions;
 		this.tenantId = tenantId;
 		this.uuid = uuid;
 	}
@@ -171,13 +171,13 @@ public class CustomUserDetails implements Serializable{
 		this.active = active;
 	}
 
-	public List<Action> getActions() {
-		return actions;
-	}
+	// TODO: Migrate from Struts/XWork: public List<Action> getActions() {
+	// 	return actions;
+	// }
 
-	public void setActions(List<Action> actions) {
-		this.actions = actions;
-	}
+	// TODO: Migrate from Struts/XWork: public void setActions(List<Action> actions) {
+	// 	this.actions = actions;
+	// }
 
 	public String getTenantId() {
 		return tenantId;
@@ -199,7 +199,7 @@ public class CustomUserDetails implements Serializable{
 	public String toString() {
 		return "CustomUserDetails [id=" + id + ", userName=" + userName + ", name=" + name + ", mobileNumber="
 				+ mobileNumber + ", emailId=" + emailId + ", locale=" + locale + ", type=" + type + ", roles=" + roles
-				+ ", active=" + active + ", actions=" + actions + ", tenantId=" + tenantId + ", uuid=" + uuid + "]";
+				+ ", active=" + active + ", tenantId=" + tenantId + ", uuid=" + uuid + "]";
 	}
 	
 	

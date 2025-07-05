@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,11 +53,11 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:if test="%{showMode=='edit'}">
-		<s:text name="contract.modify" />
-	</s:if> <s:if test="%{showMode=='view'}">
-		<s:text name="contract.view" />
-	</s:if></title>
+<title><c:if test="%{showMode=='edit'}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if> <c:if test="%{showMode=='view'}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if></title>
 <script type="text/javascript">
 		
 	function disableControls(isDisable) {
@@ -65,9 +67,9 @@
 	}	
 	
 	function onLoadTask() {
-		var close = '<s:property value="close"/>';
-		var showMode = '<s:property value="showMode"/>';
-		var success = '<s:property value="success"/>';
+		var close = '${close}';
+		var showMode = '${showMode}';
+		var success = '${success}';
 
 		if (success == 'yes') {
 			bootbox.alert("ContractType Modified Successfully");
@@ -95,43 +97,43 @@
 
 </head>
 <body onload="onLoadTask();">
-	<s:actionmessage theme="css_xhtml" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:if test="%{showMode=='edit'}">
-				<s:text name="contract.modify" />
-			</s:if>
-			<s:if test="%{showMode=='view'}">
-				<s:text name="contract.view" />
-			</s:if>
+			<c:if test="%{showMode=='edit'}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
+			<c:if test="%{showMode=='view'}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
 		</div>
 	</div>
-	<s:actionerror />
-	<s:fielderror />
-	<s:form name="contractForm" action="contractType" theme="css_xhtml"
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<form:form name="contractForm" action="contractType" theme="css_xhtml"
 		validate="true">
 
-		<s:push value="model">
-			<s:hidden name="showMode" />
-			<s:hidden name="id" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<%@include file="contractType-form.jsp"%>
 			<div class="buttonbottom" align="center">
 				<table align="center">
 					<tr class="buttonbottom" id="buttondiv" style="align: middle">
-						<s:if test="%{showMode=='edit'}">
+						<c:if test="%{showMode=='edit'}">
 							<td><s:submit name="edit" value="Modify And View"
 									method="edit" cssClass="buttonsubmit" /></td>
 							<td><s:submit name="edit" value="Modify And Close"
 									method="edit" cssClass="buttonsubmit" onclick="setClose();" /></td>
-							<s:hidden name="close" id="close" />
-						</s:if>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if>
 						<td><input type="button" id="Close" value="Close"
 							onclick="javascript:window.close()" class="button" /></td>
 					</tr>
 				</table>
 			</div>
 		</s:push>
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 </body>
 </html>

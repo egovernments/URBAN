@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -145,7 +147,7 @@ function onLoadTask(){
 	var day = currentTime.getDate()
 	var year = currentTime.getFullYear()
 	var fund = document.getElementById('fund');
-	selectedFund = '<s:property value="fund.id"/>';
+	selectedFund = '${fund.id}';
 	for(i=0;i<fund.options.length;i++){
 		if(fund.options[i].value==selectedFund){
 			fund.options[i].selected = true;
@@ -153,24 +155,24 @@ function onLoadTask(){
 	}
 	document.getElementById('fund').disabled=true;
 	document.getElementById('voucherDate').value = day + "/" + month + "/" + year ;
-	<s:if test="%{bankaccount.id !=null}">
+	<c:if test="%{bankaccount.id !=null}">
 		var bank = document.getElementById('bank');
-		selectedBank = '<s:property value="bankaccount.bankbranch.id"/>';
+		selectedBank = '${bankaccount.bankbranch.id}';
 		for(i=0;i<bank.options.length;i++){
 			if(bank.options[i].value.split('-')[1]==selectedBank){
 				bank.options[i].selected = true;
 			}
 		}
-	</s:if>
-	<s:if test="%{bankaccount.id !=null}">
-		selectedAccount ='<s:property value="bankaccount.id"/>';
+	</c:if>
+	<c:if test="%{bankaccount.id !=null}">
+		selectedAccount ='${bankaccount.id}';
 		var bankAccount = document.getElementById('bankaccount');
 		for(i=0;i<bankAccount.options.length;i++){
 			if(bankAccount.options[i].value==selectedAccount){
 				bankAccount.options[i].selected = true;
 			}
 		}
-	</s:if>
+	</c:if>
 }
 
 function populateUser(){
@@ -189,12 +191,12 @@ function populateUser(){
 function validateUser(name,value){
 	document.getElementById("actionName").value= name;
 	document.getElementById('lblError').innerHTML ="";
-<s:if test="%{wfitemstate !='END'}">
+<c:if test="%{wfitemstate !='END'}">
 	 if( (value == 'Approve' || value=='Send for Approval' || value == 'Forward') && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 		document.getElementById('lblError').innerHTML ="Please Select the user";
 		return false;
 	}
-</s:if>
+</c:if>
 	return true;
 }
 
@@ -202,9 +204,9 @@ function validateUser(name,value){
 </head>
 
 <body onload="onLoadTask();">
-	<s:form action="advanceRequisitionPayment" theme="simple"
+	<form:form action="advanceRequisitionPayment" theme="simple"
 		name="advanceRequisitionPayment">
-		<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param value="Advance Requisition Payment" name="heading" />
 		</jsp:include>
@@ -219,9 +221,9 @@ function validateUser(name,value){
 		</div>
 		<span class="mandatory">
 			<div id="Errors">
-				<s:actionerror />
-				<s:fielderror />
-			</div> <s:actionmessage />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</div> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
 			<tr>
@@ -252,7 +254,7 @@ function validateUser(name,value){
 													<tr>
 														<td class="greybox">&nbsp;</td>
 														<td class="greybox">Fund:</td>
-														<td class="greybox"><s:select name="fund" id="fund"
+														<td class="greybox"><form:select path="fund" id="fund"
 																list="dropdownData.fundList" listKey="id"
 																listValue="name" headerKey="-1"
 																headerValue="----Choose----"
@@ -267,7 +269,7 @@ function validateUser(name,value){
 															url="voucher/common!ajaxLoadBanks.action" />
 														<td class="bluebox">Bank Name:<span class="bluebox"><span
 																class="mandatory">*</span></span></td>
-														<td class="bluebox"><s:select name="bank" id="bank"
+														<td class="bluebox"><form:select path="bank" id="bank"
 																list="dropdownData.bankList" listKey="bank.id+'-'+id"
 																listValue="bank.name+' '+branchname" headerKey="-1"
 																headerValue="----Choose----" onclick="validateFund()"
@@ -277,7 +279,7 @@ function validateUser(name,value){
 															url="voucher/common!ajaxLoadAccountNumbers.action" />
 														<td class="bluebox">Account Number:<span
 															class="bluebox"><span class="mandatory">*</span></span></td>
-														<td class="bluebox"><s:select name="bankaccount.id"
+														<td class="bluebox"><form:select path="bankaccount.id"
 																id="bankaccount" list="dropdownData.accNumList"
 																listKey="id"
 																listValue="chartofaccounts.glcode+'--'+accountnumber+'--'+accounttype"
@@ -298,17 +300,17 @@ function validateUser(name,value){
 													</tr>
 													<tr>
 														<td class="bluebox">&nbsp;</td>
-														<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-															<td class="bluebox"><s:text name="voucher.number" /><span
+														<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+															<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 																class="mandatory">*</span></td>
-															<td class="bluebox"><s:textfield
+															<td class="bluebox"><form:input
 																	name="vouchernumber" id="vouchernumber" /></td>
-														</s:if>
+														</c:if>
 														<td class="bluebox">Voucher Date:<span
 															class="mandatory">*</span></td>
 														<td class="bluebox" colspan="2"><input type="text"
 															name="voucherDate" id="voucherDate" style="width: 100px"
-															value='<s:property value="%{formatDate(voucherDate)}"/>'
+															value='${%{formatDate(voucherDate)}}'
 															onkeyup="DateFormat(this,this.value,event,false,'3')" />
 															<a
 															href="javascript:show_calendar('advanceRequisitionPayment.voucherDate');"
@@ -335,14 +337,14 @@ function validateUser(name,value){
 														<tr>
 															<td class="greybox" id="deptLabel">Approver <s:text
 																	name="voucher.department" /><span class="mandatory">*</span></td>
-															<td class="greybox"><s:select name="departmentid"
+															<td class="greybox"><form:select path="departmentid"
 																	id="departmentid" list="dropdownData.departmentList"
 																	listKey="id" listValue="name" headerKey="-1"
 																	headerValue="----Choose----" value="%{departmentId}"
 																	onchange="populateUser()" /></td>
 															<td class="greybox">Approver Designation<span
 																class="mandatory">*</span></td>
-															<td class="greybox"><s:select name="designationId"
+															<td class="greybox"><form:select path="designationId"
 																	id="designationId" list="dropdownData.designationList"
 																	listKey="designationId" listValue="designationName"
 																	headerKey="-1" headerValue="----Choose----"
@@ -355,7 +357,7 @@ function validateUser(name,value){
 																url="voucher/common!ajaxLoadUser.action" />
 															<td class="bluebox" width="13%">Approver<span
 																class="mandatory">*</span></td>
-															<td class="bluebox" width="33%"><s:select
+															<td class="bluebox" width="33%"><form:select
 																	id="approverUserId" name="approverUserId"
 																	list="dropdownData.userList" headerKey="-1"
 																	headerValue="----Choose----" listKey="id"
@@ -363,7 +365,7 @@ function validateUser(name,value){
 
 														</tr>
 													</table>
-													<s:hidden name="type" id="type"></s:hidden>
+													<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 
 												</div>
 
@@ -412,7 +414,7 @@ function validateUser(name,value){
 																			<th class="bluebgheadtdnew">Credit Amount</th>
 																		</tr>
 
-																		<s:iterator
+																		<c:forEach
 																			value="advanceRequisition.egAdvanceReqDetailses"
 																			var="detail">
 																			<tr>
@@ -433,15 +435,15 @@ function validateUser(name,value){
 																					</div></td>
 																				<td class="blueborderfortdnew"><div
 																						align="center">
-																						<s:property value="#detail.chartofaccounts.glcode" />
+																						${#detail.chartofaccounts.glcode}
 																					</div></td>
 																				<td class="blueborderfortdnew">
 																					<div align="right">
-																						<s:if test="#detail.debitamount == null">
+																						<c:if test="#detail.debitamount == null">
 						0.00
-					</s:if>
-																						<s:else>
-																							<s:text name="payment.format.number">
+					</c:if>
+																						<c:otherwise>
+																							<!-- TODO: Manual migration required for custom Struts tag -->
 																								<s:param name="value"
 																									value="#detail.debitamount" />
 																							</s:text>
@@ -450,11 +452,11 @@ function validateUser(name,value){
 																				</td>
 																				<td class="blueborderfortdnew">
 																					<div align="right">
-																						<s:if test="#detail.creditamount == null">
+																						<c:if test="#detail.creditamount == null">
 						0.00
-					</s:if>
-																						<s:else>
-																							<s:text name="payment.format.number">
+					</c:if>
+																						<c:otherwise>
+																							<!-- TODO: Manual migration required for custom Struts tag -->
 																								<s:param name="value"
 																									value="#detail.creditamount" />
 																							</s:text>
@@ -463,19 +465,19 @@ function validateUser(name,value){
 																				</td>
 																				<td class="blueborderfortdnew"><div
 																						align="right">
-																						<s:if
+																						<c:if
 																							test="#detail.egAdvanceRequisition.advanceRequisitionAmount == null">
 						0.00
-				</s:if>
-																						<s:else>
-																							<s:text name="payment.format.number">
+				</c:if>
+																						<c:otherwise>
+																							<!-- TODO: Manual migration required for custom Struts tag -->
 																								<s:param name="value"
 																									value="#detail.egAdvanceRequisition.advanceRequisitionAmount" />
 																							</s:text>
 																						</s:else>
 																					</div></td>
 																			</tr>
-																		</s:iterator>
+																		</c:forEach>
 																	</tbody>
 																</table>
 															</div>
@@ -499,10 +501,10 @@ function validateUser(name,value){
 		</div>
 		<input type="hidden" name="advanceRequisition.id"
 			id="advanceRequisition.id"
-			value='<s:property value="advanceRequisition.id"/>' />
+			value='${advanceRequisition.id}' />
 		<div id="results" style="display: none"></div>
-		<s:hidden name="actionName" id="actionName" />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 </body>
 <script>
 value = 'approve';

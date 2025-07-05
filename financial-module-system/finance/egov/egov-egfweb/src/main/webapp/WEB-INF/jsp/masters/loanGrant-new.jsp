@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -101,18 +103,18 @@ var makeProjectDetailTable = function() {
 			}
 		}
 	});
-	<s:iterator value="projectCodeList" status="stat">
+	<c:forEach value="projectCodeList" status="stat">
 	projectCodeDetailsTable.addRow({SlNo:projectCodeDetailsTable.getRecordSet().getLength()+1,
-		"projectcodeid":'<s:property value="id"/>',
-		"projectcode":'<s:property value="code"/>',
-		"projectcodename":'<s:property value="name"/>'
+		"projectcodeid":'${id}',
+		"projectcode":'${code}',
+		"projectcodename":'${name}'
 	});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridNames(PROJECTCODELIST,'id',index,'<s:property value="id"/>');
-	updateGridNames(PROJECTCODELIST,'code',index,'<s:property value="code"/>');
-	updateGridNames(PROJECTCODELIST,'name',index,'<s:property value="name"/>');
+	var index = '${#stat.index}';
+	updateGridNames(PROJECTCODELIST,'id',index,'${id}');
+	updateGridNames(PROJECTCODELIST,'code',index,'${code}');
+	updateGridNames(PROJECTCODELIST,'name',index,'${name}');
 	updateProjectCodeTableIndex();
-	</s:iterator>
+	</c:forEach>
 }
 var makeSanctionedAmountTable = function() {
 		var amountDetailColumns = [ 
@@ -157,38 +159,38 @@ var makeSanctionedAmountTable = function() {
 			}
 		}
 	});
-	<s:iterator value="sanctionedAmountLGDetails" status="stat">
+	<c:forEach value="sanctionedAmountLGDetails" status="stat">
 			sanctionedAmountDT.addRow({SlNo:sanctionedAmountDT.getRecordSet().getLength()+1,
-				"fundingagency":'<s:property value="fundingAgency.id"/>',
-				"loanamount":'<s:property value="loanAmount"/>',
-				"grantamount":'<s:property value="grantAmount"/>',
-				"percentageofcost":'<s:property value="percentage"/>',
-				"agencyschemeno":'<s:property value="agencySchemeNo"/>',
-				"councilreno":'<s:property value="councilResNo"/>',
-				"loansanctiono":'<s:property value="loanSanctionNo"/>',
-				"agreementdate":'<s:property value="agreementDate"/>',
-				"commissionerorderno":'<s:property value="commOrderNo"/>',
-				"documentNumber":'<s:property value="docId"/>'
+				"fundingagency":'${fundingAgency.id}',
+				"loanamount":'${loanAmount}',
+				"grantamount":'${grantAmount}',
+				"percentageofcost":'${percentage}',
+				"agencyschemeno":'${agencySchemeNo}',
+				"councilreno":'${councilResNo}',
+				"loansanctiono":'${loanSanctionNo}',
+				"agreementdate":'${agreementDate}',
+				"commissionerorderno":'${commOrderNo}',
+				"documentNumber":'${docId}'
 			});
-			var index = '<s:property value="#stat.index"/>';
-			updateGridNames(SANCTIONEDAMOUNTLIST,'fundingAgency.id',index,'<s:property value="fundingAgency.id"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'loanAmount',index,'<s:property value="loanAmount"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'grantAmount',index,'<s:property value="grantAmount"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'percentage',index,'<s:property value="percentage"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'agencySchemeNo',index,'<s:property value="agencySchemeNo"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'councilResNo',index,'<s:property value="councilResNo"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'loanSanctionNo',index,'<s:property value="loanSanctionNo"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'agreementDate',index,'<s:property value="agreementDate"/>');
-			updateGridNames(SANCTIONEDAMOUNTLIST,'commOrderNo',index,'<s:property value="commOrderNo"/>'); 
-			updateGridNames(SANCTIONEDAMOUNTLIST,'docId',index,'<s:property value="docId"/>');  
-			var temp=parseFloat('<s:property value="loanAmount"/>');
+			var index = '${#stat.index}';
+			updateGridNames(SANCTIONEDAMOUNTLIST,'fundingAgency.id',index,'${fundingAgency.id}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'loanAmount',index,'${loanAmount}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'grantAmount',index,'${grantAmount}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'percentage',index,'${percentage}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'agencySchemeNo',index,'${agencySchemeNo}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'councilResNo',index,'${councilResNo}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'loanSanctionNo',index,'${loanSanctionNo}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'agreementDate',index,'${agreementDate}');
+			updateGridNames(SANCTIONEDAMOUNTLIST,'commOrderNo',index,'${commOrderNo}'); 
+			updateGridNames(SANCTIONEDAMOUNTLIST,'docId',index,'${docId}');  
+			var temp=parseFloat('${loanAmount}');
 			if(!isNaN(temp))
 				totalsanctionedloan = totalsanctionedloan+temp;
-			temp=parseFloat('<s:property value="grantAmount"/>');
+			temp=parseFloat('${grantAmount}');
 			if(!isNaN(temp))
 				totalsanctionedgrant = totalsanctionedgrant+temp;
 			updateSanctionedAmountTableIndex();	
-		</s:iterator>
+		</c:forEach>
 		var tfoot = sanctionedAmountDT.getTbodyEl().parentNode.createTFoot();
 		var tr = tfoot.insertRow(-1);
 		var th = tr.appendChild(document.createElement('th'));
@@ -256,38 +258,38 @@ var makeUnsanctionedAmountTable = function() {
 			}
 		}
 	});
-	<s:iterator value="unsanctionedAmountLGDetails" status="stat">
+	<c:forEach value="unsanctionedAmountLGDetails" status="stat">
 			unsanctionedAmountDT.addRow({SlNo:unsanctionedAmountDT.getRecordSet().getLength()+1,
-				"fundingagency":'<s:property value="fundingAgency.id"/>',
-				"loanamount":'<s:property value="loanAmount"/>',
-				"grantamount":'<s:property value="grantAmount"/>',
-				"percentageofcost":'<s:property value="percentage"/>',
-				"agencyschemeno":'<s:property value="agencySchemeNo"/>',
-				"councilreno":'<s:property value="councilResNo"/>',
-				"loansanctiono":'<s:property value="loanSanctionNo"/>',
-				"agreementdate":'<s:property value="agreementDate"/>',
-				"commissionerorderno":'<s:property value="commOrderNo"/>',
-				"documentNumber":'<s:property value="docId"/>'
+				"fundingagency":'${fundingAgency.id}',
+				"loanamount":'${loanAmount}',
+				"grantamount":'${grantAmount}',
+				"percentageofcost":'${percentage}',
+				"agencyschemeno":'${agencySchemeNo}',
+				"councilreno":'${councilResNo}',
+				"loansanctiono":'${loanSanctionNo}',
+				"agreementdate":'${agreementDate}',
+				"commissionerorderno":'${commOrderNo}',
+				"documentNumber":'${docId}'
 			});
-			var index = '<s:property value="#stat.index"/>';
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'fundingAgency.id',index,'<s:property value="fundingAgency.id"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'loanAmount',index,'<s:property value="loanAmount"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'grantAmount',index,'<s:property value="grantAmount"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'percentage',index,'<s:property value="percentage"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'agencySchemeNo',index,'<s:property value="agencySchemeNo"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'councilResNo',index,'<s:property value="councilResNo"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'loanSanctionNo',index,'<s:property value="loanSanctionNo"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'agreementDate',index,'<s:property value="agreementDate"/>');
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'commOrderNo',index,'<s:property value="commOrderNo"/>'); 
-			updateGridNames(UNSANCTIONEDAMOUNTLIST,'docId',index,'<s:property value="docId"/>');  
-			var temp=parseFloat('<s:property value="loanAmount"/>');
+			var index = '${#stat.index}';
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'fundingAgency.id',index,'${fundingAgency.id}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'loanAmount',index,'${loanAmount}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'grantAmount',index,'${grantAmount}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'percentage',index,'${percentage}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'agencySchemeNo',index,'${agencySchemeNo}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'councilResNo',index,'${councilResNo}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'loanSanctionNo',index,'${loanSanctionNo}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'agreementDate',index,'${agreementDate}');
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'commOrderNo',index,'${commOrderNo}'); 
+			updateGridNames(UNSANCTIONEDAMOUNTLIST,'docId',index,'${docId}');  
+			var temp=parseFloat('${loanAmount}');
 			if(!isNaN(temp))
 				totalunsanctionedloan = totalunsanctionedloan+temp;
-			temp=parseFloat('<s:property value="grantAmount"/>');
+			temp=parseFloat('${grantAmount}');
 			if(!isNaN(temp))
 				totalunsanctionedgrant = totalunsanctionedgrant+temp;
 			updateUnsanctionedAmountTableIndex();	
-		</s:iterator>
+		</c:forEach>
 		var tfoot = unsanctionedAmountDT.getTbodyEl().parentNode.createTFoot();
 		var tr = tfoot.insertRow(-1);
 		var th = tr.appendChild(document.createElement('th'));
@@ -355,38 +357,38 @@ var makeRevisedAmountTable = function() {
 			}
 		}
 	});
-	<s:iterator value="revisedAmountLGDetails" status="stat">
+	<c:forEach value="revisedAmountLGDetails" status="stat">
 			revisedAmountDT.addRow({SlNo:revisedAmountDT.getRecordSet().getLength()+1,
-				"fundingagency":'<s:property value="fundingAgency.id"/>',
-				"loanamount":'<s:property value="loanAmount"/>',
-				"grantamount":'<s:property value="grantAmount"/>',
-				"percentageofcost":'<s:property value="percentage"/>',
-				"agencyschemeno":'<s:property value="agencySchemeNo"/>',
-				"councilreno":'<s:property value="councilResNo"/>',
-				"loansanctiono":'<s:property value="loanSanctionNo"/>',
-				"agreementdate":'<s:property value="agreementDate"/>',
-				"commissionerorderno":'<s:property value="commOrderNo"/>',
-				"documentNumber":'<s:property value="docId"/>'
+				"fundingagency":'${fundingAgency.id}',
+				"loanamount":'${loanAmount}',
+				"grantamount":'${grantAmount}',
+				"percentageofcost":'${percentage}',
+				"agencyschemeno":'${agencySchemeNo}',
+				"councilreno":'${councilResNo}',
+				"loansanctiono":'${loanSanctionNo}',
+				"agreementdate":'${agreementDate}',
+				"commissionerorderno":'${commOrderNo}',
+				"documentNumber":'${docId}'
 			});
-			var index = '<s:property value="#stat.index"/>';
-			updateGridNames(REVISEDAMOUNTLIST,'fundingAgency.id',index,'<s:property value="fundingAgency.id"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'loanAmount',index,'<s:property value="loanAmount"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'grantAmount',index,'<s:property value="grantAmount"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'percentage',index,'<s:property value="percentage"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'agencySchemeNo',index,'<s:property value="agencySchemeNo"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'councilResNo',index,'<s:property value="councilResNo"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'loanSanctionNo',index,'<s:property value="loanSanctionNo"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'agreementDate',index,'<s:property value="agreementDate"/>');
-			updateGridNames(REVISEDAMOUNTLIST,'commOrderNo',index,'<s:property value="commOrderNo"/>'); 
-			updateGridNames(REVISEDAMOUNTLIST,'docId',index,'<s:property value="docId"/>');  
-			var temp=parseFloat('<s:property value="loanAmount"/>');
+			var index = '${#stat.index}';
+			updateGridNames(REVISEDAMOUNTLIST,'fundingAgency.id',index,'${fundingAgency.id}');
+			updateGridNames(REVISEDAMOUNTLIST,'loanAmount',index,'${loanAmount}');
+			updateGridNames(REVISEDAMOUNTLIST,'grantAmount',index,'${grantAmount}');
+			updateGridNames(REVISEDAMOUNTLIST,'percentage',index,'${percentage}');
+			updateGridNames(REVISEDAMOUNTLIST,'agencySchemeNo',index,'${agencySchemeNo}');
+			updateGridNames(REVISEDAMOUNTLIST,'councilResNo',index,'${councilResNo}');
+			updateGridNames(REVISEDAMOUNTLIST,'loanSanctionNo',index,'${loanSanctionNo}');
+			updateGridNames(REVISEDAMOUNTLIST,'agreementDate',index,'${agreementDate}');
+			updateGridNames(REVISEDAMOUNTLIST,'commOrderNo',index,'${commOrderNo}'); 
+			updateGridNames(REVISEDAMOUNTLIST,'docId',index,'${docId}');  
+			var temp=parseFloat('${loanAmount}');
 			if(!isNaN(temp))
 				totalrevisedloan = totalrevisedloan+temp;
-			temp=parseFloat('<s:property value="grantAmount"/>');
+			temp=parseFloat('${grantAmount}');
 			if(!isNaN(temp))
 				totalrevisedgrant = totalrevisedgrant+temp;
 			updateRevisedAmountTableIndex();	
-		</s:iterator>
+		</c:forEach>
 		var tfoot = revisedAmountDT.getTbodyEl().parentNode.createTFoot();
 		var tr = tfoot.insertRow(-1);
 		var th = tr.appendChild(document.createElement('th'));
@@ -453,38 +455,38 @@ var makeReceiptTable = function() {
 			}
 		}
 	});
-	<s:iterator value="receiptList" status="stat">
+	<c:forEach value="receiptList" status="stat">
 			receiptDT.addRow({SlNo:receiptDT.getRecordSet().getLength()+1,
 
-				"amount":'<s:property value="amount"/>',
-				"linkrefno":'<s:property value="voucherHeader.voucherNumber"/>',
-				"banckaccountid":'<s:property value="bankaccount.id"/>',
-				"banckaccountno":'<s:property value="bankaccount.accountnumber"/>',
-				"description":'<s:property value="description"/>',
-				"vhid":'<s:property value="voucherHeader.id"/>',
-				"receiptchequeid":'<s:property value="instrumentHeader.id"/>',
-				"receiptchequedate":'<s:property value="instrumentHeader.instrumentDate"/>',
-				"receiptchequeno":'<s:property value="instrumentHeader.instrumentNumber"/>',
-				"fundingagency":'<s:property value="fundingAgency.id"/>',
-				"fundingagencyname":'<s:property value="fundingAgency.name"/>'
+				"amount":'${amount}',
+				"linkrefno":'${voucherHeader.voucherNumber}',
+				"banckaccountid":'${bankaccount.id}',
+				"banckaccountno":'${bankaccount.accountnumber}',
+				"description":'${description}',
+				"vhid":'${voucherHeader.id}',
+				"receiptchequeid":'${instrumentHeader.id}',
+				"receiptchequedate":'${instrumentHeader.instrumentDate}',
+				"receiptchequeno":'${instrumentHeader.instrumentNumber}',
+				"fundingagency":'${fundingAgency.id}',
+				"fundingagencyname":'${fundingAgency.name}'
 			});
-			var index = '<s:property value="#stat.index"/>';
-			updateGridNames(RECEIPTLIST,'amount',index,'<s:property value="amount"/>');
-			updateGridNames(RECEIPTLIST,'description',index,'<s:property value="description"/>');
-			updateGridNames(RECEIPTLIST,'voucherHeader.voucherNumber',index,'<s:property value="voucherHeader.voucherNumber"/>');
-			updateGridNames(RECEIPTLIST,'voucherHeader.id',index,'<s:property value="voucherHeader.id"/>');
-			updateGridNames(RECEIPTLIST,'instrumentHeader.id',index,'<s:property value="instrumentHeader.id"/>');
-			updateGridNames(RECEIPTLIST,'instrumentHeader.instrumentNumber',index,'<s:property value="instrumentHeader.instrumentNumber"/>');
-			updateGridNames(RECEIPTLIST,'instrumentHeader.instrumentDate',index,'<s:property value="instrumentHeader.instrumentDate"/>');
-			updateGridNames(RECEIPTLIST,'fundingAgency.id',index,'<s:property value="fundingAgency.id"/>');
-			updateGridNames(RECEIPTLIST,'fundingAgency.name',index,'<s:property value="fundingAgency.name"/>');
-			updateGridNames(RECEIPTLIST,'bankaccount.id',index,'<s:property value="bankaccount.id"/>');
-			updateGridNames(RECEIPTLIST,'bankaccount.accountnumber',index,'<s:property value="bankaccount.accountnumber"/>');
-			var temp=parseFloat('<s:property value="amount"/>');
+			var index = '${#stat.index}';
+			updateGridNames(RECEIPTLIST,'amount',index,'${amount}');
+			updateGridNames(RECEIPTLIST,'description',index,'${description}');
+			updateGridNames(RECEIPTLIST,'voucherHeader.voucherNumber',index,'${voucherHeader.voucherNumber}');
+			updateGridNames(RECEIPTLIST,'voucherHeader.id',index,'${voucherHeader.id}');
+			updateGridNames(RECEIPTLIST,'instrumentHeader.id',index,'${instrumentHeader.id}');
+			updateGridNames(RECEIPTLIST,'instrumentHeader.instrumentNumber',index,'${instrumentHeader.instrumentNumber}');
+			updateGridNames(RECEIPTLIST,'instrumentHeader.instrumentDate',index,'${instrumentHeader.instrumentDate}');
+			updateGridNames(RECEIPTLIST,'fundingAgency.id',index,'${fundingAgency.id}');
+			updateGridNames(RECEIPTLIST,'fundingAgency.name',index,'${fundingAgency.name}');
+			updateGridNames(RECEIPTLIST,'bankaccount.id',index,'${bankaccount.id}');
+			updateGridNames(RECEIPTLIST,'bankaccount.accountnumber',index,'${bankaccount.accountnumber}');
+			var temp=parseFloat('${amount}');
 			if(!isNaN(temp))
 				totalreceiptamount = totalreceiptamount+temp;
 			receiptTableIndex=receiptTableIndex+1;
-		</s:iterator>
+		</c:forEach>
 		var tfoot = receiptDT.getTbodyEl().parentNode.createTFoot();
 		var tr = tfoot.insertRow(-1);
 		var th = tr.appendChild(document.createElement('th'));
@@ -502,11 +504,11 @@ function createFundingAgencyDropDownFormatter(tableType,prefix,suffix){
 		var value = (YAHOO.lang.isValue(oData))?oData:"";
 		var element=" <select  id='"+prefix+"["+index+"]"+suffix+"' name='"+prefix+"["+index+"]"+suffix+"'  >";
 		element=element+"<option value=-1 selected='selected' > --- Choose --- </option>  ";
-		<s:iterator value="fundingAgencyList" status="stat">
-			var name='<s:property value="name"/>';
-			var id='<s:property value="id" />';
+		<c:forEach value="fundingAgencyList" status="stat">
+			var name='${name}';
+			var id='${id}';
 			element=element+" <option value="+id +" > "+ name+" </option>  ";
-		</s:iterator>
+		</c:forEach>
 		element=element+" </select>";
 		el.innerHTML =element ;
 	}
@@ -593,10 +595,10 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 </style>
 </head>
 <body>
-	<span class="mandatory"> <s:actionerror /> <s:fielderror />
+	<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 	</span>
-	<s:form name="loanGrantMasterForm" action="loanGrant" theme="simple">
-		<s:push value="model">
+	<form:form name="loanGrantMasterForm" action="loanGrant" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div align="left">
 				<div class="tabber">
 					<div class="tabbertab" id="loantab">
@@ -607,7 +609,7 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 							</div>
 							<div class="mandatory" align="center" style="display: none"
 								id="codeuniquecode">
-								<s:text name="loangrant.subscheme.already.exists" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</div>
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<jsp:include page="../report/loangrant/lgcommon.jsp" />
@@ -615,14 +617,14 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 									<td class="bluebox">Bank<span class="mandatory">*</span></td>
 									<td class="bluebox"><egov:ajaxdropdown id="bank_branch"
 											fields="['Text','Value']" dropdownId="bank_branch"
-											url="voucher/common!ajaxLoadBankBranch.action" /> <s:select
+											url="voucher/common!ajaxLoadBankBranch.action" /> <form:select
 											name="bank_branch" id="bank_branch" list="bankBranchMap"
 											headerKey="-1" headerValue="----Choose----"
 											onchange="loadBankAccount(this)" value="%{bank_branch}" /></td>
 									<td class="bluebox">Bank Account<span class="mandatory">*</span></td>
 									<td class="bluebox"><egov:ajaxdropdown id="bankaccount"
 											fields="['Text','Value']" dropdownId="bankaccount"
-											url="voucher/common!ajaxLoadBankAccounts.action" /> <s:select
+											url="voucher/common!ajaxLoadBankAccounts.action" /> <form:select
 											name="bankaccount" id="bankaccount"
 											list="dropdownData.bankaccountList" listKey="id"
 											listValue="chartofaccounts.glcode+'--'+accountnumber+'---'+accounttype"
@@ -633,13 +635,13 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 									<td class="greybox"><s:text
 											name="masters.loangrant.councilresolutionnumber" /><span
 										class="mandatory">*</span></td>
-									<td class="greybox"><s:textfield id="councilResNo"
+									<td class="greybox"><form:input id="councilResNo"
 											name="councilResNo" /></td>
 									<td class="greybox"><s:text
 											name="masters.loangrant.councilresolutiondate" /><span
 										class="mandatory">*</span></td>
 									<td class="greybox"><s:date var="councilResDateId"
-											name="councilResDate" format='dd/MM/yyyy' /> <s:textfield
+											path="councilResDate" format='dd/MM/yyyy' /> <form:input
 											name="councilResDate" id="councilResDate"
 											onkeyup="DateFormat(this,this.value,event,false,'3');"
 											onblur="checkDateLG(this);" value="%{councilResDateId}" /> <a
@@ -653,13 +655,13 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 									<td class="bluebox"><s:text
 											name="masters.loangrant.governmentordernumber" /><span
 										class="mandatory">*</span></td>
-									<td class="bluebox"><s:textfield id="govtOrderNo"
+									<td class="bluebox"><form:input id="govtOrderNo"
 											name="govtOrderNo" /></td>
 									<td class="bluebox"><s:text
 											name="masters.loangrant.governmentorderdate" /><span
 										class="mandatory">*</span></td>
 									<td class="bluebox"><s:date var="govtOrderDateId"
-											name="govtOrderDate" format='dd/MM/yyyy' /> <s:textfield
+											path="govtOrderDate" format='dd/MM/yyyy' /> <form:input
 											name="govtOrderDate" id="govtOrderDate"
 											onkeyup="DateFormat(this,this.value,event,false,'3');"
 											onblur="checkDateLG(this);" value="%{govtOrderDateId}" /> <a
@@ -673,13 +675,13 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 									<td class="greybox"><s:text
 											name="masters.loangrant.amendmentnumber" /><span
 										class="mandatory">*</span></td>
-									<td class="greybox"><s:textfield id="amendmentNo"
+									<td class="greybox"><form:input id="amendmentNo"
 											name="amendmentNo" /></td>
 									<td class="greybox"><s:text
 											name="masters.loangrant.amendmentdate" /><span
 										class="mandatory">*</span></td>
 									<td class="greybox"><s:date var="amendmentDateId"
-											name="amendmentDate" format='dd/MM/yyyy' /> <s:textfield
+											path="amendmentDate" format='dd/MM/yyyy' /> <form:input
 											name="amendmentDate" id="amendmentDate"
 											onkeyup="DateFormat(this,this.value,event,false,'3');"
 											onblur="checkDateLG(this);" value="%{amendmentDateId}" /> <a
@@ -705,19 +707,19 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 											<td class="bluebox"><s:text
 													name="masters.loangrant.projectcost" /><span
 												class="mandatory">*</span></td>
-											<td class="bluebox"><s:textfield id="projectCost"
+											<td class="bluebox"><form:input id="projectCost"
 													name="projectCost" style='text-align:right;' maxlength="20"
 													onblur='validateDigitsAndDecimal(this);calculateAllPercentages();updateAllTotalAmounts()' /></td>
 											<td class="bluebox"><s:text
 													name="masters.loangrant.sanctionedcost" /><span
 												class="mandatory">*</span></td>
-											<td class="bluebox"><s:textfield id="sanctionedCost"
+											<td class="bluebox"><form:input id="sanctionedCost"
 													name="sanctionedCost" style='text-align:right;'
 													maxlength="20"
 													onblur='validateDigitsAndDecimal(this);validateAmounts(this);' /></td>
 											<td class="bluebox"><s:text
 													name="masters.loangrant.revisedcost" /></td>
-											<td class="bluebox"><s:textfield id="revisedCost"
+											<td class="bluebox"><form:input id="revisedCost"
 													name="revisedCost" style='text-align:right;' maxlength="20"
 													onblur='validateDigitsAndDecimal(this);validateAmounts(this);emptyRevisedCostIfZero(this);calculateAllPercentages();updateAllTotalAmounts()' /></td>
 											<td class="bluebox">&nbsp&nbsp&nbsp(Amounts in Lacs)</td>
@@ -741,7 +743,7 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 						<div align="center" class="buttonbottom">
 							<s:submit method="save" value="Submit"
 								onclick="return validateInputs();" cssClass="buttonsubmit" />
-							<s:submit method="newForm" value="Cancel" cssClass="button" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 							<input type="button" value="Close"
 								onclick="javascript:window.close()" class="button" />
 						</div>
@@ -815,9 +817,9 @@ function createDateFieldFormatter(tableType,prefix,suffix)
 		}
 	}
   	</script>
-			<s:token />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</s:push>
-	</s:form>
+	</form:form>
 	<script>
   	loadChanges(document.getElementById('fundId'));
   </script>

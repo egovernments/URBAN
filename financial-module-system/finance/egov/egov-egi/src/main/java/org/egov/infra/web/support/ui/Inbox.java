@@ -79,34 +79,14 @@ public class Inbox {
         //Default constructor for external inbox integration
     }
 
-    private Inbox(StateAware stateAware, WorkflowTypes workflowTypes, String nextAction) {
-        State state = stateAware.getCurrentState();
-        this.id = workflowTypes.isGrouped() ? EMPTY : new StringBuilder(5).append(state.getId()).append("#")
-                .append(workflowTypes.getId()).toString();
-        this.date = toDefaultDateTimeFormat(state.getCreatedDate());
-        this.sender = state.getSenderName();
-        this.task = defaultIfBlank(state.getNatureOfTask(), workflowTypes.getDisplayName());
-        this.status = state.getValue() + (isBlank(nextAction) ? EMPTY : " - " + nextAction);
-        this.details = defaultIfBlank(stateAware.getStateDetails(), EMPTY);
-        this.link = workflowTypes.getLink().replace(":ID", stateAware.myLinkId());
-        this.moduleName = workflowTypes.getModule().getDisplayName();
-        this.createdDate = state.getCreatedDate();
-        this.draft = state.isNew() && (state.getCreatedBy()==getUserId());
-    }
-
     private Inbox(StateHistory stateHistory, WorkflowTypes workflowTypes) {
         this.id = stateHistory.getState().getId().toString();
         this.date = toDefaultDateTimeFormat(stateHistory.getLastModifiedDate());
         this.sender = stateHistory.getSenderName();
         this.task = defaultIfBlank(stateHistory.getNatureOfTask(), workflowTypes.getDisplayName());
-        this.status = stateHistory.getValue()
-                + (isBlank(stateHistory.getNextAction()) ? EMPTY : " - " + stateHistory.getNextAction());
+        this.status = stateHistory.getValue();
         this.details = isBlank(stateHistory.getComments()) ? EMPTY : escapeSpecialChars(stateHistory.getComments());
         this.link = EMPTY;
-    }
-
-    public static Inbox build(StateAware stateAware, WorkflowTypes workflowType, String nextAction) {
-        return new Inbox(stateAware, workflowType, nextAction);
     }
 
     public static Inbox buildHistory(StateHistory stateHistory, WorkflowTypes workflowType) {

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="bank.create.new" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" type="text/css"
 	href="/services/EGF/resources/css/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css" />
 </head>
@@ -68,7 +70,7 @@
 
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="bank.create.new" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<jsp:include page="bank-form.jsp"></jsp:include>
 	</div>

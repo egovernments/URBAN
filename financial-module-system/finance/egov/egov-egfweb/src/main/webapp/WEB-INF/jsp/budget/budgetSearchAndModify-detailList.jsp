@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="budgetdetail" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" href="/services/EGF/resources/css/tabber.css?rnd=${app_release_no}"
 	TYPE="text/css">
 <script type="text/javascript" src="/services/EGF/resources/javascript/tabber.js?rnd=${app_release_no}"></script>
@@ -83,14 +85,14 @@
     </SCRIPT>
 </head>
 <body>
-	<s:form action="budgetSearchAndModify" theme="simple">
+	<form:form action="budgetSearchAndModify" theme="simple">
 
 
-		<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div style="color: red">
-			<s:actionmessage theme="simple" />
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div align="left">
 			<br />
@@ -100,13 +102,13 @@
 						<div class="tabber">
 							<div class="tabbertab" style="height: 500px">
 								<h2>Summary</h2>
-								<s:if test="%{isDetailByFunction()}">
+								<c:if test="%{isDetailByFunction()}">
 									<iframe id="report" name="report" width="100%" height="100%"
-										src='/EGF/budget/budgetReport!ajaxGenerateFunctionWiseHtml.action?model.financialYear.id=<s:property value="budgetDetail.budget.financialYear.id"/>&model.department.id=<s:property value="budgetDetail.executingDepartment.id"/>&model.function.id=<s:property value="budgetDetail.function.id"/>&topBudget.id=<s:property value="budgetDetail.budget.id"/>&model.type=<s:property value="model.type"/>&onSaveOrForward=true'></iframe>
-								</s:if>
-								<s:else>
+										src='/EGF/budget/budgetReport!ajaxGenerateFunctionWiseHtml.action?model.financialYear.id=${budgetDetail.budget.financialYear.id}&model.department.id=${budgetDetail.executingDepartment.id}&model.function.id=${budgetDetail.function.id}&topBudget.id=${budgetDetail.budget.id}&model.type=${model.type}&onSaveOrForward=true'></iframe>
+								</c:if>
+								<c:otherwise>
 									<iframe id="report" name="report" width="100%" height="100%"
-										src='/EGF/budget/budgetReport!ajaxGenerateFunctionWiseHtml.action?model.financialYear.id=<s:property value="topBudget.financialYear.id"/>&model.department.id=<s:property value="budgetDetail.executingDepartment.id"/>&topBudget.id=<s:property value="topBudget.id"/>&departmentBudget=true&model.type=<s:property value="model.type"/>&onSaveOrForward=true'></iframe>
+										src='/EGF/budget/budgetReport!ajaxGenerateFunctionWiseHtml.action?model.financialYear.id=${topBudget.financialYear.id}&model.department.id=${budgetDetail.executingDepartment.id}&topBudget.id=${topBudget.id}&departmentBudget=true&model.type=${model.type}&onSaveOrForward=true'></iframe>
 								</s:else>
 							</div>
 							<div class="tabbertab" style="height: 500px">
@@ -128,16 +130,16 @@
 							function deleteBudgetDetail(elem){
 								var transaction = YAHOO.util.Connect.asyncRequest('POST', 'budgetSearchAndModify!ajaxDeleteBudgetDetail.action?id='+elem.id+'&action=modify', callback, null);
 							}  
-						</script> <s:set var="validButtons" value="%{validActions}" /> <jsp:include
+						</script> <!-- TODO: Manual migration required for custom Struts tag --> <jsp:include
 										page="budgetHeader.jsp" />
 									<div align="left" class="extracontent">Amount in
 										Thousands</div>
 									<div class="formmainbox">
 										<div class="subheadnew">
-											<s:text name="budgetdetail" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</div>
-										<s:hidden name="budget.id" value="%{getTopBudget().getId()}" />
-										<s:if test="%{showApprovalDetails()}">
+										<!-- TODO: Manual migration required for custom Struts tag -->
+										<c:if test="%{showApprovalDetails()}">
 											<table align="center" border="0" cellpadding="0"
 												cellspacing="0" width="100%" class="tablebottom"
 												style="border-right: 0px solid #C5C5C5;">
@@ -151,20 +153,20 @@
 																value="comments" /></textarea></td>
 												</tr>
 											</table>
-										</s:if>
-										<s:hidden name="budget" id="hidden_budget" />
+										</c:if>
+										<!-- TODO: Manual migration required for custom Struts tag -->
 										<input type='hidden' name='action' value='modify' />
-										<s:if test="%{!savedbudgetDetailList.isEmpty()}">
+										<c:if test="%{!savedbudgetDetailList.isEmpty()}">
 											<div id="detail" width="600">
 												<%@ include file="budgetSearchAndModify-modifyList.jsp"%>
 											</div>
-										</s:if>
+										</c:if>
 										<br />
 										<br />
 										<script>
-								document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>';
+								document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}';
 								function validateAmounts(){
-									var len = <s:property value="savedbudgetDetailList.size"/>;
+									var len = ${savedbudgetDetailList.size};
 									for(i=0;i<len;i++){
 										if(document.getElementById('savedbudgetDetailList['+i+'].approvedAmount') && document.getElementById('savedbudgetDetailList['+i+'].approvedAmount').value == ''){
 											bootbox.alert("Enter approved amount");
@@ -174,13 +176,13 @@
 									return true;
 								}
 								function validateAppoveUser(name,value){
-									<s:if test="%{wfitemstate =='END'}">
+									<c:if test="%{wfitemstate =='END'}">
 										if(value == 'Approve' || value == 'Reject') {
 											document.getElementById("approverUserId").value=-1;
 											return true;
 										}
-									</s:if>
-									<s:else>
+									</c:if>
+									<c:otherwise>
 										if( (value == 'forward' || value == 'Forward') && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 											bootbox.alert("Please select User");
 											return false;
@@ -189,23 +191,23 @@
 									return validateAmounts();
 								}
 							</script>
-										<s:hidden id="scriptName" value="BudgetDetail.nextDesg" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</div>
 								</span>
 							</div>
 							<!-- Individual tab -->
 							<div class="tabbertab" id="approvalDetails">
 								<h2>Approval Details</h2>
-								<span> <s:if test="%{!savedbudgetDetailList.isEmpty()}">
-										<s:if test='%{! "END".equalsIgnoreCase(wfitemstate)}'>
+								<span> <c:if test="%{!savedbudgetDetailList.isEmpty()}">
+										<c:if test='%{! "END".equalsIgnoreCase(wfitemstate)}'>
 											<%@include file="../voucher/workflowApproval.jsp"%>
 											<script>
-										document.getElementById('departmentid').value='<s:property value="savedbudgetDetailList[0].executingDepartment.id"/>';
+										document.getElementById('departmentid').value='${savedbudgetDetailList[0].executingDepartment.id}';
 										populateDesg();
 										defaultDept();
 									</script>
-										</s:if>
-									</s:if>
+										</c:if>
+									</c:if>
 								</span>
 							</div>
 							<!-- Individual tab -->
@@ -215,23 +217,23 @@
 			</table>
 		</div>
 		<div class="buttonholderwk" id="buttonsDiv">
-			<s:hidden name="actionName" />
-			<s:hidden name="mode" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="buttonbottom">
-				<s:if test="%{showbuttons()}">
-					<s:iterator value="%{validButtons}">
+				<c:if test="%{showbuttons()}">
+					<c:forEach value="%{validButtons}">
 						<s:submit type="submit" cssClass="buttonsubmit"
 							value="%{capitalize(description)}" id="%{name}" name="%{name}"
 							method="update"
 							onclick=" document.budgetSearchAndModify.actionName.value='%{name}';return validateAppoveUser('%{name}','%{description}')" />
-					</s:iterator>
-				</s:if>
+					</c:forEach>
+				</c:if>
 				<input type="submit" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</div>
 
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 	if(document.getElementById("approve")){
 		document.getElementById("approvalDetails").style.display = 'none';

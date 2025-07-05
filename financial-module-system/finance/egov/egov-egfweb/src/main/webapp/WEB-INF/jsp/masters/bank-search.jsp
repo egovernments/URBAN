@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 <%@ taglib prefix="egov" tagdir="/WEB-INF/tags"%>
 <html>
 <head>
-<title><s:text name="bank.search.new" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" type="text/css"
 	href="/services/EGF/resources/css/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css" />
 <style>
@@ -66,13 +68,13 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="bank.search.new" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form name="bankForm" action="bank" theme="simple">
+		<form:form name="bankForm" action="bank" theme="simple">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr height="25px">
 					<td class="bluebox"></td>
@@ -80,9 +82,9 @@
 				<tr>
 					<td class="greybox" width="20%"></td>
 					<td class="greybox" style="text-align: center;"><span
-						class="mandatory1">*</span> <s:text name="bank.create.name" /></td>
+						class="mandatory1">*</span> <!-- TODO: Manual migration required for custom Struts tag --></td>
 
-					<td class="bluebox"><s:select name="name" id="bankName"
+					<td class="bluebox"><form:select path="name" id="bankName"
 							list="dropdownData.bankList" listKey="name" listValue="name"
 							headerKey="-1" headerValue="----Choose----" /></td>
 				</tr>
@@ -90,20 +92,20 @@
 			<br />
 	</div>
 	<div class="buttonbottom" style="padding-bottom: 10px;">
-		<s:hidden name="mode"></s:hidden>
-		<s:if test="%{mode.equals('MODIFY')}">
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
+		<c:if test="%{mode.equals('MODIFY')}">
 			<input type="submit" class="buttonsubmit" value="Modify"
 				id="modifyButton" name="Modify"
 				onclick="return validateAndSubmit();" />
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			<input type="submit" class="buttonsubmit" value="View"
 				id="modifyButton" name="View" onclick="return validateAndSubmit();" />
 		</s:else>
 		<input type="button" id="Close" value="Close"
 			onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 	</div>
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 		/* jQuery( "#bankName" ).autocomplete({
 		   source: "bank.action?mode=AUTO_COMP_BANK_NAME",

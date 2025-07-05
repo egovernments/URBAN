@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,22 +52,22 @@
 <jsp:include page="../budget/budgetHeader.jsp">
 	<jsp:param name="heading" value='Fund Flow Analysis Report' />
 </jsp:include>
-<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 </span>
 <div class="subheadsmallnew">
-	<span class="subheadnew"><s:property value="ulbName" /></span>
+	<span class="subheadnew">${ulbName}</span>
 </div>
 <table id="header" width="100%" cellpadding="0" cellspacing="0"
 	border="0">
 	<tr>
-		<td class="greybox" width="15%"><s:text name="report.fund" /></td>
-		<td class="greybox" width="34%"><s:select name="fund" id="fund"
+		<td class="greybox" width="15%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox" width="34%"><form:select path="fund" id="fund"
 				list="dropdownData.fundList" listKey="id" listValue="name"
 				headerKey="" headerValue="-----choose----" /></td>
-		<td class="greybox" width="15%"><s:text name="asondate" /><span
+		<td class="greybox" width="15%"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory">*</span></td>
 		<td class="greybox" width="34%"><s:date name='asOnDate'
-				var="asOnDateId" format='dd/MM/yyyy' /> <s:textfield name="asOnDate"
+				var="asOnDateId" format='dd/MM/yyyy' /> <form:input path="asOnDate"
 				id="asOnDate" value='%{asOnDateId}'
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 			href="javascript:show_calendar('fundFlowReport.asOnDate');"
@@ -89,7 +91,7 @@
 
 <br />
 
-<s:if test="receiptList!=null && receiptList.size()>0">
+<c:if test="receiptList!=null && receiptList.size()>0">
 	<div id="recaluclateButton" align="right" style="display: none">
 		<s:submit value="Re Calculate" method="recalculateOpeningBalance"
 			id="recalculate" cssClass="buttonsubmit"
@@ -108,167 +110,167 @@
 									Lakh)</strong></td>
 						</tr>
 						<tr>
-							<th class="bluebgheadtd"><s:text name="bank" /></th>
-							<th class="bluebgheadtd"><s:text name="Fund Name" /></th>
-							<th class="bluebgheadtd"><s:text name="coa" /></th>
-							<th class="bluebgheadtd"><s:text name="bankaccount" /></th>
-							<th class="bluebgheadtd"><s:text name="openingbalance" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="currentreceipt" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="fundsavailable" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="btbpayment" /></th>
-							<th class="bluebgheadtd"><s:text name="btbreceipt" /></th>
-							<th class="bluebgheadtd"><s:text name="closingbalance" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
 						</tr>
-						<s:iterator id="t" var="fundFlowBean" value="receiptList"
+						<c:forEach id="t" var="fundFlowBean" value="receiptList"
 							status="s">
-							<s:if test="#s.odd">
-								<s:set var="tdcss" value="'bluebox'" />
-							</s:if>
-							<s:else>
-								<s:set var="tdcss" value="'greybox'" />
+							<c:if test="#s.odd">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+							</c:if>
+							<c:otherwise>
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:else>
-							<s:if test="#s.first">
-								<s:set var="tdcss" value="'greybox'" />
-							</s:if>
-							<s:set var="index" value="<s:property value='#s.index'/>" />
-							<s:if test="%{receiptList[#s.index].accountNumber!='Total'}">
+							<c:if test="#s.first">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+							</c:if>
+							<!-- TODO: Manual migration required for custom Struts tag -->" />
+							<c:if test="%{receiptList[#s.index].accountNumber!='Total'}">
 								<tr>
 									<input type="hidden"
-										name='receiptList[<s:property value='#s.index'/>].id'
-										id="receiptList[<s:property value='#s.index'/>].id"
-										value="<s:property value="id"/>" />
+										name='receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].id'
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].id"
+										value="${id}" />
 									<input type="hidden"
-										name='receiptList[<s:property value='#s.index'/>].bankAccountId'
-										id="receiptList[<s:property value='#s.index'/>].bankAccountId"
-										value="<s:property value="bankAccountId"/>" />
-									<s:if test="%{receiptList[#s.index].walkinPaymentAccount}">
+										name='receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].bankAccountId'
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].bankAccountId"
+										value="${bankAccountId}" />
+									<c:if test="%{receiptList[#s.index].walkinPaymentAccount}">
 										<td class="${tdcss}"
 											style="text-align: center; background-color: #FFAC30; color: #000000"><input
 											type="text"
-											name='receiptList[<s:property value='#s.index'/>].bankName'
-											id="receiptList[<s:property value='#s.index'/>].bankName"
-											value="<s:property value="bankName"/>" readonly /></td>
-									</s:if>
-									<s:else>
+											name='receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].bankName'
+											id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].bankName"
+											value="${bankName}" readonly /></td>
+									</c:if>
+									<c:otherwise>
 										<td class="${tdcss}" style="text-align: center;"><input
 											type="text"
-											name='receiptList[<s:property value='#s.index'/>].bankName'
-											id="receiptList[<s:property value='#s.index'/>].bankName"
-											value="<s:property value="bankName"/>" readonly /></td>
+											name='receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].bankName'
+											id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].bankName"
+											value="${bankName}" readonly /></td>
 									</s:else>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name="receiptList[<s:property value='#s.index'/>].fundName"
-										id="receiptList[<s:property value='#s.index'/>].fundName"
-										value="<s:property value="fundName"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].fundName"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].fundName"
+										value="${fundName}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name="receiptList[<s:property value='#s.index'/>].glcode"
-										id="receiptList[<s:property value='#s.index'/>].glcode"
-										value="<s:property value="glcode"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].glcode"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].glcode"
+										value="${glcode}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name="receiptList[<s:property value='#s.index'/>].accountNumber"
-										id="receiptList[<s:property value='#s.index'/>].accountNumber"
-										value="<s:property value="accountNumber"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										value="${accountNumber}" readonly /></td>
 
 									<td class="${tdcss}" style="text-align: center"><b> <input
 											type="text"
 											style='text-align: right; background-color: #FFFF00; color: #000000'
-											name="receiptList[<s:property value='#s.index'/>].openingBalance"
-											id="receiptList[<s:property value='#s.index'/>].openingBalance"
-											value="<s:property value="openingBalance"/>" readonly
+											name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
+											id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
+											value="${openingBalance}" readonly
 											onblur="calculateFunds(this)" />
 									</b></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; right; background-color: #FFAC30; color: #000000'
-										name="receiptList[<s:property value='#s.index'/>].currentReceipt"
-										id="receiptList[<s:property value='#s.index'/>].currentReceipt"
-										value="<s:property value="currentReceipt"/>"
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+										value="${currentReceipt}"
 										onblur="calculateFunds(this)" /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #01DFD7; color: #000000'
-										name="receiptList[<s:property value='#s.index'/>].fundsAvailable"
-										id="receiptList[<s:property value='#s.index'/>].fundsAvailable"
-										value="<s:property value="fundsAvailable"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+										value="${fundsAvailable}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #81BEF7; color: #000000'
-										name="receiptList[<s:property value='#s.index'/>].btbPayment"
-										id="receiptList[<s:property value='#s.index'/>].btbPayment"
-										value="<s:property value="btbPayment"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+										value="${btbPayment}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #81BEF7; color: #000000'
-										name="receiptList[<s:property value='#s.index'/>].btbReceipt"
-										id="receiptList[<s:property value='#s.index'/>].btbReceipt"
-										value="<s:property value="btbReceipt"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+										value="${btbReceipt}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #FFFF00; color: #000000'
-										name="receiptList[<s:property value='#s.index'/>].closingBalance"
-										id="receiptList[<s:property value='#s.index'/>].closingBalance"
-										value="<s:property value="closingBalance"/>" readonly /></td>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+										value="${closingBalance}" readonly /></td>
 
 								</tr>
-							</s:if>
-							<s:else>
+							</c:if>
+							<c:otherwise>
 								<td class="${tdcss}" style="text-align: center"></td>
 								<td class="${tdcss}" style="text-align: center"></td>
 								<td class="${tdcss}" style="text-align: center"></td>
 								<strong><td class="${tdcss}"
 									style="text-align: center;"><input type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="receiptList[<s:property value='#s.index'/>].accountNumber"
-										id="receiptList[<s:property value='#s.index'/>].accountNumber"
-										value="<s:property value="accountNumber"/>" readonly /></td></strong>
+										name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										value="${accountNumber}" readonly /></td></strong>
 								<td class="${tdcss}" style="text-align: center"><input
 									type="text"
 									style='text-align: right; background-color: #DEB887; color: #000000'
-									name="receiptList[<s:property value='#s.index'/>].openingBalance"
-									id="receiptList[<s:property value='#s.index'/>].openingBalance"
-									value="<s:property value="openingBalance"/>" readonly
+									name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
+									id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
+									value="${openingBalance}" readonly
 									onblur="calculateFunds(this)" /></td>
 								<td class="${tdcss}" style="text-align: center"><input
 									type="text"
 									style='text-align: right; background-color: #DEB887; color: #000000'
-									name="receiptList[<s:property value='#s.index'/>].currentReceipt"
-									id="receiptList[<s:property value='#s.index'/>].currentReceipt"
-									value="<s:property value="currentReceipt" />" readonly
+									name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+									id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+									value="${currentReceipt}" readonly
 									onblur="calculateFunds(this)" /></td>
 								<td class="${tdcss}" style="text-align: center"><input
 									type="text"
 									style='text-align: right; background-color: #DEB887; color: #000000'
-									name="receiptList[<s:property value='#s.index'/>].fundsAvailable"
-									id="receiptList[<s:property value='#s.index'/>].fundsAvailable"
-									value="<s:property value="fundsAvailable"/>" readonly /></td>
+									name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+									id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+									value="${fundsAvailable}" readonly /></td>
 								<td class="${tdcss}" style="text-align: center"><input
 									type="text"
 									style='text-align: right; background-color: #DEB887; color: #000000'
-									name="receiptList[<s:property value='#s.index'/>].btbPayment"
-									id="receiptList[<s:property value='#s.index'/>].btbPayment"
-									value="<s:property value="btbPayment"/>" readonly /></td>
+									name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+									id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+									value="${btbPayment}" readonly /></td>
 								<td class="${tdcss}" style="text-align: center"><input
 									type="text"
 									style='text-align: right; background-color: #DEB887; color: #000000'
-									name="receiptList[<s:property value='#s.index'/>].btbReceipt"
-									id="receiptList[<s:property value='#s.index'/>].btbReceipt"
-									value="<s:property value="btbReceipt"/>" readonly /></td>
+									name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+									id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+									value="${btbReceipt}" readonly /></td>
 								<td class="${tdcss}"
 									style="text-align: center; text-decoration: bold"><input
 									type="text"
 									style='text-align: right; background-color: #DEB887; color: #000000'
-									name="receiptList[<s:property value='#s.index'/>].closingBalance"
-									id="receiptList[<s:property value='#s.index'/>].closingBalance"
-									value="<s:property value="closingBalance"/>" readonly /></td>
+									name="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+									id="receiptList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+									value="${closingBalance}" readonly /></td>
 							</s:else>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td class="${tdcss}" style="text-align: center"></td>
 							<td class="${tdcss}" style="text-align: center"></td>
@@ -311,13 +313,13 @@
 			</td>
 		</tr>
 	</table>
-</s:if>
+</c:if>
 <!-- End of RECEIPT -->
 
 
 <br />
 <br />
-<s:if test="paymentList!=null && paymentList.size()>0">
+<c:if test="paymentList!=null && paymentList.size()>0">
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="blueborderfortd">
@@ -329,123 +331,123 @@
 							<td align="right"><strong>(Rupees in Lakh)</strong></td>
 						</tr>
 						<tr>
-							<th class="bluebgheadtd"><s:text name="bank" /></th>
-							<th class="bluebgheadtd"><s:text name="FundName" /></th>
-							<th class="bluebgheadtd"><s:text name="coa" /></th>
-							<th class="bluebgheadtd"><s:text name="bankaccount" /></th>
-							<th class="bluebgheadtd"><s:text name="openingbalance" /></th>
-							<th class="bluebgheadtd"><s:text name="currentreceipt" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="btbpayment" /></th>
-							<th class="bluebgheadtd"><s:text name="btbreceipt" /></th>
-							<th class="bluebgheadtd"><s:text name="fundsavailable" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="concurrancebpv" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="closingbalance" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
-							<th class="bluebgheadtd"><s:text name="outstandingbpv" />
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->
 							</th>
 
 						</tr>
-						<s:iterator id="t" var="fundFlowBean" value="paymentList"
+						<c:forEach id="t" var="fundFlowBean" value="paymentList"
 							status="s">
-							<s:if test="#s.odd">
-								<s:set var="tdcss" value="'bluebox'" />
-							</s:if>
-							<s:else>
-								<s:set var="tdcss" value="'greybox'" />
+							<c:if test="#s.odd">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+							</c:if>
+							<c:otherwise>
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:else>
-							<s:if test="#s.first">
-								<s:set var="tdcss" value="'greybox'" />
-							</s:if>
-							<s:set var="index" value="<s:property value='#s.index'/>" />
-							<s:if test="%{paymentList[#s.index].accountNumber!='Total'}">
+							<c:if test="#s.first">
+								<!-- TODO: Manual migration required for custom Struts tag -->
+							</c:if>
+							<!-- TODO: Manual migration required for custom Struts tag -->" />
+							<c:if test="%{paymentList[#s.index].accountNumber!='Total'}">
 								<tr>
 									<input type="hidden"
-										name='paymentList[<s:property value='#s.index'/>].id'
-										id="paymentList[<s:property value='#s.index'/>].id"
-										value="<s:property value="id"/>" />
+										name='paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].id'
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].id"
+										value="${id}" />
 									<input type="hidden"
-										name='paymentList[<s:property value='#s.index'/>].bankAccountId'
-										id="paymentList[<s:property value='#s.index'/>].bankAccountId"
-										value="<s:property value="bankAccountId"/>" />
+										name='paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].bankAccountId'
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].bankAccountId"
+										value="${bankAccountId}" />
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name='paymentList[<s:property value='#s.index'/>].bankName'
-										id="paymentList[<s:property value='#s.index'/>].bankName"
-										value="<s:property value="bankName"/>" readonly /></td>
+										name='paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].bankName'
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].bankName"
+										value="${bankName}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name='paymentList[<s:property value='#s.index'/>].fundName'
-										id="paymentList[<s:property value='#s.index'/>].fundName"
-										value="<s:property value="fundName"/>" readonly /></td>
+										name='paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].fundName'
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].fundName"
+										value="${fundName}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name='paymentList[<s:property value='#s.index'/>].glcode'
-										id="paymentList[<s:property value='#s.index'/>].glcode"
-										value="<s:property value="glcode"/>" readonly /></td>
+										name='paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].glcode'
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].glcode"
+										value="${glcode}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
-										name="paymentList[<s:property value='#s.index'/>].accountNumber"
-										id="paymentList[<s:property value='#s.index'/>].accountNumber"
-										value="<s:property value="accountNumber"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										value="${accountNumber}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center;"><input
 										type="text"
 										style='text-align: right; background-color: #FFFF00; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].openingBalance"
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
 										style='text-align:right'
-										id="paymentList[<s:property value='#s.index'/>].openingBalance"
-										value="<s:property value="openingBalance"/>" readonly
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
+										value="${openingBalance}" readonly
 										onblur="calculateFundsForPayment(this)" /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #FFAC30; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].currentReceipt"
-										id="paymentList[<s:property value='#s.index'/>].currentReceipt"
-										value="<s:property value="currentReceipt"/>"
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+										value="${currentReceipt}"
 										onblur="calculateFundsForPayment(this)" /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #81BEF7; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].btbPayment"
-										id="paymentList[<s:property value='#s.index'/>].btbPayment"
-										value="<s:property value="btbPayment"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+										value="${btbPayment}" readonly /></td>
 
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #81BEF7; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].btbReceipt"
-										id="paymentList[<s:property value='#s.index'/>].btbReceipt"
-										value="<s:property value="btbReceipt"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+										value="${btbReceipt}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #01DFD7; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].fundsAvailable"
-										id="paymentList[<s:property value='#s.index'/>].fundsAvailable"
-										value="<s:property value="fundsAvailable"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+										value="${fundsAvailable}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #FF8484; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].concurranceBPV"
-										id="paymentList[<s:property value='#s.index'/>].concurranceBPV"
-										value="<s:property value="concurranceBPV"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].concurranceBPV"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].concurranceBPV"
+										value="${concurranceBPV}" readonly /></td>
 
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #FFFF00; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].closingBalance"
-										id="paymentList[<s:property value='#s.index'/>].closingBalance"
-										value="<s:property value="closingBalance"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+										value="${closingBalance}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #81BEF7; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].outStandingBPV"
-										id="paymentList[<s:property value='#s.index'/>].outStandingBPV"
-										value="<s:property value="outStandingBPV"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].outStandingBPV"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].outStandingBPV"
+										value="${outStandingBPV}" readonly /></td>
 								</tr>
-							</s:if>
-							<s:else>
+							</c:if>
+							<c:otherwise>
 								<tr>
 
 									<td class="${tdcss}" style="text-align: center"></td>
@@ -454,66 +456,66 @@
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].accountNumber"
-										id="paymentList[<s:property value='#s.index'/>].accountNumber"
-										value="<s:property value="accountNumber"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].accountNumber"
+										value="${accountNumber}" readonly /></td>
 									<td class="${tdcss}"
 										style="text-align: center; font-weight: bold;"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].openingBalance"
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
 										style='text-align:right'
-										id="paymentList[<s:property value='#s.index'/>].openingBalance"
-										value="<s:property value="openingBalance"/>" readonly
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].openingBalance"
+										value="${openingBalance}" readonly
 										onblur="calculateFundsForPayment(this)" /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].currentReceipt"
-										id="paymentList[<s:property value='#s.index'/>].currentReceipt"
-										value="<s:property value="currentReceipt"/>"
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].currentReceipt"
+										value="${currentReceipt}"
 										onblur="calculateFundsForPayment(this)" /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].btbPayment"
-										id="paymentList[<s:property value='#s.index'/>].btbPayment"
-										value="<s:property value="btbPayment"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbPayment"
+										value="${btbPayment}" readonly /></td>
 
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].btbReceipt"
-										id="paymentList[<s:property value='#s.index'/>].btbReceipt"
-										value="<s:property value="btbReceipt"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].btbReceipt"
+										value="${btbReceipt}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].fundsAvailable"
-										id="paymentList[<s:property value='#s.index'/>].fundsAvailable"
-										value="<s:property value="fundsAvailable"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].fundsAvailable"
+										value="${fundsAvailable}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].concurranceBPV"
-										id="paymentList[<s:property value='#s.index'/>].concurranceBPV"
-										value="<s:property value="concurranceBPV"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].concurranceBPV"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].concurranceBPV"
+										value="${concurranceBPV}" readonly /></td>
 
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].closingBalance"
-										id="paymentList[<s:property value='#s.index'/>].closingBalance"
-										value="<s:property value="closingBalance"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].closingBalance"
+										value="${closingBalance}" readonly /></td>
 									<td class="${tdcss}" style="text-align: center"><input
 										type="text"
 										style='text-align: right; background-color: #DEB887; color: #000000'
-										name="paymentList[<s:property value='#s.index'/>].outStandingBPV"
-										id="paymentList[<s:property value='#s.index'/>].outStandingBPV"
-										value="<s:property value="outStandingBPV"/>" readonly /></td>
+										name="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].outStandingBPV"
+										id="paymentList[<!-- TODO: Manual migration required for custom Struts tag -->].outStandingBPV"
+										value="${outStandingBPV}" readonly /></td>
 								</tr>
 							</s:else>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td class="${tdcss}" style="text-align: center"></td>
 							<td class="${tdcss}" style="text-align: center"></td>
@@ -597,12 +599,12 @@
 		</tr>
 	</table>
 
-</s:if>
+</c:if>
 
-<s:if
+<c:if
 	test="receiptList!=null && receiptList.size()==0 && paymentList!=null && paymentList.size()==0 ">
 	<div class="error">
 		<span class="bluebgheadtd" colspan="7"><s:text
 				name="no.data.found" /></span>
 	</div>
-</s:if>
+</c:if>

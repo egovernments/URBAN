@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,12 +56,12 @@
 <title>Modify Payment Search</title>
 </head>
 <body>
-	<s:form action="payment" theme="simple">
+	<form:form action="payment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Bill Payment Search" />
 		</jsp:include>
-		<span class="mandatory" id="errorSpan"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory" id="errorSpan"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">Modify Payment Search</div>
@@ -67,7 +69,7 @@
 				<tr>
 					<td class="greybox" width="30%"><s:text
 							name="chq.assignment.paymentvoucherdatefrom" /></td>
-					<td class="greybox"><s:textfield name="fromDate" id="fromDate"
+					<td class="greybox"><form:input path="fromDate" id="fromDate"
 							maxlength="20" value="%{fromDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].fromDate');"
@@ -75,7 +77,7 @@
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a><br />(dd/mm/yyyy)</td>
 					<td class="greybox" width="30%"><s:text
 							name="chq.assignment.paymentvoucherdateto" /></td>
-					<td class="greybox"><s:textfield name="toDate" id="toDate"
+					<td class="greybox"><form:input path="toDate" id="toDate"
 							maxlength="20" value="%{toDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].toDate');"
@@ -85,13 +87,13 @@
 				<tr>
 					<td class="bluebox" width="30%"><s:text
 							name="chq.assignment.paymentvoucherno" /></td>
-					<td class="bluebox"><s:textfield name="voucherNumber"
+					<td class="bluebox"><form:input path="voucherNumber"
 							id="voucherNumber" maxlength="20" value="%{voucherNumber}" /></td>
 				</tr>
 				<jsp:include page="../voucher/vouchertrans-filter.jsp" />
 			</table>
 			<div class="buttonbottom">
-				<s:hidden name="action" id="action" value="%{action}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:submit method="list" value="Search" id="searchBtn"
 					cssClass="buttonsubmit" onclick="return list()" />
 				<input type="submit" value="Close"
@@ -110,19 +112,19 @@
 						<th class="bluebgheadtd">Amount</th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
-					<s:iterator var="p" value="paymentheaderList" status="s">
+					<c:forEach var="p" value="paymentheaderList" status="s">
 						<tr>
 							<td class="<c:out value="${trclass}"/>" style="text-align: right"><s:property
 									value="#s.index+1" /></td>
-							<td class="<c:out value="${trclass}"/>"><s:if
+							<td class="<c:out value="${trclass}"/>"><c:if
 									test="%{voucherheader.name=='Direct Bank Payment'}">
 									<a href="#"
-										onclick="javascript:window.open('directBankPayment!beforeEdit.action?voucherHeader.id=<s:property value='%{voucherheader.id}'/>&fundId=<s:property value='%{voucherheader.fundId.id}'/>','Payment','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')"><s:property
+										onclick="javascript:window.open('directBankPayment!beforeEdit.action?voucherHeader.id=<!-- TODO: Manual migration required for custom Struts tag -->&fundId=<!-- TODO: Manual migration required for custom Struts tag -->','Payment','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')"><s:property
 											value="%{voucherheader.voucherNumber}" /></a></td>
-							</s:if>
-							<s:else>
+							</c:if>
+							<c:otherwise>
 								<a href="#"
-									onclick="javascript:window.open('payment!modify.action?paymentid=<s:property value='%{id}'/>&fundId=<s:property value='%{voucherheader.fundId.id}'/>','Payment','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')"><s:property
+									onclick="javascript:window.open('payment!modify.action?paymentid=<!-- TODO: Manual migration required for custom Struts tag -->&fundId=<!-- TODO: Manual migration required for custom Struts tag -->','Payment','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')"><s:property
 										value="%{voucherheader.voucherNumber}" /></a>
 								</td>
 
@@ -146,20 +148,20 @@
 								</c:when>
 							</c:choose>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
-				<s:if test="%{paymentheaderList==null || paymentheaderList.size==0}">
+				<c:if test="%{paymentheaderList==null || paymentheaderList.size==0}">
 					<div class="bottom" align="center">No Records Found !</div>
-				</s:if>
+				</c:if>
 			</div>
 		</div>
-		<s:if test="%{validateUser('deptcheck')}">
+		<c:if test="%{validateUser('deptcheck')}">
 			<script>
 					if(document.getElementById('vouchermis.departmentid'))
 						document.getElementById('vouchermis.departmentid').disabled=true;
 				</script>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 	<script>
 			function loadBank(obj){}
 			function list()

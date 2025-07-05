@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,10 +52,10 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 <script>
- <s:set var="colratio" value="%{'[50,80,80,200,80,80,80,80,80,80,80,80,150,150,200,150]'}"/>
-<s:if test="%{isConsolidatedScreen()}">
-<s:set var="colratio" value="%{'[50,80,80,200,80,80,80,80,80,80,80,80,80,150,80,150,200,150]'}"/>
-</s:if>	
+ <!-- TODO: Manual migration required for custom Struts tag -->
+<c:if test="%{isConsolidatedScreen()}">
+<!-- TODO: Manual migration required for custom Struts tag -->
+</c:if>	
 
 jQuery.noConflict();
 jQuery(document).ready(function() {
@@ -62,7 +64,7 @@ jQuery(document).ready(function() {
          height: 400,
          minColWidth: 10,  
          resizeCol: true,
-         colratio:<s:property value="colratio"/>
+         colratio:${colratio}
     });
 });
  
@@ -73,72 +75,72 @@ jQuery(document).ready(function() {
 	<table id="detailsTable" class="table-header-fix">
 		<thead>
 			<tr>
-				<th><s:text name="budgetdetail.budget.department" /></th>
-				<th><s:text name="fund" /></th>
-				<th><s:text name="budgetdetail.function" /></th>
-				<th><s:text name="budgetdetail.budgetGroup" /></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
 
-				<th><s:text name="budgetdetail.actuals" /> <s:property
+				<th><!-- TODO: Manual migration required for custom Struts tag --> <s:property
 						value="twopreviousfinYearRange" /></th>
-				<th><s:text name="budgetdetail.actuals" /> <s:property
+				<th><!-- TODO: Manual migration required for custom Struts tag --> <s:property
 						value="previousfinYearRange" /></th>
-				<th>BE <s:property value="currentfinYearRange" />(A)
+				<th>BE ${currentfinYearRange}(A)
 				</th>
-				<th><s:text name="budget.reappropriation" />(B)</th>
+				<th><!-- TODO: Manual migration required for custom Struts tag -->(B)</th>
 				<th>Total (A+B)</th>
-				<th><s:text name="budgetdetail.actuals" /> upto <s:property
+				<th><!-- TODO: Manual migration required for custom Struts tag --> upto <s:property
 						value="currentfinYearRange" /></th>
 				<th id="anticipatoryAmountheading"><s:text
 						name="budgetdetail.anticipatoryAmount" /> <s:property
 						value="currentfinYearRange" /></th>
-				<th><s:text name="budget.re" /> <s:property
+				<th><!-- TODO: Manual migration required for custom Struts tag --> <s:property
 						value="savedbudgetDetailList.get(0).getBudget().getFinancialYear().getFinYearRange()" />
 					Proposed</th>
-				<s:if test="%{isConsolidatedScreen()}">
+				<c:if test="%{isConsolidatedScreen()}">
 					<th>RE <s:property
 							value="savedbudgetDetailList.get(0).getBudget().getFinancialYear().getFinYearRange()" />
 						Fixed
 					</th>
-				</s:if>
-				<th><s:text name="budget.be" /> <s:property
+				</c:if>
+				<th><!-- TODO: Manual migration required for custom Struts tag --> <s:property
 						value="nextfinYearRange" /> Proposed</th>
-				<s:if test="%{isConsolidatedScreen()}">
-					<th width="10%">BE <s:property value="nextfinYearRange" />
+				<c:if test="%{isConsolidatedScreen()}">
+					<th width="10%">BE ${nextfinYearRange}
 						Fixed
 					</th>
-				</s:if>
+				</c:if>
 
 			</tr>
 		</thead>
 		<tbody>
-			<s:iterator value="bpBeanList" status="stat">
+			<c:forEach value="bpBeanList" status="stat">
 				<tr>
-					<s:if test="%{rowType=='heading'}">
+					<c:if test="%{rowType=='heading'}">
 
-					</s:if>
-					<s:elseif test="%{rowType=='majorcode'}">
+					</c:if>
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					</s:elseif>
 
-					<s:elseif test="%{rowType=='total'}">
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					</s:elseif>
 
-					<s:else>
+					<c:otherwise>
 						<input type='hidden'
-							name="bpBeanList[<s:property value='#stat.index'/>].id"
-							id="bpBeanList[<s:property value='#stat.index'/>].id"
-							value="<s:property value='id'/>" />
+							name="bpBeanList[<!-- TODO: Manual migration required for custom Struts tag -->].id"
+							id="bpBeanList[<!-- TODO: Manual migration required for custom Struts tag -->].id"
+							value="<!-- TODO: Manual migration required for custom Struts tag -->" />
 						<input type='hidden'
-							name="bpBeanList[<s:property value='#stat.index'/>].nextYrId"
-							id="bpBeanList[<s:property value='#stat.index'/>].nextYrId"
-							value="<s:property value='nextYrId'/>" />
+							name="bpBeanList[<!-- TODO: Manual migration required for custom Struts tag -->].nextYrId"
+							id="bpBeanList[<!-- TODO: Manual migration required for custom Struts tag -->].nextYrId"
+							value="<!-- TODO: Manual migration required for custom Struts tag -->" />
 						<input type='hidden'
-							name="bpBeanList[<s:property value='#stat.index'/>].documentNumber"
-							id="bpBeanList[<s:property value='#stat.index'/>].documentNumber"
-							value="<s:property value='docNo'/>" />
-						<td><s:property value="executingDepartment" /> &nbsp;</td>
-						<td><s:property value="fund" />&nbsp;</td>
-						<td><s:property value="function" />&nbsp;</td>
-						<td><s:property value="budgetGroup" />&nbsp;</td>
+							name="bpBeanList[<!-- TODO: Manual migration required for custom Struts tag -->].documentNumber"
+							id="bpBeanList[<!-- TODO: Manual migration required for custom Struts tag -->].documentNumber"
+							value="<!-- TODO: Manual migration required for custom Struts tag -->" />
+						<td>${executingDepartment} &nbsp;</td>
+						<td>${fund}&nbsp;</td>
+						<td>${function}&nbsp;</td>
+						<td>${budgetGroup}&nbsp;</td>
 
 
 
@@ -150,44 +152,44 @@ jQuery(document).ready(function() {
 								value="currentYearBE" />&nbsp;</td>
 						<td style="text-align: right;"><s:property
 								value="reappropriation" />&nbsp;</td>
-						<td style="text-align: right;"><s:property value="total" />&nbsp;</td>
+						<td style="text-align: right;">${total}&nbsp;</td>
 						<td style="text-align: right;"><s:property
 								value="currentYearActuals" />&nbsp;</td>
 						<td style="text-align: right;"><s:property
 								value="anticipatory" />&nbsp;</td>
 
 
-						<s:if test="%{isConsolidatedScreen()}">
+						<c:if test="%{isConsolidatedScreen()}">
 
-						</s:if>
-						<s:else>
+						</c:if>
+						<c:otherwise>
 							<td><input type="text" onchange="update(this);"
 								style="text-align: right; size: 50px;"
-								id='bpBeanList[<s:property value="#stat.index"/>].proposedRE'
-								name='bpBeanList[<s:property value="#stat.index"/>].proposedRE'
-								value='<s:text name="format.number"><s:param value="proposedRE"/></s:text>' />&nbsp;</td>
+								id='bpBeanList[${#stat.index}].proposedRE'
+								name='bpBeanList[${#stat.index}].proposedRE'
+								value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;</td>
 						</s:else>
-						<s:if test="%{isConsolidatedScreen()}">
+						<c:if test="%{isConsolidatedScreen()}">
 							<td style="text-align: right;"><s:property
 									value="proposedBE" />&nbsp;</td>
 							<td><input type="text" onchange="update(this);" size="10"
 								style="text-align: right;"
-								id='bpBeanList[<s:property value="#stat.index"/>].approvedBE'
-								name='bpBeanList[<s:property value="#stat.index"/>].approvedBE'
-								value='<s:text name="approvedBE"><s:param value="approvedBE"/></s:text>' />&nbsp;</td>
-						</s:if>
-						<s:else>
+								id='bpBeanList[${#stat.index}].approvedBE'
+								name='bpBeanList[${#stat.index}].approvedBE'
+								value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;</td>
+						</c:if>
+						<c:otherwise>
 							<td><input type="text" onChange="update(this);"
 								style="text-align: right; size: 50px;"
-								id='bpBeanList[<s:property value="#stat.index"/>].proposedBE'
-								name='bpBeanList[<s:property value="#stat.index"/>].proposedBE'
-								value='<s:text name="format.number"><s:param value="proposedBE"/></s:text>' />&nbsp;</td>
+								id='bpBeanList[${#stat.index}].proposedBE'
+								name='bpBeanList[${#stat.index}].proposedBE'
+								value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;</td>
 						</s:else>
 
 					</s:else>
 				</tr>
 
-			</s:iterator>
+			</c:forEach>
 
 		</tbody>
 

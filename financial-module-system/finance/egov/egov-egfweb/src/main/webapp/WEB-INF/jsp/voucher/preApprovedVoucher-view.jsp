@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -104,10 +106,10 @@
 </style>
 <script>
 	function openSource(){
-		if("<s:property value='%{voucherHeader.vouchermis.sourcePath}' escapeHtml='false'/>"=="" || "<s:property value='%{voucherHeader.vouchermis.sourcePath}'/>"=='null')
+		if("<!-- TODO: Manual migration required for custom Struts tag -->"=="" || "<!-- TODO: Manual migration required for custom Struts tag -->"=='null')
 			bootbox.alert('Source is not available');
 		else{
-			var url = '<s:property value="%{voucherHeader.vouchermis.sourcePath}" escapeHtml="false"/>'+'&showMode=view';
+			var url = '<!-- TODO: Manual migration required for custom Struts tag -->'+'&showMode=view';
 			window.open(url,'Source','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')
 		}   
 	}
@@ -123,12 +125,12 @@
 </head>
 
 <body onload="refreshInbox()">
-	<s:form action="preApprovedVoucher" theme="simple">
+	<form:form action="preApprovedVoucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Voucher-View" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew"><label name="head" style="align:center;">Urban Local Body</label></div>
@@ -173,7 +175,7 @@
 				</tr>
 
 
-				<s:iterator var="p" value="%{billDetails.tempList}" status="s">
+				<c:forEach var="p" value="%{billDetails.tempList}" status="s">
 					<tr>
 						<td width="18%" class="bluebox setborder" style="text-align: center"><s:property
 								value="function" /></td>
@@ -182,17 +184,17 @@
 						<td width="19%" class="bluebox setborder"><s:property
 								value="accounthead" /></td>
 						<td width="17%" class="bluebox setborder"
-							style="text-align: right"><s:text name="format.number">
-								<s:param value="%{debitamount}" />
+							style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:text></td>
 						<td width="16%" class="bluebox setborder"
-							style="text-align: right"><s:text name="format.number">
-								<s:param value="%{creditamount}" />
+							style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:text></td>
 						<c:set var="db" value="${db+debitamount}" />
 						<c:set var="cr" value="${cr+creditamount}" />
 					</tr>
-				</s:iterator>
+				</c:forEach>
 				<tr>
 					<td class="greybox setborder" style="text-align: right" colspan="3" />
 					<b>Total</b>
@@ -203,11 +205,11 @@
 							value="${cr}" pattern="#0.00" /></td>
 				</tr>
 			</table>
-			<s:hidden name="methodName" id="methodName" value="%{methodName}" />
-			<s:hidden name="actionName" id="actionName" value="%{actionName}" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<br />
-		<s:if test="%{billDetails.subLedgerlist.size()>0}">
+		<c:if test="%{billDetails.subLedgerlist.size()>0}">
 			<div align="center">
 				<br />
 				<table border="1" width="100%" cellspacing="0">
@@ -222,7 +224,7 @@
 						<th class="bluebgheadtd" width="19%">Detailed Key</th>
 						<th class="bluebgheadtd" width="17%">Amount(Rs)</th>
 					</tr>
-					<s:iterator var="p" value="%{billDetails.subLedgerlist}" status="s">
+					<c:forEach var="p" value="%{billDetails.subLedgerlist}" status="s">
 						<tr>
 							<td width="17%" class="bluebox setborder" style="text-align: center"><s:property
 									value="functionDetail" /></td>
@@ -233,70 +235,70 @@
 							<td width="17%" class="bluebox setborder"><s:property
 									value="detailKey" /></td>
 							<td width="16%" class="bluebox setborder"
-								style="text-align: right"><s:text name="format.number">
-									<s:param value="%{amount}" />
+								style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
 			</div>
-		</s:if>
+		</c:if>
 		<div id="wfHistoryDiv">
-			<s:if test="%{from=='Receipt'}">
-				<s:if test="%{receiptVoucher.state.id!=null}">
+			<c:if test="%{from=='Receipt'}">
+				<c:if test="%{receiptVoucher.state.id!=null}">
 					<jsp:include page="../workflow/workflowHistory.jsp" />
-				</s:if>
-			</s:if>
-			<s:if test="%{from=='Contra'}">
-				<s:if test="%{contraVoucher.state.id!=null}">
+				</c:if>
+			</c:if>
+			<c:if test="%{from=='Contra'}">
+				<c:if test="%{contraVoucher.state.id!=null}">
 					<jsp:include page="../workflow/workflowHistory.jsp" />
-				</s:if>
-			</s:if>
-			<s:if test="%{from=='Journal Voucher'}">
-				<s:if test="%{voucherHeader.state.id!=null}">
+				</c:if>
+			</c:if>
+			<c:if test="%{from=='Journal Voucher'}">
+				<c:if test="%{voucherHeader.state.id!=null}">
 					<jsp:include page="../workflow/workflowHistory.jsp" />
 
-				</s:if>
-			</s:if>
+				</c:if>
+			</c:if>
 		</div>
 		<div align="center" class="buttonbottom">
-			<s:if test="%{from=='Receipt'}">
-				<s:iterator value="%{getValidActions()}" var="p" status="s">
+			<c:if test="%{from=='Receipt'}">
+				<c:forEach value="%{getValidActions()}" var="p" status="s">
 					<s:submit type="submit" cssClass="buttonsubmit"
 						value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 						method="approve"
 						onclick="document.getElementById('actionName').value='%{name}';return true" />
-				</s:iterator>
-			</s:if>
-			<s:if test="%{from=='Contra'}">
-				<s:iterator value="%{getValidActions()}" var="p" status="s">
+				</c:forEach>
+			</c:if>
+			<c:if test="%{from=='Contra'}">
+				<c:forEach value="%{getValidActions()}" var="p" status="s">
 					<s:submit type="submit" cssClass="buttonsubmit"
 						value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 						method="approve"
 						onclick="document.getElementById('actionName').value='%{name}';return true" />
-				</s:iterator>
-			</s:if>
-			<s:if test="%{from=='Journal Voucher'}">
-				<s:iterator value="%{getValidActions('')}" var="p" status="s">
+				</c:forEach>
+			</c:if>
+			<c:if test="%{from=='Journal Voucher'}">
+				<c:forEach value="%{getValidActions('')}" var="p" status="s">
 					<s:submit type="submit" cssClass="buttonsubmit"
 						value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 						method="approve"
 						onclick="document.getElementById('actionName').value='%{name}';return true" />
-				</s:iterator>
-			</s:if>
+				</c:forEach>
+			</c:if>
 			<input name="button" type="button" class="buttonsubmit" id="button1"
 				value="Print" onclick="window.print()" />&nbsp; <input
 				type="button" id="button2" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-		<s:hidden id="vhid" name="vhid" value="%{voucherHeader.id}" />
-		<s:hidden id="id" name="id" value="%{voucherHeader.id}" />
-		<s:hidden id="contraId" name="contraId" value="%{contraVoucher.id}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 
 
 
-	</s:form>
+	</form:form>
 
 </body>
 

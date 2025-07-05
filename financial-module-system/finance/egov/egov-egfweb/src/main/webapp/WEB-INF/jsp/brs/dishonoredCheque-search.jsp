@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="dishonoredCheq.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <sj:head jqueryui="true" jquerytheme="redmond" loadAtOnce="true" />
 <script type="text/javascript" src="/services/EGF/resources/javascript/helper.js?rnd=${app_release_no}"></script>
 <script type="text/javascript">
@@ -161,13 +163,13 @@ function resetForm()
   </script>
 </head>
 <body>
-	<s:form name="dishonorForm" action="search" theme="css_xhtml"
+	<form:form name="dishonorForm" action="search" theme="css_xhtml"
 		validate="true">
 		<div style="color: green">
-			<s:actionmessage />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
 			<div class="errorstyle" style="display: none" id="errorDiv"></div>
@@ -175,15 +177,15 @@ function resetForm()
 		<div class="formmainbox">
 			<div class="formheading">
 				<div class="subheadnew">
-					<s:text name="dishonoredCheq.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 			</div>
 			<br />
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="dishnrChq.bankBranch.title" />:</td>
-					<td class="greybox"><s:select name="bankBranchId"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select path="bankBranchId"
 							id="bankBranchId" list="dropdownData.bankBranchList"
 							headerKey="-1" headerValue="---Choose---"
 							listKey="bank.id + '-' + id"
@@ -194,8 +196,8 @@ function resetForm()
 							url='brs/ajaxDishonored-populateAccountCodes.action'
 							selectedValue="%{bank.id + '-' + id}" /></td>
 
-					<td class="greybox"><s:text name="dishnrChq.account.title" />:</td>
-					<td class="greybox"><s:select headerKey="-1"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select headerKey="-1"
 							headerValue="---Choose---" name="accountCodes" id="accountCodes"
 							list="dropdownData.accountCodeList" listKey="id" listValue='name'
 							value="%{accountCodes}" /></td>
@@ -215,15 +217,15 @@ function resetForm()
 
 				<tr>
 					<td class="greybox"></td>
-					<td class="greybox"><s:text name="dishnrChq.chqDDNo.title" />:<span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="mandatory1">*</span></td>
-					<td class="greybox"><s:textfield name="chequeNo"
+					<td class="greybox"><form:input path="chequeNo"
 							style="width: 200px;" id="chequeNo" value="%{chequeNo}" /></td>
 
-					<td class="greybox"><s:text name="dishnrChq.chqDDDate.title" />:<span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="mandatory1">*</span></td>
 					<td class="greybox"><s:date name="chqDDDate" var="chqDDDate"
-							format="dd/MM/yyyy" /> <s:textfield name="chqDDDate"
+							format="dd/MM/yyyy" /> <form:input path="chqDDDate"
 							value="%{chqDDDate}" id="chqDDDate" cssClass="selectboldwk"
 							onfocus="javascript:vDateType='3';" maxlength="10"
 							disabled="%{fDisabled}"
@@ -250,7 +252,7 @@ function resetForm()
 			</table>
 		</div>
 
-		<s:if test="%{searchResult.fullListSize != 0}">
+		<c:if test="%{searchResult.fullListSize != 0}">
 			<table align="center">
 				<tr>
 					<td colspan="4">
@@ -316,7 +318,7 @@ function resetForm()
 											<display:column headerClass="bluebgheadtd"
 												class="blueborderfortd" title="Select"
 												style="width:3%;text-align:center">
-												<s:checkbox id="selectedCheque" name="selectedCheque" />
+												<form:checkbox id="selectedCheque" path="selectedCheque" />
 											</display:column>
 										</display:table></td>
 								</tr>
@@ -330,11 +332,11 @@ function resetForm()
 					id="dishonorButton" name="button"
 					onclick="return dishonorSelectedChq();" />
 			</div>
-		</s:if>
-		<s:elseif test="%{searchResult.fullListSize == 0}">
+		</c:if>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<font color="red">No record Found.</font>
 			</td>
 		</s:elseif>
-	</s:form>
+	</form:form>
 </body>
 </html>

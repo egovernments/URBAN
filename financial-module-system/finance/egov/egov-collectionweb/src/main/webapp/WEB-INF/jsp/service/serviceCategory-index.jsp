@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,7 +52,7 @@
 			  
 <html>  
 	<head>  
-		<title><s:text name="list.title.serviceCategory"/></title>  
+		<title><!-- TODO: Manual migration required for custom Struts tag --></title>  
 		<script>
 function onSubmit(obj){
 	document.forms[0].action=obj;
@@ -61,53 +63,53 @@ function onSubmit(obj){
 	</head>  
 
 	<body>  
-	<s:form action="serviceCategory" theme="simple" > 
-	  	<div class="subheadnew"><s:text name="serviceCategory.edit.title"/></div>
+	<form:form action="serviceCategory" theme="simple" > 
+	  	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 	  	<br/>
 	  	<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
 		        <tr>  
 		            <th class="bluebgheadtd" width="18%" style="display:none">ID</th>  
-		            <th class="bluebgheadtd" width="15%"><s:text name="masters.serviceCategory.servicCategoryeCode"/></th>
-					<th class="bluebgheadtd" width="15%"><s:text name="masters.serviceCategory.serviceCategoryName"/></th>
-				    <th class="bluebgheadtd" width="15%"><s:text name="masters.serviceCategory.serviceCategoryeEnabled" /></th>
-					<th class="bluebgheadtd" width="15%"><s:text name="masters.edit"/></th>
+		            <th class="bluebgheadtd" width="15%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd" width="15%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+				    <th class="bluebgheadtd" width="15%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd" width="15%"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				</tr>  
-				<s:iterator var="p" value="serviceCategoryList">  
+				<c:forEach var="p" value="serviceCategoryList">  
 	            <tr>  
-					<s:if test="code != null">								
+					<c:if test="code != null">								
 					<td class="blueborderfortd">
 					<div align="center">  
-					<s:property value="%{code}" /> 
+					${%{code}} 
 					</div>
 					</td>
-					</s:if>
+					</c:if>
 
-					<s:else>
+					<c:otherwise>
 					<td class="blueborderfortd">							
 					&nbsp;	
 					</td>
 					</s:else>
 			
-					<s:if test="name!= null">								
+					<c:if test="name!= null">								
 					<td class="blueborderfortd">
 					<div align="center">  
-					<s:property value="%{name}" /> 
+					${%{name}} 
 					</td>
 					</div>
-					</s:if>
+					</c:if>
 
 					<td class="blueborderfortd">
 						<div align="center">
-							<s:if test="isActive">
-								<s:text name="text.yes"></s:text>
-							</s:if>
-							<s:else>
-								<s:text name="text.no"></s:text>
+							<c:if test="isActive">
+								<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+							</c:if>
+							<c:otherwise>
+								<!-- TODO: Manual migration required for custom Struts tag --></s:text>
 							</s:else>
 						</div>
 					</td>
 
-					<s:else>
+					<c:otherwise>
 					<td class="blueborderfortd">							
 					&nbsp;	
 					</td>
@@ -115,16 +117,16 @@ function onSubmit(obj){
 						
 					<td class="blueborderfortd">
 					<div align="center">  
-   						<a href="serviceCategory-edit.action?code=<s:property value='%{code}'/>"><s:text name="masters.edit"/></a>  
+   						<a href="serviceCategory-edit.action?code=<!-- TODO: Manual migration required for custom Struts tag -->"><!-- TODO: Manual migration required for custom Struts tag --></a>  
    					</div>
 					</td>  
 	            </tr>  
-	        	</s:iterator> 
+	        	</c:forEach> 
 			</table> 
 				<div class="buttonbottom">
 			 		<input name="button2" type="submit" class="buttonsubmit" id="button" onclick="return onSubmit('serviceCategory-newform.action');" value="Add New"/>
 					<input name="button2" type="button" class="button" id="button" onclick="window.close()" value="Close"/>
 				</div>
-         </s:form>   
+         </form:form>   
 	</body>  
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,8 +51,8 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{chequeIssueRegisterList.size()>0}">
-<s:hidden name="voucherIdNumMap"></s:hidden>
+<c:if test="%{chequeIssueRegisterList.size()>0}">
+<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="bluebox">
@@ -59,16 +61,16 @@
 					<tr>
 						<td>
 							<div class="subheadsmallnew">
-								<span class="subheadnew"><s:property value="ulbName" /></span>
+								<span class="subheadnew">${ulbName}</span>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<th class="bluebgheadtd" width="100%"><strong
-							style="font-size: 15px;"><s:text name="lbl.cheque.issue.register.report" /> 
-								for <b><s:property value="formattedBankName" /></b> with <br />account
-								no:<b><s:property value="accountNumber.accountnumber" /></b>
-								from <b><s:property value="fromDate" /></b> to <b><s:property
+							style="font-size: 15px;"><!-- TODO: Manual migration required for custom Struts tag --> 
+								for <b>${formattedBankName}</b> with <br />account
+								no:<b>${accountNumber.accountnumber}</b>
+								from <b>${fromDate}</b> to <b><s:property
 										value="toDate" /></b>
 						</strong></th>
 					</tr>
@@ -91,57 +93,57 @@
 										<th class="bluebgheadtd" width="15%">Bank Payment Voucher
 											No. &amp; Date</th>
 										<th class="bluebgheadtd" width="15%">Bank Advice Report</th>
-										<s:if
+										<c:if
 											test="%{chequePrintingEnabled && chequePrintAvailableAt=='assignment'}">
 											<th class="bluebgheadtd" width="8%">Print Cheque</th>
-										</s:if>
+										</c:if>
 									</tr>
-									<s:iterator value="chequeIssueRegisterList" status="stat">
+									<c:forEach value="chequeIssueRegisterList" status="stat">
 										<tr>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="#stat.index+1" />
+													${#stat.index+1}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="chequeNumber" />
+													${chequeNumber}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><s:property
 													value="chequeDate" />&nbsp;</td>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="payTo" />
+													${payTo}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:text name="format.number">
-														<s:param name="value" value="chequeAmount" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text>
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="voucherName" />
+													${voucherName}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="chequeStatus" />
+													${chequeStatus}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="billNumberAndDate" />
+													${billNumberAndDate}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="center">
 													<a href="javascript:void(0);"
-														onclick='viewVoucher("<s:property value='chequeNumber'/>",<s:property value="voucherHeaderIdsForMultiple"/>);'><s:property
+														onclick='viewVoucher("<!-- TODO: Manual migration required for custom Struts tag -->",${voucherHeaderIdsForMultiple});'><s:property
 															value="voucherNumberAndDate" /></a>&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="center">
 													<a
-														href='/services/EGF/report/chequeIssueRegisterReport-bankAdviceExcel.action?instrumentHeaderId=<s:property value="instrumentHeaderId" />'>
-														<s:text name="instrument.chequeissueadvice" />
+														href='/services/EGF/report/chequeIssueRegisterReport-bankAdviceExcel.action?instrumentHeaderId=${instrumentHeaderId}'>
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</a>
 												</div></td>
-											<s:if
+											<c:if
 												test="%{chequePrintingEnabled && chequePrintAvailableAt=='assignment' && chequeStatus=='New'}">
 												<td class="blueborderfortd"><div align="center">
 														<input type="button" value="Print"
@@ -149,15 +151,15 @@
 						                           value="%{instrumentHeaderId}" />);"
 															class="button" />
 													</div></td>
-											</s:if>
-											<s:else>
+											</c:if>
+											<c:otherwise>
 												<td class="blueborderfortd"></td>
 											</s:else>
 										</tr>
-									</s:iterator>
+									</c:forEach>
 
 									<input type="hidden" name='chequeFormatId' id="chequeFormatId"
-										value="<s:property value="chequeFormat"/>" />
+										value="${chequeFormat}" />
 								</table>
 							</div>
 						</td>
@@ -166,10 +168,10 @@
 						<td>
 							<div class="excelpdf">
 								<a
-									href='/services/EGF/report/chequeIssueRegisterReport-generateXls.action?fromDate=<s:property value="fromDate"/>&toDate=<s:property value="toDate"/>&accountNumber.id=<s:property value="accountNumber.id"/>&deptImpl.code=<s:property value="deptImpl.code"/>&function.id=<s:property value="function.id"/>&functionary.id=<s:property value="functionary.id"/>&fund.id=<s:property value="fund.id"/>&field.id=<s:property value="field.id"/>&bank=<s:property value="bank"/>'>Excel</a>
+									href='/services/EGF/report/chequeIssueRegisterReport-generateXls.action?fromDate=${fromDate}&toDate=${toDate}&accountNumber.id=${accountNumber.id}&deptImpl.code=${deptImpl.code}&function.id=${function.id}&functionary.id=${functionary.id}&fund.id=${fund.id}&field.id=${field.id}&bank=${bank}'>Excel</a>
 								<img align="absmiddle"
 									src="/egi/resources/erp2/images/excel.png"> | <a
-									href='/services/EGF/report/chequeIssueRegisterReport-generatePdf.action?fromDate=<s:property value="fromDate"/>&toDate=<s:property value="toDate"/>&accountNumber.id=<s:property value="accountNumber.id"/>&deptImpl.code=<s:property value="deptImpl.code"/>&function.id=<s:property value="function.id"/>&functionary.id=<s:property value="functionary.id"/>&fund.id=<s:property value="fund.id"/>&field.id=<s:property value="field.id"/>&bank=<s:property value="bank"/>'>PDF</a>
+									href='/services/EGF/report/chequeIssueRegisterReport-generatePdf.action?fromDate=${fromDate}&toDate=${toDate}&accountNumber.id=${accountNumber.id}&deptImpl.code=${deptImpl.code}&function.id=${function.id}&functionary.id=${functionary.id}&fund.id=${fund.id}&field.id=${field.id}&bank=${bank}'>PDF</a>
 								<img align="absmiddle" src="/egi/resources/erp2/images/pdf.png">
 							</div>
 						</td>
@@ -179,7 +181,7 @@
 			</td>
 		</tr>
 	</table>
-</s:if>
-<s:else>
+</c:if>
+<c:otherwise>
 	<h5 style="color: red">No Data Found.</h5>
 </s:else>

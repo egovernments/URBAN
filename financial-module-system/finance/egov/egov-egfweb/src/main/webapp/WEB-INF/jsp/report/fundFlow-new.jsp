@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,22 +56,22 @@
 <head>
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/fundFlow.js?rnd=${app_release_no}"></script>
-<title><s:text name="fundflowreport" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 
 <script type="text/javascript">
     function onloadFundFlow()
     {
     //bootbox.alert("onload");
-	<s:if test="receiptList!=null && receiptList.size()>0">
-	var alertMsg='<s:text name="lastReportGenDateAlert"/>'+'  '+'<s:property value="openignBalanceCalculatedDate"/>';    
+	<c:if test="receiptList!=null && receiptList.size()>0">
+	var alertMsg='<!-- TODO: Manual migration required for custom Struts tag -->'+'  '+'${openignBalanceCalculatedDate}';    
 	bootbox.alert(alertMsg);
     calculateFunds(document.getElementById('receiptList[0].openingBalance'));
     //bootbox.alert("onload2");
-    </s:if>
-    <s:if test="paymentList!=null && paymentList.size()>0">
+    </c:if>
+    <c:if test="paymentList!=null && paymentList.size()>0">
     calculateFundsForPayment(document.getElementById('paymentList[0].openingBalance'));
-    </s:if>
+    </c:if>
     }
     function validateFundFlow()
     {
@@ -88,7 +90,7 @@
     }
 function   alertTheMessage()
     {
-    var alrtmsg='<s:text name="fundflow.recalculate.alert"/>';
+    var alrtmsg='<!-- TODO: Manual migration required for custom Struts tag -->';
    	return confirm(alrtmsg);
     
  }
@@ -99,23 +101,23 @@ function   alertTheMessage()
 </head>
 <body onload="onloadFundFlow()">
 	<div class="subheadnew">Fund Flow Analysis Report</div>
-	<s:form name="fundFlowReport" action="fundFlow" theme="simple">
-		<s:token />
+	<form:form name="fundFlowReport" action="fundFlow" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<%@include file="fundFlow-form.jsp"%>
 
-		<s:if
+		<c:if
 			test="(receiptList!=null && receiptList.size()>0) ||( paymentList!=null && paymentList.size()>0) ">
 
 
 			<div class="buttonbottom">
-				<s:submit value="Save" method="create" cssClass="buttonsubmit" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:reset name="button" type="submit" cssClass="button" id="button"
 					value="Cancel" />
 				<s:submit value="Close" onclick="javascript: self.close()"
 					cssClass="button" />
 			</div>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 </body>
 </html>
 

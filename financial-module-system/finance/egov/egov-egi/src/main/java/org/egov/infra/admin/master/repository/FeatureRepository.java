@@ -48,7 +48,7 @@
 
 package org.egov.infra.admin.master.repository;
 
-import org.egov.infra.admin.master.entity.Action;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.admin.master.entity.Action;
 import org.egov.infra.admin.master.entity.Feature;
 import org.egov.infra.admin.master.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -60,7 +60,7 @@ import java.util.List;
 @Repository
 public interface FeatureRepository extends JpaRepository<Feature, Long>, RevisionRepository<Feature, Long, Integer> {
 
-    Long countByRolesInAndActionsIn(Role role, Action action);
+// TODO: Migrate from Struts/XWork:     Long countByRolesInAndActionsIn(Role role, Action action);
 
     List<Feature> findByModuleIdAndEnabledIsTrueOrderByNameAsc(Long moduleId);
 

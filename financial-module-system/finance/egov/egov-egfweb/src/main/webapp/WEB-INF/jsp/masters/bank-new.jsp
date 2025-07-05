@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,7 +57,7 @@
 <html>
 <head>
 
-<title><s:text name="bank.create.new" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <SCRIPT type="text/javascript">
     function checkuniquenesscode(){
     	document.getElementById('codeuniquecode').style.display ='none';
@@ -73,32 +75,32 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="bank.create" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: green">
-			<s:actionmessage theme="simple" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div class="errorstyle" style="display: none" id="codeuniquecode">
-			<s:text name="bank.code.already.exists" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div class="errorstyle" style="display: none" id="nameuniquename">
-			<s:text name="bank.name.already.exists" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
-		<s:form name="bankForm" action="bank" theme="simple">
-			<s:token />
-			<s:push value="model">
-				<s:hidden id="id" name="id" />
+		<form:form name="bankForm" action="bank" theme="simple">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="bluebox" width="10%"></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.create.name" /><span class="mandatory1">*</span></td>
-						<td class="bluebox" width="46%"><s:textfield id="name"
+						<td class="bluebox" width="46%"><form:input id="name"
 								name="name" onblur="checkuniquenessname();" /></td>
 						<egov:uniquecheck id="nameuniquename" name="nameuniquename"
 							fieldtoreset="name" fields="['Value']"
@@ -108,14 +110,14 @@
 						<td class="greybox" width="10%"></td>
 						<td class="greybox" width="10%"><s:text
 								name="bank.create.code" /><span class="mandatory1">*</span></td>
-						<td class="greybox" width="30%" colspan=8><s:textfield
+						<td class="greybox" width="30%" colspan=8><form:input
 								id="code" name="code" onblur="checkuniquenesscode();" /></td>
 						<egov:uniquecheck id="codeuniquecode" name="codeuniquecode"
 							fieldtoreset="code" fields="['Value']"
 							url='masters/bank!codeUniqueCheckCode.action' />
 						<td class="greybox" width="2%"><s:text
 								name="bank.create.isactive" /></td>
-						<td class="greybox"><s:checkbox id="isactive" name="isactive" />
+						<td class="greybox"><form:checkbox id="isactive" path="isactive" />
 						</td>
 					</tr>
 
@@ -125,7 +127,7 @@
 						<td class="bluebox" width="10%"></td>
 						<td class="bluebox" width="10%"><s:text
 								name="bank.create.remarks" /></td>
-						<td class="bluebox"><s:textarea id="narration"
+						<td class="bluebox"><form:textarea id="narration"
 								name="narration" style="width:470px" /></td>
 					</tr>
 
@@ -139,6 +141,6 @@
 						onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 				</div>
 			</s:push>
-		</s:form>
+		</form:form>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -57,14 +59,14 @@
 		<tr>
 			<td class="greybox" id="deptLabel">Approver Department<span
 				class="mandatory">*</span></td>
-			<td class="greybox"><s:select name="departmentid"
+			<td class="greybox"><form:select path="departmentid"
 					id="departmentid" list="dropdownData.departmentList" listKey="id"
 					listValue="name" headerKey="-1" headerValue="----Choose----"
 					value="%{departmentId}" onchange="populateDesg()" /></td>
 			<egov:ajaxdropdown id="designationId" fields="['Text','Value']"
 				dropdownId="designationId" url="voucher/common!ajaxLoadDesg.action" />
 			<td class="greybox">Approver Designation<span class="mandatory">*</span></td>
-			<td class="greybox"><s:select name="designationId"
+			<td class="greybox"><form:select path="designationId"
 					id="designationId" list="dropdownData.designationList"
 					listKey="designationId" listValue="designationName" headerKey="-1"
 					headerValue="----Choose----" value="designationId"
@@ -75,14 +77,14 @@
 			<egov:ajaxdropdown id="approverUserId" fields="['Text','Value']"
 				dropdownId="approverUserId" url="voucher/common!ajaxLoadUser.action" />
 			<td class="bluebox" width="13%">Approver<span class="mandatory">*</span></td>
-			<td class="bluebox" width="33%"><s:select id="approverUserId"
+			<td class="bluebox" width="33%"><form:select id="approverUserId"
 					name="approverUserId" list="dropdownData.userList" headerKey="-1"
 					headerValue="----Choose----" listKey="id" listValue="userName"
 					value="id" /></td>
 
 		</tr>
 	</table>
-	<s:hidden name="type" id="type"></s:hidden>
+	<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 
 </div>
 <script>
@@ -114,12 +116,12 @@ function populateUser(){
 function validateUser(name,value){
 	document.getElementById("actionName").value= name;
 	document.getElementById('lblError').innerHTML ="";
-<s:if test="%{wfitemstate !='END'}">
+<c:if test="%{wfitemstate !='END'}">
 	 if( (value == 'Approve' || value=='Send for Approval' || value == 'Save & Forward' || value == 'Forward') && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 		document.getElementById('lblError').innerHTML ="Please Select the user";
 		return false;
 	}
-</s:if>
+</c:if>
 	return true;
 }
 

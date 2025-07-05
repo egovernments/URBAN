@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -128,41 +130,41 @@ return true;
 	</jsp:include>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="scheme.utilization.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 	</div>
 	<div style="color: red" id="errors">
-		<s:actionmessage theme="simple" />
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<s:form name="schemeUtilizationReport" action="schemeUtilizationReport"
+	<form:form name="schemeUtilizationReport" action="schemeUtilizationReport"
 		theme="simple">
 		<table align="center" width="100%" cellpadding="0" cellspacing="0">
 			<tr>
-				<td class="bluebox"><s:text name="voucher.fund" /> <s:if
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 						test="%{defaultFundId==-1}">
 						<span class="mandatory">*</span>
-					</s:if></td>
-				<td class="bluebox"><s:select name="fundId" id="fundId"
+					</c:if></td>
+				<td class="bluebox"><form:select path="fundId" id="fundId"
 						list="dropdownData.fundList" listKey="id" listValue="name"
 						headerKey="-1" headerValue="----Choose----" value="%{fundId.id}" /></td>
-				<s:if test="%{defaultFundId!=-1}">
+				<c:if test="%{defaultFundId!=-1}">
 					<script>
-		document.getElementById("fundId").value='<s:property value="defaultFundId"/>';
+		document.getElementById("fundId").value='${defaultFundId}';
 		</script>
-				</s:if>
+				</c:if>
 			</tr>
 			<tr>
-				<td class="greybox"><s:text name="voucher.scheme" /> <span
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 					class="mandatory">*</span></td>
-				<s:hidden name="schemeId" id="schemeId" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<td class="greybox"><input type="text"
 					name="subScheme.scheme.name" id="subScheme.scheme.name"
 					autocomplete="off" onFocus="autocompleteSchemeBy20(this);"
 					onBlur="splitSchemeCode(this)" /></td>
-				<td class="greybox"><s:text name="voucher.subscheme" /></td>
-				<s:hidden name="subSchemeId" id="subSchemeId" />
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<td class="greybox"><input type="text" name="subScheme.name"
 					id="subScheme.name" autocomplete="off"
 					onFocus="autocompleteSubSchemeBy20(this);"
@@ -170,16 +172,16 @@ return true;
 			</tr>
 
 			<tr>
-				<td class="bluebox"><s:text name="voucher.fromdate" /></td>
-				<td class="bluebox"><s:textfield name="fromDate" id="fromDate"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:input path="fromDate" id="fromDate"
 						maxlength="20" value="%{fromDate}" /> <a
 					href="javascript:show_calendar('forms[0].fromDate');"
 					style="text-decoration: none">&nbsp;<img
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0"
 						alt="" />
 				</a> <br /> (dd/mm/yyyy)</td>
-				<td class="bluebox"><s:text name="voucher.todate" /></td>
-				<td class="bluebox"><s:textfield name="toDate" id="toDate"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:input path="toDate" id="toDate"
 						maxlength="20" value="%{toDate}" /> <a
 					href="javascript:show_calendar('forms[0].toDate');"
 					style="text-decoration: none">&nbsp; <img
@@ -220,7 +222,7 @@ return true;
 					onclick="javascript:window.close()" class="button" /></td>
 			</tr>
 		</table>
-	</s:form>
+	</form:form>
 
 </body>
 </html>

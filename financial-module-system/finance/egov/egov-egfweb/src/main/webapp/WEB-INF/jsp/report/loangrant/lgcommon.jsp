@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,32 +52,32 @@
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <%@ taglib prefix="egov" tagdir="/WEB-INF/tags"%>
 <tr>
-	<td class="bluebox"><s:text name="masters.subscheme.search.fund" />
-		<s:if test="%{defaultFundId==-1}">
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+		<c:if test="%{defaultFundId==-1}">
 			<span class="mandatory">*</span>
-		</s:if></td>
-	<td class="bluebox"><s:select name="fundId" id="fundId"
+		</c:if></td>
+	<td class="bluebox"><form:select path="fundId" id="fundId"
 			list="dropdownData.fundList" listKey="id" listValue="name"
 			headerKey="-1" headerValue="----Choose----"
 			onchange="loadChanges(this)" value="%{fundId.id}" /></td>
-	<s:if test="%{defaultFundId!=-1}">
+	<c:if test="%{defaultFundId!=-1}">
 		<script>
-		document.getElementById("fundId").value='<s:property value="defaultFundId"/>';
+		document.getElementById("fundId").value='${defaultFundId}';
 		</script>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
-	<td class="greybox"><s:text name="masters.subscheme.search.scheme" /><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="mandatory">*</span></td>
-	<s:hidden name="schemeId" id="schemeId" />
-	<td class="greybox"><s:textfield value="%{subScheme.scheme.name}"
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<td class="greybox"><form:input value="%{subScheme.scheme.name}"
 			name="subScheme.scheme.name" id="subScheme.scheme.name"
 			autocomplete='off' onFocus="autocompleteSchemeBy20LG();"
 			onBlur="splitSchemeCode(this)" /></td>
-	<td class="greybox"><s:text name="masters.subscheme.search" /><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="mandatory">*</span></td>
-	<s:hidden name="subSchemeId" id="subSchemeId" />
-	<td class="greybox"><s:textfield value="%{subScheme.name}"
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<td class="greybox"><form:input value="%{subScheme.name}"
 			name="subScheme.name" id="subScheme.name" autocomplete='off'
 			onFocus="autocompleteSubSchemeBy20LG();"
 			onBlur="splitSubSchemeCode(this);checkuniquenesscode();" /> <egov:uniquecheck

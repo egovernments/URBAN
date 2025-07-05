@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -76,22 +78,22 @@
 </STYLE>
 <script>
     function onLoadTask(){
-	    showMessage = '<s:property value="showMessage"/>';
-		if(showMessage == 'true' && '<s:property value="getActionMessage()"/>' != ''){
-			bootbox.alert('<s:property value="getActionMessage()"/>');
+	    showMessage = '${showMessage}';
+		if(showMessage == 'true' && '${getActionMessage()}' != ''){
+			bootbox.alert('${getActionMessage()}');
 			document.getElementById('budgetDetail_executingDepartment').value=-1;
 		var functionid="";
-		<s:if test="%{function.id!=0}">
+		<c:if test="%{function.id!=0}">
 		
-			functionid='<s:property value="function.id"/>';
-		</s:if>
+			functionid='${function.id}';
+		</c:if>
 		document.forms[0].action = "${pageContext.request.contextPath}/budget/budgetProposalDetail-newRe.action?re";
 		document.forms[0].submit();
 		}
 		defaultDept();
-		 <s:if test="%{referenceBudget != null}">
-			/*  document.getElementById('referenceBudget').value = '<s:property value="referenceBudget.name"/>';  */
-		</s:if> 
+		 <c:if test="%{referenceBudget != null}">
+			/*  document.getElementById('referenceBudget').value = '${referenceBudget.name}';  */
+		</c:if> 
 		//bootbox.alert(dom.get("testId"));
 			//bootbox.alert(document.getElementById("testId"));
 			//bootbox.alert('Financial yr --- '+document.getElementById("budgetDetail_budget").value+' ----- '+document.getElementById("financialYear").value);
@@ -151,13 +153,13 @@
 	}
 	}
 		
-	<s:if test="%{showDetails}">
+	<c:if test="%{showDetails}">
 	var temp = window.setInterval(load,1);
 	function load()
 	{
 		try{document.getElementById('tabber1').onclick(); window.clearInterval(temp);}catch(e){}
 	}
-    </s:if>
+    </c:if>
     	
 	function updateApproverDepartment(obj){
 		//document.getElementById('approverDepartment').value = document.getElementById('budgetDetail_executingDepartment').value;
@@ -226,7 +228,7 @@
 	function validateForApproval()
 	{
 
-	/*var con=confirm('<s:text name="budgetdetail.alert.sending.entitre.budget"/>');
+	/*var con=confirm('<!-- TODO: Manual migration required for custom Struts tag -->');
     if(con==false)
 	return false;*/
     	if(null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
@@ -252,7 +254,7 @@
 			bootbox.alert("Select Financial Year");
 			result=false;
 		}
-		 else if('<s:property value="budgetDetail.budget.financialYear.id"/>'==''){
+		 else if('${budgetDetail.budget.financialYear.id}'==''){
 			document.getElementById('hidden_year').value = document.getElementById('financialYear').value;
 		} 
 		
@@ -263,7 +265,7 @@
 			result=false;
 		}
 		
-		 /* else if('<s:property value="budgetDetail.budget.id"/>'==''){
+		 /* else if('${budgetDetail.budget.id}'==''){
 			document.getElementById('hidden_budget').value = document.getElementById('budgetDetail_budget').value;
 			
 		}  */
@@ -275,7 +277,7 @@
 		
 		}
 		
-		//bootbox.alert('<s:property value="function.id"/>');
+		//bootbox.alert('${function.id}');
 		/* if(document.getElementById('budgetDetail_filtered_function').value==0 )
 		{
 			bootbox.alert("Select Function");
@@ -289,13 +291,13 @@
 		return result;
 	}
 	/* if(document.getElementById('hidden_budget')!=null)
-		 document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>' */ 
+		 document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}' */ 
 	     
 			 
 	</script>
 </head>
 <body>
-	<s:form name="budgetDetailForm" action="budgetProposalDetail"
+	<form:form name="budgetDetailForm" action="budgetProposalDetail"
 		theme="simple" >
 		<div align="left">
 			<br />
@@ -311,14 +313,14 @@
 							<div class="formmainbox">
 								<div class="subheadnew">Create budget proposal</div>
 								<div align="center" style="color: red;">
-									<s:actionmessage theme="simple" />
-									<s:actionerror />
-									<s:fielderror />
+									<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</div>
 								<%@ include file='budgetProposalDetail-form.jsp'%>
-								<s:hidden name="budgetDocumentNumber" id="budgetDocNumber" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								
-								<input type="hidden" id="re" value='<s:property value="re"/>' />
+								<input type="hidden" id="re" value='${re}' />
 								<table width="100%" border="0" cellspacing="0" cellpadding="0"
 									id="budgetDetailFormTable">
 									<tr>
@@ -330,17 +332,17 @@
 												name="budgetdetail.budget.asOnDate" /></td>
 										<td class="bluebox" width="20%"><input type="text"
 											id="asOnDate" name="asOnDate" style="width: 100px"
-											value='<s:date name="asOnDate" format="dd/MM/yyyy"/>'
+											value='<!-- TODO: Manual migration required for custom Struts tag -->'
 											onkeyup="DateFormat(this,this.value,event,false,'3')" readonly /><a tabindex="-1"
 								href="javascript:show_calendar('budget.asOnDate');"
 								style="text-decoration: none">&nbsp;(dd/mm/yyyy)
 										</td>
-										<td width="15%" class="bluebox"><s:text name="function" /></td>
+										<td width="15%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 										<egov:ajaxdropdown id="function_filtered"
 											fields="['Text','Value']"
 											dropdownId="budgetDetail_filtered_function"
 											url="budget/budgetProposalDetail-ajaxLoadFunctions.action" />
-										<td class="bluebox"><s:select name="function.id"
+										<td class="bluebox"><form:select path="function.id"
 												id="budgetDetail_filtered_function" list="%{functionList}"
 												value="function.id" listKey="id" listValue="name"
 												headerValue="---Select---" headerKey="0" /></td>
@@ -353,7 +355,7 @@
 											fields="['Text','Value']"
 											dropdownId="budgetDetail_filtered_budgetGroup"
 											url="budget/budgetProposalDetail-ajaxLoadBudgetGroups.action" />
-										<td class="bluebox" colspan="3"><s:select
+										<td class="bluebox" colspan="3"><form:select
 												name="budgetGroup.id" id="budgetDetail_filtered_budgetGroup"
 												list="%{budgetGroupList}" listKey="id" listValue="name"
 												headerValue="---Select---" headerKey="0" /></td>
@@ -390,17 +392,17 @@
 								addGridRows();
 								hideColumns();
 								updateAllGridValues()
-								<s:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
+								<c:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
 									setValues();
-								</s:if>
+								</c:if>
 							</script> <br /> <br /> 
-						<s:hidden name="financialYear.id" id="hidden_year" />
-                       <%--  <s:hidden name="budget.id" id="hidden_budget" /> --%>
-                       <%--  <s:hidden name="function.id" id="hidden_function"/> --%>
+						<!-- TODO: Manual migration required for custom Struts tag -->
+                       <%--  <!-- TODO: Manual migration required for custom Struts tag --> --%>
+                       <%--  <!-- TODO: Manual migration required for custom Struts tag --> --%>
                         
                         
 						<div id="savedDataGrid"></div> <script>
-								document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>'
+								document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}'
 								</script>
 					</span>
 				</div>
@@ -421,17 +423,17 @@
 		</div>
 		<div class="buttonbottom"
 			style="padding-bottom: 10px; position: relative">
-			<s:hidden id="workFlowAction" name="workFlowAction" />
-			<s:hidden name="actionName" value="forward" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<table style="width: 100%; text-align: center;">
 		<tr>
-			<td><s:iterator value="%{getValidActions()}" var="validAction">
-					<s:if test="%{validAction!=''}">
+			<td><c:forEach value="%{getValidActions()}" var="validAction">
+					<c:if test="%{validAction!=''}">
 						<s:submit type="submit" cssClass="buttonsubmit"
 							value="%{validAction}" id="%{validAction}" name="%{validAction}"
 							onclick="return validateWorkFlowApprover('%{validAction}','jsValidationErrors');" />
-					</s:if>
-				</s:iterator> <input type="button" name="button2" id="button2" value="Close"
+					</c:if>
+				</c:forEach> <input type="button" name="button2" id="button2" value="Close"
 				class="button" onclick="window.close();" /></td>
 		</tr>
 	</table>
@@ -449,7 +451,7 @@
 		</div>
 
 
-	</s:form>
+	</form:form>
 
 </body>
 </html>

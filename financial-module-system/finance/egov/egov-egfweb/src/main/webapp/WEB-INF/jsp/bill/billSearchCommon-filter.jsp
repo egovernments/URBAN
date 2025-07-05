@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,94 +53,94 @@
 <%@ page language="java"%>
 <tr>
 	<td class="bluebox">&nbsp;</td>
-	<s:if test="%{shouldShowHeaderField('fund')}">
-		<td class="bluebox"><s:text name="bill.search.fund" /> <s:if
+	<c:if test="%{shouldShowHeaderField('fund')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fund')}">
 				<span class="mandatory1" id="fundDateMandatory">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="egBillregistermis.fund"
+			</c:if></td>
+		<td class="bluebox"><form:select path="egBillregistermis.fund"
 				id="fundId" list="dropdownData.fundList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.fund.id}"
 				onChange="populateSchemes(this);" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('fundsource')}">
-		<td class="bluebox"><s:text name="bill.search..fundsource" /> <s:if
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('fundsource')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fundsource')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="egBillregistermis.fundsource"
+			</c:if></td>
+		<td class="bluebox"><form:select path="egBillregistermis.fundsource"
 				id="fundsourceId" list="dropdownData.fundsourceList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.fundsource.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="bluebox">&nbsp;</td>
-	<s:if test="%{shouldShowHeaderField('scheme')}">
+	<c:if test="%{shouldShowHeaderField('scheme')}">
 		<egov:ajaxdropdown id="schemeid" fields="['Text','Value']"
 			dropdownId="schemeid" url="voucher/common!ajaxLoadSchemes.action" />
-		<td class="greybox"><s:text name="bill.search..scheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('scheme')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="egBillregistermis.scheme"
+			</c:if></td>
+		<td class="greybox"><form:select path="egBillregistermis.scheme"
 				id="schemeid" list="dropdownData.schemeList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.scheme.id}"
 				onChange="populatesubSchemes(this)" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('subscheme')}">
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('subscheme')}">
 		<egov:ajaxdropdown id="subschemeid" fields="['Text','Value']"
 			dropdownId="subschemeid"
 			url="voucher/common!ajaxLoadSubSchemes.action" />
-		<td class="greybox"><s:text name="bill.search..subscheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('subscheme')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="egBillregistermis.subScheme"
+			</c:if></td>
+		<td class="greybox"><form:select path="egBillregistermis.subScheme"
 				id="subschemeid" list="dropdownData.subschemeList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.subScheme.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="bluebox">&nbsp;</td>
-	<s:if test="%{shouldShowHeaderField('functionary')}">
-		<td class="bluebox"><s:text name="bill.search.functionary" /> <s:if
+	<c:if test="%{shouldShowHeaderField('functionary')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('functionary')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select
+			</c:if></td>
+		<td class="bluebox"><form:select
 				name="egBillregistermis.functionaryid" id="functionaryId"
 				list="dropdownData.functionaryList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.subScheme.id}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('department')}">
-		<td class="bluebox"><s:text name="bill.search.dept" /> <s:if
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('department')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('department')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select
+			</c:if></td>
+		<td class="bluebox"><form:select
 				name="egBillregistermis.departmentcode" id="departmentcode"
 				list="dropdownData.departmentList" listKey="code" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.departmentcode}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="bluebox">&nbsp;</td>
-	<s:if test="%{shouldShowHeaderField('field')}">
-		<td class="greybox"><s:text name="bill.search..field" /> <s:if
+	<c:if test="%{shouldShowHeaderField('field')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('field')}">
 				<span class="mandatory1">*</span>
-			</s:if><br> <br></td>
-		<td class="greybox"><s:select name="egBillregistermis.fieldid"
+			</c:if><br> <br></td>
+		<td class="greybox"><form:select path="egBillregistermis.fieldid"
 				id="divisionid" list="dropdownData.fieldList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{egBillregistermis.fieldid.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <script>
 	function populateSchemes(fund) {

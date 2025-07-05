@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="scheme.create.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <SCRIPT type="text/javascript">
     function checkuniquenesscode(){
     	document.getElementById('codeuniquecode').style.display ='none';
@@ -72,11 +74,11 @@
     		return false;
             }
         if(!validateDate(document.getElementById('validfromId').value)){
-			bootbox.alert("<s:text name='msg.start.date.is.greater.than.current.date'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
         if (compareDate(document.getElementById('validfromId').value,document.getElementById('validtoId').value) == -1){
-            bootbox.alert("<s:text name='msg.start.date.should.be.less.than.end.date'/>");
+            bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
             undoLoadingMask();
             document.getElementById('validtoId').value = "";
             return false;
@@ -131,50 +133,50 @@
     </SCRIPT>
 </head>
 <body>
-	<s:form name="schemeForm" action="scheme" theme="css_xhtml"
+	<form:form name="schemeForm" action="scheme" theme="css_xhtml"
 		validate="true">
 		<div class="formmainbox">
 			<div class="subheadnew">
-			<s:if test="%{mode=='edit'}">
-				<s:text name="scheme.searchmodify.title" />
-				</s:if>
-				<s:else>
-				<s:text name="scheme.create.title" />
+			<c:if test="%{mode=='edit'}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				</c:if>
+				<c:otherwise>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				</s:else>
 			</div>
-			<s:token />
-			<s:hidden name="mode" id="mode" value="%{mode}" />
-			<s:hidden name="schemeId" id="schemeId" value="%{schemeId}" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div style="color: red">
-				<s:actionerror />
-				<s:fielderror />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: green">
-				<s:actionmessage />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: red">
 			<div  class="errorstyle" style="display: none" id="codeuniquecode" >
-				<s:text name="scheme.code.already.exists" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div class="errorstyle" style="display: none" id="uniquename" >
-				<s:text name="scheme.name.already.exists" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			</div>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td style="width: 10%"></td>
-					<td class="greybox" width="10%"><s:text name="scheme.code" /><span
+					<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1"> *</span></td>
-					<td class="greybox" width="30%"><s:textfield id="code"
+					<td class="greybox" width="30%"><form:input id="code"
 							name="code" value="%{scheme.code}"
 							onblur="checkuniquenesscode();" /></td>
 					<egov:uniquecheck id="codeuniquecode" name="codeuniquecode"
 						fieldtoreset="code" fields="['Value']"
 						url='masters/scheme-codeUniqueCheck.action' />
 
-					<td class="greybox" width="10%"><s:text name="scheme.name" /><span
+					<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1"> *</span></td>
-					<td class="greybox" width="30%"><s:textfield id="name"
+					<td class="greybox" width="30%"><form:input id="name"
 							name="name" value="%{scheme.name}"
 							onblur="checkuniquenessname();" /></td>
 					<egov:uniquecheck id="uniquename" name="uniquename"
@@ -183,31 +185,31 @@
 				</tr>
 				<tr>
 					<td style="width: 10%"></td>
-					<td class="bluebox"><s:text name="scheme.fund" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1"> *</span></td>
-					<td class="bluebox"><s:select name="fund" id="fundId"
+					<td class="bluebox"><form:select path="fund" id="fundId"
 							list="dropdownData.fundDropDownList" listKey="id"
 							listValue="name" headerKey="" headerValue="%{getText('lbl.choose.options')}"
 							value="scheme.fund.id" /></td>
 					<td class="bluebox">Active</td>
-					<td class="bluebox"><s:checkbox id="isactive" name="isactive"
+					<td class="bluebox"><form:checkbox id="isactive" path="isactive"
 							value="%{scheme.isactive}" /></td>
 				</tr>
 				<tr>
 					<td style="width: 10%"></td>
-					<td class="greybox"><s:text name="scheme.startDate" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1"> *</span></td>
 					<td class="greybox"><s:date name="scheme.validfrom" var="validfromId" 
-							format="dd/MM/yyyy" /> <s:textfield id="validfromId"
+							format="dd/MM/yyyy" /> <form:input id="validfromId"
 							name="validfrom" value="%{validfromId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
 
-					<td class="greybox"><s:text name="scheme.endDate" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory1"> *</span></td>
 					<td class="greybox"><s:date name="scheme.validto" var="validtoId"
-							format="dd/MM/yyyy" /> <s:textfield id="validtoId"
+							format="dd/MM/yyyy" /> <form:input id="validtoId"
 							name="validto" value="%{validtoId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -217,7 +219,7 @@
 					<td style="width: 10%"></td>
 					<td class="bluebox" width="10%"><s:text
 							name="scheme.description" /></td>
-					<td class="bluebox" colspan="3"><s:textarea id="description"
+					<td class="bluebox" colspan="3"><form:textarea id="description"
 							name="description" value="%{scheme.description}"
 							style="width:470px" /></td>
 				</tr>
@@ -227,30 +229,30 @@
 		<div class="buttonbottom">
 			<table align="center">
 				<tr class="buttonbottom" id="buttondiv" style="align: middle">
-					<s:if test="%{mode=='new'}">
-						<td><input type="submit" class="buttonsubmit" value="<s:text name='lbl.save'/>"
+					<c:if test="%{mode=='new'}">
+						<td><input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							id="saveButton" name="button"
 							onclick="return validateFormAndSubmit();" />&nbsp;</td>
-						<td><input type="reset" class="button" value="<s:text name='lbl.reset'/>"
+						<td><input type="reset" class="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							 name="button" onclick="return resetForm();" />&nbsp;</td>
-						<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+						<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.parent.postMessage('close','*');window.close()" class="button" />&nbsp;</td>
-					</s:if>
-					<s:elseif test="%{mode=='edit'}">
-						<td><input type="submit" class="buttonsubmit" value="<s:text name='lbl.modify'/>"
+					</c:if>
+					<!-- TODO: Manual migration required for custom Struts tag -->
+						<td><input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							id="Modify" name="button"
 							onclick="return validateFormAndSubmit();" />&nbsp;</td>
-						<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+						<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />&nbsp;</td>
 					</s:elseif>
-					<s:else>
-						<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+					<c:otherwise>
+						<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />&nbsp;</td>
 					</s:else>
 
 				</tr>
 			</table>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

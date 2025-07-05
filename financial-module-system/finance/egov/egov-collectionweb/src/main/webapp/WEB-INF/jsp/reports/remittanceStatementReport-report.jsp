@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 
 <%--
@@ -53,14 +55,14 @@
 <title>Bank Remittance Statement</title>
 </head>
 <body>
-<s:form theme="simple" name="displayReportForm">
-	<s:if test="%{hasErrors()}">
-		<div class="errorstyle"><s:actionerror /> <s:fielderror /></div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
-		<div class="messagestyle"><s:actionmessage theme="simple" /></div>
-	</s:if>
-	<iframe src="../reportViewer?reportId=<s:property value='reportId'/>" width="98%"
+<form:form theme="simple" name="displayReportForm">
+	<c:if test="%{hasErrors()}">
+		<div class="errorstyle"><!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
+		<div class="messagestyle"><!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<iframe src="../reportViewer?reportId=<!-- TODO: Manual migration required for custom Struts tag -->" width="98%"
 		height="70%">
 	<p>Your browser does not support iframes.</p>
 	</iframe>
@@ -69,6 +71,6 @@
 	<input name="collectionReport.close" type="button" class="button"
 		id="buttonClose" value="Close" onclick="window.close()" /> &nbsp;
 	</div>
-</s:form>
+</form:form>
 </body>
 </html>

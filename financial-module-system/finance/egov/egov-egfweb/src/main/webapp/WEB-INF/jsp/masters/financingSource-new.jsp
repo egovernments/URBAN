@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -79,13 +81,13 @@
 		<jsp:param name="heading" value="Financial Source Create" />
 	</jsp:include>
 	<span class="mandatory"> <font
-		style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
+		style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 	</font>
 	</span>
-	<s:if test="hasActionMessages()">
-		<font style='color: green; font-weight: bold'> <s:actionmessage />
+	<c:if test="hasActionMessages()">
+		<font style='color: green; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag -->
 		</font>
-	</s:if>
+	</c:if>
 
 	<div class="formheading" />
 	<div class="subheadnew">Financial Source</div>
@@ -112,7 +114,7 @@
 				name="masters.finsrc.code.already.exists" />
 	</font>
 	</span>
-	<s:form theme="simple" name="finsrcheaderform">
+	<form:form theme="simple" name="finsrcheaderform">
 		<table border="0" width="100%">
 			<tr class="greybox">
 				<td class="bluebox"><s:radio name="subschmselectionOpt"
@@ -136,7 +138,7 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.funsrc.code" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="codeUpper" id="codeUpper" maxlength="50"
 						onkeyup="uniqueCheckCodeUpper();"
 						onblur="clearCodeUpperIfExists();" /></td>
@@ -145,7 +147,7 @@
 					key='masters.finsrc.code.already.exists' />
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.funsrc.name" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="nameUpper" id="nameUpper" maxlength="50"
 						onkeyup="uniqueCheckNameUpper();"
 						onblur="clearNameUpperIfExists();" /></td>
@@ -164,13 +166,13 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.srcAmount" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="sourceAmountUpper" id="sourceAmountUpper" maxlength="18"
 						onkeyup="validateOnlyNumber(this);"
 						onblur="validateDigitsAndDecimal(this);calcPercAmt();" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%">Is Active</td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:checkbox
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:checkbox
 						name="isactiveChkUpper" id="isactiveChkUpper" checked="checked" /></td>
 			</tr>
 		</table>
@@ -188,7 +190,7 @@
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.fundingType" /><span class="mandatory">*</span></td>
 				</td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:select
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:select
 						name="fundingType" id="fundingType"
 						list="dropdownData.fundingTypeList" headerKey="-1"
 						headerValue="----Choose----" value="fundsource.fundingType"
@@ -196,7 +198,7 @@
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.subscheme" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:select
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:select
 						name="subSchemeId" id="subschemeid"
 						list="dropdownData.subschemeList" listKey="id" listValue="name"
 						headerKey="-1" headerValue="----Choose----"
@@ -216,7 +218,7 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.funsrc.code" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="codeMiddle" id="codeMiddle" maxlength="50"
 						onkeyup="uniqueCheckCodeMiddle();"
 						onblur="clearCodeMiddleIfExists();" /></td>
@@ -225,7 +227,7 @@
 					key='masters.finsrc.code.already.exists' />
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.funsrc.name" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="nameMiddle" id="nameMiddle" maxlength="50"
 						onkeyup="uniqueCheckNameMiddle();"
 						onblur="clearNameMiddleIfExists();" /></td>
@@ -244,13 +246,13 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.srcAmount" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="sourceAmountMiddle" id="sourceAmountMiddle" maxlength="18"
 						onkeyup="validateOnlyNumber(this);"
 						onblur="validateDigitsAndDecimal(this);calcPercAmt();" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%">Is Active</td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:checkbox
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:checkbox
 						name="isactiveChkMiddle" id="isactiveChkMiddle" checked="checked" /></td>
 			</tr>
 			<tr>
@@ -265,7 +267,7 @@
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.fininstname" /><span class="mandatory"
 					id="subschememandate">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:select
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:select
 						name="finInstId" id="finInstId" listKey="id" listValue="name"
 						list="dropdownData.finInstList" headerKey="-1"
 						headerValue="----Choose----" /></td>
@@ -273,7 +275,7 @@
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.RtOfIntr" /><span class="mandatory"
 					id="rateOfIntrestMandate" style="visibility: hidden">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="rateOfIntrest" id="rateOfIntrest" maxlength="8"
 						onkeyup="validateDecimal(this);" /></td>
 
@@ -290,14 +292,14 @@
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.prdOfLoan" /><span class="mandatory"
 					id="prdLoanMandate" style="visibility: hidden">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="loanPeriod" id="loanPeriod" maxlength="8"
 						onkeyup="validateDecimal(this);" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.moratoriumPrd" /><span class="mandatory"
 					id="mrtmPrdMandate" style="visibility: hidden">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="moratoriumPeriod" id="moratoriumPeriod" maxlength="8"
 						onkeyup="validateDecimal(this);" /></td>
 
@@ -314,14 +316,14 @@
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.rePymtFrq" /><span class="mandatory"
 					id="repFrqMandate" style="visibility: hidden">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:select
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:select
 						name="repaymentFrequency" id="repaymentFrequency"
 						list="rePymntFrqList" headerKey="-1" headerValue="----Choose----" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.noOfInstalments" /><span class="mandatory"
 					id="noOfInstMandate" style="visibility: hidden">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="noOfInstallment" id="noOfInstallment" maxlength="4"
 						onkeyup="validateOnlyNumber(this)" /></td>
 
@@ -337,12 +339,12 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.GovtOrder" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="govtOrder" id="govtOrder" maxlength="250" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.GovtOrderDate" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="govtDate" id="govtDate" maxlength="10"
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 					href="javascript:show_calendar('finsrcheaderform.govtDate',null,null,'DD/MM/YYYY');"
@@ -363,7 +365,7 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.dpCodeNum" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="dpCodeNum" id="dpCodeNum" maxlength="250" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"></td>
@@ -380,12 +382,12 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.finInstletterNum" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="finInstLetterNum" id="finInstLetterNum" maxlength="250" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.finInstLetterDt" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="finInstLetterDate" id="finInstLetterDate" maxlength="10"
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 					href="javascript:show_calendar('finsrcheaderform.finInstLetterDate',null,null,'DD/MM/YYYY');"
@@ -405,12 +407,12 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.finInstSchmNum" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="finInstSchmNum" id="finInstSchmNum" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.finInstSchDt" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="finInstSchmDate" id="finInstSchmDate" maxlength="10"
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 					href="javascript:show_calendar('finsrcheaderform.finInstSchmDate',null,null,'DD/MM/YYYY');"
@@ -429,13 +431,13 @@
 				</c:choose>
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.amtPerc" /></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:textfield
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:input
 						name="loanPercentage" id="loanPercentage" maxlength="8"
 						onkeyup="validateDecimal(this);" readOnly="true" /></td>
 
 				<td class="<c:out value='${tdclass}' />" width="25%"><s:text
 						name="masters.finsrc.bankAcc" /><span class="mandatory">*</span></td>
-				<td class="<c:out value='${tdclass}' />" width="25%"><s:select
+				<td class="<c:out value='${tdclass}' />" width="25%"><form:select
 						name="bankAccountId" id="accountNumber"
 						list="dropdownData.accNumList" listKey="id"
 						listValue="accountnumber" headerKey="-1"
@@ -455,7 +457,7 @@
 
 				<td class="bluebox" width="25%"><s:text
 						name="masters.finsrc.fundingTypeOwnSrc" /><span class="mandatory">*</span></td>
-				<td class="bluebox" width="25%"><s:select
+				<td class="bluebox" width="25%"><form:select
 						name="finSrcTypOwnSrc" id="finSrcOwnSrc"
 						list="dropdownData.finSrcTypOwnSrcList" headerKey="-1"
 						headerValue="----Choose----" listKey="id" listValue="name"
@@ -464,14 +466,14 @@
 			<tr>
 				<td class="greybox" width="25%"><s:text
 						name="masters.finsrc.srcAmount" /><span class="mandatory">*</span></td>
-				<td class="greybox" width="25%"><s:textfield
+				<td class="greybox" width="25%"><form:input
 						name="sourceAmountOwnSrc" id="sourceAmountOwnSrc" maxlength="18"
 						onkeyup="validateOnlyNumber(this);"
 						onblur="validateDigitsAndDecimal(this);calcSrcAmtPercAmt();" /></td>
 
 				<td class="greybox" width="25%"><s:text
 						name="masters.finsrc.amtPerc" /></td>
-				<td class="greybox" width="25%"><s:textfield name="ownSrcPerc"
+				<td class="greybox" width="25%"><form:input path="ownSrcPerc"
 						id="ownSrcPerc" maxlength="8" onkeyup="validateDecimal(this);"
 						readOnly="true" /></td>
 
@@ -493,12 +495,12 @@
 
 
 
-		<s:hidden name="initEstAmt" id="initEstAmt" />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<font style='color: red; font-weight: bold'>
 		<p class="error-block" id="lblGridError"></p>
 	</font>
-	<s:form action="financingSource" theme="simple" name="finSourceForm"
+	<form:form action="financingSource" theme="simple" name="finSourceForm"
 		id="finSourceForm">
 		<jsp:include page="financingSourceGrid.jsp" />
 		<div id="finSrcGrid" align="center">
@@ -525,8 +527,8 @@
 			</div>
 		</div>
 		<br>
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script>
 document.getElementById("finSrcGrid").style.display="none";
 </script>

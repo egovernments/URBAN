@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -57,41 +59,41 @@
 <title>Payment Search</title>
 </head>
 <body>
-	<s:form action="paymentReversal" theme="simple">
+	<form:form action="paymentReversal" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Voucher Search" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">Payment Search</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="greybox"><s:text name="voucher.mode.of.payment" />
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
-					<td class="greybox"><s:select name="name" id="voucherName"
+					<td class="greybox"><form:select path="name" id="voucherName"
 							list="dropdownData.voucherNameList" headerKey="-1"
 							headerValue="----Choose----" /></td>
-					<td class="greybox"><s:text name="voucher.number" /></td>
-					<td class="greybox"><s:textfield name="voucherNumber"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input path="voucherNumber"
 							id="voucherNumber" maxlength="25" value="%{voucherNumber}" /></td>
 				</tr>
 				<jsp:include page="../voucher/voucher-filter.jsp" />
 				<tr>
-					<td class="bluebox"><s:text name="voucher.fromdate" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="bluebox"><input type="text" id="fromDate"
 						name="fromDate" style="width: 100px"
-						value='<s:date name="fromDate" format="dd/MM/yyyy"/>'
+						value='<!-- TODO: Manual migration required for custom Struts tag -->'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].fromDate');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
-					<td class="bluebox"><s:text name="voucher.todate" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="bluebox"><input type="text" id="toDate"
 						name="toDate" style="width: 100px"
-						value='<s:date name="toDate" format="dd/MM/yyyy"/>'
+						value='<!-- TODO: Manual migration required for custom Struts tag -->'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('forms[0].toDate');"
 						style="text-decoration: none">&nbsp;<img
@@ -99,16 +101,16 @@
 				</tr>
 
 				<tr>
-					<td class="greybox" width="30%"><s:text name="payin.bank" /></td>
-					<td class="greybox"><s:select name="bankBranch" id="bankId"
+					<td class="greybox" width="30%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="bankBranch" id="bankId"
 							list="dropdownData.bankList" listKey="bankBranchId"
 							listValue="bankBranchName" headerKey="-1"
 							headerValue="----Choose----" onChange="populateAccNum(this);" /></td>
 					<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 						dropdownId="accountNumber"
 						url="voucher/common!ajaxLoadAccNum.action" />
-					<td class="greybox"><s:text name="payin.accountNum" /></td>
-					<td class="greybox"><s:select name="bankAccount"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="bankAccount"
 							id="accountNumber" list="dropdownData.accNumList" listKey="id"
 							listValue="accountnumber" headerKey="-1"
 							headerValue="----Choose----" /></td>
@@ -137,18 +139,18 @@
 					</tr>
 					<c:set var="trclass" value="greybox" />
 
-					<s:iterator var="p" value="paymentHeaderList" status="s">
+					<c:forEach var="p" value="paymentHeaderList" status="s">
 						<tr>
 							<td class="<c:out value="${trclass}"/>"><s:property
 									value="#s.index+1" /></td>
-							<td align="left" class="<c:out value="${trclass}"/>"><s:if
+							<td align="left" class="<c:out value="${trclass}"/>"><c:if
 									test="%{voucherheader.name=='Direct Bank Payment'}">
 									<a href="#"
-										onclick="openVoucher(<s:property value='%{voucherheader.id}'/>,'directBankPayment!beforeReverse.action?voucherHeader.id' );"><s:property
+										onclick="openVoucher(<!-- TODO: Manual migration required for custom Struts tag -->,'directBankPayment!beforeReverse.action?voucherHeader.id' );"><s:property
 											value="%{voucherheader.voucherNumber}" /> </a>
-								</s:if> <s:else>
+								</c:if> <c:otherwise>
 									<a href="#"
-										onclick="openVoucher(<s:property value='%{id}'/>,'paymentReversal!reverse.action?paymentHeader.id' );"><s:property
+										onclick="openVoucher(<!-- TODO: Manual migration required for custom Struts tag -->,'paymentReversal!reverse.action?paymentHeader.id' );"><s:property
 											value="%{voucherheader.voucherNumber}" /> </a>
 								</s:else></td>
 							<td align="left" class="<c:out value="${trclass}"/>"><s:property
@@ -160,12 +162,12 @@
 							<td align="left" class="<c:out value="${trclass}"/>"><s:property
 									value="%{voucherheader.fundId.name}" /></td>
 							<td style="text-align: right" class="<c:out value="${trclass}"/>">
-								<s:text name="format.number">
-									<s:param value="%{voucherheader.totalAmount}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
 							</td>
-							<td class="<c:out value="${trclass}"/>"><s:if
-									test="%{voucherheader.isConfirmed == 0}">UnConfirmed</s:if> <s:else>Confirmed</s:else>
+							<td class="<c:out value="${trclass}"/>"><c:if
+									test="%{voucherheader.isConfirmed == 0}">UnConfirmed</c:if> <c:otherwise>Confirmed</s:else>
 							</td>
 							<c:choose>
 								<c:when test="${trclass=='greybox'}">
@@ -176,8 +178,8 @@
 								</c:when>
 							</c:choose>
 						</tr>
-					</s:iterator>
-					<s:hidden name="targetvalue" value="%{target}" id="targetvalue" />
+					</c:forEach>
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</table>
 			</div>
 			<br />
@@ -190,21 +192,21 @@
 				</table>
 			</div>
 			<br /> <br />
-			<s:hidden name="showMode" id="showMode" />
-	</s:form>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 
 	<script>
 		function openVoucher(pid,url){
 			var url =  url+'='+ pid;
 			window.open(url,'Search','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 		}
- 		   <s:if test="%{paymentHeaderList.size==0 and message!=''}">
+ 		   <c:if test="%{paymentHeaderList.size==0 and message!=''}">
 				dom.get('msgdiv').style.display='block';
-			</s:if>
-			<s:if test="%{paymentHeaderList.size!=0}">
+			</c:if>
+			<c:if test="%{paymentHeaderList.size!=0}">
 				dom.get('msgdiv').style.display='none';
 				dom.get('listid').style.display='block';
-			</s:if>	
+			</c:if>	
 	function validate(){
 		var fromDate = document.getElementById('fromDate').value;
 		var toDate = document.getElementById('toDate').value;

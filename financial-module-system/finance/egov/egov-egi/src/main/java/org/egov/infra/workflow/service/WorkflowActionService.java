@@ -48,8 +48,8 @@
 
 package org.egov.infra.workflow.service;
 
-import org.egov.infra.workflow.entity.WorkflowAction;
-import org.egov.infra.workflow.repository.WorkflowActionRepository;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.workflow.entity.WorkflowAction;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.workflow.repository.WorkflowActionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,14 +60,16 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class WorkflowActionService {
 
-    @Autowired
-    private WorkflowActionRepository workflowActionRepository;
+    // TODO: Migrate from Struts/XWork: @Autowired
+    // TODO: Migrate from Struts/XWork: private WorkflowActionRepository workflowActionRepository;
 
-    public WorkflowAction getWorkflowActionByNameAndType(String name, String type) {
-        return workflowActionRepository.findByNameAndType(name, type);
-    }
+    // TODO: Migrate from Struts/XWork:
+    // public WorkflowAction getWorkflowActionByNameAndType(String name, String type) {
+    //     return workflowActionRepository.findByNameAndType(name, type);
+    // }
 
-    public List<WorkflowAction> getAllWorkflowActionByTypeAndActionNames(String type, List<String> names) {
-        return workflowActionRepository.findAllByTypeAndNameIn(type, names);
-    }
+    // TODO: Migrate from Struts/XWork:
+    // public List<WorkflowAction> getAllWorkflowActionByTypeAndActionNames(String type, List<String> names) {
+    //     return workflowActionRepository.findAllByTypeAndNameIn(type, names);
+    // }
 }

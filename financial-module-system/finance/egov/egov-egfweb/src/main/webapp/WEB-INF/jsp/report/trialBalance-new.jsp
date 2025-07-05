@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -56,7 +58,7 @@
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/fundFlow.js?rnd=${app_release_no}">
 </script>
-<title><s:text name="trialbalancereport" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 var toDateStr="";
 	function validate(exportValue) {
@@ -76,18 +78,18 @@ today = dd+'/'+mm+'/'+yyyy;
 
 				if (reportType == 'daterange') {
 			if (document.getElementById('fromDate').value == '') {
-				bootbox.alert('<s:text name="msg.please.select.from.date"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				return false;
 			}  if (document.getElementById('toDate').value == '') {
-				bootbox.alert('<s:text name="msg.please.select.toDate"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				return false;
 			}  if (document.getElementById('fundId').value == '') {
-				bootbox.alert('<s:text name="msg.please.select.fund"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				return false;
 			}  
  
 			 if( compareDate(formatDate6(document.getElementById('fromDate').value),formatDate6(document.getElementById('toDate').value)) == -1 ){
-				bootbox.alert('<s:text name="msg.start.date.cant.be.greater.than.end.date"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				document.getElementById('fromDate').value='';
 				document.getElementById('toDate').value='';
 				document.getElementById('fromDate').focus();
@@ -95,7 +97,7 @@ today = dd+'/'+mm+'/'+yyyy;
 			}
 		} else if (reportType == 'asondate') {
 			if (document.getElementById('toDate').value == '') {
-				bootbox.alert('<s:text name="msg.please.enter.as.onDate"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				return false;
 			}
 			document.getElementById('fromDate').value='';
@@ -151,12 +153,12 @@ today = dd+'/'+mm+'/'+yyyy;
 		document.getElementById('loading').style.display ='none';                             
 	}
 	function showDetails(glcode,startDate,endDate){           
-		var deptCode = '<s:property value="departmentCode"/>';
-		var functionaryId = '<s:property value="functionaryId"/>';
-		var functionName = '<s:property value="functionName"/>';
-		var functionId = '<s:property value="functionId"/>';
-		var fieldId = '<s:property value="divisionId"/>';	   
-		var fundId='<s:property value="fundId"/>';
+		var deptCode = '${departmentCode}';
+		var functionaryId = '${functionaryId}';
+		var functionName = '${functionName}';
+		var functionId = '${functionId}';
+		var fieldId = '${divisionId}';	   
+		var fundId='${fundId}';
                                              
 		
 		 var functionCode1=functionName+"~"+functionId;
@@ -173,23 +175,23 @@ today = dd+'/'+mm+'/'+yyyy;
 </head>
 <body onload="onLoad();">
 
-	<s:form name="trialBalance" action="trialBalance" theme="simple">
+	<form:form name="trialBalance" action="trialBalance" theme="simple">
 		<div class="formmainbox">
-			<div class="subheadnew"><s:text name="lbl.trial.balance"/> </div>
-			<s:push value="model">
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<jsp:include page="../budget/budgetHeader.jsp">
 					<jsp:param name="heading" value='trialbalancereport' />
 				</jsp:include>
-				<span class="mandatory1" id="error"> <s:actionerror /> <s:fielderror />
-					<s:actionmessage />
+				<span class="mandatory1" id="error"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</span>
-				<span class="subheadnew"><s:property value="ulbName" /></span>
+				<span class="subheadnew">${ulbName}</span>
 				<table id="header" width="100%" cellpadding="0" cellspacing="0"
 					border="0">
 					<tr>
 						<td class="bluebox"></td>
-						<td class="bluebox"><s:text name="reporttype" />
-						<td class="bluebox"><s:select name="reportType"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+						<td class="bluebox"><form:select path="reportType"
 								id="reportType"
 								list="#{'daterange':'Date Range','asondate':'As On Date'}"
 								onChange="changeLable()" /></td>
@@ -197,13 +199,13 @@ today = dd+'/'+mm+'/'+yyyy;
 					</tr>
 					<tr>
 						<td class="greybox"></td>
-						<s:date name="fromDate" format="dd/MM/yyyy" var="tempFromDate" />
-						<s:date name="toDate" format="dd/MM/yyyy" var="tempToDate" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						<td class="greybox"><div id="fromDatelbl">
-								<s:text name="fromdate" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								<span class="greybox"><span class="mandatory1">*</span></span>
 							</div></td>
-						<td class="greybox"><s:textfield name="fromDate"
+						<td class="greybox"><form:input path="fromDate"
 								id="fromDate"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								value="%{tempFromDate}" /> <a
@@ -212,10 +214,10 @@ today = dd+'/'+mm+'/'+yyyy;
 								src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>
 						</td>
 						<td class="greybox"><div id="toDatelbl">
-								<s:text name="todate" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								<span class="greybox"><span class="mandatory1">*</span></span>
 							</div></td>
-						<td class="greybox"><s:textfield name="toDate" id="toDate"
+						<td class="greybox"><form:input path="toDate" id="toDate"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								value="%{tempToDate}" /> <a
 							href="javascript:show_calendar('forms[0].toDate');"
@@ -226,27 +228,27 @@ today = dd+'/'+mm+'/'+yyyy;
 					<tr>
 						<td class="bluebox"></td>
 						<td class="bluebox"><div id="fundlbl">
-								<s:text name="voucher.fund" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								<span id="fundStar" class="mandatory1">*</span>
 							</div>
-						<td class="bluebox"><s:select name="fundId" id="fundId"
+						<td class="bluebox"><form:select path="fundId" id="fundId"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}" value="%{fundId}" /></td>
-						<td class="bluebox"><s:text name="voucher.department" />
-						<td class="bluebox"><s:select name="departmentCode"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+						<td class="bluebox"><form:select path="departmentCode"
 								id="departmentcode" list="dropdownData.departmentList"
 								listKey="code" listValue="name" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" value="departmentCode" /></td>
 					</tr>
 					<tr>
 						<td class="greybox"></td>
-						<td class="greybox"><s:text name="voucher.function" />
-						<td class="greybox"><s:select name="functionId"
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+						<td class="greybox"><form:select path="functionId"
 								id="functionId" list="dropdownData.functionList" listKey="id"
 								listValue="name" headerKey="" headerValue="%{getText('lbl.choose.options')}"
 								value="functionId" style="width:180px" /></td>
-						<td class="greybox"><s:text name="voucher.functionary" />
-						<td class="greybox"><s:select name="functionaryId"
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+						<td class="greybox"><form:select path="functionaryId"
 								id="functionaryId" list="dropdownData.functionaryList"
 								listKey="id" listValue="name" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" value="functionaryId"
@@ -254,8 +256,8 @@ today = dd+'/'+mm+'/'+yyyy;
 					</tr>
 					<tr>
 						<td class="bluebox"></td>
-						<td class="bluebox"><s:text name="voucher.field" />
-						<td class="bluebox"><s:select name="divisionId"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
+						<td class="bluebox"><form:select path="divisionId"
 								id="divisionId" list="dropdownData.fieldList" listKey="id"
 								listValue="name" headerKey="" headerValue="%{getText('lbl.choose.options')}"
 								value="divisionId" /></td>
@@ -265,18 +267,18 @@ today = dd+'/'+mm+'/'+yyyy;
 			</s:push>
 		</div>
 		<div class="buttonbottom">
-			<s:hidden name="exportType" id="exportType" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<s:submit key="lbl.view.html" method="search" cssClass="button"
 				onClick="return validate('html');" />
 			<s:submit key="lbl.export.excel" method="search" cssClass="button"
 				onClick="return validate('xls');" />
 			<s:submit key="lbl.export.pdf" method="search" cssClass="button"
 				onClick="return validate('pdf');" />
-			<input type="button" value="<s:text name='lbl.close'/>"
+			<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 		</div>
-	</s:form>
-	<s:if test="%{al.size!=0}">
+	</form:form>
+	<c:if test="%{al.size!=0}">
 
 		<script>
 			document.getElementById('loading').style.display ='none';
@@ -294,40 +296,40 @@ today = dd+'/'+mm+'/'+yyyy;
 							format="dd/MM/yyyy" /></strong></td>
 				<td colspan="12">
 					<div class="blueborderfortd" align="right">
-						<strong> <s:text name="report.amount.in" />
+						<strong> <!-- TODO: Manual migration required for custom Struts tag -->
 							Rupees&nbsp;&nbsp;&nbsp;&nbsp;
 						</strong>
 					</div>
 				</td>
 			</tr>
-			<s:if test='%{reportType == "daterange"}'>
+			<c:if test='%{reportType == "daterange"}'>
 				<tr>
-					<th class="bluebgheadtd"><s:text name="lbl.sr.no"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.account.number"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.account.head"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.opening.balance"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.debit"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.credit"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.closing.balance"/></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 
 				</tr>
-				<s:iterator var="p" value="al" status="s">
+				<c:forEach var="p" value="al" status="s">
 					<tr>
 
-						<td style="text-align: center" class="blueborderfortd"><s:if
+						<td style="text-align: center" class="blueborderfortd"><c:if
 								test='%{accCode != "   Total  "}'>
-								<s:property value="#s.index+1" />
-							</s:if> <s:else>
-								<s:property value="" />
+								${#s.index+1}
+							</c:if> <c:otherwise>
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:else></td>
 
-						<td style="text-align: center" class="blueborderfortd"><s:if
+						<td style="text-align: center" class="blueborderfortd"><c:if
 								test='%{accCode != "   Total  "}'>
 								<a href="javascript:void(0);"
-									onclick='return showDetails(<s:property value="accCode"/>,"<s:date name="%{fromDate}" format="dd/MM/yyyy"/>","<s:date name="%{toDate}" format="dd/MM/yyyy"/>")'><s:property
+									onclick='return showDetails(${accCode},"<!-- TODO: Manual migration required for custom Struts tag -->","<!-- TODO: Manual migration required for custom Struts tag -->")'><s:property
 										value="accCode" /></a>&nbsp;</div>
-							</s:if> <s:else>
-								<s:property value="accCode" />
+							</c:if> <c:otherwise>
+								${accCode}
 							</s:else></td>
 						<td style="text-align: left" class="blueborderfortd"><s:property
 								value="accName" /></td>
@@ -341,51 +343,51 @@ today = dd+'/'+mm+'/'+yyyy;
 								value="closingBal" /></td>
 
 					</tr>
-				</s:iterator>
-			</s:if>
-			<s:else>
+				</c:forEach>
+			</c:if>
+			<c:otherwise>
 				<tr>
-					<th class="bluebgheadtd"><s:text name="lbl.sr.no"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.account.number"/></th>
-					<th class="bluebgheadtd"><s:text name="lbl.account.head"/></th>
-					<s:iterator value="fundList" status="stat">
-						<th class="bluebgheadtd" colspan="1"><s:property value="name" />(Rs)</th>
-					</s:iterator>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+					<c:forEach value="fundList" status="stat">
+						<th class="bluebgheadtd" colspan="1">${name}(Rs)</th>
+					</c:forEach>
 					<th class="bluebgheadtd">Total(Rs)</th>
 				</tr>
 
-				<s:iterator var="p" value="al" status="s">
+				<c:forEach var="p" value="al" status="s">
 					<tr>
-						<td style="text-align: center" class="blueborderfortd"><s:if
+						<td style="text-align: center" class="blueborderfortd"><c:if
 								test='%{accCode != "Total"}'>
-								<s:property value="#s.index+1" />
-							</s:if> <s:else>
-								<s:property value="" />
+								${#s.index+1}
+							</c:if> <c:otherwise>
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:else></td>
-						<td style="text-align: center" class="blueborderfortd"><s:if
+						<td style="text-align: center" class="blueborderfortd"><c:if
 								test='%{accCode != "Total"}'>
 								<a href="javascript:void(0);"
-									onclick='return showDetails(<s:property value="accCode"/>,"<s:date name="%{finStartDate}" format="dd/MM/yyyy"/>","<s:date name="%{toDate}" format="dd/MM/yyyy"/>")'><s:property
+									onclick='return showDetails(${accCode},"<!-- TODO: Manual migration required for custom Struts tag -->","<!-- TODO: Manual migration required for custom Struts tag -->")'><s:property
 										value="accCode" /> </a> &nbsp;</div>
-							</s:if> <s:else>
-								<s:property value="accCode" />
+							</c:if> <c:otherwise>
+								${accCode}
 							</s:else></td>
 						<td style="text-align: left" class="blueborderfortd"><s:property
 								value="accName" /></td>
-						<s:iterator value="fundList" status="stat">
+						<c:forEach value="fundList" status="stat">
 							<td style="text-align: right" class="blueborderfortd"><s:set
 									var="fnId" value="%{id+'_amount'}" /> <s:property
 									value="%{fundWiseMap.get(#fnId)}" /></td>
-						</s:iterator>
+						</c:forEach>
 
 						<td style="text-align: right;" class="blueborderfortd"><s:property
 								value="amount1" /></td>
 
 					</tr>
-				</s:iterator>
+				</c:forEach>
 			</s:else>
 
 		</table>
-	</s:if>
+	</c:if>
 </body>
 </html>

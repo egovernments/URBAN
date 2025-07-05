@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -155,7 +157,7 @@ function check()
 	{
 		var length=0;
 		var isAnyOneContratorBillChecked = false;
-		length = <s:property value="%{contractorList.size()}"/>;
+		length = ${%{contractorList.size()}};
 		for ( var i = 0; i < length; i++){
 			if(document.getElementsByName('contractorList['+i+'].isSelected')[0].checked)
 			{
@@ -291,9 +293,9 @@ function setSelectedValues()
 
 function selectAllContractors(element){
 	var length = 0;
-	<s:if test="%{contractorList!=null}">
-		length = <s:property value="%{contractorList.size()}"/>;
-	</s:if>
+	<c:if test="%{contractorList!=null}">
+		length = ${%{contractorList.size()}};
+	</c:if>
 	
 	if(element.checked == true)	{
 		var concnt=checkcontractorForSameMisAttribs('contractorList',length);
@@ -309,9 +311,9 @@ function selectAllContractors(element){
 }
 function selectAllSuppliers(element){
 	var length = 0;
-	<s:if test="%{supplierList!=null}">
-		length = <s:property value="%{supplierList.size()}"/>;
-	</s:if>
+	<c:if test="%{supplierList!=null}">
+		length = ${%{supplierList.size()}};
+	</c:if>
 	if(element.checked == true)
 	{
 		var supcnt= checkSupplierForSameMisAttribs('supplierList',length);
@@ -327,9 +329,9 @@ function selectAllSuppliers(element){
 }
 function selectAllContingent(element){
 	var length = 0;
-	<s:if test="%{contingentList!=null}">
-		length = <s:property value="%{contingentList.size()}"/>;
-	</s:if>
+	<c:if test="%{contingentList!=null}">
+		length = ${%{contingentList.size()}};
+	</c:if>
 	
 	if(element.checked == true){
 		 
@@ -349,15 +351,15 @@ function calculatePaymentTotal(){
 	var contractorListLength = 0;
 	var supplierListLength = 0;
 	var contingentListLength = 0;
-	<s:if test="%{contractorList!=null}">
-	contractorListLength = <s:property value="%{contractorList.size()}"/>;
-	</s:if>
-	<s:if test="%{supplierList!=null}">
-	supplierListLength = <s:property value="%{supplierList.size()}"/>;
-	</s:if>
-	<s:if test="%{contingentList!=null}">
-	contingentListLength = <s:property value="%{contingentList.size()}"/>;
-	</s:if>
+	<c:if test="%{contractorList!=null}">
+	contractorListLength = ${%{contractorList.size()}};
+	</c:if>
+	<c:if test="%{supplierList!=null}">
+	supplierListLength = ${%{supplierList.size()}};
+	</c:if>
+	<c:if test="%{contingentList!=null}">
+	contingentListLength = ${%{contingentList.size()}};
+	</c:if>
 	calculateTotal('contractorList',contractorListLength);
 	calculateTotal('supplierList',supplierListLength);
 	calculateTotal('contingentList',contingentListLength);
@@ -400,61 +402,61 @@ function checkcontractorForSameMisAttribs(obj,len)
 		var concount=0;
 		for(i=0;i<len;i++)
 		{
-			 <s:if test="%{!isFieldMandatory('fund')}">
+			 <c:if test="%{!isFieldMandatory('fund')}">
 		   if((document.getElementsByName(obj+"["+i+"].fundName").item(0)).value!=null){
 		   if(fund1[0].value != null && fund1[0].value !=(document.getElementsByName(obj+"["+i+"].fundName").item(0)).value) {
 		   	document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		  	concount++; break;}}
-		  	</s:if>                     
+		  	</c:if>                     
 		   
-		   /** <s:if test="%{shouldShowHeaderField('department')}"> 
+		   /** <c:if test="%{shouldShowHeaderField('department')}"> 
 		   if((document.getElementsByName(obj+"["+i+"].deptName").item(0)).value!=null){  	
 		   if(dept1[0].value != null &&  dept1[0].value !=(document.getElementsByName(obj+"["+i+"].deptName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   concount++; break;}}
-		   </s:if>
+		   </c:if>
 		   
-		   /** <s:if test="%{shouldShowHeaderField('function')}"> 
+		   /** <c:if test="%{shouldShowHeaderField('function')}"> 
 		   if((document.getElementsByName(obj+"["+i+"].functionName").item(0)).value!=null){  	
 		   if(function1[0].value != null &&  function1[0].value !=(document.getElementsByName(obj+"["+i+"].functionName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   concount++; break;}}
-		   </s:if> **/
+		   </c:if> **/
 		    
-		    /** <s:if test="%{shouldShowHeaderField('functionary')}">
+		    /** <c:if test="%{shouldShowHeaderField('functionary')}">
 		    if(document.getElementsByName(obj+"["+i+"].functionaryName")!=null){
 		    if(functionaryName1[0].value != null && functionaryName1[0].value != (document.getElementsByName(obj+"["+i+"].functionaryName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		    concount++; break;}}
-		    </s:if>
+		    </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('fundsource')}"> 
+		   <c:if test="%{shouldShowHeaderField('fundsource')}"> 
 		   if((document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value!=null){
 		   if(fundsource1[0].value != null &&  fundsource1[0].value !=(document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		   concount++; break;}}
-		   </s:if>		   
+		   </c:if>		   
 		   
-		   <s:if test="%{shouldShowHeaderField('scheme')}">
+		   <c:if test="%{shouldShowHeaderField('scheme')}">
 		   if((document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value!=null){
 		   if(scheme1[0].value != null  && scheme1[0].value !=( document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   concount++; break;}}
-		   </s:if>
+		   </c:if>
 		 
-		   <s:if test="%{shouldShowHeaderField('subscheme')}">
+		   <c:if test="%{shouldShowHeaderField('subscheme')}">
 		   if((document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value!=null){
 		   if(subscheme1[0].value !=  null && subscheme1[0].value!=(document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;  
 		   concount++; break;}}
-		   </s:if>		 
+		   </c:if>		 
 		   
-		    <s:if test="%{shouldShowHeaderField('field')}">
+		    <c:if test="%{shouldShowHeaderField('field')}">
 		    if(document.getElementsByName(obj+"["+i+"].fieldName")!=null){
 		    if(field1[0].value != null && field1[0].value != (document.getElementsByName(obj+"["+i+"].fieldName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		    concount++; break;}}
-		    </s:if>	 **/ 		  
+		    </c:if>	 **/ 		  
 		   }
 		   return concount;
 }
@@ -463,7 +465,7 @@ function checkcontractorForSameMisAttribs(obj,len)
 {
  document.getElementById("exp2").innerHTML="";
 var field='contingentList';
-var length=<s:property value="%{contingentList.size()}"/>;
+var length=${%{contingentList.size()}};
 for (i = 0; i < length; i++){
   if(document.getElementsByName(field+'['+i+'].isSelected')[0].checked == true)
 {
@@ -475,7 +477,7 @@ document.getElementById("exp2").innerHTML=document.getElementById("exp2").innerH
 }
  document.getElementById("sup2").innerHTML="";
  field='supplierList';
- length=<s:property value="%{supplierList.size()}"/>;
+ length=${%{supplierList.size()}};
 for (i = 0; i < length; i++){
   if(document.getElementsByName(field+'['+i+'].isSelected')[0].checked == true)
 {
@@ -488,7 +490,7 @@ document.getElementById("sup2").innerHTML=document.getElementById("sup2").innerH
 
  document.getElementById("con2").innerHTML="";
 field='contractorList';
- length=<s:property value="%{contractorList.size()}"/>;
+ length=${%{contractorList.size()}};
 for (i = 0; i < length; i++){
   if(document.getElementsByName(field+'['+i+'].isSelected')[0].checked == true)
 {
@@ -518,61 +520,61 @@ function checkSupplierForSameMisAttribs(obj,len)
 		var suppcount=0;
 		for(i=0;i<len;i++)
 		{
-		   	 <s:if test="%{!isFieldMandatory('fund')}">
+		   	 <c:if test="%{!isFieldMandatory('fund')}">
 		     if((document.getElementsByName(obj+"["+i+"].fundName").item(0)).value!=null){
 		    if(fund1[0].value != null && fund1[0].value !=(document.getElementsByName(obj+"["+i+"].fundName").item(0)).value) {
 		   	document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		  	suppcount++; break;}}
-		  	 </s:if>		   
+		  	 </c:if>		   
 		   
-		   /** <s:if test="%{shouldShowHeaderField('department')}"> 
+		   /** <c:if test="%{shouldShowHeaderField('department')}"> 
 		    if((document.getElementsByName(obj+"["+i+"].deptName").item(0)).value!=null){ 	
 		   if(dept1[0].value != null && dept1[0].value !=(document.getElementsByName(obj+"["+i+"].deptName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   suppcount++; break;}}
-		   </s:if>
+		   </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('function')}"> 
+		   <c:if test="%{shouldShowHeaderField('function')}"> 
 		    if((document.getElementsByName(obj+"["+i+"].functionName").item(0)).value!=null){   	
 		   if(function1[0].value != null && function1[0].value !=(document.getElementsByName(obj+"["+i+"].functionName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   suppcount++; break;}}
-		   </s:if>
+		   </c:if>
 		  
-		   <s:if test="%{shouldShowHeaderField('functionary')}">
+		   <c:if test="%{shouldShowHeaderField('functionary')}">
 		   if(document.getElementsByName(obj+"["+i+"].functionaryName")!=null){
 		   if(functionaryName1[0].value != null && functionaryName1[0].value != (document.getElementsByName(obj+"["+i+"].functionaryName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		   suppcount++; break;}}
-		    </s:if>
+		    </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('fundsource')}"> 
+		   <c:if test="%{shouldShowHeaderField('fundsource')}"> 
 		    if((document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value!=null){
 		   if(fundsource1[0].value != null && fundsource1[0].value !=(document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		   suppcount++; break;}}
-		   </s:if>
+		   </c:if>
 		  
-		  	<s:if test="%{shouldShowHeaderField('subscheme')}">
+		  	<c:if test="%{shouldShowHeaderField('subscheme')}">
 		  	if((document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value!=null){
 		    if(scheme1[0].value != null && scheme1[0].value !=( document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value) {
 		     document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		    suppcount++; break;}}
-		    </s:if>
+		    </c:if>
 		 
-		 	<s:if test="%{shouldShowHeaderField('subscheme')}">
+		 	<c:if test="%{shouldShowHeaderField('subscheme')}">
 		 	if((document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value!=null){	 
 		   if(subscheme1[0].value !=  null && subscheme1[0].value!=(document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;  
 		   suppcount++; break;}}
-		   </s:if>
+		   </c:if>
 		 
-		 	<s:if test="%{shouldShowHeaderField('field')}">
+		 	<c:if test="%{shouldShowHeaderField('field')}">
 		    if(document.getElementsByName(obj+"["+i+"].fieldName")!=null){
 		    if(field1[0].value != null && field1[0].value != document.getElementsByName(obj+"["+i+"].fieldName")[0].value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		    suppcount++; break;}}
-		    </s:if> **/
+		    </c:if> **/
 		   			  
 		   }
 		   return suppcount;
@@ -592,61 +594,61 @@ function checkContingentForSameMisAttribs(obj,len)
 		var expcount=0;
 		for(i=0;i<len;i++)
 		{
-		 <s:if test="%{!isFieldMandatory('fund')}">
+		 <c:if test="%{!isFieldMandatory('fund')}">
 		 if((document.getElementsByName(obj+"["+i+"].fundName").item(0)).value!=null){
 		    if(fund1[0].value != null && fund1[0].value !=(document.getElementsByName(obj+"["+i+"].fundName").item(0)).value) {
 		   	document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		  	expcount++; break;}}
-		  	</s:if>
+		  	</c:if>
 		   
-		  /** <s:if test="%{shouldShowHeaderField('department')}"> 
+		  /** <c:if test="%{shouldShowHeaderField('department')}"> 
 		    if((document.getElementsByName(obj+"["+i+"].deptName").item(0)).value!=null){   	
 		   if(dept1[0].value != null && dept1[0].value !=(document.getElementsByName(obj+"["+i+"].deptName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   expcount++; break;}}
-		   </s:if>
+		   </c:if>
 
-		   <s:if test="%{shouldShowHeaderField('function')}"> 
+		   <c:if test="%{shouldShowHeaderField('function')}"> 
 		    if((document.getElementsByName(obj+"["+i+"].functionName").item(0)).value!=null){   	
 		   if(function1[0].value != null && function1[0].value !=(document.getElementsByName(obj+"["+i+"].functionName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   expcount++; break;}}
-		   </s:if>
+		   </c:if>
 		   
-		    <s:if test="%{shouldShowHeaderField('functionary')}">
+		    <c:if test="%{shouldShowHeaderField('functionary')}">
 		   if(document.getElementsByName(obj+"["+i+"].functionaryName")!=null){	  
 		   if(functionaryName1[0].value != null && functionaryName1[0].value != (document.getElementsByName(obj+"["+i+"].functionaryName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		   expcount++; break; }}
-		   </s:if>
+		   </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('fundsource')}">
+		   <c:if test="%{shouldShowHeaderField('fundsource')}">
 		   if((document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value!=null){		 
 		   if(fundsource1[0].value != null && fundsource1[0].value !=(document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		   expcount++; break;}}
-		   </s:if>
+		   </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('scheme')}">
+		   <c:if test="%{shouldShowHeaderField('scheme')}">
 		   if((document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value!=null){
 		   if(scheme1[0].value != null && scheme1[0].value !=( document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   expcount++; break;}}
-		   </s:if>
+		   </c:if>
 		 
-		   <s:if test="%{shouldShowHeaderField('subscheme')}">
+		   <c:if test="%{shouldShowHeaderField('subscheme')}">
 		   if((document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value!=null){
 		   if(subscheme1[0].value !=  null && subscheme1[0].value!=(document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;  
 		   expcount++; break;}}
-		    </s:if>
+		    </c:if>
 		 
-		   <s:if test="%{shouldShowHeaderField('field')}">
+		   <c:if test="%{shouldShowHeaderField('field')}">
 		    if(document.getElementsByName(obj+"["+i+"].fieldName")!=null){
 		    if(field1[0].value != null && field1[0].value != (document.getElementsByName(obj+"["+i+"].fieldName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		    expcount++; break;}}
-		     </s:if>**/  
+		     </c:if>**/  
 		   }
 		   return expcount;
 }
@@ -654,13 +656,13 @@ function checkContingentForSameMisAttribs(obj,len)
 function resetSelectedRowsId(billTypeObj,selectedRowsId){
 		var	length = 0;
 		if(billTypeObj == "contingentList"){
-			length = <s:property value="%{contingentList.size()}"/>;
+			length = ${%{contingentList.size()}};
 			}
 		if(billTypeObj == "contractorList"){
-			length = <s:property value="%{contractorList.size()}"/>;
+			length = ${%{contractorList.size()}};
 			}
 		if(billTypeObj == "supplierList"){
-			length = <s:property value="%{supplierList.size()}"/>;
+			length = ${%{supplierList.size()}};
 			}
 	selectedRowsArr = new Array();
 		for(var index=0;index<length;index++){
@@ -728,17 +730,17 @@ function disableSelectedRows()
 <body>
 
 
-	<s:form action="payment" theme="simple">
+	<form:form action="payment" theme="simple">
 
 		<div class="formmainbox">
-			<s:token />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Bill Payment Search" />
 			</jsp:include>
-			<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-				<s:actionmessage />
+			<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
-			<div class="subheadnew"><s:text name="lbl.bill.payment"/> </div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			<div id="budgetSearchGrid" style="display: block; width: 100%;">
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
@@ -750,20 +752,20 @@ function disableSelectedRows()
 										<td>
 											<div class="tabber">
 												<div class="tabbertab" id="searchtab">
-													<h2><s:text name="lbl.search.bill"/></h2>
+													<h2><!-- TODO: Manual migration required for custom Struts tag --></h2>
 													<span>
 														<table width="100%" border="0" cellspacing="0"
 															cellpadding="0">
 															<tr>
 																<td colspan="6">
-																	<div class="subheadsmallnew" style="border: 0;"><s:text name="lbl.search.bill"/></div>
+																	<div class="subheadsmallnew" style="border: 0;"><!-- TODO: Manual migration required for custom Struts tag --></div>
 																</td>
 															</tr>
 															<tr>
 																<td class="bluebox"></td>
 																<td class="bluebox"><s:text
 																		name="payment.billnumber" /></td>
-																<td class="bluebox"><s:textfield name="billNumber"
+																<td class="bluebox"><form:input path="billNumber"
 																		id="billNumber" maxlength="25" value="%{billNumber}" /></td>
 																<td class="bluebox"></td>
 																<td class="bluebox"></td>
@@ -772,7 +774,7 @@ function disableSelectedRows()
 																<td class="bluebox"></td>
 																<td class="greybox"><s:text
 																		name="payment.billdatefrom" /></td>
-																<td class="greybox"><s:textfield id="fromDate"
+																<td class="greybox"><form:input id="fromDate"
 																		name="fromDate" value="%{fromDate}"
 																		data-date-end-date="0d"
 																		onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -781,7 +783,7 @@ function disableSelectedRows()
 																		data-inputmask="'mask': 'd/m/y'" /></td>
 																<td class="greybox"><s:text
 																		name="payment.billdateto" /></td>
-																<td class="greybox"><s:textfield id="toDate"
+																<td class="greybox"><form:input id="toDate"
 																		name="toDate" value="%{toDate}"
 																		data-date-end-date="0d"
 																		onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -793,7 +795,7 @@ function disableSelectedRows()
 																<td class="bluebox"></td>
 																<td class="bluebox"><s:text
 																		name="payment.expendituretype" /></td>
-																<td class="bluebox"><s:select name="expType"
+																<td class="bluebox"><form:select path="expType"
 																		id="expType"
 																		list="#{'-1':'---Select---','Purchase':'Purchase','Works':'Works', 'Expense':'Expense'}"
 																		value="%{expType}" /></td>
@@ -804,14 +806,14 @@ function disableSelectedRows()
 															<tr>
 																<td align="center" colspan="5">
 																	<div class="buttonbottom">
-																		<input type="button" method="search"  value="<s:text name='lbl.search'/>"
+																		<input type="button" method="search"  value="<!-- TODO: Manual migration required for custom Struts tag -->"
 																			Class="button" onclick="return search()" />
-																		<input type="button" value="<s:text name='lbl.close'/>"
+																		<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 																			onclick="javascript:window.close()" class="button" />
-																		<s:hidden name="miscount" id="miscount" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																		<s:hidden name="miscattributes" id="miscattributes"
 																			value="" />
-																		<s:hidden name="rtgsDefaultMode" id="rtgsDefaultMode" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																		<s:hidden name="rtgsModeRestrictionDateForCJV"
 																			id="rtgsModeRestrictionDateForCJV" />
 																		<s:hidden name="paymentRestrictionDateForCJV"
@@ -823,12 +825,12 @@ function disableSelectedRows()
 													</span>
 												</div>
 												<div class="tabbertab" id="contractortab">
-													<h2><s:text name="lbl.contractor.bill"/> </h2>
+													<h2><!-- TODO: Manual migration required for custom Struts tag --> </h2>
 													<span>
 														<table name="contractortable" align="center" border="0"
 															cellpadding="0" cellspacing="0" class="newtable">
 															<tr>
-																<td colspan="6"><div class="subheadsmallnew"><s:text name="lbl.contractor.bill"/></div></td>
+																<td colspan="6"><div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
 															</tr>
 															<tr>
 																<td colspan="6">
@@ -836,32 +838,32 @@ function disableSelectedRows()
 																		<table align="left" border="0" cellpadding="0"
 																			cellspacing="0" width="100%">
 																			<tr>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.select"/> <input
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --> <input
 																					type="checkbox" name="conSelectAll"
 																					id="conSelectAll"
 																					onclick="selectAllContractors(this)" /> </checkbox></th>
 
 																				<jsp:include page="billdetails-header.jsp" />
-																				<s:iterator var="p" value="contractorList"
+																				<c:forEach var="p" value="contractorList"
 																					status="s">
 																			</tr>
 																			<tr>
 
 																				<td class="blueborderfortdnew"><s:hidden
 																						name="contractorList[%{#s.index}].csBillId"
-																						id="csBillId%{#s.index}" value="%{csBillId}" /> <s:checkbox
+																						id="csBillId%{#s.index}" value="%{csBillId}" /> <form:checkbox
 																						name="contractorList[%{#s.index}].isSelected"
 																						id="isSelected%{#s.index}"
-																						onclick="checkMiscAttributes(this)"></s:checkbox></td>
+																						onclick="checkMiscAttributes(this)"></form:checkbox></td>
 																				<td align="left" class="blueborderfortdnew" />
-																				<s:property value="#s.index+1" />
+																				${#s.index+1}
 																				</td>
 																				<td align="left" class="blueborderfortdnew"><s:hidden
 																						name="contractorList[%{#s.index}].expType"
 																						id="expType%{#s.index}" value="%{expType}" /> <s:hidden
 																						name="contractorList[%{#s.index}].billNumber"
 																						id="billNumber%{#s.index}" value="%{billNumber}" />
-																					<s:property value="%{billNumber}" /></td>
+																					${%{billNumber}}</td>
 																				<td class="blueborderfortdnew"><s:hidden
 																						name="contractorList[%{#s.index}].billDate"
 																						id="billDate%{#s.index}" value="%{getFormattedDate1({billDate})}"/> <s:date
@@ -874,8 +876,8 @@ function disableSelectedRows()
 																						name="contractorList[%{#s.index}].billVoucherId"
 																						id="billVoucherId%{#s.index}"
 																						value="%{billVoucherId}" /> 
-																						<a href="#" onclick="openVoucher('<s:property value='%{billVoucherId}'/>');">
-																							<s:property value="%{billVoucherNumber}" />
+																						<a href="#" onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->');">
+																							${%{billVoucherNumber}}
 																						</a>
 																						</td>
 																				<td style="text-align: left"
@@ -895,7 +897,7 @@ function disableSelectedRows()
 																						name="contractorList[%{#s.index}].netAmt"
 																						id="netAmt%{#s.index}" value="%{netAmt}" /> <s:text
 																						name="payment.format.number">
-																						<s:param value="%{netAmt}" />
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><s:hidden
@@ -903,7 +905,7 @@ function disableSelectedRows()
 																						id="earlierPaymentAmt%{#s.index}"
 																						value="%{earlierPaymentAmt}" /> <s:text
 																						name="payment.format.number">
-																						<s:param value="%{earlierPaymentAmt}" />
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><s:hidden
@@ -912,76 +914,76 @@ function disableSelectedRows()
 																					<s:hidden
 																						name="contractorList[%{#s.index}].paymentAmt"
 																						id="paymentAmt%{#s.index}" value="%{paymentAmt}" />
-																					<s:text name="payment.format.number">
-																						<s:param value="%{payableAmt}" />
+																					<!-- TODO: Manual migration required for custom Struts tag -->
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
-																				<s:if test="%{!isFieldMandatory('fund')}">
+																				<c:if test="%{!isFieldMandatory('fund')}">
 																					<td class="blueborderfortdnew"
-																						id="fund<s:property value="#s.index"/>"><s:hidden
+																						id="fund${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].fundName"
 																							id="fundName%{#s.index}" value="%{fundName}" />
-																						<s:property value="%{fundName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('department')}">
+																						${%{fundName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('department')}">
 																					<td class="blueborderfortdnew"
-																						id="dept<s:property value="#s.index"/>"><s:hidden
+																						id="dept${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].deptName"
 																							id="deptName%{#s.index}" value="%{deptName}" />
-																						<s:property value="%{deptName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('function')}">
+																						${%{deptName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('function')}">
 																					<td class="blueborderfortdnew"
-																						id="function<s:property value="#s.index"/>"><s:hidden
+																						id="function${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].functionName"
 																							id="functionName%{#s.index}"
 																							value="%{functionName}" /> <s:property
 																							value="%{functionName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('functionary')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('functionary')}">
 																					<td class="blueborderfortdnew"
-																						id="functionary<s:property value="#s.index"/>"><s:hidden
+																						id="functionary${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].functionaryName"
 																							id="functionaryName%{#s.index}"
 																							value="%{functionaryName}" /> <s:property
 																							value="%{functionaryName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('fundsource')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('fundsource')}">
 																					<td class="blueborderfortdnew"
-																						id="fundsource<s:property value="#s.index"/>"><s:hidden
+																						id="fundsource${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].fundsourceName"
 																							id="fundsourceName%{#s.index}"
 																							value="%{fundsourceName}" /> <s:property
 																							value="%{fundsourceName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('scheme')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('scheme')}">
 																					<td class="blueborderfortdnew"
-																						id="scheme<s:property value="#s.index"/>"><s:hidden
+																						id="scheme${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].schemeName"
 																							id="schemeName%{#s.index}" value="%{schemeName}" />
-																						<s:property value="%{schemeName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('subscheme')}">
+																						${%{schemeName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('subscheme')}">
 																					<td class="blueborderfortdnew"
-																						id="subscheme<s:property value="#s.index"/>"><s:hidden
+																						id="subscheme${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].subschemeName"
 																							id="subschemeName%{#s.index}"
 																							value="%{subschemeName}" /> <s:property
 																							value="%{subschemeName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('field')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('field')}">
 																					<td class="blueborderfortdnew"
-																						id="field<s:property value="#s.index"/>"><s:hidden
+																						id="field${#s.index}"><s:hidden
 																							name="contractorList[%{#s.index}].fieldName"
 																							id="fieldName%{#s.index}" value="%{fieldName}" />
-																						<s:property value="%{fieldName}" /></td>
-																				</s:if>
+																						${%{fieldName}}</td>
+																				</c:if>
 																			</tr>
-																			</s:iterator>
+																			</c:forEach>
 																		</table>
-																		<s:if
+																		<c:if
 																			test="contractorList == null || contractorList.size==0">
-																			<div class="subheadsmallnew" style="border: 0;"><s:text name="msg.no.record.found"/> </div>
-																		</s:if>
+																			<div class="subheadsmallnew" style="border: 0;"><!-- TODO: Manual migration required for custom Struts tag --> </div>
+																		</c:if>
 																	</div>
 																</td>
 															</tr>
@@ -989,13 +991,13 @@ function disableSelectedRows()
 													</span>
 												</div>
 												<div class="tabbertab" id="suppliertab">
-													<h2><s:text name="lbl.supplier.bill"/> </h2>
+													<h2><!-- TODO: Manual migration required for custom Struts tag --> </h2>
 													<span>
 														<table align="center" border="0" cellpadding="0"
 															cellspacing="0" class="newtable" name="supSelectAll"
 															id="supSelectAll">
 															<tr>
-																<td colspan="6"><div class="subheadsmallnew"><s:text name="lbl.supplier.bill"/></div></td>
+																<td colspan="6"><div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
 															</tr>
 															<tr>
 																<td colspan="6">
@@ -1003,29 +1005,29 @@ function disableSelectedRows()
 																		<table align="center" border="0" cellpadding="0"
 																			cellspacing="0" width="100%">
 																			<tr>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.select"/><input
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --><input
 																					type="checkbox" onclick="selectAllSuppliers(this)" />
 																					</checkbox></th>
 
 																				<jsp:include page="billdetails-header.jsp" />
-																				<s:iterator var="p" value="supplierList" status="s">
+																				<c:forEach var="p" value="supplierList" status="s">
 																			</tr>
 																			<tr>
 																				<td class="blueborderfortdnew"><s:hidden
 																						name="supplierList[%{#s.index}].csBillId"
-																						id="csBillId%{#s.index}" value="%{csBillId}" /> <s:checkbox
+																						id="csBillId%{#s.index}" value="%{csBillId}" /> <form:checkbox
 																						name="supplierList[%{#s.index}].isSelected"
 																						id="isSelected%{#s.index}"
-																						onclick="checkMiscAttributes(this)"></s:checkbox></td>
+																						onclick="checkMiscAttributes(this)"></form:checkbox></td>
 																				<td align="left" class="blueborderfortdnew" />
-																				<s:property value="#s.index+1" />
+																				${#s.index+1}
 																				</td>
 																				<td align="left" class="blueborderfortdnew"><s:hidden
 																						name="supplierList[%{#s.index}].expType"
 																						id="expType%{#s.index}" value="%{expType}" /> <s:hidden
 																						name="supplierList[%{#s.index}].billNumber"
 																						id="billNumber%{#s.index}" value="%{billNumber}" />
-																					<s:property value="%{billNumber}" /></td>
+																					${%{billNumber}}</td>
 																				<td class="blueborderfortdnew"><s:hidden
 																						name="supplierList[%{#s.index}].billDate"
 																						id="billDate%{#s.index}" value="%{getFormattedDate1({billDate})}"/> <s:date
@@ -1038,8 +1040,8 @@ function disableSelectedRows()
 																						name="supplierList[%{#s.index}].billVoucherId"
 																						id="billVoucherId%{#s.index}"
 																						value="%{billVoucherId}" /> 
-																						<a href="#" onclick="openVoucher('<s:property value='%{billVoucherId}'/>');">
-																							<s:property value="%{billVoucherNumber}" />
+																						<a href="#" onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->');">
+																							${%{billVoucherNumber}}
 																						</a>
 																						</td>
 																				<td style="text-align: left"
@@ -1058,7 +1060,7 @@ function disableSelectedRows()
 																						name="supplierList[%{#s.index}].netAmt"
 																						id="netAmt%{#s.index}" value="%{netAmt}" /> <s:text
 																						name="payment.format.number">
-																						<s:param value="%{netAmt}" />
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><s:hidden
@@ -1066,7 +1068,7 @@ function disableSelectedRows()
 																						id="earlierPaymentAmt%{#s.index}"
 																						value="%{earlierPaymentAmt}" /> <s:text
 																						name="payment.format.number">
-																						<s:param value="%{earlierPaymentAmt}" />
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><s:hidden
@@ -1075,76 +1077,76 @@ function disableSelectedRows()
 																					<s:hidden
 																						name="supplierList[%{#s.index}].paymentAmt"
 																						id="paymentAmt%{#s.index}" value="%{paymentAmt}" />
-																					<s:text name="payment.format.number">
-																						<s:param value="%{payableAmt}" />
+																					<!-- TODO: Manual migration required for custom Struts tag -->
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
-																				<s:if test="%{!isFieldMandatory('fund')}">
+																				<c:if test="%{!isFieldMandatory('fund')}">
 																					<td class="blueborderfortdnew"
-																						id="fund<s:property value="#s.index"/>"><s:hidden
+																						id="fund${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].fundName"
 																							id="fundName%{#s.index}" value="%{fundName}" />
-																						<s:property value="%{fundName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('department')}">
+																						${%{fundName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('department')}">
 																					<td class="blueborderfortdnew"
-																						id="dept<s:property value="#s.index"/>"><s:hidden
+																						id="dept${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].deptName"
 																							id="deptName%{#s.index}" value="%{deptName}" />
-																						<s:property value="%{deptName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('function')}">
+																						${%{deptName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('function')}">
 																					<td class="blueborderfortdnew"
-																						id="function<s:property value="#s.index"/>"><s:hidden
+																						id="function${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].functionName"
 																							id="functionName%{#s.index}"
 																							value="%{functionName}" /> <s:property
 																							value="%{functionName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('functionary')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('functionary')}">
 																					<td class="blueborderfortdnew"
-																						id="functionary<s:property value="#s.index"/>"><s:hidden
+																						id="functionary${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].functionaryName"
 																							id="functionaryName%{#s.index}"
 																							value="%{functionaryName}" /> <s:property
 																							value="%{functionaryName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('fundsource')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('fundsource')}">
 																					<td class="blueborderfortdnew"
-																						id="fundsource<s:property value="#s.index"/>"><s:hidden
+																						id="fundsource${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].fundsourceName"
 																							id="fundsourceName%{#s.index}"
 																							value="%{fundsourceName}" /> <s:property
 																							value="%{fundsourceName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('scheme')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('scheme')}">
 																					<td class="blueborderfortdnew"
-																						id="scheme<s:property value="#s.index"/>"><s:hidden
+																						id="scheme${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].schemeName"
 																							id="schemeName%{#s.index}" value="%{schemeName}" />
-																						<s:property value="%{schemeName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('subscheme')}">
+																						${%{schemeName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('subscheme')}">
 																					<td class="blueborderfortdnew"
-																						id="subscheme<s:property value="#s.index"/>"><s:hidden
+																						id="subscheme${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].subschemeName"
 																							id="subschemeName%{#s.index}"
 																							value="%{subschemeName}" /> <s:property
 																							value="%{subschemeName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('field')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('field')}">
 																					<td class="blueborderfortdnew"
-																						id="field<s:property value="#s.index"/>"><s:hidden
+																						id="field${#s.index}"><s:hidden
 																							name="supplierList[%{#s.index}].fieldName"
 																							id="fieldName%{#s.index}" value="%{fieldName}" />
-																						<s:property value="%{fieldName}" /></td>
-																				</s:if>
+																						${%{fieldName}}</td>
+																				</c:if>
 																			</tr>
-																			</s:iterator>
+																			</c:forEach>
 																		</table>
-																		<s:if
+																		<c:if
 																			test="supplierList == null || supplierList.size==0">
-																			<div class="subheadsmallnew" style="border: 0;"><s:text name="msg.no.record.found"/></div>
-																		</s:if>
+																			<div class="subheadsmallnew" style="border: 0;"><!-- TODO: Manual migration required for custom Struts tag --></div>
+																		</c:if>
 																	</div>
 																</td>
 															</tr>
@@ -1152,12 +1154,12 @@ function disableSelectedRows()
 													</span>
 												</div>
 												<div class="tabbertab" id="cbilltab">
-													<h2><s:text name="lbl.expense.bill"/> </h2>
+													<h2><!-- TODO: Manual migration required for custom Struts tag --> </h2>
 													<span>
 														<table align="center" border="0" cellpadding="0"
 															cellspacing="0" class="newtable" name="expSelectAll">
 															<tr>
-																<td colspan="6"><div class="subheadsmallnew"><s:text name="lbl.expense.bill"/></div></td>
+																<td colspan="6"><div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
 															</tr>
 															<tr>
 																<td colspan="6">
@@ -1165,31 +1167,31 @@ function disableSelectedRows()
 																		<table align="center" border="0" cellpadding="0"
 																			cellspacing="0" width="100%">
 																			<tr>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.select"/> <input
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --> <input
 																					type="checkbox" id="expSelectAll"
 																					onclick="selectAllContingent(this)" /> </checkbox></th>
 																				<jsp:include page="billdetails-header.jsp" />
-																				<s:iterator var="p" value="contingentList"
+																				<c:forEach var="p" value="contingentList"
 																					status="s">
 																			</tr>
 																			<tr>
 
 																				<td class="blueborderfortdnew"><s:hidden
 																						name="contingentList[%{#s.index}].csBillId"
-																						id="csBillId%{#s.index}" value="%{csBillId}" /> <s:checkbox
+																						id="csBillId%{#s.index}" value="%{csBillId}" /> <form:checkbox
 																						name="contingentList[%{#s.index}].isSelected"
 																						id="isSelected%{#s.index}"
-																						onclick="checkMiscAttributes(this)"></s:checkbox></td>
+																						onclick="checkMiscAttributes(this)"></form:checkbox></td>
 																				<td align="left" class="blueborderfortdnew" />
-																				<s:property value="#s.index+1" />
+																				${#s.index+1}
 																				</td>
-																				<!-- <td align="left"  class="blueborderfortdnew"/><s:hidden  name="contingentList[%{#s.index}].csBillId" id="csBillId%{#s.index}" value="%{csBillId}"/><s:property value="#s.index" /> </td> -->
+																				<!-- <td align="left"  class="blueborderfortdnew"/><!-- TODO: Manual migration required for custom Struts tag -->${#s.index} </td> -->
 																				<td align="left" class="blueborderfortdnew"><s:hidden
 																						name="contingentList[%{#s.index}].expType"
 																						id="expType%{#s.index}" value="%{expType}" /> <s:hidden
 																						name="contingentList[%{#s.index}].billNumber"
 																						id="billNumber%{#s.index}" value="%{billNumber}" />
-																					<s:property value="%{billNumber}" /></td>
+																					${%{billNumber}}</td>
 																				<td class="blueborderfortdnew"><s:hidden
 																						name="contingentList[%{#s.index}].billDate"
 																						id="billDate%{#s.index}" value="%{getFormattedDate1({billDate})}"/> <s:date
@@ -1202,8 +1204,8 @@ function disableSelectedRows()
 																						name="contingentList[%{#s.index}].billVoucherId"
 																						id="billVoucherId%{#s.index}"
 																						value="%{billVoucherId}" /> 
-																						<a href="#" onclick="openVoucher('<s:property value='%{billVoucherId}'/>');">
-																							<s:property value="%{billVoucherNumber}" />
+																						<a href="#" onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->');">
+																							${%{billVoucherNumber}}
 																						</a>
 																						</td>
 																				<td style="text-align: left"
@@ -1223,7 +1225,7 @@ function disableSelectedRows()
 																						name="contingentList[%{#s.index}].netAmt"
 																						id="netAmt%{#s.index}" value="%{netAmt}" /> <s:text
 																						name="payment.format.number">
-																						<s:param value="%{netAmt}" />
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><s:hidden
@@ -1231,7 +1233,7 @@ function disableSelectedRows()
 																						id="earlierPaymentAmt%{#s.index}"
 																						value="%{earlierPaymentAmt}" /> <s:text
 																						name="payment.format.number">
-																						<s:param value="%{earlierPaymentAmt}" />
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><s:hidden
@@ -1240,76 +1242,76 @@ function disableSelectedRows()
 																					<s:hidden
 																						name="contingentList[%{#s.index}].paymentAmt"
 																						id="paymentAmt%{#s.index}" value="%{paymentAmt}" />
-																					<s:text name="payment.format.number">
-																						<s:param value="%{payableAmt}" />
+																					<!-- TODO: Manual migration required for custom Struts tag -->
+																						<!-- TODO: Manual migration required for custom Struts tag -->
 																					</s:text></td>
-																				<s:if test="%{!isFieldMandatory('fund')}">
+																				<c:if test="%{!isFieldMandatory('fund')}">
 																					<td class="blueborderfortdnew"
-																						id="fund<s:property value="#s.index"/>"><s:hidden
+																						id="fund${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].fundName"
 																							id="fundName%{#s.index}" value="%{fundName}" />
-																						<s:property value="%{fundName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('department')}">
+																						${%{fundName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('department')}">
 																					<td class="blueborderfortdnew"
-																						id="dept<s:property value="#s.index"/>"><s:hidden
+																						id="dept${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].deptName"
 																							id="deptName%{#s.index}" value="%{deptName}" />
-																						<s:property value="%{deptName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('functionary')}">
+																						${%{deptName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('functionary')}">
 																					<td class="blueborderfortdnew"
-																						id="functionary<s:property value="#s.index"/>"><s:hidden
+																						id="functionary${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].functionaryName"
 																							id="functionaryName%{#s.index}"
 																							value="%{functionaryName}" /> <s:property
 																							value="%{functionaryName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('function')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('function')}">
 																					<td class="blueborderfortdnew"
-																						id="function<s:property value="#s.index"/>"><s:hidden
+																						id="function${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].functionName"
 																							id="functionName%{#s.index}"
 																							value="%{functionName}" /> <s:property
 																							value="%{functionName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('fundsource')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('fundsource')}">
 																					<td class="blueborderfortdnew"
-																						id="fundsource<s:property value="#s.index"/>"><s:hidden
+																						id="fundsource${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].fundsourceName"
 																							id="fundsourceName%{#s.index}"
 																							value="%{fundsourceName}" /> <s:property
 																							value="%{fundsourceName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('scheme')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('scheme')}">
 																					<td class="blueborderfortdnew"
-																						id="scheme<s:property value="#s.index"/>"><s:hidden
+																						id="scheme${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].schemeName"
 																							id="schemeName%{#s.index}" value="%{schemeName}" />
-																						<s:property value="%{schemeName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('subscheme')}">
+																						${%{schemeName}}</td>
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('subscheme')}">
 																					<td class="blueborderfortdnew"
-																						id="subscheme<s:property value="#s.index"/>"><s:hidden
+																						id="subscheme${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].subschemeName"
 																							id="subschemeName%{#s.index}"
 																							value="%{subschemeName}" /> <s:property
 																							value="%{subschemeName}" /></td>
-																				</s:if>
-																				<s:if test="%{shouldShowHeaderField('field')}">
+																				</c:if>
+																				<c:if test="%{shouldShowHeaderField('field')}">
 																					<td class="blueborderfortdnew"
-																						id="field<s:property value="#s.index"/>"><s:hidden
+																						id="field${#s.index}"><s:hidden
 																							name="contingentList[%{#s.index}].fieldName"
 																							id="fieldName%{#s.index}" value="%{fieldName}" />
-																						<s:property value="%{fieldName}" /></td>
-																				</s:if>
+																						${%{fieldName}}</td>
+																				</c:if>
 																			</tr>
-																			</s:iterator>
+																			</c:forEach>
 																		</table>
-																		<s:if
+																		<c:if
 																			test="contingentList == null || contingentList.size==0">
-																			<div class="subheadsmallnew" style="border: 0;"><s:text name="msg.no.record.found"/></div>
-																		</s:if>
+																			<div class="subheadsmallnew" style="border: 0;"><!-- TODO: Manual migration required for custom Struts tag --></div>
+																		</c:if>
 																	</div>
 																</td>
 															</tr>
@@ -1334,28 +1336,28 @@ function disableSelectedRows()
 			<option>Show All</option>
 		</select> -->
 			</div>
-			<s:if test="%{!validateUser('createpayment')}">
+			<c:if test="%{!validateUser('createpayment')}">
 				<script>
 			document.getElementById('searchBtn').disabled=true;
-			document.getElementById('errorSpan').innerHTML='<s:text name="payment.invalid.user"/>';
+			document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
-				d.options[d.selectedIndex].text='<s:text name="lbl.choose.options"/>';
+				d.options[d.selectedIndex].text='<!-- TODO: Manual migration required for custom Struts tag -->';
 				d.options[d.selectedIndex].text.value=-1;
 			}
 		</script>
-			</s:if>
-			<s:if test="%{validateUser('deptcheck')}">
+			</c:if>
+			<c:if test="%{validateUser('deptcheck')}">
 				<script>
 				if(document.getElementById('vouchermis.departmentid'))
 				{
 					document.getElementById('vouchermis.departmentid').disabled=true;
 				}
 			</script>
-			</s:if>
+			</c:if>
 		</div>
-	</s:form>
+	</form:form>
 <form action="payment" id="form2" name="form2" method="POST" >
 <div id="search" style="display:visible"></div>
 <table id="con2" style="display:visible">
@@ -1369,7 +1371,7 @@ function disableSelectedRows()
 				<table align="center" width="100%">
 					<tr>
 						<td class="text-right view-content">
-								<s:text name="lbl.total"/> :  
+								<!-- TODO: Manual migration required for custom Struts tag --> :  
 						</td>
 						<td width="10%" class="text-right view-content"><div id="totalPaymentAmount">0.00</div></td>
 					</tr>
@@ -1378,27 +1380,27 @@ function disableSelectedRows()
 									name="payment.mode" /><span class="mandatory1">*</span></strong> <input
 							name="paymentMode" id="paymentModecheque" checked="checked"
 							value="cheque" type="radio"><label
-							for="paymentModecheque"><s:text name="lbl.cheque"/> </label> <input name="paymentMode"
+							for="paymentModecheque"><!-- TODO: Manual migration required for custom Struts tag --> </label> <input name="paymentMode"
 							id="paymentModecash" value="cash" type="radio"><label
 							for="paymentModecash"><s:text
 									name="cash.consolidated.cheque" /></label><input name="paymentMode"
 							id="paymentModertgs" value="rtgs" type="radio"><label
-							for="paymentModertgs"><s:text name="lbl.rtgs"/></label></td>
+							for="paymentModertgs"><!-- TODO: Manual migration required for custom Struts tag --></label></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center">
-					<s:hidden id="selectedContingentRows" name="selectedContingentRows" value="%{selectedContingentRows}" />
-					<s:hidden id="selectedContractorRows" name="selectedContractorRows" value="%{selectedContractorRows}" />
-					<s:hidden id="selectedSupplierRows" name="selectedSupplierRows" value="%{selectedSupplierRows}" />
-					<s:hidden id="selectedRows" name="selectedRows" value="%{selectedRows}" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 						</td>
 					</tr>
 					<tr>
-					<td align="center" colspan="2"><br/><input type="button" class="buttonsubmit" value="<s:text name='lbl.generate.payment'/>"  id="generatePayment" onclick="return check();"/></td>
+					<td align="center" colspan="2"><br/><input type="button" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"  id="generatePayment" onclick="return check();"/></td>
 					</tr>
 					<tr>
 						<td colspan="2" class="text-center">
-					 		<font size="small" color="red">*<s:text name="msg.max.record.display.warning"/><br>*<s:text name="msg.you.can.select.max.125.bills.for.single.payment"/> </font>
+					 		<font size="small" color="red">*<!-- TODO: Manual migration required for custom Struts tag --><br>*<!-- TODO: Manual migration required for custom Struts tag --> </font>
 						</td>
 					</tr>
 </table>

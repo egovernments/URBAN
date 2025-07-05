@@ -90,9 +90,6 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
     private String currentStatus;
 
     @SafeHtml
-    private String pendingActions;
-
-    @SafeHtml
     private String currentDesignation;
 
     @SafeHtml
@@ -102,16 +99,10 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
     private String nextState;
 
     @SafeHtml
-    private String nextAction;
-
-    @SafeHtml
     private String nextDesignation;
 
     @SafeHtml
     private String nextStatus;
-
-    @SafeHtml
-    private String validActions;
 
     private BigDecimal fromQty;
 
@@ -132,23 +123,20 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
     private Boolean rejectEnabled;
 
     public WorkFlowMatrix(final String department, final String objectType, final String currentState,
-                          final String currentStatus, final String pendingActions, final String currentDesignation,
-                          final String additionalRule, final String nextState, final String nextAction, final String nextDesignation,
-                          final String nextStatus, final String validActions, final BigDecimal fromQty, final BigDecimal toQty,
-                          final Date fromDate, final Date toDate) {
+                         final String currentStatus, final String currentDesignation,
+                         final String additionalRule, final String nextState, final String nextDesignation,
+                         final String nextStatus, final BigDecimal fromQty, final BigDecimal toQty,
+                         final Date fromDate, final Date toDate) {
         super();
         this.department = department;
         this.objectType = objectType;
         this.currentState = currentState;
         this.currentStatus = currentStatus;
-        this.pendingActions = pendingActions;
         this.currentDesignation = currentDesignation;
         this.additionalRule = additionalRule;
         this.nextState = nextState;
-        this.nextAction = nextAction;
         this.nextDesignation = nextDesignation;
         this.nextStatus = nextStatus;
-        this.validActions = validActions;
         this.fromQty = fromQty;
         this.toQty = toQty;
         this.fromDate = fromDate;
@@ -161,9 +149,8 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
 
     @Override
     public WorkFlowMatrix clone() {
-        return new WorkFlowMatrix(department, objectType, currentState, currentStatus, pendingActions,
-                currentDesignation, additionalRule, nextState, nextAction, nextDesignation, nextStatus, validActions,
-                fromQty, toQty, fromDate, toDate);
+        return new WorkFlowMatrix(department, objectType, currentState, currentStatus, currentDesignation,
+                additionalRule, nextState, nextDesignation, nextStatus, fromQty, toQty, fromDate, toDate);
     }
 
     @Override
@@ -208,14 +195,6 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
         this.currentStatus = currentStatus;
     }
 
-    public String getPendingActions() {
-        return pendingActions;
-    }
-
-    public void setPendingActions(final String pendingActions) {
-        this.pendingActions = pendingActions;
-    }
-
     public String getCurrentDesignation() {
         return currentDesignation;
     }
@@ -240,14 +219,6 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
         this.nextState = nextState;
     }
 
-    public String getNextAction() {
-        return nextAction;
-    }
-
-    public void setNextAction(final String nextAction) {
-        this.nextAction = nextAction;
-    }
-
     public String getNextDesignation() {
         return nextDesignation;
     }
@@ -262,14 +233,6 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
 
     public void setNextStatus(final String nextStatus) {
         this.nextStatus = nextStatus;
-    }
-
-    public String getValidActions() {
-        return validActions;
-    }
-
-    public void setValidActions(final String validActions) {
-        this.validActions = validActions;
     }
 
     public BigDecimal getFromQty() {

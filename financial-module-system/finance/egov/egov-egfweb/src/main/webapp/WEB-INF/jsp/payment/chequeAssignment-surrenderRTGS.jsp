@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
  <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,34 +55,34 @@
 <head>
 <link rel="stylesheet" type="text/css" 
 href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
-<title><s:text name="surrender.rtgs" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
 
-	<s:form action="chequeAssignment" theme="simple">
-		<s:token />
+	<form:form action="chequeAssignment" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Surrender RTGS" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror /> 
-		<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> 
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 			<div class="subheadnew"></div>
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:property value="bank_account_dept" />
+					${bank_account_dept}
 				</div>
-				<!--<s:hidden name="department" />
+				<!--<!-- TODO: Manual migration required for custom Struts tag -->
 			-->
-				<s:hidden name="bankaccount" id="bankaccount" />
-				<s:hidden name="bank_branch" />
-				<s:hidden name="fromDate" />
-				<s:hidden name="toDate" />
-				<s:hidden name="voucherNumber" />
-				<s:hidden name="instrumentNumber" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<table align="center" width="100%" cellpadding="0" cellspacing="0">
 					<tr>
-						<th class="bluebgheadtdnew"><s:text name="Sl No." /></th>
+						<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.transacton.no" /></th>
 						<th class="bluebgheadtdnew"><s:text
@@ -94,16 +96,16 @@ href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.surrendarreason" /></th>
 					</tr>
-					<s:if test="%{instrumentHeaderList.size()>0 }">
-						<s:iterator var="p" value="instrumentHeaderList" status="stat">
+					<c:if test="%{instrumentHeaderList.size()>0 }">
+						<c:forEach var="p" value="instrumentHeaderList" status="stat">
 							<tr>
-								<s:hidden name="instrumentHeaderId" value="%{id}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								<s:hidden name="paymentVoucherNumber"
 									value="%{voucherHeaderId.id}" />
 									
 									
 								<td style="text-align: center" class="blueborderfortdnew" />
-								<s:property value="#stat.index+1" />
+								${#stat.index+1}
 								</td>
 								<td style="text-align: center" class="blueborderfortdnew"><s:property
 										value="%{transactionNumber}" /><s:hidden name="transactionNumber"
@@ -112,7 +114,7 @@ href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
 										
 								<td style="text-align: right" class="blueborderfortdnew"><s:text
 										name="format.number">
-										<s:param value="%{instrumentAmount}" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 							
 									
@@ -122,41 +124,41 @@ href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
 								</td>
 								
 								<td style="text-align: center" class="blueborderfortdnew">
-									<s:iterator var="v" value="instrumentVouchers" status="st">
+									<c:forEach var="v" value="instrumentVouchers" status="st">
 										<A href="#"
-											onclick='openDetails(<s:property value="%{voucherHeaderId.id}"/>);'>
-											<s:property value="%{voucherHeaderId.voucherNumber}" />
+											onclick='openDetails(${%{voucherHeaderId.id}});'>
+											${%{voucherHeaderId.voucherNumber}}
 										</A>
-									</s:iterator>
+									</c:forEach>
 								</td>
 								<td style="text-align: center" class="blueborderfortdnew">
-								<s:checkbox
+								<form:checkbox
 										name="surrender"
 										value='%{surrender[#stat.index]!=null?true:false}'
 										fieldValue="%{id}" id="surrender%{#stat.index}"/></td>
 								<td style="text-align: center" class="blueborderfortdnew">
-									<s:select name="surrendarReasons" id="surrendarReasons"
+									<form:select path="surrendarReasons" id="surrendarReasons"
 										list="surrendarReasonMap" headerKey="-1"
 										headerValue="----Choose----"
 										value='%{surrendarReasons[#stat.index]}' />
 							</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
-							<td class="greybox"><s:text name="chq.issued.department" /><span
-								class="mandatory1">*</span> <s:select name="department"
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
+								class="mandatory1">*</span> <form:select path="department"
 									id="department" list="dropdownData.departmentList" listKey="id"
 									listValue="name" headerKey="-1"
 									headerValue="----Choose----" value="%{department}" /></td>
 						</tr>
-					</s:if>
+					</c:if>
 
 
 				</table>
 				<br />
 
-				<s:if test="%{instrumentHeaderList.size()>0}">
+				<c:if test="%{instrumentHeaderList.size()>0}">
 					<div class="buttonbottom">
-						<s:hidden name="button" id="button" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						
 					
 					 <s:hidden name="selectedRowsId" id="selectedRowsId"
@@ -172,16 +174,16 @@ href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
 						<input type="button" value="Close"
 							onclick="javascript:window.close()" class="button" />
 					</div>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<div class="subheadsmallnew" id="noRecordsDiv">No Records
 						Found</div>
 				</s:else>
 			</div>
 
 
-			<s:token />
-	</s:form>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script>
 		function validatechequeno(obj)
 			{
@@ -251,10 +253,10 @@ href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
  	{
 		resetSelectedRowsId();
 	 	document.getElementById('button').value='surrenderAndReassign';
-	 	var chqGenMode='<s:property value="isChequeNoGenerationAuto()"/>';
-	 	var alertNumber='<s:text name="chq.number.missing.alert"/>';
-	 	var alertOnlyNumber='<s:text name="chq.number.should.numeric"/>';
-	 	var alertDate='<s:text name="chq.date.missing.alert"/>';
+	 	var chqGenMode='${isChequeNoGenerationAuto()}';
+	 	var alertNumber='<!-- TODO: Manual migration required for custom Struts tag -->';
+	 	var alertOnlyNumber='<!-- TODO: Manual migration required for custom Struts tag -->';
+	 	var alertDate='<!-- TODO: Manual migration required for custom Struts tag -->';
 	 	if(chqGenMode=='false')
 	 	{
 	 		var surrenderObj=document.getElementsByName('surrender');
@@ -302,7 +304,7 @@ href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
  		//var newSerialNoObj=document.getElementsByName('newSerialNo');
  		var newChqNoObj=document.getElementsByName('transactionNumber');
  		var newChqDateObj=document.getElementsByName('transactionDate');
-		var chequeSize='<s:property value ="%{instrumentHeaderList.size()}"/>';
+		var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 		   selectedRowsId = new Array();
 			for(var index=0;index<chequeSize;index++){
 				var obj = document.getElementById('surrender'+index);

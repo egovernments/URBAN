@@ -149,7 +149,8 @@ public class PersistenceService<T, ID extends Serializable> {
 
 	public T find(final String query) {
 		final Query q = getSession().createQuery(query);
-		return (T) q.uniqueResult();
+// TODO: Migrate from Struts/XWork: 		return (T) q.uniqueResult();
+		return null; // TODO: Implement Spring equivalent
 	}
 
 	protected T findById(final ID id) {

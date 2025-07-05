@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,12 +56,12 @@
 <%@ page language="java"%>
 
 <span class="mandatory"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span>
 <div class="formmainbox">
 	<div class="subheadnew">VoucherDetails</div>
-	<s:if test="%{viewReceiptDetailsList.size()>0}">
+	<c:if test="%{viewReceiptDetailsList.size()>0}">
 		<br />
 		<table width="99%" border="0" cellspacing="0" cellpadding="0">
 
@@ -69,7 +71,7 @@
 						<table width="100%" border="0" cellpadding="0" cellspacing="0"
 							class="tablebottom">
 							<tr>
-								<th class="bluebgheadtdnew"><s:text name="Sl No" /></th>
+								<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
 								<th class="bluebgheadtdnew"><s:text
 										name="chq.assignment.receipt.voucherno" /></th>
 								<th class="bluebgheadtdnew"><s:text
@@ -77,11 +79,11 @@
 								<th class="bluebgheadtdnew"><s:text
 										name="chq.assignment.receipt.deductedamount" /></th>
 							</tr>
-							<s:iterator value="viewReceiptDetailsList" status="stat"
+							<c:forEach value="viewReceiptDetailsList" status="stat"
 								var="ChequeAssignment">
 								<tr>
 									<td class="blueborderfortd"><div align="left">
-											<s:property value="#stat.index+1" />
+											${#stat.index+1}
 											&nbsp;
 										</div></td>
 									<s:hidden id="voucherHeaderId"
@@ -89,30 +91,30 @@
 										value="%{voucherHeaderId}" />
 									<td class="blueborderfortd"><div align="left">
 											<a href="#"
-												onclick="viewVoucher(<s:property value='voucherHeaderId'/>)">
-												<s:property value="voucherNumber" />
+												onclick="viewVoucher(<!-- TODO: Manual migration required for custom Struts tag -->)">
+												${voucherNumber}
 											</a>&nbsp;
 										</div></td>
 									<td class="blueborderfortd"><div align="right">
-											<s:text name="format.number">
-												<s:param value="%{receiptAmount}" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</s:text>
 											&nbsp;
 										</div></td>
 									<td class="blueborderfortd"><div align="right">
-											<s:text name="format.number">
-												<s:param value="%{deductedAmount}" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</s:text>
 											&nbsp;
 										</div></td>
 								</tr>
-							</s:iterator>
+							</c:forEach>
 							<tr>
 								<td class="blueborderfortd" colspan="3"><div align="right">
-										<s:text name="total" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</div></td>
 								<td class="blueborderfortd"><div align="right">
-										<s:property value="%{totalDeductedAmount}" />
+										${%{totalDeductedAmount}}
 									</div></td>
 							</tr>
 						</table>
@@ -120,8 +122,8 @@
 				</td>
 			</tr>
 		</table>
-	</s:if>
-	<s:else>No Voucher Details Found</s:else>
+	</c:if>
+	<c:otherwise>No Voucher Details Found</s:else>
 
 	<script>
 			function viewVoucher(vid){

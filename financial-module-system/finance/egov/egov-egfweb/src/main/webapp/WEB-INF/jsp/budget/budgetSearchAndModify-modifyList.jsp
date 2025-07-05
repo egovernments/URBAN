@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -64,57 +66,57 @@
 </script>
 <div id="detail"
 	style="width: 100%; overflow-x: auto; overflow-y: hidden;">
-	<s:hidden name="consolidatedScreen" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<table align="center" border="0" cellpadding="0" cellspacing="0"
 		width="100%" class="tablebottom"
 		style="border-right: 0px solid #C5C5C5;">
 		<tr>
 			<th class="bluebgheadtd" width="10%"><s:text
 					name="budgetdetail.budget" /></th>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="fund" /></th>
-			</s:if>
-			<s:if
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
 				<th class="bluebgheadtd" width="10%"><s:text
 						name="budgetdetail.function" /></th>
-			</s:if>
+			</c:if>
 
 			<th class="bluebgheadtd" width="11%"><s:text
 					name="budgetdetail.budgetGroup" /></th>
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
 				<th class="bluebgheadtd" width="16%"><s:text
 						name="budgetdetail.executingDepartment" /></th>
-			</s:if>
-			<s:if
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="functionary" /></th>
-			</s:if>
-			<s:if
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="scheme" /></th>
-			</s:if>
-			<s:if
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if
 				test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="subscheme" /></th>
-			</s:if>
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
 
-			<s:if
+			<c:if
 				test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="field" /></th>
-			</s:if>
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
 
 			<th class="bluebgheadtd" width="16%"><s:text
 					name="budgetdetail.actuals" />
-				<s:property value="twopreviousfinYearRange" />(Rs)</th>
+				${twopreviousfinYearRange}(Rs)</th>
 			<th class="bluebgheadtd" width="16%"><s:text
 					name="budgetdetail.actuals" />
-				<s:property value="previousfinYearRange" />(Rs)</th>
+				${previousfinYearRange}(Rs)</th>
 			<th class="bluebgheadtd" width="16%"><s:text
 					name="budgetdetail.actuals" />
-				<s:property value="currentfinYearRange" />(Rs)</th>
+				${currentfinYearRange}(Rs)</th>
 			<th class="bluebgheadtd" width="16%">BE <s:property
 					value="currentfinYearRange" />(Rs)(A)
 			</th>
@@ -125,30 +127,30 @@
 					name="budgetdetail.anticipatoryAmount" />(Rs)</th>
 			<th class="bluebgheadtd" width="16%"><s:text
 					name="budgetdetail.estimateAmount.revised" />(Rs)</th>
-			<s:if test="%{showApprovalDetails()}">
-				<s:if test="%{isConsolidatedScreen()}">
+			<c:if test="%{showApprovalDetails()}">
+				<c:if test="%{isConsolidatedScreen()}">
 					<th class="bluebgheadtd" width="16%">RE <s:property
 							value="savedbudgetDetailList.get(0).getBudget().getFinancialYear().getFinYearRange()" />
 						fixed (Rs)
 					</th>
-				</s:if>
-			</s:if>
+				</c:if>
+			</c:if>
 
 
 			<th class="bluebgheadtd" width="16%"><s:text
 					name="budgetdetail.estimateAmount" /> <s:property
 					value="nextfinYearRange" /> (Rs)</th>
-			<s:if test="%{showApprovalDetails()}">
-				<s:if test="%{isConsolidatedScreen()}">
+			<c:if test="%{showApprovalDetails()}">
+				<c:if test="%{isConsolidatedScreen()}">
 					<th class="bluebgheadtd" width="16%">BE <s:property
 							value="nextfinYearRange" /> fixed (Rs)
 					</th>
-				</s:if>
+				</c:if>
 				<th class="bluebgheadtd" with="16%"><s:text
 						name="budgetdetail.remarks" /></th>
-			</s:if>
-			<s:else>
-				<th class="bluebgheadtd" width="16%"><s:text name="delete" /></th>
+			</c:if>
+			<c:otherwise>
+				<th class="bluebgheadtd" width="16%"><!-- TODO: Manual migration required for custom Struts tag --></th>
 			</s:else>
 
 
@@ -156,54 +158,54 @@
 		</tr>
 		<s:hidden name="detailsLength" id="detailsLength"
 			value="%{savedbudgetDetailList.size()}" />
-		<s:iterator value="savedbudgetDetailList" status="stat">
+		<c:forEach value="savedbudgetDetailList" status="stat">
 			<tr>
 				<input type='hidden'
-					name="savedbudgetDetailList[<s:property value='#stat.index'/>].id"
-					value="<s:property value='id'/>" />
+					name="savedbudgetDetailList[<!-- TODO: Manual migration required for custom Struts tag -->].id"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->" />
 				<input type='hidden'
-					name="savedbudgetDetailList[<s:property value='#stat.index'/>].nextYrId"
-					value="<s:property value='nextYrId'/>" />
+					name="savedbudgetDetailList[<!-- TODO: Manual migration required for custom Struts tag -->].nextYrId"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->" />
 				<input type='hidden'
-					name="savedbudgetDetailList[<s:property value='#stat.index'/>].documentNumber"
-					id="savedbudgetDetailList[<s:property value='#stat.index'/>].documentNumber"
-					value="<s:property value='documentNumber'/>" />
-				<td class="blueborderfortd"><s:property value="budget.name" />
+					name="savedbudgetDetailList[<!-- TODO: Manual migration required for custom Struts tag -->].documentNumber"
+					id="savedbudgetDetailList[<!-- TODO: Manual migration required for custom Struts tag -->].documentNumber"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->" />
+				<td class="blueborderfortd">${budget.name}
 					&nbsp;</td>
-				<s:if
+				<c:if
 					test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
-					<td class="blueborderfortd"><s:property value="fund.name" />&nbsp;</td>
-				</s:if>
+					<td class="blueborderfortd">${fund.name}&nbsp;</td>
+				</c:if>
 
-				<s:if
+				<c:if
 					test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
-					<td class="blueborderfortd"><s:property value="function.name" />&nbsp;</td>
-				</s:if>
+					<td class="blueborderfortd">${function.name}&nbsp;</td>
+				</c:if>
 				<td class="blueborderfortd"><s:property
 						value="budgetGroup.name" />&nbsp;</td>
-				<s:if
+				<c:if
 					test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
 					<td class="blueborderfortd"><s:property
 							value="executingDepartment.deptName" />&nbsp;</td>
-				</s:if>
-				<s:if
+				</c:if>
+				<c:if
 					test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">
 					<td class="blueborderfortd"><s:property
 							value="functionary.name" />&nbsp;</td>
-				</s:if>
-				<s:if
+				</c:if>
+				<c:if
 					test="%{shouldShowField('scheme') || shouldShowGridField('scheme')}">
-					<td class="blueborderfortd"><s:property value="scheme.name" />&nbsp;</td>
-				</s:if>
-				<s:if
+					<td class="blueborderfortd">${scheme.name}&nbsp;</td>
+				</c:if>
+				<c:if
 					test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
-					<td class="blueborderfortd"><s:property value="subScheme.name" />&nbsp;</td>
-				</s:if>
-				<s:if
+					<td class="blueborderfortd">${subScheme.name}&nbsp;</td>
+				</c:if>
+				<c:if
 					test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
-					<td class="blueborderfortd"><s:property value="boundary.name" />&nbsp;</td>
-				</s:if>
-				<s:if test="%{isConsolidatedScreen()}">
+					<td class="blueborderfortd">${boundary.name}&nbsp;</td>
+				</c:if>
+				<c:if test="%{isConsolidatedScreen()}">
 					<s:set name="twopreviousYearActs"
 						value="%{budgetAmountView[#stat.index].twopreviousYearActuals/1000}" />
 					<s:set name="previousYearActs"
@@ -216,9 +218,9 @@
 						value="%{budgetAmountView[#stat.index].lastTotal/1000}" />
 					<s:set name="reAppropriation"
 						value="%{budgetAmountView[#stat.index].reappropriation/1000}" />
-					<s:set name="anticipatoryAmt" value="%{anticipatoryAmount/1000}" />
-					<s:set name="originalAmt" value="%{originalAmount/1000}" />
-					<s:set name="approvedAmt" value="%{approvedAmount/1000}" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 					<s:set name="nextYroriginalAmt"
 						value="%{nextYroriginalAmount/1000}" />
 					<s:set name="nextYrapprovedAmt"
@@ -231,15 +233,15 @@
 					<td class="blueborderfortd" style="text-align: right;"><fmt:formatNumber
 							type="number" maxFractionDigits="2" minFractionDigits="2"
 							value="${previousYearActs}" />
-						<s:property value="#previousYearActs" />&nbsp;</td>
+						${#previousYearActs}&nbsp;</td>
 					<td class="blueborderfortd" style="text-align: right;"><fmt:formatNumber
 							type="number" maxFractionDigits="2" minFractionDigits="2"
 							value="${currentYearBeActs}" />
-						<s:property value="#currentYearBeActs" />&nbsp;</td>
+						${#currentYearBeActs}&nbsp;</td>
 					<td class="blueborderfortd" style="text-align: right;"><fmt:formatNumber
 							type="number" maxFractionDigits="2" minFractionDigits="2"
 							value="${lastBEApp}" />
-						<s:property value="#lastBEApp" />&nbsp;</td>
+						${#lastBEApp}&nbsp;</td>
 					<td class="blueborderfortd" style="text-align: right;"><fmt:formatNumber
 							type="number" maxFractionDigits="2" minFractionDigits="2"
 							value="${reAppropriation}" /> <s:property
@@ -249,51 +251,51 @@
 					<td class="blueborderfortd" style="text-align: right;"><fmt:formatNumber
 							type="number" maxFractionDigits="2" minFractionDigits="2"
 							value="${lastTot}" />
-						<s:property value="#lastTot" />&nbsp;</td>
+						${#lastTot}&nbsp;</td>
 					</td>
 					<td class="blueborderfortd" style="text-align: right;"><fmt:formatNumber
 							type="number" maxFractionDigits="2" minFractionDigits="2"
 							value="${anticipatoryAmt}" />
-						<s:property value="#anticipatoryAmt" />&nbsp;</td>
+						${#anticipatoryAmt}&nbsp;</td>
 
 					<td class="blueborderfortd" style="text-align: right;"><s:text
 							name="format.number">
-							<s:param value="originalAmt" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</s:text>&nbsp;</td>
 
-					<s:if test="%{showApprovalDetails()}">
+					<c:if test="%{showApprovalDetails()}">
 						<td class="blueborderfortd"><input type="text"
 							style="text-align: right; size: 50px;"
-							id='savedbudgetDetailList[<s:property value="#stat.index"/>].approvedAmount'
-							name='savedbudgetDetailList[<s:property value="#stat.index"/>].approvedAmount'
-							value='<s:text name="format.number"><s:param value="approvedAmt"/></s:text>' />&nbsp;</td>
-					</s:if>
+							id='savedbudgetDetailList[${#stat.index}].approvedAmount'
+							name='savedbudgetDetailList[${#stat.index}].approvedAmount'
+							value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;</td>
+					</c:if>
 					<td class="blueborderfortd" style="text-align: right;"><s:text
 							name="format.number">
-							<s:param value="nextYroriginalAmt" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</s:text>&nbsp;</td>
-					<s:if test="%{showApprovalDetails()}">
+					<c:if test="%{showApprovalDetails()}">
 						<td class="blueborderfortd"><input type="text"
 							style="text-align: right; size: 50px;"
-							id='savedbudgetDetailList[<s:property value="#stat.index"/>].nextYrapprovedAmount'
-							name='savedbudgetDetailList[<s:property value="#stat.index"/>].nextYrapprovedAmount'
-							value='<s:if test="%{nextYrapprovedAmount == null || nextYrapprovedAmount == 0.0}"><s:text name="format.number"><s:param value="nextYrapprovedAmount"/></s:text></s:if><s:else><s:text name="format.number"><s:param value="nextYrapprovedAmt"/></s:text></s:else>' />&nbsp;</td>
+							id='savedbudgetDetailList[${#stat.index}].nextYrapprovedAmount'
+							name='savedbudgetDetailList[${#stat.index}].nextYrapprovedAmount'
+							value='<c:if test="%{nextYrapprovedAmount == null || nextYrapprovedAmount == 0.0}"><!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text></c:if><c:otherwise><!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text></s:else>' />&nbsp;</td>
 						<td class="blueborderfortd"><textarea cols="50" rows="1"
 								style="size: 50px"
-								name='savedbudgetDetailList[<s:property value="#stat.index"/>].state.text1'><s:property
+								name='savedbudgetDetailList[${#stat.index}].state.text1'><s:property
 									value="state.text1" /></textarea></td>
-					</s:if>
-					<s:else>
+					</c:if>
+					<c:otherwise>
 						<td class="blueborderfortd"><a href="#"
-							id="<s:property value='id'/>"
+							id="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="return deleteBudgetDetail(this);"><img
 								src="/egi/resources/erp2/images/cancel.png" border="0" /></a></td>
 					</s:else>
 					<td><input type="submit" class="buttonsubmit" value="Edit"
 						id="budgetDocUploadButton"
-						onclick='showDocumentManager(<s:property value="#stat.index"/>);return false;' /></td>
-				</s:if>
-				<s:else>
+						onclick='showDocumentManager(${#stat.index});return false;' /></td>
+				</c:if>
+				<c:otherwise>
 					<td class="blueborderfortd" style="text-align: right;"><s:property
 							value="budgetAmountView[#stat.index].twopreviousYearActuals" />&nbsp;</td>
 					<td class="blueborderfortd" style="text-align: right;"><s:property
@@ -314,26 +316,26 @@
 
 					<td class="blueborderfortd"><input type="text"
 						style="text-align: right; size: 50px;"
-						id='savedbudgetDetailList[<s:property value="#stat.index"/>].originalAmount'
-						name='savedbudgetDetailList[<s:property value="#stat.index"/>].originalAmount'
-						value='<s:text name="format.number"><s:param value="originalAmount"/></s:text>' />&nbsp;</td>
+						id='savedbudgetDetailList[${#stat.index}].originalAmount'
+						name='savedbudgetDetailList[${#stat.index}].originalAmount'
+						value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;</td>
 
 
 					<td class="blueborderfortd"><input type="text"
 						style="text-align: right; size: 50px;"
-						id='savedbudgetDetailList[<s:property value="#stat.index"/>].nextYroriginalAmount'
-						name='savedbudgetDetailList[<s:property value="#stat.index"/>].nextYroriginalAmount'
-						value='<s:text name="format.number"><s:param value="nextYroriginalAmount"/></s:text>' />&nbsp;</td>
+						id='savedbudgetDetailList[${#stat.index}].nextYroriginalAmount'
+						name='savedbudgetDetailList[${#stat.index}].nextYroriginalAmount'
+						value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;</td>
 
-					<s:if test="%{showApprovalDetails()}">
+					<c:if test="%{showApprovalDetails()}">
 						<td class="blueborderfortd"><textarea cols="50" rows="1"
 								style="size: 50px"
-								name='savedbudgetDetailList[<s:property value="#stat.index"/>].state.text1'><s:property
+								name='savedbudgetDetailList[${#stat.index}].state.text1'><s:property
 									value="state.text1" /></textarea></td>
-					</s:if>
-					<s:else>
+					</c:if>
+					<c:otherwise>
 						<td class="blueborderfortd"><a href="#"
-							id="<s:property value='id'/>"
+							id="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="return deleteBudgetDetail(this);"><img
 								src="/egi/resources/erp2/images/cancel.png" border="0" /></a></td>
 					</s:else>
@@ -341,10 +343,10 @@
 
 					<td><input type="submit" class="buttonsubmit" value="Edit"
 						id="budgetDocUploadButton"
-						onclick='showDocumentManager(<s:property value="#stat.index"/>);return false;' /></td>
+						onclick='showDocumentManager(${#stat.index});return false;' /></td>
 				</s:else>
 			</tr>
-		</s:iterator>
+		</c:forEach>
 	</table>
 </div>
 

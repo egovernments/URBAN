@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -69,7 +71,7 @@
 			</div>
 			<label class="col-sm-2 control-label text-right"><spring:message code="lbl.employeename" /></label>
 			<div class="col-sm-3 add-margin">
-				<form:input path="employeeName" class="form-control" id="employeeName" name="employeeName"/>
+				<form:input path="employeeName" class="form-control" id="employeeName" path="employeeName"/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -85,14 +87,14 @@
 			<label class="col-sm-2 control-label text-right"><spring:message code="lbl.designation" /></label>
 			<div class="col-sm-3 add-margin">
 			<form:hidden path="designation" name="designation" id="designation" />
-				<form:input path="" id="designationInput" class="form-control" name="designationInput" placeholder="Type first 3 letters of Designation"/>
+				<form:input path="" id="designationInput" class="form-control" path="designationInput" placeholder="Type first 3 letters of Designation"/>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label text-right"><spring:message code="lbl.position" /></label>
 			<div class="col-sm-3 add-margin">
 			   <form:hidden path="position" name="position" id="position" />
-				<form:input path="" name="positionInput" id="positionInput" class="form-control" placeholder="Type first 3 letters of Position" />
+				<form:input path="" path="positionInput" id="positionInput" class="form-control" placeholder="Type first 3 letters of Position" />
 			</div>
 			<label class="col-sm-2 control-label text-right"><spring:message code="lbl.date" /></label>
 			<div class="col-sm-3 add-margin">

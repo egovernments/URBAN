@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -85,10 +87,10 @@
 <body>
 	<div id="container">
 		<iframe id="report" name="report"
-			src='/EGF/payment/chequeAssignment!ajaxGenerateAdviceHtml.action?instHeaderId=<s:property value="%{instHeaderList[0].id}"/>'></iframe>
+			src='/EGF/payment/chequeAssignment!ajaxGenerateAdviceHtml.action?instHeaderId=${%{instHeaderList[0].id}}'></iframe>
 	</div>
 
-	<s:form name="chequeAssignmentForm" action="chequeAssignment"
+	<form:form name="chequeAssignmentForm" action="chequeAssignment"
 		theme="simple">
 		<s:hidden name="instHeaderId" id="instHeaderId"
 			value="%{instHeaderList[0].id}" />
@@ -101,5 +103,5 @@
 			<s:submit id="printXLS" value="SAVE AS EXCEL"
 				method="generateAdviceXls" cssClass="buttonsubmit" />
 		</div>
-	</s:form>
+	</form:form>
 </body>

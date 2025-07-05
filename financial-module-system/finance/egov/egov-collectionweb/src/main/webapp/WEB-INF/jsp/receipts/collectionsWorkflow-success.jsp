@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -66,32 +68,32 @@ function refreshInbox() {
 </head>
 <body onLoad="refreshInbox();">
 
-<s:form theme="simple" name="collectionsWorkflowForm">
+<form:form theme="simple" name="collectionsWorkflowForm">
 
-	<div class="subheadnew"><s:if test="%{isSubmitAction == true}">
-		<s:text name="collectionsWorkflow.submitSuccess" /> <s:property value="%{approverName}" />
-	</s:if> <s:elseif test="%{isApproveAction == true}">
-		<s:text name="collectionsWorkflow.approveSuccess" />
-	</s:elseif> <s:else>
-		<s:text name="collectionsWorkflow.rejectSuccess" /> <s:property value="%{approverName}" />
+	<div class="subheadnew"><c:if test="%{isSubmitAction == true}">
+		<!-- TODO: Manual migration required for custom Struts tag --> ${%{approverName}}
+	</c:if> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</s:elseif> <c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag --> ${%{approverName}}
 	</s:else></div>
 	<br />
-	<s:hidden name="receiptDate" value="%{receiptDate}"/>
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
 	<div class="buttonbottom">
 	<input name="buttonClose" type="button" class="buttonsubmit"
 		id="buttonClose" value="Close" onclick="window.close()" />
 
-	<s:if test="%{isSubmitAction == true}">	&nbsp;
+	<c:if test="%{isSubmitAction == true}">	&nbsp;
 		
 	<input type="button" class="buttonsubmit" id="buttonCashReport"
-			value="<s:text name='collectionsWorkflow.submit.report.cash'/>"
-			onclick="window.open('${pageContext.request.contextPath}/receipts/collectionsWorkflow-submissionReportCash.action?receiptDate=<s:property value="%{receiptDate}" />', '_blank', 'height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');"/> &nbsp;
+			value="<!-- TODO: Manual migration required for custom Struts tag -->"
+			onclick="window.open('${pageContext.request.contextPath}/receipts/collectionsWorkflow-submissionReportCash.action?receiptDate=${%{receiptDate}}', '_blank', 'height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');"/> &nbsp;
 	<input type="button" class="buttonsubmit" id="buttonCashReport"
-			value="<s:text name='collectionsWorkflow.submit.report.cheque'/>"
-			onclick="window.open('${pageContext.request.contextPath}/receipts/collectionsWorkflow-submissionReportCheque.action?receiptDate=<s:property value="%{receiptDate}" />', '_blank', 'height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');"/> &nbsp;
-	</s:if>
+			value="<!-- TODO: Manual migration required for custom Struts tag -->"
+			onclick="window.open('${pageContext.request.contextPath}/receipts/collectionsWorkflow-submissionReportCheque.action?receiptDate=${%{receiptDate}}', '_blank', 'height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');"/> &nbsp;
+	</c:if>
 	</div>
-</s:form>
+</form:form>
 </body>
 </html>

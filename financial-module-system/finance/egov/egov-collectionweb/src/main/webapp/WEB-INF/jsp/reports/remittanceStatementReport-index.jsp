@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -49,7 +51,7 @@
 
 <html>
 <head>
-<title><s:text name="remittanceStatementReport.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 function validate()
 {
@@ -61,14 +63,14 @@ function validate()
 
 		if (fromdate == "") {
 			document.getElementById("report_error_area").style.display = "block";
-			document.getElementById("report_error_area").innerHTML += '<s:text name="common.datemandatory.fromdate" />'
+			document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 					+ '<br>';
 			valSuccess = false;
 		}
 
 		if (todate == "") {
 			document.getElementById("report_error_area").style.display = "block";
-			document.getElementById("report_error_area").innerHTML += '<s:text name="common.datemandatory.todate" />'
+			document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 					+ '<br>';
 			valSuccess = false;
 		}
@@ -76,19 +78,19 @@ function validate()
 		if (fromdate != "" && todate != "" && fromdate != todate) {
 			if (!checkFdateTdate(fromdate, todate)) {
 				document.getElementById("report_error_area").style.display = "block";
-				document.getElementById("report_error_area").innerHTML += '<s:text name="common.comparedate.errormessage" />'
+				document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 						+ '<br>';
 				valSuccess = false;
 			}
 			if (!validateNotFutureDate(fromdate, currDate)) {
 				document.getElementById("report_error_area").style.display = "block";
-				document.getElementById("report_error_area").innerHTML += '<s:text name="reports.fromdate.futuredate.message" />'
+				document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 						+ '<br>';
 				valSuccess = false;
 			}
 			if (!validateNotFutureDate(todate, currDate)) {
 				document.getElementById("report_error_area").style.display = "block";
-				document.getElementById("report_error_area").innerHTML += '<s:text name="reports.todate.futuredate.message" />'
+				document.getElementById("report_error_area").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 						+ '<br>';
 				valSuccess = false;
 			}
@@ -116,10 +118,10 @@ function getBankAccountList(branch)
 </head>
 <body>
 <div class="errorstyle" id="report_error_area" style="display:none;"></div>
-<s:form theme="simple" name="receiptRegisterForm"
+<form:form theme="simple" name="receiptRegisterForm"
 	action="remittanceStatementReport-report.action">
 	<div class="formmainbox">
-	<div class="subheadnew"><s:text name="remittanceStatementReport.head" /></div>
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 	<div class="subheadsmallnew"><span class="subheadnew"><s:text
 		name="collectionReport.criteria" /></span></div>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -127,8 +129,8 @@ function getBankAccountList(branch)
 			<td width="4%" class="bluebox">&nbsp;</td>
 			<td width="21%" class="bluebox"><s:text
 				name="collectionReport.criteria.fromdate" /><span class="mandatory"></span></td>
-			<s:date name="fromDate" var="cdFormat" format="dd/MM/yyyy" />
-			<td width="24%" class="bluebox"><s:textfield id="fromDate"
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<td width="24%" class="bluebox"><form:input id="fromDate"
 				name="fromDate" value="%{cdFormat}"
 				onfocus="javascript:vDateType='3';"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -141,8 +143,8 @@ function getBankAccountList(branch)
 			</td>
 			<td width="21%" class="bluebox"><s:text
 				name="collectionReport.criteria.todate" /><span class="mandatory"></span></td>
-			<s:date name="toDate" var="cdFormat1" format="dd/MM/yyyy" />
-			<td width="30%" class="bluebox"><s:textfield id="toDate"
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<td width="30%" class="bluebox"><form:input id="toDate"
 				name="toDate" value="%{cdFormat1}"
 				onfocus="javascript:vDateType='3';"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -159,13 +161,13 @@ function getBankAccountList(branch)
 			<td width="4%" class="bluebox2">&nbsp;</td>
 			<td width="21%" class="bluebox2"><s:text
 				name="collectionReport.criteria.fund" /></td>
-			<td width="24%" class="bluebox2"><s:select headerKey="-1"
+			<td width="24%" class="bluebox2"><form:select headerKey="-1"
 				headerValue="%{getText('collectionReport.fund.all')}" name="fundId" id="fundId" cssClass="selectwk"
 				list="dropdownData.collectionFundList" listKey="id" listValue="name"
 				value="%{fundId}" onChange="getBankBranchList();"/></td>
 			<td width="21%" class="bluebox2"><s:text
 				name="collectionReport.criteria.service" /></td>
-			<td width="30%" class="bluebox2"><s:select headerKey="-1"
+			<td width="30%" class="bluebox2"><form:select headerKey="-1"
 				headerValue="%{getText('collectionReport.service.all')}" name="serviceId" id="serviceId" cssClass="selectwk"
 				list="dropdownData.collectionServiceList" listKey="id" listValue="name"
 				value="%{serviceId}" onChange="getBankBranchList();"/></td>
@@ -176,7 +178,7 @@ function getBankAccountList(branch)
 			<td width="4%" class="bluebox">&nbsp;</td>
 			<td width="21%" class="bluebox"><s:text
 				name="collectionReport.bank.name" /></td>
-			<td width="24%" class="bluebox"><s:select headerKey="-1"
+			<td width="24%" class="bluebox"><form:select headerKey="-1"
 				headerValue="%{getText('collectionReport.bank.all')}" name="branchId" id="branchId" cssClass="selectwk"
 				list="dropdownData.bankList" listKey="id" listValue="name"
 				value="%{branchId}" onchange="getBankAccountList(this)"/></td>
@@ -184,7 +186,7 @@ function getBankAccountList(branch)
                 url='receipts/ajaxBankRemittance-accountList.action' /> 
 			<td width="21%" class="bluebox"><s:text
 				name="collectionReport.criteria.bankaccount" /></td>
-			<td width="30%" class="bluebox"><s:select headerKey="-1"
+			<td width="30%" class="bluebox"><form:select headerKey="-1"
 				headerValue="%{getText('collectionReport.bankaccount.all')}" name="bankaccountId" id="bankaccountId" cssClass="selectwk"
 				list="dropdownData.bankAccountList" listKey="id" listValue="accountnumber"
 				value="%{bankaccountId}" /></td>
@@ -193,15 +195,15 @@ function getBankAccountList(branch)
 		<tr>
 			<td width="4%" class="bluebox2">&nbsp;</td>
 			<td width="21%" class="bluebox2">
-				<s:text name="collectionReport.criteria.payment.mode"/></td>
-	        	<td width="30%" class="bluebox2"><s:select headerKey="-1"
+				<!-- TODO: Manual migration required for custom Struts tag --></td>
+	        	<td width="30%" class="bluebox2"><form:select headerKey="-1"
 				headerValue="%{getText('collectionReport.payment.mode.all')}" 
 				name="paymentMode" id="paymentMode" cssClass="selectwk" 
 				list="paymentModes" value="%{paymentMode}" /> </td>
 				
 		   <td width="21%" class="bluebox2">
-				<s:text name="collectionReport.criteria.collectionlocation"/></td>
-	        	<td width="30%" class="bluebox2"><s:select headerKey="-1"
+				<!-- TODO: Manual migration required for custom Struts tag --></td>
+	        	<td width="30%" class="bluebox2"><form:select headerKey="-1"
 				headerValue="%{getText('collectionReport.collectionlocation.all')}" 
 				name="deptId" id="deptId" cssClass="selectwk" 
 				list="dropdownData.boundaryList" value="%{deptId}"  listKey="id" listValue="name"/> </td>
@@ -209,7 +211,7 @@ function getBankAccountList(branch)
 		<tr>
 					<td>
 						<div class="subheadsmallnew"><span class="subheadnew">
-											<s:text name="bankcollection.title" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 						</span>		
 						</div>
 					</td>
@@ -217,8 +219,8 @@ function getBankAccountList(branch)
 			
 		<tr>
 					<td width="4%" class="bluebox">&nbsp;</td>
-					<td width="21%" class="bluebox"><s:text name="searchreceipts.criteria.bankbranch"/></td>
-					<td width="24%" class="bluebox"><s:select headerKey="-1"
+					<td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td width="24%" class="bluebox"><form:select headerKey="-1"
 										headerValue="%{getText('collectionReport.bankbranch.select')}"  name="bankCollBankBranchId" id="bankCollBankBranchId"
 										cssClass="selectwk" list="dropdownData.bankBranchList"
 										listKey="id" listValue="branchname"
@@ -228,9 +230,9 @@ function getBankAccountList(branch)
 		</tr>		
 	</table>
     <div align="left" class="mandatory1">
-		              <s:text name="report.bankbranch.note"/>
+		              <!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<div align="left" class="mandatorycoll"><s:text name="common.mandatoryfields"/></div>
+	<div align="left" class="mandatorycoll"><!-- TODO: Manual migration required for custom Struts tag --></div>
 	</div>
 	
 	<div class="buttonbottom">
@@ -246,10 +248,10 @@ function getBankAccountList(branch)
 			</label>&nbsp;
 			<label>
 				<input type="button" class="button" id="buttonClose"
-					value="<s:text name='common.buttons.close'/>"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.close()" />
 			</label>
 		</div>
-</s:form>
+</form:form>
 </body>
 </html>

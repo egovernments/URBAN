@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -95,8 +97,8 @@
 									<span class="bold">An error has occurred. Please try
 										again or contact system administrator if the problem persists.</span>
 								</div>
-								<s:actionerror />
-								<s:fielderror />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</td>
 						</tr>
 						<tr id="msgResp" class="hiddenError">

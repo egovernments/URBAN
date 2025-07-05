@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,7 +52,7 @@
 <script>
 	function validateFinYear(method) {
 		if (document.getElementById('financialYear').value == 0) {
-			bootbox.alert('<s:text name="msg.please.select.financial.year"/>');
+			bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 			return false;
 		}
 		document.budgetDetailReportForm.action = "/services/EGF/budget/budgetReport-"
@@ -67,27 +69,27 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="greybox" width="5%" />
-		<td class="greybox"><s:text name="report.financialYear" /> <span
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 			class="mandatory"></span></td>
-		<td class="greybox"><s:select name="financialYear"
+		<td class="greybox"><form:select path="financialYear"
 				id="financialYear" list="dropdownData.financialYearList"
 				listKey="id" listValue="finYearRange" headerKey="0"
 				headerValue="%{getText('lbl.choose.options')}" value="%{model.financialYear.id}" /></td>
-		<td class="greybox"><s:text name="report.department" /></td>
-		<td class="greybox"><s:select name="department" id="department"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox"><form:select path="department" id="department"
 				list="dropdownData.departmentList" listKey="code" listValue="name"
 				headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 				value="%{model.department.code}" /></td>
 	</tr>
 	<tr>
 		<td class="bluebox" width="5%" />
-		<td class="bluebox"><s:text name="report.type" /></td>
-		<td class="bluebox"><s:select name="type" id="type"
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="bluebox"><form:select path="type" id="type"
 				list="#{'All':'---Select---','I':'Revenue','E':'Expense','L':'Liability','A':'Asset','IE':'Revenue & Expense'}" />
 		</td>
 		<td class="bluebox" id="function_label" style="visibility: visible"><s:text
 				name="report.function" /></td>
-		<td class="bluebox"><s:select name="function" id="function"
+		<td class="bluebox"><form:select path="function" id="function"
 				list="dropdownData.functionList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}" value="%{function.id}" />
 		</td>

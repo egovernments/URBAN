@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -149,9 +151,9 @@ function uncheckAll(field,length){
 }
 function selectAllTNEB(element){
 	var length = 0;
-	<s:if test="%{contingentList!=null}">
-		length = <s:property value="%{contingentList.size()}"/>;
-	</s:if>
+	<c:if test="%{contingentList!=null}">
+		length = ${%{contingentList.size()}};
+	</c:if>
 	
 	if(element.checked == true)	{
 		checkAll('contingentList',length);
@@ -164,19 +166,19 @@ function selectAllTNEB(element){
 
 </head>
 <body>
-	<s:form action="payment" theme="simple">
-		<s:token />
+	<form:form action="payment" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="TNEB Bill Payment Search" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
-		<s:hidden name="billSubType" id="billSubType" value="%{billSubType}" />
-		<s:hidden name="expType" id="expType" value="%{expType}" />
-		<s:hidden name="bank_branch" id="bank_branch" />
-		<s:hidden name="bank_account" id="bank_account" />
-		<s:hidden name="bankaccount" id="bankaccount" />
-		<s:hidden name="bankbranch" id="bankbranch" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<s:hidden name="voucherHeader.fundId.id" id="voucherHeader.fundId.id"
 			value="%{voucherHeader.fundId.id}" />
 		<s:hidden name="voucherHeader.vouchermis.function.id"
@@ -210,7 +212,7 @@ function selectAllTNEB(element){
 															<tr>
 																<td class="bluebox"><s:text
 																		name="payment.billnumber" /></td>
-																<td class="bluebox"><s:textfield name="billNumber"
+																<td class="bluebox"><form:input path="billNumber"
 																		id="billNumber" maxlength="25" value="%{billNumber}" /></td>
 																<td class="bluebox">
 																<td class="bluebox">
@@ -218,17 +220,17 @@ function selectAllTNEB(element){
 															<tr>
 																<td class="greybox"><s:text
 																		name="tnebpayment.monthyear" /></td>
-																<td class="greybox"><s:select name="month"
+																<td class="greybox"><form:select path="month"
 																		id="month" list="%{monthMap}" headerKey=""
 																		headerValue="----Choose----" />
-																	<s:select name="year" id="year"
+																	<form:select path="year" id="year"
 																		list="dropdownData.financialYearsList" listKey="id"
 																		listValue="finYearRange" headerKey=""
 																		headerValue="----Choose----" /></td>
 																<td class="greybox"><s:text
 																		name="payment.tneb.bill.region" /><span
 																	class="mandatory">*</span></td>
-																<td class="greybox" id="regionRowId2"><s:select
+																<td class="greybox" id="regionRowId2"><form:select
 																		name="region" id="region"
 																		list="dropdownData.regionsList" headerKey=""
 																		headerValue="----Choose----" /></td>
@@ -238,8 +240,8 @@ function selectAllTNEB(element){
 															<tr>
 																<td class="bluebox"><s:text
 																		name="payment.expendituretype" /></td>
-																<td class="bluebox"><s:property value="%{expType}" /></td>
-																<td class="bluebox"><s:text name="voucher.fund" /></td>
+																<td class="bluebox">${%{expType}}</td>
+																<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 																<td class="bluebox"><s:property
 																		value="%{voucherHeader.fundId.name}" /></td>
 															</tr>
@@ -248,7 +250,7 @@ function selectAllTNEB(element){
 																		name="voucher.department" /></td>
 																<td class="greybox"><s:property
 																		value="%{voucherHeader.vouchermis.departmentid.deptName}" /></td>
-																<td class="greybox"><s:text name="voucher.function" /></td>
+																<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 																<td class="greybox"><s:property
 																		value="%{voucherHeader.vouchermis.function.name}" /></td>
 
@@ -260,7 +262,7 @@ function selectAllTNEB(element){
 																			cssClass="buttonsubmit" onclick="return search()" />
 																		<input type="button" value="Close"
 																			onclick="javascript:window.close()" class="button" />
-																		<s:hidden name="miscount" id="miscount" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																		<input type="hidden" name="miscattributes"
 																			id="miscattributes" value="" />
 																	</div>
@@ -289,16 +291,16 @@ function selectAllTNEB(element){
 																					id="tnebSelectAll" onclick="selectAllTNEB(this)" />
 																				</checkbox></th>
 																				<jsp:include page="tnebBillDetails-header.jsp" />
-																				<s:iterator var="p" value="contingentList"
+																				<c:forEach var="p" value="contingentList"
 																					status="s">
 																					<tr>
 																						<td class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].csBillId"
 																								id="csBillId%{#s.index}" value="%{csBillId}" />
-																							<s:checkbox
+																							<form:checkbox
 																								name="contingentList[%{#s.index}].isSelected"
 																								id="isSelected%{#s.index}"
-																								onclick="changeTNEBSelectListCount(this)"></s:checkbox></td>
+																								onclick="changeTNEBSelectListCount(this)"></form:checkbox></td>
 																						<td class="blueborderfortdnew"><s:property
 																								value="#s.index+1" /></td>
 																						<td align="left" class="blueborderfortdnew"><s:hidden
@@ -307,17 +309,17 @@ function selectAllTNEB(element){
 																							<s:hidden
 																								name="contingentList[%{#s.index}].billNumber"
 																								id="billNumber%{#s.index}" value="%{billNumber}" />
-																							<s:property value="%{billNumber}" /></td>
+																							${%{billNumber}}</td>
 																						<td class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].billDate"
 																								id="billDate%{#s.index}" value="%{billDate}" />
-																							<s:date name="%{billDate}" format="dd/MM/yyyy" /></td>
+																							<!-- TODO: Manual migration required for custom Struts tag --></td>
 
 																						<td align="left" class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].billVoucherNumber"
 																								id="billVoucherNumber%{#s.index}"
 																								value="%{billVoucherNumber}" />
-																							<s:property value="%{billVoucherNumber}" /></td>
+																							${%{billVoucherNumber}}</td>
 																						<td style="text-align: left"
 																							class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].billVoucherDate"
@@ -329,21 +331,21 @@ function selectAllTNEB(element){
 																						<td align="left" class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].payTo"
 																								id="payTo%{#s.index}" value="%{payTo}" />
-																							<s:property value="%{payTo}" /></td>
+																							${%{payTo}}</td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].netAmt"
 																								id="netAmt%{#s.index}" value="%{netAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{netAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].earlierPaymentAmt"
 																								id="earlierPaymentAmt%{#s.index}"
 																								value="%{earlierPaymentAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{earlierPaymentAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
@@ -352,43 +354,43 @@ function selectAllTNEB(element){
 																							<s:hidden
 																								name="contingentList[%{#s.index}].paymentAmt"
 																								id="paymentAmt%{#s.index}" value="%{paymentAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{payableAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
-																						<s:if test="%{!isFieldMandatory('fund')}">
+																						<c:if test="%{!isFieldMandatory('fund')}">
 																							<td class="blueborderfortdnew"
-																								id="fund<s:property value="#s.index"/>"><s:hidden
+																								id="fund${#s.index}"><s:hidden
 																									name="contingentList[%{#s.index}].fundName"
 																									id="fundName%{#s.index}" value="%{fundName}" />
-																								<s:property value="%{fundName}" /></td>
-																						</s:if>
-																						<s:if
+																								${%{fundName}}</td>
+																						</c:if>
+																						<c:if
 																							test="%{shouldShowHeaderField('department')}">
 																							<td class="blueborderfortdnew"
-																								id="dept<s:property value="#s.index"/>"><s:hidden
+																								id="dept${#s.index}"><s:hidden
 																									name="contingentList[%{#s.index}].deptName"
 																									id="deptName%{#s.index}" value="%{deptName}" />
-																								<s:property value="%{deptName}" /></td>
-																						</s:if>
-																						<s:if test="%{shouldShowHeaderField('function')}">
+																								${%{deptName}}</td>
+																						</c:if>
+																						<c:if test="%{shouldShowHeaderField('function')}">
 																							<td class="blueborderfortdnew"
-																								id="function<s:property value="#s.index"/>"><s:hidden
+																								id="function${#s.index}"><s:hidden
 																									name="contingentList[%{#s.index}].functionName"
 																									id="functionName%{#s.index}"
 																									value="%{functionName}" />
-																								<s:property value="%{functionName}" /></td>
-																						</s:if>
+																								${%{functionName}}</td>
+																						</c:if>
 																						<td align="left" class="blueborderfortdnew"><s:hidden
 																								name="contingentList[%{#s.index}].region"
 																								id="payTo%{#s.index}" value="%{region}" />
-																							<s:property value="%{region}" /></td>
+																							${%{region}}</td>
 																					</tr>
-																				</s:iterator>
+																				</c:forEach>
 																		</table>
-																		<s:if
+																		<c:if
 																			test="contingentList == null || contingentList.size==0">
 																			<div class="subheadsmallnew">No Records Found</div>
-																		</s:if>
+																		</c:if>
 																	</div>
 																</td>
 															</tr>
@@ -421,10 +423,10 @@ function selectAllTNEB(element){
 				</tr>
 			</table>
 		</div>
-		<s:if test="%{!validateUser('createpayment')}">
+		<c:if test="%{!validateUser('createpayment')}">
 			<script>
 			document.getElementById('searchBtn').disabled=true;
-			document.getElementById('errorSpan').innerHTML='<s:text name="payment.invalid.user"/>';
+			document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
@@ -432,15 +434,15 @@ function selectAllTNEB(element){
 				d.options[d.selectedIndex].text.value=-1;
 			}
 		</script>
-		</s:if>
-		<s:if test="%{validateUser('deptcheck')}">
+		</c:if>
+		<c:if test="%{validateUser('deptcheck')}">
 			<script>
 				if(document.getElementById('vouchermis.departmentid'))
 				{
 					document.getElementById('vouchermis.departmentid').disabled=true;
 				}
 			</script>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 </body>
 </html>

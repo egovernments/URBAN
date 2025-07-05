@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -69,7 +71,7 @@
 
 <body onload="onbodyload();">
 
-	<s:form action="payInSlip" theme="simple" name="payinform">
+	<form:form action="payInSlip" theme="simple" name="payinform">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="PayInSlip" />
 		</jsp:include>
@@ -81,24 +83,24 @@
 				<div align="center">
 					<font style='color: red;'>
 						<p class="error-block" id="lblError" style="font: bold"></p>
-					</font> <span class="mandatory"> <s:actionerror /> <s:fielderror />
-						<s:actionmessage />
+					</font> <span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</span> </span>
 					<table border="0" width="100%">
 						<tr>
 
-							<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-								<td class="bluebox"><s:text name="payin.number" /><span
+							<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
-								<td class="bluebox"><s:textfield name="voucherNumber"
+								<td class="bluebox"><form:input path="voucherNumber"
 										id="payinNumber" /></td>
-							</s:if>
-							<td class="bluebox"><s:text name="payin.date" /><span
+							</c:if>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory">*</span></td>
 							<td class="bluebox" width="34%"><input type=text
 								name="voucherDate" id="voucherDate"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
-								value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+								value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 								href="javascript:show_calendar('payinform.voucherDate');"
 								style="text-decoration: none">&nbsp;<img tabIndex="-1"
 									src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>(dd/mm/yyyy)</td>
@@ -143,7 +145,7 @@
 							<tr>
 								<td width="455"></td>
 								<td>Total Amount</td>
-								<td><s:textfield name="totalAmount" id="totalAmount" /></td>
+								<td><form:input path="totalAmount" id="totalAmount" /></td>
 								</td>
 							</tr>
 						</table>
@@ -174,14 +176,14 @@
 						</div>
 						<br>
 						<br>
-						<s:hidden type="hidden" id="selectedInstr" name="selectedInstr" />
-						<s:hidden type="hidden" id="name" name="name" value="Pay In Slip" />
-						<s:hidden type="hidden" id="type" name="type" value="Contra" />
-						<s:hidden name="contraBean.saveMode" id="saveMode" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</div>
 				</div>
 			</div>
-	</s:form>
+	</form:form>
 	<script>
 	function validatePayinSearch(){
 	document.getElementById('lblError').innerHTML ="";
@@ -209,7 +211,7 @@ function onbodyload(){
 	document.getElementById("savebuttondiv1").style.display="none"
 	document.getElementById("mandatorymarkdiv").style.display="none"  
 	document.getElementById("savebuttondiv2").style.display="none"
-<s:iterator value="iHeaderList" status="stat">
+<c:forEach value="iHeaderList" status="stat">
 	document.getElementById("submitTable").style.display="block";
 	document.getElementById("chequeDetails").style.display="block";
 	document.getElementById("billDetailTable").style.display="block";
@@ -218,17 +220,17 @@ function onbodyload(){
 	document.getElementById("mandatorymarkdiv").style.display="block"
 	document.getElementById("savebuttondiv2").style.display="block"
 	disableHeader(true);
-</s:iterator>
-	var saveMode='<s:property value="contraBean.saveMode"/>';
-	var result='<s:property value="contraBean.result"/>';
+</c:forEach>
+	var saveMode='${contraBean.saveMode}';
+	var result='${contraBean.result}';
 	if(result == 'success'){
-	var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
+	var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 		if(saveMode == 'saveclose'){
 			bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber);
 				window.close();
 		} else if(saveMode == 'saveview'){
 				bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber );
-				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<s:property value='%{voucherHeader.id}'/>','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
+				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<!-- TODO: Manual migration required for custom Struts tag -->','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
 			}else if(saveMode=='savenew'){
 				bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber );
 				document.forms[0].action = "${pageContext.request.contextPath}/contra/payInSlip!newform.action";

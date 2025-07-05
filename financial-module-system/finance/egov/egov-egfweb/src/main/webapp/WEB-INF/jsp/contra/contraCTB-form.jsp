@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,16 +52,16 @@
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <table border="0" width="100%">
 	<tr>
-		<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-			<td class="bluebox"><s:text name="voucher.number" /><span
+		<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 				class="mandatory">*</span></td>
-			<td class="bluebox"><s:textfield name="voucherNumber"
+			<td class="bluebox"><form:input path="voucherNumber"
 					id="voucherNumber" /></td>
-		</s:if>
-		<td class="bluebox"><s:text name="voucher.date" /><span
+		</c:if>
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory">*</span></td>
 		<td class="bluebox"><s:date name="voucherDate" var="voucherDateId"
-				format="dd/MM/yyyy" /> <s:textfield name="voucherDate"
+				format="dd/MM/yyyy" /> <form:input path="voucherDate"
 				id="voucherDate" value="%{voucherDateId}" maxlength="10"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 			href="javascript:show_calendar('cashDepositForm.voucherDate',null,null,'DD/MM/YYYY');"
@@ -68,9 +70,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="greybox"><s:text name="payin.bank" /> <span
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 			class="greybox"><span class="mandatory">*</span></span></td>
-		<td class="greybox" colspan="3"><s:select
+		<td class="greybox" colspan="3"><form:select
 				name="contraBean.bankBranchId" id="bankId"
 				list="dropdownData.bankList" listKey="bankBranchId"
 				listValue="bankBranchName" headerKey="-1"
@@ -79,17 +81,17 @@
 	<tr>
 		<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 			dropdownId="accountNumber" url="voucher/common!ajaxLoadAccNum.action" />
-		<td class="bluebox"><s:text name="payin.accountNum" /> <span
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 			class="bluebox"><span class="mandatory">*</span></span></td>
-		<td class="bluebox"><s:select name="contraBean.accountNumberId"
+		<td class="bluebox"><form:select path="contraBean.accountNumberId"
 				id="accountNumber" list="dropdownData.accNumList" listKey="id"
 				listValue="accountnumber" headerKey="-1"
 				headerValue="----Choose----" onChange="populateNarration(this);" />
-			<s:textfield name="contraBean.accnumnar" id="accnumnar"
+			<form:input path="contraBean.accnumnar" id="accnumnar"
 				value="%{contraBean.accnumnar}" readonly="true" tabindex="-1" /></td>
-		<td class="bluebox"><s:text name="contra.amount" /> <span
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 			class="bluebox"><span class="mandatory">*</span></span></td>
-		<td class="bluebox"><s:textfield name="contraBean.amount"
+		<td class="bluebox"><form:input path="contraBean.amount"
 				id="amount" onkeyup="amountFormat()" cssStyle="text-align:right" /></td>
 	</tr>
 
@@ -98,12 +100,12 @@
 		<td class="greybox"><span id="mdcNumber"><s:text
 					name="contra.refNumber" /></span> <span class="greybox"><span
 				class="mandatory">*</span></span></td>
-		<td class="greybox"><s:textfield name="contraBean.chequeNumber"
+		<td class="greybox"><form:input path="contraBean.chequeNumber"
 				id="documentNum" value="%{contraBean.chequeNumber}" /></td>
 		<td class="greybox"><span id="mdcDate"><s:text
 					name="contra.refDate" /></span> <span class="greybox"><span
 				class="mandatory">*</span></span></td>
-		<td class="greybox"><s:textfield name="contraBean.chequeDate"
+		<td class="greybox"><form:input path="contraBean.chequeDate"
 				id="documentDate"
 				onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 			href="javascript:show_calendar('cashDepositForm.documentDate');"
@@ -112,8 +114,8 @@
 
 	</tr>
 	<tr>
-		<td class="greybox"><s:text name="voucher.narration" /></td>
-		<td class="greybox" colspan="3"><s:textarea id="narration"
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		<td class="greybox" colspan="3"><form:textarea id="narration"
 				name="description" style="width:580px"
 				onblur="checkVoucherNarrationLen(this)" /></td>
 	</tr>

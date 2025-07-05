@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,9 +52,9 @@
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <%@ taglib prefix="egov" tagdir="/WEB-INF/tags"%>
 <%@ page language="java"%>
-<s:if test="%{billSubType == 'TNEB'}">
+<c:if test="%{billSubType == 'TNEB'}">
 	<%@ include file='payment-tnebBills.jsp'%>
-</s:if>
-<s:else>
+</c:if>
+<c:otherwise>
 	<%@ include file='payment-searchbills.jsp'%>
 </s:else>

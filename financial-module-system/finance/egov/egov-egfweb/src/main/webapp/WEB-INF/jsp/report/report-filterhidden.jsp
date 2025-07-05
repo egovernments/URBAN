@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,24 +51,24 @@
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <input type="hidden" name="model.fund.id"
-	value='<s:property value="model.fund.id"/>' />
+	value='${model.fund.id}' />
 <input type="hidden" name="model.department.id"
-	value='<s:property value="model.department.id"/>' />
+	value='${model.department.id}' />
 <input type="hidden" name="model.function.id"
-	value='<s:property value="model.function.id"/>' />
+	value='${model.function.id}' />
 <input type="hidden" name="model.functionary.id"
-	value='<s:property value="model.functionary.id"/>' />
+	value='${model.functionary.id}' />
 <input type="hidden" name="model.fundsource.id"
-	value='<s:property value="model.fundsource.id"/>' />
+	value='${model.fundsource.id}' />
 <input type="hidden" name="model.field.id"
-	value='<s:property value="model.field.id"/>' />
+	value='${model.field.id}' />
 <input type="hidden" name="model.scheme.id"
-	value='<s:property value="model.scheme.id"/>' />
+	value='${model.scheme.id}' />
 <input type="hidden" name="model.subScheme.id"
-	value='<s:property value="model.subScheme.id"/>' />
+	value='${model.subScheme.id}' />
 <input type="hidden" name="model.startDate"
-	value='<s:property value="model.startDate"/>' />
+	value='${model.startDate}' />
 <input type="hidden" name="model.endDate"
-	value='<s:property value="model.endDate"/>' />
+	value='${model.endDate}' />
 <input type="hidden" name="model.endDate"
-	value='<s:property value="model.asOnDate"/>' />
+	value='${model.asOnDate}' />

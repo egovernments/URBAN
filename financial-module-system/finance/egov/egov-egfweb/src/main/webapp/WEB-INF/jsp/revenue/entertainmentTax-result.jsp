@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -68,13 +70,13 @@
 		<div class="subheadnew">Entertainment Tax Register</div>
 	</div>
 	<span class="mandatory">Entertainment Tax Saved Successfully</span>
-	<s:form name="entertainmentTaxform" action="entertainmentTax"
+	<form:form name="entertainmentTaxform" action="entertainmentTax"
 		theme="simple">
 		<div class="buttonbottom">
-			<s:submit method="newForm" value="Create New" cssClass="button" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="button" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

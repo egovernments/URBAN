@@ -54,6 +54,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
+// import com.opensymphony.xwork2.util.reflection.ReflectionExceptionHandler; // TODO: Remove or migrate Struts/XWork usage
 import org.egov.collection.constants.CollectionConstants;
 import org.egov.collection.entity.ChallanInfo;
 import org.egov.collection.entity.ReceiptDetail;
@@ -66,8 +67,6 @@ import org.egov.egf.commons.EgovCommon;
 import org.egov.infra.admin.master.entity.Location;
 import org.egov.infstr.services.PersistenceService;
 import org.egov.model.instrument.InstrumentHeader;
-
-import com.opensymphony.xwork2.util.reflection.ReflectionExceptionHandler;
 
 /**
  * The bill receipt information class. Provides details of a bill receipt.
@@ -265,7 +264,7 @@ public class BillReceiptInfoImpl implements BillReceiptInfo {
      */
     @Override
     public String getPayeeName() {
-        return StringEscapeUtils.unescapeJavaScript(receiptHeader.getPayeeName());
+        return StringEscapeUtils.unescapeJava(receiptHeader.getPayeeName());
     }
 
     /*

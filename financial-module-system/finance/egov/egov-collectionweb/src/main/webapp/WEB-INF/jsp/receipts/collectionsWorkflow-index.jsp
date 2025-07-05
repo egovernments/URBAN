@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -276,46 +278,46 @@ function onChangePaymentMode(obj)
 
 <div id="loadingMask" style="display:none;overflow:hidden;text-align: center"><img src="/services/collection/resources/images/bar_loader.gif"/> <span style="color: red">Please wait....</span></div>
 
-<s:form theme="simple" name="collectionsWorkflowForm">
-	<div class="subheadnew"><s:if test="%{isSubmitAction == true}">
-		<s:text name="collectionsWorkflow.submitTitle" />
-	</s:if> <s:else>
-		<s:text name="collectionsWorkflow.approveTitle" />
+<form:form theme="simple" name="collectionsWorkflowForm">
+	<div class="subheadnew"><c:if test="%{isSubmitAction == true}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if> <c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else></div>
 	<br />
-	<s:if test="%{hasErrors()}">
+	<c:if test="%{hasErrors()}">
 	    <div id="actionErrorMessages" class="errorstyle">
-	      <s:actionerror/>
-	      <s:fielderror/>
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+	      <!-- TODO: Manual migration required for custom Struts tag -->
 	    </div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
 	    <div id="actionMessages" class="messagestyle">
-	    	<s:actionmessage theme="simple"/>
+	    	<!-- TODO: Manual migration required for custom Struts tag -->
 	    </div>
-	</s:if>
+	</c:if>
 	<tr>
 	<div align="right">
 		<td class="blueborderfortd"><s:text
 							name="collectionsWorkflow.payment.mode" /></td>
-							<td class="bluebox"><s:select headerKey="ALL"
+							<td class="bluebox"><form:select headerKey="ALL"
 									headerValue="%{getText('collectionsWorkflow.payment.mode.all')}" list="paymentModesMap"
 									id="paymentMode" label="paymentMode" name="paymentMode"
 									value="%{paymentMode}" onchange="onChangePaymentMode(this);" /></td>
 	</div>
-			<s:hidden name="inboxItemDetails" id="inboxItemDetails" value="%{inboxItemDetails}"/>								
+			<!-- TODO: Manual migration required for custom Struts tag -->								
 									
 	</tr>	
 	<br/><br/>
-	<s:if test="%{!receiptHeaders.isEmpty() && !hasErrors()}">
+	<c:if test="%{!receiptHeaders.isEmpty() && !hasErrors()}">
 		<table width="100%" border="0" align="center" cellpadding="0"
 			cellspacing="0" class="tablebottom">
 		
 			<display:table name="receiptHeaders"
 				uid="currentRow" pagesize="30" style="border:1px;empty-cells:show;border-collapse:collapse;" cellpadding="0"
 				cellspacing="0" export="false" requestURI="">
-				<s:hidden name="receiptDate" id="receiptDate" value="%{receiptdate}"/>	
-				<s:if test="%{allowPartialSelection == true}">
+				<!-- TODO: Manual migration required for custom Struts tag -->	
+				<c:if test="%{allowPartialSelection == true}">
 					<!--  Partial selection allowed. Enable the checkboxes -->
 					<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 						title="Select?<input type='checkbox' name='selectAllReceipts' value='on' onClick='setCheckboxStatuses(this.checked)' checked/>"
@@ -325,8 +327,8 @@ function onChangePaymentMode(obj)
 							onClick="handleReceiptSelectionEvent(${currentRow.totalAmount}, '${currentRow.instrumentType}', this.checked)"
 							checked />
 					</display:column>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<!--  Partial selection allowed. Disable the checkboxes -->
 					<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 						title="Select?<input type='checkbox' name='selectAllReceipts' value='on' onClick='return readOnlyCheckBox()' checked/>"
@@ -381,7 +383,7 @@ function onChangePaymentMode(obj)
 				<tr>
 					<td class="blueborderfortd"><b><s:text
 						name="%{getText('collectionsWorkflow.summary.cash')}" /></b></td>
-					<td class="blueborderfortd"><s:textfield id="cashAmount"
+					<td class="blueborderfortd"><form:input id="cashAmount"
 						name="cashAmount"
 						style="border-width:0px; text-align: right; width: 90%"
 						disabled="true" /></td>
@@ -389,28 +391,28 @@ function onChangePaymentMode(obj)
 				<tr>
 					<td class="blueborderfortd"><b><s:text
 						name="%{getText('collectionsWorkflow.summary.cheque')}" /></b></td>
-					<td class="blueborderfortd"><s:textfield name="chequeAmount"
+					<td class="blueborderfortd"><form:input path="chequeAmount"
 						style="border-width:0px; text-align: right; width: 90%"
 						disabled="true" /></td>
 				</tr>
 				<tr>
 					<td class="blueborderfortd"><b><s:text
 						name="%{getText('collectionsWorkflow.summary.dd')}" /></b></td>
-					<td class="blueborderfortd"><s:textfield name="ddAmount"
+					<td class="blueborderfortd"><form:input path="ddAmount"
 						style="border-width:0px; text-align: right; width: 90%"
 						disabled="true" /></td>
 				</tr>
 				<tr>
 					<td class="blueborderfortd"><b><s:text
 						name="%{getText('collectionsWorkflow.summary.card')}" /></b></td>
-					<td class="blueborderfortd"><s:textfield name="cardAmount"
+					<td class="blueborderfortd"><form:input path="cardAmount"
 						style="border-width:0px; text-align: right; width: 90%"
 						disabled="true" /></td>
 				</tr>
 				<tr>
 					<td class="blueborderfortd"><b><s:text
 						name="%{getText('collectionsWorkflow.summary.bank')}" /></b></td>
-					<td class="blueborderfortd"><s:textfield name="bankAmount"
+					<td class="blueborderfortd"><form:input path="bankAmount"
 						style="border-width:0px; text-align: right; width: 90%"
 						disabled="true" /></td>
 				</tr>
@@ -418,7 +420,7 @@ function onChangePaymentMode(obj)
 					<td class="blueborderfortd"
 						style="background-color: #F5F5F5; text-align: center;"><b><s:text
 						name="%{getText('collectionsWorkflow.summary.total')}" /></b></td>
-					<td class="blueborderfortd" style="background-color: #F5F5F5;"><s:textfield
+					<td class="blueborderfortd" style="background-color: #F5F5F5;"><form:input
 						name="totalAmount" disabled="true"
 						style="border-width: 0px;font-weight: bold; background-color: #F5F5F5; text-align: right; width: 90%" /></td>
 				</tr>
@@ -433,9 +435,9 @@ function onChangePaymentMode(obj)
 				
 				<tr>
 				
-				<td><s:label>Remarks</s:label></td>
+				<td><!-- TODO: Manual migration required for custom Struts tag -->Remarks</s:label></td>
 						
-				<td><s:textarea id="remarks" name="remarks" maxlength="1024" cols="40" cssClass="form-control"></s:textarea></td>		
+				<td><form:textarea id="remarks" path="remarks" maxlength="1024" cols="40" cssClass="form-control"></form:textarea></td>		
 				
 				</tr>
 				
@@ -443,7 +445,7 @@ function onChangePaymentMode(obj)
 			<br />
 			<br />
 			<div class="buttonbottom"><!--  If action is submit, show only submit button -->
-			<s:if test="%{isSubmitAction == true}">
+			<c:if test="%{isSubmitAction == true}">
 				<s:submit type="submit" cssClass="buttonsubmit"
 					id="submitCollections" name="submitCollections"
 					value="Submit Page Collections" 
@@ -454,7 +456,7 @@ function onChangePaymentMode(obj)
 					value="Submit All Collections" 
 					disabled="false"
 					onclick="doLoadingMask('#loadingMask');document.collectionsWorkflowForm.action='collectionsWorkflow-submitAllCollections.action'" />
-			</s:if> <!-- else show only approve and reject buttons --> <s:else>
+			</c:if> <!-- else show only approve and reject buttons --> <c:otherwise>
 				<s:submit type="submit" cssClass="buttonsubmit"
 					id="approveCollections" name="approveCollections"
 					value="Approve Page Collections" 
@@ -474,21 +476,21 @@ function onChangePaymentMode(obj)
 					onclick="doLoadingMask('#loadingMask');document.collectionsWorkflowForm.action='collectionsWorkflow-rejectCollections.action'" />
 			</s:else>
 			&nbsp;<input type="button" class="button" id="buttonClose"
-				value="<s:text name='common.buttons.close'/>"
+				value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				onclick="window.close()" />
 			</div>		
 			</table>
-			</s:if>
+			</c:if>
 			
-			<s:if test='%{receiptHeaders.isEmpty()}'>
+			<c:if test='%{receiptHeaders.isEmpty()}'>
 				<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
 				<tr> 
 					<div>&nbsp;</div>
-					<div class="subheadnew"><s:text name="collectionsWorkflow.noReceipts"/></div>
+					<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 				</tr>
 				</table>
-			</s:if>
-			</s:form>
+			</c:if>
+			</form:form>
 			</div>
 			<script src="<cdn:url value='/resources/global/js/egov/inbox.js?rnd=${app_release_no}' context='/services/egi'/>"></script>
 			</body>

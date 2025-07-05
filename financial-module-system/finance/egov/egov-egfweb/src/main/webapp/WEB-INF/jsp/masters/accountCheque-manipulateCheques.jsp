@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -75,24 +77,24 @@
 	<jsp:include page="../budget/budgetHeader.jsp">
 		<jsp:param name="heading" value="Account Cheque Create" />
 	</jsp:include>
-	<s:form action="accountCheque" theme="simple" name="chequeMaster"
+	<form:form action="accountCheque" theme="simple" name="chequeMaster"
 		id="chequeMaster">
-		<s:if test="hasActionMessages()">
-			<font style='color: green; font-weight: bold'> <s:actionmessage />
+		<c:if test="hasActionMessages()">
+			<font style='color: green; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag -->
 			</font>
-		</s:if>
+		</c:if>
 		<div class="formmainbox">
 			<div class="formheading">
-				<div class="subheadnew"><s:text name="lbl.cheque.master"/> </div>
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			</div>
 			<br />
-			<s:if test="%{bankaccount != null}">
+			<c:if test="%{bankaccount != null}">
 				<table width="100%" cellspacing="0" cellpadding="0" border="0"
 					align="center">
 					<tr align="center">
 						<div class="headingsmallbg">
 							<td class="bluebgheadtd" width="100%" colspan="5"><strong
-								style="font-size: 15px;"><s:text name="lbl.bank.details"/> </strong></td>
+								style="font-size: 15px;"><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						</div
 					</tr>
 				</table>
@@ -101,27 +103,27 @@
 
 					<tr>
 						<td class="bluebox "></td>
-						<td class="bluebox"><s:text name="lbl.bank"/> <span class="mandatory1">*</span></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
 						<td class="bluebox"><s:property
 								value="bankaccount.bankbranch.bank.name" /></td>
-						<td class="bluebox"><s:text name="lbl.bank.branch"/> <span class="mandatory1">*</span></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
 						<td class="bluebox"><s:property
 								value="bankaccount.bankbranch.branchname" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox "></td>
-						<td class="greybox"><s:text name="lbl.account.number"/><span class="mandatory1">*</span></td>
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
 						<td class="greybox"><s:property
 								value="bankaccount.accountnumber" /></td>
-						<td class="greybox"><s:text name="lbl.fund"/> <span class="mandatory1">*</span></td>
-						<td class="greybox"><s:property value="bankaccount.fund.name" /></td>
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
+						<td class="greybox">${bankaccount.fund.name}</td>
 					</tr>
 				</table>
 
-				<s:hidden name="bankAccId" id="bankAccId" value="%{bankaccount.id}" />
-				<s:hidden name="financialYearId" id="financialYearId" value="%{financialYearId}" />
-				<s:hidden name="isDefaultDeptEnabled" id="isDefaultDeptEnabled" value="%{defaultSelectedDepartments != ''}" />
-			</s:if>
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
 			<br />
 			<table width="100%" cellspacing="0" cellpadding="0" border="0"
 				align="center">
@@ -129,7 +131,7 @@
 
 					<div class="headingsmallbg">
 					<td class="bluebgheadtd" width="100%" colspan="5"><strong
-								style="font-size: 15px;"><s:text name="lbl.add.new.cheque"/></strong></td>
+								style="font-size: 15px;"><!-- TODO: Manual migration required for custom Struts tag --></strong></td>
 					</div>  
 
 				</tr>
@@ -141,13 +143,13 @@
 
 				<tr>
 					<td class="bluebox "></td>
-					<td class="greybox "><s:text name="lbl.from.cheque.number"/> <span
+					<td class="greybox "><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="mandatory1">*</span></td>
-					<td class="greybox"><s:textfield name="fromChqNo"
+					<td class="greybox"><form:input path="fromChqNo"
 							class="patternvalidation" data-pattern="number" id="fromChqNo"
 							maxlength="6" size="6" onkeyup="validateOnlyNumber(this);" /></td>
-					<td class="greybox"><s:text name="lbl.to.cheque.number"/><span class="mandatory1">*</span></td>
-					<td class="greybox"><s:textfield name="toChqNo"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+					<td class="greybox"><form:input path="toChqNo"
 							class="patternvalidation" data-pattern="number" id="toChqNo"
 							maxlength="6" size="6" onkeyup="validateOnlyNumber(this);" /></td>
 
@@ -155,16 +157,16 @@
 
 				<tr>
 					<td class="bluebox "></td>
-					<td class="bluebox"><s:text name="lbl.recieve.date"/><span class="mandatory1">*</span></td>
-					<td class="bluebox"><s:textfield name="receivedDate"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+					<td class="bluebox"><form:input path="receivedDate"
 							id="receivedDate" maxlength="10"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 						href="javascript:show_calendar('chequeMaster.receivedDate',null,null,'DD/MM/YYYY');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)
 					</td>
-					<td class="bluebox"><s:text name="lbl.department"/><span class="mandatory1">*</span></td>
-					<td class="bluebox"><s:select name="departmentList"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+					<td class="bluebox"><form:select path="departmentList"
 							id="departmentList" list="dropdownData.departmentList"
 							listKey="code" listValue="name" multiple="true" required="true"
 							value="%{defaultSelectedDepartments}"
@@ -173,8 +175,8 @@
 
 				<tr>
 					<td class="bluebox "></td>
-					<td class="greybox"><s:text name="lbl.financial.year"/><span class="mandatory1">*</span></td>
-					<td class="greybox"><s:select name="serialNo" id="serialNo"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+					<td class="greybox"><form:select path="serialNo" id="serialNo"
 							list="dropdownData.financialYearList" listKey="id"
 							listValue="finYearRange" headerKey="-1" value="%{financialYearId}"
 							headerValue="%{getText('lbl.choose.options')}" required="true" disabled="true"/>
@@ -190,7 +192,7 @@
 
 					<td align="center" style="text-align: center"><input
 						type="button" name="Done" onclick="updateGridData()"
-						class="buttonsubmit" value='<s:text name="lbl.click.to.add.new.cheque"/>'
+						class="buttonsubmit" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 						align="middle" /></td>
 
 				</tr>
@@ -204,7 +206,7 @@
 				align="center">
 				<tr align="center">
 					<div class="headingsmallbg">
-						<td><span class="bold"><s:text name="lbl.existing.cheque.details"/> </span></td>
+						<td><span class="bold"><!-- TODO: Manual migration required for custom Struts tag --> </span></td>
 					</div>
 				</tr>
 			</table>
@@ -215,7 +217,7 @@
 
 
 			<div class="yui-skin-sam" align="center">
-				<s:hidden name="chequeDetailsRows"  id="chequeDetailsRowId"/>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<div id="chequeDetailsGridTable">
 					<script>
 						makeChequeDetailsGridTable();
@@ -224,16 +226,16 @@
 					</script>
 					<br />
 					<div class="buttonbottom">
-						<input type="button" id="save" value="<s:text name='lbl.save'/>"	onclick="submitForm();" class="buttonsubmit" /> 
-						<input type="button" id="Close" value="<s:text name='lbl.close'/>" onclick="javascript:window.parent.postMessage('close','*');" class="button" />
+						<input type="button" id="save" value="<!-- TODO: Manual migration required for custom Struts tag -->"	onclick="submitForm();" class="buttonsubmit" /> 
+						<input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 					</div>
 				</div>
 			</div>
-			<s:hidden name="deletedChqDeptId" id="deletedChqDeptId" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<br />
-			<s:token />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 		function submitForm() {
 			document.getElementById("lblError").innerHTML = "";
@@ -245,7 +247,7 @@
 			var isDefaultDeptEnabled = document.getElementById("isDefaultDeptEnabled").value;
 
 			if ((fromChequeNo != "" || toChequeNo != "" || receivedDate != "") ? true : isDefaultDeptEnabled == 'true' ? false : department != "")
-				document.getElementById("lblError").innerHTML = "<s:text name='msg.please.click.on.add.new.cheque.or.unselect.required.field'/>";
+				document.getElementById("lblError").innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			else {
 				disableParameters();
 				document.chequeMaster.action = '/services/EGF/masters/accountCheque-save.action';

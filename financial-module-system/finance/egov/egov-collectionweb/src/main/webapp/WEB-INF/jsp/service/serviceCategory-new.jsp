@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,21 +52,21 @@
 <html>
 <head>
 
-<title><s:text name="add.title.serviceCategory" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <body>
 	<div class="errorstyle" id="error_area" style="display: none;"></div>
 
 	<span id="remerror"> <font style='color: red; font-weight: bold'
-		size="2"> <s:actionerror /> <s:fielderror />
+		size="2"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 	</font>
 	</span>
 
-	<s:form action="serviceCategory.action" theme="simple">
+	<form:form action="serviceCategory.action" theme="simple">
 
 		<div class="subheadnew">
-			<s:text name="add.title.serviceCategory" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<%@ include file='serviceCategory-form.jsp'%>
@@ -85,6 +87,6 @@
 				onclick="window.close()" value="Close" />
 		</div>
 
-	</s:form>
+	</form:form>
 </body>
 </html>

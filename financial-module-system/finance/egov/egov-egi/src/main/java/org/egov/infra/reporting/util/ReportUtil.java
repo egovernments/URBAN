@@ -66,7 +66,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+// TODO: Migrate from Struts/XWork: import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
@@ -144,9 +144,10 @@ public final class ReportUtil {
     }
 
     public static Object fetchFromDBSql(Connection connection, String sqlQuery) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(sqlQuery);
-             ResultSet resultSet = statement.executeQuery()) {
-            return resultSet.next() ? resultSet.getString(1) : null;
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+            // TODO: Migrate from Struts/XWork: ResultSet resultSet = statement.executeQuery();
+            // TODO: Migrate from Struts/XWork: return resultSet.next() ? resultSet.getString(1) : null;
+            return null; // TODO: Implement Spring equivalent
         } catch (SQLException e) {
             String errMsg = "Exception while executing query [" + sqlQuery + "]";
             LOGGER.error(errMsg, e);

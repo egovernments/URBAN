@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,18 +55,18 @@
 <title>Expense Bill Approval</title>
 <script>
     function printPreview(){
-	document.forms[0].action='../bill/expenseBillPrint-print.action?id=<s:property value="billRegisterId"/>';
+	document.forms[0].action='../bill/expenseBillPrint-print.action?id=${billRegisterId}';
 	document.forms[0].submit();
 }
     </script>
 </head>
 <body onload="refreshInbox()">
-	<s:form action="preApprovedVoucher" theme="simple">
+	<form:form action="preApprovedVoucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Expense Bill -Approval" />
 		</jsp:include>
 		<div align="center">
-		<span class="mandatory1"> <s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		</div>
 		<br />
@@ -75,7 +77,7 @@
 		<input type="button" id="print" value="Print Preview"
 			onclick="printPreview()" class="button" />
 			</div>
-	</s:form>
+	</form:form>
 	<script>
 	function refreshInbox()
 	{

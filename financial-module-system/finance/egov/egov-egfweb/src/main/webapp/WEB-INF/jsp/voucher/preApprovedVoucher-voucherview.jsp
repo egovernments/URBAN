@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -61,22 +63,22 @@
 
 <script>
 function printEJV(){
-	var id = '<s:property value="voucherHeader.id"/>';
+	var id = '${voucherHeader.id}';
 	window.open("${pageContext.request.contextPath}/report/expenseJournalVoucherPrint-print.action?id="+id,'Print','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 }
 function printJV(){
-	var id = '<s:property value="voucherHeader.id"/>';
+	var id = '${voucherHeader.id}';
 	window.open("${pageContext.request.contextPath}/voucher/journalVoucherPrint-print.action?id="+id,'Print','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 }
 function openSource(){
-	if("<s:property value='%{voucherHeader.vouchermis.sourcePath}' escapeHtml='false'/>"=="" || "<s:property value='%{voucherHeader.vouchermis.sourcePath}'/>"=='null')
+	if("<!-- TODO: Manual migration required for custom Struts tag -->"=="" || "<!-- TODO: Manual migration required for custom Struts tag -->"=='null')
 		bootbox.alert('Source is not available');
 	else{
-		if("<s:property value='%{voucherHeader.vouchermis.sourcePath}' escapeHtml='false'/>".indexOf('EGF') > -1
-				&& "<s:property value='%{billRegister.egBillregistermis.sourcePath}' escapeHtml='false'/>".indexOf('EGF') <= -1)
-			var url = '<s:property value="%{voucherHeader.vouchermis.sourcePath}" escapeHtml="false"/>'+ '&showMode=view';
+		if("<!-- TODO: Manual migration required for custom Struts tag -->".indexOf('EGF') > -1
+				&& "<!-- TODO: Manual migration required for custom Struts tag -->".indexOf('EGF') <= -1)
+			var url = '<!-- TODO: Manual migration required for custom Struts tag -->'+ '&showMode=view';
 		else
-			var url = '<s:property value="%{voucherHeader.vouchermis.sourcePath}" escapeHtml="false"/>';
+			var url = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		window.open(url,'Source','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')
 
 	}   
@@ -86,12 +88,12 @@ function openSource(){
 function validate(name,value){
 	document.getElementById("actionName").value= name;
 	document.getElementById('lblError').innerHTML ="";
-<s:if test="%{wfitemstate !='END'}">
+<c:if test="%{wfitemstate !='END'}">
 	 if( (value == 'Approve' || value=='Send for Approval'|| value == 'Forward' ) && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 		document.getElementById('lblError').innerHTML ="Please Select the user";
 		return false;
 	}
-</s:if>
+</c:if>
 	return true;
 }
 function onSubmit()
@@ -109,28 +111,28 @@ function onSubmit()
 
 <meta http-equiv="Content-Type"
 	content="text/html; charset=windows-1252">
-<title><s:property value="type" /> Journal Voucher Approval</title>
+<title>${type} Journal Voucher Approval</title>
 </head>
 
 <body onload="refreshInbox()">
-	<s:form action="preApprovedVoucher" theme="simple">
+	<form:form action="preApprovedVoucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="PJV-Approval" />
 		</jsp:include>
-		<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<font style='color: red;'>
 			<p class="error-block" id="lblError" style="font: bold"></p>
-				<s:if test="%{finanicalYearAndClosedPeriodCheckIsClosed}">
-					<s:text name="financialyear.closedperiod.closed" ></s:text>
-				</s:if>
+				<c:if test="%{finanicalYearAndClosedPeriodCheckIsClosed}">
+					<!-- TODO: Manual migration required for custom Struts tag --></s:text>
+				</c:if>
 				</font>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 
 			<div class="subheadnew">
-				<s:property value="type" />
+				${type}
 				Journal Voucher Approval
 			</div>
 			<div id="listid" style="display: block">
@@ -138,7 +140,7 @@ function onSubmit()
 				<div align="center">
 					<table border="0" width="100%" cellspacing="0">
 						<tr>
-							<td width="10%" class="greybox"><s:property value="type" />
+							<td width="10%" class="greybox">${type}
 								Journal Voucher Number :</td>
 							<td width="25%" class="greybox"><s:property
 									value="%{voucherHeader.voucherNumber}" /></td>
@@ -160,8 +162,8 @@ function onSubmit()
 							<td width="25%"></td>
 						</tr>
 					</table>
-					<s:hidden id="vhid" name="vhid" value="%{voucherHeader.id}" />
-					<s:hidden id="id" name="id" value="%{voucherHeader.id}" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 
 					<table>
 						<tr class="bluebox">
@@ -184,7 +186,7 @@ function onSubmit()
 								<th class="bluebgheadtd" width="16%"><s:text
 										name="billVoucher.approve.crdamt" /></th>
 							</tr>
-							<s:iterator var="p" value="%{billDetails.tempList}" status="s">
+							<c:forEach var="p" value="%{billDetails.tempList}" status="s">
 								<tr>
 									<td width="18%" class="bluebox setborder"><s:property
 											value="function" /></td>
@@ -193,17 +195,17 @@ function onSubmit()
 									<td width="19%" class="bluebox setborder"><s:property
 											value="accounthead" /></td>
 									<td width="17%" class="bluebox setborder"
-										style="text-align: right"><s:text name="format.number">
-											<s:param value="%{debitamount}" />
+										style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text></td>
 									<td width="16%" class="bluebox setborder"
-										style="text-align: right"><s:text name="format.number">
-											<s:param value="%{creditamount}" />
+										style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</s:text></td>
 									<c:set var="db" value="${db+debitamount}" />
 									<c:set var="cr" value="${cr+creditamount}" />
 								</tr>
-							</s:iterator>
+							</c:forEach>
 							<tr>
 								<td class="greybox" style="text-align: right" colspan="3" />Total
 								</td>
@@ -213,7 +215,7 @@ function onSubmit()
 										value="${cr}" pattern="#0.00" /></td>
 							</tr>
 						</table>
-						<s:hidden name="actionName" id="actionName" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</div>
 					<br />
 				</div>
@@ -228,7 +230,7 @@ function onSubmit()
 							<th class="bluebgheadtd" width="19%">Detail Key</th>
 							<th class="bluebgheadtd" width="17%">Amount</th>
 						</tr>
-						<s:iterator var="p" value="%{getMasterName().tempList}" status="s">
+						<c:forEach var="p" value="%{getMasterName().tempList}" status="s">
 							<tr>
 								<td width="18%" class="bluebox setborder"><s:property
 										value="glcode" /></td>
@@ -237,20 +239,20 @@ function onSubmit()
 								<td width="18%" class="bluebox setborder"><s:property
 										value="detailkey" /></td>
 								<td width="18%" class="bluebox setborder"
-									style="text-align: right"><s:text name="format.number">
-										<s:param value="%{amount}" />
+									style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
-				<s:if test="%{!finanicalYearAndClosedPeriodCheckIsClosed}">
+				<c:if test="%{!finanicalYearAndClosedPeriodCheckIsClosed}">
 				<div id="wfHistoryDiv">
 					<jsp:include page="../workflow/workflowHistory.jsp" />
 				</div>
 				<%@ include file='../workflow/commonWorkflowMatrix.jsp'%>
 				<%@ include file='../workflow/commonWorkflowMatrix-button.jsp'%>
-				</s:if>
+				</c:if>
 				
 
 
@@ -258,17 +260,17 @@ function onSubmit()
 		</div>
 		<div class="buttonbottom" id="buttondiv">
 
-			<s:if test="%{type == finConstExpendTypeContingency}">
+			<c:if test="%{type == finConstExpendTypeContingency}">
 				<input type="button" class="button" id="print" value="Print Preview"
 					action="expenseJournalVoucherPrint" method="print"
 					onclick="printEJV()" />
-			</s:if>
-			<s:else>
-			<s:if test="%{!finanicalYearAndClosedPeriodCheckIsClosed}">
+			</c:if>
+			<c:otherwise>
+			<c:if test="%{!finanicalYearAndClosedPeriodCheckIsClosed}">
 				<input type="button" class="button" id="print" value="Print Preview"
 					action="journalVoucherPrint" method="print" onclick="printJV()" />
-					</s:if>
-					<s:else>
+					</c:if>
+					<c:otherwise>
 					<input type="button" name="button2" id="button2" value="Close"
 						class="button" onclick="window.parent.postMessage('close','*');window.close();" />
 					</s:else>
@@ -278,7 +280,7 @@ function onSubmit()
 
 
 
-	</s:form>
+	</form:form>
 </body>
 
 </html>

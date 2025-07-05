@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -70,15 +72,15 @@
 
 
 <body onload="onloadtask();">
-	<s:form action="contraCTB" theme="simple" name="cashDepositForm">
-		<s:push value="model">
+	<form:form action="contraCTB" theme="simple" name="cashDepositForm">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Cash Deposit" />
 			</jsp:include>
 
 			<span class="mandatory"> <font
-				style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-					<s:actionmessage /></font>
+				style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 			<div class="formmainbox">
 				<div class="formheading" />
@@ -94,7 +96,7 @@
 							<tr>
 								<td class="greybox" width="25%"><s:text
 										name="contra.cashInHand" /></td>
-								<td class="greybox" width="25%"><s:textfield
+								<td class="greybox" width="25%"><form:input
 										name="contraBean.cashInHand" id="cashInHand" tabindex="-1"
 										readonly="true" /></td>
 								<td class="greybox" width="25%"></td>
@@ -137,14 +139,14 @@
 				name="voucherTypeBean.voucherNumType" value="Contra" />
 			<input type="hidden" id="voucherTypeBean.cgnType"
 				name="voucherTypeBean.cgnType" value="CTB" />
-			<s:hidden name="contraBean.saveMode" id="saveMode" />
-			<s:hidden name="contraBean.result" id="result" />
-			<s:hidden name="contraBean.mode" id="mode" />
-			<s:hidden id="cgn" name="cgn"></s:hidden>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 			<s:hidden id="vouchermis.sourcePath" name="vouchermis.sourcePath"
 				value="../contra/contraCTB!loadCTBVoucher.action?vhid="></s:hidden>
 		</s:push>
-	</s:form>
+	</form:form>
 	<script>
 
 function populateAccNum(branch){
@@ -289,8 +291,8 @@ function amountFormat(){
 				document.getElementById('accnumnar').value="";
 				document.getElementById('amount').value=0;
 			}	
-			var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
-			var cgn = '<s:property value='%{cgn}'/>' ;
+			var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
+			var cgn = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 			
 			if(dom.get('result').value=='sucess')
 			{
@@ -298,7 +300,7 @@ function amountFormat(){
 				if(dom.get('saveMode').value=='saveclose'){
 					window.close();
 				}else if(dom.get('saveMode').value=='saveview'){
-					var vhId='<s:property value='%{voucherHeader.id}'/>';
+					var vhId='<!-- TODO: Manual migration required for custom Struts tag -->';
 					document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="+vhId;
 					document.forms[0].submit();
 					

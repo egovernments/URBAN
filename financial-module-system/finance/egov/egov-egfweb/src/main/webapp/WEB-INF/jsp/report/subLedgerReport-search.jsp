@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 
 <html>
 <head>
-<title><s:text name="subLedger.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -139,66 +141,66 @@ background: #DEDEDE;
 	}
 </script>
 <body onLoad="onBodyLoad()">
-	<s:form name="subLedgerForm" id="subLedgerForm"
+	<form:form name="subLedgerForm" id="subLedgerForm"
 		action="subLedgerReport" theme="css_xhtml" validate="true">
-		<s:push value="subLedgerReport">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="subLedger.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
-				<s:hidden name="accEntityId" id="accEntityId" value="%{accEntityId}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:hidden name="drillDownFromSchedule" id="drillDownFromSchedule"
 					value="%{drillDownFromSchedule}" />
 				<s:hidden name="accEntityKey" id="accEntityKey"
 					value="%{accEntityKey}" />
-				<s:hidden name="glCode2" id="glCode2" value="%{glCode2}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<div class="tbl-header" id="tbl-header">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td class="bluebox"><s:text name="subLedger.accountCode" /><span
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory"></span></td>
-							<td class="bluebox"><s:textfield id="glCode1" name="glCode1"
+							<td class="bluebox"><form:input id="glCode1" path="glCode1"
 									value="%{glCode1}" autocomplete="off"
 									onfocus='autocompleteAccountCodes(this);'
 									onblur='splitAccountCodes(this);' /></td>
-						<td class="greybox"><s:text name="subLedger.accountName" /></td>
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 						<td class="greybox">
-						<s:textfield disabled="true" name="accountName" id="accountName"></s:textfield>
+						<form:input disabled="true" path="accountName" id="accountName"></form:input>
 							 </td>
 							 <td class="greybox"></td>
 							<td class="greybox"></td>
 									</tr>
 							<tr>
-							<td class="bluebox"><s:text name="subLedger.fund" /><span
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory"></span></td>
-							<td class="bluebox"><s:select name="fund_id" id="fund_id"
+							<td class="bluebox"><form:select path="fund_id" id="fund_id"
 									list="dropdownData.fundList" listKey="id" listValue="name"
 									headerKey="" headerValue="%{getText('lbl.choose.options')}" /></td>
 						</tr>
 						<tr>
-							<td class="greybox"><s:text name="subLedger.startDate" /><span
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory"></span></td>
 
 							<td class="greybox"><s:date name="startDate" var="startDate"
-									format="dd/MM/yyyy" /> <s:textfield id="startDate"
+									format="dd/MM/yyyy" /> <form:input id="startDate"
 									name="startDate" value="%{startDate}"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 									data-inputmask="'mask': 'd/m/y'" /></td>
 
 
-							<td class="greybox"><s:text name="subLedger.endDate" /><span
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory"></span></td>
 
 							<td class="greybox"><s:date name="endDate" var="endDate"
-									format="dd/MM/yyyy" /> <s:textfield id="endDate"
+									format="dd/MM/yyyy" /> <form:input id="endDate"
 									name="endDate" value="%{endDate}"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -210,25 +212,25 @@ background: #DEDEDE;
 							<egov:ajaxdropdown id="subledger" fields="['Text','Value']"
 								dropdownId="subledger"
 								url="voucher/common-ajaxLoadSubLedgerTypesByGlCode.action" />
-							<td class="bluebox"><s:text name="subLedger.subLedgerType" /><span
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory"></span></td>
-							<td class="bluebox"><s:select name="subledger"
+							<td class="bluebox"><form:select path="subledger"
 									id="subledger" list="dropdownData.subLedgerTypeList"
 									listKey="id" listValue="description" headerKey=""
 									headerValue="%{getText('lbl.choose.options')}" /></td>
-							<td class="bluebox"><s:text name="subLedger.entityDetails" /><span
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory"></span></td>
-							<td class="bluebox"><s:textfield id="accEntitycode" placeholder="Enter first three characters"
+							<td class="bluebox"><form:input id="accEntitycode" placeholder="Enter first three characters"
 									name="accEntitycode" autocomplete="off"
 									onfocus='autocompleteEntityDetails(this);'
-									onblur='splitEntityDetails(this);' /> <s:textfield
+									onblur='splitEntityDetails(this);' /> <form:input
 									id="entityName" name="entityName" value="%{entityName}"
 									readonly="true" /></td>
 
 						</tr>
 						<tr>
-							<td class="greybox"><s:text name="subLedger.department" /></td>
-							<td class="greybox"><s:select name="departmentCode"
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="greybox"><form:select path="departmentCode"
 									id="departmentCode" list="dropdownData.departmentList"
 									listKey="code" listValue="name" headerKey=""
 									headerValue="%{getText('lbl.choose.options')}" /></td>
@@ -245,7 +247,7 @@ background: #DEDEDE;
 							<tr>
 								<td><s:submit method="search" cssClass="buttonsubmit" key="lbl.search"
 										 onclick="return validate()" /></td>
-								<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+								<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 									onclick="javascript:window.parent.postMessage('close','*');" class="button" /></td>
 							</tr>
 						</table>
@@ -253,7 +255,7 @@ background: #DEDEDE;
 				</div>
 		</s:push>
 		</div>
-		<s:if test="%{subLedgerDisplayList.size!=0}">
+		<c:if test="%{subLedgerDisplayList.size!=0}">
 			<display:table name="subLedgerDisplayList" id="currentRowObject"
 				uid="currentRowObject" class="tablebottom" style="width:100%;"
 				cellpadding="0" cellspacing="0" export="true" requestURI="">
@@ -283,12 +285,12 @@ background: #DEDEDE;
 				<display:column media="html" headerClass="bluebgheadtd"
 					class="blueborderfortd" title="Voucher Date"
 					style="width:5%;text-align:center">
-					<s:if
+					<c:if
 						test="%{ #attr.currentRowObject.voucherdate == 'Opening Balance' || #attr.currentRowObject.voucherdate == 'Closing Balance' || #attr.currentRowObject.voucherdate == 'Total'}">
-						<b><s:property value="#attr.currentRowObject.voucherdate" /></b>
-					</s:if>
-					<s:else>
-						<s:property value="#attr.currentRowObject.voucherdate" />
+						<b>${#attr.currentRowObject.voucherdate}</b>
+					</c:if>
+					<c:otherwise>
+						${#attr.currentRowObject.voucherdate}
 					</s:else>
 				</display:column>
 				<display:column media="pdf" headerClass="bluebgheadtd"
@@ -301,8 +303,8 @@ background: #DEDEDE;
 					class="blueborderfortd" title="Voucher Number"
 					style="width:8%;text-align:center">
 					<a href="#"
-						onclick="return viewVoucher('<s:property value="#attr.currentRowObject.vhId"/>')">
-						<s:property value="#attr.currentRowObject.vouchernumber" />
+						onclick="return viewVoucher('${#attr.currentRowObject.vhId}')">
+						${#attr.currentRowObject.vouchernumber}
 					</a>
 				</display:column>
 				<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -320,12 +322,12 @@ background: #DEDEDE;
 				<display:column media="html" headerClass="bluebgheadtd"
 					class="blueborderfortd" title="Amount"
 					style="width:6%;text-align:right">
-					<s:if
+					<c:if
 						test="%{ #attr.currentRowObject.voucherdate == 'Opening Balance' || #attr.currentRowObject.voucherdate == 'Closing Balance' || #attr.currentRowObject.voucherdate == 'Total'}">
-						<b><s:property value="#attr.currentRowObject.debitamount" /></b>
-					</s:if>
-					<s:else>
-						<s:property value="#attr.currentRowObject.debitamount" />
+						<b>${#attr.currentRowObject.debitamount}</b>
+					</c:if>
+					<c:otherwise>
+						${#attr.currentRowObject.debitamount}
 					</s:else>
 				</display:column>
 				<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -341,8 +343,8 @@ background: #DEDEDE;
 					class="blueborderfortd" title="Voucher Number"
 					style="width:8%;text-align:center">
 					<a href="#"
-						onclick="return viewVoucher('<s:property value="#attr.currentRowObject.vhId"/>')">
-						<s:property value="#attr.currentRowObject.creditvouchernumber" />
+						onclick="return viewVoucher('${#attr.currentRowObject.vhId}')">
+						${#attr.currentRowObject.creditvouchernumber}
 					</a>
 				</display:column>
 				<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -360,17 +362,17 @@ background: #DEDEDE;
 				<display:column media="html" headerClass="bluebgheadtd"
 					class="blueborderfortd" title="Amount"
 					style="width:6%;text-align:right">
-					<s:if
+					<c:if
 						test="%{ #attr.currentRowObject.voucherdate == 'Opening Balance' || #attr.currentRowObject.voucherdate == 'Closing Balance' || #attr.currentRowObject.voucherdate == 'Total'}">
-						<b><s:property value="#attr.currentRowObject.creditamount" /></b>
-					</s:if>
-					<s:else>
-						<s:property value="#attr.currentRowObject.creditamount" />
+						<b>${#attr.currentRowObject.creditamount}</b>
+					</c:if>
+					<c:otherwise>
+						${#attr.currentRowObject.creditamount}
 					</s:else>
 				</display:column>
 				<display:caption media="pdf">
 					<div align="left" style="text-align: left;">
-						<b><s:property value="%{titleName}" /><s:property value="%{subLedgerReport.heading}" /></b>
+						<b>${%{titleName}}${%{subLedgerReport.heading}}</b>
 					</div>
 				</display:caption>
 				<display:caption media="excel">
@@ -387,8 +389,8 @@ background: #DEDEDE;
 				<display:setProperty name="export.xml" value="false" />
 			</display:table>
 
-		</s:if>
+		</c:if>
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 </body>
 </html>

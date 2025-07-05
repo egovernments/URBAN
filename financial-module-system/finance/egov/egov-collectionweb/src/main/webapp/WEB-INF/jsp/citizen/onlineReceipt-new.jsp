@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><s:text name="title.onlineReceipts"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script
 	src="${pageContext.request.contextPath}/resources/common/watermark.js"
 	type="text/javascript"></script>
@@ -92,7 +94,7 @@ function populateapportioningamountnew(){
 	var totalCreditAmountToBePaid = 0;
 	var zeroAccHeads=false;
 	if(isNaN(collectiontotal)){
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.invalidamount" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		return;
 	}
@@ -118,7 +120,7 @@ function populateapportioningamountnew(){
 	}
 	if(collectiontotal > billingtotal && zeroAccHeads==false)
 	{
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.greatercollectioamounterror.errormessage" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		return false;
 	}
@@ -211,7 +213,7 @@ function populateapportioningamountnew(){
 			}
 			else
 			{
-				document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.greatercollectioamounterror.errormessage" />' + '<br>';
+				document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 				dom.get("receipt_error_area").style.display="block";
 				window.scroll(0,0);
 			}
@@ -267,7 +269,7 @@ function validateOnlineReceipt(){
 		}
 	}
 	if(amount==null || amount=="" || isNaN(amount) || amount=="0.0" || amount=="0" || amount<0 || amount.startsWith('+')){
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.invalidamount" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		window.scroll(0,0);
 		validation=false;
@@ -286,7 +288,7 @@ function validateOnlineReceipt(){
 
 
 	if(checkpartpaymentvalue=="false" && amount < billingtotal){
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.partpaymenterror" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		window.scroll(0,0);
 		validation=false;
@@ -295,13 +297,13 @@ function validateOnlineReceipt(){
 
 	if(amount > billingtotal && zeroAccHeads==false)
 	{
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.greatercollectioamounterror.errormessage" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		window.scroll(0,0);
 		validation=false;
 	}
 	if(dom.get("paymentServiceId").value=="-1"){
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.selectpaymentgateway.errormessage" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		window.scroll(0,0);
 		validation=false;
@@ -309,7 +311,7 @@ function validateOnlineReceipt(){
 	}
 	
 	if(!dom.get("checkbox").checked){
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="onlineReceipts.acceptterms" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		dom.get("receipt_error_area").style.display="block";
 		window.scroll(0,0);
 		validation=false;
@@ -373,7 +375,7 @@ function callAjax(paymentServiceId){
 		     	}//close If  
 			else
 		     	{
-		        	bootbox.alert("<s:text name='onlineReceipts.transactionmessage.errormessage'/>");
+		        	bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 		        	document.getElementById('transactiondiv').style.display = 'none';
 		     	}
 	     	}//close If
@@ -403,14 +405,14 @@ function onLoad(){
 </head>
 
 <body onload="onLoad();">
-<s:if test="%{hasActionMessages()}">
+<c:if test="%{hasActionMessages()}">
     <div class="errorstyle">
-      <s:actionmessage/>
+      <!-- TODO: Manual migration required for custom Struts tag -->
     </div>
-</s:if>  
+</c:if>  
 
 	<div class="maincontainer">
-		<s:form theme="simple" name="collDetails"
+		<form:form theme="simple" name="collDetails"
 			action="onlineReceipt-saveNew.action">
 			<div class="errorstyle" id="receipt_error_area"
 				style="display: none;"></div>
@@ -428,7 +430,7 @@ function onLoad(){
 							<div class="containerformsg1">
 
 								<div class="text-left margin-5">
-									<s:text name="onlineReceipts.paytaxtext" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</div>
 								<table width="100%" border="0" cellspacing="0" cellpadding="0"
 									id="billsheaderinfotable">
@@ -465,7 +467,7 @@ function onLoad(){
 										name="callbackForApportioning" />
 									<s:hidden id="paymentServiceId" value="%{paymentServiceId}"
 										name="paymentServiceId" />
-									<s:hidden id="refNumber" value="%{refNumber}" name="refNumber" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 									<s:hidden id="isTransactionPending" value="%{isTransactionPending}" 
 									name="isTransactionPending"/>
 									<%
@@ -478,7 +480,7 @@ function onLoad(){
 									<tr>
 										<td>
 											<div class="switchgroup1"
-												id="bobcontent<s:property value="#receiptheaderrowstatus.index + 1" />">
+												id="bobcontent${#receiptheaderrowstatus.index + 1}">
 
 												<table width="100%" border="0" cellpadding="0"
 													cellspacing="0" id="accountdetailtable<%=i%>"
@@ -489,13 +491,13 @@ function onLoad(){
 														</td>
 														<th class="bluebgheadtd" width="10%"><div
 																align="right">
-																<s:text name="onlineReceipts.demand" />
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</div>
 														</td>
-														<!--td class="head" width="19%" ><s:text name="onlineReceipts.collectedamount"/></td-->
-														<!--td class="head" width="19%" ><s:text name="onlineReceipts.balance"/></td-->
+														<!--td class="head" width="19%" ><!-- TODO: Manual migration required for custom Struts tag --></td-->
+														<!--td class="head" width="19%" ><!-- TODO: Manual migration required for custom Struts tag --></td-->
 													</tr>
-													<s:iterator value="%{receiptDetailList}"
+													<c:forEach value="%{receiptDetailList}"
 														status="rowreceiptdetailstatus">
 														<tr>
 
@@ -504,11 +506,11 @@ function onLoad(){
 
 															<td class="blueborderfortd">
 																<div align="right">
-																	<s:property value="%{cramountToBePaid}" />
+																	${%{cramountToBePaid}}
 																	<input
 																		id="receiptDetailList[<%=rcptDtlCnt%>].cramountToBePaid"
 																		name="receiptDetailList[<%=rcptDtlCnt%>].cramountToBePaid"
-																		value='<s:property value="%{cramountToBePaid}"/>'
+																		value='${%{cramountToBePaid}}'
 																		type="hidden" readonly="true" disabled="disabled"
 																		size="12" />
 																</div> <input type="hidden" align="right"
@@ -523,15 +525,15 @@ function onLoad(){
 																<input type="hidden"
 																name="receiptDetailList[<%=rcptDtlCnt%>].ordernumber"
 																id="receiptDetailList[<%=rcptDtlCnt%>].ordernumber"
-																value='<s:property value="ordernumber"/>' /> <input
+																value='${ordernumber}' /> <input
 																type="hidden"
 																name="receiptDetailList[<%=rcptDtlCnt%>].dramount"
 																id="receiptDetailList[<%=rcptDtlCnt%>].dramount"
-																value='<s:property value="dramount"/>' /> <input
+																value='${dramount}' /> <input
 																type="hidden"
 																name="receiptDetailList[<%=rcptDtlCnt%>].isActualDemand"
 																id="receiptDetailList[<%=rcptDtlCnt%>].isActualDemand"
-																value='<s:property value="isActualDemand"/>' /> <input
+																value='${isActualDemand}' /> <input
 																type="hidden"
 																id="receiptDetailList[<%=rcptDtlCnt%>].balanceAmtDisplay" />
 																<input type="hidden"
@@ -546,7 +548,7 @@ function onLoad(){
 														<%
 														    rcptDtlCnt = rcptDtlCnt + 1;
 														%>
-													</s:iterator>
+													</c:forEach>
 													<!--  Finished iterating through the account heads (receipt detail) -->
 													<tr>
 														<!--td class="tablestyle">&nbsp;</td-->
@@ -564,7 +566,7 @@ function onLoad(){
 															class="justbold"><s:text
 																	name="onlineReceipts.balanceamounttopay" /> :<span
 																class="mandatory1">*</span></span></td>
-														<td class="blueborderfortd text-right bg-gray"><s:textfield
+														<td class="blueborderfortd text-right bg-gray"><form:input
 																label="paymentAmount" id="paymentAmount" maxlength="12"
 																name="paymentAmount" size="12"
 																cssClass="form-control patternvalidation text-right"
@@ -590,7 +592,7 @@ function onLoad(){
 								</table>
 
 								<div class="text-left margin-5">
-									<s:text name="onlineReceipts.paythrough" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</div>
 
 								<table class="table-payment">
@@ -599,58 +601,58 @@ function onLoad(){
 												name='onlineReceipts.payusing' /></td>
 									</tr>
 
-									<s:set var="listSize" value="%{serviceDetailsList.size()}" />
-									<s:iterator var="p" value="%{serviceDetailsList}" status="s">
+									<!-- TODO: Manual migration required for custom Struts tag -->
+									<c:forEach var="p" value="%{serviceDetailsList}" status="s">
 
-										<s:set var="index" value="%{(#s.index+1)}" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 
 
-										<s:if test="%{ (#s.index+1)%2 ==1}">
+										<c:if test="%{ (#s.index+1)%2 ==1}">
 											<tr>
-										</s:if>
+										</c:if>
 
 
-										<s:if test="%{#listSize == #index}">
+										<c:if test="%{#listSize == #index}">
 
-											<s:if test="%{ (#s.index+1)%2 ==1 }">
+											<c:if test="%{ (#s.index+1)%2 ==1 }">
 
 												<td class="blueborderfortd" colspan="2" valign="top"><input
 													type="radio"
-													onclick='dom.get("paymentServiceId").value = <s:property value="id"/>'
+													onclick='dom.get("paymentServiceId").value = ${id}'
 													name="radioButton1" /><span class="complaintmsg"> <s:property
 															value="name" />
-												</span> <br> <s:text name="%{code}.transactionmessage" /></td>
+												</span> <br> <!-- TODO: Manual migration required for custom Struts tag --></td>
 
-											</s:if>
-											<s:else>
+											</c:if>
+											<c:otherwise>
 
 												<td class="blueborderfortd" width="50%" valign="top"><input
 													type="radio"
-													onclick='dom.get("paymentServiceId").value = <s:property value="id"/>'
+													onclick='dom.get("paymentServiceId").value = ${id}'
 													name="radioButton1" /><span class="complaintmsg"> <s:property
 															value="name" />
-												</span> <br> <s:text name="%{code}.transactionmessage" /></td>
+												</span> <br> <!-- TODO: Manual migration required for custom Struts tag --></td>
 
 											</s:else>
 
 
-										</s:if>
-										<s:else>
+										</c:if>
+										<c:otherwise>
 
 											<td class="blueborderfortd" width="50%" valign="top"><input
 												type="radio"
-												onclick='dom.get("paymentServiceId").value = <s:property value="id"/>'
+												onclick='dom.get("paymentServiceId").value = ${id}'
 												name="radioButton1" /><span class="complaintmsg"> <s:property
 														value="name" />
-											</span> <br> <s:text name="%{code}.transactionmessage" /></td>
+											</span> <br> <!-- TODO: Manual migration required for custom Struts tag --></td>
 
 										</s:else>
 
 
-										<s:if test="%{ (#s.index+1)%2 ==0}">
+										<c:if test="%{ (#s.index+1)%2 ==0}">
 											</tr>
-										</s:if>
-									</s:iterator>
+										</c:if>
+									</c:forEach>
 
 
 
@@ -729,7 +731,7 @@ function onLoad(){
 					</div>
 				</div>
 			</div>
-		</s:form>
+		</form:form>
 
 	</div>
 </body>

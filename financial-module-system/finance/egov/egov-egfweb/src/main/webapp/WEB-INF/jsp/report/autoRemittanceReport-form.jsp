@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -261,12 +263,12 @@ function validateBank(){
 	
 </script>
 
-	<s:form action="autoRemittanceReport" theme="simple"
+	<form:form action="autoRemittanceReport" theme="simple"
 		name="autoRemittanceReport">
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
 			<tr>
 				<td class="bluebox">Level:<span class="mandatory">*</span></td>
-				<td class="bluebox"><s:select name="level" id="level"
+				<td class="bluebox"><form:select path="level" id="level"
 						list="#{'atdepartment':'At Department','atcoc':'At CoC'}"
 						headerKey="-1" headerValue="----Choose----" /></td>
 				<td class="bluebox"></td>
@@ -274,7 +276,7 @@ function validateBank(){
 			</tr>
 			<tr>
 				<td class="greybox">Payment Voucher From date:</td>
-				<td class="greybox"><s:textfield name="paymentVoucherFromDate"
+				<td class="greybox"><form:input path="paymentVoucherFromDate"
 						id="paymentVoucherFromDate" cssStyle="width:100px"
 						value='%{getFormattedDate(paymentVoucherFromDate)}'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -284,7 +286,7 @@ function validateBank(){
 				</td>
 				<td class="greybox"></td>
 				<td class="greybox">Payment Voucher To date:</td>
-				<td class="greybox"><s:textfield name="paymentVoucherToDate"
+				<td class="greybox"><form:input path="paymentVoucherToDate"
 						id="paymentVoucherToDate" cssStyle="width:100px"
 						value='%{getFormattedDate(paymentVoucherToDate)}'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -295,13 +297,13 @@ function validateBank(){
 			</tr>
 			<tr>
 				<td class="bluebox">Department:</td>
-				<td class="bluebox"><s:select name="department" id="department"
+				<td class="bluebox"><form:select path="department" id="department"
 						list="dropdownData.departmentList" listKey="id"
 						listValue="name" headerKey="-1" headerValue="----Choose----"
 						onChange="populateDO();" /><font color="red">This is
 						mandate if Level is Department</font></td>
 				<td class="bluebox">Remittance CoA:</td>
-				<td class="bluebox"><s:select name="recovery" id="recovery"
+				<td class="bluebox"><form:select path="recovery" id="recovery"
 						list="dropdownData.recoveryList" listKey="id" listValue="type"
 						headerKey="-1" headerValue="----Choose----" /><font color="red">This
 						is mandate if Level is CoC</font></td>
@@ -312,7 +314,7 @@ function validateBank(){
 					dropdownId="drawingOfficerId"
 					url="voucher/common!ajaxLoadDrawingOfficers.action" />
 				<td class="greybox">Drawing officer:</td>
-				<td class="greybox"><s:select name="drawingOfficer"
+				<td class="greybox"><form:select path="drawingOfficer"
 						id="drawingOfficerId" list="dropdownData.drawingList" listKey="id"
 						listValue="name" headerKey="-1" headerValue="----Choose----" /></td>
 				<td class="greybox">Contractor Code/Name:</td>
@@ -328,14 +330,14 @@ function validateBank(){
 					onfocus='autocompleteEntities12By20(this,2);'
 					onblur='splitEntitiesDetailCode(this);' /></td>
 				<td class="bluebox">Fund:</td>
-				<td class="bluebox"><s:select name="fundId" id="fundId"
+				<td class="bluebox"><form:select path="fundId" id="fundId"
 						list="dropdownData.fundList" listKey="id" listValue="name"
 						headerKey="" headerValue="----Choose----"
 						onChange="loadBank(this);" value="%{fundId.id}" /></td>
 			</tr>
 			<tr>
 				<td class="greybox">RTGS Assigned From Date:</td>
-				<td class="greybox"><s:textfield name="rtgsAssignedFromDate"
+				<td class="greybox"><form:input path="rtgsAssignedFromDate"
 						id="rtgsAssignedFromDate" cssStyle="width:100px"
 						value='%{getFormattedDate(rtgsAssignedFromDate)}'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -344,7 +346,7 @@ function validateBank(){
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)<br />
 				</td>
 				<td class="greybox">RTGS Assigned To Date:</td>
-				<td class="greybox"><s:textfield name="rtgsAssignedToDate"
+				<td class="greybox"><form:input path="rtgsAssignedToDate"
 						id="rtgsAssignedToDate" cssStyle="width:100px"
 						value='%{getFormattedDate(rtgsAssignedToDate)}'
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -357,7 +359,7 @@ function validateBank(){
 				<egov:ajaxdropdown id="bank" fields="['Text','Value']"
 					dropdownId="bank" url="voucher/common!ajaxLoadAllBanks.action" />
 				<td class="bluebox">Bank:</td>
-				<td class="bluebox"><s:select name="bank" id="bank"
+				<td class="bluebox"><form:select path="bank" id="bank"
 						list="dropdownData.bankList" listKey="bankBranchId"
 						listValue="bankBranchName" headerKey="-1"
 						headerValue="----Choose----" onclick="validateFund()"
@@ -366,7 +368,7 @@ function validateBank(){
 					dropdownId="accountNumber"
 					url="voucher/common!ajaxLoadAccountNumbers.action" />
 				<td class="bluebox">Account Number:</td>
-				<td class="bluebox"><s:select name="bankAccount"
+				<td class="bluebox"><form:select path="bankAccount"
 						id="accountNumber" list="dropdownData.accNumList" listKey="id"
 						listValue="accountnumber" headerKey="-1"
 						headerValue="----Choose----" onclick="validateBank()" /></td>
@@ -389,9 +391,9 @@ function validateBank(){
 			<input type="button" value="Close" onclick="javascript: self.close()"
 				Class="button" />
 		</div>
-		<s:hidden name="detailKey" id="detailKey"></s:hidden>
+		<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 </div>
 
 <div id="results"></div>

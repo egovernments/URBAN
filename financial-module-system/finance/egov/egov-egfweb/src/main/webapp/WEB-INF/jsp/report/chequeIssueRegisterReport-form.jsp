@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -180,20 +182,20 @@ function printCheque(id)
 <body>
 	<div class="formmainbox">
 		<div class="formheading"></div>
-		<div class="subheadnew"><s:text name="lbl.cheque.issue.register.report" /></div>
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		<br/>
 		<br/>
 
 
-		<s:form action="chequeIssueRegisterReport" theme="simple"
+		<form:form action="chequeIssueRegisterReport" theme="simple"
 			name="chequeIssueRegister">
 			<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td width="10%">&nbsp;</td>
-					<td class="bluebox" width="10%"><s:text name="lbl.bank.branch.name" />:<span
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:select name="bank" id="bank"
+					<td class="bluebox"><form:select path="bank" id="bank"
 							list="dropdownData.bankList" listKey="bankBranchId"
 							listValue="bankBranchName" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" onChange="populateAccNum(this);" />
@@ -202,20 +204,20 @@ function printCheque(id)
 					<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 						dropdownId="accountNumber"
 						url="voucher/common-ajaxLoadAccNum.action" />
-					<td class="bluebox" width="10%"><s:text name="lbl.account.number" />:<span
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="bluebox"><span class="mandatory1">*</span></span></td>
-					<td class="bluebox"><s:select name="bankAccount"
+					<td class="bluebox"><form:select path="bankAccount"
 							id="accountNumber" list="dropdownData.bankAccountList"
 							listKey="id" listValue="accountnumber" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" /></td>
 				</tr>
 				<tr>
 					<td class="greybox" width="10%">&nbsp;</td>
-					<td class="greybox" width="10%"><s:text name="lbl.cheque.from.date" />:<span
+					<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="mandatory1">*</span></td>
 
 					<td class="greybox"><s:date name="fromDate" var="fromDate"
-							format="dd/MM/yyyy" /> <s:textfield id="fromDate"
+							format="dd/MM/yyyy" /> <form:input id="fromDate"
 							name="fromDate" value="%{fromDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -223,11 +225,11 @@ function printCheque(id)
 
 
 					<td width="10%">&nbsp;</td>
-					<td class="greybox" width="10%"><s:text name="lbl.cheque.to.date" />:<span
+					<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="mandatory1">*</span></td>
 
 					<td class="greybox"><s:date name="toDate" var="toDate"
-							format="dd/MM/yyyy" /> <s:textfield id="toDate" name="toDate"
+							format="dd/MM/yyyy" /> <form:input id="toDate" path="toDate"
 							value="%{toDate}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -236,31 +238,31 @@ function printCheque(id)
 				</tr>
 				<tr>
 					<td width="10%" class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="report.department" /></td>
-					<td width="22%" class="bluebox"><s:select
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td width="22%" class="bluebox"><form:select
 							list="dropdownData.executingDepartmentList" listKey="code"
 							listValue="name" name="deptImpl.code" headerKey="0"
 							headerValue="%{getText('lbl.select')}" value="%{deptImpl.code}"
-							id="department"></s:select></td>
+							id="department"></form:select></td>
 				</tr>
 			</table>
 			<br />
 			<br />
 			<div class="subheadsmallnew"></div>
 			
-			<div align="left" class="mandatory1">* <s:text name="default.message.mandatory" /></div>
+			<div align="left" class="mandatory1">* <!-- TODO: Manual migration required for custom Struts tag --></div>
 
 			<div class="buttonbottom">
-				<input type="button" value="<s:text name='lbl.submit'/>" class="buttonsubmit"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 					onclick="return generateReport()" /> &nbsp;
 				<s:reset name="button" type="submit" cssClass="button" id="button"
 					key="lbl.reset" />
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 			</div>
 			<input type="hidden" name="accountNumber.id" id="accountNumber.id" />
 	</div>
-	</s:form>
+	</form:form>
 
 	<div id="results"></div>
 </body>

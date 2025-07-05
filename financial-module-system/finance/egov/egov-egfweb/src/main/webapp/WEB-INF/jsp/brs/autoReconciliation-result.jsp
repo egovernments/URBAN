@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -56,22 +58,22 @@
 </script>
 </head>
 <body>
-	<s:form action="autoReconciliation" theme="simple" name="arform">
-		<s:hidden name="fromDate" />
-		<s:hidden name="toDate" />
-		<s:hidden name="accountId" />
-		<s:hidden name="reconciliationDate" />
-		<s:hidden name="branchId" />
-		<s:hidden name="bankId" />
+	<form:form action="autoReconciliation" theme="simple" name="arform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<h3>
 			Auto Reconciliation process Completed.
-			<s:property value="rowCount" />
+			${rowCount}
 			entries Processed
 		</h3>
 		<h3>
-			<s:property value="count" />
+			${count}
 			entries succeeded ,
-			<s:property value="rowCount-count" />
+			${rowCount-count}
 			entries failed
 		</h3>
 		<br />
@@ -87,7 +89,7 @@
 			</table>
 		</div>
 
-	</s:form>
+	</form:form>
 	<Script>
 function validate()
 {

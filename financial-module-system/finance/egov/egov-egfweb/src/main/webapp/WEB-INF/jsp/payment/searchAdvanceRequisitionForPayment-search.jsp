@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,14 +57,14 @@
 	href="<egov:url prefix='/egi'  path='/commonyui/yui2.7/assets/skins/sam/autocomplete.css'/>" />
 <html>
 <head>
-<title><s:text name='arf.search.title' /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 
 <script type="text/javascript">
 function validateAndSubmit(){
 	   if(dom.get('fromDate').value == "" && dom.get('toDate').value == ""
 		   && dom.get('departmentId').value == -1 && dom.get('arfNumberSearch').value == "") {
-	   		dom.get("searchAdvanceRequisition_error").innerHTML='<s:text name="arf.validation.select.one.search.creteria"/>'
+	   		dom.get("searchAdvanceRequisition_error").innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->'
 			dom.get("searchAdvanceRequisition_error").style.display='';
         	return false;
 	  }
@@ -81,13 +83,13 @@ var arfNumberSearchSelectionHandler = function(sType, arguments){
 <body>
 	<div class="error-block" id="searchAdvanceRequisition_error"
 		style="display: none; color: red;"></div>
-	<s:if test="%{hasErrors()}">
+	<c:if test="%{hasErrors()}">
 		<div class="error-block" style="color: red; align: left">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
-	<s:form name="searchAdvanceRequisitionForPayment"
+	</c:if>
+	<form:form name="searchAdvanceRequisitionForPayment"
 		id="searchAdvanceRequisitionForPayment" theme="simple"
 		onsubmit="return validateAndSubmit(); ">
 		<jsp:include page="../budget/budgetHeader.jsp">
@@ -96,7 +98,7 @@ var arfNumberSearchSelectionHandler = function(sType, arguments){
 		<div class="formmainbox">
 			<div class="formheading" />
 			<div class="subheadnew">
-				<s:text name="arf.search.title" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 		</div>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -108,9 +110,9 @@ var arfNumberSearchSelectionHandler = function(sType, arguments){
 						</tr>
 						<tr>
 							<td width="10%" class="bluebox"></td>
-							<td class="bluebox"><s:text name="arf.fromdate" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<td class="bluebox"><s:date name="fromDate"
-									var="fromDateFormat" format="dd/MM/yyyy" /> <s:textfield
+									var="fromDateFormat" format="dd/MM/yyyy" /> <form:input
 									name="fromDate" id="fromDate" cssClass="selectwk"
 									value="%{fromDateFormat}" onfocus="javascript:vDateType='3';"
 									onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
@@ -121,9 +123,9 @@ var arfNumberSearchSelectionHandler = function(sType, arguments){
 									alt="Calendar" width="16" height="16" border="0"
 									align="absmiddle" />
 							</a></td>
-							<td class="bluebox"><s:text name="arf.todate" /></td>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<td class="bluebox"><s:date name="toDate" var="toDateFormat"
-									format="dd/MM/yyyy" /> <s:textfield name="toDate" id="toDate"
+									format="dd/MM/yyyy" /> <form:input path="toDate" id="toDate"
 									value="%{toDateFormat}" cssClass="selectwk"
 									onfocus="javascript:vDateType='3';"
 									onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
@@ -138,18 +140,18 @@ var arfNumberSearchSelectionHandler = function(sType, arguments){
 
 						<tr>
 							<td width="10%" class="greybox"></td>
-							<td class="greybox"><s:text name="arf.department" /></td>
-							<td class="greybox"><s:select headerKey="-1"
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+							<td class="greybox"><form:select headerKey="-1"
 									headerValue="%{getText('default.dropdown.select')}"
 									name="departmentId" id="departmentId" cssClass="selectwk"
 									list="dropdownData.departmentList" listKey="id"
 									listValue='deptName' value="%{departmentId}" /></td>
-							<td class="greybox"><s:text name="arf.arfnumber" /></td>
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 							<td class="greybox">
 								<div class="yui-skin-sam">
 									<div id="arfNumberSearch_autocomplete">
 										<div>
-											<s:textfield id="arfNumberSearch" name="arfNumber"
+											<form:input id="arfNumberSearch" path="arfNumber"
 												value="%{arfNumber}" cssClass="selectwk" />
 										</div>
 										<span id="arfNumberSearchResults"></span>
@@ -187,6 +189,6 @@ var arfNumberSearchSelectionHandler = function(sType, arguments){
 		</div>
 		<!-- end of formmainbox -->
 		<%@ include file='searchAdvanceRequisitionForPayment-result.jsp'%>
-	</s:form>
+	</form:form>
 </body>
 </html>

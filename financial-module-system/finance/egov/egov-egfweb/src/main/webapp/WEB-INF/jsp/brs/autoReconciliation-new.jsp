@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,7 +57,7 @@
 <script src="<cdn:url value='/resources/app/js/i18n/jquery.i18n.properties.js?rnd=${app_release_no}' context='/services/EGF'/>"></script>
 <script src="<cdn:url value='/resources/app/js/reconciliationHelper.js?rnd=${app_release_no}' />"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="bankreconciliation" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 function validateSubmit() {
 	if(!validate())
@@ -86,14 +88,14 @@ function validateSubmit() {
 </script>
 </head>
 <body>
-	<s:form action="autoReconciliation" theme="simple" name="arform">
+	<form:form action="autoReconciliation" theme="simple" name="arform">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param value="Auto Bank Reconciliation" name="heading" />
 		</jsp:include>
 		<div class="formmainbox">
 			<div class="formheading"></div>
 			<div class="subheadnew">
-				<s:text name="autobankreconciliation" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<div align="center">
@@ -103,45 +105,45 @@ function validateSubmit() {
 			</div>
 			<span class="mandatory1">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
-				</div> <s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</div> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 			<center>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="greybox"></td>
-						<td class="greybox"><s:text name="bank" /> <span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 							class="greybox"><span class="mandatory1">*</span></span></td>
 						<egov:ajaxdropdown id="branchId" fields="['Text','Value']"
 							dropdownId="branchId"
 							url="/voucher/common-ajaxLoadBankBranchesByBank.action" />
-						<td class="greybox"><s:select name="bankId" id="bankId"
+						<td class="greybox"><form:select path="bankId" id="bankId"
 								list="dropdownData.bankList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}"
 								onchange="populatebranch(this);" value="%{bankId}" /></td>
-						<td class="greybox"><s:text name="bankbranch" /> <span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 							class="greybox"><span class="mandatory1">*</span></span></td>
 						<egov:ajaxdropdown id="accountId" fields="['Text','Value']"
 							dropdownId="accountId"
 							url="/voucher/common-ajaxLoadBankAccountsByBranch.action" />
-						<td class="greybox"><s:select name="branchId" id="branchId"
+						<td class="greybox"><form:select path="branchId" id="branchId"
 								list="dropdownData.branchList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}"
 								onchange="populateaccount(this);" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox"></td>
-						<td class="bluebox"><s:text name="bankaccount" /> <span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 							class="bluebox"><span class="mandatory1">*</span></span></td>
-						<td class="bluebox"><s:select name="accountId" id="accountId"
+						<td class="bluebox"><form:select path="accountId" id="accountId"
 								list="dropdownData.accountList" listKey="id"
 								listValue="accountnumber" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" /></td>
-						<td class="bluebox"><s:text name="reconciliationdate" /> <span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 							class="bluebox"><span class="mandatory1">*</span></span></td>
 						<td class="greybox"><s:date name="reconciliationDate"
-								var="reconciliationDate" format="dd/MM/yyyy" /> <s:textfield
+								var="reconciliationDate" format="dd/MM/yyyy" /> <form:input
 								id="reconciliationDate" name="reconciliationDate"
 								value="%{reconciliationDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -150,19 +152,19 @@ function validateSubmit() {
 					</tr>
 					<tr>
 						<td class="greybox"></td>
-						<td class="greybox"><s:text name="fromdate" /> <span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 							class="greybox"><span class="mandatory1">*</span></span></td>
 						<td class="greybox"><s:date name="fromDate" var="fromDate"
-								format="dd/MM/yyyy" /> <s:textfield id="fromDate"
+								format="dd/MM/yyyy" /> <form:input id="fromDate"
 								name="fromDate" value="%{fromDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 								data-inputmask="'mask': 'd/m/y'"  autocomplete="off"/></td>
-						<td class="greybox"><s:text name="todate" /> <span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 							class="greybox"><span class="mandatory1">*</span></span></td>
 
 						<td class="greybox"><s:date name="toDate" var="toDate"
-								format="dd/MM/yyyy" /> <s:textfield id="toDate" name="toDate"
+								format="dd/MM/yyyy" /> <form:input id="toDate" path="toDate"
 								value="%{toDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -175,20 +177,20 @@ function validateSubmit() {
 					<table>
 						<tr>
 							<td><input type="submit" class="buttonsubmit"
-								value="<s:text name='lbl.process'/>" name="Schedule" method="schedule"
+								value="<!-- TODO: Manual migration required for custom Struts tag -->" name="Schedule" method="schedule"
 								onclick="return validateSubmit();" /></td>
-							<td><input type="button" value="<s:text name='lbl.close'/>"
+							<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 								onclick="javascript:window.close()" class="buttonsubmit" /></td>
 						</tr>
 					</table>
 				</div>
 			</center>
 		</div>
-	</s:form>
+	</form:form>
 	<div class="mandatory1">
 		Note:
 		<ol>
-			<li><s:text name="autoreconciliation.process.footnote" />
+			<li><!-- TODO: Manual migration required for custom Struts tag -->
 		</ol>
 	</div>
 </body>

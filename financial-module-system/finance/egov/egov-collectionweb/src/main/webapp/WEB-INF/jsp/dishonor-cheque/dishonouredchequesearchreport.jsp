@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -119,7 +121,7 @@ var toDateAlertMsg = '<spring:message code="msg.please.select.toDate"/>';
 								<label class="col-sm-3 control-label text-right"><spring:message
 										code="lbl.bank.account.number" />:</label>
 								 <div class="col-sm-3 add-margin">
-								 <form:select name="accountNumber" path=""
+								 <form:select path="accountNumber" path=""
 										data-first-option="false" id="bankAccountId"
 										cssClass="form-control" onchange="loadMappedService()">
 										<form:option value="">
@@ -134,7 +136,7 @@ var toDateAlertMsg = '<spring:message code="msg.please.select.toDate"/>';
 								<label class="col-sm-3 control-label text-right"><spring:message
 										code="lbl.service"  />:</label>
 								 <div class="col-sm-3 add-margin">
-									 <form:select name="service" path="" data-first-option="false"
+									 <form:select path="service" path="" data-first-option="false"
 										id="serviceId" cssClass="form-control">
 										<form:option value="">
 										<spring:message code="lbls.select" text="Select" />
@@ -154,7 +156,7 @@ var toDateAlertMsg = '<spring:message code="msg.please.select.toDate"/>';
 								<label class="col-sm-3 control-label text-right"><spring:message
 										code="lbl.payment.type" text="Payment Type" />:</label>
 								<div class="col-sm-3 add-margin">
-									<form:select name="instrumentMode" path=""
+									<form:select path="instrumentMode" path=""
 										data-first-option="false" id="instrumentTypeId"
 										cssClass="form-control">
 										<form:option value="">
@@ -179,7 +181,7 @@ var toDateAlertMsg = '<spring:message code="msg.please.select.toDate"/>';
 									<button type='button' class='btn btn-primary' id="btnsearch">
 										<spring:message code='lbl.search' />
 									</button>
-								<input type="reset" class="button" value="<s:text name='lbl.reset'/>"  name="button" onclick="return resetForm();" />
+								<input type="reset" class="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"  name="button" onclick="return resetForm();" />
 									<a href='javascript:void(0)' class='btn btn-default'
 										onclick="javascript:window.parent.postMessage('close','*');"><spring:message
 											code='lbl.close' /></a>

@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -48,9 +49,9 @@
 
 package org.egov.infra.web.struts.parser;
 
-import org.apache.struts2.dispatcher.multipart.MultiPartRequest;
-import org.apache.struts2.dispatcher.multipart.StrutsUploadedFile;
-import org.apache.struts2.dispatcher.multipart.UploadedFile;
+// TODO: Migrate from Struts/XWork: // import org.apache.struts2.dispatcher.multipart.MultiPartRequest; // TODO: Migrate from Struts/XWork
+// TODO: Migrate from Struts/XWork: // import org.apache.struts2.dispatcher.multipart.StrutsUploadedFile; // TODO: Migrate from Struts/XWork
+// TODO: Migrate from Struts/XWork: // import org.apache.struts2.dispatcher.multipart.UploadedFile; // TODO: Migrate from Struts/XWork
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -76,7 +77,7 @@ import java.util.UUID;
 /**
  * @author subhash
  */
-public class SpringMultipartParser implements MultiPartRequest {
+public class SpringMultipartParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(SpringMultipartParser.class);
 
@@ -88,7 +89,6 @@ public class SpringMultipartParser implements MultiPartRequest {
 
     private MultiValueMap<String, File> multiFileMap = new LinkedMultiValueMap<>();
 
-    @Override
     public void parse(HttpServletRequest request, String saveDir) throws IOException {
         multipartRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
 
@@ -113,12 +113,10 @@ public class SpringMultipartParser implements MultiPartRequest {
         }
     }
 
-    @Override
     public Enumeration<String> getFileParameterNames() {
         return Collections.enumeration(multipartMap.keySet());
     }
 
-    @Override
     public String[] getContentType(String fieldName) {
         List<MultipartFile> files = multipartMap.get(fieldName);
         String[] contentTypes = null;
@@ -132,21 +130,16 @@ public class SpringMultipartParser implements MultiPartRequest {
         return contentTypes;
     }
 
-    @Override
-    public UploadedFile[] getFile(String fieldName) {
-        List<File> files = multiFileMap.get(fieldName);
-        UploadedFile[] uploadedFiles = null;
+    // TODO: Migrate from Struts/XWork - replaced UploadedFile with Spring MultipartFile
+    public MultipartFile[] getFile(String fieldName) {
+        List<MultipartFile> files = multipartMap.get(fieldName);
+        MultipartFile[] uploadedFiles = null;
         if (files != null) {
-            uploadedFiles = new UploadedFile[files.size()];
-            int size = 0;
-            for (File file : files) {
-                uploadedFiles[size++] = new StrutsUploadedFile(file);
-            }
+            uploadedFiles = files.toArray(new MultipartFile[0]);
         }
         return uploadedFiles;
     }
 
-    @Override
     public String[] getFileNames(String fieldName) {
         List<MultipartFile> files = multipartMap.get(fieldName);
         String[] fileNames = null;
@@ -160,7 +153,6 @@ public class SpringMultipartParser implements MultiPartRequest {
         return fileNames;
     }
 
-    @Override
     public String[] getFilesystemName(String fieldName) {
         List<File> files = multiFileMap.get(fieldName);
         String[] fileNames = null;
@@ -174,27 +166,22 @@ public class SpringMultipartParser implements MultiPartRequest {
         return fileNames;
     }
 
-    @Override
     public String getParameter(String name) {
         return multipartRequest.getParameter(name);
     }
 
-    @Override
     public Enumeration<String> getParameterNames() {
         return multipartRequest.getParameterNames();
     }
 
-    @Override
     public String[] getParameterValues(String name) {
         return multipartRequest.getParameterValues(name);
     }
 
-    @Override
     public List getErrors() {
         return errors;
     }
 
-    @Override
     public void cleanUp() {
         for (List<File> files : multiFileMap.values()) {
             for (File file : files) {

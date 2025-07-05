@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 
 <html>
 <head>
-<title><s:text name="openingBalance.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -124,36 +126,36 @@
 </div>
 </head>
 <body>
-	<s:form name="openingBalanceForm" id="openingBalanceForm"
+	<form:form name="openingBalanceForm" id="openingBalanceForm"
 		action="openingBalanceReport" theme="css_xhtml" validate="true">
-		<s:push value="openingBalanceReport">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="openingBalance.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="bluebox"><s:text
 								name="openingBalance.financialYear" /><span class="mandatory1">*</span></td>
-						<td class="bluebox"><s:select name="finYear" id="finYear"
+						<td class="bluebox"><form:select path="finYear" id="finYear"
 								list="dropdownData.financialYearList" listKey="id"
 								listValue="finYearRange" headerKey=""
 								headerValue="----Choose----" /></td>
-						<td class="bluebox"><s:text name="openingBalance.fund" /></td>
-						<td class="bluebox"><s:select name="obFund_id" id="obFund_id"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:select path="obFund_id" id="obFund_id"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="----Choose----" /></td>
 					</tr>
 					<tr>
-						<td class="greybox"><s:text name="openingBalance.department" /></td>
-						<td class="greybox"><s:select name="deptId" id="deptId"
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="greybox"><form:select path="deptId" id="deptId"
 								list="dropdownData.departmentList" listKey="code"
 								listValue="name" headerKey="" headerValue="----Choose----" /></td>
 						<td class="greybox"></td>
@@ -183,6 +185,6 @@
 			</div>
 		</span>
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 </body>
 </html>

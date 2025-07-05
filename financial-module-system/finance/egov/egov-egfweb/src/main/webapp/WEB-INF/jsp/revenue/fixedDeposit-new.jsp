@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -63,14 +65,14 @@
 
 <body>
 	<div style="color: red">
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
 	<div style="color: green">
-		<s:actionmessage theme="simple" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<s:form action="fixedDeposit" theme="simple" name="fDform">
-		<s:token />
+	<form:form action="fixedDeposit" theme="simple" name="fDform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 
 		<jsp:include page="../revenue/fixedDeposit-form.jsp"></jsp:include>
 
@@ -82,6 +84,6 @@
 			<input type="submit" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,11 +53,11 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="chartOfAccount" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 <script type="text/javascript">
 	function submitForm() {
-		var id = '<s:property value="coaId"/>';
+		var id = '${coaId}';
 		document.chartOfAccountsForm.action = '${pageContext.request.contextPath}/masters/chartOfAccounts-modify.action?model.id='
 				+ id;
 		document.chartOfAccountsForm.submit();
@@ -63,7 +65,7 @@
 		return true;
 	}
 	function submitForAdd() {
-		var id = '<s:property value="coaId"/>';
+		var id = '${coaId}';
 		document.chartOfAccountsForm.action = '${pageContext.request.contextPath}/masters/chartOfAccounts-addNewCoa.action?parentId='
 				+ id + "&model.id=" + id;
 		document.chartOfAccountsForm.submit();
@@ -75,11 +77,11 @@
 <body>
 	<jsp:include page="../budget/budgetHeader.jsp" />
 	<div class="subheadnew">
-		<s:text name="chartOfAccount" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<span class="mandatory1"> <s:actionmessage theme="simple" /> <s:actionerror />
-		<s:fielderror /></span>
-	<s:form name="chartOfAccountsForm" id="chartOfAccountsForm"
+	<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></span>
+	<form:form name="chartOfAccountsForm" id="chartOfAccountsForm"
 		action="chartOfAccounts" theme="simple">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<div class="formmainbox">
@@ -93,37 +95,37 @@
 							value="model.glcode" /></td>
 					<td class="bluebox"><strong><s:text
 								name="chartOfAccount.name" />:</strong></td>
-					<td class="bluebox"><s:property value="model.name" /></td>
+					<td class="bluebox">${model.name}</td>
 				</tr>
 				<tr>
 					<td width="20%" class="greybox">&nbsp;</td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.description" />:</strong></td>
-					<td width="22%" class="greybox"><s:property value="model.desc" /></td>
+					<td width="22%" class="greybox">${model.desc}</td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.type" />:</strong></td>
-					<td class="greybox"><s:if test="model.type == 'I'">
-							<s:text name="chartOfAccount.income" />
-						</s:if> <s:if test="model.type == 'E'">
-							<s:text name="chartOfAccount.expense" />
-						</s:if> <s:if test="model.type == 'A'">
-							<s:text name="chartOfAccount.asset" />
-						</s:if> <s:if test="model.type == 'L'">
-							<s:text name="chartOfAccount.liability" />
-						</s:if></td>
+					<td class="greybox"><c:if test="model.type == 'I'">
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <c:if test="model.type == 'E'">
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <c:if test="model.type == 'A'">
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <c:if test="model.type == 'L'">
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if></td>
 				</tr>
 				<tr>
 					<td width="20%" class="bluebox">&nbsp;</td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.classification" />:</strong></td>
-					<td width="22%" class="bluebox"><s:if
+					<td width="22%" class="bluebox"><c:if
 							test="%{model.classification == 1}">
-							<s:text name="chartOfAccount.majorCode" />
-						</s:if> <s:elseif test="%{model.classification == 2}">
-							<s:text name="chartOfAccount.minorCode" />
-						</s:elseif> <s:elseif test="%{model.classification == 4}">
-							<s:text name="chartOfAccount.detailedCode" />
-						</s:elseif> <s:else>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</s:elseif> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</s:elseif> <c:otherwise>
 						</s:else></td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.purpose" />:</strong></td>
@@ -134,49 +136,49 @@
 					<td width="20%" class="greybox">&nbsp;</td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.accountDetailType" />:</strong></td>
-					<td width="22%" class="greybox"><s:iterator
+					<td width="22%" class="greybox"><c:forEach
 							value="model.chartOfAccountDetails" status="status">
-							<s:property value="detailTypeId.name" />
-							<s:if test="!#status.last">,</s:if>
-						</s:iterator></td>
+							${detailTypeId.name}
+							<c:if test="!#status.last">,</c:if>
+						</c:forEach></td>
 					<td width="10%" class="greybox"><strong><s:text
 								name="chartOfAccount.activeForPosting" />:</strong></td>
-					<td class="greybox"><s:if
+					<td class="greybox"><c:if
 							test="%{getIsActiveForPosting() == true}">
-							<s:text name="yes" />
-						</s:if> <s:else>
-							<s:text name="no" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <c:otherwise>
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</s:else></td>
 				</tr>
 				<tr>
 					<td width="20%" class="bluebox">&nbsp;</td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.functionRequired" />:</strong></td>
-					<td width="22%" class="bluebox"><s:if
+					<td width="22%" class="bluebox"><c:if
 							test="%{getFunctionReqd() == true}">
-							<s:text name="yes" />
-						</s:if> <s:else>
-							<s:text name="no" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <c:otherwise>
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</s:else></td>
 					<td width="10%" class="bluebox"><strong><s:text
 								name="chartOfAccount.budgetRequired" />:</strong></td>
-					<td class="bluebox"><s:if test="%{budgetCheckReq() == true}">
-							<s:text name="yes" />
-						</s:if> <s:else>
-							<s:text name="no" />
+					<td class="bluebox"><c:if test="%{budgetCheckReq() == true}">
+							<!-- TODO: Manual migration required for custom Struts tag -->
+						</c:if> <c:otherwise>
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</s:else></td>
 				</tr>
 			</table>
 			<br /> <br />
 		</div>
 		<div class="buttonbottom">
-			<s:if test="%{coaId !=null || coaId!=''}">
-				<input type="submit" class="buttonsubmit" value="<s:text name='lbl.modify'/>" id="Modify"
+			<c:if test="%{coaId !=null || coaId!=''}">
+				<input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->" id="Modify"
 					name="Modify" onclick="return submitForm();" />
-			</s:if>
-			<input type="button" value="<s:text name='lbl.close'/>"
+			</c:if>
+			<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

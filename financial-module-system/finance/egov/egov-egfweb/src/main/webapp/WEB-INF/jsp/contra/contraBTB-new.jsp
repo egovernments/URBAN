@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -69,14 +71,14 @@
 	content="text/html; charset=windows-1252">
 </head>
 <body onload="onLoadTask_new()">
-	<s:form action="contraBTB" theme="simple" name="cbtbform">
-		<s:push value="model">
+	<form:form action="contraBTB" theme="simple" name="cbtbform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Bank to Bank Transfer" name="heading" />
 			</jsp:include>
 			<div class="formmainbox">
 				<div class="formheading" />
-				<div class="subheadnew"><s:text name="lbl.create.bank.to.bank.transfer"/> </div>
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 				<div id="listid" style="display: block">
 					<br />
 				</div>
@@ -88,25 +90,25 @@
 				</div>
 				<span class="mandatory1">
 					<div id="Errors">
-						<s:actionerror />
-						<s:fielderror />
-					</div> <s:actionmessage />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
+					</div> <!-- TODO: Manual migration required for custom Struts tag -->
 				</span>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="bluebox"></td>
-						<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+						<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 
 							<td class="bluebox" width="22%"><s:text
 									name="voucher.number" /><span class="mandatory1">*</span></td>
-							<td class="bluebox" width="22%"><s:textfield
+							<td class="bluebox" width="22%"><form:input
 									name="voucherNumber" id="voucherNumber" /></td>
-						</s:if>
-						<s:hidden name="id" />
+						</c:if>
+						<!-- TODO: Manual migration required for custom Struts tag -->
 
-						<td class="bluebox" width="18%"><s:text name="voucher.date" /><span
+						<td class="bluebox" width="18%"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
-						<td class="bluebox" width="34%"><s:textfield id="voucherDate"
+						<td class="bluebox" width="34%"><form:input id="voucherDate"
 								name="voucherDate" data-date-end-date="0d" value="{voucherDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" class="form-control datepicker"
@@ -117,7 +119,7 @@
 					<%@include file="contraBTB-form.jsp"%>
 				</table>
 			</div>
-			<div class="mandatory1" align="left">* <s:text name="lbl.mendatory.field"/> </div>
+			<div class="mandatory1" align="left">* <!-- TODO: Manual migration required for custom Struts tag --> </div>
 
 			</br>
 			</br>
@@ -130,15 +132,15 @@
 				name="startDateForBalanceCheckStr"
 				value="%{startDateForBalanceCheckStr}" />
 		</s:push>
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
 function	onLoadTask_new()
 {
 	//loadFromDepartment();
 	//loadToDepartment();
-	var 	button='<s:property value="button"/>';
-	var 	srcFund='<s:property value="contraBean.fromFundId"/>'
-	var 	desFund='<s:property value="contraBean.toFundId"/>'
+	var 	button='${button}';
+	var 	srcFund='${contraBean.fromFundId}'
+	var 	desFund='${contraBean.toFundId}'
 	if(srcFund!="" && desFund!="")
 	{
 		if(srcFund!=desFund)
@@ -154,7 +156,7 @@ function	onLoadTask_new()
 	
 	if(document.getElementById("Errors").innerHTML=='')  
 	{
-	bootbox.alert('<s:text name="contra.transaction.succcess"/>');
+	bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 		
 	if(button=="Save_Close")
 	{
@@ -162,7 +164,7 @@ function	onLoadTask_new()
 	}
 	else if(button=="Save_View")
 	{
-			var vhId='<s:property value="vhId"/>';
+			var vhId='${vhId}';
 			document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher-loadvoucherview.action?vhid="+vhId;
 			document.forms[0].submit();
 	}
@@ -174,11 +176,11 @@ function	onLoadTask_new()
 	}
  }
  
- <s:if test="egovCommon.isShowChequeNumber()">
+ <c:if test="egovCommon.isShowChequeNumber()">
  document.getElementById("chequeGrid").style.visibility="visible";
- </s:if>
- <s:else>
- if('<s:property value="contraBean.modeOfCollection"/>'=='cheque')
+ </c:if>
+ <c:otherwise>
+ if('${contraBean.modeOfCollection}'=='cheque')
  {
  document.getElementById("chequeGrid").style.visibility="hidden";
  }else
@@ -195,17 +197,17 @@ function	onLoadTask_new()
 			document.getElementById('chequeNumberlblError').innerHTML='';
 			if (obj.value == "RTGS/NEFT") {
 			document.getElementById("chequeGrid").style.visibility="visible";
-			document.getElementById("mdcNumber").innerHTML = '<s:text name="contra.refNumber" />';
-			document.getElementById("mdcDate").innerHTML = '<s:text name="contra.refDate" />';
+			document.getElementById("mdcNumber").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
+			document.getElementById("mdcDate").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		} else {
-		<s:if test="egovCommon.isShowChequeNumber()">
+		<c:if test="egovCommon.isShowChequeNumber()">
 		 document.getElementById("chequeGrid").style.visibility="visible";
-		 </s:if>
-		 <s:else>
+		 </c:if>
+		 <c:otherwise>
 		 document.getElementById("chequeGrid").style.visibility="hidden";
 		 </s:else>
-			document.getElementById("mdcNumber").innerHTML = '<s:text name="contra.chequeNumber" />';
-			document.getElementById("mdcDate").innerHTML = '<s:text name="contra.chequeDate" />';
+			document.getElementById("mdcNumber").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
+			document.getElementById("mdcDate").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 			
 		}
 	}
@@ -227,28 +229,28 @@ function	onLoadTask_new()
 		if(jQuery('#modeOfCollectioncheque').is(':checked')){
 			document.getElementById('chequeNumberlblError').innerHTML='';
 			if(obj.value.length != 6){
-				document.getElementById('chequeNumberlblError').innerHTML =  '<s:text name="msg.cheque.number.must.be.six.digits" />';
+				document.getElementById('chequeNumberlblError').innerHTML =  '<!-- TODO: Manual migration required for custom Struts tag -->';
 			}
 		}
 	}
 
-	if('<s:text name="%{isBankBalanceMandatory()}"/>'=='')
-		document.getElementById('lblError').innerHTML = '<s:text name="msg.bank.bal.mendatory.param.not.defined" />';
+	if('<!-- TODO: Manual migration required for custom Struts tag -->'=='')
+		document.getElementById('lblError').innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		
-		<s:if test="%{!validateUser('createpayment')}">
-			//document.getElementById('errorSpan').innerHTML='<s:text name="payment.invalid.user"/>';
+		<c:if test="%{!validateUser('createpayment')}">
+			//document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
 				d.options[d.selectedIndex].text.value=d;
 			}
-			</s:if>
+			</c:if>
 			
-			<s:if test="%{getUserDepartment()!=null}">
+			<c:if test="%{getUserDepartment()!=null}">
 				var d = document.getElementById('vouchermis.departmentid');
-				var val='<s:text name="%{getUserDepartment()}"/>';
+				var val='<!-- TODO: Manual migration required for custom Struts tag -->';
 				d.value=val;
-		</s:if>
+		</c:if>
 		
 		jQuery(document).ready(function() {
 			jQuery("#voucherDate").datepicker().datepicker("setDate", new Date());

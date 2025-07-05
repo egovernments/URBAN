@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json" %>
 <%@ taglib prefix="s" uri="/WEB-INF/taglib/struts-tags.tld" %> 
 <%--
@@ -51,13 +53,13 @@
 {
 "ResultSet": {
     "Result":[
-    <s:iterator var="s" value="taxHeadMastersList" status="status">
-    {"glcodeIdDetail":"<s:property value="%{code}" />",
-    "accounthead":"<s:property value="%{name}" />",
-    "creditAmountDetail":"<s:property value='getText(\'format.amount\',{0})' />",
-    "amountType":"<s:property value="%{isDebit}" />"
-    }<s:if test="!#status.last">,</s:if>
-    </s:iterator>       
+    <c:forEach var="s" value="taxHeadMastersList" status="status">
+    {"glcodeIdDetail":"${%{code}}",
+    "accounthead":"${%{name}}",
+    "creditAmountDetail":"<!-- TODO: Manual migration required for custom Struts tag -->",
+    "amountType":"${%{isDebit}}"
+    }<c:if test="!#status.last">,</c:if>
+    </c:forEach>       
     ]
   }
 }

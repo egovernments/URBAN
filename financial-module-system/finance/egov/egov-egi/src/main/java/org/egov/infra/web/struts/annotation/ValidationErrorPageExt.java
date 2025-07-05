@@ -53,7 +53,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.opensymphony.xwork2.Action.SUCCESS;
+// TODO: Migrate from Struts/XWork: import static com.opensymphony.xwork2.Action.SUCCESS;
 /**
  * Purpose of this annotation is same as {@link ValidationErrorPage}, In addition to 
  * main functionality, this annotation also provide two more annotation parameter<br/>
@@ -63,11 +63,12 @@ import static com.opensymphony.xwork2.Action.SUCCESS;
  * will cause the action to invoke the given method after ValidationException is processed.
  * 
  * This is useful incase of re populating dropdowns and other dynamic field in the page after 
- * if there is a ValidationException is thrown from an Action method.
+// TODO: Migrate from Struts/XWork:  * if there is a ValidationException is thrown from an Action method.
  **/
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ValidationErrorPageExt {
+	String SUCCESS = "success";
 	String action() default SUCCESS;
 	String toMethod() default "";
 	

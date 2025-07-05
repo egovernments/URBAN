@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -215,37 +217,37 @@ function validate()
 	document.getElementById("invaliddateformat").style.display="none";
 	document.getElementById("receipt_dateerror_area").style.display="none";
 	var validation = true;
-		<s:if test="%{manualReceiptNumberAndDateReq}"> 
+		<c:if test="%{manualReceiptNumberAndDateReq}"> 
 		if(document.getElementById('manualreceiptinfo').checked==true){
 				if(document.getElementById("manualReceiptDate").value=="" ){
 							document.getElementById("receipt_error_area").innerHTML+=
-									'<s:text name="billreceipt.manualreceiptdatemissing.error" />'+ '<br>';
+									'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 						validation = false;		
 				}
 				if(document.getElementById("manualReceiptNumber").value==""){
 								document.getElementById("receipt_error_area").innerHTML+=
-									'<s:text name="billreceipt.manualreceiptnumbermissing.error" />'+ '<br>';
+									'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 						validation = false;			
 				}
 		}
-		</s:if>
+		</c:if>
 				
-	<s:if test="%{isBillSourcemisc()}"> 
+	<c:if test="%{isBillSourcemisc()}"> 
 		if(validateMiscReceipt){
 			if(!validateMiscReceipt()){
 				return false;
 			}
 		}
-	</s:if>
+	</c:if>
 	var checkpartpaymentvalue=document.getElementById("partPaymentAllowed").value;
 	var collectiontotal=0,cashamount=0,chequeamount=0,cardamount=0,bankamount=0,billingtotal=0;
 	var zeroAccHeads=false;
 	console.log('checkpartpaymentvalue :',checkpartpaymentvalue);
-	<s:if test="%{isBillSourcemisc()}"> 
+	<c:if test="%{isBillSourcemisc()}"> 
 		billingtotal=document.forms[0].misctotalAmount.value;
 		console.log('checkpartpaymentvalue :',checkpartpaymentvalue);
- 	</s:if>
- 	<s:else>
+ 	</c:if>
+ 	<c:otherwise>
 		var noofaccounts=document.getElementById("totalNoOfAccounts").value;
 		var totalCreditAmountToBePaid = 0;
 		for(var j=0;j<noofaccounts; j++)
@@ -285,7 +287,7 @@ function validate()
 			//|| cashamount.startsWith('+')
 			if(cashamount==null || cashamount=="" || isNaN(cashamount) || cashamount<0){
 				document.getElementById("receipt_error_area").innerHTML+=
-				'<s:text name="billreceipt.invalidcashamount.errormessage" />'+ '<br>';
+				'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else
@@ -293,7 +295,7 @@ function validate()
 			    cashamount=eval(cashamount);
 				if(cashamount==0){
 					document.getElementById("receipt_error_area").innerHTML+=
-					'<s:text name="billreceipt.missingcashamount.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					validation = false;
 				}
 				collectiontotal=collectiontotal+cashamount;
@@ -307,7 +309,7 @@ function validate()
 
 	    	var transNo=document.getElementById("instrHeaderCard.transactionNumber").value;
 		    if(transNo==null || transNo==""){
-		    	document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingcardtransactionno.errormessage" /> ' + '<br>';
+		    	document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag --> ' + '<br>';
 		    	validation=false;
 		    }
 		}
@@ -315,7 +317,7 @@ function validate()
 
 	    	var confirmtransNo=document.getElementById("confirmtransactionNumber").value;
 		    if(confirmtransNo==null || confirmtransNo==""){
-		    	document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingcard.confirmtransactionno.errormessage" /> ' + '<br>';
+		    	document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag --> ' + '<br>';
 		    	validation=false;
 		    }
 		    else
@@ -324,7 +326,7 @@ function validate()
 		if(document.getElementById("instrHeaderCard.instrumentNumber")!=null){
 		    var cardNo=document.getElementById("instrHeaderCard.instrumentNumber").value;
 		    if(cardNo==null || isNaN(cardNo) || cardNo.length < 4){
-		    	document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingcardno.errormessage" />' + '<br>';
+		    	document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		    	validation=false;
 		    }
 		}
@@ -332,13 +334,13 @@ function validate()
 
 			cardamount=document.getElementById("instrHeaderCard.instrumentAmount").value;
 			if(cardamount==null || cardamount=="" || isNaN(cardamount) || cardamount<0 || cardamount.startsWith('+')){
-				document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.invalidcardamount.errormessage" />'+ '<br>';
+				document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else{
 				cardamount=eval(cardamount);
 				if(cardamount==0){
-					document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingcardamount.errormessage" />'+ '<br>';
+					document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					validation = false;
 				}
 				collectiontotal=collectiontotal+cardamount;
@@ -352,29 +354,29 @@ function validate()
 		if(document.getElementById("instrHeaderBank.transactionNumber")!=null){
 	    	var transNo=document.getElementById("instrHeaderBank.transactionNumber").value;
 		    if(transNo==null || transNo==""){
-		    	document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingbankchallanno.errormessage" /> ' + '<br>';
+		    	document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag --> ' + '<br>';
 		    	validation=false;
 		    }
 		    else if(isNaN(transNo) || transNo < 0 || transNo.length < 6 || transNo.startsWith('+')){
-		    	document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.invalidbankchallanno.errormessage" /> ' + '<br>';
+		    	document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag --> ' + '<br>';
 		    	validation=false;
 		    }
 		}
 		if(document.getElementById("bankChallanDate")!=null){
 			var bankChallanDate=document.getElementById("bankChallanDate").value;
 			if(bankChallanDate==null || bankChallanDate==""){
-				document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingbankchallandate.errormessage" />'+ '<br>';
+				document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else {
 				var receiptDate;
-				 <s:if test="%{!isBillSourcemisc()}">
+				 <c:if test="%{!isBillSourcemisc()}">
 				 	if(document.getElementById("manualReceiptDate"))
 				 		receiptDate = document.getElementById("manualReceiptDate").value;
 				 	else
 				 		receiptDate = "${currDate}";
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					if(document.getElementById("voucherDate"))
 						receiptDate = document.getElementById("voucherDate").value;
 					else
@@ -382,7 +384,7 @@ function validate()
 				</s:else>
 				if(receiptDate!=null && process(bankChallanDate) > process(receiptDate)){
  	 	    		document.getElementById("receipt_error_area").innerHTML+=
- 	 					'<s:text name="miscreceipt.error.transactiondate.greaterthan.receiptdate" />'+ '<br>';   	
+ 	 					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';   	
  	 				window.scroll(0,0);
  	 				validation=false;
  		 	   	}
@@ -391,24 +393,24 @@ function validate()
 		if(document.getElementById("instrHeaderBank.instrumentAmount")!=null){
 			bankamount=document.getElementById("instrHeaderBank.instrumentAmount").value;
 			if(bankamount==null || bankamount=="" || isNaN(bankamount) || bankamount<0 || bankamount.startsWith('+')){
-				document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.invalidbankchallanamount.errormessage" />'+ '<br>';
+				document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else{
 				bankamount=eval(bankamount);
 				if(bankamount==0){
-					document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingbankchallanamount.errormessage" />'+ '<br>';
+					document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					validation = false;
 				}
 				collectiontotal=collectiontotal+bankamount;
 			}
 		}
 		if(null == document.getElementById('bankBranchMaster') || document.getElementById('bankBranchMaster').value == 0){
-			document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingbankbranchname.errormessage" />'+  "<br>";
+			document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
 			validation=false;
 		}
 		if(null == document.getElementById('accountNumberMaster') || document.getElementById('accountNumberMaster').value == 0){
-			document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingbankaccountname.errormessage" />'+  "<br>";
+			document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
 			validation=false;
 		}
 	document.getElementById('instrumentTypeCashOrCard').value="bankchallan";
@@ -450,7 +452,7 @@ function validate()
 			onlineamount=document.getElementById("instrHeaderOnline.instrumentAmount").value;
 			if(onlineamount==null || onlineamount=="" || isNaN(onlineamount) || onlineamount<0){
 				document.getElementById("receipt_error_area").innerHTML+=
-				'<s:text name="billreceipt.invalidcreditamount.errormessage" />'+ '<br>';
+				'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				validation = false;
 			}
 			else
@@ -458,7 +460,7 @@ function validate()
 			    onlineamount=eval(onlineamount);
 				if(onlineamount==0){
 					document.getElementById("receipt_error_area").innerHTML+=
-					'<s:text name="billreceipt.invalidcreditamount.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					validation = false;
 				}
 				collectiontotal=collectiontotal+onlineamount;
@@ -484,25 +486,25 @@ function validate()
 	    //display error if actual payment amt > original billed amt, and there is no 'zero' account head.
 	    if(billingTotalNumberFormat < collectiontotal && advancePaymentAllowed==false)
 		{
-			document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.greatercollectionamounterror.errormessage" />' + '<br>';
+			document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 			validation=false;
 		}
 		// if there is an advance payment and overriding of acc heads is permitted, but value has not been manually entered
 		// - display error if credit total (sum of amts paid for the account heads) is not equal to payment amount entered in modes of payt
 		if(collectiontotal != credittotal  && advancePaymentAllowed==true && checkoverridevalue==true && document.getElementById("callbackForApportioning").value==false)
 		{
-			document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.incorrectaccountheadamt.errormessage" />' + '<br>';
+			document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 			validation=false;
 		}
 		if(collectiontotal < billingTotalNumberFormat && checkpartpaymentvalue==='false'){
-			document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.total.errormessage" />' + '<br>';
+			document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 			validation=false;
 		}
 		// display error if actual payt amt < original billed amt after system has done apportioning 
 		// (citizen might have manually changed credit amounts after system apportioning of account head amounts
 		else if(collectiontotal < billingTotalNumberFormat && checkpartpaymentvalue=='true'){
 		        if(collectiontotal < minimumAmt){
-		        	document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.paytlessthanmin.errormessage" />'+': ' + minimumAmt+ '<br>';
+		        	document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+': ' + minimumAmt+ '<br>';
 		        	validation=false;
 		        }
 		}
@@ -517,17 +519,17 @@ function validate()
     	var paidby=document.getElementById("paidBy").value;
     	paidby = trimAll(paidby);
    	if(paidby.length == 0 || paidby==""){
-   		document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.missingpayeename.errormessage" /> ' + '<br>';
+   		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag --> ' + '<br>';
 		validation = false;
    	}
 	
-   	<s:if test="%{!isBillSourcemisc()}"> 
+   	<c:if test="%{!isBillSourcemisc()}"> 
 	 if(eval(document.getElementById("totalamountdisplay").value)>eval(document.getElementById("totalamounttobepaid").value)){
-		 var r = confirm('<s:text name="msg.collected.amount.is.more.than.amount.to.be.paid.do.you.want.to.collect.advance.amount"/>');
+		 var r = confirm('<!-- TODO: Manual migration required for custom Struts tag -->');
 		 if(r !=true)
 			 validation = false;
 	 }
-	 </s:if>
+	 </c:if>
 
    	if(validation==false &&  document.getElementById("receipt_error_area").innerHTML!=''){
 		document.getElementById("receipt_error_area").style.display="block";
@@ -571,7 +573,7 @@ function verifyChequeDetails(table,len1)
 	    	instrumentType=getControlInBranch(table.rows[j],'instrumentType').value;
 	    	if(instrumentType==null || instrumentType==""){
 	    		if(instrTypeErrMsg==""){
-	    		    instrTypeErrMsg='<s:text name="billreceipt.selectinstrumenttype.errormessage"/>' + '<br>';
+	    		    instrTypeErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("receipt_error_area").innerHTML+=instrTypeErrMsg;
 	    		}
 	    		check=false;
@@ -584,7 +586,7 @@ function verifyChequeDetails(table,len1)
 	    	instrNo = trimAll(instrNo);
 	    	if(instrNo==null || instrNo=="" || isNaN(instrNo) || instrNo.length!=6){
 	    		if(instrNoErrMsg==""){
-	    		    instrNoErrMsg='<s:text name="billreceipt.invalidchequenumber.errormessage" />' + '<br>';
+	    		    instrNoErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("receipt_error_area").innerHTML+=instrNoErrMsg;
 	    		}
 	    		check=false;
@@ -597,13 +599,13 @@ function verifyChequeDetails(table,len1)
 	    	var bankName=getControlInBranch(table.rows[j],'bankName').value;
 	    	if(ifscCode==null || ifscCode==""){
 	    		if(bankNameErrMsg==""){
-	    		    bankNameErrMsg='<s:text name="billreceipt.missingifsc.code.errormessage" />' + '<br>';
+	    		    bankNameErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("receipt_error_area").innerHTML+=bankNameErrMsg;
 	    		}
 	    		check=false;
 	    	}else if(bankName==null || bankName==""){
 	    		if(bankNameErrMsg==""){
-	    		    bankNameErrMsg='<s:text name="billreceipt.invalidifsc.code.errormessage" />' + '<br>';
+	    		    bankNameErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("receipt_error_area").innerHTML+=bankNameErrMsg;
 	    		}
 	    		check=false;
@@ -613,10 +615,10 @@ function verifyChequeDetails(table,len1)
 	    //validate if valid date has been entered
 	    if(getControlInBranch(table.rows[j],'instrumentDate')!=null){
 	    var instrDate=getControlInBranch(table.rows[j],'instrumentDate');
-	    <s:if test="%{manualReceiptNumberAndDateReq}">
+	    <c:if test="%{manualReceiptNumberAndDateReq}">
 	    	if(instrDate.value==null || instrDate.value=="" || instrDate.value=="DD/MM/YYYY"){
 	    		if(instrDateErrMsg==""){
-	    		    instrDateErrMsg='<s:text name="billreceipt.missingchequedate.errormessage" />' + '<br>';
+	    		    instrDateErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("receipt_error_area").innerHTML+=instrDateErrMsg;
 	    		}
 	    		check=false;
@@ -627,19 +629,19 @@ function verifyChequeDetails(table,len1)
 		    	 if(receiptDate !=null && receiptDate != '' && instrDate.value != null && instrDate.value!= '' && check==true ){
 	    			if(process(instrDate.value) > process(receiptDate)){
 	 	 	    		document.getElementById("receipt_error_area").innerHTML+=
-	 	 					'<s:text name="miscreceipt.error.instrumentdate.greaterthan.receiptdate" />'+ '<br>';   	
+	 	 					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';   	
 	 	 				window.scroll(0,0);
 	 	 				check=false;
 	 		 	   	}
     				checkForCurrentDate(instrDate);
 	    	}
 	    	}
-	    </s:if>
+	    </c:if>
 
-	    <s:else>
+	    <c:otherwise>
 	    	if(instrDate.value==null || instrDate.value=="" || instrDate.value=="DD/MM/YYYY"){
 	    		if(instrDateErrMsg==""){
-	    		    instrDateErrMsg='<s:text name="billreceipt.missingchequedate.errormessage" />' + '<br>';
+	    		    instrDateErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    			document.getElementById("receipt_error_area").innerHTML+=instrDateErrMsg;
 	    		}
 	    		check=false;
@@ -652,7 +654,7 @@ function verifyChequeDetails(table,len1)
 	 				
 	 	 	    	if(instrDate.value != null && instrDate.value!= '' && check==true && process(instrDate.value) > process(receiptDate)){
 	 	 	    		document.getElementById("receipt_error_area").innerHTML+=
-	 	 					'<s:text name="miscreceipt.error.instrumentdate.greaterthan.receiptdate" />'+ '<br>';   	
+	 	 					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';   	
 	 	 				window.scroll(0,0);
 	 	 				check=false;
 	 		 	   	}
@@ -666,7 +668,7 @@ function verifyChequeDetails(table,len1)
 				var chequeamount=getControlInBranch(table.rows[j],'instrumentChequeAmount').value;
 				if(chequeamount==null || chequeamount=="" || isNaN(chequeamount) || chequeamount<0 || chequeamount.startsWith('+')){
 					if(instrAmountInvalidErrMsg==""){
-						instrAmountInvalidErrMsg='<s:text name="billreceipt.invalidchequeamount.errormessage" />' + '<br>';
+						instrAmountInvalidErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    				document.getElementById("receipt_error_area").innerHTML+=instrAmountInvalidErrMsg;
 	    				check=false;
 	    			}
@@ -675,7 +677,7 @@ function verifyChequeDetails(table,len1)
 					chequeamount=eval(chequeamount);
 					if(chequeamount==0){
 	    				if(instrAmountErrMsg==""){
-	    		    		instrAmountErrMsg='<s:text name="billreceipt.missingchequeamount.errormessage" />' + '<br>';
+	    		    		instrAmountErrMsg='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 	    					document.getElementById("receipt_error_area").innerHTML+=instrAmountErrMsg;
 	    					check=false;
 	    				}
@@ -716,7 +718,7 @@ function checkaccountheaderwiseamount()
 		var tobecollectedamount=eval(document.getElementById('receiptDetailList['+j+'].cramountToBePaid').value);
 		var amountreceived=eval(document.getElementById('receiptDetailList['+j+'].cramount').value);
 		if(isNaN(amountreceived)){
-		    document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.invalidcreditamount.errormessage" />' + '<br>';
+		    document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 			return false;
 		}
 		if(advancePaymentAllowed==true && tobecollectedamount>0 && amountreceived>tobecollectedamount){
@@ -759,21 +761,21 @@ function onBodyLoad()
 		document.getElementById('manualReceiptDate').disabled=true;
 	}
 
-	<s:if test="%{isBillSourcemisc()}"> 
+	<c:if test="%{isBillSourcemisc()}"> 
 	 document.getElementById("totalNoOfAccounts").value = 0;
 	 accountscount=document.getElementById("totalNoOfAccounts").value;
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
 	accountscount=document.getElementById("totalNoOfAccounts").value;
 	</s:else>
 
-	<s:if test="%{isBillSourcemisc()}"> 
+	<c:if test="%{isBillSourcemisc()}"> 
 	//To load the account codes if only a misc receipt request
 	if(onBodyLoadMiscReceipt){
 		onBodyLoadMiscReceipt();
 	}
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
     //set credit amount fields as non editable if 'checkoverride' flag is false
 	for(var j=0;j<accountscount;j++)
 	{
@@ -808,7 +810,7 @@ function onBodyLoad()
 		document.getElementById('instrumentChequeAmount').value="";
 	}
 	if(document.getElementById('paidBy').value==""){
-		var paidby =  '<s:property value="%{payeeName}" escapeJavaScript="true"/>';
+		var paidby =  '<!-- TODO: Manual migration required for custom Struts tag -->';
 		paidby = paidby.replace('&amp;','&');
 		document.getElementById('paidBy').value=paidby;
 	}
@@ -855,7 +857,7 @@ function checkandcalculatecredittotal(index,elem){
 	}
 	collectiontotal=calculateCollectionTotal();
 	if(collectiontotal!=credittotal){
-		document.getElementById("receipt_error_area").innerHTML+='<s:text name="billreceipt.total.amountoverride.errormessage" />' + '<br>';
+		document.getElementById("receipt_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->' + '<br>';
 		document.getElementById("receipt_error_area").style.display="block";
 		}
 	else{
@@ -878,7 +880,7 @@ function validateChallanDate(obj)
 		if(!validateNotFutureDate(obj.value,currDate)){
 		   document.getElementById("receipt_dateerror_area").style.display="block";
 	       document.getElementById("receipt_dateerror_area").innerHTML+=
-					'<s:text name="billreceipt.bankchallandate.futuredate.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 	       obj.value = "";
 	       // obj.focus();
 	       obj.tabIndex="-1";
@@ -915,7 +917,7 @@ function validateManualReceiptDate(obj)
 			  {
 				  document.getElementById("receipt_dateerror_area").style.display="block";
 			      document.getElementById("receipt_dateerror_area").innerHTML+=
-							'<s:text name="billreceipt.manualreceipt.futuredate.errormessage" />'+'<br/>';
+							'<!-- TODO: Manual migration required for custom Struts tag -->'+'<br/>';
 				  jQuery(obj).val('');
 				  scrolltop();
 				  return false;
@@ -931,7 +933,7 @@ function validateManualReceiptDate(obj)
 		if(!validateNotFutureDate(obj.value,currDate)){
 		   document.getElementById("receipt_dateerror_area").style.display="block";
 	       document.getElementById("receipt_dateerror_area").innerHTML+=
-					'<s:text name="billreceipt.manualreceipt.futuredate.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 	       obj.value = "";
 	       // obj.focus();
 	       obj.tabIndex="-1";
@@ -955,7 +957,7 @@ function checkForCurrentDate(obj)
 	var receiptDate;
 	   document.getElementById("receipt_dateerror_area").style.display="none";
 		document.getElementById("receipt_dateerror_area").innerHTML="";
-	   <s:if test="%{manualReceiptNumberAndDateReq}">
+	   <c:if test="%{manualReceiptNumberAndDateReq}">
 		   if (  document.getElementById('manualreceiptinfo').checked==true){
 			   if(document.getElementById("manualReceiptDate").value != null  && document.getElementById("manualReceiptDate").value != ''){
 			   receiptDate = document.getElementById("manualReceiptDate").value;
@@ -966,8 +968,8 @@ function checkForCurrentDate(obj)
 		   else {
 			   receiptDate = "${currDate}"; 
 			}
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 		{
 			if(document.getElementById("voucherDate"))
 				receiptDate = document.getElementById("voucherDate").value;
@@ -983,28 +985,28 @@ function checkForCurrentDate(obj)
 
 	   if(obj.value != null && obj.value != "") {
 	   if(!validatedays(obj.value,receiptDate)){
-		   <s:if test="%{manualReceiptNumberAndDateReq}">
+		   <c:if test="%{manualReceiptNumberAndDateReq}">
 		   if (document.getElementById("manualReceiptDate").value != null && document.getElementById("manualReceiptDate").value != '') {
 			if(receiptDateFormat<finDate) {
 				 document.getElementById("receipt_dateerror_area").style.display="block";
 					document.getElementById("receipt_dateerror_area").innerHTML+=
-						'<s:text name="billreceipt.datelessthan6monthdate.errormessage" />'+ '<br>';
+						'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 			}
 			else {
 				 document.getElementById("receipt_dateerror_area").style.display="block";
 				  document.getElementById("receipt_dateerror_area").innerHTML+=
-						'<s:text name="billreceipt.manualReceiptdatelessthanfinancialdate.errormessage" />'+ '<br>';
+						'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				}
 		   } else{
 			   document.getElementById("receipt_dateerror_area").style.display="block";
 				  document.getElementById("receipt_dateerror_area").innerHTML+=
-						'<s:text name="billreceipt.datelessthanreceiptdate.errormessage" />'+ '<br>';
+						'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 			  	 }
-		   </s:if>
-		   <s:else>
+		   </c:if>
+		   <c:otherwise>
 		   document.getElementById("receipt_dateerror_area").style.display="block";
 			  document.getElementById("receipt_dateerror_area").innerHTML+=
-					'<s:text name="billreceipt.datelessthanreceiptdate.errormessage" />'+ '<br>';
+					'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 		   </s:else>
 		   jQuery(obj).val('');
 		   scrolltop();
@@ -1028,13 +1030,13 @@ function checkreset()
 	clearChequeDDDetails();
 	displayPaytModes();
 	clearManualReceiptData();
-	document.getElementById('paidBy').value='<s:property value="%{payeeName}" escapeJavaScript="true"/>';
-	<s:if test="%{isBillSourcemisc()}"> 
+	document.getElementById('paidBy').value='<!-- TODO: Manual migration required for custom Struts tag -->';
+	<c:if test="%{isBillSourcemisc()}"> 
 		//To load the account codes if only a misc receipt request
 		if(resetMisc){
 			resetMisc();
 		}
-	</s:if>
+	</c:if>
 }
 
 function showHideMandataryMark(obj){
@@ -1061,7 +1063,7 @@ function showHideMandataryMark(obj){
 }
 </script>
 
-	<title><s:text name="billreceipt.pagetitle"/></title>
+	<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <!-- Area for error display -->
 <body><br>
@@ -1074,14 +1076,14 @@ function showHideMandataryMark(obj){
 
 <span align="center" style="display:none" id="delerror">
   <li>
-     <font size="2" color="red"><b><s:text name="common.lastrow.error"/></b></font>
+     <font size="2" color="red"><b><!-- TODO: Manual migration required for custom Struts tag --></b></font>
   </li>
 </span>
 
 <span align="center" style="display:none" id="amountoverrideerror">
   <li>
      <font size="2" color="red"><b>
-		<s:text name="billreceipt.amountoverride.errormessage"/>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	 </b></font>
   </li>
 </span>
@@ -1089,96 +1091,96 @@ function showHideMandataryMark(obj){
 <span align="center" style="display:none" id="invaliddateformat">
   <li>
      <font size="2" color="red"><b>
-		<s:text name="common.dateformat.errormessage"/>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</b></font>
   </li>
 </span>
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
 	<div align="center">
 	    <div id="actionErrorMessages" class="alert alert-danger">
-	      <s:actionerror/>
-	      <s:fielderror/>	      
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+	      <!-- TODO: Manual migration required for custom Struts tag -->	      
 	    </div>
-	    <input name="button" type="button" class="button" id="buttonclose" value="<s:text name='lbl.close'/>" onclick="window.close();" />
+	    <input name="button" type="button" class="button" id="buttonclose" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.close();" />
 	</div>
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
 <div class="formmainbox" style="width:100%;max-width:960px;">
 	
-	<s:if test="%{hasActionMessages()}">
+	<c:if test="%{hasActionMessages()}">
 	    <div id="actionMessages" class="messagestyle">
-	    	<s:actionmessage theme="simple"/>
+	    	<!-- TODO: Manual migration required for custom Struts tag -->
 	    </div>
-	</s:if>
+	</c:if>
 
-	<s:form theme="simple" name="collDetails" action="receipt">
+	<form:form theme="simple" name="collDetails" action="receipt">
 	<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<s:token />
-	<s:push value="model">
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
-	<s:if test="%{!isBillSourcemisc()}"> 
-		<div class="subheadnew"><s:property value="%{serviceName}" /></div>
-	</s:if>
-	<s:if test="%{isBillSourcemisc()}"> 
-		<div class="subheadnew"><s:text name="miscreceipt.title"/></div>
-	</s:if>
-	<s:if test="%{!isBillSourcemisc()}"> 
+	<c:if test="%{!isBillSourcemisc()}"> 
+		<div class="subheadnew">${%{serviceName}}</div>
+	</c:if>
+	<c:if test="%{isBillSourcemisc()}"> 
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<c:if test="%{!isBillSourcemisc()}"> 
 		<div class="subheadsmallnew">
-		<span class="subheadnew"><s:text name="billreceipt.billdetails"/></span>
+		<span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span>
 		</div>
-	</s:if>
+	</c:if>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr><td>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="billsheaderinfotable">
-		<s:hidden name="collectXML" id="collectXML" value="%{collectXML}" />
-		<s:hidden label="totalNoOfAccounts" id="totalNoOfAccounts" value="%{totalNoOfAccounts}" name="totalNoOfAccounts"/>
-		<s:hidden label="reasonForCancellation" id="reasonForCancellation" name="reasonForCancellation" />
-		<s:hidden label="oldReceiptId" id="oldReceiptId" name="oldReceiptId"/>
-		<s:hidden label="overrideAccountHeads" id="overrideAccountHeads" value="%{overrideAccountHeads}" name="overrideAccountHeads"/>
-		<s:hidden label="partPaymentAllowed" id="partPaymentAllowed" value="%{partPaymentAllowed}" name="partPaymentAllowed"/>
-		<s:hidden label="minimumAmount" id="minimumAmount" value="%{minimumAmount}" name="minimumAmount"/>
-		<s:hidden label="cashAllowed" id="cashAllowed" value="%{cashAllowed}" name="cashAllowed"/>
-		<s:hidden label="cardAllowed" id="cardAllowed" value="%{cardAllowed}" name="cardAllowed"/>
-		<s:hidden label="chequeAllowed" id="chequeAllowed" value="%{chequeAllowed}" name="chequeAllowed"/>
-		<s:hidden label="bankAllowed" id="bankAllowed" value="%{bankAllowed}" name="bankAllowed"/>
-		<s:hidden label="ddAllowed" id="ddAllowed" value="%{ddAllowed}" name="ddAllowed"/>
-		<s:hidden label="onlineAllowed" id="onlineAllowed" value="%{onlineAllowed}" name="onlineAllowed"/>
-		<s:hidden label="billSource" id="billSource" value="%{billSource}" name="billSource"/>
-		<s:hidden label="serviceName" id="serviceName" value="%{serviceName}" name="serviceName"/>
-		<s:hidden label="fundName" id="fundName" value="%{fundName}" name="fundName"/>
-		<s:hidden label="callbackForApportioning" id="callbackForApportioning" value="%{callbackForApportioning}" name="callbackForApportioning"/>
-		<s:hidden label="instrumenttotal" id="instrumenttotal" name="instrumenttotal"/>
-		<s:hidden label="manualReceiptNumberAndDateReq" id="manualReceiptNumberAndDateReq" name="manualReceiptNumberAndDateReq" value="%{manualReceiptNumberAndDateReq}"/>
-		<s:hidden label="serviceIdText" id="serviceIdText" name="serviceIdText" value="%{serviceIdText}" />
-		<s:if test="%{!isBillSourcemisc()}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<c:if test="%{!isBillSourcemisc()}">
 		      	<%@ include file='collection-billdetails.jsp'%>
-		</s:if> 
+		</c:if> 
 		</table>
 		</td></tr>
 
-		<s:if test="%{isBillSourcemisc()}"> 
+		<c:if test="%{isBillSourcemisc()}"> 
 		<tr><td>
 		<%@ include file="miscReceipts-new.jsp" %>
 		</td></tr>
-		</s:if>
+		</c:if>
 
 
 	  	<tr><td>
-	  	  <div class="subheadsmallnew"><s:text name="billreceipt.paymentdetails"/></div>
+	  	  <div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 	  	</td></tr>
 	  	<tr><td>
     	
     		<div class="billhead2">
-	    		<s:if test="%{!isBillSourcemisc()}">
-	    			<s:text name="billreceipt.payment.totalamt.tobereceived"/>
+	    		<c:if test="%{!isBillSourcemisc()}">
+	    			<!-- TODO: Manual migration required for custom Struts tag -->
 	   				<span class="bold">
 	    			
-	   				<input style="border:0px;background-color:#FFFFCC;font-weight:bold;" type="text" name="totalamounttobepaid" id="totalamounttobepaid" readonly="readonly" value='<s:property value="%{totalAmntToBeCollected}" />' >
+	   				<input style="border:0px;background-color:#FFFFCC;font-weight:bold;" type="text" name="totalamounttobepaid" id="totalamounttobepaid" readonly="readonly" value='${%{totalAmntToBeCollected}}' >
 	   				</span>
-	   			</s:if>
-	   			<s:text name="billreceipt.payment.totalamt.received"/><span><input style="border:0px;background-color:#FFFFCC;font-weight:bold;" type="text" name="totalamountdisplay" id="totalamountdisplay" readonly="readonly" tabindex='-1'></span>
+	   			</c:if>
+	   			<!-- TODO: Manual migration required for custom Struts tag --><span><input style="border:0px;background-color:#FFFFCC;font-weight:bold;" type="text" name="totalamountdisplay" id="totalamountdisplay" readonly="readonly" tabindex='-1'></span>
    			</div>
-   			<s:hidden label="totalAmntToBeCollected" name="totalAmntToBeCollected" value="%{totalAmntToBeCollected}"/>
+   			<!-- TODO: Manual migration required for custom Struts tag -->
     	</td></tr>
   	
 	  	<tr><td>
@@ -1190,32 +1192,32 @@ function showHideMandataryMark(obj){
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" >
 			<%@include file="receipt-instrumentdetails.jsp" %>
 		<!-- Paid by details -->
-		<s:if test="%{!isBillSourcemisc()}">
+		<c:if test="%{!isBillSourcemisc()}">
 		<tr >
 		   <td class="bluebox" width="3%" ></td>
-		   <td class="bluebox" width="21%"><s:text name="billreceipt.counter.paidby"/><span class="mandatory1">*</span></td>
-		   <td class="bluebox"><s:textfield label="paidBy" id="paidBy" maxlength="150" name="paidBy" value="%{payeeName}" /></td>
+		   <td class="bluebox" width="21%"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
+		   <td class="bluebox"><form:input label="paidBy" id="paidBy" maxlength="150" path="paidBy" value="%{payeeName}" /></td>
 	    </tr>
-	    </s:if>
+	    </c:if>
 		<table id="manualreceipt" >    
 		
-			<s:if test="%{manualReceiptNumberAndDateReq}">
+			<c:if test="%{manualReceiptNumberAndDateReq}">
 				<tr>
 					<td class="bluebox" width="3%" ></td>
-					<td class="bluebox"><s:text name="billreceipt.manualreceiptinfo"/><span id="asteriskId"  class="mandatory1">*</span></td>
-					 <td class="bluebox"><s:checkbox label="manualreceiptinfo" id="manualreceiptinfo" name="receiptInfo" onChange="showHideMandataryMark(this)"/></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span id="asteriskId"  class="mandatory1">*</span></td>
+					 <td class="bluebox"><form:checkbox label="manualreceiptinfo" id="manualreceiptinfo" path="receiptInfo" onChange="showHideMandataryMark(this)"/></td>
 				</tr>
-			 </s:if>
+			 </c:if>
 			 
-			 <s:if test="%{manualReceiptNumberAndDateReq}">
+			 <c:if test="%{manualReceiptNumberAndDateReq}">
 				<tr>
 				    <td class="bluebox" width="3%" ></td>
-					<td class="bluebox"><s:text name="billreceipt.manualreceipt.receiptnumber"/></td>
-					<td class="bluebox"><s:textfield label="manualReceiptNumber" id="manualReceiptNumber" maxlength="50" name="manualReceiptNumber" size="18" /></td>
-					<td class="bluebox"><s:text name="billreceipt.manualreceipt.receiptdate"/></td>
-					<td class="bluebox"><s:textfield id="manualReceiptDate" name="manualReceiptDate" cssClass="datepicker"  styleId="manualReceiptDate" onblur="validateManualReceiptDate(this);" data-inputmask="'mask': 'd/m/y'"/><div>(DD/MM/YYYY)</div></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:input label="manualReceiptNumber" id="manualReceiptNumber" maxlength="50" path="manualReceiptNumber" size="18" /></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:input id="manualReceiptDate" path="manualReceiptDate" cssClass="datepicker"  styleId="manualReceiptDate" onblur="validateManualReceiptDate(this);" data-inputmask="'mask': 'd/m/y'"/><div>(DD/MM/YYYY)</div></td>
 				</tr>
-			 </s:if>
+			 </c:if>
 		
 		</table>
 		
@@ -1232,13 +1234,13 @@ function showHideMandataryMark(obj){
 			</table>
 			 
 			 <div id="loadingMask" style="display:none;overflow:hidden;text-align: center"><img src="/services/collection/resources/images/bar_loader.gif"/> <span style="color: red">Please wait....</span></div>
-			<div align="left" class="mandatorycoll"><s:text name="common.mandatoryfields"/></div>
+			<div align="left" class="mandatorycoll"><!-- TODO: Manual migration required for custom Struts tag --></div>
 			<div class="buttonbottom" align="center">
-			      <label><input align="center" type="submit" class="buttonsubmit" id="button2" value="<s:text name='lbl.pay'/>" onclick="return validate();"/></label>
+			      <label><input align="center" type="submit" class="buttonsubmit" id="button2" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="return validate();"/></label>
 			      &nbsp;
-			      <input name="button" type="button" class="button" id="button" value="<s:text name='lbl.reset'/>" onclick="checkreset();"/>
+			      <input name="button" type="button" class="button" id="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="checkreset();"/>
 			      &nbsp;
-			      <input name="button" type="button" class="button" id="buttonclose2" value="<s:text name='lbl.close'/>" onclick="window.close();" />
+			      <input name="button" type="button" class="button" id="buttonclose2" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.close();" />
 				</div>
 
 <!-- <table width="100%" >
@@ -1247,19 +1249,19 @@ function showHideMandataryMark(obj){
        <td colspan="5">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td colspan="5"><div class="subheadsmallnew"><s:text name="billreceipt.counterdetails"/></div></td>
+            <td colspan="5"><div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
          </tr>
          <tr style="display:none">
            <td class="bluebox">&nbsp;</td>
-           <td class="bluebox"><s:text name="billreceipt.counter.point"/></td>
+           <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
            <td class="bluebox"><input name="dt" type="text" disabled="disabled" /></td>
-           <td class="bluebox"><s:text name="billreceipt.counter.collector"/></td>
+           <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
            <td class="bluebox"><input name="dt2" type="text" disabled="disabled" /></td>
          </tr>
          <tr>
            <td class="bluebox">&nbsp;</td>
-           <td class="bluebox"><s:text name="billreceipt.counter.operator"/>&nbsp;&nbsp;&nbsp; <b><s:property value="%{receiptCreatedByCounterOperator.name}"/> </b></td>
-           <td class="bluebox"><s:text name="billreceipt.service"/>&nbsp;&nbsp;&nbsp; <b><s:property value="%{serviceName}"/></b></td>
+           <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;&nbsp;&nbsp; <b>${%{receiptCreatedByCounterOperator.name}} </b></td>
+           <td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;&nbsp;&nbsp; <b>${%{serviceName}}</b></td>
           </tr>
 
           <tr>
@@ -1277,7 +1279,7 @@ function showHideMandataryMark(obj){
 
 </s:push>
 
-</s:form>
+</form:form>
 
 </div>
 </s:else>

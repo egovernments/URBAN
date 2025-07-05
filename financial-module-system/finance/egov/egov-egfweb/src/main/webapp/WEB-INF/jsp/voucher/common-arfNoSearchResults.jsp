@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json"%><%@ taglib prefix="s" uri="/struts-tags"%><%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -44,4 +46,4 @@
   ~
   ~   In case of any queries, you can reach eGovernments Foundation at contact@egovernments.org.
   ~
-  --%>{ "ResultSet": { "Result":[<s:iterator var="s" value="arfNumberSearchList" status="status"> {"value":"<s:property />"}<s:if test="!#status.last">,</s:if></s:iterator>] } }
+  --%>{ "ResultSet": { "Result":[<c:forEach var="s" value="arfNumberSearchList" status="status"> {"value":"<!-- TODO: Manual migration required for custom Struts tag -->"}<c:if test="!#status.last">,</c:if></c:forEach>] } }

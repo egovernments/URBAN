@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -123,19 +125,19 @@ path="${pageContext.request.contextPath}";
 var currDate = "${currDate}";
 
 function onBodyLoad(){
-	<s:if test="%{model.id!=null}">
+	<c:if test="%{model.id!=null}">
 		if(document.getElementById('challanDate').value!=""){
 			document.getElementById("challanDate").disabled=true;
 		}
-	</s:if>
+	</c:if>
 	
 	if(document.getElementById('challanDate').value==""){
 		document.getElementById("challanDate").value=currDate;
 	}
 	
-	if('<s:property value="designationId"/>'!=null && '<s:property value="designationId"/>'!="")
+	if('${designationId}'!=null && '${designationId}'!="")
 	{
-		onChangeDesignation('<s:property value="designationId"/>');
+		onChangeDesignation('${designationId}');
 	}
 	loadDropDownCodes();
 	loadDropDownCodesFunction();
@@ -148,9 +150,9 @@ function onBodyLoad(){
 	}
 	
 	// page has to be disabled when view through search option/ when challan has to be modified -->
-	<s:if test="%{sourcePage=='search' || (model.id!=null && model.challan.state.value=='CREATED' && sourcePage!='inbox')}">
+	<c:if test="%{sourcePage=='search' || (model.id!=null && model.challan.state.value=='CREATED' && sourcePage!='inbox')}">
 			setAsViewPage();
-	</s:if>
+	</c:if>
 	return true;
 }
 
@@ -171,7 +173,7 @@ function setAsViewPage(){
 	
 	}
 	 
-	<s:if test="%{sourcePage=='inbox' && model.challan.state.value=='APPROVED'}">
+	<c:if test="%{sourcePage=='inbox' && model.challan.state.value=='APPROVED'}">
 	if(document.getElementById('receiptMisc.fund.id')!=null)
 		document.getElementById('receiptMisc.fund.id').disabled=false;
 		 for(var i=0;i<billDetailTableIndex+1;i++)
@@ -192,12 +194,12 @@ function setAsViewPage(){
 				document.getElementById('subLedgerlist['+j+'].detailKeyId').disabled=false;
 			}
 		}
-	</s:if>
+	</c:if>
 	//document.getElementById('calendarLink').style.display="none";
 	document.getElementById('receiptId').disabled=false;
 	document.getElementById('actionName').disabled=false;
 	document.getElementById('sourcePage').disabled=false;
-	<s:if test="%{sourcePage=='inbox'}"> 
+	<c:if test="%{sourcePage=='inbox'}"> 
 	if(document.getElementById('approvalRemarks')!=null)
 		document.getElementById('approvalRemarks').disabled=false;
 	if(document.getElementById('designationId')!=null)
@@ -210,7 +212,7 @@ function setAsViewPage(){
 		document.getElementById('buttonverify').disabled=false;
 	if(document.getElementById('buttonreject')!=null)
 		document.getElementById('buttonreject').disabled=false;
-	</s:if>
+	</c:if>
 }
 
 
@@ -235,7 +237,7 @@ function validate(obj){
 		{
 			if(dom.get("approvalRemarks").value.trim().length==0)
 			{
-				document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.approvalRemarks.errormessage" />'+ "<br>";
+				document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
 				valid=false;
 			}
 		}
@@ -246,7 +248,7 @@ function validate(obj){
 		{
 			if(dom.get("challan.reasonForCancellation").value.trim().length==0)
 			{
-				document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.reasonForCancellation.errormessage" />'+ "<br>";
+				document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
 				valid=false;
 			}
 		}
@@ -254,57 +256,57 @@ function validate(obj){
 	//validations for challan create/modify
 	else{
 	 	if(null != document.getElementById('challanDate') && document.getElementById('challanDate').value.trim().length == 0){
-			document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.challanDate.errormessage" />'+ "<br>";
+			document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
 			valid=false;
 		}
 	 	 if(null != document.getElementById('payeeName') && document.getElementById('payeeName').value == ""){
 
-             document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.error.payeename" />'+ "<br>";
+             document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
              valid=false;
          }
 	 	 if(null != document.getElementById('serviceCategoryId') && document.getElementById('serviceCategoryId').value == -1){
 
-             document.getElementById("challan_error_area").innerHTML+='<s:text name="error.select.service.category" />'+ "<br>";
+             document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
              valid=false;
          }
          if(null != document.getElementById('serviceId') && document.getElementById('serviceId').value == -1){
 
-             document.getElementById("challan_error_area").innerHTML+='<s:text name="error.select.service.type" />'+ "<br>";
+             document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
              valid=false;
          }
 		 
-		 <s:if test="%{isFieldMandatory('fund')}"> 
+		 <c:if test="%{isFieldMandatory('fund')}"> 
 	 	 	if(null != document.getElementById('receiptMisc.fund.id') && document.getElementById('receiptMisc.fund.id').value == -1){
-				document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.fundcode.errormessage" />'+  "<br>";
+				document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+  "<br>";
 				valid=false;
 		 	}
-		</s:if>
-		<s:if test="%{isFieldMandatory('department')}"> 
+		</c:if>
+		<c:if test="%{isFieldMandatory('department')}"> 
 			 if(null!= document.getElementById('deptId') && document.getElementById('deptId').value == -1){
-					document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.deptcode.errormessage" />'+ '<br>';
+					document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 					valid=false;
 			 }
-		</s:if>
-		 <s:if test="%{isFieldMandatory('function')}">                     
+		</c:if>
+		 <c:if test="%{isFieldMandatory('function')}">                     
 		 if(null!= document.getElementById('functionId') && document.getElementById('functionId').value == -1){
-			 document.getElementById("challan_error_area").innerHTML+='<s:text name="miscreceipt.functioncode.errormessage" />'+ '<br>';                                
+			 document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';                                
 			valid=false;
 		 }            
-		</s:if>
+		</c:if>
 		 var chlndate=document.getElementById("challanDate").value;
     	 var cutOff = document.getElementById("cutOffDate").value;
 		if(process(chlndate) >= process(cutOff) && null!= document.getElementById('approverDeptId') && document.getElementById('approverDeptId').value == "-1"){
-			document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.department.errormessage" />'+ "<br>";
+			document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
 			valid=false;
 		}
 		
 		if(process(chlndate) >= process(cutOff) && null!= document.getElementById('designationId') && document.getElementById('designationId').value == "-1"){
-			document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.designation.errormessage" />'+ "<br>";
+			document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
 			valid=false;
 		}
 		
 		if(process(chlndate) >= process(cutOff) && null!= document.getElementById('positionUser') &&  document.getElementById('positionUser').value == "-1"){
-			document.getElementById("challan_error_area").innerHTML+='<s:text name="challan.position.errormessage" />'+ "<br>";
+			document.getElementById("challan_error_area").innerHTML+='<!-- TODO: Manual migration required for custom Struts tag -->'+ "<br>";
 			valid=false;
 		}
 		
@@ -348,7 +350,7 @@ function checkreset(){
 	}
 	document.getElementById("totalcramount").value=0;
 	//document.getElementById("totaldbamount").value=0;
-	resetTables('<s:property value="%{currentFinancialYearId}"/>');
+	resetTables('${%{currentFinancialYearId}}');
 }
 
 
@@ -356,10 +358,10 @@ function checkreset(){
 function loadFinancialYearList(){
 var fYear=new Array();
 var fcount=0;
-	<s:iterator value="%{billDetailslist}">
-		fYear[fcount]='<s:property value="financialYearId"/>';
+	<c:forEach value="%{billDetailslist}">
+		fYear[fcount]='${financialYearId}';
 		fcount++;
-	</s:iterator>
+	</c:forEach>
 	for(var i=0;i<billDetailTableIndex+1;i++){
 		if(null != document.getElementById('billDetailslist['+i+'].glcodeDetail')){
 			var selectedyearid=fYear[i];
@@ -377,15 +379,15 @@ var fcount=0;
 var totalcramt=0;
 var totaldbamt=0;
 var fYearOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.financialYearList">
-	    fYearOptions.push({label:'<s:property value="finYearRange"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.financialYearList">
+	    fYearOptions.push({label:'${finYearRange}', value:'${id}'})
+	</c:forEach>
 var makeBillDetailTable = function() {
 		var billDetailColumns = [ 
 			{key:"accounthead", label:'Account Head <span class="mandatory"/>',formatter:createLongTextFieldFormatter(VOUCHERDETAILLIST,".accounthead",VOUCHERDETAILTABLE)},				
 			{key:"glcode",label:'Account Code ', formatter:createTextFieldFormatter(VOUCHERDETAILLIST,".glcodeDetail","text",VOUCHERDETAILTABLE)},
 			{key:"creditamount",label:'Amount (Rs.)', formatter:createAmountFieldFormatter(VOUCHERDETAILLIST,".creditAmountDetail","updateCreditAmount()",VOUCHERDETAILTABLE)},
-			{key:"financialYearId",label:'Financial Year <span class="mandatory"/>', formatter:createDropdownFormatterFYear(VOUCHERDETAILLIST,'<s:property value="%{currentFinancialYearId}"/>'),  dropdownOptions:fYearOptions},
+			{key:"financialYearId",label:'Financial Year <span class="mandatory"/>', formatter:createDropdownFormatterFYear(VOUCHERDETAILLIST,'${%{currentFinancialYearId}}'),  dropdownOptions:fYearOptions},
 			{key:'Add',label:'Add',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
 			{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")},
 			{key:"glcodeid",hidden:true, formatter:createTextFieldFormatter(VOUCHERDETAILLIST,".glcodeIdDetail","hidden",VOUCHERDETAILTABLE)},
@@ -395,12 +397,12 @@ var makeBillDetailTable = function() {
 	    var billDetailDS = new YAHOO.util.DataSource(); 
 		billDetailsTable = new YAHOO.widget.DataTable("billDetailTable",billDetailColumns, billDetailDS);
 		
-		<s:if test="%{sourcePage=='search' || (model.id!=null && model.challan.state.value=='CREATED') || (sourcePage=='inbox' && model.challan.state.value!='REJECTED')}">
+		<c:if test="%{sourcePage=='search' || (model.id!=null && model.challan.state.value=='CREATED') || (sourcePage=='inbox' && model.challan.state.value!='REJECTED')}">
 			var addColumn = billDetailsTable.getColumn(5);
 			billDetailsTable.hideColumn(addColumn);
 			var delColumn = billDetailsTable.getColumn(6);
 			billDetailsTable.hideColumn(delColumn);
-		</s:if>
+		</c:if>
 		billDetailsTable.on('cellClickEvent',function (oArgs) {
 			var target = oArgs.target;
 			var record = this.getRecord(target);
@@ -427,24 +429,24 @@ var makeBillDetailTable = function() {
 				}
 					 
 		});
-		<s:iterator value="billDetailslist" status="stat">
+		<c:forEach value="billDetailslist" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"creditamount":'<s:property value="getText(\'format.amount\',{creditAmountDetail})"/>',
-					"financialYearId":'<s:property value="%{fYear}"/>'
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"creditamount":'${getText(\'format.amount\',{creditAmountDetail})}',
+					"financialYearId":'${%{fYear}}'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGrid(VOUCHERDETAILLIST,'glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGrid(VOUCHERDETAILLIST,'glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGrid(VOUCHERDETAILLIST,'accounthead',index,'<s:property value="accounthead"/>');
-				updateGrid(VOUCHERDETAILLIST,'creditAmountDetail',index,'<s:property value="getText(\'format.amount\',{creditAmountDetail})"/>');
-				updateGridDropdown('financialYearId',index,'<s:property value="finYearRange"/>','<s:property value="id"/>');
-				totalcramt = totalcramt+parseInt('<s:property value="getText(\'format.amount\',{creditAmountDetail})"/>');
-				// totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
+				var index = '${#stat.index}';
+				updateGrid(VOUCHERDETAILLIST,'glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGrid(VOUCHERDETAILLIST,'glcodeDetail',index,'${glcodeDetail}');
+				updateGrid(VOUCHERDETAILLIST,'accounthead',index,'${accounthead}');
+				updateGrid(VOUCHERDETAILLIST,'creditAmountDetail',index,'${getText(\'format.amount\',{creditAmountDetail})}');
+				updateGridDropdown('financialYearId',index,'${finYearRange}','${id}');
+				totalcramt = totalcramt+parseInt('${getText(\'format.amount\',{creditAmountDetail})}');
+				// totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 				
 	
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -480,14 +482,14 @@ var makeBillDetailTable = function() {
 		// td3.style.padding='4px 10px';
 		// td3.innerHTML="<input type='text' style='text-align:right;width:80px;align:center;height:20px;'  id='totaldbamount' name='totaldbamount' readonly='true' tabindex='-1'/>";
 		// document.getElementById('totaldbamount').value=totaldbamt;
-		<s:if test="%{sourcePage=='search' || (model.id!=null && model.challan.state.value=='CREATED') || (sourcePage=='inbox' && model.challan.state.value!='REJECTED')}">
+		<c:if test="%{sourcePage=='search' || (model.id!=null && model.challan.state.value=='CREATED') || (sourcePage=='inbox' && model.challan.state.value!='REJECTED')}">
 			var td4 = tr.insertCell(-1);
 			td4.style.borderTop = '1px #c8c8c8 solid';
 			td4.setAttribute('class','tdfortotal');
 			td4.className='tdfortotal';
 			td4.innerHTML='&nbsp;';
-		</s:if>
-	<s:else>
+		</c:if>
+	<c:otherwise>
 		var td4 = tr.insertCell(-1);
 		td4.colSpan = 4;
 		td4.style.borderTop = '1px #c8c8c8 solid';
@@ -499,17 +501,17 @@ var makeBillDetailTable = function() {
 	
 		
 	var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	var detailCodeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailCodeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailCodeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	var makeSubLedgerTable = function() {
 		var subledgerColumns = [ 
 		            			
@@ -547,28 +549,28 @@ var makeBillDetailTable = function() {
 					}
 				}  
 		});
-		<s:iterator value="subLedgerlist" status="stat">
+		<c:forEach value="subLedgerlist" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"glcode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKey"/>',
-					"detailKey":'<s:property value="detailKey"/>',
-					"creditAmount":'<s:property value="%{creditAmount}"/>'
+					"glcode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKey}',
+					"detailKey":'${detailKey}',
+					"creditAmount":'${%{creditAmount}}'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridSLDropdown('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
+				var index = '${#stat.index}';
+				updateGridSLDropdown('glcode.id',index,'${glcode.id}','${subledgerCode}');
 				 setTimeout(function(){
-					updateGridSLDropdown('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
+					updateGridSLDropdown('detailType.id',index,'${detailType.id}','${detailTypeName}');
 				 }, 1000);
-				updateSLGrid('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGrid('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGrid('detailKey',index,'<s:property value="detailKey"/>');
-				updateSLGrid('amount',index,'<s:property value="amount"/>');
+				updateSLGrid('detailCode',index,'${detailCode}');
+				updateSLGrid('detailKeyId',index,'${detailKeyId}');
+				updateSLGrid('detailKey',index,'${detailKey}');
+				updateSLGrid('amount',index,'${amount}');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 		
 	}
 
@@ -584,7 +586,7 @@ function onChangeDesignation(designationId)
 }
 function onChangeDeparment(approverDeptId)
 {
-	var receiptheaderId='<s:property value="model.id"/>';
+	var receiptheaderId='${model.id}';
 	if(document.getElementById('designationId')){
 		populatedesignationId({approverDeptId:approverDeptId,receiptheaderId:receiptheaderId});
 	}
@@ -596,167 +598,167 @@ function openVoucherSearch(){
 function populatepositionuseronload()
 {
 	if(document.getElementById('positionUser')){
-		document.getElementById('positionUser').value='<s:property value="positionUser"/>';
+		document.getElementById('positionUser').value='${positionUser}';
 	}	
 }
 
 
 
 </script>
-<title><s:text name="challan.pagetitle"/>
+<title><!-- TODO: Manual migration required for custom Struts tag -->
 </title>
 </head>
 
 <body onload="onBodyLoad();window.setTimeout('populatepositionuseronload()', 2000);" ><br>
 <div class="errorstyle" id="challan_error_area" style="display:none;"></div>
 <div class="formmainbox">
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
     <div id="actionErrors" class="errorstyle">
-      <s:actionerror/>
-      <s:fielderror/>
+      <!-- TODO: Manual migration required for custom Struts tag -->
+      <!-- TODO: Manual migration required for custom Struts tag -->
     </div>
-</s:if>
-<s:if test="%{hasActionMessages()}">
+</c:if>
+<c:if test="%{hasActionMessages()}">
     <div id="actionMessages" class="messagestyle" align="center">
-    	<s:actionmessage theme="simple"/>
+    	<!-- TODO: Manual migration required for custom Struts tag -->
     </div>
     <div class="blankspace">&nbsp;</div>
-</s:if>
+</c:if>
 
-<s:form theme="simple" name="challan">
-<s:token/>
-<s:push value="model">
+<form:form theme="simple" name="challan">
+<!-- TODO: Manual migration required for custom Struts tag -->
+<!-- TODO: Manual migration required for custom Struts tag -->
 
 <div class="subheadnew">
-<s:if test="%{model.id==null}" >
-	<s:text name="challan.title.create"/>
-</s:if>
-<s:elseif test="%{sourcePage=='inbox' && model.challan.state.value=='CREATED'}">
-	<s:text name="challan.title.validate"/>
+<c:if test="%{model.id==null}" >
+	<!-- TODO: Manual migration required for custom Struts tag -->
+</c:if>
+<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:elseif>
-<s:elseif test="%{sourcePage=='inbox' && model.challan.state.value=='CHECKED'}">
-	<s:text name="challan.title.approve"/>
+<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:elseif>
-<s:elseif test="%{sourcePage=='inbox' && model.challan.state.value=='REJECTED'}">
-	<s:text name="challan.title.cancel.modify"/>
+<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:elseif>
-<s:elseif test="%{model.challan.state.value=='APPROVED'}">
-	<s:text name="challan.title.validate"/>
+<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:elseif>
-<s:else>
-	<s:text name="challan.title.view"/>
+<c:otherwise>
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:else>
 </div>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr><td>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-<s:if test="%{model.id!=null}" >
+<c:if test="%{model.id!=null}" >
 	<tr>
 	 	<td width="4%" class="bluebox2">&nbsp;</td>
-	    	<td width="21%" class="bluebox2"><s:text name="challan.challanNumber"/></td>
-	    	<td width="24%" class="bluebox2"><s:textfield name="challan.challanNumber" id="challan.challanNumber" value="%{challan.challanNumber}" readonly="true"/></td>
-	     	<td width="21%" class="bluebox2"><s:text name="challan.challanstatus"/></td>
-	    	<td width="24%" class="bluebox2"><s:textfield name="challan.status.description" id="challan.status.description" value="%{challan.status.description}" readonly="true"/></td>
+	    	<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	    	<td width="24%" class="bluebox2"><form:input path="challan.challanNumber" id="challan.challanNumber" value="%{challan.challanNumber}" readonly="true"/></td>
+	     	<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	    	<td width="24%" class="bluebox2"><form:input path="challan.status.description" id="challan.status.description" value="%{challan.status.description}" readonly="true"/></td>
 	</tr>
-</s:if>
+</c:if>
 <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	     <td width="21%" class="bluebox"><s:text name="challan.date"/><span class="mandatory"/></td>
-	      		  <s:date name="challan.challanDate" var="cdFormat" format="dd/MM/yyyy"/>
+	     <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/></td>
+	      		  <!-- TODO: Manual migration required for custom Struts tag -->
 	      <td width="24%" class="bluebox">
-	      		<s:textfield id="challanDate" name="challan.challanDate" value="%{cdFormat}" data-inputmask="'mask': 'd/m/y'"/><div>(DD/MM/YYYY)</div>
+	      		<form:input id="challanDate" path="challan.challanDate" value="%{cdFormat}" data-inputmask="'mask': 'd/m/y'"/><div>(DD/MM/YYYY)</div>
 	      </td>
 	        
-   		<s:if test="%{shouldShowHeaderField('billNumber')}">
-   			<td width="21%" class="bluebox"><s:text name="challan.billNumber"/></td>
-			<td width="30%" class="bluebox"><s:textfield name="referencenumber" id="referencenumber" value="%{referencenumber}"  maxlength="50"/></td>
-   		</s:if>
-   		<s:else>
+   		<c:if test="%{shouldShowHeaderField('billNumber')}">
+   			<td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+			<td width="30%" class="bluebox"><form:input path="referencenumber" id="referencenumber" value="%{referencenumber}"  maxlength="50"/></td>
+   		</c:if>
+   		<c:otherwise>
    			<td width="21%" class="bluebox">&nbsp;</td>
    			<td width="30%" class="bluebox">&nbsp;</td>
    		</s:else>
  		
 	    </tr>
 	    <tr> <td width="4%" class="bluebox2">&nbsp;</td>
-	    <td width="21%" class="bluebox2"><s:text name="challan.payeename"/><span class="mandatory"/></td>
-	    <td width="24%" class="bluebox2"><s:textfield name="payeeName" id="payeeName" value="%{payeeName}" maxlength="49"/></td>
-	     <td width="21%" class="bluebox2"><s:text name="challan.payeeAddress"/></td>
-	    <td width="24%" class="bluebox2"><s:textarea name="payeeAddress" id="payeeAddress" value="%{payeeAddress}" cols="18" rows="1" maxlength="255" onkeyup="return ismaxlength(this)"/></td>
+	    <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/></td>
+	    <td width="24%" class="bluebox2"><form:input path="payeeName" id="payeeName" value="%{payeeName}" maxlength="49"/></td>
+	     <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	    <td width="24%" class="bluebox2"><form:textarea path="payeeAddress" id="payeeAddress" value="%{payeeAddress}" cols="18" rows="1" maxlength="255" onkeyup="return ismaxlength(this)"/></td>
 	    </tr>
 	  <tr> 
 	      	<td width="4%" class="bluebox">&nbsp;</td>
-		    <td width="21%" class="bluebox"><s:text name="challan.narration"/></td>
-		    <td width="24%" class="bluebox"><s:textarea name="referenceDesc" id="referenceDesc" value="%{referenceDesc}" cols="18" rows="1" maxlength="125" onkeyup="return ismaxlength(this)"/></td>
+		    <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		    <td width="24%" class="bluebox"><form:textarea path="referenceDesc" id="referenceDesc" value="%{referenceDesc}" cols="18" rows="1" maxlength="125" onkeyup="return ismaxlength(this)"/></td>
 	    </tr>
 	    <tr>
         <td width="4%" class="bluebox">&nbsp;</td>
          
-        <td width="21%" class="bluebox"><s:text name="miscreceipt.service.category" /><span class="mandatory"/> </td>
-        <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="serviceCategoryId" id="serviceCategoryId" cssClass="selectwk" list="dropdownData.serviceCategoryList" listKey="id" listValue="name" value="%{serviceCategoryId}" onChange="populateService(this);" />
+        <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/> </td>
+        <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="serviceCategoryId" id="serviceCategoryId" cssClass="selectwk" list="dropdownData.serviceCategoryList" listKey="id" listValue="name" value="%{serviceCategoryId}" onChange="populateService(this);" />
        	<egov:ajaxdropdown id="service" fields="['Text','Value']" dropdownId="serviceId" url="receipts/ajaxReceiptCreate-ajaxLoadServiceByCategoryForChallan.action" /></td>
-        <td width="21%" class="bluebox"><s:text name="miscreceipt.service" /><span class="mandatory"/> </td>
-        <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="serviceId" id="serviceId" cssClass="selectwk"
+        <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/> </td>
+        <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="serviceId" id="serviceId" cssClass="selectwk"
 			list="dropdownData.serviceList" listKey="id" listValue="code" value="%{serviceId}" onchange="loadFinDetails(this);"/>
         </td>
          
        
         </tr>
         
-	    <s:if test="%{shouldShowHeaderField('fund') || shouldShowHeaderField('department')}">
+	    <c:if test="%{shouldShowHeaderField('fund') || shouldShowHeaderField('department')}">
 	     <tr>
 	      <td width="4%" class="bluebox2">&nbsp;</td>
-	       <s:if test="%{shouldShowHeaderField('fund')}">
-	      		<td width="21%" class="bluebox2"><s:text name="challan.fund"/><s:if test="%{isFieldMandatory('fund')}"><span class="mandatory"/></s:if></td>
-		  		<td width="24%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="receiptMisc.fund" id="receiptMisc.fund.id" cssClass="selectwk"  list="dropdownData.fundList" listKey="id" listValue="name" value="%{receiptMisc.fund.id}" /> </td> 
-		   </s:if>
-		  <s:else>
+	       <c:if test="%{shouldShowHeaderField('fund')}">
+	      		<td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('fund')}"><span class="mandatory"/></c:if></td>
+		  		<td width="24%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="receiptMisc.fund" id="receiptMisc.fund.id" cssClass="selectwk"  list="dropdownData.fundList" listKey="id" listValue="name" value="%{receiptMisc.fund.id}" /> </td> 
+		   </c:if>
+		  <c:otherwise>
   			<td class="bluebox2" colspan="2"></td>
   			</s:else>
-  			  <s:if test="%{shouldShowHeaderField('department')}">
-		   <td width="21%" class="bluebox2"><s:text name="challan.department"/><s:if test="%{isFieldMandatory('department')}"><span class="mandatory"/></s:if></td>
-		  <td width="24%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="deptId" id="deptId" cssClass="selectwk" list="dropdownData.departmentList" listKey="id" listValue="name"  /> </td>
-	       </s:if>
-		   <s:else>
+  			  <c:if test="%{shouldShowHeaderField('department')}">
+		   <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('department')}"><span class="mandatory"/></c:if></td>
+		  <td width="24%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="deptId" id="deptId" cssClass="selectwk" list="dropdownData.departmentList" listKey="id" listValue="name"  /> </td>
+	       </c:if>
+		   <c:otherwise>
   			<td class="bluebox2" colspan="2"></td>
   			</s:else>
 	     </tr>
-	     </s:if>
-	      <s:if test="%{shouldShowHeaderField('function')}">
+	     </c:if>
+	      <c:if test="%{shouldShowHeaderField('function')}">
          <tr>
-         <s:if test="%{shouldShowHeaderField('function')}">
+         <c:if test="%{shouldShowHeaderField('function')}">
          <td width="4%" class="bluebox">&nbsp;</td>
-           <td width="21%" class="bluebox"><s:text name="miscreceipt.function"/><s:if test="%{isFieldMandatory('function')}"><span class="bluebox"><span class="mandatory"/></s:if></td>
-          <td width="24%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" name="functionId" id="functionId" cssClass="selectwk" list="dropdownData.functionList" listKey="id" listValue="name"  /> </td>
-            </s:if>
-           <s:else>
+           <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('function')}"><span class="bluebox"><span class="mandatory"/></c:if></td>
+          <td width="24%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('miscreceipt.select')}" path="functionId" id="functionId" cssClass="selectwk" list="dropdownData.functionList" listKey="id" listValue="name"  /> </td>
+            </c:if>
+           <c:otherwise>
             <td colspan=2 class="bluebox"></td>
             </s:else>
          </tr>
-         </s:if>
-		  <s:if test="%{shouldShowHeaderField('field')}">
+         </c:if>
+		  <c:if test="%{shouldShowHeaderField('field')}">
 		   <tr>
 		    <td width="4%" class="bluebox">&nbsp;</td>
-		    <td width="21%" class="bluebox"><s:text name="challan.field"/><s:if test="%{isFieldMandatory('field')}"><span class="mandatory"/></s:if>  </td>
-		    <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="boundaryId" id="boundaryId" cssClass="selectwk" list="dropdownData.fieldList" listKey="id" listValue="name" /></td>
+		    <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{isFieldMandatory('field')}"><span class="mandatory"/></c:if>  </td>
+		    <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="boundaryId" id="boundaryId" cssClass="selectwk" list="dropdownData.fieldList" listKey="id" listValue="name" /></td>
 		    <td class="bluebox" colspan="2"></td>
   		 </tr>
-	     </s:if>
-	      <s:if test="%{shouldShowHeaderField('service')}">
+	     </c:if>
+	      <c:if test="%{shouldShowHeaderField('service')}">
 	     <tr>
 	      <td width="4%" class="bluebox2">&nbsp;</td>
-	      <td width="21%" class="bluebox2"><s:text name="challan.service"/></td>
-		  <td width="30%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="challan.service" id="challan.service" cssClass="selectwk" list="dropdownData.serviceList" listKey="id" listValue="serviceName" value="%{challan.service.id}" onchange="getAccountDetails(this);getServiceMISDetails(this);" /></td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		  <td width="30%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="challan.service" id="challan.service" cssClass="selectwk" list="dropdownData.serviceList" listKey="id" listValue="serviceName" value="%{challan.service.id}" onchange="getAccountDetails(this);getServiceMISDetails(this);" /></td>
 		     <td width="21%" class="bluebox2" colspan="2"></td>
 	    </tr>
-	     </s:if>
+	     </c:if>
 	   
 </table>
 </td></tr>
 
  <tr><td>
     
-	<div class="subheadsmallnew"><span class="subheadnew"><s:text name="challan.billdetails"/></span></div>
+	<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 	
 	<div class="yui-skin-sam" align="center">
        <div id="billDetailTable"></div>
@@ -769,7 +771,7 @@ function populatepositionuseronload()
 	 </script>
 	 <div id="codescontainer"></div>
 	 <br/>
-	 <div class="subheadsmallnew"><span class="subheadnew"><s:text name="billreceipt.billdetails.SubLedger"/></span></div>
+	 <div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 	
 	 	
 		<div class="yui-skin-sam" align="center">
@@ -793,87 +795,87 @@ function populatepositionuseronload()
 	<tr><td> 
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	    <!-- Remarks have to displayed on Challan Check/Approve. -->
-		<s:if test="%{sourcePage=='inbox' && (model.challan.state.value=='CREATED' || model.challan.state.value=='CHECKED')}">
+		<c:if test="%{sourcePage=='inbox' && (model.challan.state.value=='CREATED' || model.challan.state.value=='CHECKED')}">
 		<tr>
 		   <td width="4%" class="bluebox">&nbsp;</td>
-		   <td width="21%" class="bluebox"><s:text name="challan.approve.remarks"/></td>
-		   <td width="75%" class="bluebox" colspan="3"><s:textfield id="approvalRemarks" type="text" name="approvalRemarks" cssStyle="width:75%" /></td>
+		   <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		   <td width="75%" class="bluebox" colspan="3"><form:input id="approvalRemarks" type="text" path="approvalRemarks" cssStyle="width:75%" /></td>
 		</tr>
-		</s:if>
+		</c:if>
 		<!-- Reason For Cancellation has to be displayed for Challan CANCEL	 -->
-		<s:if test="%{(sourcePage=='inbox' && model.challan.state.value=='REJECTED') || (actionName=='CHALLAN_MODIFY' && hasErrors())}">
+		<c:if test="%{(sourcePage=='inbox' && model.challan.state.value=='REJECTED') || (actionName=='CHALLAN_MODIFY' && hasErrors())}">
 			<tr>
 			   <td width="4%" class="bluebox">&nbsp;</td>
-			   <td width="21%" class="bluebox"><s:text name="challan.reason.cancellation"/></td>
-			   <td width="75%" class="bluebox" colspan="3"><s:textfield type="text" id="challan.reasonForCancellation" name="challan.reasonForCancellation" value="%{challan.reasonForCancellation}" cssStyle="width:75%" /></td>
+			   <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+			   <td width="75%" class="bluebox" colspan="3"><form:input type="text" id="challan.reasonForCancellation" path="challan.reasonForCancellation" value="%{challan.reasonForCancellation}" cssStyle="width:75%" /></td>
 			</tr>
-		</s:if>
+		</c:if>
 		<!--  Designation and Position has to be displayed for Challan Create/Check/Modify -->
 		<!--  Designation and Position should not be displayed when invoked from search -->
-		<s:if test="%{model.id==null || (model.challan.state.value=='REJECTED' || model.challan.state.value=='CHECKED')}">
+		<c:if test="%{model.id==null || (model.challan.state.value=='REJECTED' || model.challan.state.value=='CHECKED')}">
 		<tr> 
 		<div class="subheadnew">
-			<s:text name="approval.authority.information"/>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		 </tr>
 		<tr>
 			<td width="4%" class="bluebox2">&nbsp;</td>
-			<td width="15%" class="bluebox2"> Approver Department <s:if test="%{model.id==null}"><span class="mandatory"/></s:if></td>
-			<td width="20%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="approverDeptId" id="approverDeptId" cssClass="selectwk" list="dropdownData.approverDepartmentList" listKey="id" listValue="name" value="%{approverDeptId}"
+			<td width="15%" class="bluebox2"> Approver Department <c:if test="%{model.id==null}"><span class="mandatory"/></c:if></td>
+			<td width="20%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="approverDeptId" id="approverDeptId" cssClass="selectwk" list="dropdownData.approverDepartmentList" listKey="id" listValue="name" value="%{approverDeptId}"
 onChange="onChangeDeparment(this.value)" /> 
 		<egov:ajaxdropdown id="designationIdDropdown" fields="['Text','Value']" dropdownId='designationId'
 			         url='receipts/ajaxChallanApproval-approverDesignationList.action' selectedValue="%{designationId}"/>
 			</td>
 
 			
-		      	<td width="15%" class="bluebox2"><s:text name="challan.approve.designation"/><s:if test="%{model.id==null}"><span class="mandatory"/></s:if></td>
-			  <td width="20%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="designationId" id="designationId" cssClass="selectwk"  list="dropdownData.designationMasterList" listKey="id" listValue="name" value="%{designationId}" onChange="onChangeDesignation(this.value)"/>
+		      	<td width="15%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{model.id==null}"><span class="mandatory"/></c:if></td>
+			  <td width="20%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="designationId" id="designationId" cssClass="selectwk"  list="dropdownData.designationMasterList" listKey="id" listValue="name" value="%{designationId}" onChange="onChangeDesignation(this.value)"/>
 			  <egov:ajaxdropdown id="positionUserDropdown" fields="['Text','Value']" dropdownId='positionUser'
 			         url='receipts/ajaxChallanApproval-positionUserList.action' selectedValue="%{position.id}"/>	 
 			 </td>
-			 <td width="15%" class="bluebox2"><s:text name="challan.approve.userposition"/><s:if test="%{model.id==null}"><span class="mandatory"/></s:if></td>
+			 <td width="15%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --><c:if test="%{model.id==null}"><span class="mandatory"/></c:if></td>
 				<td width="20%" class="bluebox2">
-					<s:select headerValue="%{getText('challan.select')}"  headerKey="-1"
+					<form:select headerValue="%{getText('challan.select')}"  headerKey="-1"
 	                list="dropdownData.postionUserList" listKey="position.id" id="positionUser" listValue="position.name"
 	                label="positionUser" name="positionUser" value="%{positionUser}"/>
 				</td>
 		</tr>
-		</s:if>
+		</c:if>
 	</table>
 	</td></tr>
 	</table>
 <div id="loadingMask" style="display:none;overflow:hidden;text-align: center"><img src="/services/collection/resources/images/bar_loader.gif"/> <span style="color: red">Please wait....</span></div>
 
-<div align="left" class="mandatorycoll"><s:text name="common.mandatoryfields"/> </div>
+<div align="left" class="mandatorycoll"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 <!-- </div> -->
 	<input type="hidden" name="actionName" id="actionName" value="{actionName}" />
-	<s:date name="cutOffDate" var="cutOffDateFormat" format="dd/MM/yyyy"/>
-    <s:hidden label="cutOffDate" id="cutOffDate"  name="cutOffDate" value="%{cutOffDateFormat}"/>
+	<!-- TODO: Manual migration required for custom Struts tag -->
+    <!-- TODO: Manual migration required for custom Struts tag -->
 	 <div class="buttonbottom" align="center" id="printButton">
 		<!-- Action Buttons should be displayed only in case of Create New Challan or 
 		     If page is opened from inbox -->
-			<s:if test="%{model.id==null || (sourcePage=='inbox' && !hasActionMessages()) || (actionName=='CHALLAN_MODIFY' && hasErrors()) || (actionName=='CHALLAN_VALIDATE' && hasErrors())}" >
-			<s:iterator value="%{validActions}">
-				<s:submit type="submit" cssClass="buttonsubmit" value="%{description}" id="%{name}" name="actionButton" onclick="document.challan.actionName.value='%{name}';document.challan.action='challan-save.action'; return validate(this);"/>
-		    </s:iterator>	
-	    </s:if>
+			<c:if test="%{model.id==null || (sourcePage=='inbox' && !hasActionMessages()) || (actionName=='CHALLAN_MODIFY' && hasErrors()) || (actionName=='CHALLAN_VALIDATE' && hasErrors())}" >
+			<c:forEach value="%{validActions}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+		    </c:forEach>	
+	    </c:if>
 	   
 	     &nbsp;
-	    <s:if test="%{model.id==null}" >
+	    <c:if test="%{model.id==null}" >
 	    	<input name="button" type="button" class="button" id="button" value="Reset" onclick="checkreset();"/>
-	    </s:if>
-	    <s:if test="%{model.id!=null}" >
+	    </c:if>
+	    <c:if test="%{model.id!=null}" >
 				
-				<s:submit type="submit" cssClass="buttonsubmit" id="buttonprint" value="Print" onclick="document.challan.action='challan-printChallan.action'" /> 			
-	    </s:if>
+				<!-- TODO: Manual migration required for custom Struts tag --> 			
+	    </c:if>
 	    &nbsp;<input name="button" type="button" class="button" id="buttonclose2" value="Close" onclick="window.close();" />
     </div>
    
-   	<s:hidden id="receiptId" name="receiptId" value="%{model.id}"/>
-   	<s:hidden id="sourcePage" name="sourcePage" value="%{sourcePage}"/>
-	<s:hidden id="challanNextState" name="challanNextState" value="%{challan.state.nextAction}"/>
+   	<!-- TODO: Manual migration required for custom Struts tag -->
+   	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:push>
-</s:form>
+</form:form>
 </div>
 <script src="<cdn:url value='/resources/global/js/egov/inbox.js?rnd=${app_release_no}' context='/services/egi'/>"></script>
 </body>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,15 +55,15 @@
 		<td class="bluebox">&nbsp;</td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="party.code" /><span class="mandatory"></span></strong></td>
-		<td class="bluebox"><s:textfield id="code" name="code"
+		<td class="bluebox"><form:input id="code" path="code"
 				value="%{code}" size="10" maxlength="20" /></td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="party.parent" /></strong></td>
-		<td class="bluebox"><s:select list="dropdownData.partyTypeList"
+		<td class="bluebox"><form:select list="dropdownData.partyTypeList"
 				id="partyType.egPartytype.id" listKey="id" listValue="code"
 				name="partyType.egPartytype.id" headerKey=""
 				headerValue="---- Choose ----" value="egPartytype.id">
-			</s:select></td>
+			</form:select></td>
 	</tr>
 	<tr>
 		<td class="greybox">&nbsp;</td>

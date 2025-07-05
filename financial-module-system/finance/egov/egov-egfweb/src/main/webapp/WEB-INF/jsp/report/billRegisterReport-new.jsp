@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,7 +61,7 @@
 	rel="stylesheet" type="text/css" />
 <html>
 <head>
-<title><s:text name="bill.register.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <script>
@@ -68,16 +70,16 @@
 	}
 </script>
 <body>
-	<s:form action="billRegisterReport" name="billRegisterReport"
+	<form:form action="billRegisterReport" name="billRegisterReport"
 		theme="simple" method="post" onsubmit="javascript:doAfterSubmit()">
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<font style='color: red; font-weight: bold'>
 			<p class="error-block" id="lblError"></p>
 		</font>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bill.register.report" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 		</div>
 		<table align="center" width="100%" cellpadding="0" cellspacing="0">
@@ -87,18 +89,18 @@
 			</tr>
 
 			<tr>
-				<td class="greybox"><s:text name="voucher.fromdate" /></td>
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 				<td class="greybox"><s:date name="fromDate" var="fromDateId"
-						format="dd/MM/yyyy" /> <s:textfield name="fromDate" id="fromDate"
+						format="dd/MM/yyyy" /> <form:input path="fromDate" id="fromDate"
 						value="%{fromDateId}" maxlength="10"
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 					href="javascript:show_calendar('billRegisterReport.fromDate',null,null,'DD/MM/YYYY');"
 					style="text-decoration: none">&nbsp;<img
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)
 				</td>
-				<td class="greybox"><s:text name="voucher.todate" /></td>
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 				<td class="greybox"><s:date name="toDate" var="toDateId"
-						format="dd/MM/yyyy" /> <s:textfield name="toDate" id="toDate"
+						format="dd/MM/yyyy" /> <form:input path="toDate" id="toDate"
 						value="%{toDateId}" maxlength="10"
 						onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 					href="javascript:show_calendar('billRegisterReport.toDate',null,null,'DD/MM/YYYY');"
@@ -106,12 +108,12 @@
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
 			</tr>
 			<tr>
-				<td class="bluebox"><s:text name="bill.expenditure.type" /></td>
-				<td class="bluebox"><s:select name="exptype" id="exptype"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select path="exptype" id="exptype"
 						list="dropdownData.expenditureList" headerKey=""
 						headerValue="----Choose----" /></td>
-				<td class="bluebox"><s:text name="bill.type" /></td>
-				<td class="bluebox"><s:select name="billType" id="billType"
+				<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+				<td class="bluebox"><form:select path="billType" id="billType"
 						list="dropdownData.billTypeList" headerKey=""
 						headerValue="----Choose----" /></td>
 			</tr>
@@ -119,7 +121,7 @@
 		<div class="buttonbottom">
 			<s:submit method="list" value="Search" cssClass="buttonsubmit"
 				onclick="return validate();" />
-			<s:submit method="newform" value="Cancel" cssClass="button" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="button" value="Close"
 				onclick="javascript:window.close()" class="button" />
 
@@ -132,11 +134,11 @@
 		<br>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-			<s:if test="%{searchResult.fullListSize != 0}">
+			<c:if test="%{searchResult.fullListSize != 0}">
 				<tr align="right">
 					<td colspan="8">
 						<div align="right" style="text-align: right">
-							<strong><s:text name="report.amount.in.rupees" />&nbsp;&nbsp;&nbsp;</strong>
+							<strong><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;&nbsp;&nbsp;</strong>
 						</div>
 					</td>
 				</tr>
@@ -194,8 +196,8 @@
 						</display:table></td>
 				</tr>
 
-			</s:if>
-			<s:elseif test="%{searchResult.fullListSize == 0}">
+			</c:if>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<tr>
 					<td colspan="7" align="center"><font color="red">No
 							record Found.</font></td>
@@ -204,61 +206,61 @@
 			</s:elseif>
 		</table>
 
-	</s:form>
+	</form:form>
 
 	<script>
 		function validate(){
 	
 			
-		 <s:if test="%{isFieldMandatory('fund')}"> 
+		 <c:if test="%{isFieldMandatory('fund')}"> 
 				 if(null != document.getElementById('fundId') && document.getElementById('fundId').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please Select a fund";
 					return false;
 				 }
-			 </s:if>
-			<s:if test="%{isFieldMandatory('department')}"> 
+			 </c:if>
+			<c:if test="%{isFieldMandatory('department')}"> 
 				 if(null!= document.getElementById('vouchermis.departmentid') && document.getElementById('vouchermis.departmentid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a department";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('scheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('scheme')}"> 
 				 if(null!=document.getElementById('schemeid') &&  document.getElementById('schemeid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a scheme";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('subscheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('subscheme')}"> 
 				 if(null!= document.getElementById('subschemeid') && document.getElementById('subschemeid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a subscheme";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('functionary')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('functionary')}"> 
 				 if(null!=document.getElementById('vouchermis.functionary') &&  document.getElementById('vouchermis.functionary').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a functionary";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('fundsource')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('fundsource')}"> 
 				 if(null !=document.getElementById('fundsourceId') &&  document.getElementById('fundsourceId').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a fundsource";
 					return false;
 				}
-			</s:if>
-			<s:if test="%{isFieldMandatory('field')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('field')}"> 
 				 if(null!= document.getElementById('vouchermis.divisionid') && document.getElementById('vouchermis.divisionid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a field";
 					return false;
 				 }
-			</s:if>
+			</c:if>
 			return  true;
 }
 	</script>

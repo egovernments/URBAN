@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -62,8 +64,8 @@
 
 <script>
 function fetchDeptId() {
-	var id = '<s:property value="defaultDept"/>';
-	var did = '<s:property value="%{paymentheader.voucherheader.vouchermis.departmentid.id}"/>';
+	var id = '${defaultDept}';
+	var did = '${%{paymentheader.voucherheader.vouchermis.departmentid.id}}';
 	if(id != null && id != '-1' && id != '' ) {
 		document.getElementById('departmentid').value = id;
 	} else if(did != null && did != '-1' && did != '' ) {
@@ -72,7 +74,7 @@ function fetchDeptId() {
 }
 
 function printVoucher(){
-	document.forms[0].action='../report/billPaymentVoucherPrint!print.action?id=<s:property value="paymentheader.id"/>';
+	document.forms[0].action='../report/billPaymentVoucherPrint!print.action?id=${paymentheader.id}';
 	document.forms[0].submit();
 }
 </script>
@@ -81,15 +83,15 @@ function printVoucher(){
 
 <body>
 	<br>
-	<s:form action="payment" theme="simple">
-		<s:push value="model">
+	<form:form action="payment" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Advance Payment View" />
 			</jsp:include>
 			<font style='color: red;'>
 				<p id="lblError" style="font: bold"></p>
 			</font>
-			<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+			<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 			<div class="formmainbox">
 				<div class="subheadnew">Advance Payment View</div>
@@ -115,57 +117,57 @@ function printVoucher(){
 																</tr>
 																<tr>
 																	<td width="9%" class="bluebox">&nbsp;</td>
-																	<s:if test="%{shouldShowHeaderField('fund')}">
+																	<c:if test="%{shouldShowHeaderField('fund')}">
 																		<td width="12%" class="bluebox"><strong><s:text
 																					name="voucher.fund" /></strong></td>
 																		<td width="20%" class="bluebox"><s:property
 																				value="%{paymentheader.voucherheader.fundId.name}" /></td>
-																	</s:if>
-																	<s:if test="%{shouldShowHeaderField('fundsource')}">
+																	</c:if>
+																	<c:if test="%{shouldShowHeaderField('fundsource')}">
 																		<td width="17%" class="bluebox"><strong><s:text
 																					name="voucher.fundsource" /></strong></td>
 																		<td width="33%" class="bluebox"><s:property
 																				value="%{paymentheader.voucherheader.fundsourceId.name}" /></td>
-																	</s:if>
+																	</c:if>
 																</tr>
 																<tr>
 																	<td class="greybox">&nbsp;</td>
-																	<s:if test="%{shouldShowHeaderField('department')}">
+																	<c:if test="%{shouldShowHeaderField('department')}">
 																		<td class="greybox"><strong><s:text
 																					name="voucher.department" /></strong></td>
 																		<td class="greybox"><s:property
 																				value="%{paymentheader.voucherheader.vouchermis.departmentid.deptName}" /></td>
-																	</s:if>
-																	<s:if test="%{shouldShowHeaderField('functionary')}">
+																	</c:if>
+																	<c:if test="%{shouldShowHeaderField('functionary')}">
 																		<td class="greybox"><strong><s:text
 																					name="voucher.functionary" /></strong></td>
 																		<td class="greybox" colspan="2"><s:property
 																				value="%{paymentheader.voucherheader.vouchermis.functionary.name}" /></td>
-																	</s:if>
+																	</c:if>
 																</tr>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
-																	<s:if test="%{shouldShowHeaderField('scheme')}">
+																	<c:if test="%{shouldShowHeaderField('scheme')}">
 																		<td class="bluebox"><strong><s:text
 																					name="voucher.scheme" /></strong></td>
 																		<td class="bluebox"><s:property
 																				value="%{paymentheader.voucherheader.vouchermis.schemeid.name}" /></td>
-																	</s:if>
-																	<s:if test="%{shouldShowHeaderField('subscheme')}">
+																	</c:if>
+																	<c:if test="%{shouldShowHeaderField('subscheme')}">
 																		<td class="bluebox"><strong><s:text
 																					name="voucher.subscheme" /></strong></td>
 																		<td class="bluebox"><s:property
 																				value="%{paymentheader.voucherheader.vouchermis.subschemeid.name}" /></td>
-																	</s:if>
+																	</c:if>
 																</tr>
 																<tr>
 																	<td class="greybox">&nbsp;</td>
-																	<s:if test="%{shouldShowHeaderField('field')}">
+																	<c:if test="%{shouldShowHeaderField('field')}">
 																		<td class="greybox"><strong><s:text
 																					name="voucher.field" /></strong></td>
 																		<td class="greybox" colspan="4"><s:property
 																				value="%{paymentheader.voucherheader.vouchermis.divisionid.name}" /></td>
-																	</s:if>
+																	</c:if>
 																</tr>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
@@ -222,11 +224,11 @@ function printVoucher(){
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
 																	<td class="bluebox"><strong>Comments</strong></td>
-																	<td class="bluebox" colspan="4"><s:textarea
+																	<td class="bluebox" colspan="4"><form:textarea
 																			name="comments" id="comments" cols="100" rows="3"
 																			onblur="checkLength(this)" value="%{getComments()}" /></td>
 																</tr>
-															</table> <s:if test="%{paymentheader.state.id!=null}">
+															</table> <c:if test="%{paymentheader.state.id!=null}">
 																<div id="wfHistoryDiv">
 																	<c:import
 																		url="/WEB-INF/jsp/workflow/workflowHistory.jsp"
@@ -235,7 +237,7 @@ function printVoucher(){
 																			value="${paymentheader.state.id}"></c:param>
 																	</c:import>
 																</div>
-															</s:if>
+															</c:if>
 														</span>
 													</div>
 													<div class="tabbertab">
@@ -265,8 +267,8 @@ function printVoucher(){
 																						Requisition Amount
 																					</td>
 																				</tr>
-																				<s:if test="%{advanceRequisitionList.size>0}">
-																					<s:iterator var="p" value="advanceRequisitionList"
+																				<c:if test="%{advanceRequisitionList.size>0}">
+																					<c:forEach var="p" value="advanceRequisitionList"
 																						status="s">
 																						<tr>
 																							<td style="text-align: center"
@@ -282,13 +284,13 @@ function printVoucher(){
 																							<td style="text-align: right"
 																								class="blueborderfortdnew"><s:text
 																									name="format.number">
-																									<s:param value="%{advanceRequisitionAmount}" />
+																									<!-- TODO: Manual migration required for custom Struts tag -->
 																								</s:text></td>
 																							<c:set var="totalAmt"
 																								value="${advanceRequisitionAmount}" />
 																						</tr>
-																					</s:iterator>
-																				</s:if>
+																					</c:forEach>
+																				</c:if>
 																				<tr>
 																					<td style="text-align: right" colspan="3"
 																						class="blueborderfortdnew"><strong>Grand
@@ -330,8 +332,8 @@ function printVoucher(){
 																					<th class="bluebgheadtdnew">Cheque Status
 																					</td>
 																				</tr>
-																				<s:if test="%{instrumentHeaderList.size>0}">
-																					<s:iterator var="p" value="instrumentHeaderList"
+																				<c:if test="%{instrumentHeaderList.size>0}">
+																					<c:forEach var="p" value="instrumentHeaderList"
 																						status="s">
 																						<tr>
 																							<td style="text-align: center"
@@ -350,14 +352,14 @@ function printVoucher(){
 																								class="blueborderfortdnew"><s:property
 																									value="%{statusId.description}" /></td>
 																						</tr>
-																					</s:iterator>
-																				</s:if>
+																					</c:forEach>
+																				</c:if>
 																			</table>
-																			<s:if
+																			<c:if
 																				test="%{instrumentHeaderList==null || instrumentHeaderList.size==0}">
 																				<div class="bottom" align="center">No Cheque
 																					Details Found !</div>
-																			</s:if>
+																			</c:if>
 																		</div>
 																	</td>
 																</tr>
@@ -375,14 +377,14 @@ function printVoucher(){
 					</table>
 				</div>
 				<div class="buttonbottom" id="buttondiv">
-					<s:hidden name="paymentid" value="%{paymentheader.id}" />
-					<s:hidden name="actionname" id="actionName" value="%{action}" />
-					<s:iterator value="%{getValidActions()}" var="p" status="s">
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<c:forEach value="%{getValidActions()}" var="p" status="s">
 						<s:submit type="submit" cssClass="buttonsubmit"
 							value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 							method="sendForApproval"
 							onclick="return balanceCheck(this, '%{name}','%{description}')" />
-					</s:iterator>
+					</c:forEach>
 					<s:submit method="beforeSearch" value="Back "
 						cssClass="buttonsubmit" id="backbtnid" />
 					<s:submit cssClass="button" id="printPreview" value="Print Preview"
@@ -448,13 +450,13 @@ function printVoucher(){
 			document.getElementById('lblError').innerHTML ="";
 			document.getElementById("actionName").value= name;
 
-			<s:if test="%{wfitemstate =='END'}">
+			<c:if test="%{wfitemstate =='END'}">
 				if(value == 'Approve' || value == 'Reject') {
 					document.getElementById("approverUserId").value=-1;
 					return true;
 				}
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				if( (value == 'Approve' || value == 'Save And Forward' || value=='Forward' ) && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 					document.getElementById('lblError').innerHTML ="Please Select the user";
 					return false;
@@ -486,18 +488,18 @@ function printVoucher(){
 		if(document.getElementById('actionName').value=='modify')
 			document.getElementById('wfHistoryDiv').style.display='none';
 	</script>
-			<s:if test="%{validateUser('balancecheck')}">
+			<c:if test="%{validateUser('balancecheck')}">
 				<script>
 			if(document.getElementById('bankbalanceRow'))
 			{
 				document.getElementById('bankbalanceRow').style.visibility='visible';
-				document.getElementById('balance').innerHTML='<s:property value="%{balance}"/>'
+				document.getElementById('balance').innerHTML='${%{balance}}'
 			}
 		</script>
-			</s:if>
+			</c:if>
 			<script>fetchDeptId();</script>
 		</s:push>
-	</s:form>
+	</form:form>
 </body>
 
 </html>

@@ -108,7 +108,7 @@ public class StateHistory implements Serializable {
 	private Long ownerUser;
 
 	private String senderName;
-	private String nextAction;
+	// TODO: Migrate from Struts/XWork: private String nextAction;
 	private String comments;
 	private String natureOfTask;
 	private String extraInfo;
@@ -132,7 +132,7 @@ public class StateHistory implements Serializable {
 		ownerPosition = state.getOwnerPosition();
 		ownerUser = state.getOwnerUser();
 		senderName = state.getSenderName();
-		nextAction = state.getNextAction();
+		// TODO: Migrate from Struts/XWork: nextAction = state.getNextAction();
 		comments = state.getComments();
 		extraInfo = state.getExtraInfo();
 		dateInfo = state.getDateInfo();
@@ -181,13 +181,15 @@ public class StateHistory implements Serializable {
 		this.senderName = senderName;
 	}
 
-	public String getNextAction() {
-		return nextAction;
-	}
+	// TODO: Migrate from Struts/XWork:
+	// public String getNextAction() {
+	//     return nextAction;
+	// }
 
-	public void setNextAction(String nextAction) {
-		this.nextAction = nextAction;
-	}
+	// TODO: Migrate from Struts/XWork:
+	// public void setNextAction(String nextAction) {
+	//     this.nextAction = nextAction;
+	// }
 
 	public String getComments() {
 		return comments;

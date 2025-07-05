@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,32 +53,32 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="lbl.budget.report.functionwise"/> </title>
+<title><!-- TODO: Manual migration required for custom Struts tag --> </title>
 </head>
 <body>
-	<s:if test="%{hasErrors()}">
+	<c:if test="%{hasErrors()}">
 		<div id="actionErrorMessages" class="errorstyle">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
-	<s:form action="budgetReport" theme="simple" name="budgetDetailReportForm">
+	</c:if>
+	<form:form action="budgetReport" theme="simple" name="budgetDetailReportForm">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Budget Report - Functionwise" />
 		</jsp:include>
 		<div class="formmainbox">
-			<div class="subheadnew"><s:text name="lbl.budget.report.functionwise"/> </div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			<%@include file="budgetReport-form.jsp"%>
-			<s:hidden name="onSaveOrForward" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="buttonbottom" style="padding-bottom: 10px;">
 				<s:submit  key="lbl.search"  cssClass="buttonsubmit"
 					onclick="return validateFinYear('getFunctionwiseReport');" />
 					<s:reset name="button" type="submit" cssClass="button" id="button"
 					 key="lbl.reset"/>
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.parent.postMessage('close','*');window.close();" class="button" />
 			</div>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

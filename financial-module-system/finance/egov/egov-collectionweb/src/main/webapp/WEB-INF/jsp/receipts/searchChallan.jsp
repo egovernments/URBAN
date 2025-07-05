@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -49,7 +51,7 @@
 
 <%@ include file="/includes/taglibs.jsp" %>
 <head>
-	<title><s:text name="searchchallan.title"/></title>
+	<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 	<script>
 	
 	jQuery.noConflict();
@@ -94,7 +96,7 @@
 		var status=dom.get("status").value;
 		if((deptId=="-1")&& (challanNo=="")&& (fromdate=="")&& (todate=="")&&(serviceId=="-1")&&(status=="-1")&&(serviceCategoryId=="-1")){
 			dom.get("errorMessages").style.display="block";
-			document.getElementById("errorMessages").innerHTML='<s:text name="searchchallan.selectonecriteria" />'+ '<br>';
+			document.getElementById("errorMessages").innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 			return false;
 		
 		}
@@ -105,19 +107,19 @@
 			if (fromdate != "" && todate != "" && fromdate != todate) {
 				if (!checkFdateTdate(fromdate, todate)) {
 					document.getElementById("errorMessages").style.display = "block";
-					document.getElementById("errorMessages").innerHTML += '<s:text name="common.comparedate.errormessage" />'
+					document.getElementById("errorMessages").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 							+ '<br>';
 					valSuccess = false;
 				}
 				if (!validateNotFutureDate(fromdate, currDate)) {
 					document.getElementById("errorMessages").style.display = "block";
-					document.getElementById("errorMessages").innerHTML += '<s:text name="reports.fromdate.futuredate.message" />'
+					document.getElementById("errorMessages").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 							+ '<br>';
 					valSuccess = false;
 				}
 				if (!validateNotFutureDate(todate, currDate)) {
 					document.getElementById("errorMessages").style.display = "block";
-					document.getElementById("errorMessages").innerHTML += '<s:text name="reports.todate.futuredate.message" />'
+					document.getElementById("errorMessages").innerHTML += '<!-- TODO: Manual migration required for custom Struts tag -->'
 							+ '<br>';
 					valSuccess = false;
 				}
@@ -131,91 +133,91 @@
 </head>
 <body>
 <div class="errorstyle" id="errorMessages" style="display:none;"></div>
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
     <div id="actionErrorMessages" class="errorstyle">
-      <s:actionerror/>
-      <s:fielderror/>
+      <!-- TODO: Manual migration required for custom Struts tag -->
+      <!-- TODO: Manual migration required for custom Struts tag -->
     </div>
-</s:if>
-<s:if test="%{hasActionMessages()}">
+</c:if>
+<c:if test="%{hasActionMessages()}">
     <div id="actionMessages" class="messagestyle">
-    	<s:actionmessage theme="simple"/>
+    	<!-- TODO: Manual migration required for custom Struts tag -->
     </div>
-</s:if>
-<s:form theme="simple" name="searchChallanForm" action="searchChallan">
-<div class="formmainbox"><div class="subheadnew"><s:text name="searchchallan.title"/></div>
-<div class="subheadsmallnew"><span class="subheadnew"><s:text name="searchreceipts.criteria"/></span></div>
+</c:if>
+<form:form theme="simple" name="searchChallanForm" action="searchChallan">
+<div class="formmainbox"><div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
+<div class="subheadsmallnew"><span class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></span></div>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 	    <tr>
 	      <td width="4%" class="bluebox2">&nbsp;</td>
-	      <td width="21%" class="bluebox2"><s:text name="searchchallan.department"/></td>
-	      <td width="24%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="departmentId" id="departmentId" cssClass="selectwk" list="dropdownData.departmentList" listKey="id" listValue="name"  /> </td>
-	      <td width="21%" class="bluebox2"><s:text name="searchchallan.challanNumber"/></td>
-	   	  <td width="30%" class="bluebox2"><s:textfield id="challanNumber" name="challanNumber"/></td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="departmentId" id="departmentId" cssClass="selectwk" list="dropdownData.departmentList" listKey="id" listValue="name"  /> </td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	   	  <td width="30%" class="bluebox2"><form:input id="challanNumber" path="challanNumber"/></td>
 	     </tr>
 	     <tr>
 	      <td width="4%" class="bluebox">&nbsp;</td>
-	      <td width="21%" class="bluebox"><s:text name="searchchallan.fromdate"/></td>
-		  <s:date name="fromDate" var="cdFormat" format="dd/MM/yyyy"/>
-		  <td width="24%" class="bluebox"><s:textfield id="fromDate" name="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
-	      <td width="21%" class="bluebox"><s:text name="searchchallan.todate"/></td>
-	      <s:date name="toDate" var="cdFormat1" format="dd/MM/yyyy"/>
-		  <td width="30%" class="bluebox"><s:textfield id="toDate" name="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+		  <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td width="24%" class="bluebox"><form:input id="fromDate" path="fromDate" value="%{cdFormat}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].fromDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
+	      <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <!-- TODO: Manual migration required for custom Struts tag -->
+		  <td width="30%" class="bluebox"><form:input id="toDate" path="toDate" value="%{cdFormat1}" onfocus="javascript:vDateType='3';" onkeyup="DateFormat(this,this.value,event,false,'3')"/><a href="javascript:show_calendar('forms[0].toDate');" onmouseover="window.status='Date Picker';return true;"  onmouseout="window.status='';return true;"  ><img src="/services/egi/resources/erp2/images/calendaricon.gif" alt="Date" width="18" height="18" border="0" align="absmiddle" /></a><div class="highlight2" style="width:80px">DD/MM/YYYY</div></td>
 	    </tr>
 	     <tr>
-	      <td width="4%" class="bluebox2">&nbsp;</td>  <td width="21%" class="bluebox"><s:text name="miscreceipt.service.category" /></td>
-        <td width="30%" class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="serviceCategoryId" id="serviceCategoryId" cssClass="selectwk" list="dropdownData.serviceCategoryList" listKey="id" listValue="name" value="%{serviceCategoryId}" onChange="populateService(this);" />
+	      <td width="4%" class="bluebox2">&nbsp;</td>  <td width="21%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+        <td width="30%" class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="serviceCategoryId" id="serviceCategoryId" cssClass="selectwk" list="dropdownData.serviceCategoryList" listKey="id" listValue="name" value="%{serviceCategoryId}" onChange="populateService(this);" />
        	<egov:ajaxdropdown id="service" fields="['Text','Value']" dropdownId="serviceId" url="receipts/ajaxReceiptCreate-ajaxLoadServiceByCategoryForChallan.action" /></td>
-	      <td width="21%" class="bluebox2"><s:text name="miscreceipt.service"/></td>
-	      <td width="24%" class="bluebox2"><s:select headerKey="-1" headerValue="%{getText('challan.select')}" name="serviceId" id="serviceId" cssClass="selectwk" list="dropdownData.serviceList" listKey="id" listValue="name"  /></td>
+	      <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	      <td width="24%" class="bluebox2"><form:select headerKey="-1" headerValue="%{getText('challan.select')}" path="serviceId" id="serviceId" cssClass="selectwk" list="dropdownData.serviceList" listKey="id" listValue="name"  /></td>
 	    </tr>	
 	    <tr>
 	     <td width="4%" class="bluebox">&nbsp;</td>
-	     <td width="21%" class="bluebox2"><s:text name="searchchallan.status"/></td>
-	     <td width="30%" class="bluebox2"><s:select id="status" name="status" headerKey="-1" headerValue="%{getText('searchreceipts.status.select')}" cssClass="selectwk" list="%{challanStatuses}" value="%{status}" listKey="id" listValue="description" /> </td>
+	     <td width="21%" class="bluebox2"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	     <td width="30%" class="bluebox2"><form:select id="status" path="status" headerKey="-1" headerValue="%{getText('searchreceipts.status.select')}" cssClass="selectwk" list="%{challanStatuses}" value="%{status}" listKey="id" listValue="description" /> </td>
 	    </tr>
 </table>
 </div>
 	 <div id="loadingMask" style="display:none;overflow:hidden;text-align: center"><img src="/services/collection/resources/images/bar_loader.gif"/> <span style="color: red">Please wait....</span></div>
     <div class="buttonbottom">
-      <label><s:submit type="submit" cssClass="buttonsubmit" id="button" value="Search"  onclick="document.searchChallanForm.action='searchChallan-search.action'; return validate();"/></label>&nbsp;
-      <label><s:submit type="submit" cssClass="button" value="Reset" onclick="document.searchChallanForm.action='searchChallan-reset.action';"/></label>&nbsp;
+      <label><!-- TODO: Manual migration required for custom Struts tag --></label>&nbsp;
+      <label><!-- TODO: Manual migration required for custom Struts tag --></label>&nbsp;
       <input name="closebutton" type="button" class="button" id="closebutton" value="Close" onclick="window.close();"/>
 </div>
-<s:if test="%{!results.isEmpty()}">
+<c:if test="%{!results.isEmpty()}">
 <display:table name="results" uid="currentRow" pagesize = "30" style="border:1px;width:100%" cellpadding="0" cellspacing="0" export="false" requestURI="">
 <display:caption media="pdf">&nbsp;</display:caption>
 <display:column headerClass="bluebgheadtd" class="blueborderfortd"
 			title="Sl.No" style="width:4%;text-align:center">
-			<s:property value="%{#attr.currentRow_rowNum}" />
+			${%{#attr.currentRow_rowNum}}
 		</display:column>
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Challan No." style="width:10%">
 <div align="center">
-	<s:hidden name="currentRow.challan.challanNumber" value="%{currentRow.challan.challanNumber}"/> 
+	<!-- TODO: Manual migration required for custom Struts tag --> 
 	 <c:if test="${not empty currentRow.challan.challanNumber}">  <a href="#" onclick="openChallan('${currentRow.id}')"><c:out value="${currentRow.challan.challanNumber}"/></a></c:if>
 </div>
 </display:column>
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" property="challan.challanDate" title="Challan Date" format="{0,date,dd/MM/yyyy}" style="width:10%;text-align: center" />
-<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Service Type" style="width:20%" ><div align="center"><s:hidden name="currentRow.service.name" value="%{currentRow.service.name}"/>  <c:if test="${not empty currentRow.service.name}">   <c:out value="${currentRow.service.name}"/></c:if>&nbsp;</div></display:column>
+<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Service Type" style="width:20%" ><div align="center"><!-- TODO: Manual migration required for custom Struts tag -->  <c:if test="${not empty currentRow.service.name}">   <c:out value="${currentRow.service.name}"/></c:if>&nbsp;</div></display:column>
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" property="receiptMisc.fund.name" title="Fund" style="width:20%;text-align: center" />
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" property="receiptMisc.department.name" title="Department" style="width:20%;text-align: center" />
 <display:column headerClass="bluebgheadtd" class="blueborderfortd" property="totalAmount" title="Amount (Rs.)" format="{0, number, #,##0.00}" style="width:20%;text-align: center" />
-<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Status" style="width:20%" ><div align="center"><s:hidden name="currentRow.challan.status.description" value="%{currentRow.challan.status.description}"/>  <c:if test="${not empty currentRow.challan.status.description}">   <c:out value="${currentRow.challan.status.description}"/></c:if>&nbsp;</div></display:column>
+<display:column headerClass="bluebgheadtd" class="blueborderfortd" title="Status" style="width:20%" ><div align="center"><!-- TODO: Manual migration required for custom Struts tag -->  <c:if test="${not empty currentRow.challan.status.description}">   <c:out value="${currentRow.challan.status.description}"/></c:if>&nbsp;</div></display:column>
 
 </display:table>
-</s:if>
- <s:if test="%{results.isEmpty()}">
-	<s:if test="target=='searchresult'">
+</c:if>
+ <c:if test="%{results.isEmpty()}">
+	<c:if test="target=='searchresult'">
 	
 		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablebottom">
 		<tr> 
 			<div>&nbsp;</div>
-			<div class="subheadnew"><s:text name="searchresult.norecord"/></div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 		</tr>
 		</table>
 	
-	</s:if>
-</s:if>
-</s:form>
+	</c:if>
+</c:if>
+</form:form>
 </body>

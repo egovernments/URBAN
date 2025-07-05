@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,7 +57,7 @@
 	href="/services/EGF/resources/commonyui/yui2.7/paginator/assets/skins/sam/paginator.css">
 <script src="/services/EGF/resources/commonyui/yui2.7/paginator/paginator-min.js"></script>
 
-<title><s:text name="budget.search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style>
 .budgetSearch {
 	overflow: hidden;
@@ -69,11 +71,11 @@
 	<jsp:include page="budgetHeader.jsp">
 		<jsp:param name="heading" value="Budget Details" />
 	</jsp:include>
-	<s:if test="%{not savedbudgetDetailList.empty}">
+	<c:if test="%{not savedbudgetDetailList.empty}">
 		<%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 		<div class="yui-skin-sam">
 		<td class="bluebox">
-		<strong><s:text name="budget.amounts.rs" /></strong>
+		<strong><!-- TODO: Manual migration required for custom Struts tag --></strong>
 		</td>
 		
 			<div id="budgetDetailTable"
@@ -92,37 +94,37 @@
 				var budgetDetailColumns = [ 
 					{key:"budget.id",label:'Budget',width:90,className:"budgetSearch", sortable:true},
 					{key:"budgetGroup.id",label:'Budget Group',className:"budgetSearch",sortable:true,width:200},
-					<s:if test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
+					<c:if test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
 						{key:"executingDepartment", label:'Executing Department',className:"budgetSearch",sortable:true},
-					</s:if>
-					<s:if test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">				
+					</c:if>
+					<c:if test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">				
 						{key:"functionary.id",label:'Functionary',className:"budgetSearch",sortable:true} ,
-					</s:if>
-					<s:if test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
+					</c:if>
+					<c:if test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
 						{key:"function.id",label:'Function',className:"budgetSearch",sortable:true,width:90} ,
-					</s:if>
-					<s:if test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
+					</c:if>
+					<c:if test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
 						{key:"scheme.id",label:'Scheme',className:"budgetSearch",sortable:true} ,
-					</s:if>
-					<s:if test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
+					</c:if>
+					<c:if test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
 						{key:"subScheme.id",label:'Sub Scheme',className:"budgetSearch",sortable:true} ,
-					</s:if>
-					<s:if test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
+					</c:if>
+					<c:if test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
 						{key:"fund.id",label:'Fund',width:90,className:"budgetSearch",sortable:true} ,
-					</s:if>
-					<s:if test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
+					</c:if>
+					<c:if test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
 						{key:"boundary.id",label:'Field',className:"budgetSearch",sortable:true} ,
-					</s:if>
+					</c:if>
 						{key:"anticipatoryAmount",label:'Anticipatory Upto<br/>31 March',className:"budgetSearch"},
 						{key:"amount",label:'Estimate Amount',width:"50em"},
-						{key:"actual_previous_year",label:'<s:property value="previousfinYearRange"/> Actual <br/> Amount',className:"budgetSearch"},
-						<s:if test="%{re}">
-							{key:"actual_current_year",label:'<s:property value="currentfinYearRange"/> Revised<br/> Actual Amount',className:"budgetSearch"},
-							{key:"estimate_current_year",label:'<s:property value="currentfinYearRange"/> Revised<br/> Approved Amount',className:"budgetSearch"},
-						</s:if>
-						<s:else>
-							{key:"actual_current_year",label:'<s:property value="currentfinYearRange"/> Actual<br/> Amount',className:"budgetSearch"},
-							{key:"estimate_current_year",label:'<s:property value="currentfinYearRange"/> Approved<br/> Amount',className:"budgetSearch"},
+						{key:"actual_previous_year",label:'${previousfinYearRange} Actual <br/> Amount',className:"budgetSearch"},
+						<c:if test="%{re}">
+							{key:"actual_current_year",label:'${currentfinYearRange} Revised<br/> Actual Amount',className:"budgetSearch"},
+							{key:"estimate_current_year",label:'${currentfinYearRange} Revised<br/> Approved Amount',className:"budgetSearch"},
+						</c:if>
+						<c:otherwise>
+							{key:"actual_current_year",label:'${currentfinYearRange} Actual<br/> Amount',className:"budgetSearch"},
+							{key:"estimate_current_year",label:'${currentfinYearRange} Approved<br/> Amount',className:"budgetSearch"},
 						</s:else>
 						{key:"reappropriation_amount",label:'Total <br/>Reappropriation Amount',className:"budgetSearch"},
 						{key:"approved_amount",label:'Total <br/>Approved Amount',className:"budgetSearch"},
@@ -148,64 +150,64 @@
 						}
 					}        
 				});
-					<s:iterator value="savedbudgetDetailList" status="stat" var="p">
+					<c:forEach value="savedbudgetDetailList" status="stat" var="p">
 						budgetDetailsTable.addRow({SlNo:budgetDetailsTable.getRecordSet().getLength()+1,
-							"budget.id":"<s:property value='budget.name'/>",
-							"budgetGroup.id":"<s:property value='budgetGroup.name'/>",
-							<s:if test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
-								"executingDepartment":"<s:property value='%{getDepartmentNameByCode(executingDepartment)}'/>",
-							</s:if>
-							<s:if test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">				
-								"functionary.id":"<s:property value='functionary.name'/>",
-							</s:if>
-							<s:if test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
-								"function.id":"<s:property value='function.name'/>",
-							</s:if>
-							<s:if test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
-								"scheme.id":"<s:property value='scheme.name'/>",
-							</s:if>
-							<s:if test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
-								"subScheme.id":"<s:property value='subScheme.name'/>",
-							</s:if>
-							<s:if test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
-								"fund.id":"<s:property value='fund.name'/>",
-							</s:if>
-							<s:if test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
-								"boundary.id":"<s:property value='boundary.name'/>",
-							</s:if>
-							"anticipatoryAmount":'<s:property value="anticipatoryAmount"/>',
-							"amount":'<s:property value="originalAmount"/>',
-							<s:if test="%{previousYearBudgetDetailIdsAndAmount[#p.id.toString()] != null}">
-								"actual_previous_year":'<s:property value="%{previousYearBudgetDetailIdsAndAmount[#p.id.toString()]}"/>',
-							</s:if>
-							<s:else>
+							"budget.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							"budgetGroup.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							<c:if test="%{shouldShowHeaderField('executingDepartment') || shouldShowGridField('executingDepartment')}">
+								"executingDepartment":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							<c:if test="%{shouldShowHeaderField('functionary') || shouldShowGridField('functionary')}">				
+								"functionary.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							<c:if test="%{shouldShowHeaderField('function') || shouldShowGridField('function')}">
+								"function.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							<c:if test="%{shouldShowHeaderField('scheme') || shouldShowGridField('scheme')}">
+								"scheme.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							<c:if test="%{shouldShowHeaderField('subScheme') || shouldShowGridField('subScheme')}">
+								"subScheme.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							<c:if test="%{shouldShowHeaderField('fund') || shouldShowGridField('fund')}">
+								"fund.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							<c:if test="%{shouldShowHeaderField('boundary') || shouldShowGridField('boundary')}">
+								"boundary.id":"<!-- TODO: Manual migration required for custom Struts tag -->",
+							</c:if>
+							"anticipatoryAmount":'${anticipatoryAmount}',
+							"amount":'${originalAmount}',
+							<c:if test="%{previousYearBudgetDetailIdsAndAmount[#p.id.toString()] != null}">
+								"actual_previous_year":'${%{previousYearBudgetDetailIdsAndAmount[#p.id.toString()]}}',
+							</c:if>
+							<c:otherwise>
 								"actual_previous_year":'0.00',
 							</s:else>
-							<s:if test="%{budgetDetailIdsAndAmount[#p.id.toString()] != null}">
-								"actual_current_year":'<s:property value="%{budgetDetailIdsAndAmount[#p.id.toString()]}"/>',
-							</s:if>
-							<s:else>
+							<c:if test="%{budgetDetailIdsAndAmount[#p.id.toString()] != null}">
+								"actual_current_year":'${%{budgetDetailIdsAndAmount[#p.id.toString()]}}',
+							</c:if>
+							<c:otherwise>
 								"actual_current_year":'0.00',
 							</s:else>
-							<s:if test="%{re}">
-								"estimate_current_year":'<s:property value="budgetAmountView[#stat.index].currentYearReApproved"/>',
-							</s:if>
-							<s:else>
-								"estimate_current_year":'<s:property value="budgetAmountView[#stat.index].currentYearBeApproved"/>',
+							<c:if test="%{re}">
+								"estimate_current_year":'${budgetAmountView[#stat.index].currentYearReApproved}',
+							</c:if>
+							<c:otherwise>
+								"estimate_current_year":'${budgetAmountView[#stat.index].currentYearBeApproved}',
 							</s:else>
-							"reappropriation_amount":'<s:property value="%{(approvedReAppropriationsTotal.setScale(2).toString())/1000}"/>',
-							"approved_amount":'<s:property value="%{calculateTotal(#p)}"/>',
-							"comment":'<s:property value="comment"/>',
-							/* "document":'<input type="submit" class="buttonsubmit" value="View" onclick="'+'viewDocumentManager(<s:property value="#p.documentNumber"/>);return false;"/>' */
+							"reappropriation_amount":'${%{(approvedReAppropriationsTotal.setScale(2).toString())/1000}}',
+							"approved_amount":'${%{calculateTotal(#p)}}',
+							"comment":'${comment}',
+							/* "document":'<input type="submit" class="buttonsubmit" value="View" onclick="'+'viewDocumentManager(${#p.documentNumber});return false;"/>' */
 						});
-					</s:iterator>
+					</c:forEach>
 			}
 			budgetDetailTable();
 			</script>
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
 		<div class="error">
-			<s:text name="budget.no.details.found" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 	</s:else>
 	<br />

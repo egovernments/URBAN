@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,7 +61,7 @@
 						<tr>
 							<td colspan="6">
 								<div class="subheadsmallnew">
-									<strong><s:property value="%{functionwiseIE.cityName}" /></strong>
+									<strong>${%{functionwiseIE.cityName}}</strong>
 								</div>
 							</td>
 						</tr>
@@ -69,9 +71,9 @@
 										format="dd/MM/yyyy" /></strong></td>
 							<td colspan="6">
 								<div class="subheadsmallnew">
-									<strong>FUNCTIONWISE <s:if
-											test='%{functionwiseIE.incExp == "I"}'>INCOME</s:if>
-										<s:else>EXPENSE</s:else> SUBSIDARY REGISTER
+									<strong>FUNCTIONWISE <c:if
+											test='%{functionwiseIE.incExp == "I"}'>INCOME</c:if>
+										<c:otherwise>EXPENSE</s:else> SUBSIDARY REGISTER
 									</strong>
 								</div>
 							</td>
@@ -87,57 +89,57 @@
 							<th class="bluebgheadtd">RE-ReAppropriation</th>
 							<th class="bluebgheadtd">Expendiure As On</th>
 							<th class="bluebgheadtd">Balancce</th>
-							<s:iterator value="majorCodeList" status="stat" var="p">
-								<th class="bluebgheadtd"><s:property value="p" /></th>
-							</s:iterator>
+							<c:forEach value="majorCodeList" status="stat" var="p">
+								<th class="bluebgheadtd">${p}</th>
+							</c:forEach>
 						</tr>
-						<s:iterator value="functionwiseIE.entries" status="stat">
+						<c:forEach value="functionwiseIE.entries" status="stat">
 							<tr>
 								<td class="blueborderfortd">
 									<div align="center">
-										<s:property value="slNo" />
+										${slNo}
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="left">
-										<s:property value="functionCode" />
+										${functionCode}
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="left">
-										<s:if test='%{slNo == ""}'>
-											<strong><s:property value="functionName" /></strong>
-										</s:if>
-										<s:else>
-											<s:property value="functionName" />
+										<c:if test='%{slNo == ""}'>
+											<strong>${functionName}</strong>
+										</c:if>
+										<c:otherwise>
+											${functionName}
 										</s:else>
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="right">
-										<s:if test='%{slNo == ""}'>
-											<strong><s:property value="totalIncome" /></strong>
-										</s:if>
-										<s:else>
-											<s:property value="totalIncome" />
+										<c:if test='%{slNo == ""}'>
+											<strong>${totalIncome}</strong>
+										</c:if>
+										<c:otherwise>
+											${totalIncome}
 										</s:else>
 									</div>
 								</td>
-								<s:iterator value="functionwiseIE.majorCodeList" var="k"
+								<c:forEach value="functionwiseIE.majorCodeList" var="k"
 									status="s">
 									<td class="blueborderfortd">
 										<div align="right">
-											<s:if test='%{slNo == ""}'>
-												<strong><s:property value="majorcodeWiseAmount[#k]" /></strong>
-											</s:if>
-											<s:else>
-												<s:property value="majorcodeWiseAmount[#k]" />
+											<c:if test='%{slNo == ""}'>
+												<strong>${majorcodeWiseAmount[#k]}</strong>
+											</c:if>
+											<c:otherwise>
+												${majorcodeWiseAmount[#k]}
 											</s:else>
 										</div>
 									</td>
-								</s:iterator>
+								</c:forEach>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -145,12 +147,12 @@
 	</table>
 	<jsp:include page="report-filterhidden.jsp" />
 	<input type="hidden" name="model.incExp"
-		value='<s:property value="model.incExp"/>' />
+		value='${model.incExp}' />
 	<div class="buttonbottom">
-		<s:text name="report.export.options" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		: <a
-			href='/EGF/report/functionwiseIE!generateFunctionwiseIEXls.action?model.incExp=<s:property value="model.incExp"/>&model.fund.id=<s:property value="model.fund.id"/>&model.department.id=<s:property value="model.department.id"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.scheme.id=<s:property value="model.scheme.id"/>&model.subScheme.id=<s:property value="model.subScheme.id"/>&model.fundsource.id=<s:property value="model.fundsource.id"/>&model.field.id=<s:property value="model.field.id"/>&model.startDate=<s:property value="model.startDate"/>&model.endDate=<s:property value="model.endDate"/>'>Excel</a>
+			href='/EGF/report/functionwiseIE!generateFunctionwiseIEXls.action?model.incExp=${model.incExp}&model.fund.id=${model.fund.id}&model.department.id=${model.department.id}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.scheme.id=${model.scheme.id}&model.subScheme.id=${model.subScheme.id}&model.fundsource.id=${model.fundsource.id}&model.field.id=${model.field.id}&model.startDate=${model.startDate}&model.endDate=${model.endDate}'>Excel</a>
 		| <a
-			href='/EGF/report/functionwiseIE!generateFunctionwiseIEPdf.action?model.incExp=<s:property value="model.incExp"/>&model.fund.id=<s:property value="model.fund.id"/>&model.department.id=<s:property value="model.department.id"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.scheme.id=<s:property value="model.scheme.id"/>&model.subScheme.id=<s:property value="model.subScheme.id"/>&model.fundsource.id=<s:property value="model.fundsource.id"/>&model.field.id=<s:property value="model.field.id"/>&model.startDate=<s:property value="model.startDate"/>&model.endDate=<s:property value="model.endDate"/>'>PDF</a>
+			href='/EGF/report/functionwiseIE!generateFunctionwiseIEPdf.action?model.incExp=${model.incExp}&model.fund.id=${model.fund.id}&model.department.id=${model.department.id}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.scheme.id=${model.scheme.id}&model.subScheme.id=${model.subScheme.id}&model.fundsource.id=${model.fundsource.id}&model.field.id=${model.field.id}&model.startDate=${model.startDate}&model.endDate=${model.endDate}'>PDF</a>
 	</div>
 </div>

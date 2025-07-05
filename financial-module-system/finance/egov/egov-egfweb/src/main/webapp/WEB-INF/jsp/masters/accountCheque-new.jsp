@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -75,10 +77,10 @@
 	<jsp:include page="../budget/budgetHeader.jsp">
 		<jsp:param name="heading" value="Account Cheque Create" />
 	</jsp:include>
-	<s:form theme="simple" name="chequeMaster">
+	<form:form theme="simple" name="chequeMaster">
 
 		<div class="formmainbox" />
-		<div class="subheadnew"><s:text name="lbl.cheque.master.search"/> </div>
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 		<br>
 		<font style='color: red; font-weight: bold'>
 			<p class="error-block" id="lblError"></p>
@@ -86,14 +88,14 @@
 		<br>
 		<%@include file="accountCheque-form.jsp"%>
 		<div class="buttonbottom" style="padding-bottom: 10px;">
-			<input type="button" id="Close" value='<s:text name="lbl.add.modify.cheque"/>'
+			<input type="button" id="Close" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 				onclick="addModifyChq();" class="buttonsubmit" />
-			<s:reset id="Reset" key="lbl.cancel" cssClass="buttonsubmit" />
-			<input type="button" id="Close" value="<s:text name='lbl.close'/>"
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 		</div>
 		</div>
-	</s:form>
+	</form:form>
 
 </body>
 </html>

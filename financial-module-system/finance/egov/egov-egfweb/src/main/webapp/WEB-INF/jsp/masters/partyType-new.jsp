@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,12 +53,12 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="party.create" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 
 						function onLoadTask() {
-							var close = '<s:property value="close"/>';
-							var success = '<s:property value="success"/>';
+							var close = '${close}';
+							var success = '${success}';
 
 							if (success == 'yes') {
 								bootbox.alert("PartyType Created Successfully");
@@ -91,16 +93,16 @@
 <body onload="onLoadTask();">
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="party.create" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
-		<s:form name="partyForm" action="partyType" theme="css_xhtml"
+		<form:form name="partyForm" action="partyType" theme="css_xhtml"
 			validate="true">
-			<s:push value="model">
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<div style="color: red">
-					<s:actionmessage theme="css_xhtml" />
-					<s:actionerror />
-					<s:fielderror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<%@include file="partyType-form.jsp"%>
 				<div class="buttonbottom" align="center">
@@ -112,16 +114,16 @@
 							<td><s:submit name="create" value="Save & Close"
 									method="create" cssClass="buttonsubmit"
 									onclick="validate();setClose();" /></td>
-							<s:hidden name="close" id="close" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 							<td><input type="button" id="Close" value="Close"
 								onclick="javascript:window.close()" class="button" /></td>
 						</tr>
 					</table>
 				</div>
 	</div>
-	<s:token />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:push>
-	</s:form>
+	</form:form>
 	</div>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -65,17 +67,17 @@ function refreshInbox() {
 	}
 }
 </script>
-<title><s:text name="billreceipt.pagetitle" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body onLoad="refreshInbox();">
-<s:form theme="simple" name="displayReceiptForm">
-	<s:if test="%{hasErrors()}">
-		<div class="errorstyle"><s:actionerror /> <s:fielderror /></div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
-		<div class="messagestyle"><s:actionmessage theme="simple" /></div>
-	</s:if>
-	<iframe src="../reportViewer?reportId=<s:property value='reportId'/>" width="98%"
+<form:form theme="simple" name="displayReceiptForm">
+	<c:if test="%{hasErrors()}">
+		<div class="errorstyle"><!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
+		<div class="messagestyle"><!-- TODO: Manual migration required for custom Struts tag --></div>
+	</c:if>
+	<iframe src="../reportViewer?reportId=<!-- TODO: Manual migration required for custom Struts tag -->" width="98%"
 		height="70%">
 	<p>Your browser does not support iframes.</p>
 	</iframe>
@@ -84,8 +86,8 @@ function refreshInbox() {
 	refreshInbox();
 	</script>
 	<div class="buttonbottom">
-	<input name="buttonClose" type="button" class="button"	id="buttonClose" value="<s:text name='lbl.close'/>" onclick="window.parent.postMessage('close','*');window.close()" />
+	<input name="buttonClose" type="button" class="button"	id="buttonClose" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.parent.postMessage('close','*');window.close()" />
 	</div>
-</s:form>
+</form:form>
 </body>
 </html>

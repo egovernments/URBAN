@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -69,8 +71,8 @@
 
 <body onload="onbodyload();">
 
-	<s:form action="payInSlip" theme="simple" name="payinform">
-		<s:push value="model">
+	<form:form action="payInSlip" theme="simple" name="payinform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="PayInSlip" />
 			</jsp:include>
@@ -82,23 +84,23 @@
 					<div align="center">
 						<font style='color: red;'>
 							<p class="error-block" id="lblError"></p>
-						</font> <span class="mandatory"> <s:actionerror /> <s:fielderror />
-							<s:actionmessage />
+						</font> <span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</span>
 						<table border="0" width="100%">
 							<tr>
 
 
-								<td class="bluebox"><s:text name="payin.number" /><span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
-								<td class="bluebox"><s:textfield name="voucherNumber"
+								<td class="bluebox"><form:input path="voucherNumber"
 										id="payinNumber" /></td>
-								<td class="bluebox"><s:text name="payin.date" /><span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
 								<td class="bluebox" width="34%"><input type=text
 									name="voucherDate" id="voucherDate"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
-									value='<s:date name="voucherDate" format="dd/MM/yyyy"/>' /> <a
+									value='<!-- TODO: Manual migration required for custom Struts tag -->' /> <a
 									href="javascript:show_calendar('payinform.voucherDate');"
 									style="text-decoration: none">&nbsp;<img tabIndex="-1"
 										src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>(dd/mm/yyyy)</td>
@@ -127,7 +129,7 @@
 								<tr>
 									<td width="455"></td>
 									<td>Total Amount</td>
-									<td><s:textfield name="totalAmount" id="totalAmount" /></td>
+									<td><form:input path="totalAmount" id="totalAmount" /></td>
 									</td>
 								</tr>
 							</table>
@@ -154,22 +156,22 @@
 							<br> <input type="hidden" id="name" name="name"
 								value="Pay In Slip" /> <input type="hidden" id="type"
 								name="type" value="Contra" />
-							<s:hidden name="contraBean.saveMode" id="saveMode" />
-							<s:hidden id="id" name="id"></s:hidden>
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 						</div>
 					</div>
 				</div>
 		</s:push>
-	</s:form>
+	</form:form>
 
 	<script>
 	
 function onbodyload(){
-<s:iterator value="iHeaderList" status="stat">
+<c:forEach value="iHeaderList" status="stat">
 	document.getElementById("buttonTable").style.display="block";
 	document.getElementById("chequeDetails").style.display="block";
 	document.getElementById("billDetailTable").style.display="block";
-</s:iterator>
+</c:forEach>
 	document.getElementById("voucherNumId").style.display="none";
 	document.getElementById("voucherDateId").style.display="none";	
 for(var i=0;i<document.forms[0].length;i++)
@@ -183,16 +185,16 @@ for(var i=0;i<document.forms[0].length;i++)
 				
 								
 		}	
-	var saveMode='<s:property value="contraBean.saveMode"/>';
-	var result='<s:property value="contraBean.result"/>';
+	var saveMode='${contraBean.saveMode}';
+	var result='${contraBean.result}';
 	if(result == 'success'){
-	var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
+	var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 		if(saveMode == 'saveclose'){
 			bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber);
 				window.close();
 		} else if(saveMode == 'saveview'){
 				bootbox.alert("Payinslip voucher created sucessfully with voucher number =  "+voucherNumber );
-				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<s:property value='%{voucherHeader.id}'/>','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
+				window.open('../voucher/preApprovedVoucher!loadvoucherview.action?vhid=<!-- TODO: Manual migration required for custom Struts tag -->','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
 			}
 	}
 	}
@@ -203,12 +205,12 @@ function validateReverse(saveMode){
 
 	document.getElementById('lblError').innerHTML = "";
 
-	<s:if test="%{isFieldMandatory('vouchernumber')}"> 
+	<c:if test="%{isFieldMandatory('vouchernumber')}"> 
 	if(null != document.getElementById('reversalVoucherNumber') && document.getElementById('reversalVoucherNumber').value.trim().length == 0){
 		document.getElementById('lblError').innerHTML = "Please enter reversal voucher number ";
 		return false;
 	}
-	</s:if>
+	</c:if>
 
 	if(document.getElementById('reversalVoucherDate').value.trim().length == 0){
 		document.getElementById('lblError').innerHTML = "Please enter reversal voucher date ";

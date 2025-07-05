@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -66,7 +67,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts2.interceptor.validation.SkipValidation;
+// TODO: Migrate from Struts/XWork: import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.egov.billsaccounting.services.BillsAccountingService;
 import org.egov.billsaccounting.services.CreateVoucher;
 import org.egov.billsaccounting.services.VoucherConstant;
@@ -446,8 +447,7 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
             paymentheader.transition().progressWithStateCopy().withSenderName(user.getName())
                     .withComments(workflowBean.getApproverComments())
                     .withStateValue(stateValue).withDateInfo(currentDate.toDate())
-                    .withOwner(paymentheader.getState().getInitiatorPosition())
-                    .withNextAction(FinancialConstants.WF_STATE_EOA_Approval_Pending);
+                    .withOwner(paymentheader.getState().getInitiatorPosition());
         } else if (FinancialConstants.BUTTONAPPROVE.equalsIgnoreCase(workflowBean.getWorkFlowAction())) {
 
             final WorkFlowMatrix wfmatrix = paymentHeaderWorkflowService.getWfMatrix(paymentheader.getStateType(), null,
@@ -457,8 +457,7 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
                     .withComments(workflowBean.getApproverComments())
                     .withStateValue(wfmatrix.getCurrentDesignation() + " Approved").withDateInfo(currentDate.toDate())
                     .withOwner((info != null && info.getAssignments() != null && !info.getAssignments().isEmpty())
-                            ? info.getAssignments().get(0).getPosition() : null)
-                    .withNextAction(wfmatrix.getNextAction());
+                            ? info.getAssignments().get(0).getPosition() : null);
 
             paymentheader.getVoucherheader().setStatus(FinancialConstants.CREATEDVOUCHERSTATUS);
 
@@ -476,11 +475,10 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
                 paymentheader.transition().start().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments()).withStateValue(wfmatrix.getNextState())
                         .withDateInfo(currentDate.toDate()).withOwner(workflowBean.getApproverPositionId())
-                        .withNextAction(wfmatrix.getNextAction())
                         .withInitiator((info != null && info.getAssignments() != null && !info.getAssignments().isEmpty())
                                 ? info.getAssignments().get(0).getPosition() : null);
 
-            } else if (paymentheader.getCurrentState().getNextAction().equalsIgnoreCase("END"))
+            } else if (paymentheader.getCurrentState().getValue().equalsIgnoreCase("END"))
                 paymentheader.transition().progressWithStateCopy().end().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments()).withDateInfo(currentDate.toDate());
             else {
@@ -491,15 +489,14 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
                         null, null, null, paymentheader.getCurrentState().getValue(), null);
                 paymentheader.transition().progressWithStateCopy().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments()).withStateValue(wfmatrix.getNextState())
-                        .withDateInfo(currentDate.toDate()).withOwner(workflowBean.getApproverPositionId())
-                        .withNextAction(wfmatrix.getNextAction());
+                        .withDateInfo(currentDate.toDate()).withOwner(workflowBean.getApproverPositionId());
             }
         }
 
         return paymentheader;
     }
 
-    @SkipValidation
+    // TODO: Migrate from Struts/XWork: @SkipValidation
     public void getPaymentBills(Paymentheader paymentheader) {
         // if(LOGGER.isDebugEnabled()) LOGGER.debug("Inside getPaymentBills");
         try {
@@ -2255,6 +2252,41 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
 				if (LOGGER.isDebugEnabled())
 					LOGGER.debug(" for salary " + salaryQry);
 				chequeAssignmentList.addAll(salaryQry.list());
+                // below one handles
+                // assign-->surrendar-->assign-->surrendar-->.......
+                if (LOGGER.isDebugEnabled())
+                    LOGGER.debug("checking  cheque assigned and surrendard");
+				salaryParams = new HashMap<>();
+				final Query salaryQry2 = getSession().createSQLQuery(
+						new StringBuilder("select vh.id as voucherid ,vh.voucherNumber as voucherNumber ,").append(
+								"vh.voucherDate as voucherDate,sum(misbill.paidamount) as paidAmount,current_date as chequeDate,")
+								.append("  misbill.paidto as paidTo from Paymentheader ph,voucherheader vh ")
+								.append(" LEFT JOIN EGF_INSTRUMENTVOUCHER IV ON VH.ID=IV.VOUCHERHEADERID")
+								.append(" LEFT JOIN EGF_INSTRUMENTHEADER IH ON IV.INSTRUMENTHEADERID=IH.ID  ,vouchermis vmis,")
+								.append(" Miscbilldetail misbill ")
+								.append(", (select max(iv1.instrumentheaderid) as maxihid,iv1.voucherheaderid as iv1vhid ")
+								.append("from egf_instrumentvoucher iv1 group by iv1.voucherheaderid) as table1 ")
+								.append(" where ph.voucherheaderid=misbill.payvhid and ph.voucherheaderid=vh.id")
+								.append(" and vmis.voucherheaderid= vh.id and vh.status =:vhStatus").append(sql)
+								.append(" and IV.VOUCHERHEADERID IS NOT  NULL  and iv.instrumentheaderid=table1.maxihid")
+								.append(" and table1.iv1vhid=vh.id and  ih.id_status not in (:ihStatus) and vh.type=:vhType")
+								.append(" and vh.name = :vhName")
+								.append(" group by vh.id,vh.voucherNumber,vh.voucherDate,misbill.paidto order by vh.voucherNumber ")
+								.toString())
+						.addScalar("voucherid", LongType.INSTANCE).addScalar("voucherNumber").addScalar("voucherDate")
+						.addScalar("paidAmount", BigDecimalType.INSTANCE).addScalar("chequeDate").addScalar("paidTo")
+						.setResultTransformer(Transformers.aliasToBean(ChequeAssignment.class));
+
+				salaryParams.put("vhStatus", Integer.valueOf(approvedstatus));
+				salaryParams.putAll(sqlParams);
+				salaryParams.put("ihStatus", statusId);
+				salaryParams.put("vhType", FinancialConstants.STANDARD_VOUCHER_TYPE_PAYMENT);
+				salaryParams.put("vhName", FinancialConstants.PAYMENTVOUCHER_NAME_SALARY);
+
+				persistenceService.populateQueryWithParams(salaryQry2, salaryParams);
+				if (LOGGER.isDebugEnabled())
+					LOGGER.debug(" for salary " + salaryQry2);
+				chequeAssignmentList.addAll(salaryQry2.list());
                 final List<ChequeAssignment> tempChequeAssignmentList = chequeAssignmentList;
                 Float paidAmt;
                 String paidTo, nextPaidTo;
@@ -2458,7 +2490,7 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
 						.append("sum(misbill.paidamount) as paidAmount,current_date as chequeDate,misbill.paidto as paidTo")
 						.append(" from Paymentheader ph,voucherheader vh  LEFT JOIN EGF_INSTRUMENTVOUCHER IV")
 						.append(" ON VH.ID=IV.VOUCHERHEADERID LEFT JOIN EGF_INSTRUMENTHEADER IH ON IV.INSTRUMENTHEADERID=IH.ID,")
-						.append("vouchermis vmis, Miscbilldetail misbill,Eg_remittance  rem ")
+						.append("vouchermis vmis,Eg_remittance  rem ")
 						.append(" where ph.voucherheaderid=misbill.payvhid and  rem.paymentvhid=vh.id ");
 				String recoveryId = parameters.get("recoveryId")[0];
 				if (!recoveryId.isEmpty()) {
@@ -2496,8 +2528,7 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
 						"select vh.id as voucherid ,vh.voucherNumber as voucherNumber ,vh.voucherDate as voucherDate,")
 						.append("sum(misbill.paidamount) as paidAmount,current_date as chequeDate,misbill.paidto as paidTo ")
 						.append("from Paymentheader ph,voucherheader vh  LEFT JOIN EGF_INSTRUMENTVOUCHER IV ON VH.ID=IV.VOUCHERHEADERID")
-						.append(" LEFT JOIN EGF_INSTRUMENTHEADER IH ON IV.INSTRUMENTHEADERID=IH.ID,vouchermis vmis, Miscbilldetail misbill,")
-						.append("Eg_remittance  rem ")
+						.append(" LEFT JOIN EGF_INSTRUMENTHEADER IH ON IV.INSTRUMENTHEADERID=IH.ID,vouchermis vmis, Eg_remittance  rem ")
 						.append(", (select max(iv1.instrumentheaderid) as maxihid,iv1.voucherheaderid as iv1vhid")
 						.append(" from egf_instrumentvoucher iv1 group by iv1.voucherheaderid) table1")
 						.append(" where ph.voucherheaderid=misbill.payvhid and  rem.paymentvhid=vh.id ");
@@ -3361,7 +3392,7 @@ public class PaymentService extends PersistenceService<Paymentheader, Long> {
         return chequeAssignmentList;
     }
 
-    @SkipValidation
+    // TODO: Migrate from Struts/XWork: @SkipValidation
     public List getPayeeDetailsForExpenseBill(final Map<String, String[]> parameters,
             final CVoucherHeader voucherHeader) {
         if (LOGGER.isDebugEnabled())

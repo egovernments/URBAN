@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,53 +56,53 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
-<s:if
+<c:if
 	test="%{disableExpenditureType == true && enablePensionType == false}">
-	<title><s:text name="lbl.salary.bill.payment.search"/> </title>
-</s:if>
+	<title><!-- TODO: Manual migration required for custom Struts tag --> </title>
+</c:if>
 <s:elseif
 	test="%{disableExpenditureType == true && enablePensionType == true}">
-	<title><s:text name="lbl.pension.bill.payment.search"/> </title>
+	<title><!-- TODO: Manual migration required for custom Struts tag --> </title>
 </s:elseif>
-<s:else>
-	<title><s:text name="lbl.bill.payment.search"/> </title>
+<c:otherwise>
+	<title><!-- TODO: Manual migration required for custom Struts tag --> </title>
 </s:else>
 </head>
 <body>
-	<s:form action="payment" theme="simple">
+	<form:form action="payment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Bill Payment Search" />
 		</jsp:include>
-		<span class="mandatory1" id="errorSpan"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1" id="errorSpan"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:if
-					test="%{disableExpenditureType == true && enablePensionType == false}"><s:text name="lbl.salary.bill.payment.search"/></s:if>
+				<c:if
+					test="%{disableExpenditureType == true && enablePensionType == false}"><!-- TODO: Manual migration required for custom Struts tag --></c:if>
 				<s:elseif
-					test="%{disableExpenditureType == true && enablePensionType == true}"><s:text name="lbl.pension.bill.payment.search"/></s:elseif>
-				<s:else><s:text name="lbl.bill.payment.search"/></s:else>
+					test="%{disableExpenditureType == true && enablePensionType == true}"><!-- TODO: Manual migration required for custom Struts tag --></s:elseif>
+				<c:otherwise><!-- TODO: Manual migration required for custom Struts tag --></s:else>
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="payment.billnumber" /></td>
-					<td class="bluebox"><s:textfield name="billNumber"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:input path="billNumber"
 							id="billNumber" maxlength="25" value="%{billNumber}" /></td>
 					<td class="bluebox"></td>
 					<td class="bluebox"></td>
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="greybox"><s:text name="payment.billdatefrom" /></td>
-					<td class="greybox"><s:textfield id="fromDate" name="fromDate"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input id="fromDate" path="fromDate"
 							value="%{fromDate}" data-date-end-date="0d"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" class="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
-					<td class="greybox"><s:text name="payment.billdateto" /></td>
-					<td class="greybox"><s:textfield id="toDate" name="toDate"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input id="toDate" path="toDate"
 							value="%{toDate}" data-date-end-date="0d"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" class="form-control datepicker"
@@ -108,9 +110,9 @@
 				</tr>
 				<tr>
 					<td class="bluebox"></td>
-					<td class="bluebox"><s:text name="payment.expendituretype" />
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
-					<td class="bluebox"><s:select name="expType" id="expType"
+					<td class="bluebox"><form:select path="expType" id="expType"
 							list="#{'-1':'----Choose----','Purchase':'Purchase','Works':'Works','Expense':'Expense'}"
 							value="%{expType}" /></td>
 					<td class="bluebox"></td>
@@ -121,10 +123,10 @@
 			</table>
 
 		</div>
-		<%-- 	<s:if test="%{!validateUser('createpayment')}">
+		<%-- 	<c:if test="%{!validateUser('createpayment')}">
 		<script>
 			document.getElementById('searchBtn').disabled=true;
-			document.getElementById('errorSpan').innerHTML='<s:text name="payment.invalid.user"/>';
+			document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
@@ -132,24 +134,24 @@
 				d.options[d.selectedIndex].text.value=-1;
 			}
 		</script>
-		</s:if> --%>
-		<%-- <s:if test="%{validateUser('deptcheck')}">
+		</c:if> --%>
+		<%-- <c:if test="%{validateUser('deptcheck')}">
 			<script>
 				if(document.getElementById('vouchermis.departmentid'))
 				{
 					document.getElementById('vouchermis.departmentid').disabled=true;
 				}
 			</script>
-		</s:if> --%>
+		</c:if> --%>
 		<s:hidden name="disableExpenditureType" id="disableExpenditureType"
 			value="%{disableExpenditureType}" />
 		<s:hidden name="enablePensionType" id="enablePensionType"
 			value="%{enablePensionType}" />
-	</s:form>
+	</form:form>
 	<div align="center" class="buttonbottom">
-		<input type="submit" class="buttonsubmit" value="<s:text name='lbl.search'/>"
+		<input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 			id="searchBtn" name="searchBtn" onclick="return search();" /> <input
-			type="button" value="<s:text name='lbl.close'/>" onclick="window.parent.postMessage('close','*');window.close();"
+			type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" onclick="window.parent.postMessage('close','*');window.close();"
 			class="button" />
 	</div>
 	<script>
@@ -174,20 +176,20 @@
 				}
 				return true;
 			}
-			<s:if test="%{disableExpenditureType == true && enablePensionType == false}">
+			<c:if test="%{disableExpenditureType == true && enablePensionType == false}">
 				var element = document.getElementById('expType');
 				var len = element.options.length;
 				element.options.length = 0;
 				element.options[element.length] = new Option('Salary', 'Salary');
 				element.disabled = true;
-			</s:if>
-			<s:if test="%{disableExpenditureType == true && enablePensionType == true}">
+			</c:if>
+			<c:if test="%{disableExpenditureType == true && enablePensionType == true}">
 				var element = document.getElementById('expType');
 				var len = element.options.length;
 				element.options.length = 0;
 				element.options[element.length] = new Option('Pension', 'Pension');
 				element.disabled = true;
-			</s:if>
+			</c:if>
 		</script>
 </body>
 </html>

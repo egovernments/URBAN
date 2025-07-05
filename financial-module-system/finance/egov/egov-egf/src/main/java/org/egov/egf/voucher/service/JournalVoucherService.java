@@ -374,7 +374,6 @@ public class JournalVoucherService {
                     .withComments(approvalComent)
                     .withStateValue(stateValue).withDateInfo(currentDate.toDate())
                     .withOwner(wfInitiator.getPosition())
-                    .withNextAction("")
                     .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME);
         } else {
             if (null != approvalPosition && approvalPosition != -1 && !approvalPosition.equals(Long.valueOf(0)))
@@ -383,11 +382,13 @@ public class JournalVoucherService {
             if (null == voucherHeader.getState()) {
                 wfmatrix = cvoucherHeaderRegisterWorkflowService.getWfMatrix(voucherHeader.getStateType(), null,
                         null, additionalRule, currState, null);
+                final String stateValue = wfmatrix.getNextState();
                 voucherHeader.transition().start().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
-                        .withStateValue(wfmatrix.getNextState()).withDateInfo(new Date()).withOwner(pos)
-                        .withNextAction(wfmatrix.getNextAction())
-                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME);
+                        .withStateValue(stateValue).withDateInfo(new Date()).withOwner(pos)
+                        .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME)
+                        .withCreatedBy(user.getId())
+                        .withtLastModifiedBy(user.getId());
             } else if (FinancialConstants.BUTTONAPPROVE.toString().equalsIgnoreCase(workFlowAction)) {
                 final String stateValue = FinancialConstants.WORKFLOW_STATE_APPROVED;
                 voucherHeader.setStatus(FinancialConstants.CREATEDVOUCHERSTATUS);
@@ -395,26 +396,26 @@ public class JournalVoucherService {
                         null, additionalRule, voucherHeader.getCurrentState().getValue(), null);
                 voucherHeader.transition().progressWithStateCopy().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
-                        .withStateValue(stateValue).withDateInfo(currentDate.toDate()).withOwner(pos)
-                        .withNextAction("")
+                        .withStateValue(stateValue).withDateInfo(currentDate.toDate())
+                        .withOwner(pos)
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME);
             } else if (FinancialConstants.BUTTONCANCEL.toString().equalsIgnoreCase(workFlowAction)) {
                 final String stateValue = FinancialConstants.WORKFLOW_STATE_CANCELLED;
                 voucherHeader.setStatus(FinancialConstants.CANCELLEDVOUCHERSTATUS);
                 wfmatrix = cvoucherHeaderRegisterWorkflowService.getWfMatrix(voucherHeader.getStateType(), null,
                         null, additionalRule, voucherHeader.getCurrentState().getValue(), null);
-                voucherHeader.transition().progressWithStateCopy().withSenderName(user.getUsername() + "::" + user.getName())
+                voucherHeader.transition().end().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
-                        .withStateValue(stateValue).withDateInfo(currentDate.toDate()).withOwner(pos)
-                        .withNextAction("")
+                        .withStateValue(stateValue).withDateInfo(currentDate.toDate())
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME);
             } else {
                 wfmatrix = cvoucherHeaderRegisterWorkflowService.getWfMatrix(voucherHeader.getStateType(), null,
                         null, additionalRule, voucherHeader.getCurrentState().getValue(), null);
+                final String stateValue = wfmatrix.getNextState();
                 voucherHeader.transition().progressWithStateCopy().withSenderName(user.getUsername() + "::" + user.getName())
                         .withComments(approvalComent)
-                        .withStateValue(wfmatrix.getNextState()).withDateInfo(new Date()).withOwner(pos)
-                        .withNextAction(wfmatrix.getNextAction())
+                        .withStateValue(stateValue).withDateInfo(new Date())
+                        .withOwner(pos)
                         .withNatureOfTask(FinancialConstants.WORKFLOWTYPE_VOUCHER_DISPLAYNAME);
             }
         }

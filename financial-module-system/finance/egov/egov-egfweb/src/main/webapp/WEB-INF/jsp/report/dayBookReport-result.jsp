@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,10 +53,10 @@
 <%@ page language="java"%>
 
 <%-- <span class="mandatory1"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span> --%>
-<s:if test="%{dayBookDisplayList.size!=0}">
+<c:if test="%{dayBookDisplayList.size!=0}">
 	<display:table name="dayBookDisplayList" id="currentRowObject"
 		uid="currentRowObject" class="tablebottom" style="width:100%;"
 		cellpadding="0" cellspacing="0" export="true"
@@ -63,12 +65,12 @@
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<tr>
 					<th class="bluebgheadtd" width="100%" colspan="5"><strong
-						style="font-size: 15px;"> <s:property value="%{heading}" /></strong></th>
+						style="font-size: 15px;"> ${%{heading}}</strong></th>
 				</tr>
 			</table>
 			<div align="left" style="text-align: left; width: 98%;">
 				Total Vouchers :
-				<s:property value="%{dayBookDisplayList.size/2}" />
+				${%{dayBookDisplayList.size/2}}
 
 			</div>
 		</display:caption>
@@ -85,8 +87,8 @@
 			class="blueborderfortd" title="Voucher Number"
 			style="width:8%;text-align:center">
 			<a href="#"
-				onclick="return viewVoucher('<s:property value="#attr.currentRowObject.vhId"/>')">
-				<s:property value="#attr.currentRowObject.vouchernumber" />
+				onclick="return viewVoucher('${#attr.currentRowObject.vhId}')">
+				${#attr.currentRowObject.vouchernumber}
 			</a>
 		</display:column>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -109,12 +111,12 @@
 			title="Credit Amount(Rs.)" style="width:5%;text-align:right"
 			property="creditamount" />
 		   <display:caption media="pdf">
-		   <s:property value="%{titleName}" />
-		   <s:property value="%{heading}" />
+		   ${%{titleName}}
+		   ${%{heading}}
 		</display:caption>
 		<display:caption media="excel">
 				   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						  <s:property value="%{heading}" />
+						  ${%{heading}}
 		</display:caption>
 		<display:setProperty name="export.pdf" value="true" />
 		<display:setProperty name="export.pdf.filename"
@@ -126,5 +128,5 @@
 		<display:setProperty name="export.xml" value="false" />
 	</display:table>
 
-</s:if>
-<s:else> <s:text name="label.no.records.found"/> </s:else>
+</c:if>
+<c:otherwise> <!-- TODO: Manual migration required for custom Struts tag --> </s:else>

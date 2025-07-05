@@ -148,7 +148,4 @@ public class ActionContract {
 	public void setLastModifiedBy(Long lastModifiedBy) {
 		this.lastModifiedBy = lastModifiedBy;
 	}
-	
-	
-
 }

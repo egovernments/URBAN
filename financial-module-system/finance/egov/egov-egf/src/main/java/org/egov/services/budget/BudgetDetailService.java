@@ -2572,8 +2572,7 @@ public class BudgetDetailService extends PersistenceService<BudgetDetail, Long> 
                 final String stateValue = FinancialConstants.WORKFLOW_STATE_REJECTED;
                 budgetDetail.transition().progressWithStateCopy().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments()).withStateValue(stateValue)
-                        .withDateInfo(new Date()).withOwner(wfInitiator.getPosition())
-                        .withNextAction(FinancialConstants.WF_STATE_EOA_Approval_Pending);
+                        .withDateInfo(new Date()).withOwner(wfInitiator.getPosition());
             }
 
         } else if (FinancialConstants.BUTTONVERIFY.equalsIgnoreCase(workflowBean.getWorkFlowAction())) {
@@ -2610,8 +2609,8 @@ public class BudgetDetailService extends PersistenceService<BudgetDetail, Long> 
                         .withDateInfo(new Date()).withOwner(pos);
                 budgetDetail.setStatus(egwStatusHibernateDAO.getStatusByModuleAndCode(FinancialConstants.BUDGETDETAIL,
                         FinancialConstants.BUDGETDETAIL_CREATED_STATUS));
-            } else if (budgetDetail.getCurrentState().getNextAction() != null
-                    && budgetDetail.getCurrentState().getNextAction().equalsIgnoreCase(FinancialConstants.WORKFLOWENDSTATE))
+            } else if (budgetDetail.getCurrentState().getValue() != null
+                    && budgetDetail.getCurrentState().getValue().equalsIgnoreCase(FinancialConstants.WORKFLOWENDSTATE))
                 budgetDetail.transition().end().withSenderName(user.getName())
                         .withComments(workflowBean.getApproverComments()).withDateInfo(new Date());
             else
@@ -2633,8 +2632,7 @@ public class BudgetDetailService extends PersistenceService<BudgetDetail, Long> 
         final String stateValue = FinancialConstants.WORKFLOW_STATE_REJECTED;
         budgetDetail.transition().progressWithStateCopy().withSenderName(user.getName())
                 .withStateValue(stateValue).withComments(comment)
-                .withDateInfo(currentDate.toDate()).withOwner(wfInitiator.getPosition())
-                .withNextAction(FinancialConstants.WF_STATE_EOA_Approval_Pending);
+                .withDateInfo(currentDate.toDate()).withOwner(wfInitiator.getPosition());
         applyAuditing(budgetDetail.getState());
         return budgetDetail;
     }

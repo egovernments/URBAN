@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -67,7 +69,7 @@
     </script>
 </head>
 <body>
-	<s:form action="budgetReport" theme="simple">
+	<form:form action="budgetReport" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Budget Report - Functionwise" />
 		</jsp:include>
@@ -76,22 +78,22 @@
 			<table>
 				<tr>
 					<td class="greybox" width="5%" />
-					<td class="greybox"><s:text name="report.financialYear" /> <span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:select name="financialYear"
+					<td class="greybox"><form:select path="financialYear"
 							id="financialYear" list="dropdownData.financialYearList"
 							listKey="id" listValue="finYearRange" headerKey="0"
 							headerValue="----Select----" value="%{model.financialYear.id}" />
 					</td>
 					<td class="bluebox" id="function_label" style="visibility: visible"><s:text
 							name="report.function" /></td>
-					<td class="bluebox"><s:select name="function" id="function"
+					<td class="bluebox"><form:select path="function" id="function"
 							list="dropdownData.functionList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="----Select----"
 							value="%{function.id}" /></td>
 				</tr>
 			</table>
-			<s:hidden name="onSaveOrForward" value="true" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="buttonbottom" style="padding-bottom: 10px;">
 				<s:submit value="Submit" method="getAtGlanceReport"
 					cssClass="buttonsubmit" onclick="return validateFinYear()" />
@@ -99,6 +101,6 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

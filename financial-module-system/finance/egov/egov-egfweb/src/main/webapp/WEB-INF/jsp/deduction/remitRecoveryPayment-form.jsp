@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -58,30 +60,30 @@
 	
 	var populateRecoveryDetailsForPayment = function() {
 		var recoveryDetailColumnsNew;
-		var partyNameBasedOnTdsType = {key:"partyName",label:'<s:text name="remit.party.name"/>', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")};
-		var partyCodeBasedOnTdsType = {key:"partyCode",label:'<s:text name="remit.party.code"/>', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")};
-		<s:if test="%{isNonControlledCodeTds}">
-			partyNameBasedOnTdsType = {key:"partyName",hidden:true,label:'<s:text name="remit.party.name"/>', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")};
-			partyCodeBasedOnTdsType = {key:"partyCode",hidden:true,label:'<s:text name="remit.party.code"/>', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")};
-		</s:if>
-		<s:if test="%{isPartialPaymentEnabled}">
+		var partyNameBasedOnTdsType = {key:"partyName",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")};
+		var partyCodeBasedOnTdsType = {key:"partyCode",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")};
+		<c:if test="%{isNonControlledCodeTds}">
+			partyNameBasedOnTdsType = {key:"partyName",hidden:true,label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")};
+			partyCodeBasedOnTdsType = {key:"partyCode",hidden:true,label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")};
+		</c:if>
+		<c:if test="%{isPartialPaymentEnabled}">
 		recoveryDetailColumnsNew = [ 
 		                        	{key:"serialNo",label:'Sl no',formatter:createLabelSamll(RECOVERYLIST,".serialNo")},				
-		                        	{key:"voucherNumber",label:'<s:text name="remit.ref.number"/>', formatter:createLabelLarge(RECOVERYLIST,".voucherNumberLabel")}, 
+		                        	{key:"voucherNumber",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".voucherNumberLabel")}, 
 		                        	{key:"voucherNumber",hidden:true,formatter:createHiddenField(RECOVERYLIST,".voucherNumber","hidden")}, 
-		                        	{key:"voucherDate",label:'<s:text name="remit.date"/>', formatter:createLabelMed(RECOVERYLIST,".voucherDateLabel")},
+		                        	{key:"voucherDate",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".voucherDateLabel")},
 		                        	{key:"voucherDate",hidden:true,formatter:createHiddenField(RECOVERYLIST,".voucherDate","hidden")}, 
 		                        	{key:"voucherName",hidden:true,formatter:createHiddenField(RECOVERYLIST,".voucherName","hidden")}, 
-		                        	{key:"voucherName",label:'<s:text name="remit.nature.deduction"/>', formatter:createLabelLarge(RECOVERYLIST,".voucherNameLable")},
-		                        	/*{key:"partyName",label:'<s:text name="remit.party.name"/>', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")},*/
+		                        	{key:"voucherName",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".voucherNameLable")},
+		                        	/*{key:"partyName",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")},*/
 		                        	partyNameBasedOnTdsType,
-		                        	/*{key:"partyCode",label:'<s:text name="remit.party.code"/>', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")},*/
+		                        	/*{key:"partyCode",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")},*/
 		                        	partyCodeBasedOnTdsType,
-		                        	/* {key:"panNo",label:'<s:text name="remit.party.panno"/>', formatter:createLabelMed(RECOVERYLIST,".panNoLable")}, */
+		                        	/* {key:"panNo",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".panNoLable")}, */
 		                        	{key:"panNo",hidden:true,formatter:createHiddenField(RECOVERYLIST,".panNo","hidden")},       
-		                        	{key:"deductionAmount",label:'<s:text name="remit.deduction.amount"/>', formatter:createLabelMed(RECOVERYLIST,".deductionAmount")},
+		                        	{key:"deductionAmount",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".deductionAmount")},
 		                        	{key:"partyName",hidden:true,formatter:createHiddenField(RECOVERYLIST,".partyName","hidden")}, 
-		                        	{key:"earlierPayment",label:'<s:text name="remit.earlier.payment"/>', formatter:createLabelMed(RECOVERYLIST,".earlierPayment")},
+		                        	{key:"earlierPayment",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".earlierPayment")},
 		                        	{key:"partyCode",hidden:true,formatter:createHiddenField(RECOVERYLIST,".partyCode","hidden")}, 
 		                        	{key:"detailTypeId",hidden:true,formatter:createHiddenField(RECOVERYLIST,".detailTypeId","hidden")},
 		                        	{key:"detailKeyid",hidden:true,formatter:createHiddenField(RECOVERYLIST,".detailKeyid","hidden")},
@@ -89,26 +91,26 @@
 		                        	{key:"remittance_gl_dtlId",hidden:true, formatter:createTextFieldFormatter1(RECOVERYLIST,".remittance_gl_dtlId","hidden")},
 		                        	{key:"remittanceId",hidden:true, formatter:createTextFieldFormatter1(RECOVERYLIST,".remittanceId","hidden")},
 		                        	];
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 		recoveryDetailColumnsNew = [ 
 		                        	{key:"serialNo",label:'Sl no',formatter:createLabelSamll(RECOVERYLIST,".serialNo")},				
-		                        	{key:"voucherNumber",label:'<s:text name="remit.ref.number"/>', formatter:createLabelLarge(RECOVERYLIST,".voucherNumberLabel")}, 
+		                        	{key:"voucherNumber",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".voucherNumberLabel")}, 
 		                        	{key:"voucherNumber",hidden:true,formatter:createHiddenField(RECOVERYLIST,".voucherNumber","hidden")}, 
-		                        	{key:"voucherDate",label:'<s:text name="remit.date"/>', formatter:createLabelMed(RECOVERYLIST,".voucherDateLabel")},
+		                        	{key:"voucherDate",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".voucherDateLabel")},
 		                        	{key:"voucherDate",hidden:true,formatter:createHiddenField(RECOVERYLIST,".voucherDate","hidden")}, 
 		                        	{key:"voucherName",hidden:true,formatter:createHiddenField(RECOVERYLIST,".voucherName","hidden")}, 
-		                        	{key:"voucherName",label:'<s:text name="remit.nature.deduction"/>', formatter:createLabelLarge(RECOVERYLIST,".voucherNameLable")},
-		                        	/*{key:"partyName",label:'<s:text name="remit.party.name"/>', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")},*/
+		                        	{key:"voucherName",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".voucherNameLable")},
+		                        	/*{key:"partyName",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyNameLable")},*/
 		                        	partyNameBasedOnTdsType,
-		                        	/*{key:"partyCode",label:'<s:text name="remit.party.code"/>', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")},*/
+		                        	/*{key:"partyCode",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelLarge(RECOVERYLIST,".partyCodeLable")},*/
 		                        	partyCodeBasedOnTdsType,
-		                        	/* {key:"panNo",label:'<s:text name="remit.party.panno"/>', formatter:createLabelMed(RECOVERYLIST,".panNoLable")}, */
+		                        	/* {key:"panNo",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".panNoLable")}, */
 		                        	{key:"panNo",hidden:true,formatter:createHiddenField(RECOVERYLIST,".panNo","hidden")},       
 		                        	{key:"detailTypeId",hidden:true,formatter:createHiddenField(RECOVERYLIST,".detailTypeId","hidden")},
 		                        	{key:"detailKeyid",hidden:true,formatter:createHiddenField(RECOVERYLIST,".detailKeyid","hidden")},
-		                        	/* {key:"deductionAmount",label:'<s:text name="remit.deduction.amount"/>', formatter:createLabelMed(RECOVERYLIST,".deductionAmount")}, */
-		                        	/* {key:"earlierPayment",label:'<s:text name="remit.earlier.payment"/>', formatter:createLabelMed(RECOVERYLIST,".earlierPayment")}, */
+		                        	/* {key:"deductionAmount",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".deductionAmount")}, */
+		                        	/* {key:"earlierPayment",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createLabelMed(RECOVERYLIST,".earlierPayment")}, */
 		                        	{key:"chkremit",label:'Amount', formatter:createAmount(RECOVERYLIST,".partialAmount")},
 		                        	{key:"partyName",hidden:true,formatter:createHiddenField(RECOVERYLIST,".partyName","hidden")}, 
 		                        	{key:"partyCode",hidden:true,formatter:createHiddenField(RECOVERYLIST,".partyCode","hidden")}, 
@@ -119,37 +121,37 @@
 	
 	var recoveryDetailDSNew = new YAHOO.util.DataSource();   
    	var	recoveryDetailTableNew = new YAHOO.widget.DataTable("recoveryDetailsTableNew",recoveryDetailColumnsNew, new YAHOO.util.DataSource());
-   <s:iterator value="listRemitBean" status="stat">
+   <c:forEach value="listRemitBean" status="stat">
 	recoveryDetailTableNew.addRow({SlNo:recoveryDetailTableNew.getRecordSet().getLength()+1});
-		var index = '<s:property value="#stat.index"/>';
+		var index = '${#stat.index}';
 		updateLabel('serialNo',index,parseInt(index)+1);
 //		bootbox.alert(""+index);
-		updateLabel('voucherNumberLabel',index,'<s:property value="voucherNumber"/>');
+		updateLabel('voucherNumberLabel',index,'${voucherNumber}');
 	//		bootbox.alert(""+index);
-		updateLabel('voucherDateLabel',index,'<s:property value="voucherDate"/>');
+		updateLabel('voucherDateLabel',index,'${voucherDate}');
 		//	bootbox.alert(""+index);
-		updateLabel('voucherNameLable',index,'<s:property value="voucherName"/>');
-		updateLabel('partyNameLable',index,"<s:property value="partyName"/>");
-		updateLabel('partyCodeLable',index,'<s:property value="partyCode"/>');
-		/* updateLabel('panNoLable',index,'<s:property value="panNo"/>'); */
-		<s:if test="%{isPartialPaymentEnabled}">
-		updateLabel('deductionAmount',index,'<s:text name="format.number" ><s:param value="%{deductionAmount}"/></s:text>');
-		updateLabel('earlierPayment',index,'<s:text name="format.number" ><s:param value="%{earlierPayment}"/></s:text>');
-		</s:if>
-		updateFieldValue('voucherNumber',index,'<s:property value="voucherNumber"/>');
-		updateFieldValue('voucherDate',index,'<s:property value="voucherDate"/>');
-		updateFieldValue('voucherName',index,'<s:property value="voucherName"/>');
-		updateFieldValue('partyName',index,"<s:property value="partyName"/>");
-		updateFieldValue('partyCode',index,'<s:property value="partyCode"/>');
-		updateFieldValue('panNo',index,'<s:property value="panNo"/>');
-		updateFieldValue('partialAmount',index,'<s:text name="format.number" ><s:param value="%{partialAmount}"/></s:text>');
-		updateFieldValue('remittance_gl_dtlId',index,'<s:property value="remittance_gl_dtlId"/>');
-		updateFieldValue('detailTypeId',index,'<s:property value="detailTypeId"/>');
-		updateFieldValue('detailKeyid',index,'<s:property value="detailKeyid"/>');
-		updateFieldValue('remittanceId',index,'<s:property value="remittanceId"/>');
+		updateLabel('voucherNameLable',index,'${voucherName}');
+		updateLabel('partyNameLable',index,"${partyName}");
+		updateLabel('partyCodeLable',index,'${partyCode}');
+		/* updateLabel('panNoLable',index,'${panNo}'); */
+		<c:if test="%{isPartialPaymentEnabled}">
+		updateLabel('deductionAmount',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+		updateLabel('earlierPayment',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+		</c:if>
+		updateFieldValue('voucherNumber',index,'${voucherNumber}');
+		updateFieldValue('voucherDate',index,'${voucherDate}');
+		updateFieldValue('voucherName',index,'${voucherName}');
+		updateFieldValue('partyName',index,"${partyName}");
+		updateFieldValue('partyCode',index,'${partyCode}');
+		updateFieldValue('panNo',index,'${panNo}');
+		updateFieldValue('partialAmount',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+		updateFieldValue('remittance_gl_dtlId',index,'${remittance_gl_dtlId}');
+		updateFieldValue('detailTypeId',index,'${detailTypeId}');
+		updateFieldValue('detailKeyid',index,'${detailKeyid}');
+		updateFieldValue('remittanceId',index,'${remittanceId}');
 		
 		recoveryTableIndex = recoveryTableIndex +1;
-		</s:iterator>
+		</c:forEach>
 				
 	
 	}
@@ -195,7 +197,7 @@ function createcheckbox(prefix,suffix){
 function createAmount(prefix,suffix){
     return function(el, oRecord, oColumn, oData) {
 		var value = (YAHOO.lang.isValue(oData))?oData:"";
-		el.innerHTML = "<input type='text' id='"+prefix+"["+recoveryTableIndex+"]"+suffix+"' name='"+prefix+"["+recoveryTableIndex+"]"+suffix+"'   style='width:90px;text-align:right' <s:if test='%{!isPartialPaymentEnabled}'>readonly='true'</s:if> onblur='calcTotalForPayment()' onkeypress='return isNumber(event)'/>";
+		el.innerHTML = "<input type='text' id='"+prefix+"["+recoveryTableIndex+"]"+suffix+"' name='"+prefix+"["+recoveryTableIndex+"]"+suffix+"'   style='width:90px;text-align:right' <c:if test='%{!isPartialPaymentEnabled}'>readonly='true'</c:if> onblur='calcTotalForPayment()' onkeypress='return isNumber(event)'/>";
 	}
 }
 
@@ -281,69 +283,69 @@ function validateSearch()
 // Javascript validation of the MIS Manadate attributes.
 function validateMisAttributes()
 {
-			<s:if test="%{isFieldMandatory('vouchernumber')}"> 
+			<c:if test="%{isFieldMandatory('vouchernumber')}"> 
 				 if(null != document.getElementById('voucherNumber') && document.getElementById('voucherNumber').value.trim().length == 0 ){
 
 					document.getElementById('lblError').innerHTML = "Please enter a voucher number";
 					return false;
 				 }
-			 </s:if>
-		 <s:if test="%{isFieldMandatory('voucherdate')}"> 
+			 </c:if>
+		 <c:if test="%{isFieldMandatory('voucherdate')}"> 
 				 if(null != document.getElementById('voucherDate') && document.getElementById('voucherDate').value.trim().length == 0){
 
 					document.getElementById('lblError').innerHTML = "Please enter a voucher date";
 					return false;
 				 }
-			 </s:if>
-		 <s:if test="%{isFieldMandatory('fund')}"> 
+			 </c:if>
+		 <c:if test="%{isFieldMandatory('fund')}"> 
 				 if(null != document.getElementById('fundId') && document.getElementById('fundId').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please Select a fund";
 					return false;
 				 }
-			 </s:if>
-			<s:if test="%{isFieldMandatory('department')}"> 
+			 </c:if>
+			<c:if test="%{isFieldMandatory('department')}"> 
 				 if(null!= document.getElementById('vouchermis.departmentid') && document.getElementById('vouchermis.departmentid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a department";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('scheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('scheme')}"> 
 				 if(null!=document.getElementById('schemeid') &&  document.getElementById('schemeid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a scheme";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('subscheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('subscheme')}"> 
 				 if(null!= document.getElementById('subschemeid') && document.getElementById('subschemeid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a subscheme";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('functionary')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('functionary')}"> 
 				 if(null!=document.getElementById('vouchermis.functionary') &&  document.getElementById('vouchermis.functionary').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a functionary";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('fundsource')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('fundsource')}"> 
 				 if(null !=document.getElementById('fundsourceId') &&  document.getElementById('fundsourceId').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a fundsource";
 					return false;
 				}
-			</s:if>
-			<s:if test="%{isFieldMandatory('field')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('field')}"> 
 				 if(null!= document.getElementById('vouchermis.divisionid') && document.getElementById('vouchermis.divisionid').value == -1){
 
 					document.getElementById('lblError').innerHTML = "Please select a field";
 					return false;
 				 }
-			</s:if>
+			</c:if>
 			return true;
 
 }

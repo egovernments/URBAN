@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="dishonorcheque.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <sj:head jqueryui="true" jquerytheme="redmond" loadAtOnce="true" />
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/helper.js?rnd=${app_release_no}"></script>
@@ -245,7 +247,7 @@
 </script>
 </head>
 <body>
-	<s:if test="%{dishonoredChequeDisplayList.size != 0}">
+	<c:if test="%{dishonoredChequeDisplayList.size != 0}">
 		<table width="70%" border="1" align="center" cellpadding="0"
 			cellspacing="0" class="tablebottom">
 			<tr>
@@ -260,14 +262,14 @@
 				<th class="bluebgheadtd">Status</th>
 				<th class="bluebgheadtd">Reference No</th>
 			</tr>
-			<s:iterator var="p" value="dishonoredChequeDisplayList" status="s">
+			<c:forEach var="p" value="dishonoredChequeDisplayList" status="s">
 				<tr>
 					<td class="blueborderfortd" align="center"><s:property
 							value="%{voucherNumber}" /></td>
 					<td class="blueborderfortd" align="center"><s:property
 							value="%{receiptNumber}" /></td>
 					<td class="blueborderfortd text-center" align="center"
-						id="debitAmount"><s:property value="%{receiptDate}" /></td>
+						id="debitAmount">${%{receiptDate}}</td>
 					<td class="blueborderfortd text-right" align="center"><s:property
 							value="%{instrumentNumber}" /></td>
 					<td class="blueborderfortd" align="right"><s:property
@@ -283,16 +285,16 @@
 					<td class="blueborderfortd" align="right"><s:property
 							value="%{referenceNo}" /></td>
 				</tr>
-			</s:iterator>
+			</c:forEach>
 		</table>
-	</s:if>
-	<s:form name="dishonorForm" action="dishonoredCheque" theme="simple"
+	</c:if>
+	<form:form name="dishonorForm" action="dishonoredCheque" theme="simple"
 		validate="true">
 		<div style="color: green">
-			<s:actionmessage />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
 			<div class="errorstyle" style="display: none" id="errorDiv"></div>
@@ -300,11 +302,11 @@
 		<div class="formmainbox">
 			<div class="formheading">
 				<div class="subheadnew">
-					<s:text name="dishonorcheque.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 			</div>
 			<br />
-			<s:if test="%{generalLedger.size != 0}">
+			<c:if test="%{generalLedger.size != 0}">
 				<div class="formmainbox">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
@@ -312,7 +314,7 @@
 							<td class="greybox"><s:text
 									name="dishonorcheque.transactiondate" />:<span
 								class="mandatory1">*</span></td>
-							<td class="greybox"><s:textfield id="transactionDate"
+							<td class="greybox"><form:input id="transactionDate"
 									name="transactionDate" value="%{transactionDate}"
 									data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -320,7 +322,7 @@
 									data-inputmask="'mask': 'd/m/y'" />
 							<td class="greybox"><s:text
 									name="dishonorcheque.reversalamount" />:</td>
-							<td class="greybox"><s:textfield name="reversalAmount"
+							<td class="greybox"><form:input path="reversalAmount"
 									style="width: 200px;" id="reversalAmount"
 									cssClass="patternvalidation text-right form-control"
 									data-pattern="number" value="%{reversalAmount}" readonly="true" /></td>
@@ -328,13 +330,13 @@
 
 						<tr>
 							<td class="bluebox"></td>
-							<td class="greybox"><s:text name="dishonorcheque.reason" />:<span
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 								class="mandatory1">*</span></td>
-							<td class="greybox"><s:select name="dishonorReason"
+							<td class="greybox"><form:select path="dishonorReason"
 									id="dishonorReason" list="dropdownData.dishonorReasonsList"
 									headerKey="-1" headerValue="---Choose---" /></td>
-							<td class="greybox"><s:text name="dishonorcheque.remarks" />:</td>
-							<td class="greybox"><s:textarea name="remarks"
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+							<td class="greybox"><form:textarea path="remarks"
 									style="width: 200px;" id="remarks" rows="4" /></td>
 						</tr>
 
@@ -352,7 +354,7 @@
 							<th class="bluebgheadtd">Credit Amount</th>
 							<th class="bluebgheadtd">Reversal Amount</th>
 						</tr>
-						<s:iterator var="p" value="generalLedger" status="s">
+						<c:forEach var="p" value="generalLedger" status="s">
 							<tr>
 								<td class="blueborderfortd" align="center"><s:property
 										value="%{glcode}" /></td>
@@ -361,21 +363,21 @@
 								<td class="blueborderfortd text-right" align="center"
 									id="debitAmount"><div id="receiptDebitAmount"
 										name="receiptDebitAmount">
-										<s:property value="%{debitAmount}" />
+										${%{debitAmount}}
 									</div></td>
 								<td class="blueborderfortd text-right" align="center"><div
 										id="receiptCreditAmount" name="receiptCreditAmount">
-										<s:property value="%{creditAmount}" />
+										${%{creditAmount}}
 									</div></td>
-								<td class="blueborderfortd" align="right"><s:textfield
+								<td class="blueborderfortd" align="right"><form:input
 										name="amount" id="amount" value="0" onblur="updateTotal()"
 										cssClass="patternvalidation text-right form-control"
 										data-pattern="number" /></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td class="blueborderfortd text-right" align="right" colspan="4">Total</td>
-							<td class="blueborderfortd "><s:textfield name="totalAmount"
+							<td class="blueborderfortd "><form:input path="totalAmount"
 									id="totalAmount" value="0" readonly="true"
 									cssClass="patternvalidation text-right form-control"
 									data-pattern="number" /></td>
@@ -399,47 +401,47 @@
 							<th class="bluebgheadtd">Debit Amount</th>
 							<th class="bluebgheadtd">Credit Amount</th>
 						</tr>
-						<s:iterator var="p" value="generalLedger" status="s">
+						<c:forEach var="p" value="generalLedger" status="s">
 							<tr>
 								<td class="blueborderfortd" align="center"><div
 										name="showGlGlcode" id="showGlGlcode">
-										<s:property value="%{glcode}" />
+										${%{glcode}}
 									</div></td>
 								<td class="blueborderfortd" align="center"><s:property
 										value="%{description}" /></td>
 								<td class="blueborderfortd" align="right"><div
 										class="text-right" name="showGlDebitAmount"
 										id="showGlDebitAmount">
-										<%-- <s:property value="%{debitAmount}" /> --%>
+										<%-- ${%{debitAmount}} --%>
 									</div></td>
 								<td class="blueborderfortd" align="right"><div
 										class="text-right" id="showGlCreditAmount"
 										name="showGlCreditAmount">
-										<s:property value="%{creditAmount}" />
+										${%{creditAmount}}
 									</div></td>
 							</tr>
-						</s:iterator>
-						<s:iterator var="p" value="remittanceGeneralLedger" status="s">
+						</c:forEach>
+						<c:forEach var="p" value="remittanceGeneralLedger" status="s">
 							<tr>
 								<td class="blueborderfortd" align="center"><div
 										name="showRemittanceGlGlcode" id="showRemittanceGlGlcode">
-										<s:property value="%{glcode}" />
+										${%{glcode}}
 									</div></td>
 								<td class="blueborderfortd" align="center"><s:property
 										value="%{description}" /></td>
 								<td class="blueborderfortd" align="right"><div
 										name="showRemittanceGlDebitAmount" class="text-right"
 										id="showRemittanceGlDebitAmount">
-										<s:property value="%{debitAmount}" />
+										${%{debitAmount}}
 									</div></td>
 								<td class="blueborderfortd" align="right">
 									<div name="showRemittanceGlCreditAmount" class="text-right"
 										id="showRemittanceGlCreditAmount">
-										<s:property value="%{reversalAmount}" />
+										${%{reversalAmount}}
 									</div>
 								</td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td class="blueborderfortd text-right" align="right" colspan="2">Total</td>
 							<td class="blueborderfortd" align="right"><div
@@ -460,7 +462,7 @@
 						id="dishonorButton" name="button"
 						onclick="return copyAmountDetails();" />&nbsp;</td> -->
 				</div>
-			</s:if>
+			</c:if>
 			<s:hidden name="instHeaderIds" id="instHeaderIds"
 				value="%{instHeaderIds}" />
 			<s:hidden name="voucherHeaderIds" id="voucherHeaderIds"
@@ -471,7 +473,7 @@
 				value="%{receiptGLDetails}" />
 			<s:hidden name="remittanceGLDetails" id="remittanceGLDetails"
 				value="%{remittanceGLDetails}" />
-			<s:hidden name="referenceNo" id="referenceNo" value="%{referenceNo}" />
-	</s:form>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 </body>
 </html>

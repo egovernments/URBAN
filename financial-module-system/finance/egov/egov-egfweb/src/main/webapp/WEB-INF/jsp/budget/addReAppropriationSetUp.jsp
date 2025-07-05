@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -145,114 +147,114 @@ function makeAmountFieldFormatter(prefix,suffix){
 }
 
 	var budgetOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.budgetList">
-	    budgetOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.budgetList">
+	    budgetOptions.push({label:"${name}", value:'${id}'})
+	</c:forEach>
 	var budgetGroupOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.budgetGroupList">
-	    budgetGroupOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-	</s:iterator>
-	<s:if test="%{shouldShowField('executingDepartment')}">		
+	<c:forEach value="dropdownData.budgetGroupList">
+	    budgetGroupOptions.push({label:"${name}", value:'${id}'})
+	</c:forEach>
+	<c:if test="%{shouldShowField('executingDepartment')}">		
 	   	var executingDepartmentOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.executingDepartmentList">
-			executingDepartmentOptions.push({label:"<s:property value="deptName"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-	</s:if>
-	<s:if test="%{shouldShowField('function')}">		
+		<c:forEach value="dropdownData.executingDepartmentList">
+			executingDepartmentOptions.push({label:"${deptName}", value:'${id}'})
+		</c:forEach>
+	</c:if>
+	<c:if test="%{shouldShowField('function')}">		
 		var functionOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.functionList">
-	    	functionOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-  	</s:if>
-   	<s:if test="%{shouldShowField('functionary')}">		
+		<c:forEach value="dropdownData.functionList">
+	    	functionOptions.push({label:"${name}", value:'${id}'})
+		</c:forEach>
+  	</c:if>
+   	<c:if test="%{shouldShowField('functionary')}">		
 		var functionaryOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.functionaryList">
-	    	functionaryOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-   	</s:if>
-   	<s:if test="%{shouldShowField('scheme')}">		
+		<c:forEach value="dropdownData.functionaryList">
+	    	functionaryOptions.push({label:"${name}", value:'${id}'})
+		</c:forEach>
+   	</c:if>
+   	<c:if test="%{shouldShowField('scheme')}">		
 		var schemeOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.schemeList">
-	    	schemeOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-   	</s:if>
-   	<s:if test="%{shouldShowField('subScheme')}">		
+		<c:forEach value="dropdownData.schemeList">
+	    	schemeOptions.push({label:"${name}", value:'${id}'})
+		</c:forEach>
+   	</c:if>
+   	<c:if test="%{shouldShowField('subScheme')}">		
 		var subSchemeOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.subSchemeList">
-	    	subSchemeOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-   	</s:if>
-   	<s:if test="%{shouldShowField('fund')}">		
+		<c:forEach value="dropdownData.subSchemeList">
+	    	subSchemeOptions.push({label:"${name}", value:'${id}'})
+		</c:forEach>
+   	</c:if>
+   	<c:if test="%{shouldShowField('fund')}">		
 		var fundOptions=[{label:"--- Select ---", value:"0"}];
-		<s:iterator value="dropdownData.fundList">
-	    	fundOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-   	</s:if>
-   	<s:if test="%{shouldShowField('boundary')}">		
+		<c:forEach value="dropdownData.fundList">
+	    	fundOptions.push({label:"${name}", value:'${id}'})
+		</c:forEach>
+   	</c:if>
+   	<c:if test="%{shouldShowField('boundary')}">		
 		var boundaryOptions=[{label:"--- Select ---", value:"0"}];		
-		<s:iterator value="dropdownData.boundaryList">
-			boundaryOptions.push({label:"<s:property value="name"/>", value:'<s:property value="id"/>'})
-		</s:iterator>
-	</s:if>
+		<c:forEach value="dropdownData.boundaryList">
+			boundaryOptions.push({label:"${name}", value:'${id}'})
+		</c:forEach>
+	</c:if>
 		function addReAppGridRows(){
-			<s:iterator value="newBudgetReAppropriationList" status="stat">
+			<c:forEach value="newBudgetReAppropriationList" status="stat">
 				budgetReAppropriationTable.addRow({SlNo:budgetReAppropriationTable.getRecordSet().getLength()+1,
-					"budgetDetail.budget.id":'<s:property value="budgetDetail.budget.id"/>',
-					"budgetDetail.budgetGroup.id":'<s:property value="budgetDetail.budgetGroup.id"/>',
-					<s:if test="%{shouldShowField('executingDepartment')}">				
-						"budgetDetail.executingDepartment.id":'<s:property value="budgetDetail.executingDepartment.id"/>',
-					</s:if>
-					<s:if test="%{shouldShowField('functionary')}">				
-						"budgetDetail.functionary.id":'<s:property value="budgetDetail.functionary.id"/>',
-					</s:if>
-					<s:if test="%{shouldShowField('function')}">				
-						"budgetDetail.function.id":'<s:property value="budgetDetail.function.id"/>',
-					</s:if>
-					<s:if test="%{shouldShowField('scheme')}">				
-						"budgetDetail.scheme.id":'<s:property value="budgetDetail.scheme.id"/>',
-					</s:if>
-					<s:if test="%{shouldShowField('subScheme')}">				
-						"budgetDetail.subScheme.id":'<s:property value="budgetDetail.subScheme.id"/>',
-					</s:if>
-					<s:if test="%{shouldShowField('fund')}">				
-						"budgetDetail.fund.id":'<s:property value="budgetDetail.fund.id"/>',
-					</s:if>
-					<s:if test="%{shouldShowField('boundary')}">				
-						"budgetDetail.boundary.id":'<s:property value="budgetDetail.boundary.id"/>',
-					</s:if>
-					"amount":'<s:property value="deltaAmount"/>',
-					"planningPercent":'<s:property value="planningPercent"/>',
-					"planningBudgetApproved":'<s:property value="planningBudgetApproved"/>',
-					"total_available":'<s:property value="originalAmount"/>'
+					"budgetDetail.budget.id":'${budgetDetail.budget.id}',
+					"budgetDetail.budgetGroup.id":'${budgetDetail.budgetGroup.id}',
+					<c:if test="%{shouldShowField('executingDepartment')}">				
+						"budgetDetail.executingDepartment.id":'${budgetDetail.executingDepartment.id}',
+					</c:if>
+					<c:if test="%{shouldShowField('functionary')}">				
+						"budgetDetail.functionary.id":'${budgetDetail.functionary.id}',
+					</c:if>
+					<c:if test="%{shouldShowField('function')}">				
+						"budgetDetail.function.id":'${budgetDetail.function.id}',
+					</c:if>
+					<c:if test="%{shouldShowField('scheme')}">				
+						"budgetDetail.scheme.id":'${budgetDetail.scheme.id}',
+					</c:if>
+					<c:if test="%{shouldShowField('subScheme')}">				
+						"budgetDetail.subScheme.id":'${budgetDetail.subScheme.id}',
+					</c:if>
+					<c:if test="%{shouldShowField('fund')}">				
+						"budgetDetail.fund.id":'${budgetDetail.fund.id}',
+					</c:if>
+					<c:if test="%{shouldShowField('boundary')}">				
+						"budgetDetail.boundary.id":'${budgetDetail.boundary.id}',
+					</c:if>
+					"amount":'${deltaAmount}',
+					"planningPercent":'${planningPercent}',
+					"planningBudgetApproved":'${planningBudgetApproved}',
+					"total_available":'${originalAmount}'
 				});
-			</s:iterator>
+			</c:forEach>
 		}
 
 	var makeBudgetReAppropriationTable = function() {
 		var budgetReAppropriationColumns = [ 
 			{key:"budgetDetail.budget.id",label:'Budget <span class="mandatory1">*</span>',width:90, formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),dropdownOptions:budgetOptions},
 			{key:"budgetDetail.budgetGroup.id",label:'Budget Group <span class="mandatory1">*</span>',width:120, formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),dropdownOptions:budgetGroupOptions},
-			<s:if test="%{shouldShowField('executingDepartment')}">				
+			<c:if test="%{shouldShowField('executingDepartment')}">				
 				{key:"budgetDetail.executingDepartment.id", label:'Executing Department'+mandatorySign('executingDepartment'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST), dropdownOptions:executingDepartmentOptions},				
-			</s:if>
-			<s:if test="%{shouldShowField('functionary')}">				
+			</c:if>
+			<c:if test="%{shouldShowField('functionary')}">				
 				{key:"budgetDetail.functionary.id",label:'Functionary'+mandatorySign('functionary'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),  dropdownOptions:functionaryOptions} ,
-			</s:if>
-			<s:if test="%{shouldShowField('function')}">				
+			</c:if>
+			<c:if test="%{shouldShowField('function')}">				
 				{key:"budgetDetail.function.id",label:'Function'+mandatorySign('Function'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),  dropdownOptions:functionOptions} ,
-			</s:if>
-			<s:if test="%{shouldShowField('scheme')}">				
+			</c:if>
+			<c:if test="%{shouldShowField('scheme')}">				
 				{key:"budgetDetail.scheme.id",label:'Scheme'+mandatorySign('scheme'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),  dropdownOptions:schemeOptions} ,
-			</s:if>
-			<s:if test="%{shouldShowField('subScheme')}">				
+			</c:if>
+			<c:if test="%{shouldShowField('subScheme')}">				
 				{key:"budgetDetail.subScheme.id",label:'Sub Scheme'+mandatorySign('subScheme'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),  dropdownOptions:subSchemeOptions} ,
-			</s:if>
-			<s:if test="%{shouldShowField('fund')}">				
+			</c:if>
+			<c:if test="%{shouldShowField('fund')}">				
 				{key:"budgetDetail.fund.id",label:'Fund'+mandatorySign('fund'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),  dropdownOptions:fundOptions} ,
-			</s:if>
-			<s:if test="%{shouldShowField('boundary')}">				
+			</c:if>
+			<c:if test="%{shouldShowField('boundary')}">				
 				{key:"budgetDetail.boundary.id",label:'Field'+mandatorySign('boundary'),width:90,formatter:dropdownFormatter('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST),  dropdownOptions:boundaryOptions} ,
-			</s:if>
+			</c:if>
 			{key:"amount",label:'Budget Estimate(Rs)',width:"50em", formatter:createTextFieldFormatterWithOnblur('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST,".deltaAmount")},
 			{key:"planningPercent",label:'Planning Budget<br/>Percentage',width:"50em", formatter:createTextFieldFormatterWithOnblur('budgetReAppropriationTable',BUDGET_REAPPROPRIATION_LIST,".planningPercent")},
 			{key:"planningBudgetApproved",label:'Planning Budget Approved(Rs)',width:"50em", formatter:makeAmountFieldFormatter(BUDGET_REAPPROPRIATION_LIST,".planningBudgetApproved")},
@@ -284,38 +286,38 @@ function makeAmountFieldFormatter(prefix,suffix){
 				}
 			}        
 		});
-		<s:if test="%{newBudgetReAppropriationList.size() == 0 && getActionErrors().size()==0 && getFieldErrors().size()==0}">
+		<c:if test="%{newBudgetReAppropriationList.size() == 0 && getActionErrors().size()==0 && getFieldErrors().size()==0}">
 			budgetReAppropriationTable.addRow({SlNo:budgetReAppropriationTable.getRecordSet().getLength()+1});
 			updateAllReAppGridValues();
-		</s:if>
+		</c:if>
 	}
 
 
-	var budgetReAppListValues = new Array(<s:property value="newBudgetReAppropriationList.size"/>);
-	<s:iterator value="newBudgetReAppropriationList" status="stat">
-		budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.budgetGroup.id"] = <s:if test="budgetDetail.budgetGroup.id"><s:property value="budgetDetail.budgetGroup.id"/></s:if><s:else>0</s:else>;
-		<s:if test="%{shouldShowField('executingDepartment')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.executingDepartment.id"] = <s:if test="budgetDetail.executingDepartment.id"><s:property value="budgetDetail.executingDepartment.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-		<s:if test="%{shouldShowField('function')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.function.id"] = <s:if test="budgetDetail.function.id"><s:property value="budgetDetail.function.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-		<s:if test="%{shouldShowField('functionary')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.functionary.id"] = <s:if test="budgetDetail.functionary.id"><s:property value="budgetDetail.functionary.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-		<s:if test="%{shouldShowField('scheme')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.scheme.id"] = <s:if test="budgetDetail.scheme.id"><s:property value="budgetDetail.scheme.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-		<s:if test="%{shouldShowField('subScheme')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.subScheme.id"] = <s:if test="budgetDetail.subScheme.id"><s:property value="budgetDetail.subScheme.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-		<s:if test="%{shouldShowField('fund')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.fund.id"] = <s:if test="budgetDetail.fund.id"><s:property value="budgetDetail.fund.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-		<s:if test="%{shouldShowField('boundary')}">				
-			budgetReAppListValues["newBudgetReAppropriationList[<s:property value='#stat.index'/>].budgetDetail.boundary.id"] = <s:if test="budgetDetail.boundary.id"><s:property value="budgetDetail.boundary.id"/></s:if><s:else>0</s:else>;
-		</s:if>
-	</s:iterator>
+	var budgetReAppListValues = new Array(${newBudgetReAppropriationList.size});
+	<c:forEach value="newBudgetReAppropriationList" status="stat">
+		budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.budgetGroup.id"] = <c:if test="budgetDetail.budgetGroup.id">${budgetDetail.budgetGroup.id}</c:if><c:otherwise>0</s:else>;
+		<c:if test="%{shouldShowField('executingDepartment')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.executingDepartment.id"] = <c:if test="budgetDetail.executingDepartment.id">${budgetDetail.executingDepartment.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+		<c:if test="%{shouldShowField('function')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.function.id"] = <c:if test="budgetDetail.function.id">${budgetDetail.function.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+		<c:if test="%{shouldShowField('functionary')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.functionary.id"] = <c:if test="budgetDetail.functionary.id">${budgetDetail.functionary.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+		<c:if test="%{shouldShowField('scheme')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.scheme.id"] = <c:if test="budgetDetail.scheme.id">${budgetDetail.scheme.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+		<c:if test="%{shouldShowField('subScheme')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.subScheme.id"] = <c:if test="budgetDetail.subScheme.id">${budgetDetail.subScheme.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+		<c:if test="%{shouldShowField('fund')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.fund.id"] = <c:if test="budgetDetail.fund.id">${budgetDetail.fund.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+		<c:if test="%{shouldShowField('boundary')}">				
+			budgetReAppListValues["newBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].budgetDetail.boundary.id"] = <c:if test="budgetDetail.boundary.id">${budgetDetail.boundary.id}</c:if><c:otherwise>0</s:else>;
+		</c:if>
+	</c:forEach>
 
 	function setValuesForReAppropriation(){
 		for (key in budgetReAppListValues){
@@ -324,27 +326,27 @@ function makeAmountFieldFormatter(prefix,suffix){
 	}
 
 	function hideReAppropriationTableColumns(){
-		<s:if test="%{!gridFields.contains('executingDepartment')}">
+		<c:if test="%{!gridFields.contains('executingDepartment')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.executingDepartment.id'))
-		</s:if>
-		<s:if test="%{!gridFields.contains('function')}">
+		</c:if>
+		<c:if test="%{!gridFields.contains('function')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.function.id'))
-		</s:if>
-		<s:if test="%{!gridFields.contains('functionary')}">
+		</c:if>
+		<c:if test="%{!gridFields.contains('functionary')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.functionary.id'))
-		</s:if>
-		<s:if test="%{!gridFields.contains('scheme')}">
+		</c:if>
+		<c:if test="%{!gridFields.contains('scheme')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.scheme.id'))
-		</s:if>
-		<s:if test="%{!gridFields.contains('subScheme')}">
+		</c:if>
+		<c:if test="%{!gridFields.contains('subScheme')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.subScheme.id'))
-		</s:if>
-		<s:if test="%{!gridFields.contains('fund')}">
+		</c:if>
+		<c:if test="%{!gridFields.contains('fund')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.fund.id'))
-		</s:if>
-		<s:if test="%{!gridFields.contains('boundary')}">
+		</c:if>
+		<c:if test="%{!gridFields.contains('boundary')}">
 			budgetReAppropriationTable.hideColumn(budgetReAppropriationTable.getColumn('budgetDetail.boundary.id'))
-		</s:if>
+		</c:if>
 	}
 	
 </SCRIPT>

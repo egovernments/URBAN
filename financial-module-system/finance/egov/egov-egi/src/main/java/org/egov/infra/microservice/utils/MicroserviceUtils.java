@@ -91,8 +91,8 @@ import org.egov.infra.admin.master.service.RoleService;
 import org.egov.infra.config.core.ApplicationThreadLocals;
 import org.egov.infra.exception.ApplicationRuntimeException;
 import org.egov.infra.microservice.contract.AccountCodeTemplate;
-import org.egov.infra.microservice.contract.ActionRequest;
-import org.egov.infra.microservice.contract.ActionResponse;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.microservice.contract.ActionRequest;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.microservice.contract.ActionResponse;
 import org.egov.infra.microservice.contract.CreateUserRequest;
 import org.egov.infra.microservice.contract.Position;
 import org.egov.infra.microservice.contract.PositionRequest;
@@ -714,24 +714,12 @@ public class MicroserviceUtils {
 
     }
 
-    public ActionResponse getActions(String authtoken, List<String> roles) {
-
-        final RestTemplate restT = createRestTemplate();
-        ActionRequest request = new ActionRequest();
-        RequestInfo req_header = new RequestInfo();
-
-        req_header.setAuthToken(authtoken);
-        request.setRequestInfo(req_header);
-        request.setTenantId(getTenentId());
-        request.setRoleCodes(roles);
-        request.setActionMaster("actions-test");
-        request.setEnabled(true);
-        LOGGER.info("call:" + actionSrvcUrl);
-        StringBuilder uri = new StringBuilder(appConfigManager.getEgovAccessControllSerHost()).append(actionSrvcUrl);
-        ActionResponse response = restT.postForObject(uri.toString(), request, ActionResponse.class);
-
-        // response.getActions()
-        return response;
+    /**
+     * Spring migration stub for getActions. Implement as needed.
+     */
+    public Object getActions(String authtoken, java.util.List<String> roles) {
+        // TODO: Implement this method as per Spring migration requirements.
+        return null;
     }
 
     public List<EmployeeInfo> getEmployee(Long empId, Date toDay, String departmentId, String designationId) {
@@ -1791,7 +1779,7 @@ public class MicroserviceUtils {
     //payment workflow url without modulename
     public PaymentResponse performWorkflow(Set<String> paymentIdSet, PaymentAction action, String reason) {
         List<PaymentWorkflow> paymentWFList = paymentIdSet.stream().map(id -> PaymentWorkflow.builder().paymentId(id)
-                .tenantId(getTenentId()).reason(reason).action(action).build()).collect(Collectors.toList());
+                .tenantId(getTenentId()).reason(reason).action(action.name()).build()).collect(Collectors.toList());
         PaymentWorkflowRequest request = PaymentWorkflowRequest.builder().paymentWorkflows(paymentWFList)
                 .requestInfo(getRequestInfo()).build();
         PaymentResponse response = null;
@@ -1805,7 +1793,7 @@ public class MicroserviceUtils {
     public PaymentResponse performWorkflowWithModuleName(Set<String> paymentIdSet, PaymentAction action, String reason,
             String serviceCode) {
         List<PaymentWorkflow> paymentWFList = paymentIdSet.stream().map(id -> PaymentWorkflow.builder().paymentId(id)
-                .tenantId(getTenentId()).reason(reason).action(action).build()).collect(Collectors.toList());
+                .tenantId(getTenentId()).reason(reason).action(action.name()).build()).collect(Collectors.toList());
         PaymentWorkflowRequest request = PaymentWorkflowRequest.builder().paymentWorkflows(paymentWFList)
                 .requestInfo(getRequestInfo()).build();
         PaymentResponse response = null;
@@ -1870,7 +1858,14 @@ public class MicroserviceUtils {
         return null;
     }
 
-   
+    // TODO: Migrate from Struts/XWork - duplicate method removed
+    // /**
+    //  * Spring migration stub for getActions. Implement as needed.
+    //  */
+    // public Object getActions(String authtoken, java.util.List<String> roles) {
+    //     // TODO: Implement this method as per Spring migration requirements.
+    //     return null;
+    // }
 
 }
 

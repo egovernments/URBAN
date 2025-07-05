@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -94,8 +96,8 @@
 									</div> -->
 									<span class="bold">Session expired ,please relogin and retry</span>
 								</div>
-								<s:actionerror />
-								<s:fielderror />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</td>
 						</tr>
 						<tr id="msgResp" class="hiddenError">

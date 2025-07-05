@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,10 +54,10 @@
 
 <html>
 <head>
-<title><s:text name="bill.search.heading"></s:text></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></s:text></title>
 </head>
 <body onload="changeMandatoryField()">
-	<s:form name="billRegisterForm" action="billRegisterSearch"
+	<form:form name="billRegisterForm" action="billRegisterSearch"
 		theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Voucher Search" />
@@ -63,43 +65,43 @@
 		<font style='color: red; font-weight: bold'>
 			<p class="error-block" id="lblError"></p>
 		</font>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bill.search.heading"></s:text>
+				<!-- TODO: Manual migration required for custom Struts tag --></s:text>
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="bill.search.expType" /> <span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="mandatory1">*</span></td>
-					<td class="bluebox"><s:select name="expType" id="expType"
+					<td class="bluebox"><form:select path="expType" id="expType"
 							list="dropdownData.expType" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" value="%{expType}" /></td>
-					<td class="greybox"><s:text name="bill.search.billnumber" /></td>
-					<td class="greybox"><s:textfield name="billnumber"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input path="billnumber"
 							id="billnumber" value="%{billnumber}"
 							onblur="changeMandatoryField()" /></td>
 				</tr>
 				<tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="greybox"><s:text name="bill.search.dateFrom" /> <span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="mandatory1" id="fromDateMandatory">*</span></td>
 
 					<td class="greybox"><s:date name="billDateFrom"
-							var="billDateFrom" format="dd/MM/yyyy" /> <s:textfield
+							var="billDateFrom" format="dd/MM/yyyy" /> <form:input
 							id="billDateFrom" name="billDateFrom" value="%{billDateFrom}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 							data-inputmask="'mask': 'd/m/y'" /></td>
 
-					<td class="greybox"><s:text name="bill.search.dateTo" /> <span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 						class="mandatory1" id="toDateMandatory">*</span></td>
 
 					<td class="greybox"><s:date name="billDateTo" var="billDateTo"
-							format="dd/MM/yyyy" /> <s:textfield id="billDateTo"
+							format="dd/MM/yyyy" /> <form:input id="billDateTo"
 							name="billDateTo" value="%{billDateTo}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -111,29 +113,29 @@
 			</table>
 		</div>
 		<div align="center" class="buttonbottom">
-			<input type="submit" class="buttonsubmit" value='<s:text name="lbl.search"/>'  id="Search"
+			<input type="submit" class="buttonsubmit" value='<!-- TODO: Manual migration required for custom Struts tag -->'  id="Search"
 				name="button" onclick="return validateFormAndSubmit();" /> <input
-				type="button" id="Close" value='<s:text name="lbl.close"/>' 
+				type="button" id="Close" value='<!-- TODO: Manual migration required for custom Struts tag -->' 
 				onclick="javascript:window.parent.postMessage('close','*');" class="button" />
 		</div>
 		<br />
-		<s:if test="%{billList.size!=0 || billList!=null}">
+		<c:if test="%{billList.size!=0 || billList!=null}">
 			<div id="listid" style="display: block">
 				<table width="100%" align="center" cellpadding="0" cellspacing="0"
 					class="setborder" style="border-collapse: inherit;">
 					<tr>
-						<th class="bluebgheadtd"><s:text name="lbl.sr.no"/>.</th>
-						<th class="bluebgheadtd"><s:text name="lbl.expenditure.type"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.bill.type"/></th>
-						<th class="bluebgheadtd"><s:text name="bill.search.billnumber"/></th>
-						<th class="bluebgheadtd"><s:text name="billDate"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.bill.amount"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.passed.amount"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.bill.status"/></th>
-						<th class="bluebgheadtd"><s:text name="lbl.owner.name"/></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag -->.</th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					</tr>
 
-					<s:iterator var="p" value="billList" status="s">
+					<c:forEach var="p" value="billList" status="s">
 
 						<tr>
 
@@ -148,18 +150,18 @@
 									value="%{billtype}" /></td>
 							<td style="text-align: center"
 								class="text-center bluebox setborder"><a href="#"
-								onclick="openBill('<s:property value='%{sourcepath}' />')"><s:property
+								onclick="openBill('<!-- TODO: Manual migration required for custom Struts tag -->')"><s:property
 										value="%{billnumber}" /></a></td>
 							<td style="text-align: center"
 								class="text-center bluebox setborder"><s:date
 									name="%{billdate}" format="dd/MM/yyyy" /></td>
 							<td class="bluebox setborder" style="text-align: right"><s:text
 									name="bill.format.number">
-									<s:param value="%{billamount}" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 							<td class="bluebox setborder" style="text-align: right"><s:text
 									name="bill.format.number">
-									<s:param value="%{passedamount}" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 
 							<td style="text-align: center"
@@ -169,33 +171,33 @@
 								class="text-center bluebox setborder "><s:property
 									value="%{ownerName}" /></td>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 				</table>
 			</div>
-		</s:if>
+		</c:if>
 		<div id="msgdiv" style="display: none">
 			<table align="center" class="tablebottom" width="80%">
 				<tr>
-					<th class="bluebgheadtd" colspan="7"><s:text name="msg.no.record.found"/>
+					<th class="bluebgheadtd" colspan="7"><!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 				</tr>
 			</table>
 		</div>
 		<div id="loading" class="loading"
 			style="width: 700; height: 700; display: none" align="center">
-			<blink style="color: red"><s:text name="msg.searching.processing.please.wait"/> </blink>
+			<blink style="color: red"><!-- TODO: Manual migration required for custom Struts tag --> </blink>
 		</div>
 
 
 
-	</s:form>
+	</form:form>
 	<script>
 	 function validateFormAndSubmit(){
 		 if(jQuery('#billnumber').val()!="")
 			 {
 				 if(jQuery('#expType').val()==-1)
 					 {
-						 jQuery('#lblError').html("<s:text name='msg.please.select.expenditure.type'/>");
+						 jQuery('#lblError').html("<!-- TODO: Manual migration required for custom Struts tag -->");
 						 return false
 					 }
 			 }
@@ -216,15 +218,15 @@
 	
 		document.getElementById('lblError').innerHTML ="";
 		if(document.getElementById('expType').value == -1){
-			document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.expenditure.type'/>";
+			document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 		}
 		if(document.getElementById('billDateFrom').value.trim().length == 0){
-			document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.bill.from.date'/>";
+			document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 		}
 		if(document.getElementById('billDateTo').value.trim().length == 0){
-			document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.bill.to.date'/>";
+			document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 			return false;
 			
 		}
@@ -234,55 +236,55 @@
 		if(!DateValidation(fromDate,toDate))
 			return false;
 		
-		 <s:if test="%{isFieldMandatory('fund')}"> 
+		 <c:if test="%{isFieldMandatory('fund')}"> 
 				 if(null != document.getElementById('fundId') && document.getElementById('fundId').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.fund'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			 </s:if>
-			<s:if test="%{isFieldMandatory('department')}"> 
+			 </c:if>
+			<c:if test="%{isFieldMandatory('department')}"> 
 				 if(null!= document.getElementById('vouchermis.departmentcode') && document.getElementById('vouchermis.departmentcode').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.department'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('scheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('scheme')}"> 
 				 if(null!=document.getElementById('schemeid') &&  document.getElementById('schemeid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.scheme'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('subscheme')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('subscheme')}"> 
 				 if(null!= document.getElementById('subschemeid') && document.getElementById('subschemeid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.sub.scheme'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('functionary')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('functionary')}"> 
 				 if(null!=document.getElementById('vouchermis.functionary') &&  document.getElementById('vouchermis.functionary').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.functionary'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
-			<s:if test="%{isFieldMandatory('fundsource')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('fundsource')}"> 
 				 if(null !=document.getElementById('fundsourceId') &&  document.getElementById('fundsourceId').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.fund.source'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				}
-			</s:if>
-			<s:if test="%{isFieldMandatory('field')}"> 
+			</c:if>
+			<c:if test="%{isFieldMandatory('field')}"> 
 				 if(null!= document.getElementById('vouchermis.divisionid') && document.getElementById('vouchermis.divisionid').value == -1){
 
-					document.getElementById('lblError').innerHTML = "<s:text name='msg.please.select.field'/>";
+					document.getElementById('lblError').innerHTML = "<!-- TODO: Manual migration required for custom Struts tag -->";
 					return false;
 				 }
-			</s:if>
+			</c:if>
 			
 			
 		return true;
@@ -303,15 +305,15 @@ String.prototype.trim = function () {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
 }
 
-	<s:if test="%{billList.size<=0}">
+	<c:if test="%{billList.size<=0}">
 				dom.get('msgdiv').style.display='block';
 				dom.get('listid').style.display='none';
-			</s:if>
-	<s:if test="%{billList.size!=0}">
+			</c:if>
+	<c:if test="%{billList.size!=0}">
 				dom.get('msgdiv').style.display='none';
 				document.getElementById('loading').style.display ='none';
 				dom.get('listid').style.display='block';
-	</s:if>	
+	</c:if>	
 	
 function changeMandatoryField()
 	{

@@ -48,14 +48,9 @@
 
 package org.egov.infra.workflow.repository;
 
-import org.egov.infra.workflow.entity.WorkflowAction;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
-public interface WorkflowActionRepository extends JpaRepository<WorkflowAction, Long> {
-
-    WorkflowAction findByNameAndType(String name, String type);
-
-    List<WorkflowAction> findAllByTypeAndNameIn(String type, List<String> names);
+public interface WorkflowActionRepository {
+    // TODO: Define repository methods as needed for Spring Data JPA
 }

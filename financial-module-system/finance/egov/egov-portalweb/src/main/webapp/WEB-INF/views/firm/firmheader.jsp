@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -68,7 +70,7 @@
 			<label class="col-sm-3 control-label text-right"><spring:message code="lbl.firmname" /><span
 						class="mandatory"></span></label>
 			<div class="col-sm-3 add-margin">
-				<form:input path="name" name="name" value="${name}" id="firmname" class="form-control table-input name" maxlength="250"/>
+				<form:input path="name" path="name" value="${name}" id="firmname" class="form-control table-input name" maxlength="250"/>
 				<form:errors path="name" cssClass="add-margin error-msg" />
 			</div>
 			<label class="col-sm-2 control-label text-right"><spring:message code="lbl.pan" /><span

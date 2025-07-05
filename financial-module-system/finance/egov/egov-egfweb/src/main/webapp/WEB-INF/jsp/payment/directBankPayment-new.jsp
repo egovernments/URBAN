@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 <head>
-<title><s:text name="lbl.direct.bank.payment"/> </title>
+<title><!-- TODO: Manual migration required for custom Struts tag --> </title>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
 <script type="text/javascript"
@@ -114,35 +116,35 @@
 </style>
 <script>
 	path="${pageContext.request.contextPath}";
-	var showMode='<s:property value="showMode"/>';	
+	var showMode='${showMode}';	
 		var totaldbamt=0,totalcramt=0;
-		var OneFunctionCenter= <s:property value="isRestrictedtoOneFunctionCenter"/>; 
+		var OneFunctionCenter= ${isRestrictedtoOneFunctionCenter}; 
 		//bootbox.alert(">>.."+OneFunctionCenter);                 
 		var makeVoucherDetailTable = function() {
-			<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>                                   
+			<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>                                   
 			var voucherDetailColumns = [                   
 				{key:"functionid",hidden:true,  formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
-				{key:"function",hidden:true,label:'<s:text name="lbl.function.name"/>', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","hidden")},    
+				{key:"function",hidden:true,label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","hidden")},    
 				{key:"glcodeid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeIdDetail","hidden")},
-				{key:"glcode",label:'<s:text name="lbl.account.code"/> <span class="mandatory1">*</span>',   formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeDetail","text")},
-				{key:"accounthead", label:'<s:text name="lbl.account.head"/>',formatter:createLongTextFieldFormatterJV(VOUCHERDETAILLIST,".accounthead")},				
-				{key:"debitamount",label:'<s:text name="lbl.debit.amount"/>', formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".debitAmountDetail","updateDebitAmountJV()")}, 
-				{key:"creditamount",label:'<s:text name="lbl.credit.amount"/>',formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".creditAmountDetail","updateCreditAmountJV()")},
-				{key:'Add',label:'<s:text name="lbl.add"/>',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
-				{key:'Delete',label:'<s:text name="lbl.delete"/>',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
+				{key:"glcode",label:'<!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span>',   formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeDetail","text")},
+				{key:"accounthead", label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createLongTextFieldFormatterJV(VOUCHERDETAILLIST,".accounthead")},				
+				{key:"debitamount",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".debitAmountDetail","updateDebitAmountJV()")}, 
+				{key:"creditamount",label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".creditAmountDetail","updateCreditAmountJV()")},
+				{key:'Add',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
+				{key:'Delete',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 			];
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 			var voucherDetailColumns = [ 
        			{key:"functionid",hidden:true,  formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
-       			{key:"function",label:'<s:text name="lbl.function.name"/>', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","text")},         
+       			{key:"function",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","text")},         
        			{key:"glcodeid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeIdDetail","hidden")},
-       			{key:"glcode",label:'<s:text name="lbl.account.code"/> <span class="mandatory1">*</span>',formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeDetail","text")},
-       			{key:"accounthead", label:'<s:text name="lbl.account.head"/>',formatter:createLongTextFieldFormatterJV(VOUCHERDETAILLIST,".accounthead")},				
-       			{key:"debitamount",label:'<s:text name="lbl.debit.amount"/>', formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".debitAmountDetail","updateDebitAmountJV()")}, 
-       			{key:"creditamount",label:'<s:text name="lbl.credit.amount"/>',formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".creditAmountDetail","updateCreditAmountJV()")},
-       			{key:'Add',label:'<s:text name="lbl.add"/>',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
-       			{key:'Delete',label:'<s:text name="lbl.delete"/>',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
+       			{key:"glcode",label:'<!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span>',formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".glcodeDetail","text")},
+       			{key:"accounthead", label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createLongTextFieldFormatterJV(VOUCHERDETAILLIST,".accounthead")},				
+       			{key:"debitamount",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".debitAmountDetail","updateDebitAmountJV()")}, 
+       			{key:"creditamount",label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createAmountFieldFormatterJV(VOUCHERDETAILLIST,".creditAmountDetail","updateCreditAmountJV()")},
+       			{key:'Add',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
+       			{key:'Delete',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
        		];
 		</s:else>         
 	    var voucherDetailDS = new YAHOO.util.DataSource(); 
@@ -170,35 +172,35 @@
 					check();
 				}
 				else{
-					bootbox.alert("<s:text name='msg.this.row.can.not.be.deleted'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				}
 			}
 			
 			        
 		}
 		);
-		<s:iterator value="billDetailslist" status="stat">
+		<c:forEach value="billDetailslist" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"functionid":'<s:property value="functionIdDetail"/>',
-					"function":'<s:property value="functionDetail"/>',
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:text name="format.number" ><s:param value="%{debitAmountDetail}"/></s:text>',
-					"creditamount":'<s:text name="format.number" ><s:param value="%{creditAmountDetail}"/></s:text>'
+					"functionid":'${functionIdDetail}',
+					"function":'${functionDetail}',
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>',
+					"creditamount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridPJV('functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-				updateGridPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				updateGridPJV('glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGridPJV('glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGridPJV('accounthead',index,'<s:property value="accounthead"/>');
-				updateGridPJV('debitAmountDetail',index,'<s:text name="format.number" ><s:param value="%{debitAmountDetail}"/></s:text>');
-				updateGridPJV('creditAmountDetail',index,'<s:text name="format.number" ><s:param value="%{creditAmountDetail}"/></s:text>');
-				totaldbamt = totaldbamt+parseFloat('<s:property value="debitAmountDetail"/>');
-				totalcramt = totalcramt+parseFloat('<s:property value="creditAmountDetail"/>');
+				var index = '${#stat.index}';
+				updateGridPJV('functionIdDetail',index,'${functionIdDetail}');
+				updateGridPJV('functionDetail',index,'${functionDetail}');
+				updateGridPJV('glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGridPJV('glcodeDetail',index,'${glcodeDetail}');
+				updateGridPJV('accounthead',index,'${accounthead}');
+				updateGridPJV('debitAmountDetail',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+				updateGridPJV('creditAmountDetail',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+				totaldbamt = totaldbamt+parseFloat('${debitAmountDetail}');
+				totalcramt = totalcramt+parseFloat('${creditAmountDetail}');
 				updateAccountTableIndex();	
-			</s:iterator>
+			</c:forEach>
 				
 
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -217,14 +219,14 @@
 		document.getElementById('totaldbamount').value=totaldbamt.toFixed(2);
 		document.getElementById('totalcramount').value=totalcramt.toFixed(2); 
 		}
-		var glcodeOptions=[{label:"<s:text name='lbl.select'/>", value:"0"}];
-		<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
-	var detailtypeOptions=[{label:"<s:text name='lbl.select'/>", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+		var glcodeOptions=[{label:"<!-- TODO: Manual migration required for custom Struts tag -->", value:"0"}];
+		<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
+	var detailtypeOptions=[{label:"<!-- TODO: Manual migration required for custom Struts tag -->", value:"0"}];
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	
 	
 	
@@ -232,15 +234,15 @@
 	var makeSubLedgerTable = function() {
 		var subledgerColumns = [ 
 			{key:"subledgerCode",hidden:true, formatter:createSLTextFieldFormatterJV(SUBLEDGERLIST,".subledgerCode","hidden")},
-			{key:"glcode.id",label:'<s:text name="lbl.account.code"/> <span class="mandatory1">*</span>', formatter:createDropdownFormatterJV(SUBLEDGERLIST,"loaddropdown(this)"),  dropdownOptions:glcodeOptions},
+			{key:"glcode.id",label:'<!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span>', formatter:createDropdownFormatterJV(SUBLEDGERLIST,"loaddropdown(this)"),  dropdownOptions:glcodeOptions},
 			{key:"detailTypeName",hidden:true, formatter:createSLTextFieldFormatterJV(SUBLEDGERLIST,".detailTypeName","hidden")},
-			{key:"detailType.id",label:'<s:text name="lbl.type"/> <span class="mandatory1">*</span>', formatter:createDropdownFormatterJV1(SUBLEDGERLIST),dropdownOptions:detailtypeOptions},
-			{key:"detailCode",label:'<s:text name="lbl.code"/> <span class="mandatory1">*</span>', formatter:createSLDetailCodeTextFieldFormatterJV(SUBLEDGERLIST,".detailCode","splitEntitiesDetailCode(this)", ".search", "openSearchWindowFromJV(this)")},
+			{key:"detailType.id",label:'<!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span>', formatter:createDropdownFormatterJV1(SUBLEDGERLIST),dropdownOptions:detailtypeOptions},
+			{key:"detailCode",label:'<!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span>', formatter:createSLDetailCodeTextFieldFormatterJV(SUBLEDGERLIST,".detailCode","splitEntitiesDetailCode(this)", ".search", "openSearchWindowFromJV(this)")},
 			{key:"detailKeyId",hidden:true, formatter:createSLHiddenFieldFormatterJV(SUBLEDGERLIST,".detailKeyId")},
-			{key:"detailKey",label:'<s:text name="lbl.name"/>', formatter:createSLLongTextFieldFormatterJV(SUBLEDGERLIST,".detailKey","")},
-			{key:"amount",label:'<s:text name="lbl.amount"/>', formatter:createSLAmountFieldFormatterJV(SUBLEDGERLIST,".amount")},
-			{key:'Add',label:'<s:text name="lbl.add"/>',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
-			{key:'Delete',label:'<s:text name="lbl.delete"/>',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
+			{key:"detailKey",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createSLLongTextFieldFormatterJV(SUBLEDGERLIST,".detailKey","")},
+			{key:"amount",label:'<!-- TODO: Manual migration required for custom Struts tag -->', formatter:createSLAmountFieldFormatterJV(SUBLEDGERLIST,".amount")},
+			{key:'Add',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
+			{key:'Delete',label:'<!-- TODO: Manual migration required for custom Struts tag -->',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 		];
 	    var subledgerDS = new YAHOO.util.DataSource(); 
 		subLedgersTable = new YAHOO.widget.DataTable("subLedgerTable",subledgerColumns, subledgerDS);
@@ -266,53 +268,53 @@
 					}
 				}
 				else{
-					bootbox.alert("<s:text name='msg.this.row.can.not.be.deleted'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				}
 			}        
 		});
 	
-		<s:iterator value="subLedgerlist" status="stat">
+		<c:forEach value="subLedgerlist" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"subledgerCode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKeyId"/>',
-					"detailKey":'<s:property value="detailKey"/>',
-					"debitAmount":'<s:text name="format.number" ><s:param value="%{debitAmount}"/></s:text>',
-					"creditAmount":'<s:text name="format.number" ><s:param value="%{creditAmount}"/></s:text>'
-				});'<s:property value="glcode.id"/>'
-				var index = '<s:property value="#stat.index"/>';
-				updateGridSLDropdownJV('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
-				updateGridSLDropdownJV('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
-				updateSLGridPJV('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGridPJV('subledgerCode',index,'<s:property value="subledgerCode"/>');
-				updateSLGridPJV('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGridPJV('detailKey',index,'<s:property value="detailKey"/>');
-				updateSLGridPJV('amount',index,'<s:text name="format.number" ><s:param value="%{amount}"/></s:text>');
+					"subledgerCode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKeyId}',
+					"detailKey":'${detailKey}',
+					"debitAmount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>',
+					"creditAmount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
+				});'${glcode.id}'
+				var index = '${#stat.index}';
+				updateGridSLDropdownJV('glcode.id',index,'${glcode.id}','${subledgerCode}');
+				updateGridSLDropdownJV('detailType.id',index,'${detailType.id}','${detailTypeName}');
+				updateSLGridPJV('detailCode',index,'${detailCode}');
+				updateSLGridPJV('subledgerCode',index,'${subledgerCode}');
+				updateSLGridPJV('detailKeyId',index,'${detailKeyId}');
+				updateSLGridPJV('detailKey',index,'${detailKey}');
+				updateSLGridPJV('amount',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 	
 	}
-	var amountshouldbenumeric='<s:text  name="amount.should.be.numeric"/>';
-	var succesMessage='<s:text name="directbank.transaction.succcess"/>';
-	var totalsnotmatchingamount='<s:text name="totals.not.matching.amount"/>';
-	var 	button='<s:property value="button"/>';
+	var amountshouldbenumeric='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var succesMessage='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var totalsnotmatchingamount='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var 	button='${button}';
 	</script>
 
 </head>
 <body
 	onload="onLoadTask_new();loadDropDownCodesExcludingCashAndBank();loadDropDownCodesFunction();">
-	<s:form action="directBankPayment" theme="css_xhtml" name="dbpform"
+	<form:form action="directBankPayment" theme="css_xhtml" name="dbpform"
 		validate="true">
 		<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Direct Bank Payment" name="heading" />
 			</jsp:include>
 			<div class="formmainbox">
-				<div class="subheadnew"><s:text name="lbl.create.direct.bank.payment"/> </div>
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 
 				<div align="center">
 					<font style='color: red;'>
@@ -321,27 +323,27 @@
 				</div>
 				<span class="mandatory1">
 					<div id="Errors">
-						<s:actionerror />
-						<s:fielderror />
-					</div> <s:actionmessage />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
+					</div> <!-- TODO: Manual migration required for custom Struts tag -->
 				</span>
 				<table border="0" width="100%" cellspacing="0" cellpadding="0">
 					<tr>
 						<td width="10%" class="bluebox"></td>
-						<s:if test="%{shouldshowVoucherNumber()}">
+						<c:if test="%{shouldshowVoucherNumber()}">
 							<td class="bluebox" width="22%"><s:text
 									name="voucher.number" /><span class="mandatory1">*</span></td>
-							<td class="bluebox" width="22%"><s:textfield
+							<td class="bluebox" width="22%"><form:input
 									name="voucherNumber" id="voucherNumber" /></td>
-						</s:if>
-						<s:hidden name="id" />
+						</c:if>
+						<!-- TODO: Manual migration required for custom Struts tag -->
 
-						<td class="bluebox" width="18%"><s:text name="voucher.date" /><span
+						<td class="bluebox" width="18%"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory1">*</span></td>
-						<s:date name='voucherDate' var="voucherDateId" format='dd/MM/yyyy' />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						<td class="bluebox" width="34%">
 							<div name="daterow">
-								<s:textfield id="voucherDate" name="voucherDate"
+								<form:input id="voucherDate" path="voucherDate"
 									value="%{voucherDateId}" data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									placeholder="DD/MM/YYYY" class="form-control datepicker"
@@ -354,23 +356,23 @@
 
 
 					<div class="subheadsmallnew"></div>
-					<div align="left" class="mandatory1">* <s:text name="lbl.mendatory.fields"/> </div>
+					<div align="left" class="mandatory1">* <!-- TODO: Manual migration required for custom Struts tag --> </div>
 					<s:hidden name="typeOfAccount" id="typeOfAccount"
 						value="%{typeOfAccount}" />
 
 					</br>
 				</table>
-				<s:hidden name="cutOffDate" id="cutOffDate" />
-				<s:hidden name="bankBalanceCheck" id="bankBalanceCheck" value="%{bankBalanceCheck}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
             	<jsp:include page="../payment/commonWorkflowMatrix.jsp"/>
 			</div>
 			<div align="center">
             	<jsp:include page="../payment/commonWorkflowMatrix-button.jsp"/>
 			</div>
 		</s:push>
-		<s:hidden name="showMode" />
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script type="text/javascript">
 function onLoadTask_new()
 {
@@ -386,7 +388,7 @@ function onLoadTask_new()
 				}
 			else if(button=="Save_View")
 				{
-						var vhId='<s:property value="voucherHeader.id"/>';
+						var vhId='${voucherHeader.id}';
 						document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher-loadvoucherview.action?vhid="+vhId;
 						return true;
 				}
@@ -402,14 +404,14 @@ function onLoadTask_new()
  	}else
  	{
  		
- 		<s:if test="%{showMode=='nonbillPayment'}">
-			//bootbox.alert('<s:property value="showMode"/>');
+ 		<c:if test="%{showMode=='nonbillPayment'}">
+			//bootbox.alert('${showMode}');
 			if(document.getElementById("Errors").innerHTML!='')
 			{
 			document.getElementById('buttondiv').style.display="none";
 			document.getElementById('buttondivdefault').style.display="block";
 			}
-		</s:if>
+		</c:if>
  	}
  	
 		
@@ -432,16 +434,16 @@ function populateAccNum(branch){
 	var bankId = bankbranchId.substring(0,index);
 	var brId=bankbranchId.substring(index+1,bankbranchId.length);
 	
-	var vTypeOfAccount = '<s:property value="%{typeOfAccount}"/>';
+	var vTypeOfAccount = '${%{typeOfAccount}}';
 	
 	populateaccountNumber({fundId: fundObj.options[fundObj.selectedIndex].value,bankId:bankId,branchId:brId,typeOfAccount:vTypeOfAccount})
 }
 function onSubmit()
 {
 	enableAll();
-	var balanceCheckMandatory='<s:text name="payment.mandatory"/>';
-	var balanceCheckWarning='<s:text name="payment.warning"/>';
-	var noBalanceCheck='<s:text name="payment.none"/>';
+	var balanceCheckMandatory='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var balanceCheckWarning='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var noBalanceCheck='<!-- TODO: Manual migration required for custom Struts tag -->';
 	if (!validateForm_directBankPayment()) {
 		undoLoadingMask();
 		return false;
@@ -456,11 +458,11 @@ function onSubmit()
 		return true;
 		}
 	else if(!balanceCheck() && jQuery("#bankBalanceCheck").val()==balanceCheckMandatory){
-			 bootbox.alert("<s:text name='msg.insufficient.bank.balance'/>");
+			 bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			 return false;
 			}
 	else if(!balanceCheck() && jQuery("#bankBalanceCheck").val()==balanceCheckWarning){
-		 var msg = confirm("<s:text name='msg.insuff.bank.bal.do.you.want.to.process'/>");
+		 var msg = confirm("<!-- TODO: Manual migration required for custom Struts tag -->");
 		 if (msg == true) {
 			 document.dbpform.action = '/services/EGF/payment/directBankPayment-create.action';
 			 //document.dbpform.submit();
@@ -490,8 +492,8 @@ if(voucherDate<=cutOffDate)
 	return true;
 }
 else{
-	var msg1='<s:text name="wf.vouchercutoffdate.message"/>';
-	var msg2='<s:text name="wf.cutoffdate.msg"/>';
+	var msg1='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var msg2='<!-- TODO: Manual migration required for custom Struts tag -->';
 	bootbox.alert(msg1+" "+document.getElementById("cutOffDate").value+" "+msg2);
 		return false;
 	}

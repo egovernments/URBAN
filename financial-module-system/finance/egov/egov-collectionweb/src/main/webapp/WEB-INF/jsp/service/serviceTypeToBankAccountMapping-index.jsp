@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -77,19 +79,19 @@
         if(selected == -1){
 			return;
         }
-        <s:iterator value="serviceCategoryNames" var="obj">
-        var serTypeKey = '<s:property value="#obj.key"/>';
-        var serTypeValue = '<s:property value="serviceTypeMap[#obj.key]"/>';
+        <c:forEach value="serviceCategoryNames" var="obj">
+        var serTypeKey = '${#obj.key}';
+        var serTypeValue = '${serviceTypeMap[#obj.key]}';
         if(selected == serTypeKey && serTypeValue != ''){
         	isServiceTypeExist = true;
         	addServiceTypeDropdown('serviceTable');
- 			<s:iterator value="serviceTypeMap[#obj.key]" status="stat" var="names">
- 				var stKey = '<s:property value="#names.key"/>';
- 				var stValue = '<s:property value="#names.value"/>';
- 				document.getElementById('serviceDetailsId').options[<s:property value="#stat.index+1"/>]= new Option(stValue,stKey);
-			</s:iterator>
+ 			<c:forEach value="serviceTypeMap[#obj.key]" status="stat" var="names">
+ 				var stKey = '${#names.key}';
+ 				var stValue = '${#names.value}';
+ 				document.getElementById('serviceDetailsId').options[${#stat.index+1}]= new Option(stValue,stKey);
+			</c:forEach>
         }
-		 </s:iterator>
+		 </c:forEach>
 	}
 	function addServiceTypeDropdown(tableId){
         var table = document.getElementById(tableId);
@@ -98,7 +100,7 @@
         var cell2 = row.insertCell(1);
         cell1.className='bluebox';
         cell2.className='bluebox';
-        cell1.innerHTML = '<s:text name="miscreceipt.service" /><span class="mandatory"/>';
+        cell1.innerHTML = '<!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/>';
         cell2.innerHTML = '<select name="serviceDetails.code" id="serviceDetailsId"/>';
 		document.getElementById('serviceDetailsId').options.length=0;
 		document.getElementById('serviceDetailsId').options[0]= new Option('--------Choose--------','0');
@@ -108,13 +110,13 @@
 	function validate(obj){
 		dom.get('error_area').innerHTML = '';
 		dom.get("error_area").style.display="none";
-		<s:if test="%{null != bankAccountServices && bankAccountServices.size() >0}">
+		<c:if test="%{null != bankAccountServices && bankAccountServices.size() >0}">
 			if(dom.get('serviceAccountId').value == "") {
-				dom.get("error_area").innerHTML = '<s:text name="service.error.select" />';
+				dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 				dom.get("error_area").style.display="block";
 				return false;
 			}
-		</s:if>
+		</c:if>
 		document.forms[0].action=obj;
 		document.forms[0].submit;
 	}
@@ -126,37 +128,37 @@
 </script>
 </head>
 <body>
-	<s:form name="serviceBankMappingForm" method="post" theme="simple">
-		<s:push value="model">
+	<form:form name="serviceBankMappingForm" method="post" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="errorstyle" id="error_area" style="display: none;"></div>
 
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="service.master.bankmappping.view.header" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 960px; margin: 0 auto;">
 					<%-- <tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="service.master.bankname" /> </td>
-						<td class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="bankId" id="bankId" cssClass="selectwk" list="dropdownData.bankNameList" listKey="id" listValue="name" value="%{bankId}" onchange="onChangeBankBranch(this.value)" /> 
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+						<td class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="bankId" id="bankId" cssClass="selectwk" list="dropdownData.bankNameList" listKey="id" listValue="name" value="%{bankId}" onchange="onChangeBankBranch(this.value)" /> 
 							<egov:ajaxdropdown id="bankIdDropdown" fields="['Text','Value']" dropdownId='branchId' url='receipts/ajaxBankRemittance-bankBranchsByBankForReceiptPayments.action' />
 						</td>
-						<td class="bluebox"><s:text name="service.master.branchName" /> </td>
-						<td class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="branchId" id="branchId" cssClass="selectwk" list="dropdownData.bankBranchList" listKey="id" listValue="branchname" value="%{branchId}" onChange="onChangeBankAccount(this.value,document.getElementById('serviceDetailsId').value)" /> 
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+						<td class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="branchId" id="branchId" cssClass="selectwk" list="dropdownData.bankBranchList" listKey="id" listValue="branchname" value="%{branchId}" onChange="onChangeBankAccount(this.value,document.getElementById('serviceDetailsId').value)" /> 
 							<egov:ajaxdropdown id="bankbranchIdDropDown" fields="['Text','Value']" dropdownId='bankAccountId' url='receipts/ajaxBankRemittance-bankAccountByBankBranch.action' />
 						</td>
 					</tr> --%>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="service.master.accountnumber" /> </td>
-						<td class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="bankAccountId.accountnumber" id="bankAccountId" cssClass="selectwk"  list="dropdownData.bankAccountIdList" listKey="accountnumber" listValue="accountnumber" value="%{bankAccountId.accountnumber}" /></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+						<td class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="bankAccountId.accountnumber" id="bankAccountId" cssClass="selectwk"  list="dropdownData.bankAccountIdList" listKey="accountnumber" listValue="accountnumber" value="%{bankAccountId.accountnumber}" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="service.master.search.category" /></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 						<td class="bluebox">
-						<s:select headerKey="-1" headerValue="----Choose----" name="serviceCategory" id="serviceCategoryid" cssClass="selectwk" list="serviceCategoryNames" value="%{serviceCategory}" onChange="populateServiceType(this.value);" /> 
+						<form:select headerKey="-1" headerValue="----Choose----" path="serviceCategory" id="serviceCategoryid" cssClass="selectwk" list="serviceCategoryNames" value="%{serviceCategory}" onChange="populateServiceType(this.value);" /> 
 						</td>
 						<td colspan="2">
 						<table width="100%" id='serviceTable'>
@@ -167,7 +169,7 @@
 							if(document.getElementById("serviceCategoryid").value != -1){
 								populateServiceType(document.getElementById("serviceCategoryid").value);
 								jQuery('#serviceTable option').each(function() {
-								    if(jQuery(this).val() == "<s:property value='%{serviceTypeCode}'/>") {
+								    if(jQuery(this).val() == "<!-- TODO: Manual migration required for custom Struts tag -->") {
 								    	jQuery(this).prop("selected", true);
 								    }
 								});
@@ -178,54 +180,54 @@
 				</table>
 				<div align="left" class="mandatorycoll">
 					&nbsp;&nbsp;&nbsp;
-					<s:text name="common.mandatoryfields" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<br />
 			</div>
 			<div class="buttonbottom">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				<s:submit name="sumbit" cssClass="buttonsubmit" id="button32" onclick="document.serviceBankMappingForm.action='serviceTypeToBankAccountMapping-search.action';" value="View"/>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="button" class="button" value="Reset" id="resetbutton" name="clear" onclick="resetValues();">
 				<input name="close" type="button" class="button" id="button" onclick="window.close()" value="Close" />
 			</div>
-			<s:hidden id="serviceAccountId" name="serviceAccountId" />
-			<s:hidden id="sourcePage" name="sourcePage" value="modify" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div>
-				<s:if
+				<c:if
 					test="%{null != mappings && mappings.size() >0}">
 					<div align="center">
 						<table width="100%" border="1">
 							<tr>
-								<th class="bluebgheadtd" style="text-align: left;"><s:text name="service.master.servicetype" /></th>
-								<th class="bluebgheadtd" style="text-align: left;"><s:text name="service.master.bankname" /></th>
-								<th class="bluebgheadtd" style="text-align: left;"><s:text name="service.master.accountnumber" /></th>
+								<th class="bluebgheadtd" style="text-align: left;"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd" style="text-align: left;"><!-- TODO: Manual migration required for custom Struts tag --></th>
+								<th class="bluebgheadtd" style="text-align: left;"><!-- TODO: Manual migration required for custom Struts tag --></th>
 							</tr>
-							<s:iterator var="p" value="%{mappings}" status="s">
+							<c:forEach var="p" value="%{mappings}" status="s">
 								<tr>
-									<td class="bluebox"><div align="left"> <s:property value="businessDetailsName" /> </div></td>
-									<td class="bluebox"><div align="left"> <s:property value="bank" /> </div></td>
-									<td class="bluebox"><div align="left"> <s:property value="bankAccount" /> </div></td>
+									<td class="bluebox"><div align="left"> ${businessDetailsName} </div></td>
+									<td class="bluebox"><div align="left"> ${bank} </div></td>
+									<td class="bluebox"><div align="left"> ${bankAccount} </div></td>
 								</tr>
-							</s:iterator>
+							</c:forEach>
 						</table>
 						<input type="button" id="Close" value="Close" onclick="javascript:window.close()" class="buttonsubmit" />
 					</div>
-				</s:if>
-				<s:else>
-					<s:if test="target=='searchresult'">
+				</c:if>
+				<c:otherwise>
+					<c:if test="target=='searchresult'">
 					<table width="90%" border="0" align="center" cellpadding="0"
 						cellspacing="0" class="tablebottom">
 						<tr>
 							<div>&nbsp;</div>
 							<div class="subheadnew">
-								<s:text name="searchresult.norecord" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</div>
 						</tr>
 					</table>
-					</s:if>
+					</c:if>
 				</s:else>
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 </body>
 </html>

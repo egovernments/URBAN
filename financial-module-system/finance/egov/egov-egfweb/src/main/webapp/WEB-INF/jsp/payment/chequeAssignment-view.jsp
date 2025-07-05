@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,23 +55,23 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="/services/EGF/resources/css/ccMenu.css?rnd=${app_release_no}" />
-<title><s:text name="chq.assignment.heading.view" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Cheque Assignment View" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
-		<span><font color="green"><s:actionmessage /></font></span>
+		<span><font color="green"><!-- TODO: Manual migration required for custom Struts tag --></font></span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="chq.assignment.heading.view" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
-					<s:if test="%{paymentMode=='cheque' || paymentMode=='cash'}">
+					<c:if test="%{paymentMode=='cheque' || paymentMode=='cash'}">
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.partycode" /></th>
 
@@ -85,13 +87,13 @@
 								name="chq.assignment.instrument.status" /></th>
 						<th class="bluebgheadtdnew"><s:text
 								name="instrument.bankadvice" /></th>
-						<s:if
+						<c:if
 							test="%{chequePrintingEnabled && chequePrintAvailableAt=='assignment'}">
 							<th class="bluebgheadtdnew"></th>
-						</s:if>
+						</c:if>
 
-					</s:if>
-					<s:else>
+					</c:if>
+					<c:otherwise>
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.paymentvoucherno" /></th>
 						<th class="bluebgheadtdnew"><s:text
@@ -105,8 +107,8 @@
 					</s:else>
 
 				</tr>
-				<s:if test="%{paymentMode=='cheque'|| paymentMode=='cash'}">
-					<s:iterator var="p" value="instHeaderList" status="s">
+				<c:if test="%{paymentMode=='cheque'|| paymentMode=='cash'}">
+					<c:forEach var="p" value="instHeaderList" status="s">
 						<tr>
 							<td style="text-align: center" class="blueborderfortdnew"><s:property
 									value="%{payTo}" /></td>
@@ -116,7 +118,7 @@
 									value="%{instrumentNumber}" /></td>
 							<td style="text-align: right" class="blueborderfortdnew"><s:text
 									name="format.number">
-									<s:param value="%{instrumentAmount}" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:date
 									name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
@@ -124,11 +126,11 @@
 									value="%{statusId.description}" /></td>
 							<td class="blueborderfortd"><div align="center">
 									<a
-										href='/services/EGF/payment/chequeAssignment-bankAdviceExcel.action?instHeaderId=<s:property value="id"/>'>
-										<s:text name="instrument.bankadvice" />
+										href='/services/EGF/payment/chequeAssignment-bankAdviceExcel.action?instHeaderId=${id}'>
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</a>
 								</div></td>
-							<s:if
+							<c:if
 								test="%{chequePrintingEnabled && chequePrintAvailableAt=='assignment'}">
 								<td style="text-align: center" class="blueborderfortdnew">
 									<input type="submit" value="Print"
@@ -136,15 +138,15 @@
 						value="%{id}" />);"
 									class="button" />
 								</td>
-							</s:if>
+							</c:if>
 							<input type="hidden" name='chequeFormatId' id="chequeFormatId"
-								value="<s:property value="chequeFormat"/>" />
+								value="${chequeFormat}" />
 
 						</tr>
-					</s:iterator>
-				</s:if>
-				<s:else>
-					<s:iterator var="p" value="instVoucherList" status="s">
+					</c:forEach>
+				</c:if>
+				<c:otherwise>
+					<c:forEach var="p" value="instVoucherList" status="s">
 						<tr>
 							<td style="text-align: center" class="blueborderfortdnew"><s:property
 									value="%{voucherHeaderId.voucherNumber}" /></td>
@@ -159,35 +161,35 @@
 									value="%{instrumentHeaderId.statusId.description}" /></td>
 
 						</tr>
-					</s:iterator>
+					</c:forEach>
 					<input type="hidden" name='transactionNumber'
 						id="transactionNumber"
-						value="<s:property value="instVoucherList[0].instrumentHeaderId.id"/>" />
+						value="${instVoucherList[0].instrumentHeaderId.id}" />
 					<input type="hidden" name='bankAccountNoId' id="bankAccountNoId"
-						value="<s:property value="instVoucherList[0].instrumentHeaderId.bankAccountId.id"/>" />
+						value="${instVoucherList[0].instrumentHeaderId.bankAccountId.id}" />
 					<input type="hidden" name='bankBranchId' id="bankBranchId"
-						value="<s:property value="instVoucherList[0].instrumentHeaderId.bankAccountId.bankbranch.id"/>" />
+						value="${instVoucherList[0].instrumentHeaderId.bankAccountId.bankbranch.id}" />
 					<input type="hidden" name='bank' id="bank"
-						value="<s:property value="instVoucherList[0].instrumentHeaderId.bankAccountId.bankbranch.bank.id"/>" />
+						value="${instVoucherList[0].instrumentHeaderId.bankAccountId.bankbranch.bank.id}" />
 					<input type="hidden" name='chequeFormatId' id="chequeFormatId"
-						value="<s:property value="instVoucherList[0].instrumentHeaderId.bankAccountId.chequeformat"/>" />
+						value="${instVoucherList[0].instrumentHeaderId.bankAccountId.chequeformat}" />
 
 				</s:else>
 			</table>
 			<br />
 			<div class="buttonbottom">
 
-				<s:if test="%{paymentMode=='rtgs'}">
-					<input type="button" value='<s:text name="lbl.generate.bank.advice.excel"/>'
+				<c:if test="%{paymentMode=='rtgs'}">
+					<input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 						class="buttonsubmit" onclick="return printAdviceExcel()" />
-					<input type="button" value='<s:text name="lbl.generate.bank.advice.pdf"/>'
+					<input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 						class="buttonsubmit" onclick="return printAdvicePdf()" />
-				</s:if>
-				<input type="button" value='<s:text name="lbl.close"/>'
+				</c:if>
+				<input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 					onclick="javascript:window.parent.postMessage('close','*');" class="buttonsubmit" />
 			</div>
 		</div>
-	</s:form>
+	</form:form>
 	<script>      
 function printAdviceExcel(){
 	 	 var bank=document.getElementById("bank").value;
@@ -212,7 +214,7 @@ function printCheque(id)
 {
  	var chequeFormat=document.getElementById("chequeFormatId");
 	if(chequeFormat == "" || chequeFormat == null){
-		bootbox.alert("<s:text name='msg.this.bank.account.not.attached.to.any.cheque.format'/>");
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 		return false;
 	} 
 	window.open('/services/EGF/payment/chequeAssignmentPrint-generateChequeFormat.action?instrumentHeader='+id,'Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');

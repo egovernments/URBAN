@@ -2,7 +2,7 @@ package org.egov.infra.admin.master.entity;
 
 import java.io.Serializable;
 
-public class ActionT implements Serializable{
+public class ActionT implements Serializable {
 	
 	private String name;
 	private String url;
@@ -24,7 +24,8 @@ public class ActionT implements Serializable{
 		this.serviceCode = serviceCode;
 	}
 	
-	public ActionT() {};
+	public ActionT() {}
+	
 	public String getName() {
 		return name;
 	}
@@ -67,6 +68,4 @@ public class ActionT implements Serializable{
 	public void setServiceCode(String serviceCode) {
 		this.serviceCode = serviceCode;
 	}
-
-
 }

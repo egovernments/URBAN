@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -75,17 +77,17 @@
 </script>
 </head>
 <body>
-	<s:form action="transferClosingBalance" theme="simple" name="transferClosingBalance"
+	<form:form action="transferClosingBalance" theme="simple" name="transferClosingBalance"
 		id="transferClosingBalance" method="post">
 		<div class="formmainbox">
 			<div class="formheading"></div>
-			<div class="subheadnew"><s:text name="lbl.transfer.closing.balance" />
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<div align="center">
 				<font style='color: green;'>
 					<div id="msg">
-						<s:property value="message" />
+						${message}
 					</div>
 				</font>
 				<font style='color: red;'>
@@ -94,12 +96,12 @@
 			</div>
 			<span class="mandatory1">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div> 
 			</span>
 			<span>
-				<font color="green"><s:actionmessage /></font>
+				<font color="green"><!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 
 			<center>
@@ -110,9 +112,9 @@
 								<tr>
 									<td class="greybox" ></td>
 									<td class="greybox"></td>
-									<td class="greybox"><s:text name="financialyear" /> <span class="greybox"><span
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="greybox"><span
 											class="mandatory1">*</span></span></td>
-									<td class="greybox"><s:select name="financialYear" id="financialYear"
+									<td class="greybox"><form:select path="financialYear" id="financialYear"
 											list="dropdownData.financialYearList" listKey="id" listValue="finYearRange"
 											headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 											value="%{financialYear}" /></td>
@@ -132,7 +134,7 @@
 							<td><s:submit type="submit" cssClass="buttonsubmit"
 							key="lbl.transfer" name="transfer" method="transfer"
 									onclick="return transfer();" /></td>
-							<td><input type="button" value="<s:text name='lbl.close'/>"
+							<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 								onclick="window.parent.postMessage('close','*');window.close();" class="buttonsubmit"/></td>
 						</tr>
 					</table>
@@ -140,6 +142,6 @@
 			</center>
 		</div>
 
-	</s:form>
+	</form:form>
 </body>
 </html>

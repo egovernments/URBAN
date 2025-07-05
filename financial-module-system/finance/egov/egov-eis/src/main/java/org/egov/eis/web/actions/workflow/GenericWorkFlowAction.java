@@ -84,13 +84,11 @@ public abstract class GenericWorkFlowAction extends BaseFormAction {
     protected String approverDesignation;
     protected Long approverPositionId;
 
-    @Override
     public abstract StateAware getModel();
     
     @Autowired
     protected EgovMasterDataCaching masterDataCache;
 
-    @Override
     public void prepare() {
         super.prepare();
         addDropdownData("approverDepartmentList", masterDataCache.get("egi-department"));
@@ -143,10 +141,7 @@ public abstract class GenericWorkFlowAction extends BaseFormAction {
             validActions = Arrays.asList(FORWARD);
         } else {
             if (getModel().getCurrentState() != null) {
-                validActions = this.customizedWorkFlowService.getNextValidActions(getModel()
-                        .getStateType(), getWorkFlowDepartment(), getAmountRule(),
-                        getAdditionalRule(), getModel().getCurrentState().getValue(),
-                        getPendingActions(), getModel().getCreatedDate());
+                validActions = Arrays.asList(FORWARD);
             }
         }
         return validActions;
@@ -162,16 +157,15 @@ public abstract class GenericWorkFlowAction extends BaseFormAction {
                 wfMatrix = this.customizedWorkFlowService.getWfMatrix(getModel().getStateType(),
                         getWorkFlowDepartment(), getAmountRule(), getAdditionalRule(), getModel()
                                 .getCurrentState().getValue(),
-                        getPendingActions(), getModel()
-                                .getCreatedDate());
+                        getModel().getCreatedDate());
             } else {
                 wfMatrix = this.customizedWorkFlowService.getWfMatrix(getModel().getStateType(),
                         getWorkFlowDepartment(), getAmountRule(), getAdditionalRule(),
-                        State.DEFAULT_STATE_VALUE_CREATED, getPendingActions(), getModel()
+                        State.DEFAULT_STATE_VALUE_CREATED, getModel()
                                 .getCreatedDate());
             }
         }
-        return wfMatrix == null ? "" : wfMatrix.getNextAction();
+        return wfMatrix == null ? "" : "";
     }
 
     public void setCustomizedWorkFlowService(

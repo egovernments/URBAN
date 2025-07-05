@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -85,7 +87,7 @@
 	function exportXls() {
 		window
 				.open(
-						'/EGF/bill/expenseBillPrint-exportXls.action?id=<s:property value="id"/>',
+						'/EGF/bill/expenseBillPrint-exportXls.action?id=${id}',
 						'',
 						'resizable=yes,height=650,width=900,scrollbars=yes,left=30,top=30,status=no');
 	}
@@ -93,7 +95,7 @@
 	function exportPdf() {
 		window
 				.open(
-						'/EGF/bill/expenseBillPrint-exportPdf.action?id=<s:property value="id"/>',
+						'/EGF/bill/expenseBillPrint-exportPdf.action?id=${id}',
 						'',
 						'resizable=yes,height=650,width=900,scrollbars=yes,left=30,top=30,status=no');
 	}
@@ -102,11 +104,11 @@
 <body>
 	<div id="container">
 		<iframe id="report" name="report"
-			src='/EGF/bill/expenseBillPrint-ajaxPrint.action?id=<s:property value="id"/>'></iframe>
+			src='/EGF/bill/expenseBillPrint-ajaxPrint.action?id=${id}'></iframe>
 	</div>
-	<s:form name="expenseBillPrint" action="expenseBillPrint"
+	<form:form name="expenseBillPrint" action="expenseBillPrint"
 		theme="simple">
-		<input type="hidden" name="id" value='<s:property value="id"/>' />
+		<input type="hidden" name="id" value='${id}' />
 		<div id="buttons" class="buttonbottom">
 			<input type="button" id="btnPrint"
 				onclick="javascript:parent.report.print();" value="Print"
@@ -116,5 +118,5 @@
 			<s:submit cssClass="button" value="Save as Excel" method="exportXls"
 				id="printXLS" onclick="return exportXls();" />
 		</div>
-	</s:form>
+	</form:form>
 </body>

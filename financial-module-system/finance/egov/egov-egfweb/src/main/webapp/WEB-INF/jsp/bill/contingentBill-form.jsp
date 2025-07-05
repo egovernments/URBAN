@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,31 +54,31 @@
 <jsp:include page="../voucher/vouchertrans-filter-new-contingent.jsp" />
 <tr>
 	<td class="greybox"></td>
-	<td class="greybox"><s:text name="function" /><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="mandatory1"> *</span></td>
-	<td class="greybox"><s:textfield name="commonBean.functionName"
+	<td class="greybox"><form:input path="commonBean.functionName"
 			id="commonBean.functionName" autocomplete='off'
 			onkeyup="autocompletecodeFunctionHeader(this,event)"
 			onblur="fillNeibrAfterSplitFunctionHeader(this)" size="30" /> <s:hidden
 			name="commonBean.functionId" id="commonBean.functionId" /></td>
 	<td class="greybox"></td>
 	<td class="greybox"></td>
-	<!--<td class="greybox"><s:text name="inward.serial.number"/></td>
-	<td class="greybox"><s:textfield name="commonBean.inwardSerialNumber" id="commonBean.inwardSerialNumber"/></td>
+	<!--<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="greybox"><form:input path="commonBean.inwardSerialNumber" id="commonBean.inwardSerialNumber"/></td>
 -->
 </tr>
 
 <tr>
 	<td class="bluebox"></td>
-	<td class="bluebox"><s:text name="voucher.narration" /></td>
-	<td class="bluebox" colspan="3"><s:textarea name="description"
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox" colspan="3"><form:textarea path="description"
 			id="description" cols="120"  maxlength="1024"/><br /> <span class="highlight2">Max.
 			1024 characters</span></td>
 </tr>
 <tr id="budgetReappRow">
 	<td class="greybox"></td>
-	<td class="greybox"><s:text name="budget.reappropriation.number" /></td>
-	<td class="greybox"><s:textfield name="commonBean.budgetReappNo"
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="greybox"><form:input path="commonBean.budgetReappNo"
 			id="commonBean.budgetReappNo" /></td>
 	<td class="greybox"></td>
 	<td class="greybox"></td>
@@ -109,15 +111,15 @@
 							style="margin: 10px 0">
 							<tbody>
 								<tr>
-									<td class="bluebox"><s:text name="subledger.type" /></td>
-									<td class="bluebox" align="left"><s:select
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+									<td class="bluebox" align="left"><form:select
 											name="commonBean.subledgerType" id="commonBean.subledgerType"
 											list="dropdownData.accountDetailTypeList" listKey="id"
 											listValue="description" headerKey=""
 											onchange="load_COA_Entities(this)" headerValue="---Choose---" /></td>
-									<td class="bluebox"><s:text name="bill.subtype" /><span
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory1"> *</span></td>
-									<td class="bluebox"><s:select
+									<td class="bluebox"><form:select
 											name="commonBean.billSubType"
 											list="dropdownData.billSubTypeList" listKey="id"
 											listValue="name" headerKey="" headerValue="----Choose----"
@@ -141,14 +143,14 @@
 
 								</tr>
 								<tr>
-									<td class="bluebox"><s:text name="party.bill.number" /></td>
-									<td class="bluebox"><s:textfield
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+									<td class="bluebox"><form:input
 											name="commonBean.partyBillNumber"
 											id="commonBean.partyBillNumber" /></td>
-									<td class="bluebox"><s:text name="party.bill.date" /></td>
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 									<s:date name='commonBean.partyBillDate'
 										var="commonBean.partyBillDateId" format='dd/MM/yyyy' />
-									<td class="bluebox"><s:textfield id="partyBillDate"
+									<td class="bluebox"><form:input id="partyBillDate"
 											name="commonBean.partyBillDate"
 											value="%{commonBean.partyBillDateId}" data-date-end-date="0d"
 											onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -160,7 +162,7 @@
 									<td class="bluebox" style="text-align: left"><s:text
 											name="payto" /><span class="mandatory1"> *</span></td>
 									<td class="bluebox" style="text-align: left; width: 240"
-										colspan="4"><s:textfield name="commonBean.payto"
+										colspan="4"><form:input path="commonBean.payto"
 											id="commonBean.payto" size="55" value="%{commonBean.payto}" /></td>
 								</tr>
 							</tbody>
@@ -178,7 +180,7 @@
 				<tr>
 					<th colspan="5">
 						<div class="subheadsmallnew">
-							<s:text name="bill.accountdetails" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</div>
 					</th>
 				</tr>
@@ -290,7 +292,7 @@
 					<tr>
 						<th colspan="5">
 							<div class="subheadsmallnew">
-								<s:text name="bill.subledgerdetails" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</div>
 						</th>
 					</tr>

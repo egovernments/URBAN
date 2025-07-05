@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,10 +53,10 @@
 <%@ page language="java"%>
 
 <%-- <span class="mandatory"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span> --%>
-<s:if test="%{openingBalanceDisplayList.size!=0}">
+<c:if test="%{openingBalanceDisplayList.size!=0}">
 	<display:table name="openingBalanceDisplayList" id="currentRowObject"
 		uid="currentRowObject" class="tablebottom" style="width:100%;"
 		cellpadding="0" cellspacing="0" export="true"
@@ -63,7 +65,7 @@
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<tr>
 					<th class="bluebgheadtd" width="100%" colspan="5"><strong
-						style="font-size: 15px;"> <s:property value="%{heading}" /></strong></th>
+						style="font-size: 15px;"> ${%{heading}}</strong></th>
 				</tr>
 			</table>
 		</display:caption>
@@ -91,10 +93,10 @@
 			property="credit" />
 		<display:caption media="pdf">
 			<div align="left" style="text-align: left;">
-				<b><s:property value="%{titleName}" /><s:property value="%{heading}" /></b>
+				<b>${%{titleName}}${%{heading}}</b>
 			</div>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property value="%{titleName}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${%{titleName}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Opening Balance Report  
 		</display:caption>
 		<display:caption media="excel">
@@ -111,4 +113,4 @@
 		<display:setProperty name="export.xml" value="false" />
 	</display:table>
 
-</s:if>
+</c:if>

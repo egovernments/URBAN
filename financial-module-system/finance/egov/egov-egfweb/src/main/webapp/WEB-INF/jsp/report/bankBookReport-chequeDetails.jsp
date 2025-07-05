@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 
-<s:if test="%{chequeDetails.size()>0}">
+<c:if test="%{chequeDetails.size()>0}">
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -63,43 +65,43 @@
 							<th class="bluebgheadtd">Cheque/RTGS Amount</th>
 							<th class="bluebgheadtd">Cheque/RTGS Status</th
 						</tr>
-						<s:iterator value="chequeDetails" status="stat" var="p">
+						<c:forEach value="chequeDetails" status="stat" var="p">
 							<tr>
-								<s:if test="%{#p.instrumentNumber == null}">
+								<c:if test="%{#p.instrumentNumber == null}">
 									<td class="blueborderfortd"><div
 											style="text-align: center">
-											<s:property value="transactionNumber" />
+											${transactionNumber}
 										</div></td>
-								</s:if>
-								<s:else>
+								</c:if>
+								<c:otherwise>
 									<td class="blueborderfortd"><div
 											style="text-align: center">
-											<s:property value="instrumentNumber" />
+											${instrumentNumber}
 										</div></td>
 								</s:else>
-								<s:if test="%{#p.instrumentDate == null}">
+								<c:if test="%{#p.instrumentDate == null}">
 									<td class="blueborderfortd"><div
 											style="text-align: center">
-											<s:date name="%{transactionDate}" format="dd/MM/yyyy" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</div></td>
-								</s:if>
-								<s:else>
+								</c:if>
+								<c:otherwise>
 									<td class="blueborderfortd"><div
 											style="text-align: center">
-											<s:date name="%{instrumentDate}" format="dd/MM/yyyy" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</div></td>
 								</s:else>
 								<td class="blueborderfortd"><div style="text-align: right">
-										<s:text name="format.number">
-											<s:param value="#p.instrumentAmount"></s:param>
+										<!-- TODO: Manual migration required for custom Struts tag -->
+											<!-- TODO: Manual migration required for custom Struts tag --></s:param>
 										</s:text>
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div style="text-align: center">
-										<s:property value="statusId.description" />
+										${statusId.description}
 									</div></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -108,5 +110,5 @@
 	</td>
 	</tr>
 	</table>
-</s:if>
-<s:else>No data found</s:else>
+</c:if>
+<c:otherwise>No data found</s:else>

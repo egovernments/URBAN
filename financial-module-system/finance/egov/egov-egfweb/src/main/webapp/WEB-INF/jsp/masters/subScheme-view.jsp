@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,31 +54,31 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:if test="%{showMode=='edit'}">
-		<s:text name="subscheme.modify" />
-	</s:if> <s:else>
-		<s:text name="masters.subscheme.searchview.title" />
+<title><c:if test="%{showMode=='edit'}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if> <c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else></title>
 <script type="text/javascript">
 		function validate(){
 			if(document.getElementById('name').value == null || document.getElementById('name').value==''){
-				bootbox.alert("<s:text name='msg.please.enter.name'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			if(document.getElementById('code').value == null || document.getElementById('code').value==''){
-				bootbox.alert("<s:text name='subscheme.code.mandatory'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			if(document.getElementById('validfrom').value == null || document.getElementById('validfrom').value==''){
-				bootbox.alert("<s:text name='subscheme.validfrom.mandatory'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			if(document.getElementById('validto').value == null || document.getElementById('validto').value==''){
-				bootbox.alert("<s:text name='subscheme.validto.mandatory'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			if(isNaN(document.getElementById('initialEstimateAmount').value)){
-				bootbox.alert("<s:text name='msg.please.enter.valid.initial.estimate.date'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			document.getElementById("scheme").disabled  = false;
@@ -108,55 +110,55 @@
 <body name="subSchemeView">
 
 	<jsp:include page="../budget/budgetHeader.jsp" />
-	<div style="color: green;"><s:actionmessage theme="simple" /></div>
+	<div style="color: green;"><!-- TODO: Manual migration required for custom Struts tag --></div>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:if test="%{showMode=='new'}">
-			<s:text name="subScheme.add" />
+			<c:if test="%{showMode=='new'}">
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				
-			</s:if>
-			<s:elseif  test="%{showMode=='view'}">
-				<s:text name="masters.subscheme.searchview.title" />
+			</c:if>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</s:elseif>
-			<s:else><s:text name="subscheme.modify" /></s:else>
+			<c:otherwise><!-- TODO: Manual migration required for custom Struts tag --></s:else>
 			
 		</div>
 
-		<s:actionerror />
-		<s:fielderror />
-		<s:form name="subSchemeForm" action="subScheme" theme="simple">
-			<s:hidden name="showMode" />
-			<s:hidden name="id" />
-			<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<form:form name="subSchemeForm" action="subScheme" theme="simple">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<%@include file="subScheme-form.jsp"%>
 	</div>
 
 	<div class="buttonbottom" style="padding-bottom: 10px;">
 
 
-		<input type="button" id="Close" value="<s:text name='lbl.close'/>"
+		<input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 			onclick="javascript:window.close()" class="button" />
 	</div>
 	<script>
-			<s:if test="%{isactive==true}">
+			<c:if test="%{isactive==true}">
 			    document.getElementById("isActive").checked="checked";
-			</s:if>
-			<s:if test="%{showMode=='edit'}">
+			</c:if>
+			<c:if test="%{showMode=='edit'}">
 			document.getElementById("scheme").disabled  = true;
-			 	<s:if test="%{clearValues==true}">
-			 		bootbox.alert('<s:text name="subscheme.saved.successfully" />');
+			 	<c:if test="%{clearValues==true}">
+			 		bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 			 		window.close();
-			 	</s:if>	
-			</s:if>
-			<s:else>
+			 	</c:if>	
+			</c:if>
+			<c:otherwise>
 				disableControls(true);
 			</s:else>
 		</script>
-	<s:hidden name="createdBy" value="%{createdBy.id}" />
-	<s:hidden name="createdDate" value="%{createdDate}" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:push>
-	<s:token />
-	</s:form>
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script>
 
 	</script>

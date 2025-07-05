@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -57,39 +59,39 @@
 		<tr>
 			<td colspan="9">
 				<div class="subheadsmallnew">
-					<strong><s:text name="existing.budgetdetails" /></strong>
+					<strong><!-- TODO: Manual migration required for custom Struts tag --></strong>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<th class="bluebgheadtd" width="10%"><s:text
 					name="budgetdetail.budget" /></th>
-			<s:if test="%{shouldShowField('fund')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="fund" /></th>
-			</s:if>
-			<s:if test="%{shouldShowField('function')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="function" /></th>
-			</s:if>
+			<c:if test="%{shouldShowField('fund')}">
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if test="%{shouldShowField('function')}">
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
 
 			<th class="bluebgheadtd" width="11%"><s:text
 					name="budgetdetail.budgetGroup" /></th>
 
-			<s:if test="%{shouldShowField('executingDepartment')}">
+			<c:if test="%{shouldShowField('executingDepartment')}">
 				<th class="bluebgheadtd" width="16%"><s:text
 						name="budgetdetail.executingDepartment" /></th>
-			</s:if>
-			<s:if test="%{shouldShowField('functionary')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="functionary" /></th>
-			</s:if>
-			<s:if test="%{shouldShowField('scheme')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="scheme" /></th>
-			</s:if>
-			<s:if test="%{shouldShowField('subScheme')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="subScheme" /></th>
-			</s:if>
-			<s:if test="%{shouldShowField('boundary')}">
-				<th class="bluebgheadtd" width="10%"><s:text name="field" /></th>
-			</s:if>
+			</c:if>
+			<c:if test="%{shouldShowField('functionary')}">
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if test="%{shouldShowField('scheme')}">
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if test="%{shouldShowField('subScheme')}">
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
+			<c:if test="%{shouldShowField('boundary')}">
+				<th class="bluebgheadtd" width="10%"><!-- TODO: Manual migration required for custom Struts tag --></th>
+			</c:if>
 
 			<th class="bluebgheadtd" id="anticipatoryAmountheading" width="16%"><s:text
 					name="budgetdetail.anticipatoryAmount" /></th>
@@ -101,54 +103,54 @@
 			</th>
 		</tr>
 
-		<s:iterator value="savedbudgetDetailList" status="stat" var="p">
+		<c:forEach value="savedbudgetDetailList" status="stat" var="p">
 			<tr>
-				<td class="blueborderfortd"><s:property value="budget.name" />
+				<td class="blueborderfortd">${budget.name}
 					&nbsp;</td>
-				<s:if test="%{shouldShowField('fund')}">
-					<td class="blueborderfortd"><s:property value="fund.name" />&nbsp;</td>
-				</s:if>
-				<s:if test="%{shouldShowField('function')}">
-					<td class="blueborderfortd"><s:property value="function.name" />&nbsp;</td>
-				</s:if>
-				<s:if test="%{shouldShowField('executingDepartment')}">
+				<c:if test="%{shouldShowField('fund')}">
+					<td class="blueborderfortd">${fund.name}&nbsp;</td>
+				</c:if>
+				<c:if test="%{shouldShowField('function')}">
+					<td class="blueborderfortd">${function.name}&nbsp;</td>
+				</c:if>
+				<c:if test="%{shouldShowField('executingDepartment')}">
 					<td class="blueborderfortd"><s:property
 							value="executingDepartment.deptName" />&nbsp;</td>
-				</s:if>
+				</c:if>
 
 
 				<td class="blueborderfortd"><s:property
 						value="budgetGroup.name" />&nbsp;</td>
-				<s:if test="%{shouldShowField('functionary')}">
+				<c:if test="%{shouldShowField('functionary')}">
 					<td class="blueborderfortd"><s:property
 							value="functionary.name" />&nbsp;</td>
-				</s:if>
-				<s:if test="%{shouldShowField('scheme')}">
-					<td class="blueborderfortd"><s:property value="scheme.name" />&nbsp;</td>
-				</s:if>
-				<s:if test="%{shouldShowField('subScheme')}">
-					<td class="blueborderfortd"><s:property value="subScheme.name" />&nbsp;</td>
-				</s:if>
-				<s:if test="%{shouldShowField('boundary')}">
-					<td class="blueborderfortd"><s:property value="boundary.name" />&nbsp;</td>
-				</s:if>
+				</c:if>
+				<c:if test="%{shouldShowField('scheme')}">
+					<td class="blueborderfortd">${scheme.name}&nbsp;</td>
+				</c:if>
+				<c:if test="%{shouldShowField('subScheme')}">
+					<td class="blueborderfortd">${subScheme.name}&nbsp;</td>
+				</c:if>
+				<c:if test="%{shouldShowField('boundary')}">
+					<td class="blueborderfortd">${boundary.name}&nbsp;</td>
+				</c:if>
 				<td class="blueborderfortd" style="text-align: right;"><s:text
 						name="format.number">
-						<s:param name="value" value="anticipatoryAmount" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</s:text> &nbsp;</td>
 				<td class="blueborderfortd" style="text-align: right;"><s:text
 						name="format.number">
-						<s:param name="value" value="originalAmount" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</s:text> &nbsp;</td>
 				<td class="blueborderfortd" style="text-align: right;"><s:property
 						value="%{beNextYearAmounts[#p.id]}" /> &nbsp;</td>
 			</tr>
-		</s:iterator>
+		</c:forEach>
 	</table>
 </div>
 <script>
 		var anticipatoryAmounthead=document.getElementById("anticipatoryAmountheading").innerHTML;
-		var currentYearRange = '<s:property value="currentYearRange"/>(Rs)'; 
+		var currentYearRange = '${currentYearRange}(Rs)'; 
 		var currentFullYear=curentYearRangeWithoutRs.substr(0,2)+curentYearRangeWithoutRs.substr(5,7);
 		anticipatoryAmounthead=anticipatoryAmounthead+currentFullYear+'(Rs)';
 		document.getElementById("anticipatoryAmountheading").innerHTML=anticipatoryAmounthead;

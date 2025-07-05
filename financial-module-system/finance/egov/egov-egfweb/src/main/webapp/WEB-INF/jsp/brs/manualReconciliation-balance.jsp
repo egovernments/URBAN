@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,22 +51,22 @@
 
 <%@ include file="/includes/taglibs.jsp"%>
  <div class="panel-heading custom_form_panel_heading">
-    <div class="panel-title"><s:text name="msg.unreconciled.total"/> </div>
+    <div class="panel-title"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 </div>
 
   <table class="table table-bordered table-hover multiheadertbl" id="ff" style="width:50%"   title="UnReconciled Details"  >
      <thead>
   <tr>
-  <th><s:text name="lbl.type"/> </th>
-  <th><s:text name="lbl.amount"/> </th>
+  <th><!-- TODO: Manual migration required for custom Struts tag --> </th>
+  <th><!-- TODO: Manual migration required for custom Struts tag --> </th>
   </tr>
      </thead>
-<s:iterator value="unReconciledDrCr">
+<c:forEach value="unReconciledDrCr">
 <tr>
-<td><s:property value="key"/></td>
-<td style="text-align:right"><s:property value="value"/></td>
+<td>${key}</td>
+<td style="text-align:right">${value}</td>
  </tr>
-</s:iterator>
+</c:forEach>
 </table>
  
  

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,21 +51,21 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html>
 <head>
-<title> <s:text name="service.master.search.header"></s:text> </title>
+<title> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </title>
 
 </head>
 
 <body>
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
 			<div class="errorstyle">
-				<s:actionerror />
-				<s:fielderror />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
-		</s:if>
-		<s:if test="%{hasActionMessages()}">
+		</c:if>
+		<c:if test="%{hasActionMessages()}">
 			<font  style='color: green ; font-weight:bold '> 
-     					<s:actionmessage/>
+     					<!-- TODO: Manual migration required for custom Struts tag -->
    				</font>
-		</s:if>
+		</c:if>
 </body>
 </html>

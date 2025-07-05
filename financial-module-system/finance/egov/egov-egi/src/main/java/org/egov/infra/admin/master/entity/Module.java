@@ -90,10 +90,7 @@ public class Module implements Serializable {
 
     private Integer orderNumber;
 
-
     @OneToMany(mappedBy = "parentModule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Action> actions = Collections.emptySet();
-
     private String contextRoot;
 
     public Long getId() {
@@ -144,14 +141,6 @@ public class Module implements Serializable {
         orderNumber = displayOrder;
     }
 
-    public Set<Action> getActions() {
-        return actions;
-    }
-
-    public void setActions(final Set<Action> actions) {
-        this.actions = actions;
-    }
-
     public String getContextRoot() {
         return contextRoot;
     }
@@ -168,7 +157,6 @@ public class Module implements Serializable {
         result = prime * result + (name == null ? 0 : name.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(final Object obj) {

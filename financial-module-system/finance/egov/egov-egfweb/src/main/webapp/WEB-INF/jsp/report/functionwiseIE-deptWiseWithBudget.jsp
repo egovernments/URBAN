@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,35 +55,35 @@
 function openDeptWiseIEWithBudget(glcode,deptName)
 {
 var url="/services/EGF/report/functionwiseIE!detailWiseIEWithBudget.action?";
-url=url+"&"+'model.incExp=<s:property value="model.incExp"/>';
-url=url+"&"+'model.fund.id=<s:property value="model.fund.id"/>';
-url=url+"&"+'model.function.id=<s:property value="model.function.id"/>';
-url=url+"&"+'model.asOnDate=<s:property value="model.asOnDate"/>';
+url=url+"&"+'model.incExp=${model.incExp}';
+url=url+"&"+'model.fund.id=${model.fund.id}';
+url=url+"&"+'model.function.id=${model.function.id}';
+url=url+"&"+'model.asOnDate=${model.asOnDate}';
 url=url+"&"+'model.glcode='+glcode;
 url=url+"&"+'model.department.deptName='+deptName;
-url=url+"&"+'model.scheduleName=<s:property value="model.scheduleName"/>';
+url=url+"&"+'model.scheduleName=${model.scheduleName}';
 window.open(url,"detailIEReport","height=650,width=900,scrollbars=yes,left=20,top=20,status=yes");
 }
 function generateReport(type)
 {
 var url="/services/EGF/report/functionwiseIE!exportDeptwise.action?";
-url=url+"&"+'model.incExp=<s:property value="model.incExp"/>';
-url=url+"&"+'model.fund.id=<s:property value="model.fund.id"/>';
-url=url+"&"+'model.function.id=<s:property value="model.function.id"/>';
-url=url+"&"+'model.asOnDate=<s:property value="model.asOnDate"/>';
+url=url+"&"+'model.incExp=${model.incExp}';
+url=url+"&"+'model.fund.id=${model.fund.id}';
+url=url+"&"+'model.function.id=${model.function.id}';
+url=url+"&"+'model.asOnDate=${model.asOnDate}';
 url=url+"&"+'model.exportType='+type;
-url=url+"&"+'model.FIEscheduleId=<s:property value="model.FIEscheduleId"/>';
-url=url+"&"+'model.scheduleName=<s:property value="model.scheduleName"/>';
+url=url+"&"+'model.FIEscheduleId=${model.FIEscheduleId}';
+url=url+"&"+'model.scheduleName=${model.scheduleName}';
 window.open(url,"deptWiseReport","height=650,width=900,scrollbars=yes,left=20,top=20,status=yes");
 }
 
 </script>
 </head>
-<s:if test='%{ieWithBudgetList.size()==0}'>
+<c:if test='%{ieWithBudgetList.size()==0}'>
 	<div class="subheadsmallnew">No Data Found</div>
-</s:if>
-<s:else>
-	<s:if test='%{model.incExp=="E"}'>
+</c:if>
+<c:otherwise>
+	<c:if test='%{model.incExp=="E"}'>
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
 
 			<tr>
@@ -102,7 +104,7 @@ window.open(url,"deptWiseReport","height=650,width=900,scrollbars=yes,left=20,to
 							<tr>
 								<td colspan="11">
 									<div class="subheadsmallnew">
-										<strong><s:property value="heading" /></strong>
+										<strong>${heading}</strong>
 									</div>
 								</td>
 							</tr>
@@ -132,93 +134,93 @@ window.open(url,"deptWiseReport","height=650,width=900,scrollbars=yes,left=20,to
 									(Rs)</th>
 								<th class="bluebgheadtd">Balance (Rs)</th>
 							</tr>
-							<s:set var="i" value="0" />
-							<s:iterator value="ieWithBudgetList" status="stat" var="p">
-								<s:if test="%{!isZero()}">
-									<s:set var="i" value="#i+1" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
+							<c:forEach value="ieWithBudgetList" status="stat" var="p">
+								<c:if test="%{!isZero()}">
+									<!-- TODO: Manual migration required for custom Struts tag -->
 									<tr>
 										<td class="blueborderfortd">
 											<div align="center">
-												<s:property value="#i" />
+												${#i}
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:property value="deptName" />
+												${deptName}
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
 												<a href="#"
-													onclick="openDeptWiseIEWithBudget('<s:property value="accCode"/>','<s:property value="deptName"/>')"><s:property
+													onclick="openDeptWiseIEWithBudget('${accCode}','${deptName}')"><s:property
 														value="accCode" /></a>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:property value="name" />
+												${name}
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{beAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{beAppAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{reAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{reAppAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:text name="format.number">
-													<s:param value="%{pyAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:text name="format.number">
-													<s:param value="%{amount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{computedBalance}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 									</tr>
-								</s:if>
-							</s:iterator>
+								</c:if>
+							</c:forEach>
 						</table>
 
 					</div>
 				</td>
 			</tr>
 		</table>
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
 			<tr>
 				<td>
@@ -237,7 +239,7 @@ window.open(url,"deptWiseReport","height=650,width=900,scrollbars=yes,left=20,to
 							<tr>
 								<td colspan="10">
 									<div class="subheadsmallnew">
-										<strong><s:property value="heading" /></strong>
+										<strong>${heading}</strong>
 									</div>
 								</td>
 							</tr>
@@ -259,66 +261,66 @@ window.open(url,"deptWiseReport","height=650,width=900,scrollbars=yes,left=20,to
 								<th class="bluebgheadtd">Receipt(Current Year) (Rs)</th>
 								<th class="bluebgheadtd">Receipt(Previous Year) (Rs)</th>
 							</tr>
-							<s:set var="i" value="0" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 
 
-							<s:iterator value="ieWithBudgetList" status="stat" var="p">
-								<s:if test="%{!isZero()}">
-									<s:set var="i" value="#i+1" />
+							<c:forEach value="ieWithBudgetList" status="stat" var="p">
+								<c:if test="%{!isZero()}">
+									<!-- TODO: Manual migration required for custom Struts tag -->
 									<tr>
 										<td class='blueborderfortd'>
 											<div align="center">
-												<s:property value="#i" />
+												${#i}
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:property value="deptName" />
+												${deptName}
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
 												<a href="#"
-													onclick="openDeptWiseIEWithBudget('<s:property value="accCode"/>','<s:property value="deptName"/>')"><s:property
+													onclick="openDeptWiseIEWithBudget('${accCode}','${deptName}')"><s:property
 														value="accCode" /></a>
 											</div>
 										</td>
 										<td class='blueborderfortd'>
 											<div align="left">
-												<s:property value="name" />
+												${name}
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{beAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{reAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class='blueborderfortd'>
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{amount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 										<td class='blueborderfortd'>
 											<div align="right">
-												<s:text name="format.number">
-													<s:param value="%{pyAmount}" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
+													<!-- TODO: Manual migration required for custom Struts tag -->
 												</s:text>
 											</div>
 										</td>
 									</tr>
-								</s:if>
-							</s:iterator>
+								</c:if>
+							</c:forEach>
 						</table>
 					</div>
 				</td>
@@ -328,9 +330,9 @@ window.open(url,"deptWiseReport","height=650,width=900,scrollbars=yes,left=20,to
 	</s:else>
 	<jsp:include page="report-filterhidden.jsp" />
 	<input type="hidden" name="model.incExp"
-		value='<s:property value="model.incExp"/>' />
+		value='${model.incExp}' />
 	<div class="buttonbottom">
-		<s:text name="report.export.options" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		: <a href='#' onclick="generateReport('xls')">Excel</a> |<a href='#'
 			onclick="generateReport('pdf')">PDF</a>
 	</div>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -51,7 +53,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="page.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 .main{
 border:1px solid #666666;
@@ -129,30 +131,30 @@ padding-left:10px;
 </style>
 </head>
 <body >
-<s:form theme="simple" name="searchReceiptForm" action="searchReceipt">
+<form:form theme="simple" name="searchReceiptForm" action="searchReceipt">
 
-<s:iterator value="%{receipts}">
+<c:forEach value="%{receipts}">
 <table cellpadding="0" cellspacing="0" border="0" class="main" align="center">
 <tr>
-<td class="mainheading" colspan="6" align="center"><s:text name="page.title"/><br/><div style="font-size:12px;padding:0px 5px 5px 5px;">RECEIPT</div></td>
+<td class="mainheading" colspan="6" align="center"><!-- TODO: Manual migration required for custom Struts tag --><br/><div style="font-size:12px;padding:0px 5px 5px 5px;">RECEIPT</div></td>
 </tr>
 <tr>
-<td class="headingright" colspan="1" width="15%"><s:text name="viewReceipt.receiptno"/></td>
-<td class="headingright" colspan="1" width="43%"><s:property value="receiptnumber" /></td>
-<td class="headingright" colspan="2" width="31%"><s:text name="viewReceipt.receiptdate"/><s:date name="receiptDate" format="dd/MM/yyyy"/></td>
+<td class="headingright" colspan="1" width="15%"><!-- TODO: Manual migration required for custom Struts tag --></td>
+<td class="headingright" colspan="1" width="43%">${receiptnumber}</td>
+<td class="headingright" colspan="2" width="31%"><!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></td>
 </tr>
 <tr>
-<td class="headingright" colspan="1"><s:text name="viewReceipt.nameaddress"/></td>
-<td class="heading" colspan="4"><s:property value="receiptPayeeDetails.payeename" /><br/><s:property value="receiptPayeeDetails.payeeAddress" /></td>
+<td class="headingright" colspan="1"><!-- TODO: Manual migration required for custom Struts tag --></td>
+<td class="heading" colspan="4">${receiptPayeeDetails.payeename}<br/>${receiptPayeeDetails.payeeAddress}</td>
 </tr>
 <tr>
-<td class="headingright" colspan="1" valign="top"><s:text name="viewReceipt.billdetails"/></td>
+<td class="headingright" colspan="1" valign="top"><!-- TODO: Manual migration required for custom Struts tag --></td>
 <td class="heading" colspan="4">
 <table align="left" cellpadding="0" cellspacing="0" border="0" width="100%" class="subtable">
-<tr><td><s:text name="viewReceipt.billno"/>&nbsp;<s:property value="referencenumber" /></td></tr>
-<tr><td><s:text name="viewReceipt.servicename"/>&nbsp;<s:property value="service.serviceName" /></td></tr>
-<tr><td><s:text name="viewReceipt.description"/>&nbsp;<s:property value="referenceDesc" /></td></tr>
-<tr><td><s:text name="billreceipt.counter.paidby"/>&nbsp;<s:property value="paidBy" /></td></tr>
+<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${referencenumber}</td></tr>
+<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${service.serviceName}</td></tr>
+<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${referenceDesc}</td></tr>
+<tr><td><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${paidBy}</td></tr>
 </table>
 </td>
 </tr>
@@ -160,27 +162,27 @@ padding-left:10px;
 <td colspan="8">
 <table cellspacing="0" cellpadding="0" align="center" width="100%" class="container">
 <tbody><tr>
-<td align="center" width="30%" class="content"><b><s:text name="viewReceipt.function"/></b></td>
-<td align="center" width="25%" class="content"><b><s:text name="viewReceipt.accountcode"/></b></td>
-<td align="center" width="30%" class="content"><b><s:text name="viewReceipt.accounthead.desc"/></b></td>
-<td width="25%" align="center" class="content"><b><s:text name="viewReceipt.accounthead.amt"/><br/>
-  <s:text name="viewReceipt.amt.denom"/></b></td>
+<td align="center" width="30%" class="content"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
+<td align="center" width="25%" class="content"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
+<td align="center" width="30%" class="content"><b><!-- TODO: Manual migration required for custom Struts tag --></b></td>
+<td width="25%" align="center" class="content"><b><!-- TODO: Manual migration required for custom Struts tag --><br/>
+  <!-- TODO: Manual migration required for custom Struts tag --></b></td>
 </tr>
 
-<s:iterator value="%{receiptDetails}" >
-<s:if test="cramount!=0">
+<c:forEach value="%{receiptDetails}" >
+<c:if test="cramount!=0">
 <tr>
-<td class="content" align="center">&nbsp;<s:property value="%{function.name}" /></td>
-<td class="content" align="center">&nbsp;<s:property value="%{accounthead.glcode}" /></td>
-<td class="content" align="center">&nbsp;<s:property value="%{accounthead.name}" /></td>
-<td class="content" align="right">&nbsp;<s:property value="%{cramount}" /></td>
+<td class="content" align="center">&nbsp;${%{function.name}}</td>
+<td class="content" align="center">&nbsp;${%{accounthead.glcode}}</td>
+<td class="content" align="center">&nbsp;${%{accounthead.name}}</td>
+<td class="content" align="right">&nbsp;${%{cramount}}</td>
 </tr>
-</s:if>
-</s:iterator>
+</c:if>
+</c:forEach>
 
 <tr>
-<td class="content" colspan="4" style="padding:3px 3px 8px 3px;"><br/><b><s:text name="viewReceipt.amtinwords"/></b>
-<u> <b><s:property value="amountInWords(amount)" /> </b></u></td>
+<td class="content" colspan="4" style="padding:3px 3px 8px 3px;"><br/><b><!-- TODO: Manual migration required for custom Struts tag --></b>
+<u> <b>${amountInWords(amount)} </b></u></td>
 
 </tr>
 
@@ -188,33 +190,33 @@ padding-left:10px;
 </table>
 <table width="100%" class="container" cellpadding="0" cellspacing="0">
 <tr>
-<td class="signature" colspan="2"><s:text name="viewReceipt.payee.name"/>&nbsp;<s:property value="receiptPayeeDetails.payeename" /></td> 
+<td class="signature" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${receiptPayeeDetails.payeename}</td> 
 </tr>
-<s:iterator value='%{getInstruments("cash")}' >
+<c:forEach value='%{getInstruments("cash")}' >
 <tr>
-<td class="signature" colspan="2"><s:text name="viewReceipt.cashReceived"/>&nbsp;<s:property value="%{amount}" /></td>
+<td class="signature" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${%{amount}}</td>
 </tr>
-</s:iterator>
-<s:iterator value='%{getInstruments("cheque")}' >
+</c:forEach>
+<c:forEach value='%{getInstruments("cheque")}' >
 <tr>
-<td class="signature" colspan="2"><s:text name="viewReceipt.chequedate"/>&nbsp;<s:property value="%{instrumentNumber}" />&nbsp;-&nbsp;<s:date name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
+<td class="signature" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${%{instrumentNumber}}&nbsp;-&nbsp;<!-- TODO: Manual migration required for custom Struts tag --></td>
 </tr>
-</s:iterator>
-<s:iterator value='%{getInstruments("dd")}' >
+</c:forEach>
+<c:forEach value='%{getInstruments("dd")}' >
 <tr>
-<td class="signature" colspan="2"><s:text name="viewReceipt.dddate"/>&nbsp;<s:property value="%{instrumentNumber}" />&nbsp;-&nbsp;<s:date name="%{instrumentDate}" format="dd/MM/yyyy" /></td>
+<td class="signature" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${%{instrumentNumber}}&nbsp;-&nbsp;<!-- TODO: Manual migration required for custom Struts tag --></td>
 </tr>
-</s:iterator>
-<s:iterator value='%{getInstruments("card")}' >
+</c:forEach>
+<c:forEach value='%{getInstruments("card")}' >
 <tr>
-<td class="signature" colspan="2"><s:text name="viewReceipt.creditcardno"/>&nbsp;<s:property value="%{instrumentNumber}" /></td>
+<td class="signature" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;${%{instrumentNumber}}</td>
 </tr>
-</s:iterator>
+</c:forEach>
 <tr>
-<td class="signature" colspan="2"><s:text name="viewReceipt.comment"/>&nbsp;</td>
+<td class="signature" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;</td>
 </tr>
 <tr>
-<td class="signatureright" colspan="1" width="80%"><s:text name="viewReceipt.officer"/></td>
+<td class="signatureright" colspan="1" width="80%"><!-- TODO: Manual migration required for custom Struts tag --></td>
 <td class="signatureright" colspan="1">&nbsp;</td>
 </tr>
 
@@ -223,7 +225,7 @@ padding-left:10px;
 </tr>
 </table>
 <br/>
-</s:iterator>
-</s:form>
+</c:forEach>
+</form:form>
 </body>
 </html>

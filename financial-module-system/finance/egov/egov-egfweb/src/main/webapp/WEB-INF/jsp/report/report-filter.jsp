@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,91 +52,91 @@
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <%@ taglib prefix="egov" tagdir="/WEB-INF/tags"%>
 <tr>
-	<s:if test="%{shouldShowHeaderField('fund')}">
-		<td class="bluebox"><s:text name="voucher.fund" /> <s:if
+	<c:if test="%{shouldShowHeaderField('fund')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fund')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="fund" id="fund"
+			</c:if></td>
+		<td class="bluebox"><form:select path="fund" id="fund"
 				list="dropdownData.fundList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----"
 				onChange="getSchemelist(this)" value="%{fund.id}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('department')}">
-		<td class="bluebox"><s:text name="voucher.department" /> <s:if
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('department')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('department')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="department" id="department"
+			</c:if></td>
+		<td class="bluebox"><form:select path="department" id="department"
 				list="dropdownData.departmentList" listKey="id" listValue="deptName"
 				headerKey="-1" headerValue="----Choose----" value="%{department.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
-	<s:if test="%{shouldShowHeaderField('scheme')}">
+	<c:if test="%{shouldShowHeaderField('scheme')}">
 		<egov:ajaxdropdown id="schemeid" fields="['Text','Value']"
 			dropdownId="schemeid" url="report/report!ajaxLoadSchemes.action" />
-		<td class="greybox"><s:text name="voucher.scheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('scheme')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="scheme" id="scheme"
+			</c:if></td>
+		<td class="greybox"><form:select path="scheme" id="scheme"
 				list="dropdownData.schemeList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----"
 				onChange="getSubSchemelist(this)" value="%{scheme.id}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('subscheme')}">
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('subscheme')}">
 		<egov:ajaxdropdown id="subscheme" fields="['Text','Value']"
 			dropdownId="subscheme" url="report/report!ajaxLoadSubSchemes.action" />
-		<td class="greybox"><s:text name="voucher.subscheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('subscheme')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="subscheme" id="subscheme"
+			</c:if></td>
+		<td class="greybox"><form:select path="subscheme" id="subscheme"
 				list="dropdownData.subschemeList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----" value="%{subscheme.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
-	<s:if test="%{shouldShowHeaderField('functionary')}">
-		<td class="bluebox"><s:text name="voucher.functionary" /> <s:if
+	<c:if test="%{shouldShowHeaderField('functionary')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('functionary')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="functionary" id="functionary"
+			</c:if></td>
+		<td class="bluebox"><form:select path="functionary" id="functionary"
 				list="dropdownData.functionaryList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----"
 				value="%{functionary.id}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('fundsource')}">
-		<td class="bluebox"><s:text name="voucher.fundsource" /> <s:if
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('fundsource')}">
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fundsource')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="fundsource" id="fundsource"
+			</c:if></td>
+		<td class="bluebox"><form:select path="fundsource" id="fundsource"
 				list="dropdownData.fundsourceList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----" value="%{fundsource.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
-	<s:if test="%{shouldShowHeaderField('function')}">
-		<td class="greybox"><s:text name="voucher.function" /> <s:if
+	<c:if test="%{shouldShowHeaderField('function')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('function')}">
 				<span class="mandatory">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="function" id="function"
+			</c:if></td>
+		<td class="greybox"><form:select path="function" id="function"
 				list="dropdownData.functionList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----" value="%{function.id}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('field')}">
-		<td class="greybox"><s:if test="%{isFieldMandatory('field')}">
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('field')}">
+		<td class="greybox"><c:if test="%{isFieldMandatory('field')}">
 				<span class="mandatory">*</span>
-			</s:if><br>
+			</c:if><br>
 		<br></td>
-		<td class="greybox">&gt;<s:select name="field" id="field"
+		<td class="greybox">&gt;<form:select path="field" id="field"
 				list="dropdownData.fieldList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----" value="%{field.id}" /></td>
-	</s:if>
+	</c:if>
 </tr>
 
 <script>

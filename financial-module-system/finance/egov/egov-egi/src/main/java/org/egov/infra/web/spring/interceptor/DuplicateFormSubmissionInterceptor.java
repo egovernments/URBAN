@@ -67,7 +67,7 @@ import org.egov.infra.web.spring.annotation.ValidateToken;
 import org.hibernate.SessionException;
 import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
+// TODO: Migrate from Struts/XWork: import org.springframework.validation.BindingResult;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -113,18 +113,19 @@ public class DuplicateFormSubmissionInterceptor extends HandlerInterceptorAdapte
 			if (handlerMethod.getMethodAnnotation(DuplicateRequestToken.class) != null)
 				addToken(request, session);
 			else if (handlerMethod.getMethodAnnotation(ValidateToken.class) != null) {
-				final BindingResult bindingResult = getBindingResult(modelAndView);
-				if (bindingResult != null && bindingResult.hasErrors())
-					addToken(request, session);
+				// TODO: Migrate from Struts/XWork: final BindingResult bindingResult = getBindingResult(modelAndView);
+				// TODO: Migrate from Struts/XWork: if (bindingResult != null && bindingResult.hasErrors())
+				addToken(request, session);
 			}
 		}
 	}
 
-	private static BindingResult getBindingResult(final ModelAndView modelAndView) {
-		final Set<String> paramNames = modelAndView.getModelMap().keySet();
-		return (BindingResult) modelAndView.getModelMap().get(paramNames.parallelStream()
-				.filter(e -> e.startsWith(BindingResult.MODEL_KEY_PREFIX)).findFirst().get());
-	}
+	// TODO: Migrate from Struts/XWork:
+	// private static BindingResult getBindingResult(final ModelAndView modelAndView) {
+	// 	final Set<String> paramNames = modelAndView.getModelMap().keySet();
+	// 	return (BindingResult) modelAndView.getModelMap().get(paramNames.parallelStream()
+	// 			.filter(e -> e.startsWith(BindingResult.MODEL_KEY_PREFIX)).findFirst().get());
+	// }
 
 	private void addToken(final HttpServletRequest request, final HttpSession session) {
 		final String tokenName = RandomStringUtils.randomAlphanumeric(10);

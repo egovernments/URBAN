@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -106,12 +108,12 @@ function validateData(){
 		<div class="formheading"></div>
 		<div class="subheadnew">Working Budget Report</div>
 
-		<s:form action="budgetReport" theme="simple" name="budgetReport">
+		<form:form action="budgetReport" theme="simple" name="budgetReport">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="greybox" width="10%">Financial Year:<span
 						class="bluebox"><span class="mandatory">*</span></span></td>
-					<td class="greybox"><s:select
+					<td class="greybox"><form:select
 							name="budgetDetail.budget.financialYear.id" id="financialYear"
 							list="dropdownData.financialYearList" listKey="id"
 							listValue="finYearRange" headerKey="-1"
@@ -129,13 +131,13 @@ function validateData(){
 							class="mandatory">*</span></span></td>
 					<td class="bluebox">
 						<div id="budgetData">
-							<s:select name="budgetDetail.budget.id" id="budget"
+							<form:select path="budgetDetail.budget.id" id="budget"
 								list="budgetList" listKey="id" listValue="name" headerKey="-1"
 								headerValue="----Choose----" value="%{budget.id}" />
 						</div>
 					</td>
 					<td class="bluebox" width="10%">Department:</td>
-					<td class="bluebox"><s:select
+					<td class="bluebox"><form:select
 							name="budgetDetail.executingDepartment.id"
 							id="executingDepartment"
 							list="dropdownData.executingDepartmentList" listKey="id"
@@ -144,7 +146,7 @@ function validateData(){
 				</tr>
 				<tr>
 					<td class="greybox" width="10%">Budget Head:</td>
-					<td class="greybox"><s:select
+					<td class="greybox"><form:select
 							name="budgetDetail.budgetGroup.id" id="budgetGroup"
 							list="dropdownData.budgetGroupList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="----Choose----"
@@ -163,11 +165,11 @@ function validateData(){
 				<input type="button" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
-		</s:form>
+		</form:form>
 	</div>
 	<div>
-		<s:if test="%{showResults == true}">
-			<s:if test="%{budgetDetailsList.size()>0}">
+		<c:if test="%{showResults == true}">
+			<c:if test="%{budgetDetailsList.size()>0}">
 				<br />
 				<table width="99%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
@@ -194,26 +196,26 @@ function validateData(){
 												value="currentYearRange" />(Rs)
 										</th>
 										<th class="bluebgheadtd" width="2%">RE Proposed <br />
-										<s:property value="currentYearRange" />(Rs)
+										${currentYearRange}(Rs)
 										</th>
-										<s:if test="%{canViewREApprovedAmount == true}">
+										<c:if test="%{canViewREApprovedAmount == true}">
 											<th class="bluebgheadtd" width="2%">RE Approved <br />
-											<s:property value="currentYearRange" />(Rs)
+											${currentYearRange}(Rs)
 											</th>
-										</s:if>
+										</c:if>
 										<th class="bluebgheadtd" width="10%">BE Proposed <br />
-										<s:property value="nextYearRange" />(Rs)
+										${nextYearRange}(Rs)
 										</th>
-										<s:if test="%{canViewBEApprovedAmount == true}">
+										<c:if test="%{canViewBEApprovedAmount == true}">
 											<th class="bluebgheadtd" width="10%">BE Approved <br />
-											<s:property value="nextYearRange" />(Rs)
+											${nextYearRange}(Rs)
 											</th>
-										</s:if>
+										</c:if>
 									</tr>
-									<s:iterator value="budgetDetailsList" status="stat" var="p">
+									<c:forEach value="budgetDetailsList" status="stat" var="p">
 										<tr>
 											<td class="blueborderfortd"><div align="center">
-													<s:property value="departmentCode" />
+													${departmentCode}
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><s:property
@@ -221,48 +223,48 @@ function validateData(){
 											<td class="blueborderfortd"><s:property
 													value="budgetGroupName" />&nbsp;</td>
 											<td class="blueborderfortd"><div align="right">
-													<s:if test="%{#p.actualsLastYear != null}">
-														<s:text name="format.number">
-															<s:param name="value" value="actualsLastYear" />
+													<c:if test="%{#p.actualsLastYear != null}">
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>&nbsp;
-					</s:if>
+					</c:if>
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:text name="format.number">
-														<s:param name="value" value="beCurrentYearApproved" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text>
 													&nbsp;
 												</div></td>
 											<td class="blueborderfortd"><div align="right">
-													<s:text name="format.number">
-														<s:param name="value" value="reCurrentYearOriginal" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text>
 													&nbsp;
 												</div></td>
-											<s:if test="%{canViewREApprovedAmount == true}">
+											<c:if test="%{canViewREApprovedAmount == true}">
 												<td class="blueborderfortd"><div align="right">
-														<s:text name="format.number">
-															<s:param name="value" value="reCurrentYearApproved" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>
 														&nbsp;
 													</div></td>
-											</s:if>
+											</c:if>
 											<td class="blueborderfortd"><div align="right">
-													<s:text name="format.number">
-														<s:param name="value" value="beNextYearOriginal" />
+													<!-- TODO: Manual migration required for custom Struts tag -->
+														<!-- TODO: Manual migration required for custom Struts tag -->
 													</s:text>
 													&nbsp;
 												</div></td>
-											<s:if test="%{canViewBEApprovedAmount == true}">
+											<c:if test="%{canViewBEApprovedAmount == true}">
 												<td class="blueborderfortd"><div align="right">
-														<s:text name="format.number">
-															<s:param name="value" value="beNextYearApproved" />
+														<!-- TODO: Manual migration required for custom Struts tag -->
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</s:text>
 														&nbsp;
 													</div></td>
-											</s:if>
+											</c:if>
 										</tr>
-									</s:iterator>
+									</c:forEach>
 								</table>
 								<div class="buttonbottom" align="center">
 									Export Options: <label onclick="exportXls()"><a
@@ -276,9 +278,9 @@ function validateData(){
 				</td>
 				</tr>
 				</table>
-			</s:if>
-			<s:else>No data found</s:else>
-		</s:if>
+			</c:if>
+			<c:otherwise>No data found</s:else>
+		</c:if>
 	</div>
 </body>
 </html>

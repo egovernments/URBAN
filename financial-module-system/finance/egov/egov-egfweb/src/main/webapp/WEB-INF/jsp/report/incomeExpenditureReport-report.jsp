@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -82,18 +84,18 @@ function validateMandatoryFields(){
 
 	if(document.getElementById('period').value=="Select")
 	{
-		bootbox.alert('<s:text name="msg.please.select.period"/>');
+		bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 		return false;
 	}
 		
 	if(document.getElementById('period').value!="Date"){
 		if(document.getElementById('financialYear').value==0){
-			bootbox.alert('<s:text name="msg.please.select.financial.year"/>');
+			bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 			return false;
 		}
 	}
 	if(document.getElementById('period').value=="Date" && document.getElementById('asOndate').value==""){
-		bootbox.alert('<s:text name="msg.please.enter.as.onDate"/>');
+		bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 		return false;
 	}
 	return true;
@@ -145,24 +147,24 @@ th.bluebgheadtd {
 }
 </style>
 <div id="non-printable">
-	<s:form name="incomeExpenditureReport" action="incomeExpenditureReport"
+	<form:form name="incomeExpenditureReport" action="incomeExpenditureReport"
 		theme="simple">
 		<div class="formmainbox">
 			<div class="formheading"></div>
-			<div class="subheadnew"><s:text name="lbl.income.expenditure.report"/> </div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="10%" class="bluebox">&nbsp;</td>
-					<td width="15%" class="bluebox"><s:text name="report.period" />:<span
+					<td width="15%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="mandatory1">*</span></td>
-					<td width="22%" class="bluebox"><s:select name="period"
+					<td width="22%" class="bluebox"><form:select path="period"
 							id="period"
 							list="#{'Select':'---Choose---','Date':'Date','Yearly':'Yearly','Half Yearly':'Half Yearly'}"
 							onclick="disableAsOnDate()" value="%{model.period}" /></td>
 					<td class="bluebox" width="12%"><s:text
 							name="report.financialYear" />:<span class="mandatory1">*</span></td>
-					<td width="41%" class="bluebox"><s:select name="financialYear"
+					<td width="41%" class="bluebox"><form:select path="financialYear"
 							id="financialYear" list="dropdownData.financialYearList"
 							listKey="id" listValue="finYearRange" headerKey="0"
 							headerValue="%{getText('lbl.choose.options')}" value="%{model.financialYear.id}" />
@@ -170,49 +172,49 @@ th.bluebgheadtd {
 				</tr>
 				<tr>
 					<td class="greybox">&nbsp;</td>
-					<td class="greybox"><s:text name="report.asOnDate" />:</td>
-					<td class="greybox"><s:textfield name="asOndate" id="asOndate"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:input path="asOndate" id="asOndate"
 							cssStyle="width:100px" /><a
 						href="javascript:show_calendar('incomeExpenditureReport.asOndate');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)
 					</td>
-					<td class="greybox"><s:text name="report.rupees" />:<span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 						class="mandatory1">*</span></td>
-					<td class="greybox"><s:select name="currency" id="currency"
+					<td class="greybox"><form:select path="currency" id="currency"
 							list="#{'Rupees':'Rupees','Thousands':'Thousands','Lakhs':'Lakhs'}"
 							value="%{model.currency}" /></td>
 				</tr>
 				<tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="report.department" />:</td>
-					<td class="bluebox"><s:select name="department"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="bluebox"><form:select path="department"
 							id="department" list="dropdownData.departmentList" listKey="code"
 							listValue="name" headerKey="null" headerValue="%{getText('lbl.choose.options')}"
 							value="model.department.code" /></td>
-					<td class="bluebox"><s:text name="report.fund" />:</td>
-					<td class="bluebox"><s:select name="fund" id="fund"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="bluebox"><form:select path="fund" id="fund"
 							list="dropdownData.fundDropDownList" listKey="id"
 							listValue="name" headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 							value="model.fund.id" /></td>
 				</tr>
 				<tr>
 					<td class="greybox">&nbsp;</td>
-					<td class="greybox"><s:text name="report.function" />:</td>
-					<td class="greybox"><s:select name="function" id="function"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select path="function" id="function"
 							list="dropdownData.functionList" listKey="id" listValue="name"
 							headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 							value="model.function.id" /></td>
-					<%--<td class="greybox"><s:text name="report.functionary" />:</td>
-					<td class="greybox"><s:select name="functionary"
+					<%--<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select path="functionary"
 							id="functionary" list="dropdownData.functionaryList" listKey="id"
 							listValue="name" headerKey="0" headerValue="%{getText('lbl.choose.options')}"
 							value="model.functionary.id" /></td> --%>
 				</tr>
 				<%-- tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="report.field" />:</td>
-					<td class="bluebox"><s:select name="field" id="field"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="bluebox"><form:select path="field" id="field"
 							list="dropdownData.fieldList" listKey="id" listValue="name"
 							headerKey="0" headerValue="%{getText('lbl.choose.options')}" value="model.field.id" />
 					</td>
@@ -223,16 +225,16 @@ th.bluebgheadtd {
 			</table>
 			<div align="left" class="mandatory1">
 				*
-				<s:text name="report.mandatory.fields" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div class="buttonbottom" style="padding-bottom: 10px;">
-				<input type="button" value="<s:text name='lbl.submit'/>" class="buttonsubmit"
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 					onclick="return getData()" /> <input name="button" type="button"
-					class="buttonsubmit" id="button3" value="<s:text name='lbl.print'/>"
+					class="buttonsubmit" id="button3" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.print()" />&nbsp;&nbsp; <input type="button"
-					value="<s:text name='lbl.view.all.minor.schedules'/>" class="buttonsubmit"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 					onclick="return showAllMinorSchedules()" /> &nbsp;&nbsp; <input
-					type="button" value="<s:text name='lbl.view.all.schedules'/>" class="buttonsubmit"
+					type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 					onclick="return showAllSchedules()" /> &nbsp;&nbsp;
 			</div>
 			<div align="left" class="extracontent">
@@ -240,7 +242,7 @@ th.bluebgheadtd {
 				Paper size: A4<br /> 2. Paper Orientation: Landscape <br />
 			</div>
 		</div>
-	</s:form>
+	</form:form>
 </div>
 <script>
 disableAsOnDate();

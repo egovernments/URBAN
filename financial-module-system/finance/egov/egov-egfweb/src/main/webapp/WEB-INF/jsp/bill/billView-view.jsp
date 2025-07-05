@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="bill.view" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
 <script type="text/javascript">
@@ -86,43 +88,43 @@
 
 </head>
 <body>
-	<s:form action="billView" theme="simple">
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+	<form:form action="billView" theme="simple">
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:property value="expendituretype" />
+				${expendituretype}
 
-				<s:text name="bill.view" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="18%" class="bluebox"><s:text name="billDate" /></td>
+					<td width="18%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td width="23%" class="bluebox"><s:date name="billdate"
 							format="dd/MM/yyyy" /></td>
-					<td width="17%" class="bluebox"><s:text name="bill.number" /></td>
-					<td width="33%" class="bluebox"><s:property value="billnumber" /></td>
+					<td width="17%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td width="33%" class="bluebox">${billnumber}</td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="bill.search.fund" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:property
 							value="egBillregistermis.fund.name" /></td>
-					<td class="greybox"><s:text name="bill.search.dept" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:property
 							value="%{getMasterName('department')}" /></td>
 				</tr>
 				<tr>
-					<td class="bluebox"><s:text name="bill.search.functionary" /></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="bluebox"><s:property
 							value="egBillregistermis.functionaryid.name" /></td>
 					<td class="bluebox">&nbsp</td>
 					<td class="bluebox">&nbsp</td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="bill.narration" /></td>
-					<td colspan="3" class="greybox"><s:property value="narration" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td colspan="3" class="greybox">${narration}</td>
 				</tr>
 			</table>
 			<br />
@@ -130,7 +132,7 @@
 				<table width="100%" cellspacing="0" cellpadding="0">
 					<tr>
 						<th colspan="5"><div class="subheadsmallnew">
-								<s:text name="bill.accountdetails" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</div></th>
 					</tr>
 					<tr>
@@ -145,7 +147,7 @@
 						<th class="bluebgheadtd" width="16%"><s:text
 								name="bill.cramt" /></th>
 					</tr>
-					<s:iterator var="p" value="%{billDetailsList}" status="s">
+					<c:forEach var="p" value="%{billDetailsList}" status="s">
 						<tr>
 							<td width="17%" class="text-center bluebox setborder"><s:property
 									value="function" /></td>
@@ -154,17 +156,17 @@
 							<td width="19%" class="text-center bluebox setborder"><s:property
 									value="accountHead" /></td>
 							<td width="17%" class="text-center bluebox setborder"
-								style="text-align: right"><s:text name="format.number">
-									<s:param value="%{debitAmount}" />
+								style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 							<td width="16%" class="text-center bluebox setborder"
-								style="text-align: right"><s:text name="format.number">
-									<s:param value="%{creditAmount}" />
+								style="text-align: right"><!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text></td>
 							<c:set var="db" value="${db+debitAmount}" />
 							<c:set var="cr" value="${cr+creditAmount}" />
 						</tr>
-					</s:iterator>
+					</c:forEach>
 					<tr>
 						<td class="text-center bluebox setborder"
 							style="text-align: right" colspan="3" />Total
@@ -179,12 +181,12 @@
 				</table>
 			</div>
 			<br />
-			<s:if test="%{subledgerList.size()>0}">
+			<c:if test="%{subledgerList.size()>0}">
 				<div align="center">
 					<table border="1" width="100%" cellspacing="0">
 						<tr>
 							<th colspan="5"><div class="subheadsmallnew">
-									<s:text name="bill.subledgerdetails" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</div></th>
 						</tr>
 
@@ -200,24 +202,24 @@
 							<th class="bluebgheadtd" width="16%"><s:text
 									name="bill.amount" /></th>
 						</tr>
-						<s:iterator var="p" value="%{subledgerList}" status="s">
+						<c:forEach var="p" value="%{subledgerList}" status="s">
 							<tr>
 								<td width="17%" class="text-center bluebox setborder"><s:property
 										value="function" /></td>
-								<td width="17%" class="text-center bluebox setborder"><s:property value="glcode" /></td>
+								<td width="17%" class="text-center bluebox setborder">${glcode}</td>
 								<td width="19%" class="text-center bluebox setborder"><s:property
 										value="detailname" /></td>
 								<td width="19%" class="text-center bluebox setborder"><s:property
 										value="detailkey" /></td>
 								<td width="16%" class="text-center bluebox setborder" style="text-align: right"><s:text
 										name="format.number">
-										<s:param value="%{amount}" />
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
-			</s:if>
+			</c:if>
 		</div>
 		<div class="buttonbottom">
 			<input name="button" type="button" class="buttonsubmit" id="button1"
@@ -225,6 +227,6 @@
 				type="button" id="Close" value="Close"
 				onclick="javascript:window.close()" class="button" />&nbsp;
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

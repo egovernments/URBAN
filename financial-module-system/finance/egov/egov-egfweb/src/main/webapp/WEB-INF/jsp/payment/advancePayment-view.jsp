@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 
 <html>
 <head>
-<title><s:text name="advance.payment.view.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/advancePaymentHelper.js?rnd=${app_release_no}"></script>
 <script type="text/javascript"
@@ -87,19 +89,19 @@ function noBack() {
 	window.history.forward(); 
 }
 
-var insuffiecientBankBalance ='<s:text name="insuffiecientBankBalance"/>';
+var insuffiecientBankBalance ='<!-- TODO: Manual migration required for custom Struts tag -->';
 
 function validateAppoveUser(actionName,actionDescription){
 	document.getElementById("actionName").value= actionName;
-	<s:if test="%{wfitemstate =='END'}">
+	<c:if test="%{wfitemstate =='END'}">
 		if(actionDescription == 'Approve' || actionDescription == 'Reject') {
 			document.getElementById("approverUserId").value=-1;
 			return true;
 		}
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
 		if( (actionDescription == 'Approve' || actionDescription == 'Forward' || actionDescription=='Save And Forward' ) && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
-			bootbox.alert('<s:text name="arf.approver.required"/>');
+			bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 			return false;
 		}
 	</s:else>
@@ -112,7 +114,7 @@ function viewARF(sourcePath){
 } 
 
 function printVoucher() {
-	document.forms[0].action='../report/billPaymentVoucherPrint!print.action?id=<s:property value="paymentheader.id"/>';
+	document.forms[0].action='../report/billPaymentVoucherPrint!print.action?id=${paymentheader.id}';
 	document.forms[0].submit();
 } 
 
@@ -128,7 +130,7 @@ function balanceCheck(obj, actionName,actionDescription) {
 	if(obj.id=='wfBtn1') // in case of Reject
 		return true;
 	if(document.getElementById('bankAccountBalance')) {
-		if(parseFloat(eval('<s:property value="paymentheader.paymentAmount"/>'))>parseFloat(eval(document.getElementById('bankAccountBalance').innerHTML))) {
+		if(parseFloat(eval('${paymentheader.paymentAmount}'))>parseFloat(eval(document.getElementById('bankAccountBalance').innerHTML))) {
 			bootbox.alert(insuffiecientBankBalance);
 			return false;
 		}
@@ -143,28 +145,28 @@ function balanceCheck(obj, actionName,actionDescription) {
 	onpageshow="if(event.persisted) noBack();" onunload="">
 	<div class="error-block" id="advancePayment_error"
 		style="display: none; color: red;"></div>
-	<s:if test="%{hasErrors() || hasActionMessages()}">
+	<c:if test="%{hasErrors() || hasActionMessages()}">
 		<div class="error-block" style="color: red; align: left">
-			<s:actionerror />
-			<s:fielderror />
-			<s:actionmessage />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
-	<s:form action="advancePayment" theme="css_xhtml"
+	</c:if>
+	<form:form action="advancePayment" theme="css_xhtml"
 		name="advancePaymentViewForm">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param value="Advance Payment View" name="heading" />
 		</jsp:include>
-		<s:push value="model">
-			<s:if test="%{advanceRequisitionId != null}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+			<c:if test="%{advanceRequisitionId != null}">
 				<s:hidden name="advanceRequisitionId"
 					value="%{advanceRequisitionId}" id="advanceRequisitionId" />
-			</s:if>
-			<s:hidden name="paymentid" value="%{paymentheader.id}" />
+			</c:if>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="formmainbox">
 				<div class="formheading" />
 				<div class="subheadnew">
-					<s:text name="advance.payment.view.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 			</div>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -178,7 +180,7 @@ function balanceCheck(obj, actionName,actionDescription) {
 								<td width="10%" class="bluebox"></td>
 								<td class="bluebox"><strong><s:text
 											name="voucher.number" /></strong></td>
-								<td class="bluebox"><s:property value='%{voucherNumber}' /></td>
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 								<td class="bluebox"><strong><s:text
 											name="advancepayment.date" /></strong></td>
 								<td class="bluebox"><s:date name="voucherDate"
@@ -194,7 +196,7 @@ function balanceCheck(obj, actionName,actionDescription) {
 								<td class="greybox"><strong><s:text
 											name="arf.arfnumber" /></strong></td>
 								<td class="greybox"><a href="#"
-									onclick="viewARF('<s:property value='%{advanceRequisition.egAdvanceReqMises.sourcePath}'/>')">
+									onclick="viewARF('<!-- TODO: Manual migration required for custom Struts tag -->')">
 										<s:property
 											value="%{advanceRequisition.advanceRequisitionNumber}" />
 								</a></td>
@@ -214,14 +216,14 @@ function balanceCheck(obj, actionName,actionDescription) {
 								<td width="10%" class="greybox"></td>
 								<td class="greybox"><strong><s:text
 											name="arf.advance.coa" /></strong></td>
-								<td class="greybox"><s:iterator
+								<td class="greybox"><c:forEach
 										value="advanceRequisition.egAdvanceReqDetailses" var="detail">
-										<s:property value="#detail.chartofaccounts.glcode" /> - <s:property
+										${#detail.chartofaccounts.glcode} - <s:property
 											value="#detail.chartofaccounts.name" />
-									</s:iterator></td>
+									</c:forEach></td>
 								<td class="greybox"><strong><s:text
 											name="arf.advanceamount" /></strong></td>
-								<td class="greybox"><s:text name="payment.format.number">
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
 										<s:param name="value"
 											value="advanceRequisition.advanceRequisitionAmount" />
 									</s:text></td>
@@ -268,8 +270,8 @@ function balanceCheck(obj, actionName,actionDescription) {
 										value="%{commonBean.modeOfPayment}" /></td>
 								<td class="greybox"><strong><s:text
 											name="payment.amount" />(Rs)</strong></td>
-								<td class="greybox"><s:text name="payment.format.number">
-										<s:param name="value" value="paymentheader.paymentAmount" />
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text></td>
 							</tr>
 							<tr>
@@ -286,52 +288,52 @@ function balanceCheck(obj, actionName,actionDescription) {
 					<td colspan="5">&nbsp;</td>
 				</tr>
 
-				<s:if test="%{!hasActionMessages()}">
+				<c:if test="%{!hasActionMessages()}">
 					<tr>
-						<td><s:if test="%{!wfitemstate.equalsIgnoreCase('END')}">
+						<td><c:if test="%{!wfitemstate.equalsIgnoreCase('END')}">
 								<%@include file="../voucher/workflowApproval.jsp"%>
-							</s:if></td>
+							</c:if></td>
 					</tr>
-					<s:if test="%{showApprove}">
+					<c:if test="%{showApprove}">
 						<tr>
 							<td class="bluebox" style="text-align: center"><strong><s:text
-										name="arf.wf.label.comments" /></strong> <s:textarea name="comments"
+										path="arf.wf.label.comments" /></strong> <form:textarea path="comments"
 									id="comments" cols="100" rows="3" onblur="checkLength(this)"
 									value="%{getComments()}" /></td>
 						</tr>
-					</s:if>
-				</s:if>
+					</c:if>
+				</c:if>
 			</table>
-			<s:if test="%{showApprove}">
-				<s:if test="%{paymentheader.state.value != 'NEW'}">
-					<s:if test="%{paymentheader.state.id!=null}">
+			<c:if test="%{showApprove}">
+				<c:if test="%{paymentheader.state.value != 'NEW'}">
+					<c:if test="%{paymentheader.state.id!=null}">
 						<div id="labelAD" align="center">
 							<h5>
 								<a href="#"
-									onclick="showHistory(<s:property value='paymentheader.state.id'/>); "><s:text
+									onclick="showHistory(<!-- TODO: Manual migration required for custom Struts tag -->); "><s:text
 										name="message.show.history" /></a>
 							</h5>
 						</div>
-					</s:if>
-				</s:if>
+					</c:if>
+				</c:if>
 
 				<table align="center">
 					<tr class="buttonbottom" id="buttondiv" style="align: middle">
-						<s:hidden name="actionname" id="actionName" value="%{action}" />
-						<s:if test="%{!hasActionMessages()}">
-							<s:iterator value="%{getValidActions()}" var="p" status="s">
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<c:if test="%{!hasActionMessages()}">
+							<c:forEach value="%{getValidActions()}" var="p" status="s">
 								<td><s:submit type="submit" cssClass="buttonsubmit"
 										value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 										method="sendForApproval"
 										onclick="return balanceCheck(this, '%{name}','%{description}')" />
 								</td>
-							</s:iterator>
-							<s:if test="%{paymentheader.state.value.contains('Reject')}">
+							</c:forEach>
+							<c:if test="%{paymentheader.state.value.contains('Reject')}">
 								<td><s:submit method="cancelPayment" value="Cancel Payment"
 										cssClass="buttonsubmit"
 										onclick="document.getElementById('actionName').value='cancelPayment';" /></td>
-							</s:if>
-						</s:if>
+							</c:if>
+						</c:if>
 						<td><s:submit cssClass="button" id="printPreview"
 								value="Print Preview" onclick="printVoucher()" /></td>
 						<td><input type="button" value="Close" id="Close"
@@ -339,10 +341,10 @@ function balanceCheck(obj, actionName,actionDescription) {
 					</tr>
 				</table>
 				<script>
-		  <s:if test="%{hasActionMessages()}">   
+		  <c:if test="%{hasActionMessages()}">   
 			  if(opener && opener.top && opener.top.document.getElementById('inboxframe'))
 				opener.top.document.getElementById('inboxframe').contentWindow.egovInbox.refresh();
-		 </s:if>
+		 </c:if>
 			if(document.getElementById('actionName').value!='' ||( '<%=request.getParameter("showMode")%>'!=null && '<%=request.getParameter("showMode")%>'=='view'))
 			{
 				if(document.getElementById('wfBtn0'))
@@ -350,35 +352,35 @@ function balanceCheck(obj, actionName,actionDescription) {
 				if(document.getElementById('wfBtn1'))
 					document.getElementById('wfBtn1').style.display='none';
 			}
-		    <s:if test="%{showMode!='view'}" >
-				<s:if test="%{validateUser('balancecheck')}">
+		    <c:if test="%{showMode!='view'}" >
+				<c:if test="%{validateUser('balancecheck')}">
 						if(document.getElementById('bankbalanceRow')) {
 							document.getElementById('bankbalanceRow').style.visibility='visible';
-							document.getElementById('bankAccountBalance').innerHTML='<s:property value="%{balance}"/>'
+							document.getElementById('bankAccountBalance').innerHTML='${%{balance}}'
 						}  
-				</s:if>
-				<s:if test="%{balance=='-1'}">
-					bootbox.alert('<s:text name="validation.message.fundflow.report.notgenerated" />');
+				</c:if>
+				<c:if test="%{balance=='-1'}">
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					for(var i=0;i<document.forms[0].length;i++)
 					if(document.forms[0].elements[i].id!='Close')
 						document.forms[0].elements[i].disabled =true;   
-				</s:if>
-			</s:if>
+				</c:if>
+			</c:if>
 		
 		</script>
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				<input type="button" value="Close" id="Close"
 					onclick="javascript:window.close()" class="button" />
 			</s:else>
 			<div align="right" class="mandatory"
 				style="font-size: 11px; padding-right: 20px;">
 				*
-				<s:text name="default.message.mandatory" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			</div>
 			<!-- end of formmainbox -->
 		</s:push>
-	</s:form>
+	</form:form>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -68,7 +70,7 @@
 	src="${pageContext.request.contextPath}/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
 <script type="text/javascript"
 	src="/services/EGF/resources/javascript/tabber2.js?rnd=${app_release_no}"></script>
-<title><s:text name="remit.recovery.create.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script>
 var vTypeOfAccount="RECEIPTS_PAYMENTS,PAYMENTS"      ;                                 
 function loadBank(fundId){
@@ -81,7 +83,7 @@ function validateFund(){
 	var fund = document.getElementById('fundId').value;
 	var bank = document.getElementById('bank');
 	if(fund == -1 && bank.options.length==1){
-		bootbox.alert("<s:text name='msg.please.select.fund'/>")
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->")
 		return false;
 	}
 	return true;
@@ -89,7 +91,7 @@ function validateFund(){
 function populateAvailableBalance(accnumObj) 
 {
 			if (document.getElementById('voucherDate').value == '') {
-				bootbox.alert("<s:text name='msg.please.enter.voucher.date'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				accnumObj.options.value = -1;
 				return;
 			}
@@ -126,7 +128,7 @@ function checkLength(obj)
 {
 	if(obj.value.length>1024)
 	{
-		bootbox.alert('<s:text name="msg.max.1024.char.allowed.rest.will.truncated"/>')
+		bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->')
 		obj.value = obj.value.substring(1,1024);
 	}
 }
@@ -143,7 +145,7 @@ function populateAccNumbersForId(bankBranchId){
 }
 function onLoadTask(){
 	var fund = document.getElementById('fundId');
-	selectedFund = '<s:property value="fund.id"/>';
+	selectedFund = '${fund.id}';
 	for(i=0;i<fund.options.length;i++){
 		if(fund.options[i].value==selectedFund){
 			fund.options[i].selected = true;
@@ -152,24 +154,24 @@ function onLoadTask(){
 	document.getElementById('fundId').disabled=true;
 	//document.getElementById('voucherDate').value = day + "/" + month + "/" + year ;
 	loadBank(document.getElementById('fundId'))
-	<s:if test="%{bankaccount.id !=null}">
+	<c:if test="%{bankaccount.id !=null}">
 		var bank = document.getElementById('bank');
-		selectedBank = '<s:property value="bankaccount.bankbranch.id"/>';
+		selectedBank = '${bankaccount.bankbranch.id}';
 		for(i=0;i<bank.options.length;i++){
 			if(bank.options[i].value.split('-')[1]==selectedBank){
 				bank.options[i].selected = true;
 			}
 		}
-	</s:if>
-	<s:if test="%{bankaccount.id !=null}">
-		selectedAccount ='<s:property value="bankaccount.id"/>';
+	</c:if>
+	<c:if test="%{bankaccount.id !=null}">
+		selectedAccount ='${bankaccount.id}';
 		var bankAccount = document.getElementById('bankaccount');
 		for(i=0;i<bankAccount.options.length;i++){
 			if(bankAccount.options[i].value==selectedAccount){
 				bankAccount.options[i].selected = true;
 			}
 		}
-	</s:if>
+	</c:if>
 }
 
 function populateUser(){
@@ -193,17 +195,17 @@ function populateUser(){
 			  return false;
 		if(document.getElementById('vouchermis.function')!=null && document.getElementById('vouchermis.function').value=='-1')
 		   {
-		   document.getElementById('lblError').innerHTML='<s:text name="msg.please.select.function"/>';
+		   document.getElementById('lblError').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 		   return false;
 		   }
 		   if(document.getElementById('bank').value=='-1')
 		   {
-		   document.getElementById('lblError').innerHTML='<s:text name="msg.please.select.bank"/>';
+		   document.getElementById('lblError').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 		   return false;
 		   }
 		   if(document.getElementById('bankaccount').value=='-1')
 		   {
-		   document.getElementById('lblError').innerHTML='<s:text name="msg.please.select.bank.account.number"/>';
+		   document.getElementById('lblError').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 		   return false;
 		   } 
 		  
@@ -228,9 +230,9 @@ function onLoad(){
 }
 function onSubmit()
 {
-	var balanceCheckMandatory='<s:text name="payment.mandatory"/>';
-	var balanceCheckWarning='<s:text name="payment.warning"/>';
-	var noBalanceCheck='<s:text name="payment.none"/>';
+	var balanceCheckMandatory='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var balanceCheckWarning='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var noBalanceCheck='<!-- TODO: Manual migration required for custom Struts tag -->';
 	if(validate()){
 		 var myform = jQuery('#remittanceForm');
 		// re-disabled the set of inputs that you previously
@@ -243,11 +245,11 @@ function onSubmit()
 		  return true;
 		}
 	else if(!balanceCheck() && jQuery("#bankBalanceCheck").val()==balanceCheckMandatory){
-			 bootbox.alert("<s:text name='msg.insufficient.bank.balance'/>");
+			 bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			 return false;
 			}
 	else if(!balanceCheck() && jQuery("#bankBalanceCheck").val()==balanceCheckWarning){
-		 var msg = confirm("<s:text name='msg.insuff.bank.bal.do.you.want.to.process'/>");
+		 var msg = confirm("<!-- TODO: Manual migration required for custom Struts tag -->");
 		 if (msg == true) {
 			 disableAll();
 			 document.remittanceForm.action='${pageContext.request.contextPath}/deduction/remitRecovery-create.action';
@@ -296,8 +298,8 @@ if(voucherDate<=cutOffDate)
 	return true;
 }
 else{
-	var msg1='<s:text name="wf.vouchercutoffdate.message"/>';
-	var msg2='<s:text name="wf.cutoffdate.msg"/>';
+	var msg1='<!-- TODO: Manual migration required for custom Struts tag -->';
+	var msg2='<!-- TODO: Manual migration required for custom Struts tag -->';
 	bootbox.alert(msg1+" "+document.getElementById("cutOffDate").value+" "+msg2);
 		return false;
 	}
@@ -305,13 +307,13 @@ else{
 </script>
 </head>
 <body onload="return onLoad();">
-	<s:form action="remitRecovery" theme="simple" name="remittanceForm"
+	<form:form action="remitRecovery" theme="simple" name="remittanceForm"
 		id="remittanceForm">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Remittance Recovery" />
 			</jsp:include>
-			<s:token />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<div align="center">
 				<font style='color: red;'>
 					<p class="error-block" id="lblError"></p>
@@ -319,14 +321,14 @@ else{
 			</div>
 			<span class="mandatory1">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
-				</div> <s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</div> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="remit.recovery.new.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div id="budgetSearchGrid"
 					style="display: block; width: 100%; border-top: 1px solid #ccc;">
@@ -341,7 +343,7 @@ else{
 												<div class="tabber">
 													<div class="tabbertab" id="searchtab">
 														<h2>
-															<s:text name="remit.recovery.header" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</h2>
 														<span>
 															<table width="100%" border="0" cellspacing="0"
@@ -353,19 +355,19 @@ else{
 																</tr>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
-																	<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-																		<td class="bluebox"><s:text name="voucher.number" /><span
+																	<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+																		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 																			class="mandatory1">*</span></td>
-																		<td class="bluebox"><s:textfield
+																		<td class="bluebox"><form:input
 																				name="voucherNumber" id="vouchernumber" /></td>
-																	</s:if>
+																	</c:if>
 																	<td class="bluebox" width="18%"><s:text
 																			name="voucher.date" />&nbsp;<span class="mandatory1">*</span></td>
 																	<s:date name='voucherDate' var="voucherDateId"
 																		format='dd/MM/yyyy' />
 																	<td class="bluebox" width="34%">
 																		<div name="daterow">
-																			<s:textfield name="voucherDate" id="voucherDate"
+																			<form:input path="voucherDate" id="voucherDate"
 																				maxlength="10" readonly="true"
 																				onkeyup="DateFormat(this,this.value,event,false,'3')"
 																				size="15" value="%{voucherDateId}" />
@@ -388,9 +390,9 @@ else{
 																	<egov:ajaxdropdown id="bank" fields="['Text','Value']"
 																		dropdownId="bank"
 																		url="voucher/common-ajaxLoadBanksByFundAndType.action" />
-																	<td class="bluebox"><s:text name="bank" />&nbsp;<span
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;<span
 																		class="bluebox"><span class="mandatory1">*</span></span></td>
-																	<td class="bluebox"><s:select name="bank"
+																	<td class="bluebox"><form:select path="bank"
 																			id="bank" list="dropdownData.bankList"
 																			listKey="bank.id+'-'+id"
 																			listValue="bank.name+' '+branchname" headerKey="-1"
@@ -399,9 +401,9 @@ else{
 																	<egov:ajaxdropdown id="accountNumber"
 																		fields="['Text','Value']" dropdownId="bankaccount"
 																		url="voucher/common-ajaxLoadAccNumAndType.action" />
-																	<td class="bluebox"><s:text name="account.number" />&nbsp;<span
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;<span
 																		class="bluebox"><span class="mandatory1">*</span></span></td>
-																	<td class="bluebox"><s:select
+																	<td class="bluebox"><form:select
 																			name="commonBean.accountNumberId" id="bankaccount"
 																			list="dropdownData.accNumList" listKey="id"
 																			listValue="chartofaccounts.glcode+'--'+accountnumber+'--'+accounttype"
@@ -410,7 +412,7 @@ else{
 																</tr>
 																<tr class="greybox">
 																	<td class="greybox">&nbsp;</td>
-																	<td class="greybox"><s:text name="lbl.payment.amount"/> &nbsp;</td>
+																	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> &nbsp;</td>
 																	<td class="greybox"><label name="remitAmount"
 																		id="remitAmount" /></td>
 																	<egov:updatevalues id="availableBalance"
@@ -420,7 +422,7 @@ else{
 																		style="display: none" width="18%"><s:text
 																				name="balance.available" />&nbsp;</span></td>
 																	<td class="greybox"><span id="balanceAvl"
-																		width="32%"><s:textfield
+																		width="32%"><form:input
 																				name="commonBean.availableBalance"
 																				id="availableBalance" readonly="true"
 																				style="text-align:right"
@@ -428,24 +430,24 @@ else{
 																</tr>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
-																	<td class="bluebox"><s:text name="modeofpayment" />&nbsp;</td>
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;</td>
 																	<td class="bluebox">
 																	<!-- s:radio name="modeOfPayment"
 																			id="paymentMode" list="%{modeOfCollectionMap}" value="defaultPaymentMode"/> -->
-																	<s:iterator value="modeOfCollectionMap" var="mop">
-																	<s:if test="#mop.key eq defaultPaymentMode">
-																		<s:property value="#mop.value"/>
-																		<s:hidden name="modeOfPayment" value="%{defaultPaymentMode}"/>
-																	</s:if>
-																	</s:iterator>
+																	<c:forEach value="modeOfCollectionMap" var="mop">
+																	<c:if test="#mop.key eq defaultPaymentMode">
+																		${#mop.value}
+																		<!-- TODO: Manual migration required for custom Struts tag -->
+																	</c:if>
+																	</c:forEach>
 																	</td>
-																	<td class="bluebox"><s:text name="remit.party.to" />&nbsp;</td>
-																	<td class="bluebox"><s:textfield name="remittedTo"
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;</td>
+																	<td class="bluebox"><form:input path="remittedTo"
 																			id="remittedTo" />&nbsp;</td>
 																</tr>
 																<tr>
 																	<td class="greybox">&nbsp;</td>
-																	<td class="greybox"><s:text name="lbl.narration"/> </td>
+																	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
 																	<td class="greybox" colspan="4"><textarea
 																			name="description" id="narration" type="text"
 																			style="width: 580px;"></textarea></td>
@@ -456,14 +458,14 @@ else{
 													</div>
 													<div class="tabbertab" id="contractortab">
 														<h2>
-															<s:text name="remit.recovery.detais" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
 														</h2>
 														<span>
 															<table align="center" border="0" cellpadding="0"
 																cellspacing="0" class="newtable">
 																<tr>
 																	<td align="center" colspan="6" class="serachbillhead">
-																		<s:text name="remit.recovery.detais" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																	</td>
 																</tr>
 
@@ -472,14 +474,14 @@ else{
 																		<div style="float: left; width: 100%;">
 
 																			<jsp:include page="remitRecoveryPayment-form.jsp" />
-																			<s:hidden name="remittanceBean.recoveryId" />
-																			<s:hidden name="typeOfAccount" id="typeOfAccount" value="%{typeOfAccount}" />
+																			<!-- TODO: Manual migration required for custom Struts tag -->
+																			<!-- TODO: Manual migration required for custom Struts tag -->
 																			<div class="yui-skin-sam" align="center">
 																				<div id="recoveryDetailsTableNew"></div>
 																			</div>
-																			<s:if test="%{isPartialPaymentEnabled}">
-																			<s:hidden name="selectedPartialDeductionRows"/>
-																			</s:if>
+																			<c:if test="%{isPartialPaymentEnabled}">
+																			<!-- TODO: Manual migration required for custom Struts tag -->
+																			</c:if>
 
 																			<script>
 								populateRecoveryDetailsForPayment();
@@ -491,7 +493,7 @@ else{
 																<tr>
 																	<td width="800"></td>
 																	<td>Total Amount</td>
-																	<td><s:textfield name="remittanceBean.totalAmount"
+																	<td><form:input path="remittanceBean.totalAmount"
 																			id="totalAmount" style='width:90px;text-align:right'
 																			readonly="true" value="0" /></td>
 																</tr>
@@ -513,25 +515,25 @@ else{
 					</table>
 
 				</div>
-				<s:hidden type="hidden" id="selectedRows" name="selectedRows" />
-				<s:hidden name="cutOffDate" id="cutOffDate" />
-				<s:hidden name="bankBalanceCheck" id="bankBalanceCheck" value="%{bankBalanceCheck}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<%@ include file='../payment/commonWorkflowMatrix.jsp'%>
 				<%@ include file='../workflow/commonWorkflowMatrix-button.jsp'%>
 			</div>
 
 
 			<script type="text/javascript">
-	//bootbox.alert('<s:property value="fund.id"/>');                               
-	//populatebank({fundId:<s:property value="fundId.id"/>,typeOfAccount:"PAYMENT,RECEIPTS_PAYMENTS"});
-	populatebank({fundId:<s:property value="fundId.id"/>,typeOfAccount:vTypeOfAccount})	
+	//bootbox.alert('${fund.id}');                               
+	//populatebank({fundId:${fundId.id},typeOfAccount:"PAYMENT,RECEIPTS_PAYMENTS"});
+	populatebank({fundId:${fundId.id},typeOfAccount:vTypeOfAccount})	
 	calcTotalForPayment();
 	</script>
 
-			<s:if test="%{!validateUser('createpayment')}">
+			<c:if test="%{!validateUser('createpayment')}">
 				<script>
 			//document.getElementById('searchBtn').disabled=true;
-			document.getElementById('Errors').innerHTML='<s:text name="payment.invalid.user"/>';
+			document.getElementById('Errors').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
@@ -541,8 +543,8 @@ else{
 			disableControls(0,true);
 			document.getElementById("closeButton").disabled=false;
 		</script>
-			</s:if>
-			<s:if test="%{validateUser('balancecheck')}">
+			</c:if>
+			<c:if test="%{validateUser('balancecheck')}">
 				<script>
 			if(document.getElementById('balanceText'))
 			{
@@ -551,10 +553,10 @@ else{
 			}
 			
 		</script>
-			</s:if>
+			</c:if>
 		</s:push>
 
-	</s:form>
+	</form:form>
 
 
 </body>

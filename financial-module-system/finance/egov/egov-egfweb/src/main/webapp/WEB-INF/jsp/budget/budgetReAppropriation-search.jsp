@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,32 +54,32 @@
 
 <html>
 <head>
-<title><s:text name="budgetReAppropriation.search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
-	<s:form action="budgetReAppropriation" theme="simple">
+	<form:form action="budgetReAppropriation" theme="simple">
 		<jsp:include page="budgetHeader.jsp" />
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="budgetReAppropriation.search" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table align="center" width="80%" cellpadding="0" cellspacing="0">
 				<jsp:include page="budgetReAppropriation-filter.jsp" />
 				<tr>
 					<td class="greybox">&nbsp;</td>
-					<td class="greybox"><s:text name="budgetdetail.budgetGroup" /></td>
-					<td class="greybox"><s:select
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select
 							list="dropdownData.budgetGroupList" listKey="id" listValue="name"
 							name="budgetDetail.budgetGroup.id" headerKey="0"
 							headerValue="--- Select ---" value="budgetGroup.id"
-							id="budgetReAppropriation_budgetGroup"></s:select></td>
+							id="budgetReAppropriation_budgetGroup"></form:select></td>
 
-					<td class="greybox"><s:text name="budget.reappropriation.type" /></td>
-					<td class="greybox"><s:select
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select
 							list="#{'B':'Both','A':'Addition','R':'Reduction'}" name="type"
-							id="type"></s:select></td>
+							id="type"></form:select></td>
 				</tr>
 				<tr />
 				<tr>
@@ -96,101 +98,101 @@
 				<table width="100%" border="0" align="center" cellpadding="0"
 					cellspacing="0" class="tablebottom">
 					<tr>
-						<th class="bluebgheadtd"><s:text name="lbl.sr.no"/> </th>
-						<s:if
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						<c:if
 							test="%{shouldShowHeaderField('fund')|| shouldShowGridField('fund')}">
-							<th class="bluebgheadtd"><s:text name="fund" /></th>
-						</s:if>
-						<s:if
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						</c:if>
+						<c:if
 							test="%{shouldShowHeaderField('executingDepartment')|| shouldShowGridField('executingDepartment')}">
-							<th class="bluebgheadtd"><s:text name="lbl.executing.department"/> </th>
-						</s:if>
-						<s:if
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						</c:if>
+						<c:if
 							test="%{shouldShowField('function')|| shouldShowGridField('function')}">
-							<th class="bluebgheadtd"><s:text name="function" /></th>
-						</s:if>
-						<s:if
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						</c:if>
+						<c:if
 							test="%{shouldShowHeaderField('functionary')|| shouldShowGridField('functionary')}">
-							<th class="bluebgheadtd"><s:text name="functionary" /></th>
-						</s:if>
-						<s:if
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						</c:if>
+						<c:if
 							test="%{shouldShowHeaderField('scheme')|| shouldShowGridField('scheme')}">
-							<th class="bluebgheadtd"><s:text name="scheme" /></th>
-						</s:if>
-						<s:if
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						</c:if>
+						<c:if
 							test="%{shouldShowHeaderField('subScheme')|| shouldShowGridField('subScheme')}">
-							<th class="bluebgheadtd"><s:text name="subscheme" /></th>
-						</s:if>
-						<s:if
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						</c:if>
+						<c:if
 							test="%{shouldShowHeaderField('boundary')|| shouldShowGridField('boundary')}">
-							<th class="bluebgheadtd"><s:text name="field" /></th>
-						</s:if>
-						<th class="bluebgheadtd"><s:text name="lbl.seq.no"/> </th>
-						<th class="bluebgheadtd"><s:text name="lbl.sanction.budget"/> </th>
-						<th class="bluebgheadtd"><s:text name="lbl.additional.amount.sought"/> </th>
-						<th class="bluebgheadtd"><s:text name="lbl.reduction.amount.sought"/> </th>
-						<th class="bluebgheadtd"><s:text name="lbl.cumulative.amount"/> </th>
+							<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+						</c:if>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
+						<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> </th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
 					<c:set var="budgetdetailid" value="0" />
-					<s:iterator var="p" value="reAppropriationList" status="s">
+					<c:forEach var="p" value="reAppropriationList" status="s">
 						<tr>
 							<c:if test='${budgetdetailid!=budgetDetail.id}'>
 								<c:set var="totalAmt" value="${budgetDetail.approvedAmount}" />
 							</c:if>
 							<td class="<c:out value="${trclass}"/>"><s:property
 									value="#s.index+1" /></td>
-							<s:if
+							<c:if
 								test="%{shouldShowHeaderField('fund')|| shouldShowGridField('fund')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.fund.name}" /></td>
-							</s:if>
-							<s:if
+							</c:if>
+							<c:if
 								test="%{shouldShowHeaderField('executingDepartment')|| shouldShowGridField('executingDepartment')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.executingDepartment.deptName}" /></td>
-							</s:if>
-							<s:if
+							</c:if>
+							<c:if
 								test="%{shouldShowField('function')|| shouldShowGridField('function')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.function.name}" /></td>
-							</s:if>
-							<s:if
+							</c:if>
+							<c:if
 								test="%{shouldShowHeaderField('functionary')|| shouldShowGridField('functionary')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.functionary.name}" /></td>
-							</s:if>
-							<s:if
+							</c:if>
+							<c:if
 								test="%{shouldShowHeaderField('scheme')|| shouldShowGridField('scheme')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.scheme.name}" /></td>
-							</s:if>
-							<s:if
+							</c:if>
+							<c:if
 								test="%{shouldShowHeaderField('subScheme')|| shouldShowGridField('subScheme')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.subScheme.name}" /></td>
-							</s:if>
-							<s:if
+							</c:if>
+							<c:if
 								test="%{shouldShowHeaderField('boundary')|| shouldShowGridField('boundary')}">
 								<td class="<c:out value="${trclass}"/>"><s:property
 										value="%{budgetDetail.boundary.name}" /></td>
-							</s:if>
+							</c:if>
 							<td style="text-align: right" class="<c:out value="${trclass}"/>">
-								<s:property value="%{reAppropriationMisc.sequenceNumber}" />
+								${%{reAppropriationMisc.sequenceNumber}}
 							</td>
 							<td style="text-align: right" class="<c:out value="${trclass}"/>">
-								<s:text name="format.number">
-									<s:param value="%{budgetDetail.approvedAmount}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
 							</td>
 							<td style="text-align: right" class="<c:out value="${trclass}"/>">
-								<s:text name="format.number">
-									<s:param value="%{additionAmount}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
 							</td>
 							<td style="text-align: right" class="<c:out value="${trclass}"/>">
-								<s:text name="format.number">
-									<s:param value="%{deductionAmount}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</s:text>
 							</td>
 							<c:if
@@ -214,8 +216,8 @@
 							</c:choose>
 							<c:set var="budgetdetailid" value="${budgetDetail.id}" />
 						</tr>
-					</s:iterator>
-					<s:hidden name="targetvalue" value="%{target}" id="targetvalue" />
+					</c:forEach>
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</table>
 			</div>
 			<br /> <br />
@@ -229,26 +231,26 @@
 				</table>
 			</div>
 			<br /> <br />
-	</s:form>
+	</form:form>
 	<script>
-			<s:if test="%{reAppropriationList.size==0}">
+			<c:if test="%{reAppropriationList.size==0}">
 				dom.get('msgdiv').style.display='block';
-			</s:if>
-			<s:if test="%{reAppropriationList.size!=0}">
+			</c:if>
+			<c:if test="%{reAppropriationList.size!=0}">
 				dom.get('msgdiv').style.display='none';
 				dom.get('listid').style.display='block';
-			</s:if>
+			</c:if>
 			
 			function checkMandatory()
 			{
 				if(document.getElementById('financialYear').value==0)
 				{
-					bootbox.alert('<s:text name="msg.please.select.financial.year"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				if(document.getElementById('budgetReAppropriation_fund').value==0 && document.getElementById('budgetReAppropriation_executingDepartment').value==0 && document.getElementById('budgetReAppropriation_function').value==0)
 				{
-					bootbox.alert('<s:text name="msg.please.select.fund.department.or.functionary"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				return true;

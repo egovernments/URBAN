@@ -75,10 +75,11 @@ public class ModuleRepositoryImpl implements ModuleRepositoryCustom {
                 append("AND mod.enabled=true AND act.enabled = true AND act.application=mod.id AND mod.parentmodule is null ORDER BY mod.ordernumber ASC");
         //entityManager.setFlushMode(FlushModeType.COMMIT);
        
-//        return entityManager.createNativeQuery(sql.toString()).
-//                setParameter("roles", roles).
-//                setFlushMode(FlushModeType.COMMIT).
-//                getResultList();
+        // TODO: Implement Spring equivalent for getResultList()
+        // return entityManager.createNativeQuery(sql.toString()).
+        //         setParameter("roles", roles).
+        //         setFlushMode(FlushModeType.COMMIT).
+        //         getResultList();
   
         	
         return entityManager.createNativeQuery(sql.toString()).

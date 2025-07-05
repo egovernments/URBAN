@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,30 +55,30 @@
 
 <html>
 <head>
-<title><s:if test="showMode == 'edit'">
-		<s:text name="subscheme.modify.title" />
-	</s:if> <s:else>
-		<s:text name="masters.subscheme.searchview.title" />
+<title><c:if test="showMode == 'edit'">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if> <c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else></title>
 </head>
 <body>
 	<jsp:include page="../budget/budgetHeader.jsp" />
-	<s:actionmessage theme="simple" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
 	<div class="formmainbox">
 
 		<div class="subheadnew">
-			<s:if test="showMode == 'edit'">
-				<s:text name="subscheme.modify.title" />
-			</s:if>
-			<s:else>
-				<s:text name="masters.subscheme.searchview.title" />
+			<c:if test="showMode == 'edit'">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
+			<c:otherwise>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</s:else>
 		</div>
 
-		<s:form name="subSchemeForm" action="subScheme" theme="simple">
+		<form:form name="subSchemeForm" action="subScheme" theme="simple">
 
-			<s:hidden name="showMode" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 
 			<table align="center" width="99.5%" cellpadding="0" cellspacing="0">
 				<tr>
@@ -91,17 +93,17 @@
 					<td class="bluebox"><s:text
 							name="masters.subscheme.search.fund" /><span class="mandatory1">
 							*</span></td>
-					<td class="bluebox"><s:select list="dropdownData.fundList"
+					<td class="bluebox"><form:select list="dropdownData.fundList"
 							id="fundId" listKey="id" listValue="name" name="fundId"
 							headerKey="0" headerValue="%{getText('lbl.choose.options')}"
-							onchange="loadScheme(this)"></s:select> <egov:ajaxdropdown
+							onchange="loadScheme(this)"></form:select> <egov:ajaxdropdown
 							id="schemeId" dropdownId="schemeId" fields="['Text','Value']"
 							url="voucher/common-ajaxLoadSchemes.action" selectedValue="%{id}" />
 					</td>
 					<td class="bluebox"><s:text
 							name="masters.subscheme.search.scheme" /></td>
 
-					<td class="bluebox"><s:select name="schemeId" id="schemeId"
+					<td class="bluebox"><form:select path="schemeId" id="schemeId"
 							list="dropdownData.schemeList" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" listKey="id" listValue="name"
 							onchange="loadSubScheme(this)" /></td>
@@ -112,9 +114,9 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td class="greybox"><s:text name="masters.subscheme.search" />
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
-					<td class="greybox"><s:select name="subSchemeId"
+					<td class="greybox"><form:select path="subSchemeId"
 							id="subSchemeId" list="dropdownData.subSchemeList" headerKey="-1"
 							headerValue="%{getText('lbl.choose.options')}" listKey="id" listValue="name" />
 					</td>
@@ -132,13 +134,13 @@
 	</div>
 
 	<div class="buttonbottom">
-		<input type="submit" class="buttonsubmit" value="<s:text name='lbl.search'/>"
+		<input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 			id="saveButton" name="button" onclick="return submitForm();" /> <input
-			type="button" id="Close" value="<s:text name='lbl.close'/>"
+			type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 			onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />
 	</div>
 
-	<s:if test="%{subSchemeList.size!=0}">
+	<c:if test="%{subSchemeList.size!=0}">
 		<table width="100%" border="0" align="center" cellpadding="0"
 			cellspacing="0" class="setborder" style="border-collapse: inherit;">
 			<tr>
@@ -160,13 +162,13 @@
 			</tr>
 
 			<c:set var="trclass" value="greybox" />
-			<s:iterator var="sub" value="subSchemeList" status="s">
+			<c:forEach var="sub" value="subSchemeList" status="s">
 				<tr>
 					<td class="<c:out value='${trclass}'/>"><s:property
 							value="#s.index+1" /></td>
 					<td class="<c:out value='${trclass}'/>"><a href="#"
-						onclick="urlLoad('<s:property value="%{id}" />','<s:property value="%{showMode}" />');"
-						id="sourceLink" /> <s:label value="%{code}" /> </a></td>
+						onclick="urlLoad('${%{id}}','${%{showMode}}');"
+						id="sourceLink" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 					<td class="<c:out value='${trclass}'/>"><s:property
 							value="name" /></td>
 					<td class="<c:out value='${trclass}'/>"><s:property
@@ -175,8 +177,8 @@
 							value="scheme.fund.name" /></td>
 					<td class="<c:out value='${trclass}'/>"><s:property
 							value="initialEstimateAmount" /></td>
-					<td class="<c:out value="${trclass}"/>"><s:if
-							test="%{isactive==true}">Yes</s:if> <s:else>No</s:else></td>
+					<td class="<c:out value="${trclass}"/>"><c:if
+							test="%{isactive==true}">Yes</c:if> <c:otherwise>No</s:else></td>
 				</tr>
 				<c:choose>
 					<c:when test="${trclass=='greybox'}">
@@ -186,32 +188,32 @@
 						<c:set var="trclass" value="greybox" />
 					</c:when>
 				</c:choose>
-			</s:iterator>
+			</c:forEach>
 
 		</table>
-	</s:if>
+	</c:if>
 
 
-	<s:if test="%{subSchemeList.size==0}">
+	<c:if test="%{subSchemeList.size==0}">
 		<div id="msgdiv" style="display: block">
 			<table align="center" class="tablebottom" width="80%">
 				<tr>
-					<th class="bluebgheadtd" colspan="7"><s:text name="msg.no.record.found"/>
+					<th class="bluebgheadtd" colspan="7"><!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 				</tr>
 			</table>
 		</div>
 
-	</s:if>
+	</c:if>
 
-	</s:form>
-
-
+	</form:form>
 
 
 
-	<s:actionerror />
-	<s:fielderror />
+
+
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
 
 	<script>
@@ -239,7 +241,7 @@
 	    function submitForm(){
 		    if(document.getElementById("fundId").value==0)
 			    {
-		    	bootbox.alert("<s:text name='msg.please.select.fund'/>");
+		    	bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			    }
 	    	document.subSchemeForm.action='/services/EGF/masters/subScheme-search.action';

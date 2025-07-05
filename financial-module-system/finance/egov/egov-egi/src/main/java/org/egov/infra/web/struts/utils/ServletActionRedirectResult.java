@@ -48,20 +48,36 @@
 
 package org.egov.infra.web.struts.utils;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 /**
- * Extension for {@link org.apache.struts2.result.ServletActionRedirectResult}<br/>
- * adding extra functionality to include model id, module name with request parameter.
- **/
-public class ServletActionRedirectResult extends org.apache.struts2.result.ServletActionRedirectResult {
+ * Spring utility for handling redirects with additional parameters.
+ * Migrated from Struts ServletActionRedirectResult.
+ */
+@Component
+public class ServletActionRedirectResult {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public void setModelId(String id) {
-		this.addParameter("model.id", id);
+	/**
+	 * Add model ID parameter to redirect attributes
+	 */
+	public void setModelId(RedirectAttributes redirectAttributes, String id) {
+		redirectAttributes.addAttribute("model.id", id);
 	}
 	
-	public void setModuleName(String moduleName) {
-		this.addParameter("moduleName", moduleName);
+	/**
+	 * Add module name parameter to redirect attributes
+	 */
+	public void setModuleName(RedirectAttributes redirectAttributes, String moduleName) {
+		redirectAttributes.addAttribute("moduleName", moduleName);
 	}
 	
+	/**
+	 * Add a custom parameter to redirect attributes
+	 */
+	public void addParameter(RedirectAttributes redirectAttributes, String key, String value) {
+		redirectAttributes.addAttribute(key, value);
+	}
 }

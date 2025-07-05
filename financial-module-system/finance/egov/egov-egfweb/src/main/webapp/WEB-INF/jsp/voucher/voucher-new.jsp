@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -172,13 +174,13 @@
 	}
 	
 	var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	
 	var makeSubLedgerTable = function() {
 		var subledgerColumns = [ 
@@ -248,12 +250,12 @@ PageManager.DataService.callDataService("subschemelist");
 <body
 	onload="loadDropDownCodes();loadDropDownCodesFunction();refreshInbox()">
 
-	<s:form action="voucher" theme="simple">
+	<form:form action="voucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="JV-Create" />
 		</jsp:include>
 
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="formheading"></div>
@@ -264,12 +266,12 @@ PageManager.DataService.callDataService("subschemelist");
 						<jsp:include page="voucher-filter.jsp" />
 						<tr>
 							<td class="bluebox">Financing Source &nbsp;</td>
-							<td class="bluebox"><s:select name="financingSourceId"
+							<td class="bluebox"><form:select path="financingSourceId"
 									id="financingSourceId" list="dropdownData.subschemeList"
 									listKey="id" listValue="name" headerKey="-1"
 									headerValue="----Choose----" /></td>
 							<td width="23%" class="bluebox">Narration &nbsp;</td>
-							<td colspan="3" class="bluebox"><s:textarea name="narration" /></td>
+							<td colspan="3" class="bluebox"><form:textarea path="narration" /></td>
 						</tr>
 					</table>
 				</div>
@@ -309,7 +311,7 @@ PageManager.DataService.callDataService("subschemelist");
 					<table border="0" width="80%">
 						<tr>
 							<td class="bluebox">Comments</td>
-							<td class="bluebox"><s:textarea name="comments"
+							<td class="bluebox"><form:textarea path="comments"
 									id="comments" cols="50" rows="3"
 									value="%{voucherHeader.state.text1}" /></td>
 						</tr>
@@ -329,7 +331,7 @@ PageManager.DataService.callDataService("subschemelist");
 			</div>
 		</div>
 		<div id="codescontainer"></div>
-	</s:form>
+	</form:form>
 
 </body>
 

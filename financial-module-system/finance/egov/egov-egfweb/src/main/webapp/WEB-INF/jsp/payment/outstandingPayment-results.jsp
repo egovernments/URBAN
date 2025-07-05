@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,7 +50,7 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{paymentHeaderList.size()>0}">
+<c:if test="%{paymentHeaderList.size()>0}">
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -63,8 +65,8 @@
 							<th class="subheadnew" width="8%" bgcolor="#CCCCCC">Running
 								Balance<input type="label" style="text-align: right;"
 								readonly="readonly"
-								value='<s:text name="payment.format.number">
-					<s:param name="value" value="%{bankBalance.add(currentReceiptsAmount)}"/></s:text>'
+								value='<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></s:text>'
 								id="rBalance" />
 							</th>
 						</tr>
@@ -89,30 +91,30 @@
 						</tr>
 						<tr>
 							<td class="blueborderfortd"><div align="center">
-									<s:property value="bankAccount.bankbranch.bank.name" />
+									${bankAccount.bankbranch.bank.name}
 									&nbsp;
 								</div></td>
 							<td class="blueborderfortd"><div align="center">
-									<s:property value="bankAccount.bankbranch.branchname" />
+									${bankAccount.bankbranch.branchname}
 									&nbsp;
 								</div></td>
 							<td class="blueborderfortd"><div align="center">
-									<s:property value="bankAccount.accountnumber" />
+									${bankAccount.accountnumber}
 									&nbsp;
 								</div></td>
 							<td class="blueborderfortd"><div align="center">
-									<s:property value="bankAccount.chartofaccounts.glcode" />
+									${bankAccount.chartofaccounts.glcode}
 								</div></td>
 							<td class="blueborderfortd"><div align="right">
-									<s:text name="payment.format.number">
-										<s:param name="value" value="bankBalance" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
+										<!-- TODO: Manual migration required for custom Struts tag -->
 									</s:text>
 								</div></td>
 
 
 							<td class="blueborderfortd">
 								<div align="right">
-									<s:text name="payment.format.number">
+									<!-- TODO: Manual migration required for custom Struts tag -->
 										<s:param name="value"
 											value="%{bankBalance.add(currentReceiptsAmount)}" />
 									</s:text>
@@ -145,13 +147,13 @@
 							<th class="bluebgheadtd" width="10%">Net Payable</th>
 							<th class="bluebgheadtd" width="10%">Select</th>
 						</tr>
-						<s:iterator value="paymentHeaderList" status="stat" var="p">
+						<c:forEach value="paymentHeaderList" status="stat" var="p">
 							<tr>
 								<td class="blueborderfortd"><s:property
 										value="#stat.index+1" />&nbsp;</td>
 								<td class="blueborderfortd"><div align="center">
 										<a href="javascript:void(0);"
-											onclick='viewVoucher(<s:property value="voucherheader.id"/>);'><s:property
+											onclick='viewVoucher(${voucherheader.id});'><s:property
 												value="voucherheader.voucherNumber" /> </a>&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
@@ -167,18 +169,18 @@
 								<td class="blueborderfortd"><div align="center">
 										<input type="text" style="text-align: right;"
 											readonly="readonly"
-											value='<s:text name="payment.format.number">
-					<s:param name="value" value="paymentAmount"/></s:text>'
-											id='netPayable<s:property value="#stat.index"/>' />&nbsp;
+											value='<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></s:text>'
+											id='netPayable${#stat.index}' />&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
 										<input type="checkbox" name="selectVhs"
-											value='<s:property value="voucherheader.id"/>'
-											id='chbox_<s:property value="#stat.index"/>'
-											onclick='computeBalance(<s:property value="#stat.index"/>)' />&nbsp;
+											value='${voucherheader.id}'
+											id='chbox_${#stat.index}'
+											onclick='computeBalance(${#stat.index})' />&nbsp;
 									</div></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -192,5 +194,5 @@
 			href="javascript:void(0);">PDF</a></label>
 	</div>
 	</table>
-</s:if>
-<s:else>No data found</s:else>
+</c:if>
+<c:otherwise>No data found</s:else>

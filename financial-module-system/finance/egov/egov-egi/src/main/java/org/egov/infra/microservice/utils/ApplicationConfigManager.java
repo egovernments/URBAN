@@ -127,7 +127,7 @@ public class ApplicationConfigManager {
     public String getEgovCommonMasterSerHost(){
         return StringUtils.isNotBlank(egovCommonMasterSerHost) ? egovCommonMasterSerHost : egovSerHost; 
     }
-    public String getEegovBillingSerHost(){
+    public String getEgovBillingSerHost(){
         return StringUtils.isNotBlank(egovBillingSerHost) ? egovBillingSerHost : egovSerHost; 
     }
     public String getEgovCollSerHost(){
@@ -153,6 +153,30 @@ public class ApplicationConfigManager {
     }
     public String getEgovFileStoreDownloadFile(){
         return StringUtils.isNotBlank(egovFileStoreDownloadFile) ? egovFileStoreDownloadFile : egovSerHost; 
+    }
+    
+    public String getCollSerPaymentSearch(){
+        return StringUtils.isNotBlank(collSerPaymentSearch) ? collSerPaymentSearch : egovSerHost; 
+    }
+    
+    public String getCollSerPaymentCreate(){
+        return StringUtils.isNotBlank(collSerPaymentCreate) ? collSerPaymentCreate : egovSerHost; 
+    }
+    
+    public String getCollSerPaymentWorkflow(){
+        return StringUtils.isNotBlank(collSerPaymentWorkflow) ? collSerPaymentWorkflow : egovSerHost; 
+    }
+    
+    public String getCollSerRemittanceSearch(){
+        return StringUtils.isNotBlank(collSerRemittanceSearch) ? collSerRemittanceSearch : egovSerHost; 
+    }
+    
+    public String getCollSerPaymentModuleNameSearch(){
+        return StringUtils.isNotBlank(collSerPaymentModuleNameSearch) ? collSerPaymentModuleNameSearch : egovSerHost; 
+    }
+    
+    public String getCollSerPaymentModuleNameWorkflow(){
+        return StringUtils.isNotBlank(collSerPaymentModuleNameWorkflow) ? collSerPaymentModuleNameWorkflow : egovSerHost; 
     }
     
     

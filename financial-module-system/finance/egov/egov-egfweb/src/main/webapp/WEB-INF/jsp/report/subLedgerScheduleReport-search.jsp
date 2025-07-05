@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 
 <html>
 <head>
-<title><s:text name="subLedgerSchedule.search.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <style type="text/css">
 #codescontainer {
 	position: absolute;
@@ -130,54 +132,54 @@ background: #DEDEDE;
 	}
 </script>
 <body>
-	<s:form name="subLedgerScheduleForm" id="subLedgerScheduleForm"
+	<form:form name="subLedgerScheduleForm" id="subLedgerScheduleForm"
 		action="subLedgerScheduleReport" theme="css_xhtml" validate="true">
-		<s:push value="subLedgerScheduleReport">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:text name="subLedgerSchedule.search.title" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionerror />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div style="color: red">
-					<s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<s:hidden name="subLedgerTypeName" id="subLedgerTypeName"
 					value="%{subLedgerTypeName}" />
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td class="bluebox"><s:text name="subLedger.accountCode" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="bluebox"><s:textfield id="glcode" name="glcode"
+						<td class="bluebox"><form:input id="glcode" path="glcode"
 								value="%{glcode}" autocomplete="off"
 								onfocus='autocompleteAccountCodes(this);'
 								onblur='splitAccountCodes(this);' /></td>
-								<td class="greybox"><s:text name="subLedger.accountName" /></td>
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 						<td class="greybox">
-						<s:textfield disabled="true" name="accName" id="accName"></s:textfield>
+						<form:input disabled="true" path="accName" id="accName"></form:input>
 							 </td>
 								</tr>
 								<tr>
-						<td class="bluebox"><s:text name="subLedger.fund" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="bluebox"><s:select name="fund_id" id="fund_id"
+						<td class="bluebox"><form:select path="fund_id" id="fund_id"
 								list="dropdownData.fundList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}" /></td>
 					</tr>
 					<tr>
-						<td class="greybox"><s:text name="subLedger.startDate" /><span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="greybox"><s:textfield id="startDate"
+						<td class="greybox"><form:input id="startDate"
 								name="startDate" value="%{startDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 								data-inputmask="'mask': 'd/m/y'" /></td>
 
-						<td class="greybox"><s:text name="subLedger.endDate" /><span
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="greybox"><s:textfield id="endDate" name="endDate"
+						<td class="greybox"><form:input id="endDate" path="endDate"
 								value="%{endDate}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -187,15 +189,15 @@ background: #DEDEDE;
 						<egov:ajaxdropdown id="accEntityId" fields="['Text','Value']"
 							dropdownId="accEntityId"
 							url="voucher/common-ajaxLoadSubLedgerTypesByGlCode.action" />
-						<td class="bluebox"><s:text name="subLedger.subLedgerType" /><span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory"></span></td>
-						<td class="bluebox"><s:select name="accEntityId"
+						<td class="bluebox"><form:select path="accEntityId"
 								id="accEntityId" value='%{accEntityId}'
 								list="dropdownData.subLedgerTypeList" listKey="id"
 								listValue="description" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" /></td>
-						<td class="bluebox"><s:text name="subLedger.department" /></td>
-						<td class="bluebox"><s:select name="deptId" id="deptId"
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+						<td class="bluebox"><form:select path="deptId" id="deptId"
 								value='%{deptId}' list="dropdownData.departmentList"
 								listKey="code" listValue="name" headerKey=""
 								headerValue="%{getText('lbl.choose.options')}" /></td>
@@ -208,9 +210,9 @@ background: #DEDEDE;
 			<div class="buttonbottom">
 				<table align="center">
 					<tr>
-						<td><input type="button" value="<s:text name='lbl.search'/>" class="buttonsubmit"
+						<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 							onclick="return validate()" /></td>
-						<td><input type="button" id="Close" value="<s:text name='lbl.close'/>"
+						<td><input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.parent.postMessage('close','*');" class="button" /></td>
 					</tr>
 				</table>
@@ -223,6 +225,6 @@ background: #DEDEDE;
 		</div>
 
 		<div id="codescontainer" />
-	</s:form>
+	</form:form>
 </body>
 </html>

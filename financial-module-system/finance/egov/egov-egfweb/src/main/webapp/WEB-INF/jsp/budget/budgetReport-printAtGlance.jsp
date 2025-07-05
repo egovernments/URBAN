@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -85,21 +87,21 @@
 <body>
 	<div id="container">
 		<iframe id="report" name="report"
-			src='/EGF/budget/budgetReport-ajaxGenerateAtGlanceHtml.action?model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.function.id=<s:property value="model.function.id"/>&model.type=<s:property value="model.type"/>&onSaveOrForward=<s:property value="onSaveOrForward"/>'></iframe>
+			src='/EGF/budget/budgetReport-ajaxGenerateAtGlanceHtml.action?model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.function.id=${model.function.id}&model.type=${model.type}&onSaveOrForward=${onSaveOrForward}'></iframe>
 	</div>
 
-	<s:form name="budgetDetailReportForm" action="budgetReport"
+	<form:form name="budgetDetailReportForm" action="budgetReport"
 		theme="simple">
 		<input type="hidden" name="model.financialYear.id"
-			value='<s:property value="model.financialYear.id"/>' />
+			value='${model.financialYear.id}' />
 		<input type="hidden" name="model.department.id"
-			value='<s:property value="model.department.id"/>' />
+			value='${model.department.id}' />
 		<input type="hidden" name="model.function.id"
-			value='<s:property value="model.function.id"/>' />
+			value='${model.function.id}' />
 		<input type="hidden" name="model.type"
-			value='<s:property value="model.type"/>' />
+			value='${model.type}' />
 		<input type="hidden" name="onSaveOrForward"
-			value='<s:property value="onSaveOrForward"/>' />
+			value='${onSaveOrForward}' />
 		<div id="buttons">
 			<input type="button" id="btnPrint"
 				onclick="javascript:parent.report.print();" value="PRINT"
@@ -109,5 +111,5 @@
 			<s:submit id="printXLS" value="SAVE AS EXCEL"
 				method="generateAtGlanceXls" cssClass="buttonsubmit" />
 		</div>
-	</s:form>
+	</form:form>
 </body>

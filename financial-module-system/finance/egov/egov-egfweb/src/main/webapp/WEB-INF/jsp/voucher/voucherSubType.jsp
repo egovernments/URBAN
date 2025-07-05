@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,10 +53,10 @@
 <%@ taglib prefix="egov" tagdir="/WEB-INF/tags"%>
 <tr>
 	<td style="width: 5%"></td>
-	<td class="bluebox"><s:text name="lbl.voucher.subtype"/><span class="mandatory1">*</span></td>
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
 	<td class="bluebox"><select name="vType" id="vType"
 		onchange="onChangeVSubType()">
-			<option value="-1"><s:text name="%{getText('lbl.choose.options')}"/></option>
+			<option value="-1"><!-- TODO: Manual migration required for custom Struts tag --></option>
 			<option value="JVGeneral">General</option>
 			<option value="Works">Works</option>
 			<option value="Purchase">Purchase</option>
@@ -63,38 +65,38 @@
 			<option value="Expense">Expense</option>
 			<!-- <option value="Pension">Pension</option> -->
 	</select></td>
-	<td class="greybox"><s:text name="jv.partyName" />
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
 		<div id="partyNameDivId" style="display: none">
 			<span class="mandatory1">*</span>
 		</div></td>
-	<td class="bluebox"><s:textfield name="voucherTypeBean.partyName"
+	<td class="bluebox"><form:input path="voucherTypeBean.partyName"
 			id="voucherTypeBean.partyName" onblur="isSpecialChar(this)"
 			value="%{voucherTypeBean.partyName}" /></td>
 </tr>
 <tr>
 	<td style="width: 5%"></td>
-	<td class="bluebox"><s:text name="jv.partyBillNum" /></td>
-	<td class="bluebox"><s:textfield
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox"><form:input
 			name="voucherTypeBean.partyBillNum" id="voucherTypeBean.partyBillNum"
 			value="%{voucherTypeBean.partyBillNum}" /></td>
-	<td class="bluebox"><s:text name="jv.billNum" /></td>
-	<td class="bluebox"><s:textfield name="voucherTypeBean.billNum"
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox"><form:input path="voucherTypeBean.billNum"
 			id="voucherTypeBean.billNum" value="%{voucherTypeBean.billNum}" /></td>
 </tr>
 <tr>
 	<td style="width: 5%"></td>
-	<td class="greybox"><s:text name="jv.partyBillDate" /></td>
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 	<td class="bluebox"><s:date name="voucherTypeBean.partyBillDate"
-			var="partyBillDateId" format="dd/MM/yyyy" /> <s:textfield
+			var="partyBillDateId" format="dd/MM/yyyy" /> <form:input
 			name="voucherTypeBean.partyBillDate" id="partyBillDate"
 			value="%{partyBillDateId}" maxlength="10" size="15"
 			onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 		href="javascript:show_calendar('jvcreateform.partyBillDate',null,null,'DD/MM/YYYY');"
 		style="text-decoration: none">&nbsp;<img tabIndex=-1
 			src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
-	<td class="bluebox"><s:text name="jv.billDate" /></td>
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 	<td class="bluebox"><s:date name="voucherTypeBean.billDate"
-			var="billDateId" format="dd/MM/yyyy" /> <s:textfield
+			var="billDateId" format="dd/MM/yyyy" /> <form:input
 			name="voucherTypeBean.billDate" id="billDate" value="%{billDateId}"
 			maxlength="10" size="15"
 			onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a

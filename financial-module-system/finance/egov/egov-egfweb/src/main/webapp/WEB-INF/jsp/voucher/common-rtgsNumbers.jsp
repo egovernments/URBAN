@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/json"%><%@ taglib prefix="s"	uri="/WEB-INF/tags/struts-tags.tld"%><%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -44,4 +46,4 @@
   ~
   ~   In case of any queries, you can reach eGovernments Foundation at contact@egovernments.org.
   ~
-  --%><s:if test="bankaccountId==0">Please select account number </s:if><s:else>	<s:if test="numberList.size == 0 "> Nothing found to display</s:if><s:else><s:iterator var="s" value="numberList" status="status"><s:property value="%{s}" />~^</s:iterator></s:else></s:else>
+  --%><c:if test="bankaccountId==0">Please select account number </c:if><c:otherwise>	<c:if test="numberList.size == 0 "> Nothing found to display</c:if><c:otherwise><c:forEach var="s" value="numberList" status="status">${%{s}}~^</c:forEach></s:else></s:else>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -67,17 +69,17 @@
 </head>
 <body onload="onLoad();">
 	<br>
-	<s:form action="payment" theme="simple">
-		<s:token />
+	<form:form action="payment" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div class="formmainbox">
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Bill Payment" />
 			</jsp:include>
 
-			<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-				<s:actionmessage />
+			<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
-			<div class="subheadnew"><s:text name="lbl.bill.payment"/> </div>
+			<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			<div id="budgetSearchGrid" style="display: block; width: 100%; margin-top:-25px">
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
@@ -89,138 +91,138 @@
 										<td>
 											<div class="tabber">
 												<div class="tabbertab">
-													<h3 style="margin-left:25px"><s:text name="payment.heading"/> </h3>
+													<h3 style="margin-left:25px"><!-- TODO: Manual migration required for custom Struts tag --> </h3>
 													<span>
 														<table width="100%" border="0" cellspacing="0"
 															cellpadding="0">
 															<tr>
 																<td colspan="6"><div class="subheadsmallnew"
-																		style="border: 0;"><s:text name="payment.heading"/></div></td>
+																		style="border: 0;"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
 															</tr>
 															<tr>
 																<td width="9%" class="bluebox"><s:hidden
 																		name="billregister.id" /></td>
-																<s:if test="%{shouldShowHeaderField('fund')}">
+																<c:if test="%{shouldShowHeaderField('fund')}">
 																	<td width="12%" class="bluebox"><strong><s:text
-																				name="voucher.fund" /></strong> <s:if
+																				name="voucher.fund" /></strong> <c:if
 																			test="%{isFieldMandatory('fund')}">
 																			<span class="bluebox"><span class="mandatory1">*</span></span>
-																		</s:if></td>
+																		</c:if></td>
 																	<td width="20%" class="bluebox"><s:property
 																			value="%{billregister.egBillregistermis.fund.name}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
-																<s:if test="%{shouldShowHeaderField('fundsource')}">
+																<c:if test="%{shouldShowHeaderField('fundsource')}">
 																	<td width="17%" class="bluebox"><strong><s:text
-																				name="voucher.fundsource" /></strong> <s:if
+																				name="voucher.fundsource" /></strong> <c:if
 																			test="%{isFieldMandatory('fundsource')}">
 																			<span class="bluebox"><span class="mandatory1">*</span></span>
-																		</s:if></td>
+																		</c:if></td>
 																	<td width="33%" class="bluebox"><s:property
 																			value="%{billregister.egBillregistermis.fundsource.name}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
 															</tr>
 															<tr>
 																<td class="greybox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('department')}">
+																<c:if test="%{shouldShowHeaderField('department')}">
 																	<td class="greybox"><strong><s:text
-																				name="voucher.department" /></strong> <s:if
+																				name="voucher.department" /></strong> <c:if
 																			test="%{isFieldMandatory('department')}">
 																			<span class="bluebox"><span class="mandatory1">*</span></span>
-																		</s:if></td>
-																	<td class="greybox"><s:select name="department"
+																		</c:if></td>
+																	<td class="greybox"><form:select path="department"
 																			id="department" list="dropdownData.departmentList"
 																			listKey="code" listValue="name" headerKey="-1"
 																			headerValue="%{getText('lbl.choose.options')}"
 																			value="%{billregister.egBillregistermis.departmentcode}" /></td>
 																	<%-- <s:property
 																	value="%{billregister.egBillregistermis.egDepartment.name}" /> --%>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
-																<s:if test="%{shouldShowHeaderField('functionary')}">
+																<c:if test="%{shouldShowHeaderField('functionary')}">
 																	<td class="greybox"><strong><s:text
-																				name="voucher.functionary" /></strong> <s:if
+																				name="voucher.functionary" /></strong> <c:if
 																			test="%{isFieldMandatory('functionary')}">
 																			<span class="bluebox"><span class="mandatory1">*</span></span>
-																		</s:if></td>
+																		</c:if></td>
 																	<td class="greybox" colspan="4"><s:property
 																			value="%{billregister.egBillregistermis.functionaryid.name}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
 															</tr>
 															<tr>
 																<td class="bluebox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('scheme')}">
+																<c:if test="%{shouldShowHeaderField('scheme')}">
 																	<td class="bluebox"><strong><s:text
-																				name="voucher.scheme" /></strong> <s:if
+																				name="voucher.scheme" /></strong> <c:if
 																			test="%{isFieldMandatory('scheme')}">
 																			<span class="mandatory1">*</span>
-																		</s:if></td>
+																		</c:if></td>
 																	<td class="bluebox"><s:property
 																			value="%{billregister.egBillregistermis.scheme.name}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
-																<s:if test="%{shouldShowHeaderField('subscheme')}">
+																<c:if test="%{shouldShowHeaderField('subscheme')}">
 																	<td class="bluebox"><strong><s:text
-																				name="voucher.subscheme" /></strong> <s:if
+																				name="voucher.subscheme" /></strong> <c:if
 																			test="%{isFieldMandatory('subscheme')}">
 																			<span class="mandatory1">*</span>
-																		</s:if></td>
+																		</c:if></td>
 																	<td class="bluebox"><s:property
 																			value="%{billregister.egBillregistermis.subScheme.name}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
 															</tr>
 															<tr>
 																<td class="greybox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('function')}">
+																<c:if test="%{shouldShowHeaderField('function')}">
 																	<td class="greybox"><strong><s:text
-																				name="voucher.function" /></strong> <s:if
+																				name="voucher.function" /></strong> <c:if
 																			test="%{isFieldMandatory('function')}">
 																			<span class="mandatory1">*</span>
-																		</s:if></td>
-																	<td class="greybox"><s:select name="function"
+																		</c:if></td>
+																	<td class="greybox"><form:select path="function"
 																			id="function" list="dropdownData.functionList"
 																			listKey="id" listValue="name" headerKey="-1"
 																			headerValue="%{getText('lbl.choose.options')}"
 																			value="%{billregister.egBillregistermis.function.id}" />
 																		<%--  <s:property
 																		value="%{billregister.egBillregistermis.function.name}" /> --%></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
 																<td class="greybox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('field')}">
+																<c:if test="%{shouldShowHeaderField('field')}">
 																	<td class="greybox"><strong><s:text
-																				name="voucher.field" /></strong> <s:if
+																				name="voucher.field" /></strong> <c:if
 																			test="%{isFieldMandatory('field')}">
 																			<span class="mandatory1">*</span>
-																		</s:if></td>
+																		</c:if></td>
 																	<td class="greybox" colspan="4"><s:property
 																			value="%{billregister.egBillregistermis.fieldid.name}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox">
 																	<td class="greybox">
 																</s:else>
@@ -229,11 +231,11 @@
 																<td class="bluebox">&nbsp;</td>
 																<td class="bluebox"><strong><s:text
 																			name="payment.mode" /></strong></td>
-																<td class="bluebox"><s:if
+																<td class="bluebox"><c:if
 																		test="%{paymentMode == 'cash' || paymentMode == 'Cash'}">
-																		<s:text name="cash.consolidated.cheque" />
-																	</s:if> <s:else>
-																		<s:text name="%{paymentMode}" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
+																	</c:if> <c:otherwise>
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																	</s:else></td>
 																<td class="bluebox"><strong><s:text
 																			name="payment.amount" /></strong></td>
@@ -242,20 +244,20 @@
 															</tr>
 															<tr>
 																<td class="greybox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+																<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 																	<td class="greybox"><s:text
 																			name="payment.voucherno" /><span class="mandatory1">*</span></td>
-																	<td class="greybox"><s:textfield
+																	<td class="greybox"><form:input
 																			name="vouchernumber" id="vouchernumber"
 																			value="%{vouchernumber}" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="greybox" />
 																	<td class="greybox" />
 																</s:else>
 																<td class="greybox"><s:text
 																		name="payment.voucherdate" /><span class="mandatory1">*</span></td>
-																<td class="greybox" colspan="2"><s:textfield
+																<td class="greybox" colspan="2"><form:input
 																		id="voucherdate" name="voucherdate"
 																		value="%{voucherdate}" data-date-end-date="0d"
 																		onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -263,10 +265,10 @@
 																		class="form-control datepicker"
 																		data-inputmask="'mask': 'd/m/y'" /></td>
 															</tr>
-															<s:if test='%{billSubType.equalsIgnoreCase("TNEB")}'>
+															<c:if test='%{billSubType.equalsIgnoreCase("TNEB")}'>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
-																	<td class="bluebox"><s:text name="payment.bank" /><span
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 																		class="mandatory1">*</span></td>
 																	<td class="bluebox"><s:property
 																			value="%{bank_branch}" /></td>
@@ -275,18 +277,18 @@
 																		class="mandatory1">*</span></td>
 																	<td class="bluebox"><s:property
 																			value="%{bank_account}" /></td>
-																	<s:hidden name="bankbranch" id="bankbranch" />
-																	<s:hidden name="bank_branch" id="bank_branch" />
-																	<s:hidden name="bank_account" id="bank_account" />
-																	<s:hidden name="bankaccount" id="bankaccount" />
+																	<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
 																</tr>
-															</s:if>
-															<s:else>
+															</c:if>
+															<c:otherwise>
 																<tr>
 																	<td class="bluebox">&nbsp;</td>
-																	<td class="bluebox"><s:text name="payment.bank" /><span
+																	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 																		class="mandatory1">*</span></td>
-																	<td class="bluebox"><s:select name="bankbranch"
+																	<td class="bluebox"><form:select path="bankbranch"
 																			id="bankbranch" list="dropdownData.bankbranchList"
 																			listKey="id" listValue="bank.name+'-'+branchname"
 																			headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
@@ -298,7 +300,7 @@
 																	<td class="bluebox"><s:text
 																			name="payment.bankaccount" /><span
 																		class="mandatory1">*</span></td>
-																	<td class="bluebox" colspan="2"><s:select
+																	<td class="bluebox" colspan="2"><form:select
 																			name="bankaccount" id="bankaccount"
 																			list="dropdownData.bankaccountList" listKey="id"
 																			listValue="accountnumber+'---'+accounttype"
@@ -315,7 +317,7 @@
 																	<td class="bluebox">&nbsp;</td>
 																	<td class="bluebox" width="15%"><strong><s:text
 																				name="payment.balance" />(Rs)</strong></td>
-																	<td class="bluebox" colspan="4"><s:textfield
+																	<td class="bluebox" colspan="4"><form:input
 																			name="availableBalance" id="availableBalance"
 																			readonly="true" style="text-align:right" /></td>
 																</tr>
@@ -324,7 +326,7 @@
 																<td class="greybox">&nbsp;</td>
 																<td class="greybox" width="15%"><s:text
 																		name="payment.narration" /></td>
-																<td class="greybox" colspan="4"><s:textarea
+																<td class="greybox" colspan="4"><form:textarea
 																		name="description" id="description" cols="70" rows="4"
 																		onblur="checkLength(this)" /></td>
 															</tr>
@@ -341,7 +343,7 @@
 															<tr>
 																<td colspan="6" align="center">
 																	<div class="buttonbottom">
-																		<s:hidden name="hiddenText" id="hiddenText" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																		<s:hidden name="paymentMode" id="paymentMode"
 																			value="%{paymentMode}" />
 																		<s:hidden name="contractorIds" id="contractorIds"
@@ -362,12 +364,12 @@
 													</span>
 												</div>
 												<div class="tabbertab">
-													<h3 style="margin-left:25px"><s:text name="lbl.bill.details"/> </h3>
+													<h3 style="margin-left:25px"><!-- TODO: Manual migration required for custom Struts tag --> </h3>
 													<span>
 														<table align="center" border="0" cellpadding="0"
 															cellspacing="0" class="newtable">
 															<tr>
-																<td colspan="7"><div class="subheadsmallnew"><s:text name="lbl.bill.details"/></div></td>
+																<td colspan="7"><div class="subheadsmallnew"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
 															</tr>
 															<tr>
 																<td colspan="7">
@@ -375,18 +377,18 @@
 																		<table id="billdetailsTable" align="center" border="0"
 																			cellpadding="0" cellspacing="0" width="100%">
 																			<tr>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.bill.number"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.bill.date"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.bill.voucher.number"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.bill.voucher.date"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.payee.name"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.net.amount"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.earlier.amount"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.payable.amount"/></th>
-																				<th class="bluebgheadtdnew"><s:text name="lbl.payment.amount"/></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+																				<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
 																			</tr>
-																			<s:if test="%{billList.size>0}">
-																				<s:iterator var="p" value="billList" status="s">
+																			<c:if test="%{billList.size>0}">
+																				<c:forEach var="p" value="billList" status="s">
 																					<tr>
 																						<td style="text-align: center"
 																							class="blueborderfortdnew"><s:hidden
@@ -399,7 +401,7 @@
 																							class="blueborderfortdnew"><s:hidden
 																								name="billList[%{#s.index}].billDate"
 																								id="billDate%{#s.index}" value="%{billDate}" />
-																							<s:date name="%{billDate}" format="dd/MM/yyyy" /></td>
+																							<!-- TODO: Manual migration required for custom Struts tag --></td>
 																						<td style="text-align: center"
 																							class="blueborderfortdnew"><s:hidden
 																								name="billList[%{#s.index}].billVoucherId"
@@ -408,8 +410,8 @@
 																								name="billList[%{#s.index}].billVoucherNumber"
 																								id="billNumber" value="%{billVoucherNumber}" />
 																							<a href="#"
-																							onclick="openVoucher('<s:property value='%{billVoucherId}'/>');">
-																								<s:property value="%{billVoucherNumber}" />
+																							onclick="openVoucher('<!-- TODO: Manual migration required for custom Struts tag -->');">
+																								${%{billVoucherNumber}}
 																						</a></td>
 																						<td style="text-align: center"
 																							class="blueborderfortdnew"><s:hidden
@@ -429,7 +431,7 @@
 																								name="billList[%{#s.index}].netAmt"
 																								id="netAmt%{#s.index}" value="%{netAmt}" /> <s:text
 																								name="payment.format.number">
-																								<s:param value="%{netAmt}" />
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
@@ -437,50 +439,50 @@
 																								id="earlierPaymentAmt%{#s.index}"
 																								value="%{earlierPaymentAmt}" /> <s:text
 																								name="payment.format.number">
-																								<s:param value="%{earlierPaymentAmt}" />
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
 																								name="billList[%{#s.index}].payableAmt"
 																								id="payableAmt%{#s.index}" value="%{payableAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{payableAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
-																						<%-- <s:if
+																						<%-- <c:if
 																							test="%{expType == finConstExpendTypeContingency}">
 
 																							<td class="blueborderfortdnew"><div
 																									align="center">
 																									<input type="text"
-																										name='billList[<s:property value="%{#s.index}"/>].paymentAmt'
-																										value='<s:text name="payment.format.number" ><s:param value="%{paymentAmt}"/></s:text>'
-																										id='paymentAmt<s:property value="%{#s.index}"/>'
+																										name='billList[${%{#s.index}}].paymentAmt'
+																										value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
+																										id='paymentAmt${%{#s.index}}'
 																										style="text-align: right" readonly />
-																									<!-- <s:textfield name="billList[%{#s.index}].paymentAmt" id="paymentAmt%{#s.index}" value="%{getText('payment.format.number',{'paymentAmt'})}" style="text-align:right" readonly="true"/> -->
+																									<!-- <form:input path="billList[%{#s.index}].paymentAmt" id="paymentAmt%{#s.index}" value="%{getText('payment.format.number',{'paymentAmt'})}" style="text-align:right" readonly="true"/> -->
 																								</div></td>
-																						</s:if>
-																						<s:else> --%>
+																						</c:if>
+																						<c:otherwise> --%>
 																						<td class="blueborderfortdnew"><div
 																								align="center">
 																								<input type="text"
-																									name='billList[<s:property value="%{#s.index}"/>].paymentAmt'
-																									value='<s:text name="payment.format.number" ><s:param value="%{paymentAmt}"/></s:text>'
-																									id='paymentAmt<s:property value="%{#s.index}"/>'
+																									name='billList[${%{#s.index}}].paymentAmt'
+																									value='<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
+																									id='paymentAmt${%{#s.index}}'
 																									style="text-align: right"
 																									onchange="calcGrandTotal(this)"
 																									onfocus="updateHidden(this)" />
-																								<!-- <s:textfield name="billList[%{#s.index}].paymentAmt" id="paymentAmt%{#s.index}" value="%{paymentAmt}" style="text-align:right" onchange="calcGrandTotal(this)" onfocus="updateHidden(this)"/> -->
+																								<!-- <form:input path="billList[%{#s.index}].paymentAmt" id="paymentAmt%{#s.index}" value="%{paymentAmt}" style="text-align:right" onchange="calcGrandTotal(this)" onfocus="updateHidden(this)"/> -->
 																							</div></td>
 																						<%-- </s:else> --%>
 																						<c:set var="totalAmt"
 																							value="${totalAmt+paymentAmt}" />
 																					</tr>
-																				</s:iterator>
-																			</s:if>
+																				</c:forEach>
+																			</c:if>
 
 																			<tr>
 																				<td style="text-align: right" colspan="8"
-																					class="blueborderfortdnew"><strong><s:text name="lbl.grand.total"/> </strong></td>
+																					class="blueborderfortdnew"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 																				<td style="text-align: right"
 																					class="blueborderfortdnew"><div align="center">
 																						<input type="text" name="grandTotal"
@@ -499,14 +501,14 @@
 													</span>
 												</div>
 												<!-- individual tab -->
-												<s:if test="%{disableExpenditureType}">
+												<c:if test="%{disableExpenditureType}">
 													<div>
-														<s:text name="change.party.name" />
-														<s:checkbox name="changePartyName" id="changePartyName"
+														<!-- TODO: Manual migration required for custom Struts tag -->
+														<form:checkbox path="changePartyName" id="changePartyName"
 															checked="checked" />
-														<s:textfield name="newPartyName" id="newPartyName" />
+														<form:input path="newPartyName" id="newPartyName" />
 													</div>
-												</s:if>
+												</c:if>
 											</div> <!-- tabbber div -->
 										</td>
 									</tr>
@@ -515,7 +517,7 @@
 						</td>
 					</tr>
 				</table>
-				<s:hidden name="cutOffDate" id="cutOffDate" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:hidden name="bankBalanceCheck" id="bankBalanceCheck"
 					value="%{bankBalanceCheck}" />
 
@@ -524,14 +526,14 @@
 			</div>
 
 			<div class="buttonbottom" id="buttondiv">
-				<s:hidden name="paymentid" value="%{paymentheader.id}" />
-				<s:hidden name="actionname" id="actionName" value="%{action}" />
-				<s:hidden name="billSubType" id="billSubType" value="%{billSubType}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
-			<s:hidden id="selectedContingentRows" name="selectedContingentRows" value="%{selectedContingentRows}" />
-			<s:hidden id="selectedContractorRows" name="selectedContractorRows" value="%{selectedContractorRows}" />
-			<s:hidden id="selectedSupplierRows" name="selectedSupplierRows" value="%{selectedSupplierRows}" />
-			<s:hidden id="billIdsToPaymentAmountsMapId" name="billIdsToPaymentAmountsMap" value="%{billIdsToPaymentAmountsMap}" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 
 			<script>
 			jQuery(document).ready(function() {
@@ -548,11 +550,11 @@
 		function loadBankAccount(obj)
 		{
 			var fund = 0;
-			<s:if test="%{shouldShowHeaderField('fund')}">
-				fund = <s:property value="%{billregister.egBillregistermis.fund.id}"/>;
-			</s:if>
-			var vTypeOfAccount = '<s:property value="%{typeOfAccount}"/>';
-			var billSubType = '<s:property value="%{billSubType}"/>';
+			<c:if test="%{shouldShowHeaderField('fund')}">
+				fund = ${%{billregister.egBillregistermis.fund.id}};
+			</c:if>
+			var vTypeOfAccount = '${%{typeOfAccount}}';
+			var billSubType = '${%{billSubType}}';
 			populatebankaccount({branchId:obj.options[obj.selectedIndex].value+'&date='+new Date(), typeOfAccount:vTypeOfAccount,fundId:fund,billSubType:billSubType} );
 			//populatebankaccount({branchId:obj.options[obj.selectedIndex].value+'&date='+new Date()});
 		}
@@ -571,12 +573,12 @@
 			var putBackAmount = parseFloat(document.getElementById('payableAmt'+index).value);
 			var paymentAmount = obj.value;
 			if(paymentAmount == '' || isNaN(paymentAmount)) {
-				bootbox.alert('<s:text name="msg.payment.amount.should.be.numeric.value"/> ');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag --> ');
 				obj.value = putBackAmount.toFixed(vFixedDecimal);
 			}
 			
 			if(paymentAmount > parseFloat(document.getElementById('payableAmt'+index).value) ) {
-				bootbox.alert('<s:text name="msg.payment.should.not.be.greater.than.payable.amount"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				obj.value = putBackAmount.toFixed(vFixedDecimal);
 			}
 			
@@ -595,7 +597,7 @@
 		function populateAvailableBalance(accnumObj) 
 		{
 					if (document.getElementById('voucherdate').value == '') {
-						bootbox.alert("<s:text name='msg.please.select.voucher.date'/>");
+						bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 						accnumObj.options.value = -1;
 						return;
 					}
@@ -642,31 +644,31 @@
 		function onSubmit()
 		{
 			doLoadingMask();
-			var balanceCheckMandatory='<s:text name="payment.mandatory"/>';
-			var balanceCheckWarning='<s:text name="payment.warning"/>';
-			var noBalanceCheck='<s:text name="payment.none"/>';
+			var balanceCheckMandatory='<!-- TODO: Manual migration required for custom Struts tag -->';
+			var balanceCheckWarning='<!-- TODO: Manual migration required for custom Struts tag -->';
+			var noBalanceCheck='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(dom.get('department').value=='-1')
 			{
-				bootbox.alert("<s:text name='msg.please.select.department'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				undoLoadingMask();
 				return false;
 			}
 			if(dom.get('function').value=='-1')
 			{
-				bootbox.alert("<s:text name='msg.please.select.function'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				undoLoadingMask();
 				return false;
 			}
 			
 			if(dom.get('vouchernumber') && dom.get('vouchernumber').value=='')
 			{
-				bootbox.alert('<s:text name="msg.please.enter.voucher.number"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				undoLoadingMask();
 				return false;
 			}
 			if(dom.get('voucherdate').value=='')
 			{
-				bootbox.alert("<s:text name='msg.please.select.voucher.date'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				undoLoadingMask();
 				return false;
 			}
@@ -674,13 +676,13 @@
 			{
 				if(dom.get('bankbranch').options[dom.get('bankbranch').selectedIndex].value==-1)
 				{
-					bootbox.alert("<s:text name='msg.please.select.bank'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					undoLoadingMask();
 					return false;
 				}
 				if(dom.get('bankaccount').options[dom.get('bankaccount').selectedIndex].value==-1)
 				{
-					bootbox.alert("<s:text name='msg.please.select.bank.account'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					undoLoadingMask();
 					return false;
 				}
@@ -688,26 +690,26 @@
 		
 			if(document.getElementById('grandTotal').value==0 || document.getElementById('grandTotal').value=='NaN')
 			{
-				bootbox.alert('<s:text name="msg.payment.amount.should.be.greater.than.zero"/>');
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 				dom.get('tabber1').onclick();
 				undoLoadingMask();
 				return false;
 			}
- 			<s:if test="%{disableExpenditureType}">
+ 			<c:if test="%{disableExpenditureType}">
 				if(dom.get("changePartyName") && dom.get("changePartyName").checked==true)
 				{
 					if(dom.get("newPartyName").value=='')
 					{
-						bootbox.alert('<s:text name="msg.enter.party.name.to.change"/>');
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 						dom.get("newPartyName").focus();
 						undoLoadingMask();
 						return false;
 					}
 				}
-			</s:if>
-			var balanceCheckMandatory='<s:text name="payment.mandatory"/>';
-			var balanceCheckWarning='<s:text name="payment.warning"/>';
-			var noBalanceCheck='<s:text name="payment.none"/>';
+			</c:if>
+			var balanceCheckMandatory='<!-- TODO: Manual migration required for custom Struts tag -->';
+			var balanceCheckWarning='<!-- TODO: Manual migration required for custom Struts tag -->';
+			var noBalanceCheck='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(jQuery("#bankBalanceCheck").val()==noBalanceCheck)
 			{
 				billIdsToPaymentAmountsap('billList','billIdsToPaymentAmountsMapId');
@@ -720,12 +722,12 @@
 			 document.forms[0].submit();
 			}
 			else if(!balanceCheck() && jQuery("#bankBalanceCheck").val()==balanceCheckMandatory){
-					 bootbox.alert("<s:text name='msg.insufficient.bank.balance'/>");
+					 bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					 undoLoadingMask();
 					 return false;
 					}
 			else if(!balanceCheck() && jQuery("#bankBalanceCheck").val()==balanceCheckWarning){
-					 var msg = confirm("<s:text name='msg.insuff.bank.bal.do.you.want.to.process'/>");
+					 var msg = confirm("<!-- TODO: Manual migration required for custom Struts tag -->");
 					 if (msg == true) {
 						 billIdsToPaymentAmountsMap('billList','billIdsToPaymentAmountsMapId');
 						 document.forms[0].action='${pageContext.request.contextPath}/payment/payment-create.action';
@@ -766,8 +768,8 @@
 			return true;
 		}
 		else{
-			var msg1='<s:text name="wf.vouchercutoffdate.message"/>';
-			var msg2='<s:text name="wf.cutoffdate.msg"/>';
+			var msg1='<!-- TODO: Manual migration required for custom Struts tag -->';
+			var msg2='<!-- TODO: Manual migration required for custom Struts tag -->';
 			bootbox.alert(msg1+" "+document.getElementById("cutOffDate").value+" "+msg2);
 				return false;
 			}
@@ -777,7 +779,7 @@
 		{
 			if(obj.value.length>250)
 			{
-				bootbox.alert('<s:text name="msg.max.250.char.allowed.for.comment"/>')
+				bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->')
 				obj.value = obj.value.substring(1,250);
 			}
 		}
@@ -789,7 +791,7 @@
 		document.getElementById('paymentAmountspan').innerHTML = document.getElementById('grandTotal').value;
 
 		function billIdsToPaymentAmountsMap(billTypeObj,id){
-			var	length = <s:property value="%{billList.size()}"/>;
+			var	length = ${%{billList.size()}};
 			var selectedRowsArr = new Array();
 			for(var index=0;index<length;index++){
 					selectedRowsArr.push(
@@ -832,6 +834,6 @@
 		
 	</script>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

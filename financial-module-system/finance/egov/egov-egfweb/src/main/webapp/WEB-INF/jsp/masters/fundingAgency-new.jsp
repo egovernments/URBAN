@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,7 +57,7 @@
 <html>
 <head>
 
-<title><s:text name="fundingagency.create.new.funding.agency" />
+<title><!-- TODO: Manual migration required for custom Struts tag -->
 </title>
 <SCRIPT type="text/javascript">
     function checkuniquenesscode(){
@@ -69,25 +71,25 @@
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="fundingagency.create.funding.agency" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: red">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div style="color: green">
-			<s:actionmessage theme="simple" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div class="errorstyle" style="display: none" id="codeuniquecode">
-			<s:text name="fundingagency.code.already.exists" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form name="fundingAgencyForm" action="fundingAgency" theme="simple">
-			<s:token />
-			<s:push value="model">
+		<form:form name="fundingAgencyForm" action="fundingAgency" theme="simple">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="greybox" width="10%">Code<span class="mandatory">*</span></td>
-						<td class="greybox" width="30%" colspan=8><s:textfield
+						<td class="greybox" width="30%" colspan=8><form:input
 								id="code" name="code" onblur="checkuniquenesscode();" /></td>
 						<egov:uniquecheck id="codeuniquecode" name="codeuniquecode"
 							fieldtoreset="code" fields="['Value']"
@@ -95,10 +97,10 @@
 					</tr>
 					<tr>
 						<td class="bluebox" width="10%">Name<span class="mandatory">*</span></td>
-						<td class="bluebox" width="46%"><s:textfield id="name"
+						<td class="bluebox" width="46%"><form:input id="name"
 								name="name" /></td>
 						<td class="bluebox" width="2%">IsActive</td>
-						<td class="bluebox"><s:checkbox id="isActive" name="isActive" />
+						<td class="bluebox"><form:checkbox id="isActive" path="isActive" />
 						</td>
 					</tr>
 
@@ -106,7 +108,7 @@
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="greybox" width="10%">Remarks</td>
-						<td class="greybox"><s:textarea id="remarks" name="remarks"
+						<td class="greybox"><form:textarea id="remarks" path="remarks"
 								style="width:470px" /></td>
 					</tr>
 
@@ -120,14 +122,14 @@
 						onclick="javascript:window.close()" class="button" />
 				</div>
 			</s:push>
-		</s:form>
+		</form:form>
 		<script type="text/javascript">
-		<s:if test="%{clearValues == true}">
+		<c:if test="%{clearValues == true}">
 			document.getElementById('code').value = "";
 			document.getElementById('name').value = "";
 			document.getElementById('remarks').value = "";
 			document.getElementById('isActive').checked=false;
-		</s:if>
+		</c:if>
 	</script>
 </body>
 </html>

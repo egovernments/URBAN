@@ -73,86 +73,46 @@ public class CustomizedWorkFlowService {
 
     public List<String> getNextDesignationsForActiveAssignments(String type, String department, BigDecimal businessRule,
                                                                 String additionalRule, String currentState,
-                                                                String pendingAction, Date date) {
-
+                                                                Date date) {
         return getDesignationNames(workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState,
-                pendingAction, date));
+                date));
     }
-
 
     public List<String> getNextDesignationsForActiveAssignments(String type, String department, BigDecimal businessRule,
                                                                 String additionalRule, String currentState,
-                                                                String pendingAction, Date date, String designation) {
-
+                                                                Date date, String designation) {
         return getDesignationNames(workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState,
-                pendingAction, date, designation));
+                date, designation));
     }
 
     public List<String> getNextDesignations(String type, String department, BigDecimal businessRule,
-                                            String additionalRule, String currentState, String pendingAction, Date date) {
+                                            String additionalRule, String currentState, Date date) {
         return getDesignationNames(workflowService
-                .getWfMatrix(type, department, businessRule, additionalRule, currentState, pendingAction, date));
+                .getWfMatrix(type, department, businessRule, additionalRule, currentState, date));
     }
 
     public List<String> getNextDesignations(String type, String department, BigDecimal businessRule,
                                             String additionalRule, String currentState,
-                                            String pendingAction, Date date, String designation) {
-
+                                            Date date, String designation) {
         return getDesignationNames(workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState,
-                pendingAction, date, designation));
-    }
-
-    public List<String> getNextValidActions(String type, String departmentName, BigDecimal businessRule,
-                                            String additionalRule, String currentState, String pendingAction) {
-
-        WorkFlowMatrix wfMatrix = workflowService.getWfMatrix(type, departmentName, businessRule, additionalRule,
-                currentState, pendingAction);
-        List<String> validActions = Collections.emptyList();
-        if (wfMatrix != null && wfMatrix.getValidActions() != null)
-            validActions = Arrays.asList(wfMatrix.getValidActions().split(","));
-        return validActions;
-    }
-
-    public List<String> getNextValidActions(String type, String departmentName, BigDecimal businessRule,
-                                            String additionalRule, String currentState, String pendingAction, Date date) {
-
-        WorkFlowMatrix wfMatrix = workflowService.getWfMatrix(type, departmentName, businessRule, additionalRule,
-                currentState, pendingAction, date);
-        List<String> validActions = Collections.emptyList();
-
-        if (wfMatrix != null && wfMatrix.getValidActions() != null)
-            validActions = Arrays.asList(wfMatrix.getValidActions().split(","));
-        return validActions;
-    }
-
-    public List<String> getNextValidActions(String type, String departmentName, BigDecimal businessRule,
-                                            String additionalRule, String currentState, String pendingAction, Date date,
-                                            String currentDesignation) {
-
-        WorkFlowMatrix wfMatrix = workflowService.getWfMatrix(type, departmentName, businessRule, additionalRule,
-                currentState, pendingAction, date, currentDesignation);
-        List<String> validActions = Collections.emptyList();
-
-        if (wfMatrix != null && wfMatrix.getValidActions() != null)
-            validActions = Arrays.asList(wfMatrix.getValidActions().split(","));
-        return validActions;
+                date, designation));
     }
 
     public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal businessRule,
-                                      String additionalRule, String currentState, String pendingAction, Date date) {
-        return workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState, pendingAction, date);
+                                      String additionalRule, String currentState, Date date) {
+        return workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState, date);
     }
 
     public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal businessRule,
-                                      String additionalRule, String currentState, String pendingAction, Date date,
+                                      String additionalRule, String currentState, Date date,
                                       String currentDesignation) {
-        return workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState, pendingAction, date,
+        return workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState, date,
                 currentDesignation);
     }
 
     public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal businessRule,
-                                      String additionalRule, String currentState, String pendingAction) {
-        return workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState, pendingAction);
+                                      String additionalRule, String currentState) {
+        return workflowService.getWfMatrix(type, department, businessRule, additionalRule, currentState);
     }
 
     private List<String> getDesignationNames(WorkFlowMatrix wfMatrix) {

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html>
 <head>
-<title><s:text name="service.master.search.header" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 <script type="text/javascript">
 	function validate() {
@@ -57,23 +59,23 @@
 		document.getElementById('error_area').innerHTML = '';
 		document.getElementById("error_area").style.display = "none";
 		if (document.getElementById('serviceCategoryid').value == "-1") {
-			document.getElementById("error_area").innerHTML = '<s:text name="error.select.service.category" />';
+			document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 			valid = false;
 		}
 		else if (document.getElementById('serviceDetailsId') != undefined && document.getElementById('serviceDetailsId').value == "0") {
-			document.getElementById("error_area").innerHTML = '<s:text name="error.select.service.type" />';
+			document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 			valid = false;
 		}
 		else if (document.getElementById('bankName').value == "-1") {
-			document.getElementById("error_area").innerHTML = '<s:text name="error.select.bank" />';
+			document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 			valid = false;
 		}
 		else if (document.getElementById('branchName').value == "-1") {
-			document.getElementById("error_area").innerHTML = '<s:text name="error.select.bankbranch" />';
+			document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 			valid = false;
 		}
 		else if (document.getElementById('bankAccountId').value == "-1") {
-			document.getElementById("error_area").innerHTML = '<s:text name="error.select.bankaccount" />';
+			document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 			valid = false;
 		}
 		if (valid == false) {
@@ -129,19 +131,19 @@
         if(selected == -1){
 			return;
         }
-        <s:iterator value="serviceCategoryNames" var="obj">
-        var serTypeKey = '<s:property value="#obj.key"/>';
-        var serTypeValue = '<s:property value="serviceTypeMap[#obj.key]"/>';
+        <c:forEach value="serviceCategoryNames" var="obj">
+        var serTypeKey = '${#obj.key}';
+        var serTypeValue = '${serviceTypeMap[#obj.key]}';
         if(selected == serTypeKey && serTypeValue != ''){
         	isServiceTypeExist = true;
         	addServiceTypeDropdown('serviceTable');
- 			<s:iterator value="serviceTypeMap[#obj.key]" status="stat" var="names">
- 				var stKey = '<s:property value="#names.key"/>';
- 				var stValue = '<s:property value="#names.value"/>';
- 				document.getElementById('serviceDetailsId').options[<s:property value="#stat.index+1"/>]= new Option(stValue,stKey);
-			</s:iterator>
+ 			<c:forEach value="serviceTypeMap[#obj.key]" status="stat" var="names">
+ 				var stKey = '${#names.key}';
+ 				var stValue = '${#names.value}';
+ 				document.getElementById('serviceDetailsId').options[${#stat.index+1}]= new Option(stValue,stKey);
+			</c:forEach>
         }
-		 </s:iterator>
+		 </c:forEach>
 	}
 	function addServiceTypeDropdown(tableId){
         var table = document.getElementById(tableId);
@@ -150,7 +152,7 @@
         var cell2 = row.insertCell(1);
         cell1.className='bluebox';
         cell2.className='bluebox';
-        cell1.innerHTML = '<s:text name="miscreceipt.service" /><span class="mandatory"/>';
+        cell1.innerHTML = '<!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory"/>';
         cell2.innerHTML = '<select name="serviceDetails.code" id="serviceDetailsId"/>';
 		document.getElementById('serviceDetailsId').options.length=0;
 		document.getElementById('serviceDetailsId').options[0]= new Option('--------Choose--------','0');
@@ -160,40 +162,40 @@
 </head>
 
 <body>
-	<s:if test="%{hasErrors()}">
+	<c:if test="%{hasErrors()}">
 		<div class="errorstyle">
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-	</s:if>
-	<s:if test="%{hasActionMessages()}">
-		<font style='color: green; font-weight: bold'> <s:actionmessage />
+	</c:if>
+	<c:if test="%{hasActionMessages()}">
+		<font style='color: green; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag -->
 		</font>
-	</s:if>
-	<s:form name="serviceBankMappingForm" method="post" theme="simple">
-		<s:push value="model">
+	</c:if>
+	<form:form name="serviceBankMappingForm" method="post" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div class="errorstyle" id="error_area" style="display: none;"></div>
 
 			<div class="formmainbox">
 				<div class="subheadnew">
-					<s:if test="%{serviceAccountId}">
-						<s:text name="service.master.bankmapppingmodify.header" />
-					</s:if>
-					<s:else>
-						<s:text name="service.master.bankmappping.header" />
+					<c:if test="%{serviceAccountId}">
+						<!-- TODO: Manual migration required for custom Struts tag -->
+					</c:if>
+					<c:otherwise>
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</s:else>
 				</div>
 
 				<table width="100%" border="0" cellspacing="0" cellpadding="0"
 					style="max-width: 960px; margin: 0 auto;">
 					<tr>
-						<s:hidden id="serviceAccountId" name="serviceAccountId" />
-						<s:hidden id="id" name="id" />
-						<s:hidden id="sourcePage" name="sourcePage" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="service.master.search.category" /> <span class="mandatory" /></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory" /></td>
 						<td class="bluebox">
-						<s:select headerKey="-1" headerValue="----Choose----" name="serviceCategory" id="serviceCategoryid" cssClass="selectwk" list="serviceCategoryNames" value="%{service.serviceCategory}" onChange="populateServiceType(this.value);" />
+						<form:select headerKey="-1" headerValue="----Choose----" path="serviceCategory" id="serviceCategoryid" cssClass="selectwk" list="serviceCategoryNames" value="%{service.serviceCategory}" onChange="populateServiceType(this.value);" />
 						</td>
 						<td colspan="2">
 						<table width="100%" id='serviceTable'>
@@ -202,35 +204,35 @@
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="service.master.bankname" /> <span class="mandatory" /></td>
-						<td class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="bankId" id="bankName" cssClass="selectwk" list="dropdownData.bankNameList" listKey="id" listValue="name" value="%{bankId}" onchange="onChangeBankBranch(this.value)" /> 
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory" /></td>
+						<td class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="bankId" id="bankName" cssClass="selectwk" list="dropdownData.bankNameList" listKey="id" listValue="name" value="%{bankId}" onchange="onChangeBankBranch(this.value)" /> 
 							<egov:ajaxdropdown id="accountNumberIdDropdown" fields="['Text','Value']" dropdownId='branchName' url='receipts/ajaxBankRemittance-bankBranchsByBankForReceiptPayments.action' />
 						</td>
-						<td class="bluebox"><s:text name="service.master.branchName" /> <span class="mandatory" /></td>
-						<td class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="branchId" id="branchName" cssClass="selectwk" list="dropdownData.bankBranchList" listKey="id" listValue="branchname" onChange="onChangeBankAccount(this.value)" value="%{branchId}" />
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory" /></td>
+						<td class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="branchId" id="branchName" cssClass="selectwk" list="dropdownData.bankBranchList" listKey="id" listValue="branchname" onChange="onChangeBankAccount(this.value)" value="%{branchId}" />
 							<egov:ajaxdropdown id="bankAccountIdDropDown" fields="['Text','Value']" dropdownId='bankAccountId' url='receipts/ajaxBankRemittance-bankAccountByBankBranch.action' />
 						</td>
 					</tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="service.master.accountnumber" /> <span class="mandatory" /></td>
-					<td class="bluebox"><s:select headerKey="-1" headerValue="----Choose----" name="bankAccountId" id="bankAccountId" cssClass="selectwk" list="dropdownData.bankAccountIdList" listKey="id" listValue="accountnumber" value="%{bankAccountId.id}" /></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory" /></td>
+					<td class="bluebox"><form:select headerKey="-1" headerValue="----Choose----" path="bankAccountId" id="bankAccountId" cssClass="selectwk" list="dropdownData.bankAccountIdList" listKey="id" listValue="accountnumber" value="%{bankAccountId.id}" /></td>
 					<tr>
 					</tr>
 				</table>
 				<div align="left" class="mandatorycoll">
 					&nbsp;&nbsp;&nbsp;
-					<s:text name="common.mandatoryfields" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<br />
 			</div>
 
 			<div class="buttonbottom">
-				<s:submit name="sumbit" cssClass="buttonsubmit" id="button32" onclick="return validate(); " value="Create Mapping" />
-				<s:reset name="reset" cssClass="button" id="button" value="Reset" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input name="close" type="button" class="button" id="button" onclick="window.close()" value="Close" />
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 	<script>
 		if (jQuery('#serviceAccountId').val())
 			jQuery('#serviceCategory, #serviceDetailsId')

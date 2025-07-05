@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -51,39 +53,39 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="cheque.remittance.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body >
-<s:form theme="simple" name="chequeRemittanceForm" action="chequeRemittance">
+<form:form theme="simple" name="chequeRemittanceForm" action="chequeRemittance">
 
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0" class="main" align="center">
 <tr>
-<td class="mainheading" colspan="6" align="center"><s:text name="bankremittance.confirmation"/>&nbsp;<b></b><s:property value="%{finalBeanList[0].remittanceReferenceNumber}" /></b><br/></td>
+<td class="mainheading" colspan="6" align="center"><!-- TODO: Manual migration required for custom Struts tag -->&nbsp;<b></b>${%{finalBeanList[0].remittanceReferenceNumber}}</b><br/></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
 </tr>
 	<td align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="tablebottom">
 		<tr>
-			<th class="bluebgheadtd" width="5%"> <s:text name="service.slNo.table.header"/></th>
-			<th class="bluebgheadtd" width="20%" ><s:text name="bankremittance.receiptnumber"/></th>
-			<th class="bluebgheadtd" width="20%" ><s:text name="bankremittance.receiptdate"/></th>
-			<th class="bluebgheadtd" width="20%" ><s:text name="bankremittance.servicename"/></th>
+			<th class="bluebgheadtd" width="5%"> <!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="20%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="20%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="20%" ><!-- TODO: Manual migration required for custom Struts tag --></th>
 		</tr>
-		<s:iterator value="%{remittedReceiptList}" status="s"> 
+		<c:forEach value="%{remittedReceiptList}" status="s"> 
 		<tr>
-			<td width="5%"  class="blueborderfortd"><div align="center"><s:property value="#s.index+1" /></div>  </td>
-			<td class="blueborderfortd"><div align="center"><s:property value="%{bill[0].billDetails[0].receiptNumber}" /></div></td>
-			<td class="blueborderfortd"><div align="center"><s:date name="%{bill[0].billDetails[0].receiptDate}" format="dd/MM/yyyy" /></div></td>
-			<td class="blueborderfortd"><div align="center"><s:property value="%{bill[0].billDetails[0].businessService}" /></div></td>
+			<td width="5%"  class="blueborderfortd"><div align="center">${#s.index+1}</div>  </td>
+			<td class="blueborderfortd"><div align="center">${%{bill[0].billDetails[0].receiptNumber}}</div></td>
+			<td class="blueborderfortd"><div align="center"><!-- TODO: Manual migration required for custom Struts tag --></div></td>
+			<td class="blueborderfortd"><div align="center">${%{bill[0].billDetails[0].businessService}}</div></td>
 			
-		</s:iterator>
-		<s:hidden name="totalCashAmount" value="%{totalCashAmount}"/>
-		<s:hidden name="totalChequeAmount" value="%{totalChequeAmount}"/>
-		<s:hidden name="totalOnlineAmount" value="%{totalOnlineAmount}"/>
-		<s:hidden name="bank" value="%{bank}"/>
-		<s:hidden name="bankAccount" value="%{bankAccount}"/>
+		</c:forEach>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		
 	</table></td>
 </table>
@@ -91,10 +93,10 @@
 <div class="buttonbottom">
 <input name="button2" type="button" class="button" id="button" onclick="window.close()" value="Close"/>
 <input type="button" class="buttonsubmit" id="buttonCashReport"
-			value="<s:text name='bankremittance.print.bankchallan'/>"
-			onclick="window.open('${pageContext.request.contextPath}/receipts/chequeRemittance-printBankChallan.action?totalCashAmount=<s:property value="%{totalCashAmount}"/>&totalChequeAmount=<s:property value="%{totalChequeAmount}"/>&totalOnlineAmount=<s:property value="%{totalOnlineAmount}"/>&bank=<s:property value="%{bank}"/>&bankAccount=<s:property value="%{bankAccount}"/>&remittanceDate=<s:property value="%{remittanceDate}"/>', '_blank', 'height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');"/> &nbsp;
+			value="<!-- TODO: Manual migration required for custom Struts tag -->"
+			onclick="window.open('${pageContext.request.contextPath}/receipts/chequeRemittance-printBankChallan.action?totalCashAmount=${%{totalCashAmount}}&totalChequeAmount=${%{totalChequeAmount}}&totalOnlineAmount=${%{totalOnlineAmount}}&bank=${%{bank}}&bankAccount=${%{bankAccount}}&remittanceDate=${%{remittanceDate}}', '_blank', 'height=650,width=980,scrollbars=yes,left=0,top=0,status=yes');"/> &nbsp;
 	
 </div>
-</s:form>
+</form:form>
 </body>
 </html>

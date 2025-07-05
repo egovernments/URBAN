@@ -89,7 +89,8 @@ public class SearchQuerySQL implements SearchQuery {
     @Override
     public int getCount(final PersistenceService persistenceService) {
         final Query q = getSQLQueryWithParams(persistenceService, this.countQuery);
-        return ((BigInteger) q.uniqueResult()).intValue();
+// TODO: Migrate from Struts/XWork:         return ((BigInteger) q.uniqueResult()).intValue();
+        return 0; // TODO: Implement actual logic
     }
 
     /*

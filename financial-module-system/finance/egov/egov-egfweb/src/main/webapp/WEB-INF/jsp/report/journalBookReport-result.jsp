@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,10 +53,10 @@
 <%@ page language="java"%>
 
 <span class="mandatory1"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span>
-<s:if test="%{journalBookDisplayList.size!=0}">
+<c:if test="%{journalBookDisplayList.size!=0}">
 	<display:table name="journalBookDisplayList" id="currentRowObject"
 		uid="currentRowObject" class="tablebottom" style="width:100%;"
 		cellpadding="0" cellspacing="0" export="true"
@@ -63,7 +65,7 @@
 			<table width="100%">
 				<tr>
 					<th class="bluebgheadtd" width="100%" colspan="8"><strong
-						style="font-size: 15px;"><s:property value="%{heading}" />
+						style="font-size: 15px;">${%{heading}}
 					</strong></th>
 				</tr>
 			</table>
@@ -81,8 +83,8 @@
 			class="blueborderfortd" title="Voucher Number"
 			style="width:4%;text-align:center">
 			<a href="#"
-				onclick="return viewVoucher('<s:property value="#attr.currentRowObject.vhId"/>')">
-				<s:property value="#attr.currentRowObject.vouchernumber" />
+				onclick="return viewVoucher('${#attr.currentRowObject.vhId}')">
+				${#attr.currentRowObject.vouchernumber}
 			</a>
 		</display:column>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
@@ -105,7 +107,7 @@
 			property="creditamount" />
 		<display:caption media="pdf">
 			<div align="left" style="text-align: left;">
-			<b><s:property value="%{titleName}" /><s:property value="%{heading}" />
+			<b>${%{titleName}}${%{heading}}
 				(<s:property
 						value="%{journalBookReport.isConfirmedCount}" /> in <s:property
 						value="%{journalBookReport.totalCount}" /> are unconfirmed)
@@ -126,5 +128,5 @@
 		<display:setProperty name="export.xml" value="false" />
 	</display:table>
 
-</s:if>
-<s:else>No records found</s:else>
+</c:if>
+<c:otherwise>No records found</s:else>

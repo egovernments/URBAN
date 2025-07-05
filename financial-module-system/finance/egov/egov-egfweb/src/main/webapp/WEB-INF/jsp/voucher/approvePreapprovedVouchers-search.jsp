@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -55,41 +57,41 @@
 <title>Voucher Search</title>
 </head>
 <body>
-	<s:form action="approvePreapprovedVouchers" theme="simple">
+	<form:form action="approvePreapprovedVouchers" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Approve pre-approval Voucher Search" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="formheading"></div>
 			<table align="center" width="80%" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="greybox"><s:text name="voucher.number" /></td>
-					<td class="greybox"><s:textfield name="voucherNumber"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input path="voucherNumber"
 							id="voucherNumber" maxlength="25" value="%{voucherNumber}" /></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td class="bluebox"><s:text name="voucher.type" /></td>
-					<td class="bluebox"><s:select name="type" id="type"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="type" id="type"
 							list="dropdownData.typeList" headerKey="-1"
 							headerValue="----Choose----"
 							onchange="loadVoucherNames(this.value)" /></td>
-					<td class="bluebox"><s:text name="voucher.name" /></td>
-					<td class="bluebox"><s:select name="name" id="name"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="name" id="name"
 							list="%{nameList}" headerKey="-1" headerValue="----Choose----" /></td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="voucher.fromdate" /></td>
-					<td class="greybox"><s:textfield name="fromDate" id="fromDate"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input path="fromDate" id="fromDate"
 							maxlength="20" value="%{fromDate}" /><a
 						href="javascript:show_calendar('forms[0].fromDate');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a><br />(dd/mm/yyyy)</td>
-					<td class="greybox"><s:text name="voucher.todate" /></td>
-					<td class="greybox"><s:textfield name="toDate" id="toDate"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:input path="toDate" id="toDate"
 							maxlength="20" value="%{toDate}" /><a
 						href="javascript:show_calendar('forms[0].toDate');"
 						style="text-decoration: none">&nbsp;<img
@@ -103,7 +105,7 @@
 					<td><input type="submit" value="Close"
 						onclick="javascript:window.close()" class="button" /></td>
 				</tr>
-				<s:hidden name="mode" value="%{mode}" id="mode" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</table>
 			<br />
 			<div id="listid" style="display: none">
@@ -120,13 +122,13 @@
 					</tr>
 					<c:set var="trclass" value="greybox" />
 
-					<s:iterator var="p" value="voucherList" status="s">
+					<c:forEach var="p" value="voucherList" status="s">
 						<tr>
 							<td class="<c:out value="${trclass}"/>"><s:property
 									value="#s.index+1" /></td>
 							<td align="left" class="<c:out value="${trclass}"/>"><a
 								href="#"
-								onclick="javascript:window.open('preApprovedVoucher!loadvoucherview.action?vhid=<s:property value='%{id}'/>','Search','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')"><s:property
+								onclick="javascript:window.open('preApprovedVoucher!loadvoucherview.action?vhid=<!-- TODO: Manual migration required for custom Struts tag -->','Search','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700')"><s:property
 										value="%{vouchernumber}" /> </a></td>
 							<td align="left" class="<c:out value="${trclass}"/>"><s:property
 									value="%{type}" /></td>
@@ -135,9 +137,9 @@
 							<td align="left" class="<c:out value="${trclass}"/>"><s:property
 									value="%{fundname}" /></td>
 							<td style="text-align: right" class="<c:out value="${trclass}"/>">
-								<s:property value="%{amount}" />
+								${%{amount}}
 							</td>
-							<td class="<c:out value="${trclass}"/>"><s:checkbox
+							<td class="<c:out value="${trclass}"/>"><form:checkbox
 									name="approveList" fieldValue="%{id}" /></td>
 							<c:choose>
 								<c:when test="${trclass=='greybox'}">
@@ -148,8 +150,8 @@
 								</c:when>
 							</c:choose>
 						</tr>
-					</s:iterator>
-					<s:hidden name="targetvalue" value="%{target}" id="targetvalue" />
+					</c:forEach>
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</table>
 				<table align="center">
 					<tr align="center">
@@ -172,7 +174,7 @@
 				</table>
 			</div>
 			<br /> <br />
-	</s:form>
+	</form:form>
 	<script>
 		
 		function loadVoucherNames(selected)
@@ -183,18 +185,18 @@
 				document.getElementById('name').options.length=0;
 				document.getElementById('name').options[0]= new Option('--------Choose--------','0');
 				}
-		<s:iterator value="voucherTypes" var="obj">
-		  s='<s:property value="#obj"/>';
+		<c:forEach value="voucherTypes" var="obj">
+		  s='${#obj}';
 		 if(selected==s)
 		 {
 		document.getElementById('name').options.length=0;
 		document.getElementById('name').options[0]= new Option('--------Choose--------','0');
 		
-		 <s:iterator value="voucherNames[#obj]" status="stat" var="names">
-		 document.getElementById('name').options[<s:property value="#stat.index+1"/>]= new Option('<s:property value="#names"/>','<s:property value="#names"/>');
-		 </s:iterator>   
+		 <c:forEach value="voucherNames[#obj]" status="stat" var="names">
+		 document.getElementById('name').options[${#stat.index+1}]= new Option('${#names}','${#names}');
+		 </c:forEach>   
 		 }
-		 </s:iterator>
+		 </c:forEach>
 			  
 			
 		}
@@ -221,13 +223,13 @@
 	   	
 			
 		
-		<s:if test="%{voucherList.size==0}">
+		<c:if test="%{voucherList.size==0}">
 				dom.get('msgdiv').style.display='block';
-			</s:if>
-			<s:if test="%{voucherList.size!=0}">
+			</c:if>
+			<c:if test="%{voucherList.size!=0}">
 				dom.get('msgdiv').style.display='none';
 				dom.get('listid').style.display='block';
-			</s:if>	
+			</c:if>	
 	
 		</script>
 </body>

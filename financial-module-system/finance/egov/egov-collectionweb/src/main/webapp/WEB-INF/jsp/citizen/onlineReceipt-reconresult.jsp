@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,16 +53,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><s:text name="coc.title"/></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
-<s:if test="%{hasErrors()}">
+<c:if test="%{hasErrors()}">
     <div class="errorstyle">
-      <s:actionerror/>
-      <s:fielderror/>
+      <!-- TODO: Manual migration required for custom Struts tag -->
+      <!-- TODO: Manual migration required for custom Struts tag -->
     </div>
-</s:if>
-<s:else>
+</c:if>
+<c:otherwise>
 	<table cellpadding="0" cellspacing="0" border="0" class="main" align="center">
 		
 	<tr>Manual Reconciliation of Online Payment Receipts Successful</tr>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -57,7 +59,7 @@
 <script type="text/javascript">
 		function validateAndSubmit(obj){
 			if(document.getElementById('glCode').value == null || document.getElementById('glCode').value==''){
-				bootbox.alert("<s:text name='msg.please.enter.account.code'/>");
+				bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 				return false;
 			}
 			var value = obj.value;
@@ -76,14 +78,14 @@
 <body class="yui-skin-sam">
 	<jsp:include page="../budget/budgetHeader.jsp" />
 	<span class="mandatory1">
-	<s:actionmessage theme="simple" />
-	<s:actionerror />
-	<s:fielderror /></span>
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag --></span>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="chartOfAccount.detailed" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
-		<s:form name="chartOfAccountsForm" id="chartOfAccountsForm"
+		<form:form name="chartOfAccountsForm" id="chartOfAccountsForm"
 			action="chartOfAccounts" theme="simple">
 
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
@@ -103,17 +105,17 @@
 			</table>
 	</div>
 	<div class="buttonbottom" style="padding-bottom: 10px;">
-		<input type="submit" class="buttonsubmit" value='<s:text name="lbl.search.and.view"/>'
+		<input type="submit" class="buttonsubmit" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 			id="Search" name="Search" onclick="return validateAndSubmit(this);" />
-		<input type="button" value='<s:text name="lbl.close"/>'' onclick="javascript:window.parent.postMessage('close','*');"
+		<input type="button" value='<!-- TODO: Manual migration required for custom Struts tag -->'' onclick="javascript:window.parent.postMessage('close','*');"
 			class="button" />
 	</div>
-	</s:form>
+	</form:form>
 	<script type="text/javascript">
 	var allGlcodes = [];
-	<s:iterator value="allChartOfAccounts">
-		allGlcodes.push("<s:property value="glcode"/>-<s:property value="name.replaceAll('\n',' ')"/>")
-	</s:iterator>
+	<c:forEach value="allChartOfAccounts">
+		allGlcodes.push("${glcode}-${name.replaceAll('\n',' ')}")
+	</c:forEach>
 	YAHOO.example.BasicLocal = function() { 
 		    var oDS = new YAHOO.util.LocalDataSource(allGlcodes); 
 		    // Optional to define fields for single-dimensional array 

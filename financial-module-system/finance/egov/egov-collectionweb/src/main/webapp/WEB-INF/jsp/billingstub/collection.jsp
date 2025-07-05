@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -77,10 +79,10 @@
 </head>
 <body onload="onBodyLoad();">
 
-	<s:form name="collDetails" action="collection" theme="simple"
+	<form:form name="collDetails" action="collection" theme="simple"
 		method="post">
 
-		<s:set name="defaultxml">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<bill-collect> <serviceCode>PT</serviceCode> <fundCode>01</fundCode>
 			<functionaryCode>999</functionaryCode> <fundSourceCode>01</fundSourceCode>
 			<departmentCode>REV</departmentCode> <displayMessage>HELLO
@@ -110,9 +112,9 @@
 				</td>
 			</tr>
 			<tr>
-				<td><s:hidden id="collectXML" name="collectXML" /> <!--<s:textarea name="collectXML" cols="100" rows="30">
-					<s:param name="value" value="#defaultxml" />
-				</s:textarea>--></td>
+				<td><!-- TODO: Manual migration required for custom Struts tag --> <!--<form:textarea path="collectXML" cols="100" rows="30">
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</form:textarea>--></td>
 			</tr>
 			<tr>
 				<td><s:submit type="submit" value="create"
@@ -138,7 +140,7 @@
 
 
 
-	</s:form>
+	</form:form>
 
 </body>
 </html>

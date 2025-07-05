@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -58,7 +60,7 @@
 }
 </style>
 
-<s:if test="%{balanceSheet.size()>0}">
+<c:if test="%{balanceSheet.size()>0}">
 	<div id="budgetSearchGrid"
 		style="width: 1250px; overflow-x: auto; overflow-y: hidden;">
 		<br />
@@ -76,7 +78,7 @@
 											value="ulbName" /><br /> <strong><s:text
 												name="report.balancesheet.year" /> <s:property
 												value="model.financialYear.finYearRange" />
-											<s:property value="header" /></strong></th>
+											${header}</strong></th>
 									</td>
 								</tr>
 								<tr>
@@ -87,49 +89,49 @@
 									</div></td>
 									<td colspan="16">
 										<div class="blueborderfortd" align="right">
-											<strong>Amount in <s:property value="model.currency" />
+											<strong>Amount in ${model.currency}
 												&nbsp;&nbsp;&nbsp;&nbsp;
 											</strong>
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<th class="bluebgheadtd"><s:text name="report.accountCode" /></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 									<th class="bluebgheadtd"><s:text
 											name="report.headOfAccount" /></th>
-									<th class="bluebgheadtd"><s:text name="report.scheduleNo" /></th>
-									<s:if test="%{balanceSheet.funds.size()>1}">
-										<s:iterator value="balanceSheet.funds" status="stat">
-											<th class="bluebgheadtd"><s:property value="name" /></th>
-										</s:iterator>
-									</s:if>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+									<c:if test="%{balanceSheet.funds.size()>1}">
+										<c:forEach value="balanceSheet.funds" status="stat">
+											<th class="bluebgheadtd">${name}</th>
+										</c:forEach>
+									</c:if>
 									<th class="bluebgheadtd"><s:property
 											value="currentYearToDate" /></th>
 									<th class="bluebgheadtd"><s:property
 											value="previousYearToDate" /></th>
 								</tr>
-								<s:iterator value="balanceSheet.entries" status="stat">
+								<c:forEach value="balanceSheet.entries" status="stat">
 									<tr>
 										<td class="blueborderfortd">
 											<div align="center">
-												<s:if test='%{glCode != ""}'>
-													<s:if test='%{displayBold == true}'>
-														<strong><s:property value="glCode" /></strong>
-													</s:if>
-													<s:else>
-														<s:property value="glCode" />
+												<c:if test='%{glCode != ""}'>
+													<c:if test='%{displayBold == true}'>
+														<strong>${glCode}</strong>
+													</c:if>
+													<c:otherwise>
+														${glCode}
 													</s:else>
-												</s:if>
+												</c:if>
 												&nbsp;
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="left">
-												<s:if test='%{scheduleNo == ""}'>
-													<strong><s:property value="accountName" /></strong>
-												</s:if>
-												<s:else>
-													<s:property value="accountName" />
+												<c:if test='%{scheduleNo == ""}'>
+													<strong>${accountName}</strong>
+												</c:if>
+												<c:otherwise>
+													${accountName}
 												</s:else>
 												&nbsp;
 											</div>
@@ -137,70 +139,70 @@
 										<td class="blueborderfortd">
 											<div align="center">
 												<a href="javascript:void(0);"
-													onclick='return showSchedule(<s:property value="glCode"/>)'><s:property
+													onclick='return showSchedule(${glCode})'><s:property
 														value="scheduleNo" /></a>&nbsp;
 											</div>
 										</td>
-										<s:if test="%{balanceSheet.funds.size()>1}">
-											<s:iterator value="balanceSheet.funds" status="stat">
+										<c:if test="%{balanceSheet.funds.size()>1}">
+											<c:forEach value="balanceSheet.funds" status="stat">
 												<td class="blueborderfortd">
 													<div align="right">
-														<s:if test='%{displayBold == true}'>
-															<strong><s:property value="fundWiseAmount[name]" />&nbsp;</strong>
-														</s:if>
-														<s:else>
-															<s:property value="fundWiseAmount[name]" />&nbsp;</s:else>
+														<c:if test='%{displayBold == true}'>
+															<strong>${fundWiseAmount[name]}&nbsp;</strong>
+														</c:if>
+														<c:otherwise>
+															${fundWiseAmount[name]}&nbsp;</s:else>
 													</div>
 												</td>
-											</s:iterator>
-										</s:if>
+											</c:forEach>
+										</c:if>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:if test='%{displayBold == true}'>
-													<strong><s:if test='%{currentYearTotal != 0}'>
-															<s:property value="currentYearTotal" />
-														</s:if>
-														<s:else>0.0</s:else></strong>
-												</s:if>
-												<s:else>
-													<s:if test='%{currentYearTotal != 0}'>
-														<s:property value="currentYearTotal" />
-													</s:if>
-													<s:else>0.0</s:else>
+												<c:if test='%{displayBold == true}'>
+													<strong><c:if test='%{currentYearTotal != 0}'>
+															${currentYearTotal}
+														</c:if>
+														<c:otherwise>0.0</s:else></strong>
+												</c:if>
+												<c:otherwise>
+													<c:if test='%{currentYearTotal != 0}'>
+														${currentYearTotal}
+													</c:if>
+													<c:otherwise>0.0</s:else>
 												</s:else>
 												&nbsp;
 											</div>
 										</td>
 										<td class="blueborderfortd">
 											<div align="right">
-												<s:if test='%{displayBold == true}'>
-													<strong><s:if test='%{previousYearTotal != 0}'>
-															<s:property value="previousYearTotal" />
-														</s:if>
-														<s:else>0.0</s:else></strong>
-												</s:if>
-												<s:else>
-													<s:if test='%{previousYearTotal != 0}'>
-														<s:property value="previousYearTotal" />
-													</s:if>
-													<s:else>0.0</s:else>
+												<c:if test='%{displayBold == true}'>
+													<strong><c:if test='%{previousYearTotal != 0}'>
+															${previousYearTotal}
+														</c:if>
+														<c:otherwise>0.0</s:else></strong>
+												</c:if>
+												<c:otherwise>
+													<c:if test='%{previousYearTotal != 0}'>
+														${previousYearTotal}
+													</c:if>
+													<c:otherwise>0.0</s:else>
 												</s:else>
 												&nbsp;
 											</div>
 										</td>
 									</tr>
-								</s:iterator>
+								</c:forEach>
 							</table>
 						</div>
 					</td>
 				</tr>
 			</table>
 			<div class="buttonbottom" id="exportButton">
-				<s:text name="report.export.options" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				: <a
-					href='/services/EGF/report/balanceSheetReport-generateBalanceSheetXls.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.fund.id=<s:property value="model.fund.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.field.id=<s:property value="model.field.id"/>'>Excel</a>
+					href='/services/EGF/report/balanceSheetReport-generateBalanceSheetXls.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.fund.id=${model.fund.id}&model.asOndate=${model.asOndate}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.field.id=${model.field.id}'>Excel</a>
 				| <a
-					href='/services/EGF/report/balanceSheetReport-generateBalanceSheetPdf.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.fund.id=<s:property value="model.fund.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.field.id=<s:property value="model.field.id"/>'>PDF</a>
+					href='/services/EGF/report/balanceSheetReport-generateBalanceSheetPdf.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.fund.id=${model.fund.id}&model.asOndate=${model.asOndate}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.field.id=${model.field.id}'>PDF</a>
 			</div>
 		</div>
-</s:if>
+</c:if>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -63,11 +65,11 @@
 
 <body>
 	<br>
-	<s:form action="payment" theme="simple">
+	<form:form action="payment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Modify Advance Payment" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">Modify Advance Payment</div>
@@ -93,90 +95,90 @@
 															</tr>
 															<tr>
 																<td width="9%" class="bluebox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('fund')}">
+																<c:if test="%{shouldShowHeaderField('fund')}">
 																	<td width="20%" class="bluebox"><strong><s:text
 																				name="voucher.fund" /></strong></td>
 																	<td width="20%" class="bluebox"><s:hidden
 																			name="paymentheader.voucherheader.fundId.name" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.fundId.name}" /></td>
-																</s:if>
+																</c:if>
 																<td width="10%" class="bluebox" />
-																<s:if test="%{shouldShowHeaderField('fundsource')}">
+																<c:if test="%{shouldShowHeaderField('fundsource')}">
 																	<td width="17%" class="bluebox"><strong><s:text
 																				name="voucher.fundsource" /></strong></td>
 																	<td width="25%" class="bluebox"><s:hidden
 																			name="paymentheader.voucherheader.fundsourceId.name" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.fundsourceId.name}" /></td>
-																</s:if>
+																</c:if>
 															</tr>
 															<tr>
 																<td class="greybox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('department')}">
+																<c:if test="%{shouldShowHeaderField('department')}">
 																	<td class="greybox"><strong><s:text
 																				name="voucher.department" /></strong></td>
 																	<td class="greybox"><s:hidden
 																			name="paymentheader.voucherheader.vouchermis.departmentid.deptName" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.vouchermis.departmentid.deptName}" /></td>
-																</s:if>
+																</c:if>
 																<td class="greybox" />
-																<s:if test="%{shouldShowHeaderField('functionary')}">
+																<c:if test="%{shouldShowHeaderField('functionary')}">
 																	<td class="greybox"><strong><s:text
 																				name="voucher.functionary" /></strong></td>
 																	<td class="greybox" colspan="2"><s:hidden
 																			name="paymentheader.voucherheader.vouchermis.functionary.name" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.vouchermis.functionary.name}" /></td>
-																</s:if>
+																</c:if>
 															</tr>
 															<tr>
 																<td class="bluebox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('scheme')}">
+																<c:if test="%{shouldShowHeaderField('scheme')}">
 																	<td class="bluebox"><strong><s:text
 																				name="voucher.scheme" /></strong></td>
 																	<td class="bluebox"><s:hidden
 																			name="paymentheader.voucherheader.vouchermis.schemeid.name" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.vouchermis.schemeid.name}" /></td>
-																</s:if>
+																</c:if>
 																<td class="bluebox" />
-																<s:if test="%{shouldShowHeaderField('subscheme')}">
+																<c:if test="%{shouldShowHeaderField('subscheme')}">
 																	<td class="bluebox"><strong><s:text
 																				name="voucher.subscheme" /></strong></td>
 																	<td class="bluebox"><s:hidden
 																			name="paymentheader.voucherheader.vouchermis.subschemeid.name" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.vouchermis.subschemeid.name}" /></td>
-																</s:if>
+																</c:if>
 															</tr>
 															<tr>
 																<td class="greybox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('field')}">
+																<c:if test="%{shouldShowHeaderField('field')}">
 																	<td class="greybox"><strong><s:text
 																				name="voucher.field" /></strong></td>
 																	<td class="greybox" colspan="4"><s:hidden
 																			name="paymentheader.voucherheader.vouchermis.divisionid.name" />
 																		<s:property
 																			value="%{paymentheader.voucherheader.vouchermis.divisionid.name}" /></td>
-																</s:if>
+																</c:if>
 																<td class="greybox" />
 															</tr>
 															<tr>
 																<td class="bluebox">&nbsp;</td>
-																<s:if test="%{shouldShowHeaderField('vouchernumber')}">
+																<c:if test="%{shouldShowHeaderField('vouchernumber')}">
 																	<td class="bluebox"><strong><s:text
 																				name="payment.voucherno" /></strong><span class="mandatory">*</span></td>
-																	<td class="bluebox"><s:textfield
+																	<td class="bluebox"><form:input
 																			name="voucherNumberPrefix" id="voucherNumberPrefix"
 																			value="%{voucherNumberPrefix}" size="2"
 																			readonly="true" />
-																		<s:textfield name="voucherNumberSuffix"
+																		<form:input path="voucherNumberSuffix"
 																			id="voucherNumberSuffix"
 																			value="%{voucherNumberSuffix}" size="10" /></td>
-																</s:if>
-																<s:else>
+																</c:if>
+																<c:otherwise>
 																	<td class="bluebox" />
 																	<td class="bluebox" />
 																</s:else>
@@ -186,7 +188,7 @@
 																<td class="bluebox" colspan="2"><s:date
 																		name="paymentheader.voucherheader.voucherDate"
 																		var="tempDate" format="dd/MM/yyyy" />
-																	<s:textfield
+																	<form:input
 																		name="paymentheader.voucherheader.voucherDate"
 																		id="voucherDate" maxlength="10" value="%{tempDate}"
 																		size="10"
@@ -200,7 +202,7 @@
 																<td class="greybox">&nbsp;</td>
 																<td class="greybox"><strong><s:text
 																			name="payment.bank" /></strong><span class="mandatory">*</span></td>
-																<td class="greybox"><s:select
+																<td class="greybox"><form:select
 																		name="paymentheader.bankaccount.bankbranch.id"
 																		id="bankbranch" list="dropdownData.bankbranchList"
 																		listKey="id" listValue="bank.name+'-'+branchname"
@@ -213,7 +215,7 @@
 																	url="voucher/common!ajaxLoadBankAccounts.action" />
 																<td class="greybox"><strong><s:text
 																			name="payment.bankaccount" /></strong><span class="mandatory">*</span></td>
-																<td class="greybox" colspan="2"><s:select
+																<td class="greybox" colspan="2"><form:select
 																		name="paymentheader.bankaccount.id" id="bankaccount"
 																		list="dropdownData.bankaccountList" listKey="id"
 																		listValue="chartofaccounts.glcode+'--'+accountnumber+'--'+accounttype"
@@ -240,7 +242,7 @@
 																<td class="greybox">&nbsp;</td>
 																<td class="greybox" width="15%"><strong><s:text
 																			name="payment.narration" /></strong></td>
-																<td class="greybox" colspan="5"><s:textarea
+																<td class="greybox" colspan="5"><form:textarea
 																		name="paymentheader.voucherheader.description"
 																		id="description" cols="70" rows="4"
 																		onblur="checkLength(this)"
@@ -283,8 +285,8 @@
 																					Amount
 																				</td>
 																			</tr>
-																			<s:if test="%{advanceRequisitionList.size>0}">
-																				<s:iterator var="p" value="advanceRequisitionList"
+																			<c:if test="%{advanceRequisitionList.size>0}">
+																				<c:forEach var="p" value="advanceRequisitionList"
 																					status="s">
 																					<tr>
 																						<td style="text-align: center"
@@ -300,13 +302,13 @@
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:text
 																								name="format.number">
-																								<s:param value="%{advanceRequisitionAmount}" />
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<c:set var="totalAmt"
 																							value="${advanceRequisitionAmount}" />
 																					</tr>
-																				</s:iterator>
-																			</s:if>
+																				</c:forEach>
+																			</c:if>
 																			<tr>
 																				<td style="text-align: right" colspan="3"
 																					class="blueborderfortdnew"><strong>Grand
@@ -340,19 +342,19 @@
 			<div class="buttonbottom" id="buttondiv">
 				<s:hidden name="fundId"
 					value="%{paymentheader.voucherheader.fundId.id}" />
-				<s:hidden name="hiddenText" id="hiddenText" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:hidden name="paymentheader.voucherheader.id"
 					value="%{paymentheader.voucherheader.id}" />
-				<s:hidden name="paymentheader.id" value="%{paymentheader.id}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 
-				<s:hidden name="paymentid" value="%{paymentheader.id}" />
-				<s:hidden name="actionname" id="actionName" value="%{action}" />
-				<s:iterator value="%{getValidActions()}" var="p" status="s">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<c:forEach value="%{getValidActions()}" var="p" status="s">
 					<s:submit type="submit" cssClass="buttonsubmit"
 						value="%{description}" id="wfBtn%{#s.index}" name="%{name}"
 						method="updateAdvancePayment"
 						onclick="return validate('%{name}','%{description}')" />
-				</s:iterator>
+				</c:forEach>
 				<s:submit method="cancelPayment" value="Cancel Payment"
 					cssClass="buttonsubmit" id="updatebtnid"
 					onclick="document.getElementById('actionName').value='canccelPayment';" />
@@ -365,13 +367,13 @@
 	
 		function validateAppoveUser(name,value){
 			document.getElementById("actionName").value= name;
-			<s:if test="%{wfitemstate =='END'}">
+			<c:if test="%{wfitemstate =='END'}">
 				if(value == 'Approve' || value == 'Reject') {
 					document.getElementById("approverUserId").value=-1;
 					return true;
 				}
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				if( (value == 'Approve' || value == 'Save And Forward' || value == 'Forward' ) && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 					bootbox.alert("please select User");
 					//document.getElementById('lblError').innerHTML ="Please Select the user";
@@ -443,11 +445,11 @@
 		}
 		function loadBankAccount(obj)
 		{
-			var vTypeOfAccount = '<s:property value="%{typeOfAccount}"/>';
+			var vTypeOfAccount = '${%{typeOfAccount}}';
 			var fund = 0;
-			<s:if test="%{shouldShowHeaderField('fund')}">
-				fund = <s:property value="%{paymentheader.voucherheader.fundId.id}"/>;
-			</s:if>
+			<c:if test="%{shouldShowHeaderField('fund')}">
+				fund = ${%{paymentheader.voucherheader.fundId.id}};
+			</c:if>
 			if(obj.options[obj.selectedIndex].value==-1)
 			{
 				var d = dom.get('bankaccount');
@@ -459,15 +461,15 @@
 		}
 	</script>
 
-		<s:if test="%{validateUser('balancecheck')}">
+		<c:if test="%{validateUser('balancecheck')}">
 			<script>
 			if(document.getElementById('bankbalanceRow'))
 			{
 				document.getElementById('bankbalanceRow').style.visibility='visible';
-				document.getElementById('balance').innerHTML='<s:property value="%{balance}"/>'
+				document.getElementById('balance').innerHTML='${%{balance}}'
 			}
 		</script>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 </body>
 </html>

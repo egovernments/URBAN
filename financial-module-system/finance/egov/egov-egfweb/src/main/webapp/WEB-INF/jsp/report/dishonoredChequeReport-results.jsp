@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,10 +53,10 @@
 <%@ page language="java"%>
 
 <span class="mandatory"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span>
-<s:if test="%{dishonoredChequeDisplayList.size!=0}">
+<c:if test="%{dishonoredChequeDisplayList.size!=0}">
 	<display:table name="dishonoredChequeDisplayList" id="currentRowObject"
 		uid="currentRowObject" class="tablebottom" style="width:100%;"
 		cellpadding="0" cellspacing="0" export="true"
@@ -62,12 +64,12 @@
 		<display:caption>
 			<div class="headingsmallbgnew" align="center"
 				style="text-align: center; width: 98%;">
-				<b><s:property value="%{heading}" /></b>
+				<b>${%{heading}}</b>
 			</div>
 		</display:caption>
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 			title="Sl.No" style="width:4%;text-align:center">
-			<s:property value="%{#attr.currentRowObject_rowNum}" />
+			${%{#attr.currentRowObject_rowNum}}
 		</display:column>
 		<display:column media="pdf" headerClass="bluebgheadtd"
 			class="blueborderfortd" title="Voucher Number"
@@ -79,19 +81,19 @@
 			class="blueborderfortd" title="Voucher Number"
 			style="width:8%;text-align:center">
 			<a href="#"
-				onclick="return viewVoucher('<s:property value="#attr.currentRowObject.voucherHeaderId"/>')">
-				<s:property value="#attr.currentRowObject.voucherNumber" />
+				onclick="return viewVoucher('${#attr.currentRowObject.voucherHeaderId}')">
+				${#attr.currentRowObject.voucherNumber}
 			</a>
 		</display:column>
-		<s:if test="%{dishonoredChequeReport.mode == 2}">
+		<c:if test="%{dishonoredChequeReport.mode == 2}">
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="Cheque Number" style="width:6%;text-align:center"
 				property="chequeNumber" />
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="Cheque Date" style="width:6%;text-align:center"
 				property="chequeDate" />
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="DD Number" style="width:8%;text-align:center"
 				property="chequeNumber" />
@@ -105,12 +107,12 @@
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 			title="Deposited in" style="width:8%;text-align:center"
 			property="bankName" />
-		<s:if test="%{dishonoredChequeReport.mode == 2}">
+		<c:if test="%{dishonoredChequeReport.mode == 2}">
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="Cheque Dishonored on" style="width:6%;text-align:center"
 				property="recChequeDate" />
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="DD Dishonored on" style="width:6%;text-align:center"
 				property="recChequeDate" />
@@ -124,19 +126,19 @@
 		<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 			title="Cheque Amount (Rs.)" style="width:8%;text-align:right"
 			property="amount" />
-		<s:if test="%{dishonoredChequeReport.mode == 2}">
+		<c:if test="%{dishonoredChequeReport.mode == 2}">
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="Cheque Status" style="width:8%;text-align:center"
 				property="status" />
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			<display:column headerClass="bluebgheadtd" class="blueborderfortd"
 				title="DD Status" style="width:8%;text-align:center"
 				property="status" />
 		</s:else>
 		<display:caption media="pdf">
 			<div align="left" style="text-align: left;">
-				<b> <s:property value="%{heading}" /></b>
+				<b> ${%{heading}}</b>
 			</div>
 		</display:caption>
 		<display:caption media="excel">
@@ -153,8 +155,8 @@
 		<display:setProperty name="export.xml" value="false" />
 	</display:table>
 
-</s:if>
-<s:else>
+</c:if>
+<c:otherwise>
 	<table align="center" class="tablebottom" width="80%">
 		<tr>
 			<th class="bluebgheadtd" colspan="7">No Records Found

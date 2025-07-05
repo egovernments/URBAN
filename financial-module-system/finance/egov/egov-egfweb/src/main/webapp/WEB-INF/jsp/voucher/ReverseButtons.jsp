@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 <table border="0" width="30%" align="center">
     <tr></tr>
     <tr>
-        <td><s:hidden name="button" id="button" /> <s:submit
+        <td><!-- TODO: Manual migration required for custom Struts tag --> <s:submit
 				type="submit" cssClass="buttonsubmit" id="Save_View"
 				name="Save_View" value="Reverse & View"
 				onclick="enableAll();document.getElementById('button').value='Reverse_View'; return validateReverse()"

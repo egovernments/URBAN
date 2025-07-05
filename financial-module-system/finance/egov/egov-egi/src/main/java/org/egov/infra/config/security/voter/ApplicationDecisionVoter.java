@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.egov.infra.admin.master.entity.ActionT;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.admin.master.entity.ActionT;
 import org.egov.infra.admin.master.entity.CustomUserDetails;
 import org.egov.infra.config.security.authentication.userdetail.CurrentUser;
 import org.egov.infra.microservice.utils.MicroserviceUtils;

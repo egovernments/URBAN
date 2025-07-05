@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,10 +54,10 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:if test="showMode == 'new'">
-		<s:text name="subScheme.add" />
-	</s:if> <s:else>
-		<s:text name="subscheme.modify.title" />
+<title><c:if test="showMode == 'new'">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if> <c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else></title>
 <SCRIPT type="text/javascript">
 	function validate() {
@@ -127,34 +129,34 @@
 	<jsp:include page="../budget/budgetHeader.jsp" />
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:if test="showMode == 'new'">
-				<s:text name="subScheme.add" />
-			</s:if>
-			<s:else>
-				<s:text name="subscheme.modify.title" />
+			<c:if test="showMode == 'new'">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
+			<c:otherwise>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</s:else>
 			<div style="color: red" align="left">
-				<s:actionerror />
-				<s:fielderror />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: green" align="left">
-				<s:actionmessage />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div style="color: red" align="left">
 			</br>
 				<div class="errorstyle" style="display: none" id="codeuniquecode">
-					<s:text name="subscheme.code.already.exists" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 				<div class="errorstyle" style="display: none" id="uniquename">
-					<s:text name="subscheme.name.already.exists" />
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</div>
 			</div>
-			<s:token />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 
-			<s:form id="subSchemeForm" name="subSchemeForm" action="subScheme"
+			<form:form id="subSchemeForm" name="subSchemeForm" action="subScheme"
 				theme="css_xhtml" validate="true">
 
-				<s:hidden name="showMode" id="showMode" value="%{showMode}" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<s:hidden id="subSchemeId" name="subSchemeId"
 					value="%{subScheme.id}" />
 					
@@ -162,16 +164,16 @@
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox" width="20%"><strong><s:text name="lbl.scheme"/><span
+						<td class="bluebox" width="20%"><strong><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory1"> *</span></strong></td>
-						<td class="bluebox"><s:select name="schemeId" id="scheme"
+						<td class="bluebox"><form:select path="schemeId" id="scheme"
 								list="dropdownData.schemeList" listKey="id" listValue="name"
 								headerKey="" headerValue="%{getText('lbl.choose.options')}"
 								value="%{subScheme.scheme.id}" /></td>
-						<td class="bluebox" width="20%"><strong><s:text name="lbl.sub.scheme.name"/><span
+						<td class="bluebox" width="20%"><strong><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory1"> *</span></strong></td>
-						<%-- <s:if test="showMode == 'new'"> --%>
-						<td class="bluebox"><s:textfield id="name" name="name"
+						<%-- <c:if test="showMode == 'new'"> --%>
+						<td class="bluebox"><form:input id="name" path="name"
 								value="%{subScheme.name}" cssStyle="width: 250px"
 								onblur="checkuniquenessname();" /></td>
 						<egov:uniquecheck id="uniquename" name="uniquename"
@@ -181,17 +183,17 @@
 					</tr>
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<td class="greybox"><strong><s:text name="lbl.sub.scheme.code"/></strong><span
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --></strong><span
 							class="mandatory1"> *</span></td>
-						<%-- <s:if test="showMode == 'new'"> --%>
-						<td class="greybox"><s:textfield id="code" name="code"
+						<%-- <c:if test="showMode == 'new'"> --%>
+						<td class="greybox"><form:input id="code" path="code"
 								value="%{subScheme.code}" onblur="checkuniquenesscode();" /></td>
 						<egov:uniquecheck id="codeuniquecode" name="codeuniquecode"
 							fieldtoreset="code" fields="['Value']"
 							url='masters/subScheme-codeUniqueCheck.action' />
 
 						<td class="greybox"><strong>Active</strong></td>
-						<td class="greybox"><s:checkbox id="isactive" name="isactive"
+						<td class="greybox"><form:checkbox id="isactive" path="isactive"
 								value="%{subScheme.isactive}" /></td>
 
 						
@@ -199,18 +201,18 @@
 					<tr>
 						<td class="bluebox">&nbsp;</td>
 						
-						<td class="bluebox"><strong><s:text name="lbl.valid.from"/></strong><span
+						<td class="bluebox"><strong><!-- TODO: Manual migration required for custom Struts tag --></strong><span
 							class="mandatory1"> *</span></td>
 						<td class="bluebox"><s:date name="subScheme.validfrom"
-								var="validfromId" format="dd/MM/yyyy" /> <s:textfield
+								var="validfromId" format="dd/MM/yyyy" /> <form:input
 								id="validfrom" name="validfrom" value="%{validfromId}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
 								data-inputmask="'mask': 'd/m/y'" /></td>
-								<td class="bluebox"><strong><s:text name="lbl.valid.to"/></strong><span
+								<td class="bluebox"><strong><!-- TODO: Manual migration required for custom Struts tag --></strong><span
 							class="mandatory1"> *</span></td>
 						<td class="bluebox"><s:date name="subScheme.validto"
-								var="validtoId" format="dd/MM/yyyy" /> <s:textfield
+								var="validtoId" format="dd/MM/yyyy" /> <form:input
 								id="validtoId" name="validto" value="%{validtoId}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -220,13 +222,13 @@
 					</tr>
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<td class="greybox"><strong><s:text name="lbl.department"/> </strong></td>
-						<td class="greybox"><s:select
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
+						<td class="greybox"><form:select
 								list="dropdownData.departmentList" listKey="code" listValue="name"
 								headerKey="0" headerValue="%{getText('lbl.choose.options')}" name="department"
-								id="department" value="%{subScheme.department}"></s:select></td>
-						<td class="greybox"><strong><s:text name="lbl.initial.estimate.amount"/> </strong></td>
-						<td class="greybox"><s:textfield
+								id="department" value="%{subScheme.department}"></form:select></td>
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
+						<td class="greybox"><form:input
 								cssStyle="text-align: right;" id="initialEstimateAmount"
 								name="initialEstimateAmount"
 								value="%{subScheme.initialEstimateAmount}"
@@ -234,14 +236,14 @@
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><strong><s:text name="lbl.council.loan.proposal.number"/> </strong></td>
-						<td class="bluebox"><s:textfield
+						<td class="bluebox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
+						<td class="bluebox"><form:input
 								id="councilLoanProposalNumber" name="councilLoanProposalNumber"
 								value="%{subScheme.councilLoanProposalNumber}" /></td>
-						<td class="bluebox"><strong><s:text name="lbl.council.loan.proposal.date"/> </strong></td>
+						<td class="bluebox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						<td class="bluebox"><s:date
 								name="subScheme.councilLoanProposalDate"
-								var="councilLoanProposalDateId" format="dd/MM/yyyy" /> <s:textfield
+								var="councilLoanProposalDateId" format="dd/MM/yyyy" /> <form:input
 								id="subScheme.councilLoanProposalDate"
 								name="councilLoanProposalDate"
 								value="%{councilLoanProposalDateId}"
@@ -251,16 +253,16 @@
 					</tr>
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<td class="greybox"><strong><s:text name="lbl.council.admin.sanctioned.number"/> </strong></td>
-						<td class="greybox"><s:textfield
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
+						<td class="greybox"><form:input
 								id="councilAdminSanctionNumber"
 								name="councilAdminSanctionNumber"
 								value="%{subScheme.councilAdminSanctionNumber}" /></td>
-						<td class="greybox"><strong><s:text name="lbl.council.admin.sanctioned.date"/> </strong></td>
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						<td class="greybox"><s:date
 								name="subScheme.councilAdminSanctionDate"
 								var="councilAdminSanctionDateId" format="dd/MM/yyyy" />
-							<s:textfield id="councilAdminSanctionDate"
+							<form:input id="councilAdminSanctionDate"
 								name="councilAdminSanctionDate"
 								value="%{councilAdminSanctionDateId}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -269,15 +271,15 @@
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<td class="bluebox"><strong><s:text name="lbl.government.loan.proposal.number"/> </strong></td>
-						<td class="bluebox"><s:textfield id="govtLoanProposalNumber"
+						<td class="bluebox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
+						<td class="bluebox"><form:input id="govtLoanProposalNumber"
 								name="govtLoanProposalNumber"
 								value="%{subScheme.govtLoanProposalNumber}" /></td>
-						<td class="bluebox"><strong><s:text name="lbl.government.loan.proposal.date"/> </strong></td>
+						<td class="bluebox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						<td class="bluebox"><s:date
 								name="subScheme.govtLoanProposalDate"
 								var="govtLoanProposalDateId" format="dd/MM/yyyy" />
-							<s:textfield id="govtLoanProposalDate"
+							<form:input id="govtLoanProposalDate"
 								name="govtLoanProposalDate" value="%{govtLoanProposalDateId}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
 								placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -285,14 +287,14 @@
 					</tr>
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<td class="greybox"><strong><s:text name="lbl.govt.admin.sanction.number"/> </strong></td>
-						<td class="greybox"><s:textfield id="govtAdminSanctionNumber"
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
+						<td class="greybox"><form:input id="govtAdminSanctionNumber"
 								name="govtAdminSanctionNumber"
 								value="%{subScheme.govtAdminSanctionNumber}" /></td>
-						<td class="greybox"><strong><s:text name="lbl.govt.admin.sanction.date"/> </strong></td>
+						<td class="greybox"><strong><!-- TODO: Manual migration required for custom Struts tag --> </strong></td>
 						<td class="greybox"><s:date
 								name="subScheme.govtAdminSanctionDate"
-								var="govtAdminSanctionDateId" format="dd/MM/yyyy" /> <s:textfield
+								var="govtAdminSanctionDateId" format="dd/MM/yyyy" /> <form:input
 								id="govtAdminSanctionDate" name="govtAdminSanctionDate"
 								value="%{govtAdminSanctionDateId}"
 								onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -303,32 +305,32 @@
 				<br />
 				<br />
 
-				<s:if test="%{showMode=='new'}">
+				<c:if test="%{showMode=='new'}">
 					<div align="center" class="buttonbottom"
 						style="padding-bottom: 10px;">
-						<input type="submit" class="buttonsubmit" value="<s:text name='lbl.save'/>"
+						<input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							id="saveButton" name="button" onclick="return validate();" /> 
-							<input type="reset" class="buttonsubmit" value="<s:text name='lbl.reset'/>"
+							<input type="reset" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							id="resetButton" name="button" onclick="return resetSubmit();" /> <input
-							type="button" id="Close" value="<s:text name='lbl.close'/>"
+							type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.close()" class="button" />
 					</div>
-				</s:if>
-				<s:elseif test="%{showMode=='edit'}">
+				</c:if>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 					<div class="buttonbottom" style="padding-bottom: 10px;">
-						<input type="submit" class="buttonsubmit" value="<s:text name='lbl.save'/>"
+						<input type="submit" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							id="saveButton" name="button" onclick="return validate();" /> <input
-							type="button" id="Close" value="<s:text name='lbl.close'/>"
+							type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.close()" class="button" />
 					</div>
 				</s:elseif>
-				<s:else>
+				<c:otherwise>
 					<div class="buttonbottom" style="padding-bottom: 10px;">
-						<input type="button" id="Close" value="<s:text name='lbl.close'/>"
+						<input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 							onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />
 						</dev>
 				</s:else>
-			</s:form>
+			</form:form>
 			<script type="text/javascript">
 				function resetSubmit()
 				{

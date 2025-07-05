@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,10 +50,10 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{message != ''}">
-	<label style="color: red"><s:property value="message" /></label>
-</s:if>
-<s:elseif test="%{remittedTDS.size()>0}">
+<c:if test="%{message != ''}">
+	<label style="color: red">${message}</label>
+</c:if>
+<!-- TODO: Manual migration required for custom Struts tag -->0}">
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -59,7 +61,7 @@
 
 			<th class="bluebgheadtd" width="100%" colspan="7"><strong
 				style="font-size: 15px;"> Deductions remittance summary for
-					<s:property value="%{type}" /> as on <s:property
+					${%{type}} as on <s:property
 						value="%{getFormattedDate(asOnDate)}" />
 			</strong></th>
 		</tr>
@@ -77,42 +79,42 @@
 							<th class="bluebgheadtd">Total Deduction(Rs)</th>
 							<th class="bluebgheadtd">Total Remitted(Rs)</th>
 						</tr>
-						<s:iterator value="remittedTDS" status="stat" var="p">
+						<c:forEach value="remittedTDS" status="stat" var="p">
 							<tr>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="#stat.index+1" />
+										${#stat.index+1}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="natureOfDeduction" />
+										${natureOfDeduction}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="month" />
+										${month}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd">
 									<div align="right">
-										<s:if test="%{#p.totalDeduction != null}">
-											<s:text name="format.number">
-												<s:param name="value" value="totalDeduction" />
+										<c:if test="%{#p.totalDeduction != null}">
+											<!-- TODO: Manual migration required for custom Struts tag -->
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</s:text>&nbsp;
-						</s:if>
-										<s:else>0.00</s:else>
+						</c:if>
+										<c:otherwise>0.00</s:else>
 									</div>
 								</td>
 								<td class="blueborderfortd">
 									<div align="right">
-										<s:if test="%{#p.totalRemitted != null}">
-											<s:text name="format.number">
-												<s:param name="value" value="totalRemitted" />
+										<c:if test="%{#p.totalRemitted != null}">
+											<!-- TODO: Manual migration required for custom Struts tag -->
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</s:text>&nbsp;
-						</s:if>
-										<s:else>0.00</s:else>
+						</c:if>
+										<c:otherwise>0.00</s:else>
 									</div>
 								</td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -128,4 +130,4 @@
 	</div>
 
 </s:elseif>
-<s:else>No records found</s:else>
+<c:otherwise>No records found</s:else>

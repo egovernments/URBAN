@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -60,8 +62,8 @@
 
 </head>
 <body onload="onloadTask();">
-	<s:form action="contraBTC" theme="simple" name="cbtcform">
-		<s:push value="model">
+	<form:form action="contraBTC" theme="simple" name="cbtcform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Bank to Cash Transfer" name="heading" />
 			</jsp:include>
@@ -74,21 +76,21 @@
 				<div align="center">
 					<font style='color: red;'><p class="error-block"
 							id="lblError"></p></font> <span class="mandatory"> <s:actionerror
-							id="actionerror" /> <s:fielderror id="fielderror" /> <s:actionmessage
+							id="actionerror" /> <!-- TODO: Manual migration required for custom Struts tag --> <s:actionmessage
 							id="actionmessage" />
 					</span>
 				</div>
 				<%@include file="contraBTC-form.jsp"%>
 				<tr>
-					<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-						<td class="bluebox"><s:text name="reversalVoucherNumber" /><span
+					<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory">*</span></td>
-						<td class="bluebox"><s:textfield name="reverseVoucherNumber"
+						<td class="bluebox"><form:input path="reverseVoucherNumber"
 								id="reversalVoucherNumber" /></td>
-					</s:if>
-					<td class="bluebox"><s:text name="reversalVoucherDate" /><span
+					</c:if>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="bluebox"><s:textfield name="reverseVoucherDate"
+					<td class="bluebox"><form:input path="reverseVoucherDate"
 							id="reversalVoucherDate"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 						href="javascript:show_calendar('cbtcform.reversalVoucherDate');"
@@ -99,7 +101,7 @@
 		<br />
 		<br />
 		<input type="hidden" name="voucherHeader.id"
-			value='<s:property value="voucherHeader.id"/>' id="voucherHeaderId" />
+			value='${voucherHeader.id}' id="voucherHeaderId" />
 		<div id="buttons">
 			<s:submit type="submit" cssClass="buttonsubmit"
 				value="Reverse and View" method="saveReverse" id="reverse"
@@ -112,7 +114,7 @@
 		</div>
 		<div id="resultGrid"></div>
 		</div>
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
 
 function onloadTask(){

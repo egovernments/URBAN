@@ -97,11 +97,7 @@ public class Feature extends AbstractPersistable<Long> {
     @NotAudited
     private Module module;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "eg_feature_action", joinColumns = @JoinColumn(name = "feature"), inverseJoinColumns = @JoinColumn(name = "action"))
-    @Fetch(FetchMode.JOIN)
-    @NotAudited
-    private Set<Action> actions;
+    // TODO: Migrate from Struts/XWork: private Set<Action> actions;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "eg_feature_role", joinColumns = @JoinColumn(name = "feature"), inverseJoinColumns = @JoinColumn(name = "role"))
@@ -146,13 +142,15 @@ public class Feature extends AbstractPersistable<Long> {
         this.module = module;
     }
 
-    public Set<Action> getActions() {
-        return actions;
-    }
+    // TODO: Migrate from Struts/XWork:
+    // public Set<Action> getActions() {
+    //     return actions;
+    // }
 
-    public void setActions(final Set<Action> actions) {
-        this.actions = actions;
-    }
+    // TODO: Migrate from Struts/XWork:
+    // public void setActions(final Set<Action> actions) {
+    //     this.actions = actions;
+    // }
 
     public Set<Role> getRoles() {
         return roles;

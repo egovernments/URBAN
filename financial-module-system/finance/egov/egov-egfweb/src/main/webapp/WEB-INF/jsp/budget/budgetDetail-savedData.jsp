@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,16 +52,16 @@
 <%@ include file='budgetDetailList.jsp'%>
 <input type="hidden" name="newPreviousYearValue"
 	id="newPreviousYearValue"
-	value='<s:property value="%{previousYearRange}"/>' />
+	value='${%{previousYearRange}}' />
 <input type="hidden" name="newCurrentYearValue" id="newCurrentYearValue"
-	value='<s:property value="%{currentYearRange}"/>' />
+	value='${%{currentYearRange}}' />
 <input type="hidden" name="newLastButOneYearValue"
 	id="newLastButOneYearValue"
-	value='<s:property value="%{lastButOneYearRange}"/>' />
+	value='${%{lastButOneYearRange}}' />
 <input type="hidden" name="newNextYearValue" id="newNextYearValue"
-	value='<s:property value="%{nextYearRange}"/>' />
-<input type="hidden" name="re" id="re" value='<s:property value="re"/>' />
+	value='${%{nextYearRange}}' />
+<input type="hidden" name="re" id="re" value='${re}' />
 <input type="hidden" name="referenceBudgetName" id="referenceBudgetName"
-	value='<s:property value="referenceBudget.name"/>' />
+	value='${referenceBudget.name}' />
 <input type="hidden" id="newBudgetDocNum"
-	value='<s:property value="%{budgetDocumentNumber}"/>' />
+	value='${%{budgetDocumentNumber}}' />

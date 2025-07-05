@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,18 +56,18 @@
 <input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <tr>
 	<td class="greybox"></td>
-	<td class="greybox"><s:text name="bank" /> <span class="greybox"><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="greybox"><span
 			class="mandatory1">*</span></span></td>
 	<egov:ajaxdropdown id="bankId" fields="['Text','Value']"
 		dropdownId="bankId"
 		url="/voucher/common-ajaxLoadBanksByFundAndType.action" />
-	<td class="greybox"><s:select name="commonBean.bankId" id="bankId"
+	<td class="greybox"><form:select path="commonBean.bankId" id="bankId"
 			list="dropdownData.bankList" listKey="bankBranchId"
 			listValue="bankBranchName" headerKey="" headerValue="%{getText('lbl.choose.options')}"
 			onChange="populateAccNum(this);" /></td>
-	<td class="greybox"><s:text name="amount" /><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="mandatory1">*</span></td>
-	<td class="greybox"><s:textfield name="commonBean.amount"
+	<td class="greybox"><form:input path="commonBean.amount"
 			id="amount" maxlength="18" onblur="validateDigitsAndDecimal(this);"
 			cssStyle="text-align:right" /></td>
 </tr>
@@ -75,21 +77,21 @@
 	<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 		dropdownId="accountNumber"
 		url="voucher/common-ajaxLoadBankAccounts.action" />
-	<td class="bluebox" width="22%"><s:text name="account.number" /><span
+	<td class="bluebox" width="22%"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="bluebox"><span class="mandatory1">*</span></span></td>
-	<td class="bluebox" width="22%"><s:select
+	<td class="bluebox" width="22%"><form:select
 			name="commonBean.accountNumberId" id="accountNumber"
 			list="dropdownData.accNumList" listKey="id"
 			listValue="accountnumber+'-'+accounttype" headerKey=""
 			headerValue="%{getText('lbl.choose.options')}"
 			onChange="populateNarration(this);populateAvailableBalance(this);" />
-		<s:textfield name="accnumnar" id="accnumnar"
+		<form:input path="accnumnar" id="accnumnar"
 			value="%{commonBean.accnumnar}" readonly="true" tabindex="-1" /></td>
 	<egov:updatevalues id="availableBalance" fields="['Text']"
 		url="/payment/payment-ajaxGetAccountBalance.action" />
 	<td class="bluebox" id="balanceText"><s:text
 			name="balance.available" /></td>
-	<td class="bluebox" id="balanceAvl"><s:textfield
+	<td class="bluebox" id="balanceAvl"><form:input
 			name="commonBean.availableBalance" id="availableBalance"
 			readonly="true" style="text-align:right"
 			value="%{commonBean.availableBalance}" /></td>
@@ -97,21 +99,21 @@
 
 </tr>
 <td class="greybox"></td>
-<td class="greybox"><s:text name="modeofpayment" /> <span
+<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 	class="greybox"><span class="mandatory1">*</span></span></td>
 <td class="greybox"><s:radio name="commonBean.modeOfPayment"
 		id="modeOfPayment" list="%{modeOfPaymentMap}" /></td>
-<td class="greybox"><s:text name="paidto" /><span
+<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 	class="mandatory1">*</span></td>
-<td class="greybox"><s:textfield name="commonBean.paidTo" class = "patternvalidation"
+<td class="greybox"><form:input path="commonBean.paidTo" class = "patternvalidation"
 		id="paidTo" maxlength="250" data-pattern="alphanumericwithspaceanddot"
 			cssStyle="text-align:right"/></td>
 </tr>
 <%-- <tr>
 	<td class="bluebox"></td>
-	<td class="bluebox"><s:text name="link.ref.number" /><span
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="bluebox"></td>
-	<td class="bluebox"><s:textfield
+	<td class="bluebox"><form:input
 			name="commonBean.linkReferenceNumber"
 			id="commonBean.linkReferenceNumber" size="25" /> <img
 		src="/services/egi/resources/erp2/images/searchicon.gif"
@@ -122,15 +124,15 @@
 </tr> --%>
 <tr>
 	<td class="greybox"></td>
-	<td class="greybox"><s:text name="document.number" /><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="greybox"><span class="mandatory1">*</span></span></td>
-	<td class="greybox"><s:textfield name="commonBean.documentNumber"
+	<td class="greybox"><form:input path="commonBean.documentNumber"
 			id="commonBean.documentNumber" size="25" /></td>
-	<td class="greybox"><s:text name="document.date" /><span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 		class="greybox"><span class="mandatory1">*</span></span></td>
 	<s:date name='commonBean.documentDate' var="commonBean.documentDateId"
 		format='dd/MM/yyyy' />
-	<td class="greybox"><s:textfield id="documentDate"
+	<td class="greybox"><form:input id="documentDate"
 			name="commonBean.documentDate" value="%{commonBean.documentDateId}"
 			data-date-end-date="0d"
 			onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -139,28 +141,28 @@
 </tr>
 
 
-<s:if test="%{instrumentHeaderList.size()>0}">
-	<s:iterator var="p" value="instrumentHeaderList" status="s">
+<c:if test="%{instrumentHeaderList.size()>0}">
+	<c:forEach var="p" value="instrumentHeaderList" status="s">
 		<tr>
 			<td class="bluebox"></td>
-			<td class="bluebox"><s:text name="lbl.cheque.number"/> </td>
-			<td class="bluebox"><s:property value="%{instrumentNumber}" />
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> </td>
+			<td class="bluebox">${%{instrumentNumber}}
 			</td>
-			<td class="bluebox"><s:text name="lbl.cheque.date"/></td>
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 			<td class="bluebox"><s:date name="%{instrumentDate}"
 					format="dd/MM/yyyy" /></td>
 		</tr>
 		<tr>
 			<td class="greybox"></td>
-			<td class="greybox"><s:text name="lbl.party.name"/></td>
-			<td class="greybox"><s:property value="%{payTo}" /></td>
+			<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+			<td class="greybox">${%{payTo}}</td>
 		</tr>
-	</s:iterator>
-</s:if>
+	</c:forEach>
+</c:if>
 <tr>
 	<td class="bluebox"></td>
-	<td class="bluebox"><s:text name="voucher.narration" /></td>
-	<td class="bluebox" colspan="3"><s:textarea name="description"
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="bluebox" colspan="3"><form:textarea path="description"
 			id="description" style="width:580px" /></td>
 </tr>
 </table>
@@ -175,7 +177,7 @@
 					<td colspan="6">
 						<div id="labelAD" align="center">
 							<div class="subheadsmallnew">
-								<strong><s:text name="lbl.account.details"/></strong>
+								<strong><!-- TODO: Manual migration required for custom Struts tag --></strong>
 							</div>
 						</div>
 						<div class="yui-skin-sam" align="center">
@@ -205,7 +207,7 @@
 					<tr>
 						<td colspan="6">
 							<div class="subheadsmallnew">
-								<strong><s:text name="lbl.subledger.details"/></strong>
+								<strong><!-- TODO: Manual migration required for custom Struts tag --></strong>
 							</div>
 							</div>
 

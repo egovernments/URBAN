@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -135,16 +137,16 @@ function loadSearch(){
 		<div class="subheadnew">Manual Entry Report</div>
 	</div>
 
-	<s:form action="fundFlowManualEntryReport" theme="simple"
+	<form:form action="fundFlowManualEntryReport" theme="simple"
 		name="fundFlowManualEntryReport">
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<table width="100%" cellpadding="0" cellspacing="0" border="0">
 			<tr>
 				<td class="greybox"></td>
-				<td class="greybox" width="10%"><s:text name="voucher.fund" /><span
+				<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="greybox"><span class="mandatory">*</span></span></td>
-				<td class="greybox"><s:select name="fund.id" id="fund"
+				<td class="greybox"><form:select path="fund.id" id="fund"
 						list="dropdownData.fundList" listKey="id" listValue="name"
 						headerKey="0" headerValue="----Choose----"
 						onChange="loadBank(this);" /></td>
@@ -153,7 +155,7 @@ function loadSearch(){
 
 				<td class="greybox" width="10%">Bank Name:<span class="bluebox"><span
 						class="mandatory">*</span></span></td>
-				<td class="greybox"><s:select name="bank.bankBranchId"
+				<td class="greybox"><form:select path="bank.bankBranchId"
 						id="bank" list="dropdownData.bankList" listKey="bankBranchId"
 						listValue="bankBranchName" headerKey="-1"
 						headerValue="----Choose----" onclick="validateFund()"
@@ -165,9 +167,9 @@ function loadSearch(){
 				<egov:ajaxdropdown id="accountNumber" fields="['Text','Value']"
 					dropdownId="accountNumber"
 					url="voucher/common!ajaxLoadAccountNumbers.action" />
-				<td class="bluebox" width="10%"><s:text name="bankaccount" />:<span
+				<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 					class="bluebox"><span class="mandatory">*</span></span></td>
-				<td class="bluebox"><s:select name="bankAccount.id"
+				<td class="bluebox"><form:select path="bankAccount.id"
 						id="accountNumber" list="dropdownData.accNumList" listKey="id"
 						listValue="accountnumber" headerKey="-1"
 						headerValue="----Choose----" onclick="validateBank()"
@@ -176,20 +178,20 @@ function loadSearch(){
 
 			<tr>
 				<td class="greybox"></td>
-				<td class="greybox"><s:text name="voucher.fromdate" /><span
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory">*</span></td>
-				<s:date name="startDate" format="dd/MM/yyyy" var="tempFromDate" />
-				<td class="greybox"><s:textfield name="startDate"
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<td class="greybox"><form:input path="startDate"
 						id="startDate" maxlength="20"
 						onkeyup="DateFormat(this,this.value,event,false,'3')"
 						value="%{tempFromDate}" /><a
 					href="javascript:show_calendar('fundFlowManualEntryReport.startDate');"
 					style="text-decoration: none">&nbsp;<img
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a></td>
-				<td class="greybox"><s:text name="voucher.todate" /><span
+				<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory">*</span></td>
-				<s:date name="endDate" format="dd/MM/yyyy" var="tempToDate" />
-				<td class="greybox"><s:textfield name="endDate" id="endDate"
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<td class="greybox"><form:input path="endDate" id="endDate"
 						maxlength="20"
 						onkeyup="DateFormat(this,this.value,event,false,'3')"
 						value="%{tempToDate}" /><a
@@ -197,7 +199,7 @@ function loadSearch(){
 					style="text-decoration: none">&nbsp;<img
 						src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)</td>
 			</tr>
-			<s:hidden name="selectedAccountNumber" id="selectedAccountNumber" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</table>
 		<br />
 		<br />
@@ -222,11 +224,11 @@ function loadSearch(){
 						wait...</blink>
 				</div>
 				<div class="subheadsmallnew">
-					<strong><s:property value="heading" /></strong>
+					<strong>${heading}</strong>
 				</div>
 				</td>
 
-				<s:if test="%{manualEntryReportList.size!=0}">
+				<c:if test="%{manualEntryReportList.size!=0}">
 					<script>             
 				document.getElementById('loading').style.display ='none';	
 				</script>
@@ -234,22 +236,22 @@ function loadSearch(){
 			<td style="text-align: right" class="bluebox" colspan="3"><strong>Amounts
 					in lakhs</strong></td>
 			<tr>
-				<th class="bluebgheadtd"><s:text name="voucher.serialno" /></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				<th class="bluebgheadtd">Report</th>
-				<th class="bluebgheadtd"><s:text name="voucher.amount" /></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 			</tr>
 			<c:set var="trclass" value="greybox" />
-			<s:iterator var="p" value="manualEntryReportList" status="s">
+			<c:forEach var="p" value="manualEntryReportList" status="s">
 				<tr>
 					<td style="text-align: center" class="<c:out value="${trclass}"/>">
-						<s:property value="#s.index+1" />
+						${#s.index+1}
 					</td>
 					<td style="text-align: center" class="<c:out value="${trclass}"/>">
-						<s:date name="%{reportDate}" format="dd/MM/yyyy" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 					<td style="text-align: right" class="<c:out value="${trclass}"/>">
-						<s:text name="format.number">
-							<s:param value="%{currentReceipt}" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</s:text>
 					</td>
 
@@ -262,13 +264,13 @@ function loadSearch(){
 						</c:when>
 					</c:choose>
 				</tr>
-			</s:iterator>
+			</c:forEach>
 			<tr>
 				<td style="text-align: right" colspan="2" class="blueborderfortdnew"><strong>Grand
 						Total</strong></td>
 				<td style="text-align: right" colspan="3" class="blueborderfortd"><strong><s:text
 							name="format.number">
-							<s:param value="%{grandTotal}" /></strong>
+							<!-- TODO: Manual migration required for custom Struts tag --></strong>
 				</s:text></td>
 			</tr>
 		</table>
@@ -278,8 +280,8 @@ function loadSearch(){
 			<s:submit method="generateXls" value="Save As Xls"
 				cssClass="buttonsubmit" id="generateXls" />
 		</div>
-		</s:if>
-		<s:elseif test="%{manualEntryReportList.size == 0}">
+		</c:if>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<tr>
 				<td colspan="5" align="center"><font color="red">No
 						record Found</font></td>
@@ -287,7 +289,7 @@ function loadSearch(){
 			</tr>
 		</s:elseif>
 
-	</s:form>
+	</form:form>
 
 
 </body>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -58,8 +60,8 @@
 
 </head>
 <body onload="onloadTask();">
-	<s:form action="paymentReversal" theme="simple" name="cbtcform">
-		<s:push value="model">
+	<form:form action="paymentReversal" theme="simple" name="cbtcform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param value="Reverse Payment" name="heading" />
 			</jsp:include>
@@ -72,7 +74,7 @@
 				<div align="center">
 					<font style='color: red;'><p class="error-block"
 							id="lblError"></p></font> <span class="mandatory"> <s:actionerror
-							id="actionerror" /> <s:fielderror id="fielderror" /> <s:actionmessage
+							id="actionerror" /> <!-- TODO: Manual migration required for custom Struts tag --> <s:actionmessage
 							id="actionmessage" />
 					</span>
 				</div>
@@ -80,57 +82,57 @@
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td width="9%" class="bluebox">&nbsp;</td>
-						<s:if test="%{shouldShowHeaderField('fund')}">
+						<c:if test="%{shouldShowHeaderField('fund')}">
 							<td width="12%" class="bluebox"><strong><s:text
 										name="voucher.fund" /></strong></td>
 							<td width="20%" class="bluebox"><s:property
 									value="paymentHeader.voucherheader.fundId.name" /></td>
-						</s:if>
-						<s:if test="%{shouldShowHeaderField('fundsource')}">
+						</c:if>
+						<c:if test="%{shouldShowHeaderField('fundsource')}">
 							<td width="17%" class="bluebox"><strong><s:text
 										name="voucher.fundsource" /></strong></td>
 							<td width="33%" class="bluebox"><s:property
 									value="paymentHeader.voucherheader.fundsourceId.name" /></td>
-						</s:if>
+						</c:if>
 					</tr>
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<s:if test="%{shouldShowHeaderField('department')}">
+						<c:if test="%{shouldShowHeaderField('department')}">
 							<td class="greybox"><strong><s:text
 										name="voucher.department" /></strong></td>
 							<td class="greybox"><s:property
 									value="paymentHeader.voucherheader.vouchermis.departmentid.deptName" /></td>
-						</s:if>
-						<s:if test="%{shouldShowHeaderField('functionary')}">
+						</c:if>
+						<c:if test="%{shouldShowHeaderField('functionary')}">
 							<td class="greybox"><strong><s:text
 										name="voucher.functionary" /></strong></td>
 							<td class="greybox" colspan="2"><s:property
 									value="paymentHeader.voucherheader.vouchermis.functionary.name" /></td>
-						</s:if>
+						</c:if>
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
-						<s:if test="%{shouldShowHeaderField('scheme')}">
+						<c:if test="%{shouldShowHeaderField('scheme')}">
 							<td class="bluebox"><strong><s:text
 										name="voucher.scheme" /></strong></td>
 							<td class="bluebox"><s:property
 									value="paymentHeader.voucherheader.vouchermis.schemeid.name" /></td>
-						</s:if>
-						<s:if test="%{shouldShowHeaderField('subscheme')}">
+						</c:if>
+						<c:if test="%{shouldShowHeaderField('subscheme')}">
 							<td class="bluebox"><strong><s:text
 										name="voucher.subscheme" /></strong></td>
 							<td class="bluebox"><s:property
 									value="paymentHeader.voucherheader.vouchermis.subschemeid.name" /></td>
-						</s:if>
+						</c:if>
 					</tr>
 					<tr>
 						<td class="greybox">&nbsp;</td>
-						<s:if test="%{shouldShowHeaderField('field')}">
+						<c:if test="%{shouldShowHeaderField('field')}">
 							<td class="greybox"><strong><s:text
 										name="voucher.field" /></strong></td>
 							<td class="greybox" colspan="4"><s:property
 									value="paymentHeader.voucherheader.vouchermis.divisionid.name" /></td>
-						</s:if>
+						</c:if>
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
@@ -167,30 +169,30 @@
 						<td class="greybox">&nbsp;</td>
 						<td class="greybox"><strong><s:text
 									name="payment.mode" /></strong></td>
-						<td class="greybox"><s:property value="paymentHeader.type" /></td>
+						<td class="greybox">${paymentHeader.type}</td>
 						<td class="greybox"><strong><s:text
 									name="payment.amount" /></strong></td>
-						<td class="greybox" colspan="2"><s:text name="format.number">
-								<s:param value="%{paymentHeader.voucherheader.totalAmount}" />
+						<td class="greybox" colspan="2"><!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:text></td>
 					</tr>
 					<tr>
 						<td class="bluebox">&nbsp;</td>
 						<td class="bluebox"><strong>Comments</strong></td>
-						<td class="bluebox" colspan="4"><s:textarea name="comments"
+						<td class="bluebox" colspan="4"><form:textarea path="comments"
 								id="comments" cols="100" rows="3" onblur="checkLength(this)" /></td>
 					</tr>
 				</table>
 				<tr>
-					<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-						<td class="bluebox"><s:text name="reversalVoucherNumber" /><span
+					<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 							class="mandatory">*</span></td>
-						<td class="bluebox"><s:textfield name="reverseVoucherNumber"
+						<td class="bluebox"><form:input path="reverseVoucherNumber"
 								id="reversalVoucherNumber" /></td>
-					</s:if>
-					<td class="bluebox"><s:text name="reversalVoucherDate" /><span
+					</c:if>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="bluebox"><s:textfield name="reverseVoucherDate"
+					<td class="bluebox"><form:input path="reverseVoucherDate"
 							id="reversalVoucherDate"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 						href="javascript:show_calendar('cbtcform.reversalVoucherDate');"
@@ -201,7 +203,7 @@
 		<br />
 		<br />
 		<input type="hidden" name="voucherHeader.id"
-			value='<s:property value="paymentHeader.voucherheader.id"/>'
+			value='${paymentHeader.voucherheader.id}'
 			id="voucherHeaderId" />
 		<div id="buttons">
 			<s:submit type="submit" cssClass="buttonsubmit"
@@ -215,17 +217,17 @@
 		</div>
 		<div id="resultGrid"></div>
 		</div>
-	</s:form>
+	</form:form>
 	<SCRIPT type="text/javascript">
 function onloadTask(){
-	var message = '<s:property value="message"/>';
-	var voucherHeaderId = <s:property value="voucherHeader.id"/>;
+	var message = '${message}';
+	var voucherHeaderId = ${voucherHeader.id};
 	if(message != ''){
 		bootbox.alert(message);
 		document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="+voucherHeaderId;
 		document.forms[0].submit();
 	}
-	var close = '<s:property value="close"/>';
+	var close = '${close}';
 	if(close == 'true'){
 		self.close();
 	}

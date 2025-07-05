@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -76,24 +78,24 @@
 	<jsp:include page="../budget/budgetHeader.jsp">
 		<jsp:param name="heading" value="Account Cheque Create" />
 	</jsp:include>
-	<s:form action="accountCheque" theme="simple" name="chequeMaster"
+	<form:form action="accountCheque" theme="simple" name="chequeMaster"
 		id="chequeMaster">
-		<s:if test="hasActionMessages()">
-			<font style='color: green; font-weight: bold'> <s:actionmessage />
+		<c:if test="hasActionMessages()">
+			<font style='color: green; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag -->
 			</font>
-		</s:if>
+		</c:if>
 		<div class="formmainbox">
 			<div class="formheading">
-				<div class="subheadnew"><s:text name="lbl.cheque.master"/></div>
+				<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></div>
 			</div>
 			<br />
-			<s:if test="%{bankaccount != null}">
+			<c:if test="%{bankaccount != null}">
 				<table width="100%" cellspacing="0" cellpadding="0" border="0"
 					align="center">
 					<tr align="center">
 						<div class="headingsmallbg">
 							<td class="bluebgheadtd" width="100%" colspan="5"><strong
-								style="font-size: 15px;"><s:text name="lbl.bank.details"/></strong></td>
+								style="font-size: 15px;"><!-- TODO: Manual migration required for custom Struts tag --></strong></td>
 						</div
 					</tr>
 				</table>
@@ -102,32 +104,32 @@
 
 					<tr>
 						<td class="bluebox "></td>
-						<td class="bluebox"><s:text name="lbl.bank"/> <span class="mandatory1">*</span></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
 						<td class="bluebox"><s:property
 								value="bankaccount.bankbranch.bank.name" /></td>
-						<td class="bluebox"><s:text name="lbl.bank.branch"/> <span class="mandatory1">*</span></td>
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
 						<td class="bluebox"><s:property
 								value="bankaccount.bankbranch.branchname" /></td>
 					</tr>
 					<tr>
 						<td class="bluebox "></td>
-						<td class="greybox"><s:text name="lbl.account.number"/><span class="mandatory1">*</span></td>
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span class="mandatory1">*</span></td>
 						<td class="greybox"><s:property
 								value="bankaccount.accountnumber" /></td>
-						<td class="greybox"><s:text name="lbl.fund"/> <span class="mandatory1">*</span></td>
-						<td class="greybox"><s:property value="bankaccount.fund.name" /></td>
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span class="mandatory1">*</span></td>
+						<td class="greybox">${bankaccount.fund.name}</td>
 					</tr>
 				</table>
 
-				<s:hidden name="bankAccId" id="bankAccId" value="%{bankaccount.id}" />
-			</s:if>
+				<!-- TODO: Manual migration required for custom Struts tag -->
+			</c:if>
 			</br></br>
-			<s:if test="%{chequeDetailsList.size()>0}">
+			<c:if test="%{chequeDetailsList.size()>0}">
 				<table width="100%" cellspacing="0" cellpadding="0" border="0"
 					align="center">
 					<tr align="center">
 						<div class="headingsmallbg">
-							<td><span class="bold"><s:text name="lbl.existing.cheque.details"/></span></td>
+							<td><span class="bold"><!-- TODO: Manual migration required for custom Struts tag --></span></td>
 						</div>
 					</tr>
 				</table>
@@ -138,48 +140,48 @@
 							<table width="100%" border="0" cellpadding="0" cellspacing="0"
 								class="tablebottom">
 								<tr>
-									<th class="bluebgheadtd"><s:text name="lbl.from.cheque.number"/></th>
-									<th class="bluebgheadtd"><s:text name="lbl.to.cheque.number"/></th>
-									<th class="bluebgheadtd"><s:text name="lbl.department"/></th>
-									<th class="bluebgheadtd"><s:text name="lbl.recieve.date"/></th>
-									<th class="bluebgheadtd"><s:text name="lbl.financial.year"/></th>
-									<th class="bluebgheadtd"><s:text name="lbl.exhausted"/></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+									<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 								</tr>
-								<s:iterator value="chequeDetailsList" status="stat" var="p">
+								<c:forEach value="chequeDetailsList" status="stat" var="p">
 									<tr>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="fromChqNo" />
+												${fromChqNo}
 											</div></td>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="toChqNo" />
+												${toChqNo}
 											</div></td>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="deptName" />
+												${deptName}
 											</div></td>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="receivedDate" />
+												${receivedDate}
 											</div></td>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="serialNoH" />
+												${serialNoH}
 											</div></td>
 										<td class="blueborderfortd"><div align="center">
-												<s:property value="isExhusted" />
+												${isExhusted}
 											</div></td>
 
 									</tr>
-								</s:iterator>
+								</c:forEach>
 							</table>
 						</td>
 					</tr>
 				</table>
-			</s:if>
-			<span class="mandatory1"> <s:else><s:text name="msg.no.cheque.found"/> </s:else></span>
+			</c:if>
+			<span class="mandatory1"> <c:otherwise><!-- TODO: Manual migration required for custom Struts tag --> </s:else></span>
 		</div>
 		<div class="buttonbottom">
-			<input type="button" id="Close" value="<s:text name='lbl.close'/>"
+			<input type="button" id="Close" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 
 </html>

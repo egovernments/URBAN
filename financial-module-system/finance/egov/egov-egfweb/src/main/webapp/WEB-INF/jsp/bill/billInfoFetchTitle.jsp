@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,11 +52,11 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 
-<s:if
+<c:if
 	test="%{mode == @org.egov.utils.FinancialConstants@STRUTS_RESULT_PAGE_NEW}">
-	<s:text name="billInfoFetch.title" />
-</s:if>
+	<!-- TODO: Manual migration required for custom Struts tag -->
+</c:if>
 <s:elseif
 	test="%{mode == @org.egov.utils.FinancialConstants@STRUTS_RESULT_PAGE_VIEW}">
-	<s:text name="billInfoView.title" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </s:elseif>

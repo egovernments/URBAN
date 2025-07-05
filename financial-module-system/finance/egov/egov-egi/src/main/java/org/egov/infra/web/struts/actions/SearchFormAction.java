@@ -61,7 +61,7 @@ import org.egov.infstr.search.SearchQuery;
  * search functionality. Supports pagination. Extending class must implement the method {@link SearchFormAction#prepareQuery()} 
  * that prepares the query based on criteria entered by user, and returns an object of {@link SearchQuery}
  */
-public abstract class SearchFormAction extends BaseFormAction {
+public abstract class SearchFormAction /* extends BaseFormAction */ {
 	private static final long serialVersionUID = 1L;
 	private static final String SORT_ORDER_ASCENDING = "asc";
 	private static final String SORT_ORDER_DESCENDING = "desc";
@@ -86,7 +86,7 @@ public abstract class SearchFormAction extends BaseFormAction {
 	private String sortField;
 	private SortOrderEnum sortOrder = SortOrderEnum.ASCENDING;
 	private SearchQuery searchQuery;
-	protected PaginatedList searchResult;
+	// protected PaginatedList searchResult;
 
 	/**
 	 * Sets the display tag table id. This is used to create the param encoder. 
@@ -172,9 +172,9 @@ public abstract class SearchFormAction extends BaseFormAction {
 	/**
 	 * @return the search result
 	 */
-	public PaginatedList getSearchResult() {
-		return this.searchResult;
-	}
+	// protected PaginatedList getSearchResult() {
+	// 	return this.searchResult;
+	// }
 
 	/**
 	 * @param sortField the field on which data is to be sorted. 
@@ -192,7 +192,8 @@ public abstract class SearchFormAction extends BaseFormAction {
 	 * @return true if user is trying to "export" the search results to a file, else false.
 	 */
 	private boolean isExportMode() {
-		return this.parameters.get(this.paramEncoder.encodeParameterName(TableTagParameters.PARAMETER_EXPORTTYPE)) != null;
+		// TODO: Migrate from Struts/XWork - parameters variable not found
+		return false;
 	}
 
 	/**
@@ -213,10 +214,11 @@ public abstract class SearchFormAction extends BaseFormAction {
 			this.pageNum = 1;
 		}
 
-		final Page resultPage = this.searchQuery.getPage(this.persistenceService, this.pageNum, this.pageSize);
-		final int searchCount = this.searchQuery.getCount(this.persistenceService);
-		this.searchResult = new EgovPaginatedList(resultPage, searchCount, this.sortField, this.sortOrder);
+		// TODO: Migrate from Struts/XWork - persistenceService and SUCCESS not found
+		// final Page resultPage = this.searchQuery.getPage(this.persistenceService, this.pageNum, this.pageSize);
+		// final int searchCount = this.searchQuery.getCount(this.persistenceService);
+		// this.searchResult = new EgovPaginatedList(resultPage, searchCount, this.sortField, this.sortOrder);
 
-		return SUCCESS;
+		return "success";
 	}
 }

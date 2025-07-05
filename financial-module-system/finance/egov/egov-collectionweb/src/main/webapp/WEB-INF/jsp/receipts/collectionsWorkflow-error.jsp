@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -56,7 +58,7 @@
 <title>Approve Collections - Error</title>
 </head>
 <body>
-<s:form theme="simple" name="collectionsWorkflowForm">
+<form:form theme="simple" name="collectionsWorkflowForm">
 
 	<div class="subheadnew"><s:text
 		name="collectionsWorkflow.errorMessage" /></div>
@@ -65,6 +67,6 @@
 
 	<input name="buttonClose" type="button" class="buttonsubmit"
 		id="buttonClose" value="Close" onclick="window.close()" />
-</s:form>
+</form:form>
 </body>
 </html>

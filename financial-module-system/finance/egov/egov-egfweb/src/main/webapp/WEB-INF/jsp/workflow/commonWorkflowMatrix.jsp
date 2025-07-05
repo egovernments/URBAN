@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -64,7 +66,7 @@
 	function callAlertForDepartment() {
 		var value = document.getElementById("approverDepartment").value;
 		if (value == "-1") {
-			bootbox.alert("<s:text name='msg.please.select.approver.department'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			document.getElementById("approverDepartment").focus();
 			return false;
 		}
@@ -73,7 +75,7 @@
 	function callAlertForDesignation() {
 		var value = document.getElementById("approverDesignation").value;
 		if (value == "-1") {
-			bootbox.alert("<s:text name='msg.please.select.approver.designation'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			document.getElementById("approverDesignation").focus();
 			return false;
 		}
@@ -105,7 +107,7 @@
 		var amountRule = dom.get('amountRule').value;
 		var additionalRule = dom.get('additionalRule').value;
 		var pendingAction = document.getElementById('pendingActions').value;
-		var stateType = '<s:property value="%{stateType}"/>';
+		var stateType = '${%{stateType}}';
 		loadDesignationByDeptAndType(stateType, dept, currentState, amountRule,
 				additionalRule, pendingAction);
 	}
@@ -115,43 +117,43 @@
 	}
 
 	function setDesignation() {
-		document.getElementById("approverDesignation").value = '<s:property value="%{approverDesignation}"/>';
+		document.getElementById("approverDesignation").value = '${%{approverDesignation}}';
 		populateApprover();
 	}
 
 	function setApprover() {
-		document.getElementById("approverPositionId").value = '<s:property value="%{approverPositionId}"/>';
+		document.getElementById("approverPositionId").value = '${%{approverPositionId}}';
 	}
 </script>
-<s:if test="%{getNextAction()!='END'}">
-	<s:if test="%{!'Closed'.equalsIgnoreCase(model.state.value)}">
-		<s:hidden id="currentState" name="currentState" value="%{model.state.value}" />
-	</s:if>
-	<s:else>
-		<s:hidden id="currentState" name="currentState" value="" />
+<c:if test="%{getNextAction()!='END'}">
+	<c:if test="%{!'Closed'.equalsIgnoreCase(model.state.value)}">
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</c:if>
+	<c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else>
-	<s:hidden id="currentDesignation" name="currentDesignation" value="%{currentDesignation}" />
-	<s:hidden id="additionalRule" name="additionalRule" value="%{additionalRule}" />
-	<s:hidden id="amountRule" name="amountRule" value="%{amountRule}" />
-	<s:hidden id="workFlowDepartment" name="workFlowDepartment" value="%{workFlowDepartment}" />
-	<s:hidden id="pendingActions" name="pendingActions" value="%{pendingActions}" />
-	<s:hidden id="approverName" name="approverName" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
-	<s:if test="%{#request.approverOddTextCss==null}">
+	<c:if test="%{#request.approverOddTextCss==null}">
 		<c:set var="approverOddTextCss" value="greybox" scope="request" />
 		<c:set var="approverOddCSS" value="greybox" scope="request" />
-	</s:if>
+	</c:if>
 
-	<s:if test="%{#request.approverEvenTextCSS==null}">
+	<c:if test="%{#request.approverEvenTextCSS==null}">
 		<c:set var="approverEvenTextCSS" value="bluebox" scope="request" />
 		<c:set var="approverEvenCSS" value="bluebox" scope="request" />
-	</s:if>
+	</c:if>
 
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	</br>
 		<tr>
 			<div class="headingsmallbg">
-				<span class="bold"><s:text name="title.approval.information" /></span>
+				<span class="bold"><!-- TODO: Manual migration required for custom Struts tag --></span>
 			</div>
 
 		</tr>
@@ -159,18 +161,18 @@
 		<>
 		<tr>
 			<td class="${approverOddCSS}" width="5%">&nbsp;</td>
-			<td class="${approverOddCSS}" id="deptLabel" width="14%"><s:text name="wf.approver.department" />:</td>
-			<td class="${approverOddTextCss}" width="14%"><s:select name="approverDepartment" id="approverDepartment" list="dropdownData.approverDepartmentList" listKey="code" listValue="name" headerKey="-1" headerValue="----Choose----" value="%{approverDepartment}" onchange="loadDesignationFromMatrix();" cssClass="dropDownCss" />
+			<td class="${approverOddCSS}" id="deptLabel" width="14%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+			<td class="${approverOddTextCss}" width="14%"><form:select path="approverDepartment" id="approverDepartment" list="dropdownData.approverDepartmentList" listKey="code" listValue="name" headerKey="-1" headerValue="----Choose----" value="%{approverDepartment}" onchange="loadDesignationFromMatrix();" cssClass="dropDownCss" />
 			<egov:ajaxdropdown fields="['Text','Value']" url="workflow/ajaxWorkFlow-getDesignationsByObjectType.action"  id="approverDesignation" dropdownId="approverDesignation" contextToBeUsed="/services/eis" afterSuccess="setDesignation();" /></td>
-			<td class="${approverOddCSS}" width="14%"><s:text name="wf.approver.designation" />:</td>
-			<td class="${approverOddTextCss}" width="14%"><s:select id="approverDesignation" name="approverDesignation" list="dropdownData.designationList" listKey="code" headerKey="-1" listValue="value" headerValue="----Choose----" onchange="populateApprover();" onfocus="callAlertForDepartment();" cssClass="dropDownCss" /> 
+			<td class="${approverOddCSS}" width="14%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+			<td class="${approverOddTextCss}" width="14%"><form:select id="approverDesignation" path="approverDesignation" list="dropdownData.designationList" listKey="code" headerKey="-1" listValue="value" headerValue="----Choose----" onchange="populateApprover();" onfocus="callAlertForDepartment();" cssClass="dropDownCss" /> 
 			<egov:ajaxdropdown id="approverPositionId" fields="['Text','Value']" dropdownId="approverPositionId" url="workflow/ajaxWorkFlow-getPositionByPassingDesigId.action" contextToBeUsed="/services/eis" afterSuccess="setApprover();" /></td>
-			<td class="${approverOddCSS}" width="14%"><s:text name="wf.approver" />:</td>
-			<td class="${approverOddTextCss}" width="14%"><s:select id="approverPositionId" name="approverPositionId" list="dropdownData.approverList" headerKey="-1" headerValue="----Choose----" listKey="id" listValue="firstName" onfocus="callAlertForDesignation();" value="%{approverPositionId}" cssClass="dropDownCss" /></td>
+			<td class="${approverOddCSS}" width="14%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+			<td class="${approverOddTextCss}" width="14%"><form:select id="approverPositionId" path="approverPositionId" list="dropdownData.approverList" headerKey="-1" headerValue="----Choose----" listKey="id" listValue="firstName" onfocus="callAlertForDesignation();" value="%{approverPositionId}" cssClass="dropDownCss" /></td>
 			<td class="${approverOddCSS}" width="5%">&nbsp;</td>
 		</tr>
 	</table>
-</s:if>
+</c:if>
 <br />
 
 <div id="workflowCommentsDiv" align="center">
@@ -178,7 +180,7 @@
 		<tr>
 			<td width="10%" class="${approverEvenCSS}">&nbsp;</td>
 			<td width="20%" class="${approverEvenCSS}">&nbsp;</td>
-			<td class="${approverEvenCSS}" width="13%"><s:text name="wf.approver.remarks" />:</td>
+			<td class="${approverEvenCSS}" width="13%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
 			<td class="${approverEvenTextCSS}"><textarea id="approverComments" name="approverComments" rows="2" cols="35"></textarea> </td>
 			<td class="${approverEvenCSS}">&nbsp;</td>
 			<td width="10%" class="${approverEvenCSS}">&nbsp;</td>

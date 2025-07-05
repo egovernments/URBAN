@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,26 +51,26 @@
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
 <span class="mandatory"> <font
-	style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-		<s:actionmessage /></font>
+	style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag --></font>
 </span>
 
-<s:if test="%{autoRemittance.size()>0}">
+<c:if test="%{autoRemittance.size()>0}">
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 
 		<tr>
-			<td class="blueborderfortd"><s:if test="%{level == 'atcoc'}">
+			<td class="blueborderfortd"><c:if test="%{level == 'atcoc'}">
 					<table width="50%" border="0" cellpadding="0" cellspacing="0"
 						class="tablebottom">
-						<s:iterator value="%{coaAbstract}" status="status">
+						<c:forEach value="%{coaAbstract}" status="status">
 							<tr>
 								<th class="bluebgheadtd" colspan='4'>Summary of remittance</th>
 							</tr>
 							<tr>
 								<td class="greybox">&nbsp;</td>
 								<th class="bluebgheadtd">Grand Total</th>
-								<td class="greybox"><s:property value="%{grandTotal}" /></td>
+								<td class="greybox">${%{grandTotal}}</td>
 								<td class="greybox">&nbsp;</td>
 							</tr>
 							<tr>
@@ -82,7 +84,7 @@
 										value="%{incomeTaxRemittedAmt}" /></td>
 								<td class="greybox"><s:property
 										value="%{salesTaxRemittedAmt}" /></td>
-								<td class="greybox"><s:property value="%{mwgwfRemittedAmt}" />
+								<td class="greybox">${%{mwgwfRemittedAmt}}
 								</td>
 								<td class="greybox"><s:property
 										value="%{serviceTaxRemittedAmt}" /></td>
@@ -94,11 +96,11 @@
 								<th class="bluebgheadtd">Amount Remitted For</th>
 								<th class="bluebgheadtd">Total</th>
 							</tr>
-						</s:iterator>
-						<s:iterator value="%{remittanceList}" status="status">
+						</c:forEach>
+						<c:forEach value="%{remittanceList}" status="status">
 
 							<tr>
-								<td class="greybox"><s:property value="%{departmentCode}" />
+								<td class="greybox">${%{departmentCode}}
 								</td>
 								<td class="greybox">IT</td>
 								<td class="greybox"><s:property
@@ -117,7 +119,7 @@
 							<tr>
 								<td class="greybox">-</td>
 								<td class="greybox">MWGWF</td>
-								<td class="greybox"><s:property value="%{mwgwfRemittedAmt}" />
+								<td class="greybox">${%{mwgwfRemittedAmt}}
 								</td>
 								<td class="greybox">-</td>
 
@@ -127,21 +129,21 @@
 								<td class="greybox">Service Tax</td>
 								<td class="greybox"><s:property
 										value="%{serviceTaxRemittedAmt}" /></td>
-								<td class="greybox"><s:property value="%{departmentTotal}" /></td>
+								<td class="greybox">${%{departmentTotal}}</td>
 
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
-				</s:if>
+				</c:if>
 				<div>
 					<table width="100%" border="0" cellpadding="0" cellspacing="0"
 						class="tablebottom">
 						<tr>
 							<th class="bluebgheadtd">Sl No</th>
 							<th class="bluebgheadtd">Party Name</th>
-							<s:if test="%{level == 'atcoc'}">
+							<c:if test="%{level == 'atcoc'}">
 								<th class="bluebgheadtd">PAN Number</th>
-							</s:if>
+							</c:if>
 							<th class="bluebgheadtd">Bill Number/Reciept Number</th>
 							<th class="bluebgheadtd">Bill/Receipt Amount(Rs)</th>
 							<th class="bluebgheadtd">Voucher Number</th>
@@ -150,20 +152,20 @@
 							<th class="bluebgheadtd">RTGS Number/Date</th>
 							<th class="bluebgheadtd">RTGS Amount</th>
 						</tr>
-						<s:set var="counter" value="0" />
-						<s:iterator value="autoremittanceMap" status="stat">
+						<!-- TODO: Manual migration required for custom Struts tag -->
+						<c:forEach value="autoremittanceMap" status="stat">
 							<tr>
 								<td class="greybox">Remittance COA - <s:property
 										value="key.remittanceCOA" />
 								</td>
-								<s:if test="%{level == 'atcoc'}">
+								<c:if test="%{level == 'atcoc'}">
 									<td class="greybox">Department/Drawing Officer -<s:property
 											value="key.department" /> / <s:property
 											value="key.drawingOfficer" />
-								</s:if>
-								<s:if test="%{level == 'atdepartment'}">
-									<td class="greybox">Fund -<s:property value="key.fundName" />
-								</s:if>
+								</c:if>
+								<c:if test="%{level == 'atdepartment'}">
+									<td class="greybox">Fund -${key.fundName}
+								</c:if>
 								</td>
 								<td class="greybox">Bank/Branch - <s:property
 										value="key.bankbranchAccount" />
@@ -175,78 +177,78 @@
 							</tr>
 
 							<tr>
-								<s:iterator value="value" status="s">
+								<c:forEach value="value" status="s">
 
 									<td align="left" style="text-align: center"
 										class="blueborderfortdnew" />
-									<s:property value="#s.index+1" />
+									${#s.index+1}
 									</td>
 									<td class="blueborderfortd"><div align="left">
-											<s:property value="partyName" />
+											${partyName}
 											&nbsp;
 										</div></td>
-									<s:if test="%{level == 'atcoc'}">
+									<c:if test="%{level == 'atcoc'}">
 										<td class="blueborderfortd"><div align="left">
-												<s:property value="panNumber" />
+												${panNumber}
 												&nbsp;
 											</div></td>
-									</s:if>
+									</c:if>
 									<td class="blueborderfortd"><a href="javascript:void(0);"
-										onclick="viewBill(<s:property value='billId'/>);"><s:property
+										onclick="viewBill(<!-- TODO: Manual migration required for custom Struts tag -->);"><s:property
 												value="billNumber" /></a>&nbsp;</td>
 									<td class="blueborderfortd"><div align="left">
-											<s:property value="billAmount" />
+											${billAmount}
 											&nbsp;
 										</div></td>
 									<td class="blueborderfortd"><a href="javascript:void(0);"
-										onclick="viewVoucher(<s:property value='voucherId'/>);"><s:property
+										onclick="viewVoucher(<!-- TODO: Manual migration required for custom Struts tag -->);"><s:property
 												value="voucherNumber" /></a>&nbsp;</td>
 									<td class="blueborderfortd"><a href="javascript:void(0);"
-										onclick="viewVoucher(<s:property value='paymentVoucherId'/>);"><s:property
+										onclick="viewVoucher(<!-- TODO: Manual migration required for custom Struts tag -->);"><s:property
 												value="remittancePaymentNo" /></a>&nbsp; / <s:property
 											value="remittedAmount" /></td>
 									<td class="blueborderfortd"><div align="right">
-											<s:property value="remittedAmount" />
+											${remittedAmount}
 											&nbsp;
 										</div></td>
 									<td class="blueborderfortd"><div align="right">
-											<s:property value="rtgsNoDate" />
+											${rtgsNoDate}
 											&nbsp;
 										</div></td>
 									<td class="blueborderfortd"><div align="right">
-											<s:property value="rtgsAmount" />
+											${rtgsAmount}
 											&nbsp;
 										</div></td>
-									<s:set var="counter" value="%{#counter+1}" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 							</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
-							<s:if test="%{level == 'atcoc'}">
+							<c:if test="%{level == 'atcoc'}">
 								<td></td>
-							</s:if>
+							</c:if>
 							<td class="greybox"><div align="left">SubTotal:</div></td>
 							<td class="greybox"><div align="right">
-									<s:property value="key.remittedAmountSubtotal" />
+									${key.remittedAmountSubtotal}
 								</div></td>
 						</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
-							<s:if test="%{level == 'atcoc'}">
+							<c:if test="%{level == 'atcoc'}">
 								<td></td>
-							</s:if>
+							</c:if>
 							<td class="greybox"><div align="left">Grand Total:</div></td>
 							<td class="greybox"><div align="right">
-									<s:property value="remittedAmountTotal" />
+									${remittedAmountTotal}
 								</div>
 						</tr>
 					</table>
@@ -256,12 +258,12 @@
 	</td>
 	</tr>
 	</table>
-</s:if>
-<s:else>No Records found</s:else>
-<s:if test="%{autoRemittance.size()>0}">
+</c:if>
+<c:otherwise>No Records found</s:else>
+<c:if test="%{autoRemittance.size()>0}">
 	<div class="buttonbottom" align="center">
 		Export Options: <label onclick="exportXls()"><a
 			href='javascript:void(0);'>Excel</a></label> | <label onclick="exportPdf()"><a
 			href="javascript:void(0);">PDF</a></label>
 	</div>
-</s:if>
+</c:if>

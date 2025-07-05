@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
-<s:if test="%{billRegisterList.size()>0}">
+<c:if test="%{billRegisterList.size()>0}">
 	<br />
 	<table width="99%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -73,37 +75,37 @@
 							<th class="bluebgheadtd" width="10%">Net Pay</th>
 							<th class="bluebgheadtd" width="10%">Bill Status</th>
 						</tr>
-						<s:iterator value="billRegisterList" status="stat" var="p">
+						<c:forEach value="billRegisterList" status="stat" var="p">
 							<tr>
 								<td class="blueborderfortd"><s:property
 										value="#stat.index+1" />&nbsp;</td>
 								<td class="blueborderfortd"><div align="center">
 										<a
-											href='../bill/salaryBillRegister!view.action?billregisterId=<s:property value="id"/>'><s:property
+											href='../bill/salaryBillRegister!view.action?billregisterId=${id}'><s:property
 												value="billnumber" />&nbsp;</a>
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="billdate" />
+										${billdate}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="egBillregistermis.departmentcode" />
+										${egBillregistermis.departmentcode}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="egBillregistermis.month" />
+										${egBillregistermis.month}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="billamount" />
+										${billamount}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="billstatus" />
+										${billstatus}
 										&nbsp;
 									</div></td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</table>
 				</div>
 			</td>
@@ -116,5 +118,5 @@
 			id="non-printable" value="Print" onclick="window.print()" />&nbsp;&nbsp;
 	</tr>
 	</table>
-</s:if>
-<s:else>No data found</s:else>
+</c:if>
+<c:otherwise>No data found</s:else>

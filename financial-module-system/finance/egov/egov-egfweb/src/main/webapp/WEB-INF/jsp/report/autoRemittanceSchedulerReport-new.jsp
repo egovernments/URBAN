@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -59,7 +61,7 @@
 	rel="stylesheet" type="text/css" />
 <html>
 <head>
-<title><s:text name="report.autoremittancescheduler.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 <body>
@@ -67,38 +69,38 @@
 	<div class="formmainbox">
 		<div class="formheading"></div>
 		<div class="subheadnew">
-			<s:text name='report.autoremittancescheduler.title' />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
-		<s:form action="autoRemittanceSchedulerReport" theme="simple"
+		<form:form action="autoRemittanceSchedulerReport" theme="simple"
 			name="autoRemittanceSchedulerReport">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
-					<td class="bluebox"><s:text name="report.remittancecoa" /></td>
-					<td class="bluebox"><s:select name="recoveryId"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="recoveryId"
 							id="recoveryId" list="recoveryMap" listKey="key"
 							value='%{recoveryId}' listValue="value" headerKey=""
 							headerValue="----Choose----" /></td>
 
-					<td class="bluebox"><s:text name="report.schedulertype" /></td>
-					<td class="bluebox"><s:select name="schedulerType"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:select path="schedulerType"
 							value='%{schedulerType}' id="schedulerType"
 							list="dropdownData.schedulerTypeList" headerKey="" /></td>
 
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="report.rundatefrom" />:</td>
-					<s:date name="runDateFrom" var="fromDateFormat" format="dd/MM/yyyy" />
-					<td class="greybox"><s:textfield name="runDateFrom"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:input path="runDateFrom"
 							id="runDateFrom" cssStyle="width:100px" value='%{fromDateFormat}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('autoRemittanceSchedulerReport.runDateFrom');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0"
 							alt="" /></a>(dd/mm/yyyy)<br /></td>
-					<td class="greybox"><s:text name="report.rundateto" />:</td>
-					<s:date name="runDateTo" var="toDateFormat" format="dd/MM/yyyy" />
-					<td class="greybox"><s:textfield name="runDateTo"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td class="greybox"><form:input path="runDateTo"
 							id="runDateTo" cssStyle="width:100px" value='%{toDateFormat}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('autoRemittanceSchedulerReport.runDateTo');"
@@ -109,7 +111,7 @@
 				<!-- <tr>
 					<td class="bluebox" width="10%"><s:text
 							name="report.nextrundate" /></td>
-					<td class="bluebox"><s:checkbox name="nextRunDate"
+					<td class="bluebox"><form:checkbox path="nextRunDate"
 							id="nextRunDate" /></td>
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox">&nbsp;</td>
@@ -126,7 +128,7 @@
 				</tr>
 			</table>
 			<div>
-				<s:if test="%{searchResult.fullListSize != 0}">
+				<c:if test="%{searchResult.fullListSize != 0}">
 					<display:table name="searchResult" uid="currentRowObject"
 						cellpadding="0" cellspacing="0" requestURI="" class="its"
 						style="border:1px;width:100%;empty-cells:show;border-collapse:collapse;">
@@ -139,41 +141,41 @@
 						<display:column headerClass="pagetableth" class="pagetabletd"
 							title="Recovery CoA" titleKey="report.schedulertype"
 							style="width:20%;text-align:center">
-							<s:property value="#attr.currentRowObject.recoveryCoa" />
+							${#attr.currentRowObject.recoveryCoa}
 						</display:column>
 
 						<display:column headerClass="pagetableth" class="pagetabletd"
 							title="Scheduler Type" titleKey="report.schedulertype"
 							style="width:4%;text-align:center">
-							<s:property value="#attr.currentRowObject.scheduleType" />
+							${#attr.currentRowObject.scheduleType}
 						</display:column>
 
 						<display:column headerClass="pagetableth" class="pagetabletd"
 							title="Run Date" titleKey="report.run.date"
 							style="width:5%;text-align:left">
-							<s:date name="#attr.currentRowObject.runDate" format="dd/MM/yyyy" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</display:column>
 
 						<display:column headerClass="pagetableth" class="pagetabletd"
 							title="Status" titleKey="report.schedulertype"
 							style="width:4%;text-align:center">
-							<s:property value="#attr.currentRowObject.status" />
+							${#attr.currentRowObject.status}
 						</display:column>
 
 						<display:column headerClass="pagetableth" class="pagetabletd"
 							title="Remarks" titleKey="report.schedulertype"
 							style="width:60%;text-align:center">
-							<s:property value="#attr.currentRowObject.remarks" />
+							${#attr.currentRowObject.remarks}
 						</display:column>
 
 						<display:column headerClass="pagetableth" class="pagetabletd"
 							title="Number of Payments" titleKey="report.schedulertype"
 							style="width:3%;text-align:center">
-							<s:property value="#attr.currentRowObject.numberOfPayments" />
+							${#attr.currentRowObject.numberOfPayments}
 						</display:column>
 					</display:table>
-				</s:if>
-				<s:elseif test="%{searchResult.fullListSize == 0}">
+				</c:if>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 					<div>
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<tr>
@@ -184,7 +186,7 @@
 					</div>
 				</s:elseif>
 			</div>
-		</s:form>
+		</form:form>
 	</div>
 </body>
 

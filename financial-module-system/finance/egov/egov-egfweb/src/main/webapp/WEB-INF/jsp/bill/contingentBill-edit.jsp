@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 <head>
-<title><s:text name="contingent.bill" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/javascript/voucherHelper.js?rnd=${app_release_no}"></script>
 <script type="text/javascript"
@@ -122,19 +124,19 @@
 
 <script>
 mode='modify';
-<s:iterator value="commonBean.checkListValuesMap" status="stat">
-var option<s:property value="#stat.index"/>=new Option('<s:property value="key"/>','<s:property value="value"/>');
-</s:iterator>
+<c:forEach value="commonBean.checkListValuesMap" status="stat">
+var option${#stat.index}=new Option('${key}','${value}');
+</c:forEach>
 
 
 
 
-var succesMessage='<s:text name="transaction.success"/>';
-var 	button='<s:property value="button"/>';
-var enterpayto='<s:text name="enter.pato"/>';
-var entityNotSelected='<s:text name="entity.notselected"/>';
-var invalidEntityselected='<s:text name="invalidEntityselected"/>';
-var invalidAccountCode='<s:text name="invalidAccountCode"/>';
+var succesMessage='<!-- TODO: Manual migration required for custom Struts tag -->';
+var 	button='${button}';
+var enterpayto='<!-- TODO: Manual migration required for custom Struts tag -->';
+var entityNotSelected='<!-- TODO: Manual migration required for custom Struts tag -->';
+var invalidEntityselected='<!-- TODO: Manual migration required for custom Struts tag -->';
+var invalidAccountCode='<!-- TODO: Manual migration required for custom Struts tag -->';
 path="${pageContext.request.contextPath}";
 var totaldbamt=0,totalcramt=0;
 var makeVoucherDetailTable = function() {
@@ -147,23 +149,23 @@ var makeVoucherDetailTable = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTable = new YAHOO.widget.DataTable("billDetailTable",voucherDetailColumns, voucherDetailDS);
-<s:iterator value="billDetailslist" status="stat">
+<c:forEach value="billDetailslist" status="stat">
 
 	billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
 		
-		"glcodeid":'<s:property value="glcodeIdDetail"/>',
-		"glcode":'<s:property value="glcodeDetail"/>',
-		"isSubledger":'<s:property value="isSubledger"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-		"amount":'<s:property value="%{debitAmountDetail}"/>'
+		"glcodeid":'${glcodeIdDetail}',
+		"glcode":'${glcodeDetail}',
+		"isSubledger":'${isSubledger}',
+		"accounthead":'${accounthead}',
+		"amount":'${%{debitAmountDetail}}'
 		});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridCbill('billDetailsTable','glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-	updateGridCbill('billDetailsTable','glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-	updateGridCbill('billDetailsTable','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTable','debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
+	var index = '${#stat.index}';
+	updateGridCbill('billDetailsTable','glcodeIdDetail',index,'${glcodeIdDetail}');
+	updateGridCbill('billDetailsTable','glcodeDetail',index,'${glcodeDetail}');
+	updateGridCbill('billDetailsTable','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTable','debitAmountDetail',index,'${debitAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 
 
 	
@@ -180,21 +182,21 @@ var makeVoucherDetailTableCredit = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTableCredit = new YAHOO.widget.DataTable("billDetailTableCredit",voucherDetailColumnsCredit, voucherDetailDS);
-<s:iterator value="billDetailslist" status="stat">
+<c:forEach value="billDetailslist" status="stat">
 
 	billDetailsTableCredit.addRow({SlNo:billDetailsTableCredit.getRecordSet().getLength()+1,
-		"glcodeid":'<s:property value="glcodeIdDetail"/>',
-		"glcode":'<s:property value="glcodeDetail"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-		"amount":'<s:property value="%{debitAmountDetail}"/>'
+		"glcodeid":'${glcodeIdDetail}',
+		"glcode":'${glcodeDetail}',
+		"accounthead":'${accounthead}',
+		"amount":'${%{debitAmountDetail}}'
 		});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridCbill('billDetailsTableCredit','glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-	updateGridCbill('billDetailsTableCredit','glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-	updateGridCbill('billDetailsTableCredit','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTableCredit','debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
+	var index = '${#stat.index}';
+	updateGridCbill('billDetailsTableCredit','glcodeIdDetail',index,'${glcodeIdDetail}');
+	updateGridCbill('billDetailsTableCredit','glcodeDetail',index,'${glcodeDetail}');
+	updateGridCbill('billDetailsTableCredit','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTableCredit','debitAmountDetail',index,'${debitAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 
 
 }
@@ -208,21 +210,21 @@ var makeVoucherDetailTableNet = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTableNet = new YAHOO.widget.DataTable("billDetailTableNet",voucherDetailColumnsNet, voucherDetailDS);
-<s:iterator value="billDetailslist" status="stat">
+<c:forEach value="billDetailslist" status="stat">
 
 	billDetailsTableNet.addRow({SlNo:billDetailsTableNet.getRecordSet().getLength()+1,
-		"glcodeid":'<s:property value="glcodeIdDetail"/>',
-		"glcode":'<s:property value="glcodeDetail"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-		"amount":'<s:property value="%{debitAmountDetail}"/>'
+		"glcodeid":'${glcodeIdDetail}',
+		"glcode":'${glcodeDetail}',
+		"accounthead":'${accounthead}',
+		"amount":'${%{debitAmountDetail}}'
 		});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridCbill('billDetailsTableNet','glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-	updateGridCbill('billDetailsTableNet','glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-	updateGridCbill('billDetailsTableNet','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTableNet','debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
+	var index = '${#stat.index}';
+	updateGridCbill('billDetailsTableNet','glcodeIdDetail',index,'${glcodeIdDetail}');
+	updateGridCbill('billDetailsTableNet','glcodeDetail',index,'${glcodeDetail}');
+	updateGridCbill('billDetailsTableNet','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTableNet','debitAmountDetail',index,'${debitAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 }
 
 
@@ -236,23 +238,23 @@ var makeVoucherDetailTableFinal = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTableFinal = new YAHOO.widget.DataTable("billDetailTableFinal",voucherDetailColumns, voucherDetailDS);
-<s:iterator value="billDetailsTableFinal" status="stat">
+<c:forEach value="billDetailsTableFinal" status="stat">
 
 	billDetailsTableFinal.addRow({SlNo:billDetailsTableFinal.getRecordSet().getLength()+1,
-		"glcodeid":'<s:property value="glcodeIdDetail"/>',
-		"glcode":'<s:property value="glcodeDetail"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-		"isSubledger":'<s:property value="isSubldger"/>',
-		"amount":'<s:property value="%{debitAmountDetail}"/>'
+		"glcodeid":'${glcodeIdDetail}',
+		"glcode":'${glcodeDetail}',
+		"accounthead":'${accounthead}',
+		"isSubledger":'${isSubldger}',
+		"amount":'${%{debitAmountDetail}}'
 		});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridCbill('billDetailsTableFinal','glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-	updateGridCbill('billDetailsTableFinal','glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-	updateGridCbill('billDetailsTableFinal','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTableFinal','isSubledger',index,'<s:property value="isSubledger"/>');
-	updateGridCbill('billDetailsTableFinal','debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
+	var index = '${#stat.index}';
+	updateGridCbill('billDetailsTableFinal','glcodeIdDetail',index,'${glcodeIdDetail}');
+	updateGridCbill('billDetailsTableFinal','glcodeDetail',index,'${glcodeDetail}');
+	updateGridCbill('billDetailsTableFinal','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTableFinal','isSubledger',index,'${isSubledger}');
+	updateGridCbill('billDetailsTableFinal','debitAmountDetail',index,'${debitAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 
 
 	
@@ -269,24 +271,24 @@ var makeVoucherDetailTableCreditFinal = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTableCreditFinal = new YAHOO.widget.DataTable("billDetailTableCreditFinal",voucherDetailColumnsCredit, voucherDetailDS);
-<s:iterator value="billDetailsTableCreditFinal" status="stat">
+<c:forEach value="billDetailsTableCreditFinal" status="stat">
 
 	billDetailsTableCreditFinal.addRow({SlNo:billDetailsTableCredit.getRecordSet().getLength()+1,
-		"glcodeid":'<s:property value="glcodeIdDetail"/>',
-		"glcode":'<s:property value="glcodeDetail"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-	    "isSubledger":'<s:property value="isSubldger"/>',
-		"amount":'<s:property value="%{creditAmountDetail}"/>'
+		"glcodeid":'${glcodeIdDetail}',
+		"glcode":'${glcodeDetail}',
+		"accounthead":'${accounthead}',
+	    "isSubledger":'${isSubldger}',
+		"amount":'${%{creditAmountDetail}}'
 		});
-	var index = '<s:property value="#stat.index"/>';
+	var index = '${#stat.index}';
 	
-	updateGridCbill('billDetailsTableCreditFinal','glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-	updateGridCbill('billDetailsTableCreditFinal','glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-	updateGridCbill('billDetailsTableCreditFinal','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTableCreditFinal','isSubledger',index,'<s:property value="isSubledger"/>');
-	updateGridCbill('billDetailsTableCreditFinal','creditAmountDetail',index,'<s:property value="creditAmountDetail"/>');
+	updateGridCbill('billDetailsTableCreditFinal','glcodeIdDetail',index,'${glcodeIdDetail}');
+	updateGridCbill('billDetailsTableCreditFinal','glcodeDetail',index,'${glcodeDetail}');
+	updateGridCbill('billDetailsTableCreditFinal','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTableCreditFinal','isSubledger',index,'${isSubledger}');
+	updateGridCbill('billDetailsTableCreditFinal','creditAmountDetail',index,'${creditAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 
 
 }
@@ -300,22 +302,22 @@ var makeVoucherDetailTableNetFinal = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTableNetFinal = new YAHOO.widget.DataTable("billDetailTableNetFinal",voucherDetailColumnsNet, voucherDetailDS);
-<s:iterator value="billDetailsTableNetFinal" status="stat">
+<c:forEach value="billDetailsTableNetFinal" status="stat">
 	billDetailsTableNetFinal.addRow({SlNo:billDetailsTableNetFinal.getRecordSet().getLength()+1,
-		"glcodeid":'<s:property value="glcodeIdDetail"/>',
-		"glcode":'<s:property value="glcodeDetail"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-		"isSubledger":'<s:property value="isSubldger"/>',
-		"amount":'<s:property value="%{creditAmountDetail}"/>'
+		"glcodeid":'${glcodeIdDetail}',
+		"glcode":'${glcodeDetail}',
+		"accounthead":'${accounthead}',
+		"isSubledger":'${isSubldger}',
+		"amount":'${%{creditAmountDetail}}'
 		});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridCbill('billDetailsTableNetFinal','glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-	updateGridCbill('billDetailsTableNetFinal','glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-	updateGridCbill('billDetailsTableNetFinal','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTableNetFinal','isSubledger',index,'<s:property value="isSubledger"/>');
-	updateGridCbill('billDetailsTableNetFinal','creditAmountDetail',index,'<s:property value="creditAmountDetail"/>');
+	var index = '${#stat.index}';
+	updateGridCbill('billDetailsTableNetFinal','glcodeIdDetail',index,'${glcodeIdDetail}');
+	updateGridCbill('billDetailsTableNetFinal','glcodeDetail',index,'${glcodeDetail}');
+	updateGridCbill('billDetailsTableNetFinal','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTableNetFinal','isSubledger',index,'${isSubledger}');
+	updateGridCbill('billDetailsTableNetFinal','creditAmountDetail',index,'${creditAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 }
 
 var makeVoucherDetailTableSubledger = function() {
@@ -330,25 +332,25 @@ var makeVoucherDetailTableSubledger = function() {
 ];
 var voucherDetailDS = new YAHOO.util.DataSource(); 
 billDetailsTableSubledger = new YAHOO.widget.DataTable("billDetailTableSubledger",voucherDetailColumnsSubledger, voucherDetailDS);
-<s:iterator value="billDetailsTableSubledger" status="stat">
+<c:forEach value="billDetailsTableSubledger" status="stat">
 
 	billDetailsTableSubledger.addRow({SlNo:billDetailsTableSubledger.getRecordSet().getLength()+1,
-		"subledgerCode":'<s:property value="subledgerCode"/>',
-		"detailName":'<s:property value="detailNameEscSpecChar"/>',
-		"detailCode":'<s:property value="detailCode"/>',
-		"detailKey":'<s:property value="detailKey"/>',
-		"accounthead":'<s:property value="accounthead"/>',
-		"amount":'<s:property value="amount"/>'
+		"subledgerCode":'${subledgerCode}',
+		"detailName":'${detailNameEscSpecChar}',
+		"detailCode":'${detailCode}',
+		"detailKey":'${detailKey}',
+		"accounthead":'${accounthead}',
+		"amount":'${amount}'
 		});
-	var index = '<s:property value="#stat.index"/>';
-	updateGridCbill('billDetailsTableSubledger','subledgerCode',index,'<s:property value="subledgerCode"/>');
-	updateGridCbill('billDetailsTableSubledger','detailCode',index,'<s:property value="detailCode"/>');
-	updateGridCbill('billDetailsTableSubledger','detailName',index,'<s:property value="detailNameEscSpecChar"/>');
-	updateGridCbill('billDetailsTableSubledger','detailKey',index,'<s:property value="detailKey"/>');
-	updateGridCbill('billDetailsTableSubledger','accounthead',index,'<s:property value="accounthead"/>');
-	updateGridCbill('billDetailsTableSubledger','debitAmountDetail',index,'<s:property value="debitAmountDetail"/>');
+	var index = '${#stat.index}';
+	updateGridCbill('billDetailsTableSubledger','subledgerCode',index,'${subledgerCode}');
+	updateGridCbill('billDetailsTableSubledger','detailCode',index,'${detailCode}');
+	updateGridCbill('billDetailsTableSubledger','detailName',index,'${detailNameEscSpecChar}');
+	updateGridCbill('billDetailsTableSubledger','detailKey',index,'${detailKey}');
+	updateGridCbill('billDetailsTableSubledger','accounthead',index,'${accounthead}');
+	updateGridCbill('billDetailsTableSubledger','debitAmountDetail',index,'${debitAmountDetail}');
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 }
 
 var makeCheckListTable = function() {
@@ -358,21 +360,21 @@ var makeCheckListTable = function() {
 ];
 var checkListDS = new YAHOO.util.DataSource(); 
 checkListsTable = new YAHOO.widget.DataTable("checkListTable",checkListColumns, checkListDS);
-<s:iterator value="checkListsTable" status="stat">
+<c:forEach value="checkListsTable" status="stat">
 
 	checkListsTable.addRow({SlNo:checkListsTable.getRecordSet().getLength()+1,
-		"name":'<s:property value="name"/>',
-		"id":'<s:property value="id"/>',
-		"val":'<s:property value="value"/>'
+		"name":'${name}',
+		"id":'${id}',
+		"val":'${value}'
 		});
-	var index = '<s:property value="#stat.index"/>';
+	var index = '${#stat.index}';
 	updateDropdown('checkListsTable','val',index);
-	updateGridCbill('checkListsTable','name',index,'<s:property value="name"/>');
-	updateGridCbill('checkListsTable','id',index,'<s:property value="id"/>');
-	updateGridCbill('checkListsTable','val',index,'<s:property value="val"/>');
+	updateGridCbill('checkListsTable','name',index,'${name}');
+	updateGridCbill('checkListsTable','id',index,'${id}');
+	updateGridCbill('checkListsTable','val',index,'${val}');
 	
 	//updateAccountTableIndex();	
-</s:iterator>
+</c:forEach>
 }
 
 
@@ -392,7 +394,7 @@ window.close();
 }
 else if(button=="Save_View")
 {
-//	var vhId='<s:property value="voucherHeader.id"/>';
+//	var vhId='${voucherHeader.id}';
 //	document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="+vhId;
 //	document.forms[0].submit();
 }
@@ -448,9 +450,9 @@ var	url = path+"/voucher/common!ajaxLoadCheckList.action?billSubtypeId="+obj.val
 		    var v=chekListArray[i].split("`-`");
 			document.getElementById("checkListsTable["+(Len)+"].name").value=v[0];
 			document.getElementById("checkListsTable["+(Len)+"].id").value=v[1];
-			<s:iterator value="commonBean.checkListValuesMap" status="stat">
-				document.getElementById("checkListsTable["+(Len)+"].val").options[<s:property value="#stat.index"/>]=new Option("<s:property value='value'/>", "<s:property value='key'/>");
-			</s:iterator>
+			<c:forEach value="commonBean.checkListValuesMap" status="stat">
+				document.getElementById("checkListsTable["+(Len)+"].val").options[${#stat.index}]=new Option("<!-- TODO: Manual migration required for custom Struts tag -->", "<!-- TODO: Manual migration required for custom Struts tag -->");
+			</c:forEach>
 			document.getElementById("checkListsTable["+(Len)+"].val").value='na';
 			//bootbox.alert("1");
 			}
@@ -472,17 +474,17 @@ var	url = path+"/voucher/common!ajaxLoadCheckList.action?billSubtypeId="+obj.val
 }
 function updateDropdown(tab,field,idx)
 {
-<s:iterator value="commonBean.checkListValuesMap" status="stat">
-document.getElementById(tab+"["+idx+"]."+field).options[<s:property value="#stat.index"/>]=new Option('<s:property value="value"/>','<s:property value="key"/>');
-</s:iterator>
+<c:forEach value="commonBean.checkListValuesMap" status="stat">
+document.getElementById(tab+"["+idx+"]."+field).options[${#stat.index}]=new Option('${value}','${key}');
+</c:forEach>
 }
 
 </script>
 </head>
 <body>
-	<s:form action="contingentBill" theme="css_xhtml" name="cbill"
+	<form:form action="contingentBill" theme="css_xhtml" name="cbill"
 		validate="true">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div id="loading"
 				style="position: absolute; left: 25%; top: 70%; padding: 2px; z-index: 20001; height: auto; width: 500px; display: none;">
 				<div class="loading-indicator"
@@ -502,31 +504,31 @@ document.getElementById(tab+"["+idx+"]."+field).options[<s:property value="#stat
 					<div class="formmaininbox">
 						<div class="formheading" />
 						<div class="subheadnew">
-							<s:text name="contingent.bill" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 						</div>
 					</div>
 					<center>
 						<span class="mandatory">
 							<div id="Errors">
-								<s:actionerror />
-								<s:fielderror />
-							</div> <s:actionmessage />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
+							</div> <!-- TODO: Manual migration required for custom Struts tag -->
 						</span>
 					</center>
 					<table border="0" width="100%" cellspacing="0" cellpadding="0">
 						<tr>
 							<td class="bluebox"></td>
-							<s:if test="%{!billNumberGenerationAuto}">
-								<td class="bluebox"><s:text name="bill.Number" /><span
+							<c:if test="%{!billNumberGenerationAuto}">
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory">*</span></td>
-								<td class="bluebox"><s:textfield
+								<td class="bluebox"><form:input
 										name="commonBean.billNumber" /></td>
-							</s:if>
-							<td class="bluebox"><s:text name="bill.Date" /><span
+							</c:if>
+							<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory">*</span></td>
 							<s:date name='commonBean.billDate' var="commonBean.billDateId"
 								format='dd/MM/yyyy' />
-							<td class="bluebox"><s:textfield name="commonBean.billDate"
+							<td class="bluebox"><form:input path="commonBean.billDate"
 									id="billDate"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									value="%{commonBean.billDateId}" /> <a tabindex="-1"
@@ -550,8 +552,8 @@ document.getElementById(tab+"["+idx+"]."+field).options[<s:property value="#stat
 	</script>
 
 
-				<s:hidden name="billRegisterId" id="billRegisterId" />
-				<s:hidden name="actionName" id="actionName" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
 
 			</div>
 			<div class="tabbertab" id="approval">
@@ -562,17 +564,17 @@ document.getElementById(tab+"["+idx+"]."+field).options[<s:property value="#stat
 					<div align="center" class="error-block" id="Errors"
 						style="font: bold; text-align: center"></div>
 				</font>
-				<s:if test='%{! nextLevel.equalsIgnoreCase("END")}'>
+				<c:if test='%{! nextLevel.equalsIgnoreCase("END")}'>
 
 					<%@include file="../voucher/workflowApproval-contingent.jsp"%>
-				</s:if>
-				<s:hidden name="nextLevel" id="nextLevel" />
+				</c:if>
+				<!-- TODO: Manual migration required for custom Struts tag -->
 
 				<div align="center">
 					<table border="0" width="100%">
 						<tr>
 							<td class="bluebox">Comments</td>
-							<td class="bluebox"><s:textarea name="comments"
+							<td class="bluebox"><form:textarea path="comments"
 									id="comments" cols="150" rows="3" onblur="checkLength(this)" /></td>
 						</tr>
 						<br />
@@ -581,14 +583,14 @@ document.getElementById(tab+"["+idx+"]."+field).options[<s:property value="#stat
 				<div class="buttonbottom">
 					<table border="0" width="75%" cellspacing="0" align="center">
 						<tr></tr>
-						<s:hidden name="button" id="button" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						<tr>
-							<s:iterator value="%{validButtons}" var="p">
+							<c:forEach value="%{validButtons}" var="p">
 								<td><s:submit type="submit" cssClass="buttonsubmit"
 										value="%{description}" id="%{name}" name="%{name}"
 										method="edit"
 										onclick="document.getElementById('button').value='%{description}';return validate('%{name}','%{description}');" /></td>
-							</s:iterator>
+							</c:forEach>
 							<td><input type="button" id="closeButton" value="Close"
 								onclick="javascript:window.close()" class="button" /></td>
 						</tr>
@@ -597,44 +599,44 @@ document.getElementById(tab+"["+idx+"]."+field).options[<s:property value="#stat
 			</div>
 			</div>
 		</s:push>
-	</s:form>
+	</form:form>
 
 	<script>
 autocompleteEntitiesBy20();
 document.getElementById("budgetReappRow").style.display="none";
-document.getElementById("billDetailsTableNet[0].detailTypes").value='<s:property value="%{detailTypeIdandName}"/>';
+document.getElementById("billDetailsTableNet[0].detailTypes").value='${%{detailTypeIdandName}}';
 var net=document.getElementById('billDetailsTableNet[0].glcodeDetail');
 net.options[0] =new Option("----Choose----","-1");
 var i=1;
-<s:iterator value="netPayList" status="stat">
+<c:forEach value="netPayList" status="stat">
            
-	<s:if test="%{chartOfAccountDetails.size()>0}">
-	net.options[i] =new Option('<s:property value="glcode"/>','<s:property value="glcode"/>~#<s:property value="name"/>~#true');
+	<c:if test="%{chartOfAccountDetails.size()>0}">
+	net.options[i] =new Option('${glcode}','${glcode}~#${name}~#true');
 	
-	</s:if> 
-	<s:else>
-	net.options[i] =new Option('<s:property value="glcode"/>','<s:property value="glcode"/>~#<s:property value="name"/>~#false');
+	</c:if> 
+	<c:otherwise>
+	net.options[i] =new Option('${glcode}','${glcode}~#${name}~#false');
 	</s:else>    
 i++;
-</s:iterator>
-	<s:if test="%{billDetailsTableNetFinal==null}">
-	document.getElementById('billDetailsTableNet[0].accounthead').value='<s:property value="defaultNetPayCode.name"/>';
-	document.getElementById('billDetailsTableNet[0].glcodeIdDetail').value='<s:property value="defaultNetPayCode.id"/>';
-	<s:if test="%{defaultNetPayCode.chartOfAccountDetails.size()>0}">
+</c:forEach>
+	<c:if test="%{billDetailsTableNetFinal==null}">
+	document.getElementById('billDetailsTableNet[0].accounthead').value='${defaultNetPayCode.name}';
+	document.getElementById('billDetailsTableNet[0].glcodeIdDetail').value='${defaultNetPayCode.id}';
+	<c:if test="%{defaultNetPayCode.chartOfAccountDetails.size()>0}">
 	  
-		net.value='<s:property value="defaultNetPayCode.glcode"/>-<s:property value="defaultNetPayCode.name"/>-true';	
+		net.value='${defaultNetPayCode.glcode}-${defaultNetPayCode.name}-true';	
 		document.getElementById('billDetailsTableNet[0].isSubledger').value='true';
-	</s:if>
-	<s:else>
-		net.value='<s:property value="defaultNetPayCode.glcode"/>-<s:property value="defaultNetPayCode.name"/>-false';	
+	</c:if>
+	<c:otherwise>
+		net.value='${defaultNetPayCode.glcode}-${defaultNetPayCode.name}-false';	
 		document.getElementById('billDetailsTableNet[0].isSubledger').value='false';
 	</s:else>
-</s:if>
-<s:else>
-document.getElementById('billDetailsTableNet[0].accounthead').value='<s:property value="billDetailsTableNetFinal[0].accounthead"/>';
-document.getElementById('billDetailsTableNet[0].glcodeIdDetail').value='<s:property value="billDetailsTableNetFinal[0].glcodeIdDetail"/>';
-net.value='<s:property value="billDetailsTableNetFinal[0].glcodeDetail"/>-<s:property value="billDetailsTableNetFinal[0].accounthead"/>-<s:property value="billDetailsTableNetFinal[0].isSubledger"/>';	
-document.getElementById('billDetailsTableNet[0].isSubledger').value='<s:property value="billDetailsTableNetFinal[0].isSubledger"/>';
+</c:if>
+<c:otherwise>
+document.getElementById('billDetailsTableNet[0].accounthead').value='${billDetailsTableNetFinal[0].accounthead}';
+document.getElementById('billDetailsTableNet[0].glcodeIdDetail').value='${billDetailsTableNetFinal[0].glcodeIdDetail}';
+net.value='${billDetailsTableNetFinal[0].glcodeDetail}-${billDetailsTableNetFinal[0].accounthead}-${billDetailsTableNetFinal[0].isSubledger}';	
+document.getElementById('billDetailsTableNet[0].isSubledger').value='${billDetailsTableNetFinal[0].isSubledger}';
 </s:else>
 loadDropDownCodesFunction();
 if(button!=undefined && button!="")
@@ -650,7 +652,7 @@ window.close();
 }
 else if(button=="Save_View")
 {
-//	var vhId='<s:property value="voucherHeader.id"/>';
+//	var vhId='${voucherHeader.id}';
 //	document.forms[0].action = "${pageContext.request.contextPath}/voucher/preApprovedVoucher!loadvoucherview.action?vhid="+vhId;
 //	document.forms[0].submit();
 }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
-<s:select list="budgetList" listKey="id" listValue="name" name="budget"
+<form:select list="budgetList" listKey="id" listValue="name" path="budget"
 	onchange="getSavedData();" value="model.budget.id"
 	id="budgetDetail_budget" disabled="%{headerDisabled}" headerKey="0"
-	headerValue="--- Select ---"></s:select>
+	headerValue="--- Select ---"></form:select>

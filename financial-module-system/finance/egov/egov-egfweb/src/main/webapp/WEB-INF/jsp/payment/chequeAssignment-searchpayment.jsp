@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -58,30 +60,30 @@
 	content="text/html; charset=windows-1252">
 </head>
 <body>
-	<s:form action="chequeAssignment" theme="simple">
+	<form:form action="chequeAssignment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Cheque Assignment Search" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="chq.assignment.heading.search" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0"
 				id="paymentTable">
 				<tr>
 					<th class="bluebgheadtdnew"><s:text
-							name="chq.assignment.select" /> <s:checkbox id="selectall"
+							path="chq.assignment.select" /> <form:checkbox id="selectall"
 							name="selectall" onclick="checkAll(this)" /></th>
-					<th class="bluebgheadtdnew"><s:text name="Sl No" /></th>
+					<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
 
-					<s:if test="%{paymentMode=='cheque'}">
+					<c:if test="%{paymentMode=='cheque'}">
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.partycode" /></th>
 
-					</s:if>
+					</c:if>
 					<th class="bluebgheadtdnew"><s:text
 							name="chq.assignment.payment.voucherno" /></th>
 					<th class="bluebgheadtdnew"><s:text
@@ -89,7 +91,7 @@
 					<th class="bluebgheadtdnew"><s:text
 							name="chq.assignment.payment.amount" /></th>
 
-					<s:if test="%{reassignSurrenderChq && paymentMode=='cheque'}">
+					<c:if test="%{reassignSurrenderChq && paymentMode=='cheque'}">
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.instrument.serialno" /></th>
 						<th class="bluebgheadtdnew" width="10%"><s:text
@@ -97,7 +99,7 @@
 						<th class="bluebgheadtdnew"><s:text
 								name="chq.assignment.instrument.date" /><span
 							class="mandatory1">*</span><br>(dd/mm/yyyy)</th>
-					</s:if>
+					</c:if>
 					<s:elseif
 						test="%{!isChequeNoGenerationAuto() && paymentMode=='cheque'}">
 						<th class="bluebgheadtdnew"><s:text
@@ -110,23 +112,23 @@
 							class="mandatory1">*</span><br>(dd/mm/yyyy)</th>
 					</s:elseif>
 				</tr>
-				<s:iterator var="p" value="chequeAssignmentList" status="s">
+				<c:forEach var="p" value="chequeAssignmentList" status="s">
 					<tr>
 						<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 								id="voucherHeaderId"
 								name="chequeAssignmentList[%{#s.index}].voucherHeaderId"
-								value="%{voucherHeaderId}" /> <s:checkbox
+								value="%{voucherHeaderId}" /> <form:checkbox
 								name="chequeAssignmentList[%{#s.index}].isSelected"
 								id="isSelected%{#s.index}" onclick="update(this)" /></td>
 						<td align="left" style="text-align: center"
 							class="blueborderfortdnew" />
-						<s:property value="#s.index+1" />
+						${#s.index+1}
 						</td>
-						<s:if test="%{paymentMode=='cheque'}">
+						<c:if test="%{paymentMode=='cheque'}">
 							<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 									id="paidTo" name="chequeAssignmentList[%{#s.index}].paidTo"
-									value="%{paidTo}" /> <s:property value="%{paidTo}" /></td>
-						</s:if>
+									value="%{paidTo}" /> ${%{paidTo}}</td>
+						</c:if>
 						<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 								id="voucherNumber"
 								name="chequeAssignmentList[%{#s.index}].voucherNumber"
@@ -134,7 +136,7 @@
 								name="chequeAssignmentList[%{#s.index}].detailtypeid"
 								value="%{detailtypeid}" /> <s:hidden id="detailkeyid"
 								name="chequeAssignmentList[%{#s.index}].detailkeyid"
-								value="%{detailkeyid}" /> <s:property value="%{voucherNumber}" /></td>
+								value="%{detailkeyid}" /> ${%{voucherNumber}}</td>
 						<td style="text-align: center" class="blueborderfortdnew"><s:hidden
 								id="voucherDate"
 								name="chequeAssignmentList[%{#s.index}].voucherDate"
@@ -146,17 +148,17 @@
 						<td style="text-align: right" class="blueborderfortdnew"><s:hidden
 								id="paidAmount"
 								name="chequeAssignmentList[%{#s.index}].paidAmount"
-								value="%{paidAmount}" /> <s:text name="format.number">
-								<s:param value="%{paidAmount}" />
+								value="%{paidAmount}" /> <!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:text></td>
 
-						<s:if test="%{reassignSurrenderChq && paymentMode=='cheque'}">
-							<td style="text-align: right" class="blueborderfortdnew"><s:select
+						<c:if test="%{reassignSurrenderChq && paymentMode=='cheque'}">
+							<td style="text-align: right" class="blueborderfortdnew"><form:select
 									name="chequeAssignmentList[%{#s.index}].serialNo"
 									id="chequeAssignmentList[%{#s.index}].serialNo"
 									class="serialNo" list="chequeSlNoMap"
 									value='%{chequeAssignmentList[%{#s.index}].serialNo}' /></td>
-							<td style="text-align: center" class="blueborderfortdnew"><s:textfield
+							<td style="text-align: center" class="blueborderfortdnew"><form:input
 									size="6" maxlength="6" id="chequeNumber%{#s.index}"
 									name="chequeAssignmentList[%{#s.index}].chequeNumber"
 									value="%{chequeNumber}"
@@ -164,21 +166,21 @@
 									onchange="validateReassignSurrenderChequeNumber(this)" /></td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:date
 									name="chequeDate" var="tempChequeDate" format="dd/MM/yyyy" />
-								<s:textfield id="chequeDate%{#s.index}"
+								<form:input id="chequeDate%{#s.index}"
 									name="chequeAssignmentList[%{#s.index}].chequeDate"
 									value="%{tempChequeDate}" data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									placeholder="DD/MM/YYYY" class="form-control datepicker"
 									data-inputmask="'mask': 'd/m/y'" /></td>
-						</s:if>
+						</c:if>
 						<s:elseif
 							test="%{!isChequeNoGenerationAuto() && paymentMode=='cheque'}">
-							<td style="text-align: right" class="blueborderfortdnew"><s:select
+							<td style="text-align: right" class="blueborderfortdnew"><form:select
 									name="chequeAssignmentList[%{#s.index}].serialNo"
 									id="chequeAssignmentList[%{#s.index}].serialNo"
 									class="serialNo" list="chequeSlNoMap"
 									value='%{chequeAssignmentList[%{#s.index}].serialNo}' /></td>
-							<td style="text-align: center" class="blueborderfortdnew"><s:textfield
+							<td style="text-align: center" class="blueborderfortdnew"><form:input
 									id="chequeNumber%{#s.index}"
 									name="chequeAssignmentList[%{#s.index}].chequeNumber"
 									value="%{chequeNumber}" onchange="validateChequeNumber(this)"
@@ -187,7 +189,7 @@
 									maxlength="6" /></td>
 							<td style="text-align: center" class="blueborderfortdnew"><s:date
 									name="chequeDate" var="tempChequeDate" format="dd/MM/yyyy" />
-								<s:textfield id="chequeDate%{#s.index}"
+								<form:input id="chequeDate%{#s.index}"
 									name="chequeAssignmentList[%{#s.index}].chequeDate"
 									value="%{tempChequeDate}" data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -195,64 +197,64 @@
 									data-inputmask="'mask': 'd/m/y'" /></td>
 						</s:elseif>
 					</tr>
-				</s:iterator>
+				</c:forEach>
 			</table>
 			<div class="subheadsmallnew" id="noRecordsDiv"
-				style="visibility: hidden"><s:text name="msg.no.record.found"/> </div>
+				style="visibility: hidden"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 			<br />
 			<div id="departmentDiv" style="visibility: visible">
-				<s:hidden name="reassignSurrenderChq" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<table align="center" width="100%" cellspacing="0">
 					<tr>
-						<td class="greybox"><s:text name="chq.assignment.department" /><span
-							class="mandatory1">*</span> <s:select
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
+							class="mandatory1">*</span> <form:select
 								name="vouchermis.departmentcode" id="departmentid"
 								list="dropdownData.departmentList" listKey="code" listValue="name"
 								headerKey="-1" headerValue="%{getText('lbl.choose.options)}"
 								value="%{voucherHeader.vouchermis.departmentcode}"
 								onChange="populateYearcode(this);" /></td>
 
-						<s:if test="%{reassignSurrenderChq && paymentMode!='cheque'}">
+						<c:if test="%{reassignSurrenderChq && paymentMode!='cheque'}">
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.serialno" /><span
-								class="mandatory1">*</span> <s:select name="serialNo"
+								class="mandatory1">*</span> <form:select path="serialNo"
 									id="serialNo" class="serialNo" list="chequeSlNoMap"
 									value='%{serialNo}' /></td>
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.no" /><span class="mandatory1">*</span>
-								<s:textfield id="chequeNumber0" name="chequeNo" maxlength="6"
+								<form:input id="chequeNumber0" path="chequeNo" maxlength="6"
 									size="6" value="%{chequeNo}"
 									onchange="validateReassignSurrenderChequeNumber(this)"
 									onkeypress='return event.charCode >= 48 && event.charCode <= 57' /></td>
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.date" /><span
 								class="mandatory1">*</span>(dd/mm/yyyy) <s:date name="chequeDt"
-									var="tempChequeDate" format="dd/MM/yyyy" /> <s:textfield
+									var="tempChequeDate" format="dd/MM/yyyy" /> <form:input
 									id="chequeDt" name="chequeDt" value="%{tempChequeDate}"
 									data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
 									placeholder="DD/MM/YYYY" class="form-control datepicker"
 									data-inputmask="'mask': 'd/m/y'" /></td>
-						</s:if>
+						</c:if>
 
 
 						<s:elseif
 							test="%{!isChequeNoGenerationAuto() && paymentMode=='cash'}">
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.serialno" /><span
-								class="mandatory1">*</span> <s:select name="serialNo"
+								class="mandatory1">*</span> <form:select path="serialNo"
 									id="serialNo" class="serialNo" list="chequeSlNoMap"
 									value='%{serialNo}' /></td>
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.no" /><span class="mandatory1">*</span>
-								<s:textfield id="chequeNumber0" name="chequeNo" maxlength="6"
+								<form:input id="chequeNumber0" path="chequeNo" maxlength="6"
 									size="6" value="%{chequeNo}"
 									onchange="validateChequeNumber(this)"
 									onkeypress='return event.charCode >= 48 && event.charCode <= 57' /></td>
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.date" /><span
 								class="mandatory1">*</span>(dd/mm/yyyy) <s:date name="chequeDt"
-									var="tempChequeDate" format="dd/MM/yyyy" /> <s:textfield
+									var="tempChequeDate" format="dd/MM/yyyy" /> <form:input
 									id="chequeDt" name="chequeDt" value="%{tempChequeDate}"
 									data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -262,12 +264,12 @@
 						<s:elseif
 							test="%{!isChequeNoGenerationAuto() && paymentMode=='rtgs'}">
 							<td class="greybox"></td>
-							<td class="greybox"><s:text name="chq.assignment.rtgs.refno" /><span
-								class="mandatory1">*</span> <s:textfield id="rtgsRefNo"
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
+								class="mandatory1">*</span> <form:input id="rtgsRefNo"
 									name="rtgsRefNo" value="%{chequeNo}" /></td>
-							<td class="greybox"><s:text name="chq.assignment.rtgs.date" /><span
+							<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 								class="mandatory1">*</span>(dd/mm/yyyy) <s:date name="rtgsDate"
-									var="tempChequeDate" format="dd/MM/yyyy" /> <s:textfield
+									var="tempChequeDate" format="dd/MM/yyyy" /> <form:input
 									id="chequeDt" name="rtgsDate" value="%{tempChequeDate}"
 									data-date-end-date="0d"
 									onkeyup="DateFormat(this,this.value,event,false,'3')"
@@ -275,12 +277,12 @@
 									data-inputmask="'mask': 'd/m/y'" /></td>
 						</s:elseif>
 
-						<s:if test="%{paymentMode=='cash'}">
+						<c:if test="%{paymentMode=='cash'}">
 							<td class="greybox"><s:text
 									name="chq.assignment.instrument.infavourof" /><span
-								class="mandatory1">*</span> <s:textfield id="inFavourOf"
+								class="mandatory1">*</span> <form:input id="inFavourOf"
 									name="inFavourOf" value="%{inFavourOf}" maxlength="50" /></td>
-						</s:if>
+						</c:if>
 					</tr>
 				</table>
 			</div>
@@ -290,15 +292,15 @@
 					value="%{selectedRowsId}" />
 				<s:hidden id="selectedRows" name="selectedRows"
 					value="%{selectedRows}" />
-				<s:hidden id="paymentMode" name="paymentMode" value="%{paymentMode}" />
-				<s:hidden id="bankaccount" name="bankaccount" value="%{bankaccount}" />
-				<input type="button" class="buttonsubmit" value="<s:text name='lbl.assign.cheque'/>"  id="assignChequeBtn"  onclick="validate();" />
-				<input type="button" value="<s:text name='lbl.close'/>"
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<!-- TODO: Manual migration required for custom Struts tag -->
+				<input type="button" class="buttonsubmit" value="<!-- TODO: Manual migration required for custom Struts tag -->"  id="assignChequeBtn"  onclick="validate();" />
+				<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.parent.postMessage('close','*');window.close();" class="button" />
 			</div>
 		</div>
-		<s:token />
-	</s:form>
+		<!-- TODO: Manual migration required for custom Struts tag -->
+	</form:form>
 	<script>
 	var mode="";
 			var selectedRowsId=new Array();
@@ -318,41 +320,41 @@
 				var result=true;
 				if(dom.get('departmentid') && dom.get('departmentid').options[dom.get('departmentid').selectedIndex].value==-1)
 				{
-					bootbox.alert('<s:text name="msg.select.cheque.issued.dept"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				if(document.getElementById('selectedRows').value=='' || document.getElementById('selectedRows').value==0)
 				{
-					bootbox.alert('<s:text name="msg.please.select.the.payment.voucher"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
-				<s:if test="%{paymentMode=='cheque'}">
-				var chequeSize='<s:property value ="%{chequeAssignmentList.size()}"/>';
+				<c:if test="%{paymentMode=='cheque'}">
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				for(var index=0;index<chequeSize;index++){
 					//console.log(document.getElementsByName("chequeAssignmentList["+index+"].serialNo")[0].value);
 				var srlNo=document.getElementsByName("chequeAssignmentList["+index+"].serialNo")[0].value;
 				if(srlNo=='')
 				{
-					bootbox.alert('<s:text name="payment.yearcode.invalid"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				}
-				</s:if>  
-				<s:if test="%{paymentMode=='rtgs'}">
+				</c:if>  
+				<c:if test="%{paymentMode=='rtgs'}">
 					result= validateForRtgsMode();  
-				</s:if>    
-				<s:if test="%{paymentMode=='cash'}">
+				</c:if>    
+				<c:if test="%{paymentMode=='cash'}">
 				if( document.getElementById('serialNo')==null || document.getElementById('serialNo').value=='' )
 				{
-					bootbox.alert('<s:text name="payment.yearcode.invalid"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					return false;
 				}
 				
 					result= validateChequeDateForNonChequeMode();  
-				</s:if> 
-				<s:if test="%{paymentMode=='cheque'}">
+				</c:if> 
+				<c:if test="%{paymentMode=='cheque'}">
 					 result=validateChequeDateForChequeMode();
-				</s:if> 
+				</c:if> 
 
 				if(document.getElementById("paymentMode").value!="cash")
 					{
@@ -379,18 +381,18 @@
 				var noOfSelectedRows=document.getElementById('selectedRows').value;
 				var chkCount=0;
 				var isSelected=0;
-				var chequeSize='<s:property value ="%{chequeAssignmentList.size()}"/>';
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				var chequeDate=dom.get('chequeDt').value;                            
 				var rtgsNo=document.getElementById('rtgsRefNo').value;                                  
 				                                              
                                                               
 				if(rtgsNo==null || rtgsNo==''){
-					bootbox.alert("<s:text name='msg.please.enter.valid.rtgs.number'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					return false;   
 				}	            			
 
 				if(isNaN( Date.parse( chequeDate))) {                
-					bootbox.alert("<s:text name='msg.please.enter.valid.cheque.date'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					return false;
 				 }
 				               
@@ -401,7 +403,7 @@
 					chkCount++;
 					if( compareDate(paymentDate,chequeDate) == -1){     
 					  //  bootbox.alert(paymentDate+"----"+chequeDate);      
-						bootbox.alert('<s:text name="msg.cheque.date.cant.be.less.than.payment.date"/>');
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 						document.getElementById('rtgsDate').value='';
 						document.getElementById('rtgsDate').focus();
 						return false;
@@ -421,11 +423,11 @@
 				//bootbox.alert("sizseled"+noOfSelectedRows);
 				var chkCount=0;
 				var isSelected=0;
-				var chequeSize='<s:property value ="%{chequeAssignmentList.size()}"/>';
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				var chequeDate=document.getElementById('chequeDt').value;
 				var chequeNo=document.getElementById('chequeNumber0').value;
 				if(chequeNo==null || chequeNo==''){
-					bootbox.alert('<s:text name="msg.please.enter.valid.cheque.number"/>', function() {
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->', function() {
 						flag =  false;
 					});
 				}
@@ -434,7 +436,7 @@
 					if(document.getElementById('isSelected'+index).checked){
 						chkCount++;
 						if( compareDate(paymentDate,chequeDate) == -1){     
-							bootbox.alert('<s:text name="msg.cheque.date.cant.be.less.than.payment.date"/>', function() {
+							bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->', function() {
 								document.getElementById('chequeDt').value='';
 								document.getElementById('chequeDt').focus();
 								flag =  false;
@@ -450,7 +452,7 @@
 				var noOfSelectedRows=document.getElementById('selectedRows').value;
 				var chkCount=0;
 				var isSelected=0;
-				var chequeSize='<s:property value ="%{chequeAssignmentList.size()}"/>';
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				var chequeObj;
 
 				for(var index=0;index<chequeSize;index++){
@@ -491,13 +493,13 @@
 					return true;
 				else if(isNaN(obj.value))
 				{
-					bootbox.alert('<s:text name="msg.number.date.contains.alpha.char"/>', function() {
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->', function() {
 						obj.value='';
 						return true;
 					});
 				}else if(obj.value.length!=6)
 				{
-					bootbox.alert("<s:text name='msg.cheque.number.must.be.six.digit.long'/>", function() {
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->", function() {
 						obj.value='';
 						return true;
 					});
@@ -505,7 +507,7 @@
 				}
 				else if(obj.value.match(pattPeriod)!=null || obj.value.match(pattNegative)!=null )
 				{
-					bootbox.alert('<s:text name="msg.cheque.num.should.contaain.only.number"/>', function() {
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->', function() {
 						obj.value='';
 						return true;
 					});
@@ -513,7 +515,7 @@
 				
 				else if(dom.get('departmentid') && dom.get('departmentid').options[dom.get('departmentid').selectedIndex].value==-1)
 				{
-					bootbox.alert('<s:text name="msg.select.cheque.issued.dept"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					obj.value='';
 					return true;
 				}
@@ -530,13 +532,13 @@
 			{
 				if(isNaN(obj.value))
 				{
-					bootbox.alert('<s:text name="msg.cheque.number.contains.alpha.char"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					obj.value='';
 					return false;
 				}
 				if(obj.value.length!=6)
 				{
-					bootbox.alert("<s:text name='msg.cheque.number.must.be.six.digit.long'/>");
+					bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 					obj.value='';
 					return false;
 				}
@@ -545,7 +547,7 @@
 				var pattNegative=/-/i;
 				if(obj.value.match(pattPeriod)!=null || obj.value.match(pattNegative)!=null )
 				{
-					bootbox.alert('<s:text name="msg.cheque.num.should.contaain.only.number"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					obj.value='';
 					return false;
 				}
@@ -555,7 +557,7 @@
 					
 				if(dom.get('departmentid') && dom.get('departmentid').options[dom.get('departmentid').selectedIndex].value==-1)
 				{
-					bootbox.alert('<s:text name="msg.select.cheque.issued.dept"/>');
+					bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');
 					obj.value='';
 					return false;
 				}
@@ -581,7 +583,7 @@
 					res = res.split('~');
 					if(res[1]=='false')
 					{
-						bootbox.alert('<s:text name="msg.enter.valid.cheque.number.or.cheque.already.used"/>', function() {
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->', function() {
 							return true;
 						});
 						document.getElementById('chequeNumber'+parseInt(res[0])).value='';
@@ -597,7 +599,7 @@
 					res = res.split('~');
 					if(res[1]=='false')
 					{
-						bootbox.alert('<s:text name="msg.cheque.num.not.exist.in.surrendered.list"/>');     
+						bootbox.alert('<!-- TODO: Manual migration required for custom Struts tag -->');     
 						document.getElementById('chequeNumber'+parseInt(res[0])).value='';
 					}
 			    },
@@ -617,7 +619,7 @@
 				
 				if(document.getElementById("paymentMode").value!="cash")
 					{
-				var chequeSize='<s:property value ="%{chequeAssignmentList.size()}"/>';
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				   selectedRowsId = new Array();
 					for(var index=0;index<chequeSize;index++){
 						var obj = document.getElementById('isSelected'+index);
@@ -705,7 +707,7 @@
 			
 			
 			function disableforCash(){
-				var chequeSize='<s:property value ="%{chequeAssignmentList.size()}"/>';
+				var chequeSize='<!-- TODO: Manual migration required for custom Struts tag -->';
 				   selectedRowsId = new Array();
 					for(var index=0;index<chequeSize;index++){
 						var obj = document.getElementById('isSelected'+index);
@@ -730,21 +732,21 @@
 					 
 			}
 		</script>
-	<%-- 	<s:if test="%{isFieldMandatory('department')}">
-		<s:if
+	<%-- 	<c:if test="%{isFieldMandatory('department')}">
+		<c:if
 			test="%{assignmentType!='SalaryPayment' && assignmentType!='RemittancePayment'}">
 			<script>
 						document.getElementById('departmentid').disabled=true;
 					</script>
-		</s:if>
-	</s:if> --%>
-	<s:if
+		</c:if>
+	</c:if> --%>
+	<c:if
 		test="chequeAssignmentList == null || chequeAssignmentList.size==0">
 		<script>
 				document.getElementById('noRecordsDiv').style.visibility='visible';
 				document.getElementById('departmentDiv').style.visibility='hidden';
 				document.getElementById('assignChequeBtn').style.display='none';
 			</script>
-	</s:if>
+	</c:if>
 </body>
 </html>

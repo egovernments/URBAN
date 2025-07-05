@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,38 +53,38 @@
 <%@ page language="java"%>
 
 
-<th class="bluebgheadtdnew"><s:text name="lbl.sl.no"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.bill.number"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.bill.date"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.bill.voucher.number"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.bill.voucher.date"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.payee.name"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.net.amount"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.earlier.amount"/></th>
-<th class="bluebgheadtdnew"><s:text name="lbl.payable.amount"/></th>
-<s:if test="%{!isFieldMandatory('fund')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.fund"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('department')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.department"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('function')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.function"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('functionary')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.functionary"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('fundsource')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.fund.source"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('scheme')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.scheme"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('subscheme')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.sub.scheme"/></th>
-</s:if>
-<s:if test="%{shouldShowHeaderField('field')}">
-	<th class="bluebgheadtdnew"><s:text name="lbl.field"/></th>
-</s:if>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+<c:if test="%{!isFieldMandatory('fund')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('department')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('function')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('functionary')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('fundsource')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('scheme')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('subscheme')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
+<c:if test="%{shouldShowHeaderField('field')}">
+	<th class="bluebgheadtdnew"><!-- TODO: Manual migration required for custom Struts tag --></th>
+</c:if>
 
 

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -65,7 +67,7 @@
 </head>
 
 <body>
-	<s:form action="stateFC" theme="simple" name="stateFCform">
+	<form:form action="stateFC" theme="simple" name="stateFCform">
 		<jsp:include page="../revenue/common-grant.jsp"></jsp:include>
 		<div align="center" class="buttonbottom">
 			<s:submit method="saveOrupdate" value="Create"
@@ -73,6 +75,6 @@
 			<input type="button" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

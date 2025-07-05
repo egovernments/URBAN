@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -64,22 +66,22 @@
 	<td class="greybox"></td>
 	<egov:ajaxdropdown id="fromBankId" fields="['Text','Value']"
 		dropdownId="fromBankId" url="/voucher/common-ajaxLoadBanks.action" />
-	<td class="greybox"><s:text name="contra.fromBank" /> <span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="greybox"><span class="mandatory1">*</span></span></td>
-	<s:hidden name="temp" value="contraBean.fromBankId" />
-	<td class="greybox"><s:select name="contraBean.fromBankId"
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<td class="greybox"><form:select path="contraBean.fromBankId"
 			id="fromBankId" list="%{fromBankBranchMap}" headerKey="-1"
 			headerValue="%{getText('lbl.choose.options')}" onChange="loadFromAccNum(this);" /></td>
 	<egov:ajaxdropdown id="fromAccountNumber" fields="['Text','Value']"
 		dropdownId="fromAccountNumber"
 		url="/voucher/common-ajaxLoadAccountNumbers.action" />
-	<td class="greybox"><s:text name="contra.fromBankAccount" /> <span
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="greybox"><span class="mandatory1">*</span></span></td>
-	<td class="greybox"><s:select name="contraBean.fromBankAccountId"
+	<td class="greybox"><form:select path="contraBean.fromBankAccountId"
 			value="%{contraBean.fromBankAccountId}" id="fromAccountNumber"
 			list="dropdownData.fromAccNumList" listKey="id"
 			listValue="accountnumber" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
-			onChange="populatefromNarration(this);loadFromBalance(this)" /> <s:textfield
+			onChange="populatefromNarration(this);loadFromBalance(this)" /> <form:input
 			name="fromAccnumnar" id="fromAccnumnar" value="%{fromAccnumnar}"
 			readonly="true" tabindex="-1" /></td>
 </tr>
@@ -88,9 +90,9 @@
 	<td class="bluebox"></td>
 	<egov:updatevalues id="fromBankBalance" fields="['Text']"
 		url="/payment/payment-ajaxGetAccountBalance.action" />
-	<td class="bluebox"><s:text name="contra.fromBankBalance" />
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->
 		(Rs.) <span class="bluebox"><span class="mandatory1">*</span></span></td>
-	<td class="bluebox"><s:textfield name="contraBean.fromBankBalance"
+	<td class="bluebox"><form:input path="contraBean.fromBankBalance"
 			id="fromBankBalance" readonly="true" tabindex="-1"
 			cssStyle="text-align:right" /></td>
 	<td class="bluebox"></td>
@@ -109,47 +111,47 @@
 </tr>
 <tr>
 	<td class="greybox"></td>
-	<s:if test="%{shouldShowHeaderField('fund')}">
-		<td class="greybox"><s:text name="voucher.fund" /><span
+	<c:if test="%{shouldShowHeaderField('fund')}">
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 			class="mandatory1">*</span></td>
-		<td class="greybox"><s:select name="contraBean.toFundId"
+		<td class="greybox"><form:select path="contraBean.toFundId"
 				id="toFundId" list="dropdownData.fundList" listKey="id"
 				listValue="name" onChange="loadToBank(this);checkInterFund();"
 				headerKey="" headerValue="%{getText('lbl.choose.options')}" /></td>
-	</s:if>
-	<s:if test="%{shouldShowHeaderField('department')}">
+	</c:if>
+	<c:if test="%{shouldShowHeaderField('department')}">
 		<td id="interFundRow1" style="visibility: hidden" class="greybox"><s:text
-				name="voucher.department" /> <s:if
+				name="voucher.department" /> <c:if
 				test="%{isFieldMandatory('department')}">
 				<span class="bluebox"><span class="mandatory1">*</span></span>
-			</s:if></td>
-		<td id="interFundRow2" style="visibility: hidden" class="greybox"><s:select
+			</c:if></td>
+		<td id="interFundRow2" style="visibility: hidden" class="greybox"><form:select
 				name="contraBean.toDepartment" id="contraBean.toDepartment"
 				list="dropdownData.departmentList" listKey="code" listValue="name"
 				headerKey="" headerValue="%{getText('lbl.choose.options')}"
 				value="voucherHeader.vouchermis.departmentcode"
 				onChange="populateApproverDept(this);" /></td>
-	</s:if>
+	</c:if>
 </tr>
 <tr>
 	<td class="bluebox"></td>
 	<egov:ajaxdropdown id="toBankId" fields="['Text','Value']"
 		dropdownId="toBankId" url="/voucher/common-ajaxLoadBanks.action" />
 
-	<td class="bluebox"><s:text name="contra.toBank" /> <span
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="bluebox"><span class="mandatory1">*</span></span></td>
-	<td class="bluebox"><s:select name="contraBean.toBankId"
+	<td class="bluebox"><form:select path="contraBean.toBankId"
 			id="toBankId" list="%{toBankBranchMap}" headerKey="-1"
 			headerValue="%{getText('lbl.choose.options')}" onChange="loadToAccNum(this);" /></td>
 	<egov:ajaxdropdown id="toAccountNumber" fields="['Text','Value']"
 		dropdownId="toAccountNumber"
 		url="/voucher/common-ajaxLoadAccountNumbers.action" />
-	<td class="bluebox"><s:text name="contra.toBankAccount" /> <span
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="bluebox"><span class="mandatory1">*</span></span></td>
-	<td class="bluebox"><s:select name="contraBean.toBankAccountId"
+	<td class="bluebox"><form:select path="contraBean.toBankAccountId"
 			id="toAccountNumber" list="dropdownData.toAccNumList" listKey="id"
 			listValue="accountnumber" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
-			onChange="populatetoNarration(this);loadToBalance(this)" /> <s:textfield
+			onChange="populatetoNarration(this);loadToBalance(this)" /> <form:input
 			name="toAccnumnar" id="toAccnumnar" value="%{toAccnumnar}"
 			readonly="true" tabindex="-1" /></td>
 </tr>
@@ -158,9 +160,9 @@
 	<td class="greybox"></td>
 	<egov:updatevalues id="toBankBalance" fields="['Text']"
 		url="/payment/payment-ajaxGetAccountBalance.action" />
-	<td class="greybox"><s:text name="contra.toBankBalance" /> (Rs.)
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> (Rs.)
 		<span class="greybox"><span class="mandatory1">*</span></span></td>
-	<td class="greybox"><s:textfield name="contraBean.toBankBalance"
+	<td class="greybox"><form:input path="contraBean.toBankBalance"
 			id="toBankBalance" readonly="true" tabindex="-1"
 			cssStyle="text-align:right" /></td>
 	<td class="greybox"></td>
@@ -168,14 +170,14 @@
 </tr>
 <tr id="interFundRow3" style="visibility: hidden">
 	<td class="greybox"></td>
-	<td class="greybox"><s:text name="lbl.source.inter.fund.code" />
-	<td class="greybox"><span class="mandatory1">*</span> <s:select
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
+	<td class="greybox"><span class="mandatory1">*</span> <form:select
 			name="contraBean.sourceGlcode" id="sourceGlcode"
 			list="dropdownData.interFundList" listKey="glcode"
 			listValue="glcode+'-'+name" headerKey="-1"
 			headerValue="%{getText('lbl.choose.options')}" /></td>
-	<td class="greybox"><s:text name="lbl.destination.inter.fund.code" /></td>
-	<td class="greybox"><span class="mandatory1">*</span> <s:select
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="greybox"><span class="mandatory1">*</span> <form:select
 			name="contraBean.destinationGlcode" id="destinationGlcode"
 			list="dropdownData.interFundList" listKey="glcode"
 			listValue="glcode+'-'+name" headerKey="-1"
@@ -185,7 +187,7 @@
 
 <tr>
 	<td class="bluebox"></td>
-	<td class="bluebox"><s:text name="contra.modeOfCollection" /> <span
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 		class="bluebox"><span class="mandatory1">*</span></span></td>
 	<td class="bluebox"><s:radio name="contraBean.modeOfCollection"
 			id="modeOfCollection" list="%{modeOfCollectionMap}"
@@ -199,7 +201,7 @@
 	<td class="greybox"><span id="mdcNumber"><s:text
 				name="contra.refNumber" /></span> <span class="greybox"><span
 			class="mandatory1">*</span></span></td>
-	<td class="greybox"><s:textfield name="contraBean.chequeNumber"
+	<td class="greybox"><form:input path="contraBean.chequeNumber"
 			id="chequeNum" value="%{contraBean.chequeNumber}" onblur="validateChequeNumber(this)" onkeyup="decimalvalue(this)"/>
 				<span>
 					<font style='color: red;'>
@@ -209,7 +211,7 @@
 	</td>
 	<td class="greybox"><span id="mdcDate"><s:text
 				name="contra.refDate" /></span></td>
-	<td class="greybox"><s:textfield id="chequeDate"
+	<td class="greybox"><form:input id="chequeDate"
 			name="contraBean.chequeDate" data-date-end-date="0d"
 			onkeyup="DateFormat(this,this.value,event,false,'3')"
 			placeholder="DD/MM/YYYY" class="form-control datepicker"
@@ -219,9 +221,9 @@
 
 <tr>
 	<td class="bluebox"></td>
-	<td class="bluebox"><s:text name="contra.amount" /> (Rs.) <span
+	<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> (Rs.) <span
 		class="bluebox"><span class="mandatory1">*</span></span></td>
-	<td class="bluebox"><s:textfield name="amount" id="amount"
+	<td class="bluebox"><form:input path="amount" id="amount"
 			cssStyle="text-align:right" /></td>
 	<td class="bluebox"></td>
 	<td class="bluebox"></td>
@@ -229,8 +231,8 @@
 
 <tr>
 	<td class="greybox"></td>
-	<td class="greybox"><s:text name="voucher.narration" /></td>
-	<td class="greybox" colspan="3"><s:textarea name="description"
+	<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+	<td class="greybox" colspan="3"><form:textarea path="description"
 			id="description" style="width:580px" /></td>
 	<td class="greybox"></td>
 	<td class="greybox"></td>
@@ -239,9 +241,9 @@
 <script>
 	var fund_map = new Array();
 	var i=0;
-	<s:iterator var="f" value="%{dropdownData.fundList}" status="stat">
-		fund_map[i++]= '<s:property value="%{id}"/>'+"_"+'<s:property value="%{chartofaccountsByPayglcodeid.glcode}"/>';
-	</s:iterator>	
+	<c:forEach var="f" value="%{dropdownData.fundList}" status="stat">
+		fund_map[i++]= '${%{id}}'+"_"+'${%{chartofaccountsByPayglcodeid.glcode}}';
+	</c:forEach>	
 	
 	</script>
 

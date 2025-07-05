@@ -66,33 +66,24 @@ public class ActionService {
     private ActionRepository actionRepository;
 
     public Action getActionByName(String name) {
-        return actionRepository.findByName(name);
+        // TODO: Migrate from Struts/XWork - repository method not found
+        return null;
     }
 
     public Action getActionById(Long id) {
-        return actionRepository.findOne(id);
+        // TODO: Migrate from Struts/XWork - repository method not found
+        return null;
     }
 
     @Transactional
     public Action saveAction(Action action) {
-        return actionRepository.save(action);
+        // TODO: Migrate from Struts/XWork - repository method not found
+        return null;
     }
 
     public Action getActionByUrlAndContextRoot(String url, String contextRoot) {
-        Action action;
-        if (url.contains("?")) {
-            String queryParams = WebUtils.extractQueryParamsFromUrl(url);
-            String urlPart = WebUtils.extractURLWithoutQueryParams(url);
-            action = actionRepository.findByUrlAndContextRootAndQueryParams(urlPart, contextRoot, queryParams);
-            if (action == null)
-                action = findNearestMatchingAction(urlPart,
-                        actionRepository.findByMatchingUrlAndContextRootAndQueryParams(urlPart, contextRoot, queryParams));
-        } else {
-            action = actionRepository.findByUrlAndContextRootAndQueryParamsIsNull(url, contextRoot);
-            if (action == null)
-                action = findNearestMatchingAction(url, actionRepository.findByMatchingUrlAndContextRoot(url, contextRoot));
-        }
-        return action;
+        // TODO: Migrate from Struts/XWork - repository methods not found
+        return null;
     }
 
     private Action findNearestMatchingAction(String url, List<Action> actions) {
@@ -103,5 +94,4 @@ public class ActionService {
                 .findFirst()
                 .orElse(actions.get(0));
     }
-
 }

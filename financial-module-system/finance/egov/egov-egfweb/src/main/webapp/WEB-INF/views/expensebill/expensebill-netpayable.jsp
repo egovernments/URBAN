@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -76,7 +78,7 @@
 					<form:hidden path="" name="netPayableDetailKeyId" id="netPayableDetailKeyId" />
 					<form:hidden path="" name="netPayableDetailTypeName" id="netPayableDetailTypeName" />
 					<form:hidden path="" name="netPayableDetailKeyName" id="netPayableDetailKeyName" />
-					<form:select path="" data-first-option="false" name="netPayableAccountCode" id="netPayableAccountCode" class="form-control" >
+					<form:select path="" data-first-option="false" path="netPayableAccountCode" id="netPayableAccountCode" class="form-control" >
 						<form:option value=""> <spring:message code="lbl.select" text="Select"/> </form:option>
 					</form:select>
 				</td>

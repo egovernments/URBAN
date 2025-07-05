@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -69,7 +71,7 @@
 											<form:input path="name" id="name" cssClass="form-control" placeholder="Name"/>
 										</div>
 										 <div class="col-sm-4 add-margin">
-											<form:select cssClass="form-control" id="department" name="department" path="department">
+											<form:select cssClass="form-control" id="department" path="department" path="department">
 												<form:option value="">
 													<spring:message code="lbl.departments" />
 												</form:option>
@@ -79,7 +81,7 @@
 											</form:select>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:select cssClass="form-control" id="designation" name="designation" path="designation">
+											<form:select cssClass="form-control" id="designation" path="designation" path="designation">
 												<form:option value="">
 													<spring:message code="lbl.designations" />
 												</form:option>
@@ -94,7 +96,7 @@
 									<div class="form-group advanced-forms">
 										
 										<div class="col-sm-4 add-margin">
-											<form:select cssClass="form-control" id="function" name="function" path="function">
+											<form:select cssClass="form-control" id="function" path="function" path="function">
 												<form:option value="">
 													<spring:message code="lbl.functions" />
 												</form:option>
@@ -104,7 +106,7 @@
 											</form:select>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:select cssClass="form-control" id="functionary" name="functionary" path="functionary">
+											<form:select cssClass="form-control" id="functionary" path="functionary" path="functionary">
 												<form:option value="">
 													<spring:message code="lbl.functionaries" />
 												</form:option>
@@ -114,7 +116,7 @@
 											</form:select>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:select cssClass="form-control" id="status" name="status" path="status">
+											<form:select cssClass="form-control" id="status" path="status" path="status">
 												<form:option value="">
 													<spring:message code="lbl.status" />
 												</form:option>
@@ -128,7 +130,7 @@
 									<div class="form-group advanced-forms">
 										
 										<div class="col-sm-4 add-margin">
-											<form:select cssClass="form-control" id="employeeType" name="employeeType" path="employeeType">
+											<form:select cssClass="form-control" id="employeeType" path="employeeType" path="employeeType">
 												<form:option value="">
 													<spring:message code="lbl.types" />
 												</form:option>
@@ -138,23 +140,23 @@
 											</form:select>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:input type="text" name="pan" id="pan" cssClass="form-control" path="pan" placeholder="PAN"/>
+											<form:input type="text" path="pan" id="pan" cssClass="form-control" path="pan" placeholder="PAN"/>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:input type="text" name="aadhaar" id="aadhaar" cssClass="form-control" path="aadhaar" placeholder="Aadhaar"/>
+											<form:input type="text" path="aadhaar" id="aadhaar" cssClass="form-control" path="aadhaar" placeholder="Aadhaar"/>
 										</div>
 										
 									</div>
 
 									<div class="form-group advanced-forms">
 										<div class="col-sm-4 add-margin">
-											<form:input type="text" name="mobileNumber" id="mobileNumber" cssClass="form-control" path="mobileNumber" placeholder="Mobile Number"/>
+											<form:input type="text" path="mobileNumber" id="mobileNumber" cssClass="form-control" path="mobileNumber" placeholder="Mobile Number"/>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:input type="text" name="email" id="email" cssClass="form-control" path="email" placeholder="Email"/>
+											<form:input type="text" path="email" id="email" cssClass="form-control" path="email" placeholder="Email"/>
 										</div>
 										<div class="col-sm-4 add-margin">
-											<form:input type="text" name="code" id="code" cssClass="form-control" path="code" placeholder="Code"/>
+											<form:input type="text" path="code" id="code" cssClass="form-control" path="code" placeholder="Code"/>
 										</div>
 										
 									</div>

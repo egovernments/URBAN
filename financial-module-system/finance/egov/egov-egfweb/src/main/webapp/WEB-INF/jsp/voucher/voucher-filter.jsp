@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,17 +56,17 @@
    %>
 <tr>
 	<td style="width: 5%"></td>
-	<s:if test="%{shouldShowHeaderField('fund')}">
+	<c:if test="%{shouldShowHeaderField('fund')}">
 		<% count++; %>
-		<td class="bluebox"><s:text name="voucher.fund" /> <s:if
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fund')}">
 				<span class="mandatory1" id="disableFundCheck">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="fundId" id="fundId"
+			</c:if></td>
+		<td class="bluebox"><form:select path="fundId" id="fundId"
 				list="dropdownData.fundList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				onChange="getSchemelist(this)" value="%{fundId.id}" /></td>
-	</s:if>
+	</c:if>
 	<%if(count % 2 == 1) {%>
 </tr>
 <tr>
@@ -72,17 +74,17 @@
 	<%} %>
 
 
-	<s:if test="%{shouldShowHeaderField('fundsource')}">
+	<c:if test="%{shouldShowHeaderField('fundsource')}">
 		<% count++; %>
-		<td class="bluebox"><s:text name="voucher.fundsource" /> <s:if
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('fundsource')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="fundsourceId"
+			</c:if></td>
+		<td class="bluebox"><form:select path="fundsourceId"
 				id="fundsourceId" list="dropdownData.fundsourceList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{vouchermis.fundsource.id}" /></td>
-	</s:if>
+	</c:if>
 
 
 
@@ -92,19 +94,19 @@
 <td style="width: 5%"></td>
 	<%} %>
 
-	<s:if test="%{shouldShowHeaderField('scheme')}">
+	<c:if test="%{shouldShowHeaderField('scheme')}">
 		<% count++; %>
 		<egov:ajaxdropdown id="schemeid" fields="['Text','Value']"
 			dropdownId="schemeid" url="voucher/common-ajaxLoadSchemes.action" />
-		<td class="greybox"><s:text name="voucher.scheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('scheme')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="vouchermis.schemeid"
+			</c:if></td>
+		<td class="greybox"><form:select path="vouchermis.schemeid"
 				id="schemeid" list="dropdownData.schemeList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				onChange="getSubSchemelist(this)" value="%{vouchermis.schemeid.id}" /></td>
-	</s:if>
+	</c:if>
 
 
 	<%if(count % 2 == 1) {%>
@@ -112,70 +114,70 @@
 <tr>
 <td style="width: 5%"></td>
 	<%} %>
-	<s:if test="%{shouldShowHeaderField('subscheme')}">
+	<c:if test="%{shouldShowHeaderField('subscheme')}">
 		<% count++; %>
 		<egov:ajaxdropdown id="subschemeid" fields="['Text','Value']"
 			dropdownId="subschemeid"
 			url="voucher/common-ajaxLoadSubSchemes.action" />
-		<td class="greybox"><s:text name="voucher.subscheme" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('subscheme')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="vouchermis.subschemeid"
+			</c:if></td>
+		<td class="greybox"><form:select path="vouchermis.subschemeid"
 				id="subschemeid" list="dropdownData.subschemeList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 				value="%{vouchermis.subschemeid.id}" /></td>
-	</s:if>
+	</c:if>
 	
 	<%if(count % 2 == 1) {%>
 </tr>
 <tr>
 <td style="width: 5%"></td>
 	<%} %>
-	<s:if test="%{shouldShowHeaderField('functionary')}">
+	<c:if test="%{shouldShowHeaderField('functionary')}">
 		<% count++; %>
-		<td class="bluebox"><s:text name="voucher.functionary" /> <s:if
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('functionary')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="bluebox"><s:select name="vouchermis.functionary"
+			</c:if></td>
+		<td class="bluebox"><form:select path="vouchermis.functionary"
 				id="vouchermis.functionary" list="dropdownData.functionaryList"
 				listKey="id" listValue="name" headerKey="-1"
 				headerValue="%{getText('lbl.choose.options')}" value="%{vouchermis.functionary.id}" /></td>
-	</s:if>
+	</c:if>
 
 	<%if(count % 2 == 1) {%>
 </tr>
 <tr>
 <td style="width: 5%"></td>
 	<%} %>
-	<s:if test="%{shouldShowHeaderField('department')}">
+	<c:if test="%{shouldShowHeaderField('department')}">
 		<% count++; %>
-		<td class="bluebox"><s:text name="voucher.department" /> <s:if
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('department')}">
 				<span class="mandatory1">*</span>
-			</s:if></td>
-		<td class="greybox"><s:select name="deptImpl.code" id="deptImpl.code"
+			</c:if></td>
+		<td class="greybox"><form:select path="deptImpl.code" id="deptImpl.code"
 				list="dropdownData.departmentList" listKey="code" listValue="name"
 				headerKey="-1" headerValue="%{getText('lbl.choose.options')}" value="%{deptImpl.code}" /></td>
-	</s:if>
+	</c:if>
 
 	<%if(count % 2 == 1) {%>
 </tr>
 <tr>
 <td style="width: 5%"></td>
 	<%} %>
-	<s:if test="%{shouldShowHeaderField('field')}">
+	<c:if test="%{shouldShowHeaderField('field')}">
 		<% count++; %>
-		<td class="greybox"><s:text name="voucher.field" /> <s:if
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <c:if
 				test="%{isFieldMandatory('field')}">
 				<span class="mandatory1">*</span>
-			</s:if><br> <br></td>
-		<td class="greybox"><s:select name="vouchermis.divisionid"
+			</c:if><br> <br></td>
+		<td class="greybox"><form:select path="vouchermis.divisionid"
 				id="vouchermis.divisionid" list="dropdownData.fieldList"
 				listKey="id" listValue="name" headerKey="-1"
 				headerValue="%{getText('lbl.choose.options')}" value="%{vouchermis.divisionid.id}" /></td>
-	</s:if>
+	</c:if>
 
 	<%if(count % 2 == 1) {%>
 </tr>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,7 +51,7 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html>
 <head>
-<title>  <s:text name="branchuser.master.title"></s:text> </title>
+<title>  <!-- TODO: Manual migration required for custom Struts tag --></s:text> </title>
 
 <script>
 function onChangeBankBranch(bankId) {
@@ -72,15 +74,15 @@ function validate() {
 	document.getElementById('error_area').innerHTML = '';
 	document.getElementById("error_area").style.display = "none";
 	if (document.getElementById('bankId').value == "-1") {
-		document.getElementById("error_area").innerHTML = '<s:text name="branchuser.master.bank.error" />';
+		document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		valid = false;
 	}
 	else if (document.getElementById('branchId').value == "-1") {
-		document.getElementById("error_area").innerHTML = '<s:text name="branchuser.master.branch.error" />';
+		document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		valid = false;
 	}
 	else if (document.getElementById('userId').value == "-1") {
-		document.getElementById("error_area").innerHTML = '<s:text name="branchuser.master.user.error" />';
+		document.getElementById("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 		valid = false;
 	}
 	if (valid == false) {
@@ -97,22 +99,22 @@ function validate() {
 <div class="errorstyle" id="error_area" style="display: none;"></div>
 
 	<span id="remerror"> <font style='color: red; font-weight: bold'
-		size="2"> <s:actionerror /> <s:fielderror />
+		size="2"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 	</font>
 	</span>
 
-<s:form action="branchUserMap.action" theme="simple">
+<form:form action="branchUserMap.action" theme="simple">
    <div class="errorstyle" id="error_area" style="display: none;"></div>
-   <s:token />
+   <!-- TODO: Manual migration required for custom Struts tag -->
     <div class="formmainbox">
 		<div class="subheadnew">
-			 <s:text name="branchuser.master.create.title" />
+			 <!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:960px;margin:0 auto;"  theme="simple">
 	   	
 		<tr>
-			<td class="greybox"><s:text name="branchuser.master.bank"></s:text> <span class="mandatory"></span></td>
-			<td class="greybox"><s:select headerKey="-1"
+			<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></s:text> <span class="mandatory"></span></td>
+			<td class="greybox"><form:select headerKey="-1"
 								headerValue="----Choose----" name="bankId" id="bankId"
 								cssClass="selectwk" list="dropdownData.bankNameList"
 								listKey="id" listValue="name" value="%{bank.id}"
@@ -120,17 +122,17 @@ function validate() {
 								id="branchIdDropdown" fields="['Text','Value']"
 								dropdownId='branchId'
 								url='service/branchUserMap-bankBranchsByBankForReceiptPayments.action' /></td>
-			<td class="greybox"><s:text name="branchuser.master.bankbranch" />
+			<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->
 							<span class="mandatory" /></td>
-			<td class="greybox"><s:select headerKey="-1"
+			<td class="greybox"><form:select headerKey="-1"
 								headerValue="----Choose----" name="branchId" id="branchId"
 								cssClass="selectwk" list="dropdownData.bankBranchList"
 								listKey="id" listValue="branchname"
 								value="%{bankbranch.id}" />
 		</tr>
 		<tr>
-			<td class="bluebox"><s:text name="branchuser.master.bankuser"></s:text> <span class="mandatory"></span></td>
-			<td class="bluebox"><s:select headerKey="-1"
+			<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></s:text> <span class="mandatory"></span></td>
+			<td class="bluebox"><form:select headerKey="-1"
 								headerValue="----Choose----" name="userId" id="userId"
 								cssClass="selectwk" list="dropdownData.bankCollectionOperatorUserList"
 								listKey="id" listValue="username" value="%{bankuser.id}"/></td>
@@ -140,12 +142,12 @@ function validate() {
 		<tr>
 			<td class="greybox"><label for="isActive"><s:text
 						name="branchuser.master.IsEnable/Disable" /> </label></td>
-			<td class="greybox"><s:checkbox name="isActive" id="isActive" /></td>
+			<td class="greybox"><form:checkbox path="isActive" id="isActive" /></td>
 		</tr>
 	</table>
 	<div align="left" class="mandatorycoll">
 					&nbsp;&nbsp;&nbsp;
-		<s:text name="common.mandatoryfields" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
     </div>
 	<br />
 </div>
@@ -153,10 +155,10 @@ function validate() {
 				<s:submit name="sumbit" cssClass="buttonsubmit" id="button32" 
 					onclick="return onSubmit('branchUserMap-create.action'); "
 					value="Create Mapping" />
-				<s:reset name="reset" cssClass="button" id="button" value="Reset" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input name="close" type="button" class="button" id="button"
 					onclick="window.close()" value="Close" />
 	</div>
-</s:form>
+</form:form>
 </body>
 </html>

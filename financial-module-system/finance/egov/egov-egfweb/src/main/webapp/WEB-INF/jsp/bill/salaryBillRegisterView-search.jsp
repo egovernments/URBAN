@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="bill.salarybill.register" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link href="/services/EGF/resources/css/budget.css?rnd=${app_release_no}" rel="stylesheet"
 	type="text/css" />
 <link href="/services/EGF/css/commonegov.css" rel="stylesheet" type="text/css" />
@@ -95,18 +97,18 @@ function validateDates(){
 </script>
 </head>
 <body>
-	<s:form action="salaryBillRegisterView" theme="simple"
+	<form:form action="salaryBillRegisterView" theme="simple"
 		name="salaryBillView">
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bill.salarybill.register.view" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="9%" class="bluebox">&nbsp;</td>
-					<td width="18%" class="bluebox"><s:text name="billDate" /></>:<span
+					<td width="18%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></>:<span
 						class="mandatory">*</span></td>
 					<td width="23%" class="bluebox"><input type="text"
 						name="fromDate" id="fromDate"
@@ -115,7 +117,7 @@ function validateDates(){
 						style="text-decoration: none">&nbsp;<img tabIndex="-1"
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></A>(dd/mm/yyyy)</td>
 					</td>
-					<td width="18%" class="bluebox"><s:text name="billDate" /></>:<span
+					<td width="18%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></>:<span
 						class="mandatory">*</span></td>
 					<td width="23%" class="bluebox"><input type="text"
 						name="toDate" id="toDate"
@@ -143,8 +145,8 @@ function validateDates(){
 							<option value="11">November</option>
 							<option value="12">December</option>
 					</select></td>
-					<td class="greybox"><s:text name="department" />:</td>
-					<td class="greybox"><s:select name="department.id"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+					<td class="greybox"><form:select path="department.id"
 							id="department" list="dropdownData.departmentList" listKey="id"
 							listValue="name" headerKey="-1" headerValue="----Choose----" /></td>
 				</tr>
@@ -161,6 +163,6 @@ function validateDates(){
 			</div>
 		</div>
 		<div id="results"></div>
-	</s:form>
+	</form:form>
 </body>
 </html>

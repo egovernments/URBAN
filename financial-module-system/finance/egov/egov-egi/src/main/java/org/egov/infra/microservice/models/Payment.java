@@ -174,7 +174,67 @@ public class Payment {
         return this;
     }
 
-
-
-
+    // Manual getter and setter methods since Lombok is not working properly
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    public BigDecimal getTotalDue() { return totalDue; }
+    public void setTotalDue(BigDecimal totalDue) { this.totalDue = totalDue; }
+    
+    public BigDecimal getTotalAmountPaid() { return totalAmountPaid; }
+    public void setTotalAmountPaid(BigDecimal totalAmountPaid) { this.totalAmountPaid = totalAmountPaid; }
+    
+    public String getTransactionNumber() { return transactionNumber; }
+    public void setTransactionNumber(String transactionNumber) { this.transactionNumber = transactionNumber; }
+    
+    public Long getTransactionDate() { return transactionDate; }
+    public void setTransactionDate(Long transactionDate) { this.transactionDate = transactionDate; }
+    
+    public PaymentModeEnum getPaymentMode() { return paymentMode; }
+    public void setPaymentMode(PaymentModeEnum paymentMode) { this.paymentMode = paymentMode; }
+    
+    public Long getInstrumentDate() { return instrumentDate; }
+    public void setInstrumentDate(Long instrumentDate) { this.instrumentDate = instrumentDate; }
+    
+    public String getInstrumentNumber() { return instrumentNumber; }
+    public void setInstrumentNumber(String instrumentNumber) { this.instrumentNumber = instrumentNumber; }
+    
+    public InstrumentStatusEnum getInstrumentStatus() { return instrumentStatus; }
+    public void setInstrumentStatus(InstrumentStatusEnum instrumentStatus) { this.instrumentStatus = instrumentStatus; }
+    
+    public String getIfscCode() { return ifscCode; }
+    public void setIfscCode(String ifscCode) { this.ifscCode = ifscCode; }
+    
+    public AuditDetails getAuditDetails() { return auditDetails; }
+    public void setAuditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; }
+    
+    public JsonNode getAdditionalDetails() { return additionalDetails; }
+    public void setAdditionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; }
+    
+    public List<PaymentDetail> getPaymentDetails() { return paymentDetails; }
+    public void setPaymentDetails(List<PaymentDetail> paymentDetails) { this.paymentDetails = paymentDetails; }
+    
+    public String getPaidBy() { return paidBy; }
+    public void setPaidBy(String paidBy) { this.paidBy = paidBy; }
+    
+    public String getMobileNumber() { return mobileNumber; }
+    public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
+    
+    public String getPayerName() { return payerName; }
+    public void setPayerName(String payerName) { this.payerName = payerName; }
+    
+    public String getPayerAddress() { return payerAddress; }
+    public void setPayerAddress(String payerAddress) { this.payerAddress = payerAddress; }
+    
+    public String getPayerEmail() { return payerEmail; }
+    public void setPayerEmail(String payerEmail) { this.payerEmail = payerEmail; }
+    
+    public String getPayerId() { return payerId; }
+    public void setPayerId(String payerId) { this.payerId = payerId; }
+    
+    public PaymentStatusEnum getPaymentStatus() { return paymentStatus; }
+    public void setPaymentStatus(PaymentStatusEnum paymentStatus) { this.paymentStatus = paymentStatus; }
 }

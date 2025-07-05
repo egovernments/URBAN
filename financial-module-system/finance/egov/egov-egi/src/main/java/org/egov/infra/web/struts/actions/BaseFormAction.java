@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -62,10 +63,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.convention.annotation.ParentPackage;
-import org.apache.struts2.interceptor.ParameterAware;
-import org.apache.struts2.interceptor.RequestAware;
-import org.apache.struts2.interceptor.SessionAware;
 import org.egov.infra.exception.ApplicationRuntimeException;
 import org.egov.infra.microservice.models.Department;
 import org.egov.infra.microservice.utils.MicroserviceUtils;
@@ -75,15 +72,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.interceptor.ParameterNameAware;
-
-@ParentPackage("egov")
-public abstract class BaseFormAction extends ActionSupport
-        implements ModelDriven<Object>, ParameterAware, SessionAware, Preparable, RequestAware, ParameterNameAware {
+public abstract class BaseFormAction {
     public static final String INDEX = "index";
     public static final String NEW = "new";
     public static final String EDIT = "edit";
@@ -113,7 +102,6 @@ public abstract class BaseFormAction extends ActionSupport
         return session;
     }
 
-    @Override
     public void setSession(final Map<String, Object> session) {
         this.session = session;
     }
@@ -126,7 +114,6 @@ public abstract class BaseFormAction extends ActionSupport
         persistenceService = service;
     }
 
-    @Override
     public void prepare() {
         final Map<String, Class> relationships = getRelationships();
         for (final Entry<String, Class> rel : relationships.entrySet())
@@ -165,7 +152,7 @@ public abstract class BaseFormAction extends ActionSupport
 	}
 
     protected void setValue(final String relationshipName, final Object relation) {
-        ActionContext.getContext().getValueStack().setValue("model." + relationshipName, relation);
+        // TODO: Implement Spring equivalent for ActionContext.getContext().getValueStack().setValue
     }
 
     public Map<String, Class> getRelationships() {
@@ -176,7 +163,6 @@ public abstract class BaseFormAction extends ActionSupport
         return dropdownData;
     }
 
-    @Override
     public void setRequest(final Map<String, Object> request) {
         this.request = request;
     }
@@ -209,12 +195,10 @@ public abstract class BaseFormAction extends ActionSupport
         dropdownData.put(name, values);
     }
 
-    @Override
     public boolean acceptableParameterName(final String paramName) {
         return !relations.containsKey(paramName);
     }
 
-    @Override
     public void setParameters(Map<String, String[]> parameters) {
         this.parameters = parameters;
     }
@@ -228,9 +212,7 @@ public abstract class BaseFormAction extends ActionSupport
     }
 
     public List<Department> getDepartmentsFromMs() {
-
         List<Department> departments = microserviceUtils.getDepartments();
         return departments;
     }
-
 }

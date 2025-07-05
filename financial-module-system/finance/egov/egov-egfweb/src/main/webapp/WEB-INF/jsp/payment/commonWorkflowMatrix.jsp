@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -64,7 +66,7 @@
 	function callAlertForDepartment() {
 		var value = document.getElementById("approverDepartment").value;
 		if (value == "-1") {
-			bootbox.alert("<s:text name='msg.please.select.approver.dept'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			document.getElementById("approverDepartment").focus();
 			return false;
 		}
@@ -73,7 +75,7 @@
 	function callAlertForDesignation() {
 		var value = document.getElementById("approverDesignation").value;
 		if (value == "-1") {
-			bootbox.alert("<s:text name='msg.please.select.approver.designation'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			document.getElementById("approverDesignation").focus();
 			return false;
 		}
@@ -84,10 +86,10 @@
 			pendingActionsValue) {
 		var designationObj = document.getElementById('approverDesignation');
 		designationObj.options.length = 0;
-		designationObj.options[0] = new Option("<s:text name='lbl.choose.options'/>", "-1");
+		designationObj.options[0] = new Option("<!-- TODO: Manual migration required for custom Struts tag -->", "-1");
 		var approverObj = document.getElementById('approverPositionId');
 		approverObj.options.length = 0;
-		approverObj.options[0] = new Option("<s:text name='lbl.choose.options'/>", "-1");
+		approverObj.options[0] = new Option("<!-- TODO: Manual migration required for custom Struts tag -->", "-1");
 		populateapproverDesignation({
 			departmentRule : departmentValue,
 			type : typeValue,
@@ -115,47 +117,47 @@
 	}
 
 	function setDesignation() {
-		document.getElementById("approverDesignation").value = '<s:property value="%{approverDesignation}"/>';
+		document.getElementById("approverDesignation").value = '${%{approverDesignation}}';
 		populateApprover();
 	}
 
 	function setApprover() {
-		document.getElementById("approverPositionId").value = '<s:property value="%{approverPositionId}"/>';
+		document.getElementById("approverPositionId").value = '${%{approverPositionId}}';
 	}
 </script>
-<s:if test="%{getNextAction()!='END'}">
-	<s:if test="%{getCurrentState()!='Closed'}">
+<c:if test="%{getNextAction()!='END'}">
+	<c:if test="%{getCurrentState()!='Closed'}">
 		<s:hidden id="currentState" name="currentState"
 			value="%{getCurrentState()}" />
-	</s:if>
-	<s:else>
-		<s:hidden id="currentState" name="currentState" value="" />
+	</c:if>
+	<c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else>
 	<s:hidden id="currentDesignation" name="currentDesignation"
 		value="%{currentDesignation}" />
 	<s:hidden id="additionalRule" name="additionalRule"
 		value="%{additionalRule}" />
-	<s:hidden id="amountRule" name="amountRule" value="%{amountRule}" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<s:hidden id="workFlowDepartment" name="workFlowDepartment"
 		value="%{workFlowDepartment}" />
 	<s:hidden id="pendingActions" name="pendingActions"
 		value="%{pendingActions}" />
-	<s:hidden id="approverName" name="approverName" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
-	<s:if test="%{#request.approverOddTextCss==null}">
+	<c:if test="%{#request.approverOddTextCss==null}">
 		<c:set var="approverOddTextCss" value="greybox" scope="request" />
 		<c:set var="approverOddCSS" value="greybox" scope="request" />
-	</s:if>
+	</c:if>
 
-	<s:if test="%{#request.approverEvenTextCSS==null}">
+	<c:if test="%{#request.approverEvenTextCSS==null}">
 		<c:set var="approverEvenTextCSS" value="bluebox" scope="request" />
 		<c:set var="approverEvenCSS" value="bluebox" scope="request" />
-	</s:if>
+	</c:if>
 
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<div class="headingsmallbg">
-				<span class="bold"><s:text name="title.approval.information" /></span>
+				<span class="bold"><!-- TODO: Manual migration required for custom Struts tag --></span>
 			</div>
 
 		</tr>
@@ -165,7 +167,7 @@
 			<td class="${approverOddCSS}" id="deptLabel" width="14%"><s:text
 					name="wf.approver.department" />:</td>
 			<td class="${approverOddTextCss}" width="14%">
-				<s:select name="approverDepartment" id="approverDepartment"
+				<form:select path="approverDepartment" id="approverDepartment"
 					list="dropdownData.approverDepartmentList" listKey="code"
 					listValue="name" headerKey="-1" headerValue="%{getText('lbl.choose.options')}"
 					value="%{approverDepartment}"
@@ -176,9 +178,9 @@
 					contextToBeUsed="/services/eis" afterSuccess="setDesignation();" />
 			</td>
 			<td class="${approverOddCSS}" width="14%">
-				<s:text	name="wf.approver.designation" />:</td>
+				<!-- TODO: Manual migration required for custom Struts tag -->:</td>
 			<td class="${approverOddTextCss}" width="14%">
-				<s:select	id="approverDesignation" name="approverDesignation"
+				<form:select	id="approverDesignation" path="approverDesignation"
 					list="dropdownData.designationList" listKey="designationId"
 					headerKey="-1" listValue="designationName"
 					headerValue="%{getText('lbl.choose.options')}" onchange="populateApprover();"
@@ -189,9 +191,9 @@
 					contextToBeUsed="/services/eis" afterSuccess="setApprover();" />
 			</td>
 			<td class="${approverOddCSS}" width="14%">
-				<s:text	name="wf.approver" />:</td>
+				<!-- TODO: Manual migration required for custom Struts tag -->:</td>
 			<td class="${approverOddTextCss}" width="14%">
-				<s:select	id="approverPositionId" name="approverPositionId"
+				<form:select	id="approverPositionId" path="approverPositionId"
 					list="dropdownData.approverList" headerKey="-1"
 					headerValue="%{getText('lbl.choose.options')}" listKey="id" listValue="firstName"
 					onfocus="callAlertForDesignation();" value="%{approverPositionId}"
@@ -201,7 +203,7 @@
 			<td class="${approverOddCSS}" width="5%">&nbsp;</td>
 		</tr>
 	</table>
-</s:if>
+</c:if>
 <br />
 
 <div id="workflowCommentsDiv" align="center">

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java"%>
 <%@page import="org.egov.utils.FinancialConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -70,7 +72,7 @@
 </head>
 <body onload="treeInit()" >
 <h2>
-	<s:text name="chartOfAccount"/>
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </h2>
  
 <div id="treeDiv1">

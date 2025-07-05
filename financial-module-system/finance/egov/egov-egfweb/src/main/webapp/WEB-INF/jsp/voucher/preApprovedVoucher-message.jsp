@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -57,31 +59,31 @@
 <title>PJV Approval</title>
 </head>
 <body onload="refreshInbox()">
-	<s:form action="preApprovedVoucher" theme="simple">
+	<form:form action="preApprovedVoucher" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="PJV-Approval" />
 		</jsp:include>
-		<span class="mandatory1"> <s:actionmessage />
+		<span class="mandatory1"> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<br />
-		<s:hidden id="id" name="id" value="%{voucherHeader.id}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div class="buttonbottom" align="center">
-			<s:if test="%{type == finConstExpendTypeContingency}">
+			<c:if test="%{type == finConstExpendTypeContingency}">
 				<input type="button" class="button" id="print" value="Print Preview"
 					action="expenseJournalVoucherPrint" method="print"
 					onclick="printEJV()" />
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				<input type="button" class="button" id="print" value="Print Preview"
 					action="journalVoucherPrint" method="print" onclick="printJV()" />
 			</s:else>
 			<input type="button" value="Close"
 				onclick="javascript:window.close()" class="button" />
 		</div>
-	</s:form>
+	</form:form>
 	<script>
 		function printEJV() {
-			var id = '<s:property value="voucherHeader.id"/>';
+			var id = '${voucherHeader.id}';
 			window
 					.open(
 							"${pageContext.request.contextPath}/report/expenseJournalVoucherPrint-print.action?id="
@@ -89,7 +91,7 @@
 							'resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 		}
 		function printJV() {
-			var id = '<s:property value="voucherHeader.id"/>';
+			var id = '${voucherHeader.id}';
 			window
 					.open(
 							"${pageContext.request.contextPath}/voucher/journalVoucherPrint-print.action?id="

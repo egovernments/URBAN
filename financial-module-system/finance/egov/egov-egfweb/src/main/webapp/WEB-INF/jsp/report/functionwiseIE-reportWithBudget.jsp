@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -82,12 +84,12 @@
     </script>
 </head>
 <body>
-	<s:form action="functionwiseIE" theme="simple">
+	<form:form action="functionwiseIE" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading"
 				value="Functionwise Income/Expense Subsidary Report" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="formheading"></div>
@@ -95,26 +97,26 @@
 				<tr>
 					<td class="greybox" width="30%">Income/ expenditure<span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:select name="incExp" id="incExp"
+					<td class="greybox"><form:select path="incExp" id="incExp"
 							list="#{'-1':'---Select---','I':'Income','E':'Expenditure'}" />
 					</td>
 					<td class="greybox" width="30%">As On Date<span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:textfield name="asOnDate" id="asOnDate"
+					<td class="greybox"><form:input path="asOnDate" id="asOnDate"
 							maxlength="20" /><a
 						href="javascript:show_calendar('forms[0].asOnDate');"
 						style="text-decoration: none">&nbsp;<img
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a><br />(dd/mm/yyyy)</td>
 				</tr>
 				<tr>
-					<td class="bluebox"><s:text name="voucher.fund" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span>
-					<td class="bluebox"><s:select name="fund" id="fund"
+					<td class="bluebox"><form:select path="fund" id="fund"
 							list="dropdownData.fundList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="----Choose----" value="%{fund.id}" /></td>
-					<td class="bluebox"><s:text name="voucher.function" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span>
-					<td class="bluebox"><s:select name="function" id="function"
+					<td class="bluebox"><form:select path="function" id="function"
 							list="dropdownData.functionList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="----Choose----"
 							value="%{function.id}" /></td>
@@ -134,6 +136,6 @@
 				</CENTER>
 			</div>
 			<br />
-	</s:form>
+	</form:form>
 </body>
 </html>

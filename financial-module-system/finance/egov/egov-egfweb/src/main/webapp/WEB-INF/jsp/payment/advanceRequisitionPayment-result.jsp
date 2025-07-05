@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -81,9 +83,9 @@ voucher number
 								<th class="bluebgheadtdnew">Credit Amount</th>
 							</tr>
 
-							<s:iterator value="advanceRequisition.egAdvanceReqDetailses"
+							<c:forEach value="advanceRequisition.egAdvanceReqDetailses"
 								var="detail">
-								<s:iterator value="%{#detail.egAdvanceReqpayeeDetailses}"
+								<c:forEach value="%{#detail.egAdvanceReqpayeeDetailses}"
 									var="payee">
 									<tr>
 										<td class="blueborderfortdnew"><div align="center">
@@ -104,12 +106,12 @@ voucher number
 											</div></td>
 										<td class="blueborderfortdnew">
 											<div align="right">
-												<s:if
+												<c:if
 													test="#payee.egAdvanceRequisitionDetails.debitamount == null">
 						0.00
-					</s:if>
-												<s:else>
-													<s:text name="payment.format.number">
+					</c:if>
+												<c:otherwise>
+													<!-- TODO: Manual migration required for custom Struts tag -->
 														<s:param name="value"
 															value="#payee.egAdvanceRequisitionDetails.debitamount" />
 													</s:text>
@@ -118,12 +120,12 @@ voucher number
 										</td>
 										<td class="blueborderfortdnew">
 											<div align="right">
-												<s:if
+												<c:if
 													test="#payee.egAdvanceRequisitionDetails.creditamount == null">
 						0.00
-					</s:if>
-												<s:else>
-													<s:text name="payment.format.number">
+					</c:if>
+												<c:otherwise>
+													<!-- TODO: Manual migration required for custom Struts tag -->
 														<s:param name="value"
 															value="#payee.egAdvanceRequisitionDetails.creditamount" />
 													</s:text>
@@ -132,12 +134,12 @@ voucher number
 										</td>
 										<td class="blueborderfortdnew">
 											<div align="right">
-												<s:if
+												<c:if
 													test="#payee.egAdvanceRequisitionDetails.egAdvanceRequisition.advanceRequisitionAmount == null">
 						0.00
-					</s:if>
-												<s:else>
-													<s:text name="payment.format.number">
+					</c:if>
+												<c:otherwise>
+													<!-- TODO: Manual migration required for custom Struts tag -->
 														<s:param name="value"
 															value="#payee.egAdvanceRequisitionDetails.egAdvanceRequisition.advanceRequisitionAmount" />
 													</s:text>
@@ -145,8 +147,8 @@ voucher number
 											</div>
 										</td>
 									</tr>
-								</s:iterator>
-							</s:iterator>
+								</c:forEach>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

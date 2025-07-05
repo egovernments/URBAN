@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -85,12 +87,12 @@ function getData(){
 	doAfterSubmit();
 }
 function loadBank(fund){
-	var status = '<s:property value="voucherStatusKey" escape="false"/>';
+	var status = '<!-- TODO: Manual migration required for custom Struts tag -->';
 	var asOnDate =  document.getElementById('asOnDate').value;
 	populatebank({fundId:fund.options[fund.selectedIndex].value,asOnDate:asOnDate,voucherStatusKey:status})	
 }
 function populateAccNumbers(bankBranch){
-	var status = '<s:property value="voucherStatusKey" escape="false"/>';
+	var status = '<!-- TODO: Manual migration required for custom Struts tag -->';
 	var fund = document.getElementById('fundId');
 	id = bankBranch.options[bankBranch.selectedIndex].value.split("-")[1]
 	var asOnDate =  document.getElementById('asOnDate').value;
@@ -209,19 +211,19 @@ function exportPdf(){
 		<div class="subheadnew">Outstanding Bank Payments & Running
 			Balance Report</div>
 
-		<s:form action="outstandingPayment" theme="simple"
+		<form:form action="outstandingPayment" theme="simple"
 			name="outstandingPayment">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="greybox" width="20%">&nbsp;</td>
 					<td class="greybox" width="10%">Fund:<span class="mandatory">*</span></td>
-					<td class="greybox"><s:select name="fundId" id="fundId"
+					<td class="greybox"><form:select path="fundId" id="fundId"
 							list="dropdownData.fundList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="----Choose----"
 							onChange="loadBank(this);" /></td>
 					<td class="greybox" width="10%">As On Date:<span
 						class="mandatory">*</span></td>
-					<td class="greybox"><s:textfield name="asOnDate" id="asOnDate"
+					<td class="greybox"><form:input path="asOnDate" id="asOnDate"
 							value='%{getFormattedDate(asOnDate)}' cssStyle="width:100px"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('outstandingPayment.asOnDate');"
@@ -236,7 +238,7 @@ function exportPdf(){
 						url="voucher/common!ajaxLoadBanksWithPaymentInWorkFlow.action" />
 					<td class="bluebox" width="10%">Bank Name:<span
 						class="bluebox"><span class="mandatory">*</span></span></td>
-					<td class="bluebox"><s:select name="bank" id="bank"
+					<td class="bluebox"><form:select path="bank" id="bank"
 							list="dropdownData.bankList" listKey="bankBranchId"
 							listValue="bankBranchName" headerKey="-1"
 							headerValue="----Choose----" onclick="validateFund()"
@@ -246,7 +248,7 @@ function exportPdf(){
 						url="voucher/common!ajaxLoadBankAccountsWithPaymentInWorkFlow.action" />
 					<td class="bluebox" width="10%">Account Number:<span
 						class="bluebox"><span class="mandatory">*</span></span></td>
-					<td class="bluebox"><s:select name="bankAccount"
+					<td class="bluebox"><form:select path="bankAccount"
 							id="accountNumber" list="dropdownData.accNumList" listKey="id"
 							listValue="accountnumber" headerKey="-1"
 							headerValue="----Choose----" onclick="validateBank()" /></td>
@@ -268,7 +270,7 @@ function exportPdf(){
 		style="width: 700; height: 700; display: none" align="center">
 		<blink style="color: red">Searching processing, Please wait...</blink>
 	</div>
-	</s:form>
+	</form:form>
 
 
 	<div id="results">

@@ -171,4 +171,70 @@ public class BillDetailV2 {
         }
     }
 
+    // Manual getter and setter methods since Lombok is not working properly
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    public String getDemandId() { return demandId; }
+    public void setDemandId(String demandId) { this.demandId = demandId; }
+    
+    public String getBillId() { return billId; }
+    public void setBillId(String billId) { this.billId = billId; }
+    
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+    
+    public BigDecimal getAmountPaid() { return amountPaid; }
+    public void setAmountPaid(BigDecimal amountPaid) { this.amountPaid = amountPaid; }
+    
+    public Long getFromPeriod() { return fromPeriod; }
+    public void setFromPeriod(Long fromPeriod) { this.fromPeriod = fromPeriod; }
+    
+    public Long getToPeriod() { return toPeriod; }
+    public void setToPeriod(Long toPeriod) { this.toPeriod = toPeriod; }
+    
+    public JsonNode getAdditionalDetails() { return additionalDetails; }
+    public void setAdditionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; }
+    
+    public String getChannel() { return channel; }
+    public void setChannel(String channel) { this.channel = channel; }
+    
+    public String getVoucherHeader() { return voucherHeader; }
+    public void setVoucherHeader(String voucherHeader) { this.voucherHeader = voucherHeader; }
+    
+    public String getBoundary() { return boundary; }
+    public void setBoundary(String boundary) { this.boundary = boundary; }
+    
+    public String getManualReceiptNumber() { return manualReceiptNumber; }
+    public void setManualReceiptNumber(String manualReceiptNumber) { this.manualReceiptNumber = manualReceiptNumber; }
+    
+    public Long getManualReceiptDate() { return manualReceiptDate; }
+    public void setManualReceiptDate(Long manualReceiptDate) { this.manualReceiptDate = manualReceiptDate; }
+    
+    public List<BillAccountDetail> getBillAccountDetails() { return billAccountDetails; }
+    public void setBillAccountDetails(List<BillAccountDetail> billAccountDetails) { this.billAccountDetails = billAccountDetails; }
+    
+    public CollectionType getCollectionType() { return collectionType; }
+    public void setCollectionType(CollectionType collectionType) { this.collectionType = collectionType; }
+    
+    public AuditDetails getAuditDetails() { return auditDetails; }
+    public void setAuditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; }
+    
+    public String getBillDescription() { return billDescription; }
+    public void setBillDescription(String billDescription) { this.billDescription = billDescription; }
+    
+    public Long getExpiryDate() { return expiryDate; }
+    public void setExpiryDate(Long expiryDate) { this.expiryDate = expiryDate; }
+    
+    public String getDisplayMessage() { return displayMessage; }
+    public void setDisplayMessage(String displayMessage) { this.displayMessage = displayMessage; }
+    
+    public Boolean getCallBackForApportioning() { return callBackForApportioning; }
+    public void setCallBackForApportioning(Boolean callBackForApportioning) { this.callBackForApportioning = callBackForApportioning; }
+    
+    public String getCancellationRemarks() { return cancellationRemarks; }
+    public void setCancellationRemarks(String cancellationRemarks) { this.cancellationRemarks = cancellationRemarks; }
 }

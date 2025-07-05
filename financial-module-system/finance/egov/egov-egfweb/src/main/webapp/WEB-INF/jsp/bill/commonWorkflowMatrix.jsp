@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -115,47 +117,47 @@
 	}
 
 	function setDesignation() {
-		document.getElementById("approverDesignation").value = '<s:property value="%{approverDesignation}"/>';
+		document.getElementById("approverDesignation").value = '${%{approverDesignation}}';
 		populateApprover();
 	}
 
 	function setApprover() {
-		document.getElementById("approverPositionId").value = '<s:property value="%{approverPositionId}"/>';
+		document.getElementById("approverPositionId").value = '${%{approverPositionId}}';
 	}
 </script>
-<s:if test="%{getNextAction()!='END'}">
-	<s:if test="%{getCurrentState()!='Closed'}">
+<c:if test="%{getNextAction()!='END'}">
+	<c:if test="%{getCurrentState()!='Closed'}">
 		<s:hidden id="currentState" name="currentState"
 			value="%{getCurrentState()}" />
-	</s:if>
-	<s:else>
-		<s:hidden id="currentState" name="currentState" value="" />
+	</c:if>
+	<c:otherwise>
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</s:else>
 	<s:hidden id="currentDesignation" name="currentDesignation"
 		value="%{currentDesignation}" />
 	<s:hidden id="additionalRule" name="additionalRule"
 		value="%{additionalRule}" />
-	<s:hidden id="amountRule" name="amountRule" value="%{amountRule}" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	<s:hidden id="workFlowDepartment" name="workFlowDepartment"
 		value="%{workFlowDepartment}" />
 	<s:hidden id="pendingActions" name="pendingActions"
 		value="%{pendingActions}" />
-	<s:hidden id="approverName" name="approverName" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 
-	<s:if test="%{#request.approverOddTextCss==null}">
+	<c:if test="%{#request.approverOddTextCss==null}">
 		<c:set var="approverOddTextCss" value="greybox" scope="request" />
 		<c:set var="approverOddCSS" value="greybox" scope="request" />
-	</s:if>
+	</c:if>
 
-	<s:if test="%{#request.approverEvenTextCSS==null}">
+	<c:if test="%{#request.approverEvenTextCSS==null}">
 		<c:set var="approverEvenTextCSS" value="bluebox" scope="request" />
 		<c:set var="approverEvenCSS" value="bluebox" scope="request" />
-	</s:if>
+	</c:if>
 
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<div class="headingsmallbg">
-				<span class="bold"><s:text name="title.approval.information" /></span>
+				<span class="bold"><!-- TODO: Manual migration required for custom Struts tag --></span>
 			</div>
 
 		</tr>
@@ -164,7 +166,7 @@
 			<td class="${approverOddCSS}" width="5%">&nbsp;</td>
 			<td class="${approverOddCSS}" id="deptLabel" width="14%"><s:text
 					name="wf.approver.department" />:</td>
-			<td class="${approverOddTextCss}" width="14%"><s:select
+			<td class="${approverOddTextCss}" width="14%"><form:select
 					name="approverDepartment" id="approverDepartment"
 					list="dropdownData.approverDepartmentList" listKey="id"
 					listValue="name" headerKey="-1" headerValue="----Choose----"
@@ -176,7 +178,7 @@
 					contextToBeUsed="/eis" afterSuccess="setDesignation();" /></td>
 			<td class="${approverOddCSS}" width="14%"><s:text
 					name="wf.approver.designation" />:</td>
-			<td class="${approverOddTextCss}" width="14%"><s:select
+			<td class="${approverOddTextCss}" width="14%"><form:select
 					id="approverDesignation" name="approverDesignation"
 					list="dropdownData.designationList" listKey="designationId"
 					headerKey="-1" listValue="designationName"
@@ -188,7 +190,7 @@
 					contextToBeUsed="/eis" afterSuccess="setApprover();" /></td>
 			<td class="${approverOddCSS}" width="14%"><s:text
 					name="wf.approver" />:</td>
-			<td class="${approverOddTextCss}" width="14%"><s:select
+			<td class="${approverOddTextCss}" width="14%"><form:select
 					id="approverPositionId" name="approverPositionId"
 					list="dropdownData.approverList" headerKey="-1"
 					headerValue="----Choose----" listKey="id" listValue="firstName"
@@ -197,7 +199,7 @@
 			<td class="${approverOddCSS}" width="5%">&nbsp;</td>
 		</tr>
 	</table>
-</s:if>
+</c:if>
 <br />
 
 <div id="workflowCommentsDiv" align="center">

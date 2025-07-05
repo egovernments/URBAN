@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,7 +52,7 @@
 <jsp:include page="vouchertrans-filter.jsp" />
 <tr>
 	<td width="30%" class="greybox">Narration &nbsp;</td>
-	<td colspan="10" class="greybox"><s:textarea maxlength="250"
+	<td colspan="10" class="greybox"><form:textarea maxlength="250"
 			rows="4" cols="60" name="narration" /></td>
 </tr>
 </table>

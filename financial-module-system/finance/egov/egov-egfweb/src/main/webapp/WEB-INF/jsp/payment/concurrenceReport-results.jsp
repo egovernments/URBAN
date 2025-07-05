@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,7 +50,7 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{paymentHeaderListFnd.size()>0}">
+<c:if test="%{paymentHeaderListFnd.size()>0}">
 	<br />
 	<div class="subheadnew">List Of Payments Made</div>
 	<%
@@ -75,80 +77,80 @@ Integer srno=0;
 							<th class="bluebgheadtd" width="10%">Amount</th>
 
 						</tr>
-						<s:iterator value="paymentHeaderListFnd" status="stat" var="p">
+						<c:forEach value="paymentHeaderListFnd" status="stat" var="p">
 							<tr>
 
-								<td class="blueborderfortd"><s:if
-										test="%{#p.bpvNumber != 'Total'}"><%=++srno %></s:if> &nbsp;</td>
+								<td class="blueborderfortd"><c:if
+										test="%{#p.bpvNumber != 'Total'}"><%=++srno %></c:if> &nbsp;</td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="bankName" />
+										${bankName}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="bankAccountNumber" />
+										${bankAccountNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="departmentName" />
+										${departmentName}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="billNumber" />
+										${billNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="%{getFormattedDate(#p.billDate)}" />
+										${%{getFormattedDate(#p.billDate)}}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="uac" />
+										${uac}
 										&nbsp;
 									</div></td>
 
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="bpvNumber" />
+										${bpvNumber}
 										&nbsp;
 									</div></td>
 								<td class="blueborderfortd"><div align="center">
-										<s:property value="%{getFormattedDate(#p.bpvDate)}" />
+										${%{getFormattedDate(#p.bpvDate)}}
 										&nbsp;
 									</div></td>
-								<s:if test="%{#p.bpvNumber == 'Total'}">
+								<c:if test="%{#p.bpvNumber == 'Total'}">
 									<td class="blueborderfortd"><div align="center">
-											<strong><s:property value="bpvAccountCode" />&nbsp;
+											<strong>${bpvAccountCode}&nbsp;
 										</div></td>
 									</strong>
 									<td class="blueborderfortd"><div align="center">
 											<input type="text" style="text-align: right;"
 												readonly="readonly"
-												value='<s:text name="payment.format.number">
-			<strong><s:param name="value" value="amount"/></s:text>' />&nbsp;
+												value='<!-- TODO: Manual migration required for custom Struts tag -->
+			<strong><!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;
 										</div></td>
 									</strong>
-								</s:if>
-								<s:else>
+								</c:if>
+								<c:otherwise>
 									<td class="blueborderfortd"><div align="center">
-											<s:property value="bpvAccountCode" />
+											${bpvAccountCode}
 											&nbsp;
 										</div></td>
 									<td class="blueborderfortd"><div align="center">
 											<input type="text" style="text-align: right;"
 												readonly="readonly"
-												value='<s:text name="payment.format.number">
-			<s:param name="value" value="amount"/></s:text>'
-												id='netPayable<s:property value="#stat.index"/>' />&nbsp;
+												value='<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --></s:text>'
+												id='netPayable${#stat.index}' />&nbsp;
 										</div></td>
 								</s:else>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 						<tr>
 							<td style="text-align: right" colspan="10"
 								class="blueborderfortdnew"><strong>Grand Total</strong></td>
 							<td class="blueborderfortd"><div align="center">
 									<input type="text" style="text-align: right;"
 										readonly="readonly"
-										value='<s:text name="payment.format.number">
-			<s:param name="grandTol" value="grandTol"/></s:text>' />&nbsp;
+										value='<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag --></s:text>' />&nbsp;
 								</div></td>
 						</tr>
 					</table>
@@ -168,5 +170,5 @@ Integer srno=0;
 		</div>
 	</tr>
 	</table>
-</s:if>
-<s:else>No data found</s:else>
+</c:if>
+<c:otherwise>No data found</s:else>

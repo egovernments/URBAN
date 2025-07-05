@@ -226,4 +226,79 @@ public class BillV2 {
         }
     }
 
+    // Manual getter and setter methods since Lombok is not working properly
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMobileNumber() { return mobileNumber; }
+    public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
+    
+    public String getPaidBy() { return paidBy; }
+    public void setPaidBy(String paidBy) { this.paidBy = paidBy; }
+    
+    public String getPayerName() { return payerName; }
+    public void setPayerName(String payerName) { this.payerName = payerName; }
+    
+    public String getPayerAddress() { return payerAddress; }
+    public void setPayerAddress(String payerAddress) { this.payerAddress = payerAddress; }
+    
+    public String getPayerEmail() { return payerEmail; }
+    public void setPayerEmail(String payerEmail) { this.payerEmail = payerEmail; }
+    
+    public String getPayerId() { return payerId; }
+    public void setPayerId(String payerId) { this.payerId = payerId; }
+    
+    public StatusEnum getStatus() { return status; }
+    public void setStatus(StatusEnum status) { this.status = status; }
+    
+    public String getReasonForCancellation() { return reasonForCancellation; }
+    public void setReasonForCancellation(String reasonForCancellation) { this.reasonForCancellation = reasonForCancellation; }
+    
+    public Boolean getIsCancelled() { return isCancelled; }
+    public void setIsCancelled(Boolean isCancelled) { this.isCancelled = isCancelled; }
+    
+    public JsonNode getAdditionalDetails() { return additionalDetails; }
+    public void setAdditionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; }
+    
+    public List<BillDetailV2> getBillDetails() { return billDetails; }
+    public void setBillDetails(List<BillDetailV2> billDetails) { this.billDetails = billDetails; }
+    
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    
+    public AuditDetails getAuditDetails() { return auditDetails; }
+    public void setAuditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; }
+    
+    public List<String> getCollectionModesNotAllowed() { return collectionModesNotAllowed; }
+    public void setCollectionModesNotAllowed(List<String> collectionModesNotAllowed) { this.collectionModesNotAllowed = collectionModesNotAllowed; }
+    
+    public Boolean getPartPaymentAllowed() { return partPaymentAllowed; }
+    public void setPartPaymentAllowed(Boolean partPaymentAllowed) { this.partPaymentAllowed = partPaymentAllowed; }
+    
+    public Boolean getIsAdvanceAllowed() { return isAdvanceAllowed; }
+    public void setIsAdvanceAllowed(Boolean isAdvanceAllowed) { this.isAdvanceAllowed = isAdvanceAllowed; }
+    
+    public BigDecimal getMinimumAmountToBePaid() { return minimumAmountToBePaid; }
+    public void setMinimumAmountToBePaid(BigDecimal minimumAmountToBePaid) { this.minimumAmountToBePaid = minimumAmountToBePaid; }
+    
+    public String getBusinessService() { return businessService; }
+    public void setBusinessService(String businessService) { this.businessService = businessService; }
+    
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
+    
+    public String getConsumerCode() { return consumerCode; }
+    public void setConsumerCode(String consumerCode) { this.consumerCode = consumerCode; }
+    
+    public String getBillNumber() { return billNumber; }
+    public void setBillNumber(String billNumber) { this.billNumber = billNumber; }
+    
+    public Long getBillDate() { return billDate; }
+    public void setBillDate(Long billDate) { this.billDate = billDate; }
+    
+    public BigDecimal getAmountPaid() { return amountPaid; }
+    public void setAmountPaid(BigDecimal amountPaid) { this.amountPaid = amountPaid; }
+    
+    public String getFileStoreId() { return fileStoreId; }
+    public void setFileStoreId(String fileStoreId) { this.fileStoreId = fileStoreId; }
 }

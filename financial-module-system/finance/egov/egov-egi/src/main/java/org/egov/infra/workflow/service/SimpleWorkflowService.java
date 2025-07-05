@@ -93,42 +93,38 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
     private final PersistenceService<T, Long> stateAwarePersistenceService;
 
     @Autowired
-    private WorkflowActionService workflowActionService;
-
-    @Autowired
     private ScriptService scriptService;
 
     public SimpleWorkflowService(PersistenceService<T, Long> stateAwarePersistenceService) {
         this.stateAwarePersistenceService = stateAwarePersistenceService;
     }
 
-    @Override
     public T transition(WorkflowAction workflowAction, T stateAware, String comments) {
-        scriptService.executeScript(getScript(stateAware, workflowAction.getName()), ScriptService.createContext(WF_ACTION_ARG, this,
-                WF_ITEM_ARG, stateAware, PERSISTENCE_SERVICE_ARG, this.stateAwarePersistenceService, "workflowService", this,
-                "comments", comments));
+        // TODO: Migrate from Struts/XWork: scriptService.executeScript(getScript(stateAware, workflowAction.getName()), ScriptService.createContext(WF_ACTION_ARG, this,
+        //         WF_ITEM_ARG, stateAware, PERSISTENCE_SERVICE_ARG, this.stateAwarePersistenceService, "workflowService", this,
+        //         "comments", comments));
         return this.stateAwarePersistenceService.persist(stateAware);
     }
 
-    @Override
     public T transition(String actionName, T stateAware, String comment) {
-        WorkflowAction workflowAction = workflowActionService.getWorkflowActionByNameAndType(actionName,
-                stateAware.getStateType());
-        if (workflowAction == null)
-            workflowAction = new WorkflowAction(actionName, stateAware.getStateType(), actionName);
-        return transition(workflowAction, stateAware, comment);
+        // TODO: Migrate from Struts/XWork: WorkflowAction workflowAction = workflowActionService.getWorkflowActionByNameAndType(actionName,
+        //         stateAware.getStateType());
+        // TODO: Migrate from Struts/XWork: if (workflowAction == null)
+        // TODO: Migrate from Struts/XWork:     workflowAction = new WorkflowAction(actionName, stateAware.getStateType(), actionName);
+        // TODO: Migrate from Struts/XWork: return transition(workflowAction, stateAware, comment);
+        return null; // TODO: Implement Spring equivalent
     }
 
-    @Override
     public List<WorkflowAction> getValidActions(T stateAware) {
         String scriptName = stateAware.getStateType() + ".workflow.validactions";
         Script transitionScript = this.scriptService.getByName(scriptName);
         List<String> actionNames = (List<String>) scriptService.executeScript(transitionScript,
                 ScriptService.createContext(WF_ITEM_ARG, stateAware, "workflowService", this, PERSISTENCE_SERVICE_ARG,
                         this.stateAwarePersistenceService));
-        List<WorkflowAction> savedWorkflowActions = workflowActionService
-                .getAllWorkflowActionByTypeAndActionNames(stateAware.getStateType(), actionNames);
-        return savedWorkflowActions.isEmpty() ? createActions(stateAware, actionNames) : savedWorkflowActions;
+        // TODO: Migrate from Struts/XWork: List<WorkflowAction> savedWorkflowActions = workflowActionService
+        // TODO: Migrate from Struts/XWork:         .getAllWorkflowActionByTypeAndActionNames(stateAware.getStateType(), actionNames);
+        // TODO: Migrate from Struts/XWork: return savedWorkflowActions.isEmpty() ? createActions(stateAware, actionNames) : savedWorkflowActions;
+        return new ArrayList<>(); // TODO: Implement Spring equivalent
     }
 
     public Object execute(T stateAware) {
@@ -155,54 +151,58 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
         return script;
     }
 
-    private List<WorkflowAction> createActions(T stateAware, List<String> actionNames) {
-        List<WorkflowAction> workflowActions = new ArrayList<>();
-        for (String action : actionNames)
-            workflowActions.add(new WorkflowAction(action, stateAware.getStateType(), action));
-        return workflowActions;
+    // TODO: Migrate from Struts/XWork:
+    // private List<WorkflowAction> createActions(T stateAware, List<String> actionNames) {
+    //     List<WorkflowAction> workflowActions = new ArrayList<>();
+    //     for (String action : actionNames)
+    //         workflowActions.add(new WorkflowAction(action, stateAware.getStateType(), action));
+    //     return workflowActions;
+    // }
+
+    @Override
+    public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal amountRule,
+                                      String additionalRule, String currentState) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
+        Criteria wfMatrixCriteria = createWfMatrixAdditionalCriteria(type, department, amountRule,
+                additionalRule, currentState, null);
+        return getWorkflowMatrixObj(type, additionalRule, currentState, null, wfMatrixCriteria);
     }
 
     @Override
     public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal amountRule,
-                                      String additionalRule, String currentState, String pendingActions) {
+                                      String additionalRule, String currentState, Date date) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
         Criteria wfMatrixCriteria = createWfMatrixAdditionalCriteria(type, department, amountRule,
-                additionalRule, currentState, pendingActions, null);
-        return getWorkflowMatrixObj(type, additionalRule, currentState, pendingActions, null, wfMatrixCriteria);
-    }
-
-    @Override
-    public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal amountRule,
-                                      String additionalRule, String currentState, String pendingActions, Date date) {
-        Criteria wfMatrixCriteria = createWfMatrixAdditionalCriteria(type, department, amountRule,
-                additionalRule, currentState, pendingActions, null);
+                additionalRule, currentState, null);
         Criterion fromDateCriteria = Restrictions.le("fromDate", date == null ? new Date() : date);
         Criterion toDateCriteria = Restrictions.ge("toDate", date == null ? new Date() : date);
         Criterion dateCriteria = Restrictions.conjunction().add(fromDateCriteria).add(toDateCriteria);
         wfMatrixCriteria.add(Restrictions.or(dateCriteria, fromDateCriteria));
-        return getWorkflowMatrixObj(type, additionalRule, currentState, pendingActions, null, wfMatrixCriteria);
+        return getWorkflowMatrixObj(type, additionalRule, currentState, null, wfMatrixCriteria);
     }
 
     @Override
     public WorkFlowMatrix getWfMatrix(String type, String department, BigDecimal amountRule,
-                                      String additionalRule, String currentState, String pendingActions, Date date,
+                                      String additionalRule, String currentState, Date date,
                                       String designation) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
         Criteria wfMatrixCriteria = createWfMatrixAdditionalCriteria(type, department, amountRule,
-                additionalRule, currentState, pendingActions, designation);
+                additionalRule, currentState, designation);
         Criterion fromDateCriteria = Restrictions.le("fromDate", date == null ? new Date() : date);
         Criterion toDateCriteria = Restrictions.ge("toDate", date == null ? new Date() : date);
         Criterion dateCriteria = Restrictions.conjunction().add(fromDateCriteria).add(toDateCriteria);
         Criterion criteriaDesignation = Restrictions.ilike(CURRENT_DESIGNATION, isNotBlank(designation) ? designation : EMPTY);
         wfMatrixCriteria.add(criteriaDesignation);
         wfMatrixCriteria.add(Restrictions.or(dateCriteria, fromDateCriteria));
-        return getWorkflowMatrixObj(type, additionalRule, currentState, pendingActions, designation, wfMatrixCriteria);
+        return getWorkflowMatrixObj(type, additionalRule, currentState, designation, wfMatrixCriteria);
     }
 
     private WorkFlowMatrix getWorkflowMatrixObj(String type, String additionalRule,
-                                                String currentState, String pendingActions,
-                                                String designation, Criteria wfMatrixCriteria) {
+                                                String currentState, String designation, Criteria wfMatrixCriteria) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
         List<WorkFlowMatrix> workflowMatrix = wfMatrixCriteria.list();
         if (workflowMatrix.isEmpty()) {
-            Criteria defaultCriteria = commonWorkFlowMatrixCriteria(type, additionalRule, currentState, pendingActions);
+            Criteria defaultCriteria = commonWorkFlowMatrixCriteria(type, additionalRule, currentState);
             defaultCriteria.add(Restrictions.eq(DEPARTMENT, ANY));
             if (isNotBlank(designation))
                 defaultCriteria.add(Restrictions.ilike(CURRENT_DESIGNATION, designation));
@@ -218,9 +218,9 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
 
     private Criteria createWfMatrixAdditionalCriteria(String type, String department,
                                                       BigDecimal amountRule, String additionalRule, String currentState,
-                                                      String pendingActions, String designation) {
-        Criteria wfMatrixCriteria = commonWorkFlowMatrixCriteria(type, additionalRule, currentState,
-                pendingActions);
+                                                      String designation) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
+        Criteria wfMatrixCriteria = commonWorkFlowMatrixCriteria(type, additionalRule, currentState);
         if (isNotBlank(department))
             wfMatrixCriteria.add(Restrictions.eq(DEPARTMENT, department));
 
@@ -242,9 +242,9 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
     }
 
     public WorkFlowMatrix getPreviousStateFromWfMatrix(String type, String department, BigDecimal amountRule,
-                                                       String additionalRule, String currentState, String pendingActions) {
-
-        Criteria wfMatrixCriteria = previousWorkFlowMatrixCriteria(type, additionalRule, currentState, pendingActions);
+                                                       String additionalRule, String currentState) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
+        Criteria wfMatrixCriteria = previousWorkFlowMatrixCriteria(type, additionalRule, currentState);
         if (department != null && !"".equals(department))
             wfMatrixCriteria.add(Restrictions.eq(DEPARTMENT, department));
         else
@@ -269,8 +269,8 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
 
     }
 
-    private Criteria previousWorkFlowMatrixCriteria(String type, String additionalRule, String currentState,
-                                                    String pendingActions) {
+    private Criteria previousWorkFlowMatrixCriteria(String type, String additionalRule, String currentState) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
         Criteria commonWfMatrixCriteria = this.stateAwarePersistenceService.getSession()
                 .createCriteria(WorkFlowMatrix.class);
         commonWfMatrixCriteria.add(Restrictions.eq("objectType", type));
@@ -278,8 +278,9 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
         if (isNotBlank(additionalRule))
             commonWfMatrixCriteria.add(Restrictions.eq("additionalRule", additionalRule));
 
-        if (isNotBlank(pendingActions))
-            commonWfMatrixCriteria.add(Restrictions.ilike("nextAction", pendingActions, MatchMode.EXACT));
+        // TODO: Migrate from Struts/XWork:
+        // if (isNotBlank(pendingActions))
+        //     commonWfMatrixCriteria.add(Restrictions.ilike("nextAction", pendingActions, MatchMode.EXACT));
 
         if (isNotBlank(currentState))
             commonWfMatrixCriteria.add(Restrictions.ilike("nextState", currentState, MatchMode.EXACT));
@@ -287,8 +288,8 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
     }
 
     private Criteria commonWorkFlowMatrixCriteria(String type, String additionalRule,
-                                                  String currentState, String pendingActions) {
-
+                                                  String currentState) {
+        // TODO: Migrate from Struts/XWork: String pendingActions parameter
         Criteria commonWfMatrixCriteria = this.stateAwarePersistenceService.getSession().createCriteria(
                 WorkFlowMatrix.class);
 
@@ -297,8 +298,9 @@ public class SimpleWorkflowService<T extends StateAware> implements WorkflowServ
         if (isNotBlank(additionalRule))
             commonWfMatrixCriteria.add(Restrictions.eq("additionalRule", additionalRule));
 
-        if (isNotBlank(pendingActions))
-            commonWfMatrixCriteria.add(Restrictions.ilike("pendingActions", pendingActions, MatchMode.ANYWHERE));
+        // TODO: Migrate from Struts/XWork:
+        // if (isNotBlank(pendingActions))
+        //     commonWfMatrixCriteria.add(Restrictions.ilike("pendingActions", pendingActions, MatchMode.ANYWHERE));
 
         if (isNotBlank(currentState))
             commonWfMatrixCriteria.add(Restrictions.ilike("currentState", currentState, MatchMode.EXACT));

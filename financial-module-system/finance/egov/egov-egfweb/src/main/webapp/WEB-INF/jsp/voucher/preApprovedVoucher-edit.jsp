@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,13 +50,13 @@
 
 
 <%@ taglib prefix="s" uri="/WEB-INF/tags/struts-tags.tld"%>
-<s:if test="%{methodName=='save'}">
+<c:if test="%{methodName=='save'}">
 	<%@ include file='preApprovedVoucher-billview.jsp'%>
-</s:if>
-<s:elseif test="%{methodName=='update'}">
+</c:if>
+<!-- TODO: Manual migration required for custom Struts tag -->
 	<%@ include file='preApprovedVoucher-voucherview.jsp'%>
 </s:elseif>
-<s:else>
+<c:otherwise>
 	<%@ include file='preApprovedVoucher-voucheredit.jsp'%>
 </s:else>
 

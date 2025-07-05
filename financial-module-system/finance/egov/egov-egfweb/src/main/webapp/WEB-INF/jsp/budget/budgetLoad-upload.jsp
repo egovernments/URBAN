@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,7 +55,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="budgetload" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <script type="text/javascript">
 	function validate(event) {
 		event.preventDefault();
@@ -61,7 +63,7 @@
 		document.getElementById("Errors").innerHTML = "";
 
 		if (document.getElementById("budgetInXls").value == "") {
-			bootbox.alert("<s:text name='msg.select.file.to.upload'/>");
+			bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->");
 			return false;
 		}
 		document.budgetLoad.action = '/services/EGF/budget/budgetLoad-upload.action';
@@ -88,7 +90,7 @@
 			if (jQuery.inArray(ext, fileformats) > -1) {
 				//do something    
 			} else {
-				bootbox.alert(ext + "<s:text name='msg.file.format.not.allowed'/>");
+				bootbox.alert(ext + "<!-- TODO: Manual migration required for custom Struts tag -->");
 				jQuery(this).val("");
 				return;
 			}
@@ -97,27 +99,27 @@
 </script>
 </head>
 <body>
-	<s:form action="budgetLoad" theme="css_xhtml" name="budgetLoad"
+	<form:form action="budgetLoad" theme="css_xhtml" name="budgetLoad"
 		id="budgetLoad" enctype="multipart/form-data" method="post">
 		<div class="formmainbox">
 			<div class="formheading"></div>
 			<div class="subheadnew">
-				<s:text name="budgetload" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 
 			<div align="center">
 				<font style='color: red;'>
 					<div id="msg">
-						<s:property value="message" />
+						${message}
 					</div>
 					<p class="error-block" id="lblError"></p>
 				</font>
 			</div>
 			<span class="mandatory1">
 				<div id="Errors">
-					<s:actionerror />
-					<s:fielderror />
-				</div> <s:actionmessage />
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
+				</div> <!-- TODO: Manual migration required for custom Struts tag -->
 			</span>
 										
 			<center>
@@ -125,9 +127,9 @@
 					<tr width="50%">
 						<th width="50%"></th>
 						<th width="25%" class="bluebgheadtd"
-							style="width: 4%; text-align: center" align="center"><s:text name="lbl.original.files"/> </th>
+							style="width: 4%; text-align: center" align="center"><!-- TODO: Manual migration required for custom Struts tag --> </th>
 						<th width="25%" class="bluebgheadtd"
-							style="width: 4%; text-align: center" align="center"><s:text name="lbl.output.files"/></th>
+							style="width: 4%; text-align: center" align="center"><!-- TODO: Manual migration required for custom Struts tag --></th>
 					</tr>
 					<tr>
 						<td width="50%">
@@ -135,7 +137,7 @@
 								<tr>
 									<td class="greybox" width="20%"></td>
 									<td class="greybox"></td>
-									<td class="greybox"><s:text name="budgetupload" /> <span
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --> <span
 										class="greybox"><span class="mandatory1">*</span></span></td>
 									<td class="greybox"><s:file name="budgetInXls"
 											id="budgetInXls" /></td>
@@ -148,37 +150,37 @@
 						</td>
 						<td width="25%">
 							<table border="1" width="100%" cellspacing="0" cellpadding="0">
-								<s:iterator var="scheme" value="originalFiles" status="f">
+								<c:forEach var="scheme" value="originalFiles" status="f">
 									<tr>
 
 										<td style="text-align: center" align="center"><a href="#"
-											onclick="urlLoad('<s:property value="%{fileStoreId}" />');"
-											id="originalFileId" /> <s:label value="%{fileName}" /> </a></td>
+											onclick="urlLoad('${%{fileStoreId}}');"
+											id="originalFileId" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 									</tr>
-								</s:iterator>
+								</c:forEach>
 							</table>
 						</td>
 						<td width="25%">
 							<table border="1" width="100%" cellspacing="0" cellpadding="0">
-								<s:iterator var="scheme" value="outPutFiles" status="f">
+								<c:forEach var="scheme" value="outPutFiles" status="f">
 									<tr>
 
 										<td style="text-align: center" align="center"><a href="#"
-											onclick="urlLoad('<s:property value="%{fileStoreId}" />');"
-											id="outputFileId" /> <s:label value="%{fileName}" /> </a></td>
+											onclick="urlLoad('${%{fileStoreId}}');"
+											id="outputFileId" /> <!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 									</tr>
 									
-								</s:iterator>
+								</c:forEach>
 							</table>
 						</td>
 					</tr>
 					<tr>
 
 						<td class="greybox" colspan="2"><a
-							href="/services/EGF/resources/app/formats/Budget_Data_Template.xls"><s:text name="lbl.download.template"/> </a></td>
+							href="/services/EGF/resources/app/formats/Budget_Data_Template.xls"><!-- TODO: Manual migration required for custom Struts tag --> </a></td>
 					</tr>
 				</table>
-				<div  class="text-left error-msg" style="color: #C00000">&nbsp;* <s:text name="msg.only.xls.files.supprted"/>.</span></div>
+				<div  class="text-left error-msg" style="color: #C00000">&nbsp;* <!-- TODO: Manual migration required for custom Struts tag -->.</span></div>
 				<div class="buttonbottom" id="buttondiv">
 					<table>
 						<tr>
@@ -186,7 +188,7 @@
 							<td><s:submit type="submit" cssClass="buttonsubmit"
 									key="lbl.upload.budget" name="upload" method="upload"
 									onclick="return validate(event);" /></td>
-							<td><input type="button" value="<s:text name='lbl.close'/>"
+							<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 								onclick="javascript:window.close()" class="buttonsubmit" /></td>
 						</tr>
 					</table>
@@ -194,6 +196,6 @@
 			</center>
 		</div>
 
-	</s:form>
+	</form:form>
 </body>
 </html>

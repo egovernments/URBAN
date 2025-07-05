@@ -59,17 +59,14 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import static org.egov.infra.workflow.entity.WorkflowAction.SEQ_WF_ACTION;
-
 @Entity
 @Table(name = "EG_WF_ACTION")
-@SequenceGenerator(name = SEQ_WF_ACTION, sequenceName = SEQ_WF_ACTION, allocationSize = 1)
+@SequenceGenerator(name = "SEQ_EG_WF_ACTION", sequenceName = "SEQ_EG_WF_ACTION", allocationSize = 1)
 public class WorkflowAction extends AbstractAuditable {
 
-    static final String SEQ_WF_ACTION = "SEQ_EG_WF_ACTION";
     private static final long serialVersionUID = -7940804129929823917L;
     @Id
-    @GeneratedValue(generator = SEQ_WF_ACTION, strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "SEQ_EG_WF_ACTION", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotNull

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -56,51 +58,51 @@
 <title>TNEB Bill Payment Search</title>
 </head>
 <body>
-	<s:form action="payment" theme="simple">
+	<form:form action="payment" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Bill Payment Search" />
 		</jsp:include>
-		<span class="mandatory" id="errorSpan"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory" id="errorSpan"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 		<div class="formmainbox">
 			<div class="subheadnew">TNEB Bill Payment Search</div>
 			<table align="center" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="bluebox"><s:text name="payment.billnumber" /></td>
-					<td class="bluebox"><s:textfield name="billNumber"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox"><form:input path="billNumber"
 							id="billNumber" maxlength="25" value="%{billNumber}" /></td>
 					<td class="bluebox"></td>
 					<td class="bluebox"></td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="tnebpayment.monthyear" /></td>
-					<td class="greybox"><s:select name="month" id="month"
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="greybox"><form:select path="month" id="month"
 							list="%{monthMap}" headerKey="" headerValue="----Choose----" />
-						<s:select name="year" id="year"
+						<form:select path="year" id="year"
 							list="dropdownData.financialYearsList" listKey="id"
 							listValue="finYearRange" headerKey=""
 							headerValue="----Choose----" /></td>
-					<td class="greybox"><s:text name="payment.tneb.bill.region" /><span
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
-					<td class="greybox" id="regionRowId2"><s:select name="region"
+					<td class="greybox" id="regionRowId2"><form:select path="region"
 							id="region" list="dropdownData.regionsList" headerKey=""
 							headerValue="----Choose----" /></td>
 
 					</td>
 				</tr>
 				<tr>
-					<td class="bluebox"><s:text name="payment.expendituretype" /></td>
-					<td class="bluebox"><s:property value="%{expType}" /></td>
-					<td class="bluebox"><s:text name="voucher.fund" /></td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+					<td class="bluebox">${%{expType}}</td>
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="bluebox"><s:property
 							value="%{voucherHeader.fundId.name}" /></td>
 				</tr>
 				<tr>
-					<td class="greybox"><s:text name="voucher.department" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:property
 							value="%{voucherHeader.vouchermis.departmentid.deptName}" /></td>
-					<td class="greybox"><s:text name="voucher.function" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox"><s:property
 							value="%{voucherHeader.vouchermis.function.name}" /></td>
 
@@ -113,10 +115,10 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 		</div>
-		<s:if test="%{!validateUser('createpayment')}">
+		<c:if test="%{!validateUser('createpayment')}">
 			<script>
 			document.getElementById('searchBtn').disabled=true;
-			document.getElementById('errorSpan').innerHTML='<s:text name="payment.invalid.user"/>';
+			document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
@@ -124,25 +126,25 @@
 				d.options[d.selectedIndex].text.value=-1;
 			}
 		</script>
-		</s:if>
-		<s:if test="%{validateUser('deptcheck')}">
+		</c:if>
+		<c:if test="%{validateUser('deptcheck')}">
 			<script>
 				if(document.getElementById('vouchermis.departmentid'))
 				{
 					document.getElementById('vouchermis.departmentid').disabled=true;
 				}
 			</script>
-		</s:if>
+		</c:if>
 		<s:hidden name="disableExpenditureType" id="disableExpenditureType"
 			value="%{disableExpenditureType}" />
 		<s:hidden name="enablePensionType" id="enablePensionType"
 			value="%{enablePensionType}" />
-		<s:hidden name="billSubType" id="billSubType" value="%{billSubType}" />
-		<s:hidden name="bank_branch" id="bank_branch" />
-		<s:hidden name="bank_account" id="bank_account" />
-		<s:hidden name="bankaccount" id="bankaccount" />
-		<s:hidden name="bankbranch" id="bankbranch" />
-		<s:hidden name="expType" id="expType" value="%{expType}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<s:hidden name="voucherHeader.fundId.id" id="voucherHeader.fundId.id"
 			value="%{voucherHeader.fundId.id}" />
 		<s:hidden name="voucherHeader.vouchermis.function.id"
@@ -151,7 +153,7 @@
 		<s:hidden name="voucherHeader.vouchermis.departmentid.id"
 			id="voucherHeader.vouchermis.departmentid.id"
 			value="%{voucherHeader.vouchermis.departmentid.id}" />
-	</s:form>
+	</form:form>
 	<script>
 			function search()
 			{

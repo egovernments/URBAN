@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -51,7 +53,7 @@
 <%@ page language="java"%>
 <html>
 <head>
-<title><s:text name="budgetdetail" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet"
 	href="/services/EGF/resources/css/tabber.css?rnd=${app_release_no}"
 	TYPE="text/css">
@@ -73,12 +75,12 @@
 <jsp:include page="budgetHeader.jsp" />
 </head>
 <body>
-	<s:form action="budgetProposal" theme="simple">
-		<s:token />
+	<form:form action="budgetProposal" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div style="color: red">
-			<s:actionmessage theme="simple" />
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div align="left">
 			<br />
@@ -89,26 +91,26 @@
 							<div class="tabbertab" style="height: 500px; width: 1200px;">
 								<h2>Budget Details</h2>
 
-								<s:set var="validButtons" value="%{validActions}" />
-								<s:else>
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<c:otherwise>
 									<div align="right" class="extracontent">Amount in Rupees
 									</div>
 								</s:else>
 
-								<s:hidden name="topBudget.id" value="%{getTopBudget().getId()}" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								<s:hidden name="consolidatedScreen"
 									value="%{consolidatedScreen}" />
-								<s:hidden name="budgetDetail.id" id="budgetDetail.id" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 								<s:hidden name="budgetDetail.budget.id"
 									id="budgetDetail.budget.id" />
 
-								<s:if test="%{!bpBeanList.isEmpty()}">
+								<c:if test="%{!bpBeanList.isEmpty()}">
 									<div id="detail">
 										<%@ include file="budgetproposal-modifydetailslist.jsp"%>
 
 									</div>
 
-								</s:if>
+								</c:if>
 
 								<br /> <br />
 								<script>
@@ -135,26 +137,26 @@
 												value="%{getTopBudget().getName()}" /></td>
 										<td class="blueborderfortd" width="5%"><b>Remarks:</b></td>
 										<td class="blueborderfortd"><textarea cols="50" rows="3"
-												name='comments'><s:property value="comments" /></textarea>
+												name='comments'>${comments}</textarea>
 										</td>
 									</tr>
 								</table>
 
 
 								<div class="buttonholderwk" id="buttonsDiv">
-									<s:hidden name="actionName" />
-									<s:hidden name="mode" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 									<centre>
 									<div class="buttonbottom" id="sbuttons"
 										style="text-align: center">
-										<s:iterator value="%{getValidActions()}" var="validAction">
-											<s:if test="%{validAction!=''}">
+										<c:forEach value="%{getValidActions()}" var="validAction">
+											<c:if test="%{validAction!=''}">
 												<s:submit type="submit" cssClass="buttonsubmit"
 													value="%{validAction}" id="%{validAction}"
 													name="%{validAction}" method="update"
 													onclick="document.budgetProposal.actionName.value='%{validAction}';return validateAppoveUser('%{validAction}');" />
-											</s:if>
-										</s:iterator>
+											</c:if>
+										</c:forEach>
 
 
 										<input type="button" value="Close"
@@ -173,6 +175,6 @@
 			</table>
 		</div>
 
-	</s:form>
+	</form:form>
 </body>
 </html>

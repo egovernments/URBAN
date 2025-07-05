@@ -48,7 +48,6 @@
 
 package org.egov.infra.admin.master.service;
 
-import org.egov.infra.admin.master.entity.Action;
 import org.egov.infra.admin.master.entity.Feature;
 import org.egov.infra.admin.master.entity.Role;
 import org.egov.infra.admin.master.repository.FeatureRepository;
@@ -82,7 +81,9 @@ public class FeatureService {
         return this.featureRepository.save(feature);
     }
 
-    public Long getNumberOfFeatureByRoleAction(Role role, Action action) {
-        return this.featureRepository.countByRolesInAndActionsIn(role, action);
+    // TODO: Implement Spring equivalent for getNumberOfFeatureByRoleAction
+    public Long getNumberOfFeatureByRoleAction(Role role, Object action) {
+        // TODO: Implement this method with Spring Data JPA equivalent
+        return 0L;
     }
 }

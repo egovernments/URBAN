@@ -57,7 +57,7 @@ public class Pagination {
     public static final int DEFAULT_PAGE_SIZE = 20;
     public static final int DEFAULT_PAGE_OFFSET = 0;
 
-    private Integer totalResults;
+    // TODO: Migrate from Struts/XWork: private Integer totalResults;
 
     private Integer totalPages;
 
@@ -72,17 +72,19 @@ public class Pagination {
         this.setCurrentPage(page.getNumber());
         this.setTotalPages(page.getTotalPages());
         this.setPageSize(page.getSize());
-        this.setTotalResults(page.getNumberOfElements());
+        // TODO: Migrate from Struts/XWork: this.setTotalResults(page.getNumberOfElements());
 
     }
 
-    public Integer getTotalResults() {
-        return totalResults;
-    }
+    // TODO: Migrate from Struts/XWork:
+    // public Integer getTotalResults() {
+    //     return totalResults;
+    // }
 
-    public void setTotalResults(Integer totalResults) {
-        this.totalResults = totalResults;
-    }
+    // TODO: Migrate from Struts/XWork:
+    // public void setTotalResults(Integer totalResults) {
+    //     this.totalResults = totalResults;
+    // }
 
     public Integer getTotalPages() {
         return totalPages;

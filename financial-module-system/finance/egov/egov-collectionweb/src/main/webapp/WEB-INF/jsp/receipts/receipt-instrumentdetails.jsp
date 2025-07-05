@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -73,9 +75,9 @@
 <script>
 
 function callpopulateapportioningamountforbills(){
-	<s:if test="%{!isBillSourcemisc()}">  
+	<c:if test="%{!isBillSourcemisc()}">  
 		populateapportioningamount();
-	</s:if>
+	</c:if>
 	
 }
 
@@ -308,11 +310,11 @@ function showInstrumentDetails(obj){
 		clearCashDetails();
 		clearCardDetails();
 		clearChequeDDDetails();
-		<s:if test="%{isBillSourcemisc()}">
+		<c:if test="%{isBillSourcemisc()}">
 			if(document.getElementById("fundId")!=null && document.getElementById("fundId").value!="-1"){
 				getBankBranchList(document.getElementById('fundId'));
 			}
-		</s:if>
+		</c:if>
 		document.getElementById('manualreceipt').style.display='block';    
 	}
 	else if(obj.id=='onlineradiobutton'){
@@ -347,7 +349,7 @@ function validateTransactionNumber()
 				         document.getElementById("confirmtransactionNumber").value="";
 				         document.getElementById("receipt_error_area").style.display="block";
 				         document.getElementById("receipt_error_area").innerHTML+=
-				 			'<s:text name="billreceipt.missingcard.confirmtransactionno.validationmessage" />'+ '<br>';
+				 			'<!-- TODO: Manual migration required for custom Struts tag -->'+ '<br>';
 				 		 return(false);
 					}
 			}
@@ -423,7 +425,7 @@ loadBankDetailFailureHandler = function(){
 	<td class="bluebox" width="21%"><s:text
 			name="billreceipt.payment.instrumentAmount" /><span
 		class="mandatory1">*</span></td>
-	<td class="bluebox" colspan="3"><s:textfield
+	<td class="bluebox" colspan="3"><form:input
 			label="instrumentAmount" id="instrHeaderCash.instrumentAmount"
 			name="instrHeaderCash.instrumentAmount" maxlength="14" size="18"
 			cssClass="form-control patternvalidation text-right"
@@ -444,7 +446,7 @@ loadBankDetailFailureHandler = function(){
 					<table width="100%" border="0" cellspacing="0" cellpadding="0"
 						name="chequegrid" id="chequegrid">
 						<!-- This row contains check boxes to choose between cheque and DD -->
-						<s:if
+						<c:if
 							test="instrumentProxyList==null || instrumentProxyList.size()==0">
 							<s:hidden label="instrumentType" id="instrumentType"
 								name="instrumentType" />
@@ -454,7 +456,7 @@ loadBankDetailFailureHandler = function(){
 								<td class="bluebox" width="22%"><s:text
 										name="billreceipt.payment.chequeddno" /><span
 									class="mandatory1">*</span></td>
-								<td class="bluebox"><s:textfield label="instrumentNumber"
+								<td class="bluebox"><form:input label="instrumentNumber"
 										id="instrumentChequeNumber" maxlength="6"
 										name="instrumentProxyList[0].instrumentNumber" size="18" /></td>
 								<td class="bluebox"><s:text
@@ -470,7 +472,7 @@ loadBankDetailFailureHandler = function(){
 								<td class="bluebox"><s:text
 										name="billreceipt.payment.ifsccode" /><span
 									class="mandatory1">*</span></td>
-								<td class="bluebox"><s:textfield
+								<td class="bluebox"><form:input
 										label="instrumentIfscCode" id="instrumentIfscCode"
 										maxlength="50" name="instrumentProxyList[0].ifscCode"
 										size="18" placeholder='Search...'/>
@@ -482,7 +484,7 @@ loadBankDetailFailureHandler = function(){
 								<td class="bluebox"><s:text
 										name="billreceipt.payment.bankname" /><span
 									class="mandatory1">*</span></td>
-								<td class="bluebox"><s:textfield id="bankName" type="text"
+								<td class="bluebox"><form:input id="bankName" type="text"
 										name="instrumentProxyList[0].bankId.name" readonly="true"/> <s:hidden id="bankCode"
 										name="instrumentProxyList[0].bankId.code" />
 									<div id="bankcodescontainer"></div></td>
@@ -492,14 +494,14 @@ loadBankDetailFailureHandler = function(){
 								<td class="bluebox"><s:text
 										name="billreceipt.payment.branchname" /><span
 									class="mandatory1">*</span></td>
-								<td class="bluebox"><s:textfield
+								<td class="bluebox"><form:input
 										label="instrumentBranchName" id="instrumentBranchName"
 										maxlength="50" name="instrumentProxyList[0].bankBranchName"
 										size="18" readonly="true"/></td>
 								<td class="bluebox"><s:text
 										name="billreceipt.payment.instrumentAmount" /><span
 									class="mandatory1">*</span></td>
-								<td class="bluebox"><s:textfield label="instrumentAmount"
+								<td class="bluebox"><form:input label="instrumentAmount"
 										id="instrumentChequeAmount" maxlength="14"
 										name="instrumentProxyList[0].instrumentAmount" size="18"
 										cssClass="form-control patternvalidation text-right"
@@ -511,7 +513,7 @@ loadBankDetailFailureHandler = function(){
 									<div id="addchequerow" style="display: none">
 										<a href="#" id="addchequelink"
 											onclick="addChequeGrid('chequegrid','chequedetailsrow','chequebankrow','chequeamountrow',this,'chequeaddrow')">
-											<s:text name="billreceipt.payment.add" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</a> <img src="../../egi/resources/erp2/images/add.png"
 											id="addchequeimg" alt="Add" width="16" height="16" border="0"
 											align="absmiddle"
@@ -520,7 +522,7 @@ loadBankDetailFailureHandler = function(){
 									<div id="deletechequerow" style="display: none">
 										<a href="#" id="deletechequelink"
 											onclick="deleteChequeObj(this,'chequegrid','delerror')">
-											<s:text name="billreceipt.payment.delete" />
+											<!-- TODO: Manual migration required for custom Struts tag -->
 										</a> <img src="../../egi/resources/erp2/images/delete.png"
 											alt="Delete" width="16" height="16" border="0"
 											align="absmiddle"
@@ -528,9 +530,9 @@ loadBankDetailFailureHandler = function(){
 									</div>
 								</td>
 							</tr> -->
-						</s:if>
-						<s:else>
-							<s:iterator value="(instrumentProxyList.size).{#this}"
+						</c:if>
+						<c:otherwise>
+							<c:forEach value="(instrumentProxyList.size).{#this}"
 								status="instrstatus">
 								<s:hidden label="instrumentType" id="instrumentType"
 									name="instrumentType" />
@@ -541,7 +543,7 @@ loadBankDetailFailureHandler = function(){
 									<td class="bluebox2new"><s:text
 											name="billreceipt.payment.chequeddno" /><span
 										class="mandatory1">*</span></td>
-									<td class="bluebox2" width="20%"><s:textfield
+									<td class="bluebox2" width="20%"><form:input
 											label="instrumentNumber" id="instrumentChequeNumber"
 											maxlength="6"
 											name="instrumentProxyList[%{#instrstatus.index}].instrumentNumber"
@@ -561,7 +563,7 @@ loadBankDetailFailureHandler = function(){
 									<td class="blueboxnew"><s:text
 											name="billreceipt.payment.bankname" /><span
 										class="mandatory1">*</span></td>
-									<td class="bluebox"><s:textfield id="bankName" type="text"
+									<td class="bluebox"><form:input id="bankName" type="text"
 											name="instrumentProxyList[%{#instrstatus.index}].bankId.name"
 											onkeyup='autocompletecodeBank(this,event)'
 											onblur='fillAfterSplitBank(this)' /> <s:hidden id="bankID"
@@ -569,7 +571,7 @@ loadBankDetailFailureHandler = function(){
 										<div id="bankcodescontainer"></div></td>
 									<td class="bluebox"><s:text
 											name="billreceipt.payment.branchname" /></td>
-									<td class="bluebox"><s:textfield
+									<td class="bluebox"><form:input
 											label="instrumentBranchName" id="instrumentBranchName"
 											maxlength="50"
 											name="instrumentProxyList[%{#instrstatus.index}].bankBranchName"
@@ -580,7 +582,7 @@ loadBankDetailFailureHandler = function(){
 									<td class="bluebox2new"><s:text
 											name="billreceipt.payment.instrumentAmount" /><span
 										class="mandatory1">*</span></td>
-									<td class="bluebox2"><s:textfield label="instrumentAmount"
+									<td class="bluebox2"><form:input label="instrumentAmount"
 											id="instrumentChequeAmount" maxlength="14"
 											name="instrumentProxyList[%{#instrstatus.index}].instrumentAmount"
 											size="18"
@@ -596,7 +598,7 @@ loadBankDetailFailureHandler = function(){
 										<div id="addchequerow" style="display: none">
 											<a href="#" id="addchequelink"
 												onclick="addChequeGrid('chequegrid','chequedetailsrow','chequebankrow','chequeamountrow',this,'chequeaddrow')">
-												<s:text name="billreceipt.payment.add" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</a> <img
 												src="<egov:url path='../../../../egi/resources/erp2/images/add.png' />"
 												id="addchequeimg" alt="Add" width="16" height="16"
@@ -606,7 +608,7 @@ loadBankDetailFailureHandler = function(){
 										<div id="deletechequerow" style="display: none">
 											<a href="#" id="deletechequelink"
 												onclick="deleteChequeObj(this,'chequegrid','delerror')">
-												<s:text name="billreceipt.payment.delete" />
+												<!-- TODO: Manual migration required for custom Struts tag -->
 											</a> <img
 												src="<egov:url id="deletechequeimg" path='../../egi/resources/erp2/images/delete.png' />"
 												alt="Delete" width="16" height="16" border="0"
@@ -615,7 +617,7 @@ loadBankDetailFailureHandler = function(){
 										</div>
 									</td>
 								</tr> --%>
-							</s:iterator>
+							</c:forEach>
 						</s:else>
 					</table> <!-- End of table 'chequegrid' --></td>
 			</tr>
@@ -630,7 +632,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox" width="3%"></td>
 							<td width="22%" class="bluebox"><s:text
 									name="billreceipt.payment.cardno" /><span class="mandatory1">*</span></td>
-							<td class="bluebox"><s:textfield
+							<td class="bluebox"><form:input
 									label="instrHeaderCard.instrumentNumber"
 									id="instrHeaderCard.instrumentNumber" maxlength="4"
 									name="instrHeaderCard.instrumentNumber"
@@ -638,7 +640,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox"><s:text
 									name="billreceipt.payment.transactionnumber" /><span
 								class="mandatory1">*</span></td>
-							<td class="bluebox"><s:textfield
+							<td class="bluebox"><form:input
 									label="instrHeaderCard.transactionNumber"
 									id="instrHeaderCard.transactionNumber" maxlength="14"
 									name="instrHeaderCard.transactionNumber" size="18"
@@ -646,7 +648,7 @@ loadBankDetailFailureHandler = function(){
 								<td class="bluebox"><s:text
 									name="billreceipt.payment.reenter.transactionnumber" /><span
 								class="mandatory1">*</span></td>									
-							<td class="bluebos"> <s:password id="confirmtransactionNumber"  maxlength="14"
+							<td class="bluebos"> <form:password id="confirmtransactionNumber"  maxlength="14"
 							                   name ="confirmtransactionNumber"  size="18" onblur="validateTransactionNumber();" /></td>		
 						</tr>
 
@@ -655,7 +657,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox"><s:text
 									name="billreceipt.payment.instrumentAmount" /><span
 								class="mandatory1">*</span></td>
-							<td class="bluebox"><s:textfield
+							<td class="bluebox"><form:input
 									label="instrHeaderCard.instrumentAmount"
 									id="instrHeaderCard.instrumentAmount" maxlength="14"
 									name="instrHeaderCard.instrumentAmount" size="18"
@@ -680,7 +682,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox" width="22%"><s:text
 									name="billreceipt.payment.bankchallano" /><span
 								class="mandatory1">*</span></td>
-							<td class="bluebox"><s:textfield label="transactionNumber"
+							<td class="bluebox"><form:input label="transactionNumber"
 									id="instrHeaderBank.transactionNumber" maxlength="16"
 									name="instrHeaderBank.transactionNumber"
 									value="%{instrHeaderBank.transactionNumber}" size="18" /></td>
@@ -689,7 +691,7 @@ loadBankDetailFailureHandler = function(){
 								class="mandatory1">*</span></td>
 							<s:date name="instrHeaderBank.transactionDate" var="cdFormat"
 								format="dd/MM/yyyy" />
-							<td class="bluebox"><s:textfield id="bankChallanDate"
+							<td class="bluebox"><form:input id="bankChallanDate"
 									name="instrHeaderBank.transactionDate" value="%{cdFormat}"
 									onfocus="javascript:vDateType='3';"
 									onkeyup="DateFormat(this,this.value,event,false,'3');waterMarkTextOut('bankChallanDate','DD/MM/YYYY');"
@@ -710,7 +712,7 @@ loadBankDetailFailureHandler = function(){
 									id="bankBranchMasterDropdown" fields="['Text','Value']"
 									dropdownId='bankBranchMaster'
 									url='receipts/ajaxBankRemittance-bankBranchList.action'
-									selectedValue="%{bankbranch.id}" /> <s:select
+									selectedValue="%{bankbranch.id}" /> <form:select
 									headerValue="--Select--" headerKey="0"
 									list="dropdownData.bankBranchList" listKey="id"
 									id="bankBranchMaster" listValue="branchname"
@@ -724,7 +726,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox"><s:text
 									name="billreceipt.payment.bankaccountname" /><span
 								class="mandatory"></td>
-							<td class="bluebox"><s:select headerValue="--Select--"
+							<td class="bluebox"><form:select headerValue="--Select--"
 									headerKey="0" list="dropdownData.accountNumberList"
 									listKey="id" id="accountNumberMaster" listValue="accountnumber"
 									label="accountNumberMaster" name="bankAccountId"
@@ -735,7 +737,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox" width="22%"><s:text
 									name="billreceipt.payment.instrumentAmount" /><span
 								class="mandatory1">*</span></td>
-							<td class="bluebox"><s:textfield label="instrumentAmount"
+							<td class="bluebox"><form:input label="instrumentAmount"
 									id="instrHeaderBank.instrumentAmount"
 									name="instrHeaderBank.instrumentAmount" maxlength="14"
 									size="18" cssClass="form-control patternvalidation text-right"
@@ -756,7 +758,7 @@ loadBankDetailFailureHandler = function(){
 							<td class="bluebox" width="22%"><s:text
 									name="billreceipt.payment.instrumentAmount" /><span
 								class="mandatory1">*</span></td>
-							<td class="bluebox" ><s:textfield
+							<td class="bluebox" ><form:input
 									label="instrumentAmount"
 									id="instrHeaderOnline.instrumentAmount"
 									name="instrHeaderOnline.instrumentAmount" maxlength="14"

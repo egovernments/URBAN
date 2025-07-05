@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,62 +52,62 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <%@ page language="java"%>
 <div class="panel-heading custom_form_panel_heading">
-	<div class="panel-title"><s:text name="msg.unreconciled.items"/> </div>
+	<div class="panel-title"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 </div>
 <div class="col-md-12 form-group report-table-container">
 	<table class="table table-bordered table-hover multiheadertbl"
 		id="resultTable">
 		<thead>
 			<tr>
-				<th><s:text name="lbl.voucher.number"/></th>
-				<th><s:text name="lbl.cheque.number"/></th>
-				<th><s:text name="lbl.cheque.date"/></th>
-				<th><s:text name="lbl.type"/></th>
-				<th><s:text name="lbl.instrument.type"/></th>
-				<th><s:text name="lbl.amount"/></th>
-				<th><s:text name="lbl.reconciliation.date"/></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th><!-- TODO: Manual migration required for custom Struts tag --></th>
 			</tr>
 		</thead>
-		<s:if test="%{unReconciledCheques.size>0}">
-			<s:iterator var="vh" value="unReconciledCheques" status="status">
+		<c:if test="%{unReconciledCheques.size>0}">
+			<c:forEach var="vh" value="unReconciledCheques" status="status">
 				<tr>
 					<input type="hidden"
-						name="instrumentHeaders[<s:property value="#status.index"/>]"
-						value='<s:property value="ihId"/>' />
-					<td style="text-align: left"><s:property value="voucherNumber" /></td>
-					<td style="text-align: left"><s:property value="chequeNumber" /></td>
-					<td><s:property value="chequeDate" /></td>
-					<td><s:property value="type" /></td>
-					<td  style="text-align: center;"><s:property value="instrumentType" /></td>
-					<td style="text-align: right"><s:property value="chequeAmount" /></td>
+						name="instrumentHeaders[${#status.index}]"
+						value='${ihId}' />
+					<td style="text-align: left">${voucherNumber}</td>
+					<td style="text-align: left">${chequeNumber}</td>
+					<td>${chequeDate}</td>
+					<td>${type}</td>
+					<td  style="text-align: center;">${instrumentType}</td>
+					<td style="text-align: right">${chequeAmount}</td>
 					<td><input type="text"
-						id="reconDates<s:property value="#status.index"/>"
-						name="reconDates[<s:property value="#status.index"/>]"
+						id="reconDates${#status.index}"
+						name="reconDates[${#status.index}]"
 						class="form-control datepicker" data-inputmask="'mask': 'd/m/y'" />
 					</td>
 				</tr>
-			</s:iterator>
-		</s:if>
-		<s:else>
+			</c:forEach>
+		</c:if>
+		<c:otherwise>
 			<tr>
-				<td colspan="7" style="text-align: center"><s:text name="msg.no.record.found"/></td>
+				<td colspan="7" style="text-align: center"><!-- TODO: Manual migration required for custom Struts tag --></td>
 			</tr>
 		</s:else>
 	</table>
 </div>
-<s:if test="%{unReconciledCheques.size>0}">
+<c:if test="%{unReconciledCheques.size>0}">
 	<div class="buttonbottom" id="reconcileDiv" style="display: none">
 		<table>
 			<tr>
-				<td><input type="button" class="buttonsubmit" value='<s:text name="lbl.reconcile.button"/>'
+				<td><input type="button" class="buttonsubmit" value='<!-- TODO: Manual migration required for custom Struts tag -->'
 					name="Reconcile" method="reconcile"
 					onclick="return validateReconcile();" /></td>
-				<td><input type="button" value="<s:text name='lbl.close'/>"
+				<td><input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="javascript:window.close()" class="buttonsubmit" /></td>
 			</tr>
 		</table>
 	</div>
-</s:if>
+</c:if>
 
 
 

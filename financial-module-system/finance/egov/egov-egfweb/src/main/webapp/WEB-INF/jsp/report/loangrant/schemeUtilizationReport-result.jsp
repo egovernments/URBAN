@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -107,40 +109,40 @@
 	</jsp:include>
 	<div class="formmainbox">
 		<h1 class="subheadnew">
-			<s:text name="scheme.utilization.report" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</h1>
 	</div>
 	<div style="color: red">
-		<s:actionmessage theme="simple" />
-		<s:actionerror />
-		<s:fielderror />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<s:form name="schemeUtilizationReport" action="schemeUtilizationReport"
+	<form:form name="schemeUtilizationReport" action="schemeUtilizationReport"
 		theme="simple">
 		<table align="center" width="100%" cellpadding="0" cellspacing="0"
 			border="0">
 			<tr>
 
-				<th class="bluebgheadtd"><s:text name="voucher.subscheme" /></th>
-				<th class="bluebgheadtd"><s:text name="code" /> <s:property
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --> <s:property
 						value="projectCode" /></th>
-				<th class="bluebgheadtd"><s:text name="vouchernumber" /></th>
-				<th class="bluebgheadtd"><s:text name="voucherdate" /></th>
-				<th class="bluebgheadtd"><s:text name="amount" /></th>
-				<th class="bluebgheadtd"><s:text name="status" /></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
+				<th class="bluebgheadtd"><!-- TODO: Manual migration required for custom Struts tag --></th>
 				<th columnspan="2" class="bluebgheadtd"><s:text
 						name="fundingwise.utilization" /></th>
 			</tr>
-			<s:set var="total" value="0" />
-			<s:iterator var="pc" value="projectCodeResultList" status="stat">
-				<s:if test="#stat.index==0">
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<c:forEach var="pc" value="projectCodeResultList" status="stat">
+				<c:if test="#stat.index==0">
 					<tr>
 						<td class="blueborderfortd" style="text-align: center"><s:set
 								var="subSchemeName" value="subScheme" /> <B> <s:property
 									value="subScheme" />
 						</B></td>
 						<td class="blueborderfortd" style="text-align: center"><s:set
-								var="projectCode" value="code" /> <s:property value="code" />
+								var="projectCode" value="code" /> ${code}
 						</td>
 						<td class="blueborderfortd" style="text-align: center"><s:property
 								value="voucherNumber" /></td>
@@ -148,48 +150,48 @@
 								name="%{voucherDate}" format="dd/MM/yyyy" /></td>
 						<td class="blueborderfortd" style="text-align: right"><s:text
 								name="format.amount">
-								<s:param value="amount" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:text></td class="blueborderfortd">
 						<td class="blueborderfortd" style="text-align: center"><s:text
 								name="status" /></td>
-						<td columnspan="2" rowspan='<s:property value="maxRows+1"/>'
+						<td columnspan="2" rowspan='${maxRows+1}'
 							class="blueborderfortd">
 							<div id="fdetails" valign="top"></div>
 						</td>
 					</tr>
-				</s:if>
-				<s:else>
+				</c:if>
+				<c:otherwise>
 					<tr>
-						<td class="blueborderfortd" style="text-align: center"><s:if
+						<td class="blueborderfortd" style="text-align: center"><c:if
 								test="%{#subSchemeName!=subScheme}">
-								<s:set var="subSchemeName" value="subScheme" />
-								<b><s:property value="subScheme" /></b>
-							</s:if></td>
-						<td class="blueborderfortd" style="text-align: center"><s:if
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<b>${subScheme}</b>
+							</c:if></td>
+						<td class="blueborderfortd" style="text-align: center"><c:if
 								test="#projectCode!=code">
-								<s:property value="code" />
-							</s:if></td>
+								${code}
+							</c:if></td>
 						<td class="blueborderfortd" style="text-align: center"><s:property
 								value="voucherNumber" /></td>
 						<td class="blueborderfortd" style="text-align: center"><s:date
 								name="%{voucherDate}" format="dd/MM/yyyy" /></td>
 						<td class="blueborderfortd" style="text-align: right"><s:text
 								name="format.amount">
-								<s:param value="amount" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</s:text></td>
 
-						<td class="blueborderfortd" style="text-align: center"><s:if
+						<td class="blueborderfortd" style="text-align: center"><c:if
 								test="#projectCode!=code">
                            Hello
-                        </s:if> <s:set var="projectCode" value="code" /></td>
+                        </c:if> <!-- TODO: Manual migration required for custom Struts tag --></td>
 					</tr>
 				</s:else>
-			</s:iterator>
-			<s:if test="%{projectCodeResultList.size() < maxRows}">
-				<s:bean name="org.apache.struts2.util.Counter" var="counter">
-					<s:param name="last" value="maxRows-projectCodeResultList.size()" />
+			</c:forEach>
+			<c:if test="%{projectCodeResultList.size() < maxRows}">
+				<!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag -->
 				</s:bean>
-				<s:iterator value="#counter">
+				<c:forEach value="#counter">
 					<tr>
 						<td class="blueborderfortd"></td>
 						<td class="blueborderfortd"></td>
@@ -198,8 +200,8 @@
 						<td class="blueborderfortd"></td>
 						<td /></td>
 					</tr>
-				</s:iterator>
-			</s:if>
+				</c:forEach>
+			</c:if>
 
 		</table>
 		<table align="center">
@@ -210,17 +212,17 @@
 		</table>
 		<script>
   var xx=' <table align="top" valign="top" width="100%" cellpadding="0" cellspacing="0" border="0"> ' +
-   <s:iterator var="fa" value="faTotalMap.keySet()">
-   '<tr> <td class="blueborderfortd" style="text-align:center"><s:property value="fa"/> </td>' +      
-   '<td class="blueborderfortd" style="text-align:right"><s:text name="format.amount" ><s:param value="faTotalMap.get(#fa)"/></s:text> </td>'+
-   '</tr>'+</s:iterator><s:if test="%{fundingPatternBysubScheme.size() < maxRows}"><s:bean name="org.apache.struts2.util.Counter" var="counter">   <s:param name="last" value="maxRows-fundingPatternBysubScheme.size()"/></s:bean>
-   <s:iterator value="#counter">'<tr><td class="blueborderfortd">&nbsp;</td><td class="blueborderfortd">&nbsp;</td></tr>'+</s:iterator></s:if>
-   '<tr><td class="blueborderfortd"></td> <td class="blueborderfortd" style="text-align:right"><s:text name="format.amount" >123</s:text></td></tr></table>'; 
+   <c:forEach var="fa" value="faTotalMap.keySet()">
+   '<tr> <td class="blueborderfortd" style="text-align:center">${fa} </td>' +      
+   '<td class="blueborderfortd" style="text-align:right"><!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text> </td>'+
+   '</tr>'+</c:forEach><c:if test="%{fundingPatternBysubScheme.size() < maxRows}"><!-- TODO: Manual migration required for custom Struts tag -->   <!-- TODO: Manual migration required for custom Struts tag --></s:bean>
+   <c:forEach value="#counter">'<tr><td class="blueborderfortd">&nbsp;</td><td class="blueborderfortd">&nbsp;</td></tr>'+</c:forEach></c:if>
+   '<tr><td class="blueborderfortd"></td> <td class="blueborderfortd" style="text-align:right"><!-- TODO: Manual migration required for custom Struts tag -->123</s:text></td></tr></table>'; 
   document.getElementById("fdetails").innerHTML=xx;
   
   </script>
 
-	</s:form>
+	</form:form>
 
 </body>
 

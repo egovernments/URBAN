@@ -74,8 +74,8 @@ public class Page<T> {
 
         this.pageNumber = currentPageNo;
         if (pageSize > 0) {
-            query.setFirstResult((currentPageNo - 1) * pageSize);
-            query.setMaxResults(pageSize + 1);
+// TODO: Migrate from Struts/XWork:             query.setFirstResult((currentPageNo - 1) * pageSize);
+// TODO: Migrate from Struts/XWork:             query.setMaxResults(pageSize + 1);
             this.pageSize = pageSize;
         } else {
             this.pageSize = -1;
@@ -92,8 +92,8 @@ public class Page<T> {
         this.pageNumber = currentPageNo;
 
         if (pageSize > 0) {
-            criteria.setFirstResult((currentPageNo - 1) * pageSize);
-            criteria.setMaxResults(pageSize + 1);
+// TODO: Migrate from Struts/XWork:             criteria.setFirstResult((currentPageNo - 1) * pageSize);
+// TODO: Migrate from Struts/XWork:             criteria.setMaxResults(pageSize + 1);
             this.pageSize = pageSize;
         } else {
             this.pageSize = -1;
@@ -123,13 +123,14 @@ public class Page<T> {
         this.pageNumber = currentPageNo;
 
         if (pageSize > 0) {
-            query.setFirstResult((currentPageNo - 1) * pageSize);
-            query.setMaxResults(pageSize + 1);
+// TODO: Migrate from Struts/XWork:             query.setFirstResult((currentPageNo - 1) * pageSize);
+// TODO: Migrate from Struts/XWork:             query.setMaxResults(pageSize + 1);
             this.pageSize = pageSize;
         } else {
             this.pageSize = -1;
         }
-        this.results = query.getResultList();
+// TODO: Migrate from Struts/XWork:         this.results = query.getResultList();
+        this.results = null; // TODO: Initialize properly
         this.recordTotal = recordTotal;
     }
 

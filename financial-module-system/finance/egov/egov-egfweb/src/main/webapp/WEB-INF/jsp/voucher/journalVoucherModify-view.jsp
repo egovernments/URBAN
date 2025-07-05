@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -114,7 +116,7 @@
 		
 		
 		var makeVoucherDetailTable = function() {
-			<s:if test='%{isRestrictedtoOneFunctionCenter == true}'>      
+			<c:if test='%{isRestrictedtoOneFunctionCenter == true}'>      
 		var voucherDetailColumns = [ 
 			{key:"functionid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
 			{key:"function",hidden:true,label:'Function Name', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","hidden")},
@@ -126,8 +128,8 @@
 			{key:'Add',label:'Add',formatter:createAddImageFormatter("${pageContext.request.contextPath}")},
 			{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")}
 		];
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 		var voucherDetailColumns = [ 
      			{key:"functionid",hidden:true, formatter:createTextFieldFormatterJV(VOUCHERDETAILLIST,".functionIdDetail","hidden")},
      			{key:"function",label:'Function Name', formatter:createTextFieldFormatterForFunctionJV(VOUCHERDETAILLIST,".functionDetail","text")}, 
@@ -167,28 +169,28 @@
 			
 			        
 		});
-		<s:iterator value="billDetailslist" status="stat">
+		<c:forEach value="billDetailslist" status="stat">
 				billDetailsTable.addRow({SlNo:billDetailsTable.getRecordSet().getLength()+1,
-					"functionid":'<s:property value="functionIdDetail"/>',
-					"function":'<s:property value="functionDetail"/>',
-					"glcodeid":'<s:property value="glcodeIdDetail"/>',
-					"glcode":'<s:property value="glcodeDetail"/>',
-					"accounthead":'<s:property value="accounthead"/>',
-					"debitamount":'<s:text name="format.number" ><s:param value="%{debitAmountDetail}"/></s:text>',
-					"creditamount":'<s:text name="format.number" ><s:param value="%{creditAmountDetail}"/></s:text>'
+					"functionid":'${functionIdDetail}',
+					"function":'${functionDetail}',
+					"glcodeid":'${glcodeIdDetail}',
+					"glcode":'${glcodeDetail}',
+					"accounthead":'${accounthead}',
+					"debitamount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>',
+					"creditamount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateGridPJV('functionIdDetail',index,'<s:property value="functionIdDetail"/>');
-				updateGridPJV('functionDetail',index,'<s:property value="functionDetail"/>');
-				updateGridPJV('glcodeIdDetail',index,'<s:property value="glcodeIdDetail"/>');
-				updateGridPJV('glcodeDetail',index,'<s:property value="glcodeDetail"/>');
-				updateGridPJV('accounthead',index,'<s:property value="accounthead"/>');
-				updateGridPJV('debitAmountDetail',index,'<s:text name="format.number" ><s:param value="%{debitAmountDetail}"/></s:text>');
-				updateGridPJV('creditAmountDetail',index,'<s:text name="format.number" ><s:param value="%{creditAmountDetail}"/></s:text>');
-				totaldbamt = totaldbamt+parseFloat('<s:text name="format.number" ><s:param value="%{debitAmountDetail}"/></s:text>');
-				totalcramt = totalcramt+parseFloat('<s:text name="format.number" ><s:param value="%{creditAmountDetail}"/></s:text>');
+				var index = '${#stat.index}';
+				updateGridPJV('functionIdDetail',index,'${functionIdDetail}');
+				updateGridPJV('functionDetail',index,'${functionDetail}');
+				updateGridPJV('glcodeIdDetail',index,'${glcodeIdDetail}');
+				updateGridPJV('glcodeDetail',index,'${glcodeDetail}');
+				updateGridPJV('accounthead',index,'${accounthead}');
+				updateGridPJV('debitAmountDetail',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+				updateGridPJV('creditAmountDetail',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+				totaldbamt = totaldbamt+parseFloat('<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
+				totalcramt = totalcramt+parseFloat('<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
 				updateAccountTableIndex();
-			</s:iterator>
+			</c:forEach>
 				
 	
 		var tfoot = billDetailsTable.getTbodyEl().parentNode.createTFoot();
@@ -214,13 +216,13 @@
 	}
 	
 	var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	
 	var makeSubLedgerTable = function() {
 		var subledgerColumns = [ 
@@ -259,44 +261,44 @@
 				}
 			}        
 		});
-		<s:iterator value="subLedgerlist" status="stat">
+		<c:forEach value="subLedgerlist" status="stat">
 				subLedgersTable.addRow({SlNo:subLedgersTable.getRecordSet().getLength()+1,
-					"glcode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"detailType.id":'<s:property value="detailType.id"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"detailKeyId":'<s:property value="detailKeyId"/>',
-					"detailKey":'<s:property value="detailKeyEscSpecChar"/>',
-					"debitAmount":'<s:text name="format.number" ><s:param value="%{debitAmount}"/></s:text>',
-					"creditAmount":'<s:text name="format.number" ><s:param value="%{creditAmount}"/></s:text>'
+					"glcode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"detailType.id":'${detailType.id}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"detailKeyId":'${detailKeyId}',
+					"detailKey":'${detailKeyEscSpecChar}',
+					"debitAmount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>',
+					"creditAmount":'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>'
 				});
-				var index = '<s:property value="#stat.index"/>';
-				updateSLGridPJV('subledgerCode',index,'<s:property value="subledgerCode"/>');
-				updateGridSLDropdownJV('glcode.id',index,'<s:property value="glcode.id"/>','<s:property value="subledgerCode"/>');
-				updateGridSLDropdownJV('detailType.id',index,'<s:property value="detailType.id"/>','<s:property value="detailTypeName"/>');
-				updateSLGridPJV('detailCode',index,'<s:property value="detailCode"/>');
-				updateSLGridPJV('detailKeyId',index,'<s:property value="detailKeyId"/>');
-				updateSLGridPJV('detailKey',index,'<s:property value="detailKeyEscSpecChar"/>');
-				updateSLGridPJV('amount',index,'<s:text name="format.number" ><s:param value="%{amount}"/></s:text>');
+				var index = '${#stat.index}';
+				updateSLGridPJV('subledgerCode',index,'${subledgerCode}');
+				updateGridSLDropdownJV('glcode.id',index,'${glcode.id}','${subledgerCode}');
+				updateGridSLDropdownJV('detailType.id',index,'${detailType.id}','${detailTypeName}');
+				updateSLGridPJV('detailCode',index,'${detailCode}');
+				updateSLGridPJV('detailKeyId',index,'${detailKeyId}');
+				updateSLGridPJV('detailKey',index,'${detailKeyEscSpecChar}');
+				updateSLGridPJV('amount',index,'<!-- TODO: Manual migration required for custom Struts tag --><!-- TODO: Manual migration required for custom Struts tag --></s:text>');
 				updateSLTableIndex();
-			</s:iterator>
+			</c:forEach>
 		
 	}
 	
 	</script>
 <body onload="onLoadTask()">
 
-	<s:form action="journalVoucherModify" theme="simple"
+	<form:form action="journalVoucherModify" theme="simple"
 		name="jvmodifyform">
-		<s:push value="model">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<jsp:include page="../budget/budgetHeader.jsp">
 				<jsp:param name="heading" value="Journal voucher -Modify" />
 			</jsp:include>
 
 			<span class="mandatory1"> <font
-				style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-					<s:actionmessage /></font>
+				style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 			<div class="formmainbox">
 				<div class="subheadnew">Journal Voucher</div>
@@ -310,29 +312,29 @@
 						<table border="0" width="100%">
 							<tr>
 								<td class="bluebox">&nbsp;</td>
-								<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-									<td class="bluebox"><s:text name="voucher.number" /><span
+								<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory1">*</span></td>
 									<td class="bluebox"><input type="text"
 										name="voucherNumberPrefix" id="voucherNumberPrefix"
 										readonly="true" /></td>
-									<td class="bluebox"><s:textfield name="voucherNumber"
+									<td class="bluebox"><form:input path="voucherNumber"
 											id="voucherNumber" /></td>
-								</s:if>
-								<s:else>
-									<td class="bluebox"><s:text name="voucher.number" /><span
+								</c:if>
+								<c:otherwise>
+									<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory1"> *</span></td>
-									<td class="bluebox"><s:textfield name="voucherNumber"
+									<td class="bluebox"><form:input path="voucherNumber"
 											id="voucherNumber" readonly="true" /></td>
 									<td class="bluebox">&nbsp;</td>
 								</s:else>
 							</tr>
 							<tr>
 								<td class="bluebox">&nbsp;</td>
-								<td class="bluebox"><s:text name="voucher.date" /><span
+								<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory1"> *</span></td>
 								<td class="bluebox"><s:date name="voucherDate"
-										var="voucherDateId" format="dd/MM/yyyy" /> <s:textfield
+										var="voucherDateId" format="dd/MM/yyyy" /> <form:input
 										name="voucherDate" id="voucherDate" value="%{voucherDateId}"
 										maxlength="10"
 										onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
@@ -346,8 +348,8 @@
 
 							<tr>
 								<td class="bluebox">&nbsp;</td>
-								<td class="greybox"><s:text name="voucher.narration" /></td>
-								<td class="greybox" colspan="3"><s:textarea id="narration"
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+								<td class="greybox" colspan="3"><form:textarea id="narration"
 										name="description" style="width:580px"
 										onblur="checkVoucherNarrationLen(this)" /></td>
 							</tr>
@@ -407,13 +409,13 @@
 			<div id="codescontainer"></div>
 
 		</s:push>
-	</s:form>
+	</form:form>
 
 	<script type="text/javascript">               
 
 	function onLoadTask()
 	{
-		document.getElementById('vType').value='<s:property value="voucherTypeBean.voucherSubType"/>';
+		document.getElementById('vType').value='${voucherTypeBean.voucherSubType}';
 		var frmIndex=0;
 		for(var i=0;i<document.forms[frmIndex].length;i++)
 		{

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -71,11 +73,11 @@ function getData(){
 	var department = document.getElementById('executingDepartment').value;
 	
 	if(department ==-1){
-		bootbox.alert("<s:text name='msg.please.select.department'/>")
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->")
 		return false;
 	}
 	if(asOnDate ==''){
-		bootbox.alert("<s:text name='msg.please.enter.valid.date'/>")
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->")
 		return false;
 	}
 	var csrfToken = document.getElementById('csrfTokenValue').value;
@@ -111,37 +113,37 @@ function exportPdf(){
 function validateData(){
 	var asOnDate =  Date.parse(document.getElementById('asOnDate').value);
 	if(asOnDate == ''){
-		bootbox.alert("<s:text name='msg.please.enter.valid.date'/>")
+		bootbox.alert("<!-- TODO: Manual migration required for custom Struts tag -->")
 		return false;
 	}
-	<s:if test="%{isFieldMandatory('executingDepartment')}">
+	<c:if test="%{isFieldMandatory('executingDepartment')}">
 		if(!checkMandatoryField("executingDepartment"))
 			return false;
-	</s:if>
-	<s:if test="%{isFieldMandatory('function')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('function')}">
 		if(!checkMandatoryField("function"))
 			return false;
-	</s:if>
-	<s:if test="%{isFieldMandatory('fund')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('fund')}">
 		if(!checkMandatoryField("fund"))
 			return false;
-	</s:if>
-	<s:if test="%{isFieldMandatory('functionary')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('functionary')}">
 		if(!checkMandatoryField("functionary"))
 			return false;
-	</s:if>
-	<s:if test="%{isFieldMandatory('scheme')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('scheme')}">
 		if(!checkMandatoryField("scheme"))
 			return false;
-	</s:if>
-	<s:if test="%{isFieldMandatory('subScheme')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('subScheme')}">
 		if(!checkMandatoryField("subScheme"))
 			return false;
-	</s:if>
-	<s:if test="%{isFieldMandatory('boundary')}">
+	</c:if>
+	<c:if test="%{isFieldMandatory('boundary')}">
 		if(!checkMandatoryField("boundary"))
 			return false;
-	</s:if>
+	</c:if>
 	return true;	
 }
 
@@ -166,106 +168,106 @@ function resetSubmit()
 <body>
 	<div class="formmainbox">
 		<div class="formheading"></div>
-		<div class="subheadnew"><s:text name="lbl.budget.variance.report"/> </div>
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 		<h5 style="color: red">
-			<s:actionerror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</h5>
-		<s:form action="budgetVarianceReport" theme="simple"
+		<form:form action="budgetVarianceReport" theme="simple"
 			name="budgetVarianceReport">
 			<input type="hidden" id="csrfTokenValue" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
-					<s:if test="%{isFieldMandatory('executingDepartment')}">
-						<td class="bluebox" width="10%"><s:text name="report.department"/> :<span
+					<c:if test="%{isFieldMandatory('executingDepartment')}">
+						<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --> :<span
 							class="mandatory1">*</span></td>
-						<td class="bluebox"><s:select name="executingDepartment"
+						<td class="bluebox"><form:select path="executingDepartment"
 								id="executingDepartment" list="dropdownData.departmentList"
 								listKey="code" listValue="name" headerKey="-1"
 								value="%{budgetDetail.executingDepartment}"
 								headerValue="%{getText('lbl.choose.options')}" /></td>
-					</s:if>
-					<s:if test="%{isFieldMandatory('function')}">
-						<td class="bluebox" width="10%"><s:text name="report.function"/> :</td>
-						<td class="bluebox"><s:select name="function" id="function"
+					</c:if>
+					<c:if test="%{isFieldMandatory('function')}">
+						<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --> :</td>
+						<td class="bluebox"><form:select path="function" id="function"
 								value="%{budgetDetail.function.id}"
 								list="dropdownData.functionList" listKey="id" listValue="name"
 								headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
-					</s:if>
+					</c:if>
 				</tr>
 				<tr>
-					<s:if test="%{isFieldMandatory('fund')}">
-						<td class="greybox" width="10%"><s:text name="report.fund"/>:</td>
-						<td class="greybox"><s:select name="fund" id="fund"
+					<c:if test="%{isFieldMandatory('fund')}">
+						<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+						<td class="greybox"><form:select path="fund" id="fund"
 								value="%{budgetDetail.fund.id}" list="dropdownData.fundList"
 								listKey="id" listValue="name" headerKey="-1"
 								headerValue="%{getText('lbl.choose.options')}" /></td>
-					</s:if>
-					<s:if test="%{isFieldMandatory('functionary')}">
-						<td class="greybox" width="10%"><s:text name="report.functionary"/>:<span
+					</c:if>
+					<c:if test="%{isFieldMandatory('functionary')}">
+						<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 							class="mandatory1">*</span></td>
-						<td class="greybox"><s:select name="functionary"
+						<td class="greybox"><form:select path="functionary"
 								id="functionary" list="dropdownData.functionaryList"
 								listKey="id" listValue="name" headerKey="-1"
 								headerValue="%{getText('lbl.choose.options')}" /></td>
-					</s:if>
-					<s:else>
+					</c:if>
+					<c:otherwise>
 						<td class="greybox">&nbsp;</td>
 						<td class="greybox">&nbsp;</td>
 					</s:else>
 				</tr>
 				<tr>
-					<s:if test="%{isFieldMandatory('scheme')}">
+					<c:if test="%{isFieldMandatory('scheme')}">
 						<td width="10%" class="bluebox">&nbsp;</td>
-						<td class="bluebox"><s:text name="scheme" />:<span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 							class="mandatory1">*</span></td>
-						<td class="bluebox"><s:select list="dropdownData.schemeList"
+						<td class="bluebox"><form:select list="dropdownData.schemeList"
 								listKey="id" listValue="name" headerKey="0"
 								headerValue="%{getText('lbl.choose.options')}" name="scheme"
 								onchange="updateGrid('scheme.id',document.getElementById('budgetDetail_scheme').selectedIndex);populateSubSchemes(this);"
-								value="scheme.id" id="budgetDetail_scheme"></s:select></td>
-					</s:if>
-					<s:if test="%{isFieldMandatory('subScheme')}">
+								value="scheme.id" id="budgetDetail_scheme"></form:select></td>
+					</c:if>
+					<c:if test="%{isFieldMandatory('subScheme')}">
 						<egov:ajaxdropdown id="subScheme" fields="['Text','Value']"
 							dropdownId="budgetDetail_subScheme"
 							url="budget/budgetDetail-ajaxLoadSubSchemes.action"
 							afterSuccess="onHeaderSubSchemePopulation" />
-						<td class="bluebox"><s:text name="subScheme" />:<span
+						<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 							class="mandatory1">*</span></td>
-						<td class="bluebox"><s:select
+						<td class="bluebox"><form:select
 								list="dropdownData.subschemeList" listKey="id" listValue="name"
 								headerKey="0" headerValue="%{getText('lbl.choose.options')}" name="subScheme"
 								onchange="updateGrid('subScheme.id',document.getElementById('budgetDetail_subScheme').selectedIndex)"
-								value="subScheme.id" id="budgetDetail_subScheme"></s:select></td>
-					</s:if>
+								value="subScheme.id" id="budgetDetail_subScheme"></form:select></td>
+					</c:if>
 				</tr>
 				<tr>
-					<s:if test="%{isFieldMandatory('boundary')}">
-						<td class="greybox"><s:text name="field"/>:<span
+					<c:if test="%{isFieldMandatory('boundary')}">
+						<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 							class="mandatory1">*</span></td>
-						<td class="greybox"><s:select list="dropdownData.fieldList"
+						<td class="greybox"><form:select list="dropdownData.fieldList"
 								listKey="id" listValue="name" headerKey="0"
 								headerValue="%{getText('lbl.choose.options')}" name="boundary"
 								onchange="updateGrid('boundary.id',document.getElementById('budgetDetail_boundary').selectedIndex)"
-								value="boundary.id" id="budgetDetail_boundary"></s:select></td>
-					</s:if>
+								value="boundary.id" id="budgetDetail_boundary"></form:select></td>
+					</c:if>
 				</tr>
 				<tr>
-					<td class="bluebox" width="10%"><s:text name="lbl.account.type"/> :</td>
-					<td class="bluebox"><s:select name="accountType"
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --> :</td>
+					<td class="bluebox"><form:select path="accountType"
 							id="accountType" list="dropdownData.accountTypeList"
 							headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
-					<td class="bluebox" width="10%"><s:text name="report.budged.head"/> :</td>
-					<td class="bluebox"><s:select name="budgetGroup"
+					<td class="bluebox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --> :</td>
+					<td class="bluebox"><form:select path="budgetGroup"
 							value="%{budgetGroup.id}" id="budgetGroup"
 							list="dropdownData.budgetGroupList" listKey="id" listValue="name"
 							headerKey="-1" headerValue="%{getText('lbl.choose.options')}" /></td>
 				</tr>
 				<tr>
-					<td class="greybox" width="10%"><s:text name="report.asOnDate"/> :<span
+					<td class="greybox" width="10%"><!-- TODO: Manual migration required for custom Struts tag --> :<span
 						class="mandatory1">*</span></td>
 
 					<td class="greybox"><s:date name="asOnDate" var="asOnDateId"
-							format="dd/MM/yyyy" /> <s:textfield id="asOnDate"
+							format="dd/MM/yyyy" /> <form:input id="asOnDate"
 							name="asOnDate" value="%{asOnDateId}"
 							onkeyup="DateFormat(this,this.value,event,false,'3')"
 							placeholder="DD/MM/YYYY" cssClass="form-control datepicker"
@@ -279,15 +281,15 @@ function resetSubmit()
 			<br />
 			<br />
 			<div class="buttonbottom">
-				<input type="submit" value="<s:text name='lbl.search'/>" class="buttonsubmit"
+				<input type="submit" value="<!-- TODO: Manual migration required for custom Struts tag -->" class="buttonsubmit"
 					onclick="return getData();" /> &nbsp <input name="button"
-					type="submit" class="button" id="button" value="<s:text name='lbl.reset'/>"
-					onclick="resetSubmit();" /> <input type="button" value="<s:text name='lbl.close'/>"
+					type="submit" class="button" id="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
+					onclick="resetSubmit();" /> <input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.parent.postMessage('close','*');window.close();" class="button" />
 			</div>
 	</div>
 
-	</s:form>
+	</form:form>
 
 	<div id="results"><jsp:include
 			page="./budgetVarianceReport-results.jsp"></jsp:include>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -73,7 +75,7 @@
 				<div class="form-group">
 						<label for="field-1" class="col-sm-2 control-label"><spring:message code="lbl.onlinepayment.districtname" /></label>
 						<div class="col-sm-3 add-margin">
-							<form:select name="districtname" id="districtname" path=""
+							<form:select path="districtname" id="districtname" path=""
 								cssClass="form-control" cssErrorClass="form-control error">
 								<form:option value="">
 									<spring:message code="lbl.select" />
@@ -85,7 +87,7 @@
 						
 						<label for="field-1" class="col-sm-2 control-label"><spring:message code="lbl.onlinepayment.ulbname" /></label>
 						<div class="col-sm-3 add-margin">
-							<form:select name="ulbname" id="ulbname" path=""
+							<form:select path="ulbname" id="ulbname" path=""
 								cssClass="form-control" cssErrorClass="form-control error">
 								<form:option value="">
 									<spring:message code="lbl.select" />
@@ -99,7 +101,7 @@
 								code="lbl.fromDate" /></label>
 						<div class="col-sm-3 add-margin">
 						<fmt:formatDate value="${fromdate}" var="formatfromdate" pattern="dd/MM/yyyy"/>
-							<form:input path="" name="fromdate" id="fromdate"
+							<form:input path="" path="fromdate" id="fromdate"
 								cssClass="form-control datepicker" value="${formatfromdate}"
 								cssErrorClass="form-control error" />
 						</div>
@@ -107,7 +109,7 @@
 								code="lbl.toDate" /></label>
 						<div class="col-sm-3 add-margin">
 						<fmt:formatDate value="${todate}" var="formattodate" pattern="dd/MM/yyyy"/>
-							<form:input path="" name="todate" id="todate"
+							<form:input path="" path="todate" id="todate"
 								cssClass="form-control datepicker" value="${formattodate}"
 								cssErrorClass="form-control error" />
 						</div>
@@ -116,7 +118,7 @@
 						<label for="field-1" class="col-sm-2 control-label"><spring:message
 								code="lbl.onlinepayment.transid" /></label>
 						<div class="col-sm-3 add-margin">
-							<form:input path="" name="transid" id="transid"
+							<form:input path="" path="transid" id="transid"
 								class="form-control patternvalidation" data-pattern="number" value="${transid}"
 								cssErrorClass="form-control error" />
 						</div>

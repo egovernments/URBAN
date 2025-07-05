@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,10 +56,10 @@
 function openDeptWiseIEWithBudget(scheduleId,scheduleName)
 {
 var url="/services/EGF/report/functionwiseIE!deptWiseIEWithBudget.action?";
-url=url+"&"+'model.incExp=<s:property value="model.incExp"/>';
-url=url+"&"+'model.fund.id=<s:property value="model.fund.id"/>';
-url=url+"&"+'model.function.id=<s:property value="model.function.id"/>';
-url=url+"&"+'model.asOnDate=<s:property value="model.asOnDate"/>';
+url=url+"&"+'model.incExp=${model.incExp}';
+url=url+"&"+'model.fund.id=${model.fund.id}';
+url=url+"&"+'model.function.id=${model.function.id}';
+url=url+"&"+'model.asOnDate=${model.asOnDate}';
 url=url+"&"+'model.FIEscheduleId='+scheduleId;
 url=url+"&"+'model.scheduleName='+scheduleName;    
 window.open(url,"DeptWiseIEReprt","height=650,width=900,scrollbars=yes,left=20,top=20,status=yes");
@@ -66,10 +68,10 @@ window.open(url,"DeptWiseIEReprt","height=650,width=900,scrollbars=yes,left=20,t
 function generateReport(type)
 {
 var url="/services/EGF/report/functionwiseIE!exportMajorAndMinorCodewise.action?";
-url=url+"&"+'model.incExp=<s:property value="model.incExp"/>';
-url=url+"&"+'model.fund.id=<s:property value="model.fund.id"/>';
-url=url+"&"+'model.function.id=<s:property value="model.function.id"/>';
-url=url+"&"+'model.asOnDate=<s:property value="model.asOnDate"/>';
+url=url+"&"+'model.incExp=${model.incExp}';
+url=url+"&"+'model.fund.id=${model.fund.id}';
+url=url+"&"+'model.function.id=${model.function.id}';
+url=url+"&"+'model.asOnDate=${model.asOnDate}';
 url=url+"&"+'model.exportType='+type;
 window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=yes,left=20,top=20,status=yes");
 }
@@ -77,12 +79,12 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 </script>
 </head>
 <body>
-	<s:form name="temp">
-		<s:if test='%{ieWithBudgetList.size()==0}'>
+	<form:form name="temp">
+		<c:if test='%{ieWithBudgetList.size()==0}'>
 			<div class="subheadsmallnew">No Data Found</div>
-		</s:if>
-		<s:else>
-			<s:if test='%{model.incExp=="E"}'>
+		</c:if>
+		<c:otherwise>
+			<c:if test='%{model.incExp=="E"}'>
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td>
@@ -101,7 +103,7 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 									<tr>
 										<td colspan="11">
 											<div class="subheadsmallnew">
-												<strong><s:property value="heading" /></strong>
+												<strong>${heading}</strong>
 											</div>
 										</td>
 									</tr>
@@ -131,179 +133,179 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 											(Rs)</th>
 										<th class="bluebgheadtd">Balance (Rs)</th>
 									</tr>
-									<s:set var="i" value="0" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 
 
-									<s:iterator value="ieWithBudgetList" status="stat" var="p">
-										<s:if test="%{!isZero()}">
-											<s:set var="i" value="#i+1" />
+									<c:forEach value="ieWithBudgetList" status="stat" var="p">
+										<c:if test="%{!isZero()}">
+											<!-- TODO: Manual migration required for custom Struts tag -->
 
-											<s:if test="%{#p.getIsMajor()}">
+											<c:if test="%{#p.getIsMajor()}">
 												<tr>
 													<td class='blueborderfortd1'>
 														<div align="center">
-															<s:property value="#i" />
+															${#i}
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="left">
-															<s:property value="accCode" />
+															${accCode}
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="left">
-															<s:property value="name" />
+															${name}
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="left">
 															<a href="#"
-																onclick="openDeptWiseIEWithBudget('<s:property value="FIEscheduleId"/>','<s:property value="schedule"/>')">
-																<s:property value="schedule" />
+																onclick="openDeptWiseIEWithBudget('${FIEscheduleId}','${schedule}')">
+																${schedule}
 															</a>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{beAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{beAppAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{reAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{reAppAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 
 													<td class="blueborderfortd1">
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{pyAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 
 													<td class="blueborderfortd1">
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{amount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class="blueborderfortd1">
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{computedBalance}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 												</tr>
-											</s:if>
-											<s:else>
+											</c:if>
+											<c:otherwise>
 
 												<tr>
 													<td class='blueborderfortd'>
 														<div align="center">
-															<s:property value="#i" />
+															${#i}
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="left">
-															<s:property value="accCode" />
+															${accCode}
 														</div>
 													</td>
 													<td class="blueborderfortd">
 														<div align="left">
-															<s:property value="name" />
+															${name}
 														</div>
 													</td>
 													<td class="blueborderfortd">
 														<div align="left">
 															<a href="#"
-																onclick="openDeptWiseIEWithBudget('<s:property value="FIEscheduleId"/>', '<s:property value="schedule"/>')">
-																<s:property value="schedule" />
+																onclick="openDeptWiseIEWithBudget('${FIEscheduleId}', '${schedule}')">
+																${schedule}
 															</a>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{beAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{beAppAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{reAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{reAppAmount}" />
-															</s:text>
-														</div>
-													</td>
-
-													<td class='blueborderfortd'>
-														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{pyAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{amount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
+															</s:text>
+														</div>
+													</td>
+
+													<td class='blueborderfortd'>
+														<div align="right">
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{computedBalance}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 												</tr>
 											</s:else>
-										</s:if>
-									</s:iterator>
+										</c:if>
+									</c:forEach>
 								</table>
 							</div>
 						</td>
 					</tr>
 				</table>
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td>
@@ -322,7 +324,7 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 									<tr>
 										<td colspan="10">
 											<div class="subheadsmallnew">
-												<strong><s:property value="heading" /></strong>
+												<strong>${heading}</strong>
 											</div>
 										</td>
 									</tr>
@@ -347,49 +349,49 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 										<th class="bluebgheadtd">Receipt(Current Year) (Rs)</th>
 										<th class="bluebgheadtd">Receipt(Previous Year) (Rs)</th>
 									</tr>
-									<s:set var="i" value="0" />
+									<!-- TODO: Manual migration required for custom Struts tag -->
 
 
-									<s:iterator value="ieWithBudgetList" status="stat" var="p">
-										<s:if test="%{!isZero()}">
-											<s:set var="i" value="#i+1" />
+									<c:forEach value="ieWithBudgetList" status="stat" var="p">
+										<c:if test="%{!isZero()}">
+											<!-- TODO: Manual migration required for custom Struts tag -->
 
-											<s:if test="%{#p.getIsMajor()}">
+											<c:if test="%{#p.getIsMajor()}">
 												<tr>
 													<td class='blueborderfortd1'>
 														<div align="center">
-															<s:property value="#i" />
+															${#i}
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="left">
-															<s:property value="accCode" />
+															${accCode}
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="left">
-															<s:property value="name" />
+															${name}
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="left">
 															<a href="#"
-																onclick="openDeptWiseIEWithBudget('<s:property value="scheduleId"/>', '<s:property value="schedule"/>')">
-																<s:property value="schedule" />
+																onclick="openDeptWiseIEWithBudget('${scheduleId}', '${schedule}')">
+																${schedule}
 															</a>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{beAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{reAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
@@ -397,57 +399,57 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{amount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd1'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{pyAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 												</tr>
-											</s:if>
-											<s:else>
+											</c:if>
+											<c:otherwise>
 
 												<tr>
 													<td class='blueborderfortd'>
 														<div align="center">
-															<s:property value="#i" />
+															${#i}
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="left">
-															<s:property value="accCode" />
+															${accCode}
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="left">
-															<s:property value="name" />
+															${name}
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="left">
 															<a href="#"
-																onclick="openDeptWiseIEWithBudget('<s:property value="FIEscheduleId"/>',' <s:property value="schedule"/>')">
-																<s:property value="schedule" />
+																onclick="openDeptWiseIEWithBudget('${FIEscheduleId}',' ${schedule}')">
+																${schedule}
 															</a>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{beAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{reAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
@@ -455,22 +457,22 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{amount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 													<td class='blueborderfortd'>
 														<div align="right">
-															<s:text name="format.number">
-																<s:param value="%{pyAmount}" />
+															<!-- TODO: Manual migration required for custom Struts tag -->
+																<!-- TODO: Manual migration required for custom Struts tag -->
 															</s:text>
 														</div>
 													</td>
 												</tr>
 											</s:else>
-										</s:if>
-									</s:iterator>
+										</c:if>
+									</c:forEach>
 								</table>
 							</div>
 						</td>
@@ -479,14 +481,14 @@ window.open(url,"MajorAndMinorCodewiseReprt","height=650,width=900,scrollbars=ye
 			</s:else>
 			<jsp:include page="report-filterhidden.jsp" />
 			<input type="hidden" name="model.incExp"
-				value='<s:property value="model.incExp"/>' />
+				value='${model.incExp}' />
 			<div class="buttonbottom">
-				<s:text name="report.export.options" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				: <a href='#' onclick="generateReport('xls')">Excel</a> |<a href='#'
 					onclick="generateReport('pdf')">PDF</a>
 			</div>
 		</s:else>
-	</s:form>
+	</form:form>
 
 </body>
 </html>

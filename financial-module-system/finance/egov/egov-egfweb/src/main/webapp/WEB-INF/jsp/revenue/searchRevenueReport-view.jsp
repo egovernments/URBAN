@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,39 +55,39 @@
 
 <html>
 <head>
-<title><s:text name="Grants Search" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body onload="init()">
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="Search Grants" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="searchRevenueReportForm" action="searchRevenueReport"
+		<form:form name="searchRevenueReportForm" action="searchRevenueReport"
 			theme="simple">
-			<s:hidden name="mode" id="mode" value="%{mode}"></s:hidden>
+			<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr align="center">
 					<td class="greybox" width="10%" align="center">Financial Year<span
 						class="greybox"></span><span class="mandatory">*</span></td>
-					<td class="greybox" align="center"><s:select name="finYearId"
+					<td class="greybox" align="center"><form:select path="finYearId"
 							id="finYearId" list="dropdownData.finanYearList" listKey="id"
 							listValue="finYearRange" headerKey="-1"
 							headerValue="----Choose----" /></td>
 					<td class="greybox" width="10%" align="center">Grant Type<span
 						class="greybox"></span></td>
-					<td class="greybox" align="center"><s:select
+					<td class="greybox" align="center"><form:select
 							name="grantTypeStr" id="grantTypeStr"
 							list="dropdownData.grtTypeList" headerKey="-1"
 							headerValue="----Choose----" value="%{grantTypeStr}" /></td>
 					<td class="greybox" width="10%" align="center">Department<span
 						class="greybox"></span></td>
-					<td class="greybox" align="center"><s:select name="deptId"
+					<td class="greybox" align="center"><form:select path="deptId"
 							id="deptId" list="dropdownData.deptList" listKey="id"
 							listValue="name" headerKey="-1" headerValue="----Choose----" />
 					</td>
@@ -102,7 +104,7 @@
 					onclick="javascript:window.close()" class="button" />
 			</div>
 
-			<s:if test="%{grantsList.size!=0}">
+			<c:if test="%{grantsList.size!=0}">
 				<table width="100%" border="0" align="center" cellpadding="0"
 					cellspacing="0" class="tablebottom">
 
@@ -118,7 +120,7 @@
 							align="center">Grant Type</th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
-					<s:iterator var="fa" value="grantsList" status="f">
+					<c:forEach var="fa" value="grantsList" status="f">
 						<tr>
 
 							<td class="<c:out value="${trclass}"/>"
@@ -126,7 +128,7 @@
 									value="#f.index+1" /></td>
 							<td class="<c:out value="${trclass}"/>"
 								style="text-align: center" align="center"><a href="#"
-								onclick="urlLoad('<s:property value="financialYear.id"/>','<s:property value="department.id"/>','<s:property value="grantType"/>','<s:property value="period"/>');"
+								onclick="urlLoad('${financialYear.id}','${department.id}','${grantType}','${period}');"
 								id="sourceLink" /> <s:property
 									value="financialYear.finYearRange" /> </a></td>
 							<td class="<c:out value="${trclass}"/>"
@@ -144,11 +146,11 @@
 								</c:when>
 							</c:choose>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 
 				</table>
-			</s:if>
-			<s:if test="%{grantsList.size==0}">
+			</c:if>
+			<c:if test="%{grantsList.size==0}">
 				<div id="msgdiv" style="display: block">
 					<table align="center" class="tablebottom" width="80%">
 						<tr>
@@ -157,12 +159,12 @@
 						</tr>
 					</table>
 				</div>
-			</s:if>
+			</c:if>
 
-		</s:form>
+		</form:form>
 		<script>
 	function urlLoad(fyID, depID, grType, prd){
-		<s:if test="%{mode =='edit'}">
+		<c:if test="%{mode =='edit'}">
 			if (grType == 'Central Finance Commission')
 				url = "centralFC!beforeModify.action?model.financialYear.id="+fyID+"&model.department.id="+depID+"&model.grantType="+grType+"&mode=edit";
 			if (grType == 'Entertainment Tax')
@@ -171,8 +173,8 @@
 				url = "stateFC!beforeModify.action?model.financialYear.id="+fyID+"&model.department.id="+depID+"&model.grantType="+grType+"&mode=edit";
 			if (grType == 'Stamp Duty')
 				url = "stampDuty!beforeModify.action?model.financialYear.id="+fyID+"&model.department.id="+depID+"&model.grantType="+grType+"&mode=edit";
-		</s:if>
-		<s:if test="%{mode =='view'}">
+		</c:if>
+		<c:if test="%{mode =='view'}">
 			if (grType == 'Central Finance Commission')
 				url = "centralFC!beforeModify.action?model.financialYear.id="+fyID+"&model.department.id="+depID+"&model.grantType="+grType+"&mode=view";
 			if (grType == 'Entertainment Tax')
@@ -181,7 +183,7 @@
 				url = "stateFC!beforeModify.action?model.financialYear.id="+fyID+"&model.department.id="+depID+"&model.grantType="+grType+"&mode=view";
 			if (grType == 'Stamp Duty')
 				url = "stampDuty!beforeModify.action?model.financialYear.id="+fyID+"&model.department.id="+depID+"&model.grantType="+grType+"&mode=view";
-		</s:if>
+		</c:if>
 		window.open(url,'grantsEdit','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 	}
 	function validateMandatoryFields(){

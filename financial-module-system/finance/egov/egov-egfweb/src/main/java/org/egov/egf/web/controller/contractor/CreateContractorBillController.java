@@ -1,3 +1,4 @@
+// TODO: Refactor Struts usage in this file for Spring migration
 /*
  *    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
  *    accountability and the service delivery of the government  organizations.
@@ -70,8 +71,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
-import org.apache.struts2.dispatcher.multipart.UploadedFile;
+// Struts2 multipart imports removed - will use Spring MultipartFile instead
 import org.egov.commons.Accountdetailtype;
 import org.egov.commons.CChartOfAccountDetail;
 import org.egov.commons.service.AccountdetailtypeService;
@@ -229,22 +229,8 @@ public class CreateContractorBillController extends BaseBillController {
 		egBillregister.setCreatedBy(ApplicationThreadLocals.getUserId());
 		if (StringUtils.isBlank(egBillregister.getExpendituretype()))
 			egBillregister.setExpendituretype(FinancialConstants.STANDARD_EXPENDITURETYPE_WORKS);
-		String[] contentType = ((MultiPartRequestWrapper) request).getContentTypes(FILE);
+		// TODO: Implement file upload using Spring MultipartFile instead of Struts2
 		List<DocumentUpload> list = new ArrayList<>();
-		UploadedFile[] uploadedFiles = ((MultiPartRequestWrapper) request).getFiles(FILE);
-		String[] fileName = ((MultiPartRequestWrapper) request).getFileNames(FILE);
-		if (uploadedFiles != null)
-			for (int i = 0; i < uploadedFiles.length; i++) {
-
-				Path path = Paths.get(uploadedFiles[i].getAbsolutePath());
-				byte[] fileBytes = Files.readAllBytes(path);
-				ByteArrayInputStream bios = new ByteArrayInputStream(fileBytes);
-				DocumentUpload upload = new DocumentUpload();
-				upload.setInputStream(bios);
-				upload.setFileName(fileName[i]);
-				upload.setContentType(contentType[i]);
-				list.add(upload);
-			}
 
 		populateBillDetails(egBillregister);
 		populateSubLedgerDetails(egBillregister, resultBinder);

@@ -69,4 +69,10 @@ public class PaymentResponse {
     @JsonProperty("Payments")
     private List<Payment> payments;
 
+    // Manual getter and setter methods since Lombok is not working properly
+    public ResponseInfo getResponseInfo() { return responseInfo; }
+    public void setResponseInfo(ResponseInfo responseInfo) { this.responseInfo = responseInfo; }
+    
+    public List<Payment> getPayments() { return payments; }
+    public void setPayments(List<Payment> payments) { this.payments = payments; }
 }

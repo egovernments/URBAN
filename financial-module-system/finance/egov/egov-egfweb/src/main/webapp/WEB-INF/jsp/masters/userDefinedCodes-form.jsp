@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,33 +54,33 @@
 		<td class="greybox">&nbsp;</td>
 		<td class="greybox" width="20%"><strong><s:text
 					name="subCodeFor" /><span class="mandatory"></span></strong></td>
-		<td class="greybox"><s:select list="dropdownData.userDefCodeList"
+		<td class="greybox"><form:select list="dropdownData.userDefCodeList"
 				id="accEntity.accountdetailtype.id" listKey="id" listValue="name"
 				name="accEntity.accountdetailtype.id" headerKey=""
 				headerValue="---- Choose ----"
-				value="accEntity.accountdetailtype.id"></s:select></td>
+				value="accEntity.accountdetailtype.id"></form:select></td>
 		<td class="greybox" colspan="2">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="bluebox">&nbsp;</td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="userDefCode.code" /><span class="mandatory"></span></strong></td>
-		<td class="bluebox"><s:textfield id="code" name="code"
+		<td class="bluebox"><form:input id="code" path="code"
 				value="%{code}" /></td>
 		<td class="bluebox" width="20%"><strong><s:text
 					name="userDefCode.name" /><span class="mandatory"></span></strong></td>
-		<td class="bluebox"><s:textfield id="name" name="name"
+		<td class="bluebox"><form:input id="name" path="name"
 				value="%{name}" /></td>
 	</tr>
 	<tr>
 		<td class="greybox">&nbsp;</td>
 		<td class="greybox" width="20%"><strong><s:text
 					name="userDefCode.Desc" /></strong></td>
-		<td class="greybox"><s:textarea name="narration" id="narration"
+		<td class="greybox"><form:textarea path="narration" id="narration"
 				rows="3" cols="60" /></td>
 		<td class="greybox" width="20%"><strong><s:text
 					name="userDefCode.active" /></strong></td>
-		<td class="greybox"><s:checkbox name="isactive" id="isactive" />
+		<td class="greybox"><form:checkbox path="isactive" id="isactive" />
 		</td>
 	</tr>
 </table>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -49,61 +51,61 @@
 <%@ include file="/includes/taglibs.jsp"%>
 <html>
 <head>
-<title>  <s:text name="service.master.search.header"></s:text> </title>
+<title>  <!-- TODO: Manual migration required for custom Struts tag --></s:text> </title>
 
 </head>
 
 <body>
-<s:form theme="simple" name="serviceDetailsForm" method="post">
-<s:push value="model">
+<form:form theme="simple" name="serviceDetailsForm" method="post">
+<!-- TODO: Manual migration required for custom Struts tag -->
 	 <div class="errorstyle" id="error_area" style="display:none;"></div>
 	<div class="formmainbox">
-	<div class="subheadnew"><s:text name="service.list.service"></s:text> </div>
+	<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --></s:text> </div>
 	
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td class="bluebox"  style="font-size:14px;"> <b><s:text name="service.master.search.category"></s:text></b> : &nbsp;&nbsp;&nbsp; <s:property value="model.serviceCategory.name"/>  </td>
+			<td class="bluebox"  style="font-size:14px;"> <b><!-- TODO: Manual migration required for custom Struts tag --></s:text></b> : &nbsp;&nbsp;&nbsp; ${model.serviceCategory.name}  </td>
 			<td class="bluebox"></td>
-			<s:hidden id="serviceCategoryId" name="serviceCategoryId" value="%{serviceCategory.id}"/>
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</tr>
 	</table>
 	<br> <br>
-	<s:if test="%{null != serviceCategory.services && serviceCategory.services.size() >0}">
+	<c:if test="%{null != serviceCategory.services && serviceCategory.services.size() >0}">
 	<div align="center">
 		<table width="100%" border="1"colspan="5" >
 
 		
 		<tr>
-			<th class="bluebgheadtd" width="5%"> <s:text name="service.select.table.header"/></th>
-			<th class="bluebgheadtd" width="5%" style="text-align:left;" > <s:text name="service.slNo.table.header"/></th>
-			<th class="bluebgheadtd" width="20"> <s:text name="service.create.code"/></th>
-			<th class="bluebgheadtd" style="text-align:left;" width="40%"> <s:text name="service.create.name"/></th>
-			<th class="bluebgheadtd" width="5%"> <s:text name="service.master.enable"/></th>
+			<th class="bluebgheadtd" width="5%"> <!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="5%" style="text-align:left;" > <!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="20"> <!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" style="text-align:left;" width="40%"> <!-- TODO: Manual migration required for custom Struts tag --></th>
+			<th class="bluebgheadtd" width="5%"> <!-- TODO: Manual migration required for custom Struts tag --></th>
 		
 		</tr>
-		<s:iterator var="p" value="%{serviceCategory.services}" status="s"> 
+		<c:forEach var="p" value="%{serviceCategory.services}" status="s"> 
 				<tr>
-					<s:hidden id="serviceId" name="serviceId"/>
-					<td width="5%"  class="bluebox"><input type="radio" onclick='dom.get("serviceId").value = <s:property value="id"/>'  name="radioButton1"/>  </td>
-					<td width="5%"  class="bluebox"> <s:property value="#s.index+1" />  </td>
-					<td width="30%"  class="bluebox"><div  align="center"><s:property value="code"/></div></td>
-					<td width="6%"  class="bluebox"><div  align="left"><s:property value="name"/></div></td>
-					<td width="10%"  class="bluebox" ><div  align="center"><s:if test="isEnabled" ><s:text name="text.yes"></s:text> </s:if><s:else><s:text name="text.no"></s:text> </s:else> </div></td>
+					<!-- TODO: Manual migration required for custom Struts tag -->
+					<td width="5%"  class="bluebox"><input type="radio" onclick='dom.get("serviceId").value = ${id}'  name="radioButton1"/>  </td>
+					<td width="5%"  class="bluebox"> ${#s.index+1}  </td>
+					<td width="30%"  class="bluebox"><div  align="center">${code}</div></td>
+					<td width="6%"  class="bluebox"><div  align="left">${name}</div></td>
+					<td width="10%"  class="bluebox" ><div  align="center"><c:if test="isEnabled" ><!-- TODO: Manual migration required for custom Struts tag --></s:text> </c:if><c:otherwise><!-- TODO: Manual migration required for custom Struts tag --></s:text> </s:else> </div></td>
 				</tr>
-		</s:iterator>
+		</c:forEach>
 
 	</table>	
 	</div>
-	</s:if>
-	<s:else>
+	</c:if>
+	<c:otherwise>
 		<div align="center">
-	 		<s:text name="serviceDetails.createservice.message"/>
+	 		<!-- TODO: Manual migration required for custom Struts tag -->
 	 	</div>
 	</s:else>
 	</div>
 	
 	<div class="buttonbottom">
-		<s:if test="%{null != serviceCategory.services && serviceCategory.services.size() >0}">
+		<c:if test="%{null != serviceCategory.services && serviceCategory.services.size() >0}">
 			<label>
 				<s:submit type="submit" cssClass="buttonsubmit" id="button"
 					value="View" 
@@ -115,32 +117,32 @@
 					value="Modify" 
 					onclick="return validate('serviceDetails-beforeModify.action');" />
 			</label>	
-			</s:if>
-			<s:else>
-				<input type="button" id="back" value="Back" onclick="window.location='${pageContext.request.contextPath}/service/serviceDetails-newform.action?serviceCategoryId=<s:property value='%{serviceCategoryId}'/>';"  class="buttonsubmit"/>
+			</c:if>
+			<c:otherwise>
+				<input type="button" id="back" value="Back" onclick="window.location='${pageContext.request.contextPath}/service/serviceDetails-newform.action?serviceCategoryId=<!-- TODO: Manual migration required for custom Struts tag -->';"  class="buttonsubmit"/>
 			</s:else>
 			<label>
 				<input type="button"  class="buttonsubmit" id="button"
 					value="Create Service" 
-					onclick="window.location='${pageContext.request.contextPath}/service/serviceDetails-beforeCreate.action?serviceCategoryId=<s:property value='%{serviceCategoryId}'/>';" />
+					onclick="window.location='${pageContext.request.contextPath}/service/serviceDetails-beforeCreate.action?serviceCategoryId=<!-- TODO: Manual migration required for custom Struts tag -->';" />
 			</label>&nbsp;
 			<label>
 			<input type="button" id="Close" value="Close" onclick="javascript:window.close()" class="buttonsubmit"/>
 			</label>	
 		</div>
 </s:push>
-</s:form>
+</form:form>
 <script>
 	function validate(obj){
 		dom.get('error_area').innerHTML = '';
 		dom.get("error_area").style.display="none";
-		<s:if test="%{null != serviceCategory.services && serviceCategory.services.size() >0}">
+		<c:if test="%{null != serviceCategory.services && serviceCategory.services.size() >0}">
 			if(dom.get('serviceId').value == "") {
-				dom.get("error_area").innerHTML = '<s:text name="service.error.select" />';
+				dom.get("error_area").innerHTML = '<!-- TODO: Manual migration required for custom Struts tag -->';
 				dom.get("error_area").style.display="block";
 				return false;
 			}
-		</s:if>
+		</c:if>
 		document.forms[0].action=obj;
 		document.forms[0].submit;
 	}

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -54,7 +56,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="departmentwise.expenditure.report" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 
 <script>
@@ -158,15 +160,15 @@ function populateAssetCode(obj){
 </script>
 <body onload="onLoadTask();">
 	<div class="subheadnew">
-		<s:text name="departmentwise.expenditure.report" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
-	<s:form name="departmentwiseExpenditureReport"
+	<form:form name="departmentwiseExpenditureReport"
 		action="departmentwiseExpenditureReport" theme="simple">
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value='departmentwiseExpenditureReport' />
 		</jsp:include>
-		<span class="mandatory" id="error"> <s:actionerror /> <s:fielderror />
-			<s:actionmessage />
+		<span class="mandatory" id="error"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 
 
@@ -177,20 +179,20 @@ function populateAssetCode(obj){
 				<td class="greybox" width="6%"></td>
 				<td class="greybox" width="6%">
 					<div id="fundlbl">
-						<s:text name="report.fund" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						<span id="fundStar" class="mandatory">*</span>
 					</div>
-				<td class="greybox"><s:select name="fundId" id="fundId"
+				<td class="greybox"><form:select path="fundId" id="fundId"
 						list="dropdownData.fundDropDownList" listKey="id" listValue="name"
 						headerKey="" headerValue="----Choose----"
 						onChange="populateAssetCode(this);" value="%{deptReport.fundId}" /></td>
 
 				<td class="greybox" width="6%">
 					<div id="reportlbl" width="4%">
-						<s:text name="reporttype" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 						<span id="repStar" class="mandatory">*</span>
 					</div>
-				<td class="greybox"><s:select name="reportType"
+				<td class="greybox"><form:select path="reportType"
 						id="reportType" list="#{'daterange':'Date Range','Month':'Month'}"
 						headerKey="0" headerValue="----Choose----"
 						onChange="changeType(this)" value="%{deptReport.reportType}" /></td>
@@ -211,7 +213,7 @@ function populateAssetCode(obj){
 							Expenditure on<span class="mandatory">
 						</div>
 					</td>
-					<td class="bluebox"><s:select name="assetCode" id="assetCode"
+					<td class="bluebox"><form:select path="assetCode" id="assetCode"
 							list="#{'0':'---Choose---','412':'CWIP','410':'Fixed Asset'}"
 							headerKey="0" value="%{deptReport.assetCode}" /></td>
 					<td class="bluebox" width="6%">
@@ -228,10 +230,10 @@ function populateAssetCode(obj){
 				border="0">
 				<tr>
 					<td class="bluebox" width="6%"></td>
-					<td class="bluebox" width="6%"><s:text name="report.fromdate" /><span
+					<td class="bluebox" width="6%"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="bluebox"><s:date name="fromDate"
-							format="dd/MM/yyyy" var="fromDateId" /> <s:textfield
+							format="dd/MM/yyyy" var="fromDateId" /> <form:input
 							name="fromDate" id="fromDate" value="%{fromDateId}"
 							maxlength="10"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
@@ -241,10 +243,10 @@ function populateAssetCode(obj){
 					</td>
 					<td class="bluebox" width="6%">
 					<td class="bluebox" width="6%"></td>
-					<td class="bluebox"><s:text name="report.todate" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="bluebox"><s:date name="toDate" format="dd/MM/yyyy"
-							var="toDateId" /> <s:textfield name="toDate" id="toDate"
+							var="toDateId" /> <form:input path="toDate" id="toDate"
 							value="%{toDateId}" maxlength="10"
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
 						href="javascript:show_calendar('departmentwiseExpenditureReport.toDate',null,null,'DD/MM/YYYY');"
@@ -266,17 +268,17 @@ function populateAssetCode(obj){
 					<td class="bluebox" width="6%">
 
 						<div id="monlbl">
-							<s:text name="report.month" />
+							<!-- TODO: Manual migration required for custom Struts tag -->
 							<span class="mandatory">*</span>
 						</div>
 					</td>
-					<td class="bluebox"><s:select name="month" id="month"
+					<td class="bluebox"><form:select path="month" id="month"
 							list="#{'Select':'---Choose---','01':'January','02':'February','03':'March','04':'April','05':'May','06':'June','07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'}"
 							headerKey="0" value="%{deptReport.month}" /></td>
 					<td class="bluebox" width="6%">
 					<td class="bluebox" width="4%">
-					<td class="bluebox"><s:text name="report.financialYear" />:<span
-						class="mandatory">*</span> <s:select name="financialYearId"
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
+						class="mandatory">*</span> <form:select path="financialYearId"
 							id="financialYearId" list="dropdownData.financialYearList"
 							listKey="id" listValue="finYearRange" headerKey="0"
 							headerValue="----Choose----"
@@ -306,6 +308,6 @@ function populateAssetCode(obj){
 		</div>
 
 
-	</s:form>
+	</form:form>
 </body>
 </html>

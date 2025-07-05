@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -50,9 +52,9 @@
 	src="../resources/javascript/jsCommonMethods.js?rnd=${app_release_no}"></script>
 <%@ include file="balanceSheetReport-form.jsp"%>
 <div class="buttonbottom">
-	<s:text name="report.export.options" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 	: <a
-		href='/services/EGF/report/balanceSheetReport-generateBalanceSheetScheduleXls.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.fund.id=<s:property value="model.fund.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.field.id=<s:property value="model.field.id"/>&majorCode=<s:property value="#parameters['majorCode']" />'>Excel</a>
+		href='/services/EGF/report/balanceSheetReport-generateBalanceSheetScheduleXls.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.fund.id=${model.fund.id}&model.asOndate=${model.asOndate}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.field.id=${model.field.id}&majorCode=${#parameters['majorCode']}'>Excel</a>
 	| <a
-		href='/services/EGF/report/balanceSheetReport-generateBalanceSheetSchedulePdf.action?showDropDown=false&model.period=<s:property value="model.period"/>&model.currency=<s:property value="model.currency"/>&model.financialYear.id=<s:property value="model.financialYear.id"/>&model.department.id=<s:property value="model.department.id"/>&model.fund.id=<s:property value="model.fund.id"/>&model.asOndate=<s:property value="model.asOndate"/>&model.function.id=<s:property value="model.function.id"/>&model.functionary.id=<s:property value="model.functionary.id"/>&model.field.id=<s:property value="model.field.id"/>&majorCode=<s:property value="#parameters['majorCode']" />'>PDF</a>
+		href='/services/EGF/report/balanceSheetReport-generateBalanceSheetSchedulePdf.action?showDropDown=false&model.period=${model.period}&model.currency=${model.currency}&model.financialYear.id=${model.financialYear.id}&model.department.id=${model.department.id}&model.fund.id=${model.fund.id}&model.asOndate=${model.asOndate}&model.function.id=${model.function.id}&model.functionary.id=${model.functionary.id}&model.field.id=${model.field.id}&majorCode=${#parameters['majorCode']}'>PDF</a>
 </div>

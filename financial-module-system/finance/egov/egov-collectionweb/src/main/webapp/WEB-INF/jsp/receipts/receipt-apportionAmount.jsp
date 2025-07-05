@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
@@ -53,13 +55,13 @@
 {
 "ResultSet": {
     "Result":[
-    <s:iterator var="s" value="receiptDetailsforbillApportioning" status="status">  
-    {"OrderNumber":"<s:property value="%{ordernumber}" />",
-    "CreditAmount":"<s:property value="%{cramount}" />",
-    "DebitAmount":"<s:property value="%{dramount}" />",
-    "CrAmountToBePaid":"<s:property value="%{cramountToBePaid}" />"	
-    }<s:if test="!#status.last">,</s:if>
-    </s:iterator>       
+    <c:forEach var="s" value="receiptDetailsforbillApportioning" status="status">  
+    {"OrderNumber":"${%{ordernumber}}",
+    "CreditAmount":"${%{cramount}}",
+    "DebitAmount":"${%{dramount}}",
+    "CrAmountToBePaid":"${%{cramountToBePaid}}"	
+    }<c:if test="!#status.last">,</c:if>
+    </c:forEach>       
     ]
   }
 }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,36 +55,36 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:text name="tneb.download.text.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <script type="text/javascript" src="/services/EGF/resources/javascript/helper.js?rnd=${app_release_no}"></script>
 <body>
-	<s:actionmessage />
-	<s:actionerror />
-	<s:form name="downloadTextForm" action="bankAdviceReport"
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<!-- TODO: Manual migration required for custom Struts tag -->
+	<form:form name="downloadTextForm" action="bankAdviceReport"
 		theme="simple">
-		<s:token />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div class="formmainbox"></div>
 		<div class="formheading" />
 		<div class="subheadnew">
-			<s:text name="tneb.download.text.title" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<br />
 		<table align="center" width="100%" cellspacing="0">
 			<tr>
 				<td width="40%"></td>
-				<td width="10%"><s:text name="tneb.month" /><span
+				<td width="10%"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory">*</span> :</td>
-				<td width="10%"><s:select name="month" id="month"
+				<td width="10%"><form:select path="month" id="month"
 						list="%{fullNameMonthMap}" headerKey=""
 						headerValue="----Choose----" value="%{month}" /></td>
 				<td width="40%"></td>
 			</tr>
 			<tr>
 				<td width="40%"></td>
-				<td width="10%"><s:text name="tneb.financialYear" /><span
+				<td width="10%"><!-- TODO: Manual migration required for custom Struts tag --><span
 					class="mandatory">*</span> :</td>
-				<td width="10%"><s:select name="financialYearId"
+				<td width="10%"><form:select path="financialYearId"
 						id="financialYearId" list="%{dropdownData.financialYearsList}"
 						listKey="id" listValue="finYearRange" headerKey=""
 						headerValue="----Choose----" value="%{financialYearId}" /></td>
@@ -90,7 +92,7 @@
 			</tr>
 
 		</table>
-		<s:hidden name="mode" id="mode" value="%{mode}" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<div class="buttonbottom" align="center">
 			<table border="0px" cellpadding="0" cellspacing="10"
 				class="buttonbottom">
@@ -103,7 +105,7 @@
 				</tr>
 			</table>
 		</div>
-		<s:if test="%{instrumentHeaderList.size!=0}">
+		<c:if test="%{instrumentHeaderList.size!=0}">
 			<table width="100%" border="0" align="center" cellpadding="0"
 				cellspacing="0">
 				<tr>
@@ -122,20 +124,20 @@
 						align="center">Download Link</th>
 				</tr>
 				<c:set var="trclass" value="greybox" />
-				<s:iterator var="instrumentHeader" value="instrumentHeaderList"
+				<c:forEach var="instrumentHeader" value="instrumentHeaderList"
 					status="f">
 					<tr>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
-							align="center" width="10%"><s:property value="#f.index+1" /></td>
+							align="center" width="10%">${#f.index+1}</td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
 							align="center" width="15%"><s:property
 								value="transactionNumber" /></td>
 						<td class="<c:out value="${trclass}"/>" style="text-align: center"
 							align="center" width="15%"><a href="#"
-							onclick="urlLoad('<s:property value="%{id}" />',
-							'<s:property value="%{bankAccountId.id}" />',
-							'<s:property value="%{bankAccountId.bankbranch.id}" />',
-							'<s:property value="%{bankAccountId.bankbranch.bank.id}" />');"
+							onclick="urlLoad('${%{id}}',
+							'${%{bankAccountId.id}}',
+							'${%{bankAccountId.bankbranch.id}}',
+							'${%{bankAccountId.bankbranch.bank.id}}');"
 							id="sourceLink" /> Download TXT </a></td>
 						<c:choose>
 							<c:when test="${trclass=='greybox'}">
@@ -146,12 +148,12 @@
 							</c:when>
 						</c:choose>
 					</tr>
-				</s:iterator>
+				</c:forEach>
 
 			</table>
-		</s:if>
-		<s:if test="%{mode.equalsIgnoreCase('search')}">
-			<s:if test="%{instrumentHeaderList.size==0}">
+		</c:if>
+		<c:if test="%{mode.equalsIgnoreCase('search')}">
+			<c:if test="%{instrumentHeaderList.size==0}">
 				<div id="msgdiv" style="display: block">
 					<table align="center" class="tablebottom" width="80%">
 						<tr>
@@ -160,9 +162,9 @@
 						</tr>
 					</table>
 				</div>
-			</s:if>
-		</s:if>
-	</s:form>
+			</c:if>
+		</c:if>
+	</form:form>
 	<script>
 		
 		function validate() {			

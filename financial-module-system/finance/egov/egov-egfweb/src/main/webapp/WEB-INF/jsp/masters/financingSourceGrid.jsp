@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -186,27 +188,27 @@ function addDataToGridWithsubscheme(){
 var makeFundSourceGridTable = function() {
    var fundSourceGridColumns = [ 
 	{key:"serialNo",label:'Sl no',width:30,formatter:createLabelSamll(FUNDSOUCELIST,".serialNo")},	
-	{key:"fsrcTypL",label:'<s:text name="masters.finsrc.fundingType"/>',width:110, formatter:createLabelSamll(FUNDSOUCELIST,".fsrcTypLabel")},
-	{key:"subschemeL",label:'<s:text name="masters.subscheme"/>',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".subscemeLabel")},
-	{key:"codeL",label:'<s:text name="masters.funsrc.code"/>',width:70, formatter:createLabelSamll(FUNDSOUCELIST,".codeLable")},
-	{key:"nameL",label:'<s:text name="masters.funsrc.name"/>',width:70, formatter:createLabelSamll(FUNDSOUCELIST,".nameLable")},
-	{key:"srcAmtL",label:'<s:text name="masters.finsrc.srcAmount"/>',width:90, formatter:createLabelSamll(FUNDSOUCELIST,".srcAmtLabel")},
+	{key:"fsrcTypL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:110, formatter:createLabelSamll(FUNDSOUCELIST,".fsrcTypLabel")},
+	{key:"subschemeL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".subscemeLabel")},
+	{key:"codeL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:70, formatter:createLabelSamll(FUNDSOUCELIST,".codeLable")},
+	{key:"nameL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:70, formatter:createLabelSamll(FUNDSOUCELIST,".nameLable")},
+	{key:"srcAmtL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:90, formatter:createLabelSamll(FUNDSOUCELIST,".srcAmtLabel")},
 	{key:"isactiveL",label:'Is Active',width:50, formatter:createLabelSamll(FUNDSOUCELIST,".isactiveL")},
-	{key:"instNameL",label:'<s:text name="masters.finsrc.fininstname"/>',width:210, formatter:createLabelSamll(FUNDSOUCELIST,".instNameLabel")},
-	{key:"rtofIntrL",label:'<s:text name="masters.finsrc.RtOfIntr"/>',width:90, formatter:createLabelSamll(FUNDSOUCELIST,".rtofIntrLabel")},
-	{key:"loanprdL",label:'<s:text name="masters.finsrc.prdOfLoan"/>',width:80, formatter:createLabelSamll(FUNDSOUCELIST,".loanprdLabel")},
-	{key:"mrtmPrdL",label:'<s:text name="masters.finsrc.moratoriumPrd"/>',width:80, formatter:createLabelSamll(FUNDSOUCELIST,".mrtmPrdLabel")},
-	{key:"rePymtFrqL",label:'<s:text name="masters.finsrc.rePymtFrq"/>',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".repymntLabel")},
-	{key:"noofinstL",label:'<s:text name="masters.finsrc.noOfInstalments"/>',width:160,formatter:createLabelSamll(FUNDSOUCELIST,".noOfInstLabel")},
-	{key:"GovtOrderL",label:'<s:text name="masters.finsrc.GovtOrder"/>',width:100, formatter:createLabelSamll(FUNDSOUCELIST,".govtOrderLabel")},
-	{key:"GovtOrderDateL",label:'<s:text name="masters.finsrc.GovtOrderDate"/>',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".govtDateLabel")},
-	{key:"dpCodeNumL",label:'<s:text name="masters.finsrc.dpCodeNum"/>',width:180, formatter:createLabelSamll(FUNDSOUCELIST,".dpCodeNumLabel")},
-	{key:"finINmL",label:'<s:text name="masters.finsrc.finInstletterNum"/>',width:220, formatter:createLabelSamll(FUNDSOUCELIST,".finInstLetNumLabel")},
-	{key:"finIDtL",label:'<s:text name="masters.finsrc.finInstLetterDt"/>',width:220, formatter:createLabelSamll(FUNDSOUCELIST,".finInstLetDtLabel")},
-	{key:"finINumL",label:'<s:text name="masters.finsrc.finInstSchmNum"/>',width:330, formatter:createLabelSamll(FUNDSOUCELIST,".finInstSchmNumLabel")},
-	{key:"finISDtL",label:'<s:text name="masters.finsrc.finInstSchDt"/>',width:330, formatter:createLabelSamll(FUNDSOUCELIST,".finInstSchmDtLabel")},
-	{key:"amtPerctgL",label:'<s:text name="masters.finsrc.amtPerc"/>',width:120, formatter:createLabelSamll(FUNDSOUCELIST,".amtPerctgLabel")},
-	{key:"bankAccL",label:'<s:text name="masters.finsrc.bankAcc"/>',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".accNumLabel")},
+	{key:"instNameL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:210, formatter:createLabelSamll(FUNDSOUCELIST,".instNameLabel")},
+	{key:"rtofIntrL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:90, formatter:createLabelSamll(FUNDSOUCELIST,".rtofIntrLabel")},
+	{key:"loanprdL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:80, formatter:createLabelSamll(FUNDSOUCELIST,".loanprdLabel")},
+	{key:"mrtmPrdL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:80, formatter:createLabelSamll(FUNDSOUCELIST,".mrtmPrdLabel")},
+	{key:"rePymtFrqL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".repymntLabel")},
+	{key:"noofinstL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:160,formatter:createLabelSamll(FUNDSOUCELIST,".noOfInstLabel")},
+	{key:"GovtOrderL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:100, formatter:createLabelSamll(FUNDSOUCELIST,".govtOrderLabel")},
+	{key:"GovtOrderDateL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".govtDateLabel")},
+	{key:"dpCodeNumL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:180, formatter:createLabelSamll(FUNDSOUCELIST,".dpCodeNumLabel")},
+	{key:"finINmL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:220, formatter:createLabelSamll(FUNDSOUCELIST,".finInstLetNumLabel")},
+	{key:"finIDtL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:220, formatter:createLabelSamll(FUNDSOUCELIST,".finInstLetDtLabel")},
+	{key:"finINumL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:330, formatter:createLabelSamll(FUNDSOUCELIST,".finInstSchmNumLabel")},
+	{key:"finISDtL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:330, formatter:createLabelSamll(FUNDSOUCELIST,".finInstSchmDtLabel")},
+	{key:"amtPerctgL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:120, formatter:createLabelSamll(FUNDSOUCELIST,".amtPerctgLabel")},
+	{key:"bankAccL",label:'<!-- TODO: Manual migration required for custom Struts tag -->',width:140, formatter:createLabelSamll(FUNDSOUCELIST,".accNumLabel")},
 	
 	
 	{key:'Delete',label:'Delete',formatter:createDeleteImageFormatter("${pageContext.request.contextPath}")},

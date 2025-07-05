@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -58,7 +60,7 @@
 			{key:"id",label:'id',width:100,hidden:true, formatter:createTextFieldFormatter('CFCGtable',GRANTLIST,".id","hidden")},
 			{key:"grants.department",label:'Department'+'<span class="mandatory">*</span>',width:110, formatter:createDepartmentDropDownFormatter('CFCGtable',GRANTLIST,".department.id","text")},
 			{key:"grants.finYear",label:'Financial Year'+'<span class="mandatory">*</span>',width:110, formatter:createFinYearDropDownFormatter('CFCGtable',GRANTLIST,".financialYear.id","text")},
-			{key:"grants.period",label:'<s:text name="revenue.period"/>'+'<span class="mandatory">*</span>',width:110, formatter:createPeriodDropDownFormatter('CFCGtable',GRANTLIST,".period","text")},
+			{key:"grants.period",label:'<!-- TODO: Manual migration required for custom Struts tag -->'+'<span class="mandatory">*</span>',width:110, formatter:createPeriodDropDownFormatter('CFCGtable',GRANTLIST,".period","text")},
             {key:"grants.proceedingsNo",label:'Proceedings No'+'<span class="mandatory">*</span>',width:100, formatter:createTextFieldFormatterWithStyle('CFCGtable',GRANTLIST,".proceedingsNo","width:100px")},
             {key:"proceedingsdate",label:'Proceedings Date<br />(dd/mm/yyyy)'+'<span class="mandatory">*</span>',width:100, formatter:createDateFieldFormatter('CFCGtable',GRANTLIST,".proceedingsDate")},
 			{key:"accGJVvhid",label:'accGJVvhid',width:100,hidden:true, formatter:createTextFieldFormatter('CFCGtable',GRANTLIST,".accrualVoucher.id","hidden")},
@@ -102,54 +104,54 @@
 			}
 		}
 	});
-		<s:iterator value="grantsList" status="stat">
+		<c:forEach value="grantsList" status="stat">
 			grantTableDT.addRow({SlNo:grantTableDT.getRecordSet().getLength()+1,
-				"id":'<s:property value="id"/>',
-				"grants.department":'<s:property value="department.id"/>',
-				"grants.finYear":'<s:property value="financialYear.id"/>',
-				"grants.period":'<s:property value="period"/>',
-				"grants.proceedingsNo":'<s:property value="proceedingsNo"/>',
-				"proceedingsdate":'<s:date name="proceedingsDate" format="dd/MM/yyyy"/>',
-				"accGJVvhid":'<s:property value="accrualVoucher.id"/>',
-				"linkAccrualGJV":'<s:property value="accrualVoucher.voucherNumber"/>',
-				"accrualGJVDate":'<s:date name="accrualVoucher.voucherDate" format="dd/MM/yyyy"/>',
-				"grants.accrualAmount":'<s:property value="accrualAmount"/>',
-				"GJVvhid":'<s:property value="generalVoucher.id"/>',
-				"linkGJV":'<s:property value="generalVoucher.voucherNumber"/>',
-				"GJVDate":'<s:date name="generalVoucher.voucherDate" format="dd/MM/yyyy"/>',
-				"receiptGJVvhid":'<s:property value="receiptVoucher.id"/>',
-				"linkReceiptGJV":'<s:property value="receiptVoucher.voucherNumber"/>',
-				"receiptGJVDate":'<s:date name="receiptVoucher.voucherDate" format="dd/MM/yyyy"/>',
-				"grants.grantAmount":'<s:property value="grantAmount"/>',
-				"insHeaderId":'<s:property value="ihID.id"/>',
-				"cheuqeNo":'<s:property value="ihID.instrumentNumber"/>',
-				"chequeDate":'<s:date name="ihID.instrumentDate" format="dd/MM/yyyy"/>',
-				"grants.remarks":'<s:property value="remarks"/>'
+				"id":'${id}',
+				"grants.department":'${department.id}',
+				"grants.finYear":'${financialYear.id}',
+				"grants.period":'${period}',
+				"grants.proceedingsNo":'${proceedingsNo}',
+				"proceedingsdate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"accGJVvhid":'${accrualVoucher.id}',
+				"linkAccrualGJV":'${accrualVoucher.voucherNumber}',
+				"accrualGJVDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"grants.accrualAmount":'${accrualAmount}',
+				"GJVvhid":'${generalVoucher.id}',
+				"linkGJV":'${generalVoucher.voucherNumber}',
+				"GJVDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"receiptGJVvhid":'${receiptVoucher.id}',
+				"linkReceiptGJV":'${receiptVoucher.voucherNumber}',
+				"receiptGJVDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"grants.grantAmount":'${grantAmount}',
+				"insHeaderId":'${ihID.id}',
+				"cheuqeNo":'${ihID.instrumentNumber}',
+				"chequeDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"grants.remarks":'${remarks}'
 			});
-			var index = '<s:property value="#stat.index"/>';
-			updateYUIGrid(GRANTLIST,'id',index,'<s:property value="id"/>');
-			updateYUIGrid(GRANTLIST,'department.id',index,'<s:property value="department.id"/>');
-			updateYUIGrid(GRANTLIST,'financialYear.id',index,'<s:property value="financialYear.id"/>');
-			updateYUIGrid(GRANTLIST,'period',index,'<s:property value="period"/>');
-			updateYUIGrid(GRANTLIST,'proceedingsNo',index,'<s:property value="proceedingsNo"/>');
-			updateYUIGrid(GRANTLIST,'proceedingsDate',index,'<s:date name="proceedingsDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'accrualVoucher.id',index,'<s:property value="accrualVoucher.id"/>');
-			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherNumber',index,'<s:property value="accrualVoucher.voucherNumber"/>');
-			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherDate',index,'<s:date name="accrualVoucher.voucherDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'accrualAmount',index,'<s:property value="accrualAmount"/>');
-			updateYUIGrid(GRANTLIST,'generalVoucher.id',index,'<s:property value="generalVoucher.id"/>');
-			updateYUIGrid(GRANTLIST,'generalVoucher.voucherNumber',index,'<s:property value="generalVoucher.voucherNumber"/>');
-			updateYUIGrid(GRANTLIST,'generalVoucher.voucherDate',index,'<s:date name="generalVoucher.voucherDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'receiptVoucher.id',index,'<s:property value="receiptVoucher.id"/>');
-			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherNumber',index,'<s:property value="receiptVoucher.voucherNumber"/>');
-			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherDate',index,'<s:date name="receiptVoucher.voucherDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'grantAmount',index,'<s:property value="grantAmount"/>');
-			updateYUIGrid(GRANTLIST,'ihID.id',index,'<s:property value="ihID.id"/>');
-			updateYUIGrid(GRANTLIST,'ihID.instrumentNumber',index,'<s:property value="ihID.instrumentNumber"/>');
-			updateYUIGrid(GRANTLIST,'ihID.instrumentDate',index,'<s:date name="ihID.instrumentDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'remarks',index,'<s:property value="remarks"/>');
+			var index = '${#stat.index}';
+			updateYUIGrid(GRANTLIST,'id',index,'${id}');
+			updateYUIGrid(GRANTLIST,'department.id',index,'${department.id}');
+			updateYUIGrid(GRANTLIST,'financialYear.id',index,'${financialYear.id}');
+			updateYUIGrid(GRANTLIST,'period',index,'${period}');
+			updateYUIGrid(GRANTLIST,'proceedingsNo',index,'${proceedingsNo}');
+			updateYUIGrid(GRANTLIST,'proceedingsDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'accrualVoucher.id',index,'${accrualVoucher.id}');
+			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherNumber',index,'${accrualVoucher.voucherNumber}');
+			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'accrualAmount',index,'${accrualAmount}');
+			updateYUIGrid(GRANTLIST,'generalVoucher.id',index,'${generalVoucher.id}');
+			updateYUIGrid(GRANTLIST,'generalVoucher.voucherNumber',index,'${generalVoucher.voucherNumber}');
+			updateYUIGrid(GRANTLIST,'generalVoucher.voucherDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'receiptVoucher.id',index,'${receiptVoucher.id}');
+			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherNumber',index,'${receiptVoucher.voucherNumber}');
+			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'grantAmount',index,'${grantAmount}');
+			updateYUIGrid(GRANTLIST,'ihID.id',index,'${ihID.id}');
+			updateYUIGrid(GRANTLIST,'ihID.instrumentNumber',index,'${ihID.instrumentNumber}');
+			updateYUIGrid(GRANTLIST,'ihID.instrumentDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'remarks',index,'${remarks}');
 			updategrantTableIndex();	
-		</s:iterator>
+		</c:forEach>
     }
     
     //makeGrantTableET for Entertainment Tax
@@ -159,7 +161,7 @@
 			{key:"id",label:'id',width:100,hidden:true, formatter:createTextFieldFormatter('CFCGtable',GRANTLIST,".id","hidden")},
 			{key:"grants.department",label:'Department'+'<span class="mandatory">*</span>',width:110, formatter:createDepartmentDropDownFormatter('CFCGtable',GRANTLIST,".department.id","text")},
 			{key:"grants.finYear",label:'Financial Year'+'<span class="mandatory">*</span>',width:110, formatter:createFinYearDropDownFormatter('CFCGtable',GRANTLIST,".financialYear.id","text")},
-			{key:"grants.period",label:'<s:text name="revenue.period"/>'+'<span class="mandatory">*</span>',width:110, formatter:createPeriodDropDownFormatter('CFCGtable',GRANTLIST,".period","text")},
+			{key:"grants.period",label:'<!-- TODO: Manual migration required for custom Struts tag -->'+'<span class="mandatory">*</span>',width:110, formatter:createPeriodDropDownFormatter('CFCGtable',GRANTLIST,".period","text")},
             {key:"grants.proceedingsNo",label:'Proceedings No'+'<span class="mandatory">*</span>',width:100, formatter:createTextFieldFormatterWithStyle('CFCGtable',GRANTLIST,".proceedingsNo","width:100px")},
             {key:"proceedingsdate",label:'Proceedings Date<br />(dd/mm/yyyy)'+'<span class="mandatory">*</span>',width:100, formatter:createDateFieldFormatter('CFCGtable',GRANTLIST,".proceedingsDate")},
 			{key:"accGJVvhid",label:'accGJVvhid',width:100,hidden:true, formatter:createTextFieldFormatter('CFCGtable',GRANTLIST,".accrualVoucher.id","hidden")},
@@ -204,56 +206,56 @@
 			}
 		}
 	});
-		<s:iterator value="grantsList" status="stat">
+		<c:forEach value="grantsList" status="stat">
 			grantTableDT.addRow({SlNo:grantTableDT.getRecordSet().getLength()+1,
-				"id":'<s:property value="id"/>',
-				"grants.department":'<s:property value="department.id"/>',
-				"grants.finYear":'<s:property value="financialYear.id"/>',
-				"grants.period":'<s:property value="period"/>',
-				"grants.proceedingsNo":'<s:property value="proceedingsNo"/>',
-				"proceedingsdate":'<s:date name="proceedingsDate" format="dd/MM/yyyy"/>',
-				"accGJVvhid":'<s:property value="accrualVoucher.id"/>',
-				"linkAccrualGJV":'<s:property value="accrualVoucher.voucherNumber"/>',
-				"accrualGJVDate":'<s:date name="accrualVoucher.voucherDate" format="dd/MM/yyyy"/>',
-				"grants.accrualAmount":'<s:property value="accrualAmount"/>',
-				"GJVvhid":'<s:property value="generalVoucher.id"/>',
-				"linkGJV":'<s:property value="generalVoucher.voucherNumber"/>',
-				"GJVDate":'<s:date name="generalVoucher.voucherDate" format="dd/MM/yyyy"/>',
-				"receiptGJVvhid":'<s:property value="receiptVoucher.id"/>',
-				"linkReceiptGJV":'<s:property value="receiptVoucher.voucherNumber"/>',
-				"receiptGJVDate":'<s:date name="receiptVoucher.voucherDate" format="dd/MM/yyyy"/>',
-				"grants.grantAmount":'<s:property value="grantAmount"/>',
-				"insHeaderId":'<s:property value="ihID.id"/>',
-				"cheuqeNo":'<s:property value="ihID.instrumentNumber"/>',
-				"chequeDate":'<s:date name="ihID.instrumentDate" format="dd/MM/yyyy"/>',
-				"grants.commercial":'<s:property value="commTaxOfficer"/>',
-				"grants.remarks":'<s:property value="remarks"/>'
+				"id":'${id}',
+				"grants.department":'${department.id}',
+				"grants.finYear":'${financialYear.id}',
+				"grants.period":'${period}',
+				"grants.proceedingsNo":'${proceedingsNo}',
+				"proceedingsdate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"accGJVvhid":'${accrualVoucher.id}',
+				"linkAccrualGJV":'${accrualVoucher.voucherNumber}',
+				"accrualGJVDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"grants.accrualAmount":'${accrualAmount}',
+				"GJVvhid":'${generalVoucher.id}',
+				"linkGJV":'${generalVoucher.voucherNumber}',
+				"GJVDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"receiptGJVvhid":'${receiptVoucher.id}',
+				"linkReceiptGJV":'${receiptVoucher.voucherNumber}',
+				"receiptGJVDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"grants.grantAmount":'${grantAmount}',
+				"insHeaderId":'${ihID.id}',
+				"cheuqeNo":'${ihID.instrumentNumber}',
+				"chequeDate":'<!-- TODO: Manual migration required for custom Struts tag -->',
+				"grants.commercial":'${commTaxOfficer}',
+				"grants.remarks":'${remarks}'
 			});
-			var index = '<s:property value="#stat.index"/>';
-			updateYUIGrid(GRANTLIST,'id',index,'<s:property value="id"/>');
-			updateYUIGrid(GRANTLIST,'department.id',index,'<s:property value="department.id"/>');
-			updateYUIGrid(GRANTLIST,'financialYear.id',index,'<s:property value="financialYear.id"/>');
-			updateYUIGrid(GRANTLIST,'period',index,'<s:property value="period"/>');
-			updateYUIGrid(GRANTLIST,'proceedingsNo',index,'<s:property value="proceedingsNo"/>');
-			updateYUIGrid(GRANTLIST,'proceedingsDate',index,'<s:date name="proceedingsDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'accrualVoucher.id',index,'<s:property value="accrualVoucher.id"/>');
-			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherNumber',index,'<s:property value="accrualVoucher.voucherNumber"/>');
-			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherDate',index,'<s:date name="accrualVoucher.voucherDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'accrualAmount',index,'<s:property value="accrualAmount"/>');
-			updateYUIGrid(GRANTLIST,'generalVoucher.id',index,'<s:property value="generalVoucher.id"/>');
-			updateYUIGrid(GRANTLIST,'generalVoucher.voucherNumber',index,'<s:property value="generalVoucher.voucherNumber"/>');
-			updateYUIGrid(GRANTLIST,'generalVoucher.voucherDate',index,'<s:date name="generalVoucher.voucherDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'receiptVoucher.id',index,'<s:property value="receiptVoucher.id"/>');
-			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherNumber',index,'<s:property value="receiptVoucher.voucherNumber"/>');
-			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherDate',index,'<s:date name="receiptVoucher.voucherDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'grantAmount',index,'<s:property value="grantAmount"/>');
-			updateYUIGrid(GRANTLIST,'ihID.id',index,'<s:property value="ihID.id"/>');
-			updateYUIGrid(GRANTLIST,'ihID.instrumentNumber',index,'<s:property value="ihID.instrumentNumber"/>');
-			updateYUIGrid(GRANTLIST,'ihID.instrumentDate',index,'<s:date name="ihID.instrumentDate" format="dd/MM/yyyy"/>');
-			updateYUIGrid(GRANTLIST,'commTaxOfficer',index,'<s:property value="commTaxOfficer"/>');
-			updateYUIGrid(GRANTLIST,'remarks',index,'<s:property value="remarks"/>');
+			var index = '${#stat.index}';
+			updateYUIGrid(GRANTLIST,'id',index,'${id}');
+			updateYUIGrid(GRANTLIST,'department.id',index,'${department.id}');
+			updateYUIGrid(GRANTLIST,'financialYear.id',index,'${financialYear.id}');
+			updateYUIGrid(GRANTLIST,'period',index,'${period}');
+			updateYUIGrid(GRANTLIST,'proceedingsNo',index,'${proceedingsNo}');
+			updateYUIGrid(GRANTLIST,'proceedingsDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'accrualVoucher.id',index,'${accrualVoucher.id}');
+			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherNumber',index,'${accrualVoucher.voucherNumber}');
+			updateYUIGrid(GRANTLIST,'accrualVoucher.voucherDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'accrualAmount',index,'${accrualAmount}');
+			updateYUIGrid(GRANTLIST,'generalVoucher.id',index,'${generalVoucher.id}');
+			updateYUIGrid(GRANTLIST,'generalVoucher.voucherNumber',index,'${generalVoucher.voucherNumber}');
+			updateYUIGrid(GRANTLIST,'generalVoucher.voucherDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'receiptVoucher.id',index,'${receiptVoucher.id}');
+			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherNumber',index,'${receiptVoucher.voucherNumber}');
+			updateYUIGrid(GRANTLIST,'receiptVoucher.voucherDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'grantAmount',index,'${grantAmount}');
+			updateYUIGrid(GRANTLIST,'ihID.id',index,'${ihID.id}');
+			updateYUIGrid(GRANTLIST,'ihID.instrumentNumber',index,'${ihID.instrumentNumber}');
+			updateYUIGrid(GRANTLIST,'ihID.instrumentDate',index,'<!-- TODO: Manual migration required for custom Struts tag -->');
+			updateYUIGrid(GRANTLIST,'commTaxOfficer',index,'${commTaxOfficer}');
+			updateYUIGrid(GRANTLIST,'remarks',index,'${remarks}');
 			updategrantTableIndex();	
-		</s:iterator>
+		</c:forEach>
     }
     
     var GRANTLIST='grantsList';
@@ -280,11 +282,11 @@
 		var value = (YAHOO.lang.isValue(oData))?oData:"";
 		var element=" <select  id='"+prefix+"["+index+"]"+suffix+"' name='"+prefix+"["+index+"]"+suffix+"'  >";
 		element=element+"<option value=-1 selected='selected' > --- Choose --- </option>  ";
-		<s:iterator value="departmentList" status="stat">
-			var name='<s:property value="deptName"/>';
-			var id='<s:property value="id" />';
+		<c:forEach value="departmentList" status="stat">
+			var name='${deptName}';
+			var id='${id}';
 			element=element+" <option value="+id +" > "+ name+" </option>  ";
-		</s:iterator>
+		</c:forEach>
 		element=element+" </select>";
 		el.innerHTML =element ;
 		}
@@ -295,11 +297,11 @@
       var value = (YAHOO.lang.isValue(oData))?oData:"";
       var element=" <select  id='"+prefix+"["+index+"]"+suffix+"' name='"+prefix+"["+index+"]"+suffix+"'  >";
       element=element+"<option value=-1 selected='selected' > --- Choose --- </option>  ";
-      <s:iterator var="period" value="periodList" status="stat">
-         var name='<s:property value="period"/>';
-         var id='<s:property value="period" />';
+      <c:forEach var="period" value="periodList" status="stat">
+         var name='${period}';
+         var id='${period}';
          element=element+" <option value="+id +" > "+ name+" </option>  ";
-      </s:iterator>
+      </c:forEach>
       element=element+" </select>";
       el.innerHTML =element ;
       }
@@ -311,11 +313,11 @@
 		var value = (YAHOO.lang.isValue(oData))?oData:"";
 		var element=" <select  id='"+prefix+"["+index+"]"+suffix+"' name='"+prefix+"["+index+"]"+suffix+"'  >";
 		element=element+"<option value=-1 selected='selected' > --- Choose --- </option>  ";
-		<s:iterator value="finYearList" status="stat">
-			var name='<s:property value="finYearRange"/>';
-			var id='<s:property value="id" />';
+		<c:forEach value="finYearList" status="stat">
+			var name='${finYearRange}';
+			var id='${id}';
 			element=element+" <option value="+id +" > "+ name+" </option>  ";
-		</s:iterator>
+		</c:forEach>
 		element=element+" </select>";
 		el.innerHTML =element ;
 		}
@@ -333,12 +335,12 @@
 		YAHOO.util.Connect.asyncRequest('POST', url, chequeNoAndDate, null);
 	}
 	function loadFundingAgencyAmount(billVhId,name){
-		var grantType='<s:property value="grantsType"/>';
+		var grantType='${grantsType}';
 		var url = '../voucher/common!ajaxLoadVoucherAmount.action?billVhId='+billVhId+'&grantType='+grantType;
 		YAHOO.util.Connect.asyncRequest('POST', url, fundingAgencyAmount, null);
 	}
 	function loadGrantAmountAndSubLedger(billVhId,name){
-		var grantType='<s:property value="grantsType"/>';
+		var grantType='${grantsType}';
 		var url = '../voucher/common!ajaxLoadGrantAmountSubledger.action?billVhId='+billVhId+'&grantType='+grantType;
 		YAHOO.util.Connect.asyncRequest('POST', url, grantAmountAndSubledger, null);
 	}
@@ -400,9 +402,9 @@
 			{
 				var docs=o.responseText.split("$");
 				document.getElementById(onlyName+".grantAmount" ).value= ((docs[0]=='0')?"":docs[0]);
-				<s:if test="%{grantsType =='Entertainment Tax'}">
+				<c:if test="%{grantsType =='Entertainment Tax'}">
 					document.getElementById(onlyName+".commTaxOfficer" ).value= ((docs[1]=='0')?"":docs[1]);
-				</s:if>
+				</c:if>
 			}
 		},
 		failure: function(o) {
@@ -536,7 +538,7 @@
 <br></br>
 <div id="labelAD" align="center">
 	<h1>
-		<s:text name="revenue.heading.create" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</h1>
 </div>
 <br></br>
@@ -544,7 +546,7 @@
 <div class="formmainbox">
 	<div class="formheading" />
 	<div class="subheadnew">
-		<s:text name="revenue.heading.detail" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
 </div>
 </div>
@@ -556,10 +558,10 @@
 </div>
 
 <script type="text/javascript">
-     		<s:if test="%{grantsType =='Entertainment Tax'}">
+     		<c:if test="%{grantsType =='Entertainment Tax'}">
      			makeGrantTableET();
-			</s:if>
-			<s:else>
+			</c:if>
+			<c:otherwise>
 				makeGrantTable();
 			</s:else>
      		document.getElementById('grantTablediv').getElementsByTagName('table')[0].width="80%";

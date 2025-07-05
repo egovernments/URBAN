@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -74,13 +76,13 @@ function EnableVoucherDetails(obj){
 		}
 }
 </script>
-<title> <s:text name="service.master.search.header"></s:text> </title>
+<title> <!-- TODO: Manual migration required for custom Struts tag --></s:text> </title>
 
 </head>
 <body onload="onBodyLoad();loadDropDownCodes();loadDropDownCodesFunction();loadGridOnValidationFail();">
-<s:form theme="simple" name="serviceDetailsForm" action="serviceDetails-create.action" method="post">
-<s:token />
-<s:push value="model">
+<form:form theme="simple" name="serviceDetailsForm" action="serviceDetails-create.action" method="post">
+<!-- TODO: Manual migration required for custom Struts tag -->
+<!-- TODO: Manual migration required for custom Struts tag -->
 	
 	<jsp:include page="serviceDetails-form.jsp"/>
 	<div class="buttonbottom">
@@ -94,7 +96,7 @@ function EnableVoucherDetails(obj){
 			</label>			
 		</div>
 </s:push>
-</s:form>
+</form:form>
 
 </body>
 </html>

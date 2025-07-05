@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="/includes/taglibs.jsp"%>
 
 <%--
@@ -57,8 +59,8 @@
 	<c:set var="trclass" value="greybox" />
 
 
-	<s:if test="%{projectCodeList!=null && projectCodeList.size()>0}">
-		<s:iterator var="pc" value="%{projectCodeList}" status="stat">
+	<c:if test="%{projectCodeList!=null && projectCodeList.size()>0}">
+		<c:forEach var="pc" value="%{projectCodeList}" status="stat">
 			<c:choose>
 				<c:when test="${trclass=='greybox'}">
 					<c:set var="trclass" value="bluebox" />
@@ -76,12 +78,12 @@
 						value="%{name}" /></td>
 				<td class='<c:out value="${trclass}"/>' style='text-align: center'><input
 					type="checkbox"
-					name='projectCodeIdList[<s:property value="#stat.index"/>]'
-					value='<s:property value="%{id}" />' /></td>
+					name='projectCodeIdList[${#stat.index}]'
+					value='${%{id}}' /></td>
 			</tr>
-		</s:iterator>
-	</s:if>
-	<s:else>
+		</c:forEach>
+	</c:if>
+	<c:otherwise>
 		<tr>
 			<td></td>
 			<td></td>

@@ -71,4 +71,32 @@ public class PaymentWorkflowRequest {
     @Size(min = 1)
     @Valid
     private List<PaymentWorkflow> paymentWorkflows;
+    
+    // Manual getter and setter methods since Lombok is not working properly
+    public RequestInfo getRequestInfo() { return requestInfo; }
+    public void setRequestInfo(RequestInfo requestInfo) { this.requestInfo = requestInfo; }
+    
+    public List<PaymentWorkflow> getPaymentWorkflows() { return paymentWorkflows; }
+    public void setPaymentWorkflows(List<PaymentWorkflow> paymentWorkflows) { this.paymentWorkflows = paymentWorkflows; }
+    
+    // Builder method
+    public static PaymentWorkflowRequestBuilder builder() {
+        return new PaymentWorkflowRequestBuilder();
+    }
+    
+    // Builder class
+    public static class PaymentWorkflowRequestBuilder {
+        private RequestInfo requestInfo;
+        private List<PaymentWorkflow> paymentWorkflows;
+        
+        public PaymentWorkflowRequestBuilder requestInfo(RequestInfo requestInfo) { this.requestInfo = requestInfo; return this; }
+        public PaymentWorkflowRequestBuilder paymentWorkflows(List<PaymentWorkflow> paymentWorkflows) { this.paymentWorkflows = paymentWorkflows; return this; }
+        
+        public PaymentWorkflowRequest build() {
+            PaymentWorkflowRequest request = new PaymentWorkflowRequest();
+            request.requestInfo = this.requestInfo;
+            request.paymentWorkflows = this.paymentWorkflows;
+            return request;
+        }
+    }
 }

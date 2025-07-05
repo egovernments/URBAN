@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -73,8 +75,8 @@
 <body
 	onload="loadDropDownCodes();loadDropDownCodesFunction();onLoadTask()">
 
-	<s:form theme="simple" name="jvmodifyform">
-		<s:push value="model">
+	<form:form theme="simple" name="jvmodifyform">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 			<div id="loading"
 				style="position: absolute; left: 25%; top: 70%; padding: 2px; z-index: 20001; height: auto; width: 500px; display: none;">
 				<div class="loading-indicator"
@@ -90,8 +92,8 @@
 			</jsp:include>
 
 			<span class="mandatory1"> <font
-				style='color: red; font-weight: bold'> <s:actionerror /> <s:fielderror />
-					<s:actionmessage /></font>
+				style='color: red; font-weight: bold'> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
+					<!-- TODO: Manual migration required for custom Struts tag --></font>
 			</span>
 			<div class="formmainbox">
 				<div class="subheadnew">Journal Voucher</div>
@@ -105,28 +107,28 @@
 						<table border="0" width="100%">
 							<tr>
 								<td class="greybox">&nbsp;</td>
-								<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-									<td class="greybox"><s:text name="voucher.number" /><span
+								<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory1"> *</span></td>
 									<td class="greybox"><input type="text"
 										name="voucherNumberPrefix" id="voucherNumberPrefix"
 										readonly="true" style="width: 100%" /></td>
-									<td class="greybox"><s:textfield name="voucherNumber"
+									<td class="greybox"><form:input path="voucherNumber"
 											id="voucherNumber" /></td>
-								</s:if>
-								<s:else>
-									<td class="greybox"><s:text name="voucher.number" /><span
+								</c:if>
+								<c:otherwise>
+									<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 										class="mandatory1"> *</span></td>
-									<td class="greybox"><s:textfield name="voucherNumber"
+									<td class="greybox"><form:input path="voucherNumber"
 											id="voucherNumber" readonly="true" /></td>
 								</s:else>
 							</tr>
 							<tr>
 								<td class="greybox">&nbsp;</td>
-								<td class="greybox"><s:text name="voucher.date" /><span
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --><span
 									class="mandatory1"> *</span></td>
 								<td class="greybox"><s:date name="voucherDate"
-										var="voucherDateId" format="dd/MM/yyyy" /> <s:textfield
+										var="voucherDateId" format="dd/MM/yyyy" /> <form:input
 										name="voucherDate" id="voucherDate" value="%{voucherDateId}"
 										maxlength="10"
 										onkeyup="DateFormat(this,this.value,event,false,'3')" /> <a
@@ -140,8 +142,8 @@
 							<jsp:include page="loadYIDataTable.jsp" />
 							<tr>
 								<td class="greybox">&nbsp;</td>
-								<td class="greybox"><s:text name="voucher.narration" /></td>
-								<td class="greybox" colspan="3"><s:textarea id="narration"
+								<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
+								<td class="greybox" colspan="3"><form:textarea id="narration"
 										name="description" style="width:580px"
 										onblur="checkVoucherNarrationLen(this)" /></td>
 							</tr>
@@ -186,20 +188,20 @@
 	        <c:param name="stateId" value="${voucherHeader.state.id}"></c:param>
         </c:import> --%>
 					</div>
-					<s:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
+					<c:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
 						<%@include file="voucherWorkflow.jsp"%>
-					</s:if>
+					</c:if>
 					<div align="center">
 						<table border="0" width="100%">
 							<tr>
 								<td class="bluebox">&nbsp;</td>
 								<td class="bluebox">Comments</td>
-								<td class="bluebox"><s:textarea name="comments"
+								<td class="bluebox"><form:textarea path="comments"
 										id="comments" cols="150" rows="3" onblur="checkLength(this)" /></td>
 								<td><s:hidden id="methodName" name="methodName"
 										value="save" /></td>
-								<s:hidden id="vhid" name="vhid" value="%{voucherHeader.id}" />
-								<s:hidden name="actionName" id="actionName" />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<!-- TODO: Manual migration required for custom Struts tag -->
 							</tr>
 							<br />
 						</table>
@@ -215,30 +217,30 @@
 				<input type="button" class="button" id="print" value="Print Preview"
 					action="journalVoucherPrint" method="print" onclick="printJV()" />
 			</div>
-			<s:hidden id="cgn" name="cgn"></s:hidden>
-			<s:hidden name="saveMode" id="saveMode" />
-			<s:hidden name="actionName" id="actionName" />
+			<!-- TODO: Manual migration required for custom Struts tag --></s:hidden>
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="hidden" id="voucherTypeBean.voucherNumType"
 				name="voucherTypeBean.voucherNumType" value="Journal Voucher" />
-			<s:hidden id="type" name="type" value="Journal Voucher" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="hidden" id="worksVoucherRestrictedDate"
 				name="worksVoucherRestrictedDate"
 				value="${worksVoucherRestrictedDate}" />
 		</s:push>
-	</s:form>
+	</form:form>
 
 	<script type="text/javascript">
 function validateApproverUser(name,value){
 //	bootbox.alert("name value"+name);    
 	document.getElementById("actionName").value= name;
-	<s:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
+	<c:if test='%{! wfitemstate.equalsIgnoreCase("END")}'>
 		if(!validateUser(name,value)){
 		return false;
 		}
-	</s:if> return true;
+	</c:if> return true;
 }
 function printJV(){
-	var id = '<s:property value="voucherHeader.id"/>';
+	var id = '${voucherHeader.id}';
 	window.open("${pageContext.request.contextPath}/voucher/journalVoucherPrint-print.action?id="+id,'Print','resizable=yes,scrollbars=yes,left=300,top=40, width=900, height=700');
 }
 function onSubmit()
@@ -304,8 +306,8 @@ function validateJV()
 		//loadSlFunction();
 		//getSlAccountCodes();
 		// code- JV subtype - starts
-		document.getElementById('vType').value='<s:property value="voucherTypeBean.voucherSubType"/>';
-		if('<s:property value="voucherTypeBean.voucherSubType"/>' == 'JVGeneral' ){
+		document.getElementById('vType').value='${voucherTypeBean.voucherSubType}';
+		if('${voucherTypeBean.voucherSubType}' == 'JVGeneral' ){
 			document.getElementById('voucherTypeBean.partyBillNum').readOnly=true;
 			document.getElementById('voucherTypeBean.partyName').readOnly=true;
 			document.getElementById('partyBillDate').readOnly=true;
@@ -320,28 +322,28 @@ function validateJV()
 		}
 		document.getElementById('vType').disabled=true; 
 		// code- JV subtype - ends
-		var target = '<s:property value="target"/>';
-		var saveMode='<s:property value="saveMode"/>';
-		var voucherNumber = '<s:property value='%{voucherHeader.voucherNumber}'/>' ;
-		var cgn = '<s:property value='%{cgn}'/>' ;
+		var target = '${target}';
+		var saveMode='${saveMode}';
+		var voucherNumber = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
+		var cgn = '<!-- TODO: Manual migration required for custom Struts tag -->' ;
 		if(target == 'success' ){
 			if(saveMode == 'saveclose'){
 				bootbox.alert("Voucher modified sucessfully with voucher number =  "+voucherNumber );
 				window.close();
 			}else if(saveMode == 'saveview'){
 				bootbox.alert("Voucher modified sucessfully with voucher number =  "+voucherNumber);
-				window.open('preApprovedVoucher-loadvoucherview.action?vhid=<s:property value='%{voucherHeader.id}'/>','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
+				window.open('preApprovedVoucher-loadvoucherview.action?vhid=<!-- TODO: Manual migration required for custom Struts tag -->','Search','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
 			}else if(saveMode == 'saveprint'){
 				bootbox.alert("Voucher modified sucessfully with voucher number =  "+voucherNumber);
-				window.open('journalVoucherPrint-print.action?id=<s:property value='%{voucherHeader.id}'/>','','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
+				window.open('journalVoucherPrint-print.action?id=<!-- TODO: Manual migration required for custom Struts tag -->','','resizable=yes,scrollbars=yes,left=300,top=40,width=900, height=700');
 			}
 		}
-		<s:if test="%{shouldShowHeaderField('vouchernumber')}">
-			   var tempVoucherNumber='<s:property value="voucherHeader.voucherNumber"/>';
-			   var prefixLength='<s:property value="voucherNumberPrefixLength"/>';
+		<c:if test="%{shouldShowHeaderField('vouchernumber')}">
+			   var tempVoucherNumber='${voucherHeader.voucherNumber}';
+			   var prefixLength='${voucherNumberPrefixLength}';
 			   document.getElementById('voucherNumberPrefix').value=tempVoucherNumber.substring(0,prefixLength);
 			   document.getElementById('voucherNumber').value=tempVoucherNumber.substring(prefixLength,tempVoucherNumber.length);
-		</s:if>
+		</c:if>
 		populateslDropDown(); // to load the subledger detils when page loads, required when validation fails.
 		if(document.getElementById('approverDepartment'))
 			document.getElementById('approverDepartment').value = "-1";

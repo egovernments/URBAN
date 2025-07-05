@@ -6,13 +6,12 @@ import org.egov.infra.microservice.models.RequestInfo;
 
 public class ActionRequest {
 
-	
 	private RequestInfo requestInfo;
 	private List<String> roleCodes;
 	private List<Long> featureIds;
 	private String tenantId;
 	private Boolean enabled;
-	private List<Action> actions;
+	// TODO: Migrate from Struts/XWork: private List<Action> actions;
 	private String actionMaster;
 	private String navigationURL;
 	private String leftIcon;
@@ -21,14 +20,14 @@ public class ActionRequest {
 	public ActionRequest(){}
 
 	public ActionRequest(RequestInfo requestInfo, List<String> roleCodes, List<Long> featureIds, String tenantId,
-			Boolean enabled, List<Action> actions, String actionMaster, String navigationURL, String leftIcon,
+			Boolean enabled, String actionMaster, String navigationURL, String leftIcon,
 			String rightIcon) {
 		this.requestInfo = requestInfo;
 		this.roleCodes = roleCodes;
 		this.featureIds = featureIds;
 		this.tenantId = tenantId;
 		this.enabled = enabled;
-		this.actions = actions;
+		// TODO: this.actions = actions;
 		this.actionMaster = actionMaster;
 		this.navigationURL = navigationURL;
 		this.leftIcon = leftIcon;
@@ -75,13 +74,13 @@ public class ActionRequest {
 		this.enabled = enabled;
 	}
 
-	public List<Action> getActions() {
-		return actions;
-	}
+	// TODO: Migrate from Struts/XWork: public List<Action> getActions() {
+	// 	return actions;
+	// }
 
-	public void setActions(List<Action> actions) {
-		this.actions = actions;
-	}
+	// TODO: Migrate from Struts/XWork: public void setActions(List<Action> actions) {
+	// 	this.actions = actions;
+	// }
 
 	public String getActionMaster() {
 		return actionMaster;
@@ -114,5 +113,4 @@ public class ActionRequest {
 	public void setRightIcon(String rightIcon) {
 		this.rightIcon = rightIcon;
 	}
-	
 }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,9 +55,9 @@
 <jsp:include page="budgetHeader.jsp">
 	<jsp:param name="heading" value="Budget Report - Departmentwise" />
 </jsp:include>
-<s:actionmessage theme="simple" />
-<s:actionerror />
-<s:fielderror />
+<!-- TODO: Manual migration required for custom Struts tag -->
+<!-- TODO: Manual migration required for custom Struts tag -->
+<!-- TODO: Manual migration required for custom Struts tag -->
 <script>
 	function popUp(url) {
 		newwindow=window.open(url,'name','height=200,width=150');
@@ -63,11 +65,11 @@
 		return false;
 	}
 </script>
-<s:actionmessage theme="simple" />
-<s:form name="budgetDetailReportForm" action="budgetReport" id = "budgetDetailReportForm"
+<!-- TODO: Manual migration required for custom Struts tag -->
+<form:form name="budgetDetailReportForm" action="budgetReport" id = "budgetDetailReportForm"
 	theme="simple">
 	<div class="formmainbox">
-		<div class="subheadnew"><s:text name="lbl.budget.report.departmentwise"/> </div>
+		<div class="subheadnew"><!-- TODO: Manual migration required for custom Struts tag --> </div>
 		<%@include file="budgetReport-form.jsp"%>
 		<div class="buttonbottom" style="padding-bottom: 10px;">
 			<s:submit key="lbl.search" onclick="return validateFinYear('printDepartmentWiseReport');"
@@ -78,11 +80,11 @@
 				cssClass="buttonsubmit" />
 			<s:reset name="button" type="submit" cssClass="button" id="button"
 					key="lbl.reset"/>
-			<input type="button" value="<s:text name='lbl.close'/>"
+			<input type="button" value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.parent.postMessage('close','*');window.close();" class="button" />
 		</div>
 	</div>
-</s:form>
+</form:form>
 <script>
 	document.getElementById('function').style.display="none";
 	document.getElementById('function_label').style.visibility="hidden";

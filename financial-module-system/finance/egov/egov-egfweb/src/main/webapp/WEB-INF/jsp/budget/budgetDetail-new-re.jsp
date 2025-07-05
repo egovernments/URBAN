@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -72,15 +74,15 @@
 </STYLE>
 <SCRIPT type="text/javascript">
     function onLoadTask(){
-    	showMessage = '<s:property value="showMessage"/>';
-    	if(showMessage == 'true' && '<s:property value="actionMessage"/>' != ''){
-    		bootbox.alert('<s:property value="actionMessage"/>');
+    	showMessage = '${showMessage}';
+    	if(showMessage == 'true' && '${actionMessage}' != ''){
+    		bootbox.alert('${actionMessage}');
     		document.getElementById('budgetDetail_executingDepartment').value=-1;
     		var functionid="";
-    		<s:if test="%{searchfunctionid!=0}">
-	   		   functionid='<s:property value="searchfunctionid"/>';
-   		   </s:if>
-    		var params='financialYear=<s:property value="financialYear.id"/>&department.id=<s:property value="executingDepartment.id"/>&function='+functionid;
+    		<c:if test="%{searchfunctionid!=0}">
+	   		   functionid='${searchfunctionid}';
+   		   </c:if>
+    		var params='financialYear=${financialYear.id}&department.id=${executingDepartment.id}&function='+functionid;
     		params=params+'&onSaveOrForward=true&type=All';
     		var reportUrl="${pageContext.request.contextPath}/budget/budgetReport-getFunctionwiseReport.action?"+params;
     		window.open(reportUrl,"report",850,600);
@@ -89,9 +91,9 @@
 	    	}
     	
     	defaultDept();
-    	<s:if test="%{referenceBudget != null}">
-    		document.getElementById('referenceBudget').innerHTML = '<s:property value="referenceBudget.name"/>';
-    	</s:if>
+    	<c:if test="%{referenceBudget != null}">
+    		document.getElementById('referenceBudget').innerHTML = '${referenceBudget.name}';
+    	</c:if>
     }
     
     function getActuals(){
@@ -140,7 +142,7 @@
     </SCRIPT>
 </head>
 <body>
-	<s:form name="budgetDetailForm" action="budgetDetail" theme="simple">
+	<form:form name="budgetDetailForm" action="budgetDetail" theme="simple">
 		<div align="left">
 			<br />
 			<div class="tabber">
@@ -178,7 +180,7 @@
 							}
 							function validateForApproval()
 							{
-								var con=confirm('<s:text name="budgetdetail.alert.sending.entitre.budget"/>');
+								var con=confirm('<!-- TODO: Manual migration required for custom Struts tag -->');
 								if(con==false)
 								    return false;
 								if(null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
@@ -192,13 +194,13 @@
 							<div class="formmainbox">
 								<div class="subheadnew">Create budget proposal</div>
 								<div align="center" style="color: red;">
-									<s:actionmessage theme="simple" />
-									<s:actionerror />
-									<s:fielderror />
+									<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
+									<!-- TODO: Manual migration required for custom Struts tag -->
 								</div>
 								<%@ include file='budgetDetail-form.jsp'%>
-								<s:hidden name="budgetDocumentNumber" id="budgetDocNumber" />
-								<input type="hidden" id="re" value='<s:property value="re"/>' />
+								<!-- TODO: Manual migration required for custom Struts tag -->
+								<input type="hidden" id="re" value='${re}' />
 								<table width="100%" border="0" cellspacing="0" cellpadding="0"
 									id="budgetDetailFormTable">
 									<tr>
@@ -210,17 +212,17 @@
 												name="budgetdetail.budget.asOnDate" /></td>
 										<td class="greybox" width="15%"><input type="text"
 											id="asOnDate" name="asOnDate" style="width: 100px"
-											value='<s:date name="asOnDate" format="dd/MM/yyyy"/>' /><a
+											value='<!-- TODO: Manual migration required for custom Struts tag -->' /><a
 											href="javascript:show_calendar('budgetDetailForm.asOnDate');"
 											style="text-decoration: none">&nbsp;<img
 												src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)
 										</td>
-										<td width="15%" class="greybox"><s:text name="function" /></td>
+										<td width="15%" class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 										<egov:ajaxdropdown id="function_filtered"
 											fields="['Text','Value']"
 											dropdownId="budgetDetail_filtered_function"
 											url="budget/budgetDetail-ajaxLoadFunctions.action" />
-										<td class="greybox"><s:select name="searchfunctionid"
+										<td class="greybox"><form:select path="searchfunctionid"
 												id="budgetDetail_filtered_function" list="%{functionList}"
 												value="searchfunctionid" listKey="id" listValue="name"
 												headerValue="---Select---" headerKey="0" /></td>
@@ -233,7 +235,7 @@
 											fields="['Text','Value']"
 											dropdownId="budgetDetail_filtered_budgetGroup"
 											url="budget/budgetDetail-ajaxLoadBudgetGroups.action" />
-										<td class="bluebox" colspan="3"><s:select
+										<td class="bluebox" colspan="3"><form:select
 												name="searchbudgetGroupid"
 												id="budgetDetail_filtered_budgetGroup"
 												list="%{budgetGroupList}" listKey="id" listValue="name"
@@ -270,13 +272,13 @@
 								addGridRows();
 								hideColumns();
 								updateAllGridValues()
-								<s:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
+								<c:if test="%{getActionErrors().size()>0 || getFieldErrors().size()>0}">
 									setValues();
-								</s:if>
+								</c:if>
 							</script> <br />
-					<br /> <s:hidden name="budget" id="hidden_budget" />
+					<br /> <!-- TODO: Manual migration required for custom Struts tag -->
 						<div id="savedDataGrid"></div> <script>
-								document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>'
+								document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}'
 						</script>
 					</span>
 				</div>
@@ -293,7 +295,7 @@
 		</div>
 		<div class="buttonbottom"
 			style="padding-bottom: 10px; position: relative">
-			<s:hidden name="actionName" value="forward" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 			<input type="submit" value="Save" id="budgetDetail__createRe"
 				name="method:createRe" onClick="javascript: return validate();"
 				class="buttonsubmit" /> <input type="submit" value="Forward"
@@ -317,13 +319,13 @@
 		    }
 		}
 		
-		<s:if test="%{showDetails}">
+		<c:if test="%{showDetails}">
 			var temp = window.setInterval(load,1);
 			function load()
 			{
 				try{document.getElementById('tabber1').onclick(); window.clearInterval(temp);}catch(e){}
 			}
-    	</s:if>
+    	</c:if>
     	
 		function updateApproverDepartment(obj){
 			document.getElementById('departmentid').value = document.getElementById('budgetDetail_executingDepartment').value;
@@ -333,10 +335,10 @@
 			//var url = '/EGF/voucher/common!ajaxLoadDefaultDepartment.action';
 			//YAHOO.util.Connect.asyncRequest('POST', url, dept_callback, null);
 		}
-		document.getElementById('hidden_budget').value = '<s:property value="budgetDetail.budget.id"/>'
+		document.getElementById('hidden_budget').value = '${budgetDetail.budget.id}'
 	</script>
 
-	</s:form>
+	</form:form>
 
 </body>
 </html>

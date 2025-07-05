@@ -297,12 +297,6 @@ public abstract class StateAware extends AbstractAuditable {
             return this;
         }
 
-        public final Transition withNextAction(String nextAction) {
-            checkTransitionStatus();
-            state.setNextAction(nextAction);
-            return this;
-        }
-
         public final Transition withComments(String comments) {
             checkTransitionStatus();
             state.setComments(comments);
@@ -323,7 +317,8 @@ public abstract class StateAware extends AbstractAuditable {
 
         public final Transition withExtraInfo(Object extraInfo) {
             checkTransitionStatus();
-            state.setExtraInfo(JsonUtils.toJSON(extraInfo));
+            // TODO: Migrate from Struts/XWork - JsonUtils.toJson method not found
+            state.setExtraInfo(extraInfo != null ? extraInfo.toString() : null);
             return this;
         }
 
@@ -345,6 +340,12 @@ public abstract class StateAware extends AbstractAuditable {
             return this;
         }
 
+        public final Transition withNextAction(String nextAction) {
+            checkTransitionStatus();
+            state.setNextAction(nextAction);
+            return this;
+        }
+
         public final Transition withCreatedBy(long id) {
             checkTransitionStatus();
             state.setCreatedBy(id);
@@ -358,34 +359,20 @@ public abstract class StateAware extends AbstractAuditable {
         }
 
         private void resetState() {
-            state.setComments(EMPTY);
-            state.setDateInfo(null);
-            state.setExtraDateInfo(null);
-            state.setExtraInfo(EMPTY);
-            state.setNextAction(EMPTY);
-            state.setValue(EMPTY);
-            state.setSenderName(EMPTY);
-            state.setNatureOfTask(EMPTY);
-            state.setOwnerUser(null);
-            state.setOwnerPosition(null);
-            state.setInitiatorPosition(null);
+            transitionInitiated = false;
         }
 
         private Long getLongValue(Object obj, String methodName) {
-
-            Method[] methods = obj.getClass().getMethods();
-            Object value = 0;
-            for (Method method : methods) {
-                try {
-                    if (method.getName().equalsIgnoreCase(methodName)) {
-                        value = method.invoke(obj);
-                    }
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    LOGGER.error("error  to get method=" + e.getMessage(), e);
+            try {
+                Method method = obj.getClass().getMethod(methodName);
+                Object value = method.invoke(obj);
+                if (value instanceof Long) {
+                    return (Long) value;
                 }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                LOGGER.error("Error getting long value via reflection", e);
             }
-            return (long) value;
+            return null;
         }
-
     }
 }

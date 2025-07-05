@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -174,9 +176,9 @@ function search()
 
 function selectAllPension(element){
 	var length = 0;
-	<s:if test="%{pensionList!=null}">
-		length = <s:property value="%{pensionList.size()}"/>;
-	</s:if>
+	<c:if test="%{pensionList!=null}">
+		length = ${%{pensionList.size()}};
+	</c:if>
 	if(element.checked == true)
 		checkAll('pensionList',length);
 	else
@@ -198,9 +200,9 @@ function uncheckAll(field,length){
 }
 function selectAllPension(element){
 	var length = 0;
-	<s:if test="%{pensionList!=null}">
-		length = <s:property value="%{pensionList.size()}"/>;
-	</s:if>
+	<c:if test="%{pensionList!=null}">
+		length = ${%{pensionList.size()}};
+	</c:if>
 	
 	if(element.checked == true)	{
 		var salcnt=checkpensionForSameMisAttribs('pensionList',length);
@@ -228,61 +230,61 @@ function checkpensionForSameMisAttribs(obj,len)
 		var salcount=0;
 		for(i=0;i<len;i++)
 		{
-			 <s:if test="%{!isFieldMandatory('fund')}">
+			 <c:if test="%{!isFieldMandatory('fund')}">
 		   if((document.getElementsByName(obj+"["+i+"].fundName").item(0)).value!=null){
 		   if(fund1[0].value != null && fund1[0].value !=(document.getElementsByName(obj+"["+i+"].fundName").item(0)).value) {
 		   	document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		  	salcount++; break;}}
-		  	</s:if>
+		  	</c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('department')}"> 
+		   <c:if test="%{shouldShowHeaderField('department')}"> 
 		   if((document.getElementsByName(obj+"["+i+"].deptName").item(0)).value!=null){  	
 		   if(dept1[0].value != null &&  dept1[0].value !=(document.getElementsByName(obj+"["+i+"].deptName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   salcount++; break;}}
-		   </s:if>
+		   </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('function')}"> 
+		   <c:if test="%{shouldShowHeaderField('function')}"> 
 		   if((document.getElementsByName(obj+"["+i+"].functionName").item(0)).value!=null){  	
 		   if(function1[0].value != null &&  function1[0].value !=(document.getElementsByName(obj+"["+i+"].functionName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   concount++; break;}}
-		   </s:if>
+		   </c:if>
 		    
-		    <s:if test="%{shouldShowHeaderField('functionary')}">
+		    <c:if test="%{shouldShowHeaderField('functionary')}">
 		    if(document.getElementsByName(obj+"["+i+"].functionaryName")!=null){
 		    if(functionaryName1[0].value != null && functionaryName1[0].value != (document.getElementsByName(obj+"["+i+"].functionaryName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		    salcount++; break;}}
-		    </s:if>
+		    </c:if>
 		   
-		   <s:if test="%{shouldShowHeaderField('fundsource')}"> 
+		   <c:if test="%{shouldShowHeaderField('fundsource')}"> 
 		   if((document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value!=null){
 		   if(fundsource1[0].value != null &&  fundsource1[0].value !=(document.getElementsByName(obj+"["+i+"].fundsourceName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		   salcount++; break;}}
-		   </s:if>		   
+		   </c:if>		   
 		   
-		   <s:if test="%{shouldShowHeaderField('scheme')}">
+		   <c:if test="%{shouldShowHeaderField('scheme')}">
 		   if((document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value!=null){
 		   if(scheme1[0].value != null  && scheme1[0].value !=( document.getElementsByName(obj+"["+i+"].schemeName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;
 		   salcount++; break;}}
-		   </s:if>
+		   </c:if>
 		 
-		   <s:if test="%{shouldShowHeaderField('subscheme')}">
+		   <c:if test="%{shouldShowHeaderField('subscheme')}">
 		   if((document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value!=null){
 		   if(subscheme1[0].value !=  null && subscheme1[0].value!=(document.getElementsByName(obj+"["+i+"].subschemeName").item(0)).value) {
 		   document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false;  
 		   salcount++; break;}}
-		   </s:if>		 
+		   </c:if>		 
 		   
-		    <s:if test="%{shouldShowHeaderField('field')}">
+		    <c:if test="%{shouldShowHeaderField('field')}">
 		    if(document.getElementsByName(obj+"["+i+"].fieldName")!=null){
 		    if(field1[0].value != null && field1[0].value != (document.getElementsByName(obj+"["+i+"].fieldName").item(0)).value) {
 		    document.getElementsByName(obj+"["+i+"].isSelected")[0].checked = false; 
 		    salcount++; break;}}
-		    </s:if>	  		  
+		    </c:if>	  		  
 		   }
 		   return salcount;
 }
@@ -290,12 +292,12 @@ function checkpensionForSameMisAttribs(obj,len)
 
 </head>
 <body>
-	<s:form action="payment" theme="simple">
-		<s:token />
+	<form:form action="payment" theme="simple">
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<jsp:include page="../budget/budgetHeader.jsp">
 			<jsp:param name="heading" value="Pension Bill Payment Search" />
 		</jsp:include>
-		<span class="mandatory"> <s:actionerror /> <s:fielderror /> <s:actionmessage />
+		<span class="mandatory"> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag --> <!-- TODO: Manual migration required for custom Struts tag -->
 		</span>
 
 		<div class="formmainbox">
@@ -323,13 +325,13 @@ function checkpensionForSameMisAttribs(obj,len)
 															<tr>
 																<td class="bluebox" width="30%"><s:text
 																		name="payment.billnumber" /></td>
-																<td class="bluebox"><s:textfield name="billNumber"
+																<td class="bluebox"><form:input path="billNumber"
 																		id="billNumber" maxlength="25" value="%{billNumber}" /></td>
 															</tr>
 															<tr>
 																<td class="greybox" width="30%"><s:text
 																		name="payment.billdatefrom" /></td>
-																<td class="greybox"><s:textfield name="fromDate"
+																<td class="greybox"><form:input path="fromDate"
 																		id="fromDate" maxlength="20" value="%{fromDate}" /><a
 																	href="javascript:show_calendar('forms[0].fromDate');"
 																	style="text-decoration: none">&nbsp;<img
@@ -337,7 +339,7 @@ function checkpensionForSameMisAttribs(obj,len)
 																		border="0" /></a><br />(dd/mm/yyyy)</td>
 																<td class="greybox" width="30%"><s:text
 																		name="payment.billdateto" /></td>
-																<td class="greybox"><s:textfield name="toDate"
+																<td class="greybox"><form:input path="toDate"
 																		id="toDate" maxlength="20" value="%{toDate}" /><a
 																	href="javascript:show_calendar('forms[0].toDate');"
 																	style="text-decoration: none">&nbsp;<img
@@ -347,7 +349,7 @@ function checkpensionForSameMisAttribs(obj,len)
 															<tr>
 																<td class="bluebox" width="30%"><s:text
 																		name="payment.expendituretype" /></td>
-																<td class="bluebox"><s:select name="expType"
+																<td class="bluebox"><form:select path="expType"
 																		id="expType" list="#{'Pension':'Pension'}"
 																		value="%{expType}" /></td>
 															</tr>
@@ -359,7 +361,7 @@ function checkpensionForSameMisAttribs(obj,len)
 																			cssClass="buttonsubmit" onclick="return search()" />
 																		<input type="submit" value="Close"
 																			onclick="javascript:window.close()" class="button" />
-																		<s:hidden name="miscount" id="miscount" />
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																		<input type="hidden" name="miscattributes"
 																			id="miscattributes" value="" />
 																	</div>
@@ -388,15 +390,15 @@ function checkpensionForSameMisAttribs(obj,len)
 																					id="salSelectAll" onclick="selectAllPension(this)" />
 																				</checkbox></th>
 																				<jsp:include page="billdetails-header.jsp" />
-																				<s:iterator var="p" value="pensionList" status="s">
+																				<c:forEach var="p" value="pensionList" status="s">
 																					<tr>
 																						<td class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].csBillId"
 																								id="csBillId%{#s.index}" value="%{csBillId}" />
-																							<s:checkbox
+																							<form:checkbox
 																								name="pensionList[%{#s.index}].isSelected"
 																								id="isSelected%{#s.index}"
-																								onclick="checkMiscAttributes(this)"></s:checkbox></td>
+																								onclick="checkMiscAttributes(this)"></form:checkbox></td>
 																						<td class="blueborderfortdnew"><s:property
 																								value="#s.index+1" /></td>
 																						<td align="left" class="blueborderfortdnew"><s:hidden
@@ -405,17 +407,17 @@ function checkpensionForSameMisAttribs(obj,len)
 																							<s:hidden
 																								name="pensionList[%{#s.index}].billNumber"
 																								id="billNumber%{#s.index}" value="%{billNumber}" />
-																							<s:property value="%{billNumber}" /></td>
+																							${%{billNumber}}</td>
 																						<td class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].billDate"
 																								id="billDate%{#s.index}" value="%{billDate}" />
-																							<s:date name="%{billDate}" format="dd/MM/yyyy" /></td>
+																							<!-- TODO: Manual migration required for custom Struts tag --></td>
 
 																						<td align="left" class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].billVoucherNumber"
 																								id="billVoucherNumber%{#s.index}"
 																								value="%{billVoucherNumber}" />
-																							<s:property value="%{billVoucherNumber}" /></td>
+																							${%{billVoucherNumber}}</td>
 																						<td style="text-align: left"
 																							class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].billVoucherDate"
@@ -427,21 +429,21 @@ function checkpensionForSameMisAttribs(obj,len)
 																						<td align="left" class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].payTo"
 																								id="payTo%{#s.index}" value="%{payTo}" />
-																							<s:property value="%{payTo}" /></td>
+																							${%{payTo}}</td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].netAmt"
 																								id="netAmt%{#s.index}" value="%{netAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{netAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
 																								name="pensionList[%{#s.index}].earlierPaymentAmt"
 																								id="earlierPaymentAmt%{#s.index}"
 																								value="%{earlierPaymentAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{earlierPaymentAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
 																						<td style="text-align: right"
 																							class="blueborderfortdnew"><s:hidden
@@ -450,80 +452,80 @@ function checkpensionForSameMisAttribs(obj,len)
 																							<s:hidden
 																								name="pensionList[%{#s.index}].paymentAmt"
 																								id="paymentAmt%{#s.index}" value="%{paymentAmt}" />
-																							<s:text name="payment.format.number">
-																								<s:param value="%{payableAmt}" />
+																							<!-- TODO: Manual migration required for custom Struts tag -->
+																								<!-- TODO: Manual migration required for custom Struts tag -->
 																							</s:text></td>
-																						<s:if test="%{!isFieldMandatory('fund')}">
+																						<c:if test="%{!isFieldMandatory('fund')}">
 																							<td class="blueborderfortdnew"
-																								id="fund<s:property value="#s.index"/>"><s:hidden
+																								id="fund${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].fundName"
 																									id="fundName%{#s.index}" value="%{fundName}" />
-																								<s:property value="%{fundName}" /></td>
-																						</s:if>
-																						<s:if
+																								${%{fundName}}</td>
+																						</c:if>
+																						<c:if
 																							test="%{shouldShowHeaderField('department')}">
 																							<td class="blueborderfortdnew"
-																								id="dept<s:property value="#s.index"/>"><s:hidden
+																								id="dept${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].deptName"
 																									id="deptName%{#s.index}" value="%{deptName}" />
-																								<s:property value="%{deptName}" /></td>
-																						</s:if>
-																						<s:if test="%{shouldShowHeaderField('function')}">
+																								${%{deptName}}</td>
+																						</c:if>
+																						<c:if test="%{shouldShowHeaderField('function')}">
 																							<td class="blueborderfortdnew"
-																								id="function<s:property value="#s.index"/>"><s:hidden
+																								id="function${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].functionName"
 																									id="functionName%{#s.index}"
 																									value="%{functionName}" />
-																								<s:property value="%{functionName}" /></td>
-																						</s:if>
-																						<s:if
+																								${%{functionName}}</td>
+																						</c:if>
+																						<c:if
 																							test="%{shouldShowHeaderField('functionary')}">
 																							<td class="blueborderfortdnew"
-																								id="functionary<s:property value="#s.index"/>"><s:hidden
+																								id="functionary${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].functionaryName"
 																									id="functionaryName%{#s.index}"
 																									value="%{functionaryName}" />
-																								<s:property value="%{functionaryName}" /></td>
-																						</s:if>
-																						<s:if
+																								${%{functionaryName}}</td>
+																						</c:if>
+																						<c:if
 																							test="%{shouldShowHeaderField('fundsource')}">
 																							<td class="blueborderfortdnew"
-																								id="fundsource<s:property value="#s.index"/>"><s:hidden
+																								id="fundsource${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].fundsourceName"
 																									id="fundsourceName%{#s.index}"
 																									value="%{fundsourceName}" />
-																								<s:property value="%{fundsourceName}" /></td>
-																						</s:if>
-																						<s:if test="%{shouldShowHeaderField('scheme')}">
+																								${%{fundsourceName}}</td>
+																						</c:if>
+																						<c:if test="%{shouldShowHeaderField('scheme')}">
 																							<td class="blueborderfortdnew"
-																								id="scheme<s:property value="#s.index"/>"><s:hidden
+																								id="scheme${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].schemeName"
 																									id="schemeName%{#s.index}"
 																									value="%{schemeName}" />
-																								<s:property value="%{schemeName}" /></td>
-																						</s:if>
-																						<s:if test="%{shouldShowHeaderField('subscheme')}">
+																								${%{schemeName}}</td>
+																						</c:if>
+																						<c:if test="%{shouldShowHeaderField('subscheme')}">
 																							<td class="blueborderfortdnew"
-																								id="subscheme<s:property value="#s.index"/>"><s:hidden
+																								id="subscheme${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].subschemeName"
 																									id="subschemeName%{#s.index}"
 																									value="%{subschemeName}" />
-																								<s:property value="%{subschemeName}" /></td>
-																						</s:if>
-																						<s:if test="%{shouldShowHeaderField('field')}">
+																								${%{subschemeName}}</td>
+																						</c:if>
+																						<c:if test="%{shouldShowHeaderField('field')}">
 																							<td class="blueborderfortdnew"
-																								id="field<s:property value="#s.index"/>"><s:hidden
+																								id="field${#s.index}"><s:hidden
 																									name="pensionList[%{#s.index}].fieldName"
 																									id="fieldName%{#s.index}" value="%{fieldName}" />
-																								<s:property value="%{fieldName}" /></td>
-																						</s:if>
+																								${%{fieldName}}</td>
+																						</c:if>
 																					</tr>
-																				</s:iterator>
+																				</c:forEach>
 																		</table>
-																		<s:if
+																		<c:if
 																			test="pensionList == null || pensionList.size==0">
 																			<div class="subheadsmallnew">No Records Found</div>
-																		</s:if>
+																		</c:if>
 																	</div>
 																</td>
 															</tr>
@@ -557,7 +559,7 @@ function checkpensionForSameMisAttribs(obj,len)
 						value="cash" type="radio"><label for="paymentModecash"><s:text
 								name="cash.consolidated.cheque" /></label> <input name="paymentMode"
 						id="paymentModecash" value="rtgs" type="radio"><label
-						for="paymentModeRTGS"><s:text name="rtgs" /></label></td>
+						for="paymentModeRTGS"><!-- TODO: Manual migration required for custom Struts tag --></label></td>
 				</tr>
 				<tr>
 					<td class="buttonbottomnew" align="center"><s:submit
@@ -566,10 +568,10 @@ function checkpensionForSameMisAttribs(obj,len)
 				</tr>
 			</table>
 		</div>
-		<s:if test="%{!validateUser('createpayment')}">
+		<c:if test="%{!validateUser('createpayment')}">
 			<script>
 			document.getElementById('searchBtn').disabled=true;
-			document.getElementById('errorSpan').innerHTML='<s:text name="payment.invalid.user"/>';
+			document.getElementById('errorSpan').innerHTML='<!-- TODO: Manual migration required for custom Struts tag -->';
 			if(document.getElementById('vouchermis.departmentid'))
 			{
 				var d = document.getElementById('vouchermis.departmentid');
@@ -577,15 +579,15 @@ function checkpensionForSameMisAttribs(obj,len)
 				d.options[d.selectedIndex].text.value=-1;
 			}
 		</script>
-		</s:if>
-		<s:if test="%{validateUser('deptcheck')}">
+		</c:if>
+		<c:if test="%{validateUser('deptcheck')}">
 			<script>
 				if(document.getElementById('vouchermis.departmentid'))
 				{
 					document.getElementById('vouchermis.departmentid').disabled=true;
 				}
 			</script>
-		</s:if>
-	</s:form>
+		</c:if>
+	</form:form>
 </body>
 </html>

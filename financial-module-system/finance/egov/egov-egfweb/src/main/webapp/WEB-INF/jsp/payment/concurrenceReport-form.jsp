@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -270,14 +272,14 @@ function doAfterSubmit(){
 		<div class="subheadnew">Concurrence Report</div>
 
 
-		<s:form action="concurrenceReport" theme="simple"
+		<form:form action="concurrenceReport" theme="simple"
 			name="concurrenceReport" theme="simple" method="post"
 			onsubmit="javascript:doAfterSubmit()">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox">Fund</td>
-					<td class="bluebox" colspan="3"><s:select name="fundId"
+					<td class="bluebox" colspan="3"><form:select path="fundId"
 							id="fundId" list="dropdownData.fundList" listKey="id"
 							listValue="name" headerKey="-1" headerValue="----Choose----"
 							onChange="loadBank(this);" value="%{fundId.id}" /></td>
@@ -288,7 +290,7 @@ function doAfterSubmit(){
 						dropdownId="bank"
 						url="/voucher/common!ajaxLoadBanksByFundAndType.action" />
 					<td class="greybox">Bank Name:<span class="bluebox"></span></td>
-					<td class="greybox"><s:select name="bank" id="bank"
+					<td class="greybox"><form:select path="bank" id="bank"
 							list="dropdownData.bankList" listKey="bankBranchId"
 							listValue="bankBranchName" headerKey="-1"
 							headerValue="----Choose----" onChange="populateAccNumbers(this);" />
@@ -297,14 +299,14 @@ function doAfterSubmit(){
 						dropdownId="accountNumber"
 						url="voucher/common!ajaxLoadAccNumAndType.action" />
 					<td class="greybox">Account Number:<span class="bluebox"></span></td>
-					<td class="greybox"><s:select name="bankAccount"
+					<td class="greybox"><form:select path="bankAccount"
 							id="accountNumber" list="dropdownData.accNumList" listKey="id"
 							listValue="accountnumber" headerKey="-1"
 							headerValue="----Choose----" onclick="validateBank()" /></td>
 				</tr>
 				<tr>
 					<td class="bluebox">&nbsp;</td>
-					<td class="bluebox"><s:text name="Date Type" /><span
+					<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --><span
 						class="mandatory">*</span></td>
 					<td class="bluebox" colspan="3"><s:radio id="dateType"
 							name="dateType" list="#{'1':'AsOnDate','0':'Date Range'}"
@@ -313,7 +315,7 @@ function doAfterSubmit(){
 				<tr id="asdat1">
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox">As On Date:<span class="mandatory">*</span></td>
-					<td class="bluebox" colspan="3"><s:textfield name="asOnDate"
+					<td class="bluebox" colspan="3"><form:input path="asOnDate"
 							id="asOnDate" cssStyle="width:100px"
 							value='%{getFormattedAsOnDate()}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
@@ -325,7 +327,7 @@ function doAfterSubmit(){
 				<tr id="dateran">
 					<td class="bluebox">&nbsp;</td>
 					<td class="bluebox">From Date:<span class="mandatory">*</span></td>
-					<td class="bluebox"><s:textfield name="fromDate" id="fromDate"
+					<td class="bluebox"><form:input path="fromDate" id="fromDate"
 							cssStyle="width:100px" value='%{getFormattedDate(this.value)}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('concurrenceReport.fromDate');"
@@ -333,7 +335,7 @@ function doAfterSubmit(){
 							src="/services/egi/resources/erp2/images/calendaricon.gif" border="0" /></a>(dd/mm/yyyy)<br />
 					</td>
 					<td class="bluebox">To Date:<span class="mandatory">*</span></td>
-					<td class="bluebox"><s:textfield name="toDate" id="toDate"
+					<td class="bluebox"><form:input path="toDate" id="toDate"
 							cssStyle="width:100px" value='%{getFormattedDate()}'
 							onkeyup="DateFormat(this,this.value,event,false,'3')" /><a
 						href="javascript:show_calendar('concurrenceReport.toDate');"
@@ -343,7 +345,7 @@ function doAfterSubmit(){
 				</tr>
 				<tr>
 					<td class="greybox">&nbsp;</td>
-					<td class="greybox"><s:text name="payment.mode" /></td>
+					<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag --></td>
 					<td class="greybox" colspan="3"><s:radio id="chequeOrRTGS"
 							name="chequeOrRTGS" list="#{'cheque':'Cheque','rtgs':'RTGS'}"
 							value="%{chequeOrRTGS}" /></td>
@@ -364,7 +366,7 @@ function doAfterSubmit(){
 		style="width: 700; height: 700; display: none" align="center">
 		<blink style="color: red">Searching processing, Please wait...</blink>
 	</div>
-	</s:form>
+	</form:form>
 
 	<div id="results">
 		<script>

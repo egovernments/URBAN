@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -53,32 +55,32 @@
 
 <html>
 <head>
-<title><s:text name="grants.search.grants" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 
 </head>
 
 <body>
 	<div class="formmainbox">
 		<div class="subheadnew">
-			<s:text name="grants.search.grants" />
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 
 		<br />
 		<br />
 
-		<s:form name="baseRevenueForm" action="baseRevenue" theme="simple">
+		<form:form name="baseRevenueForm" action="baseRevenue" theme="simple">
 
 
 			<br />
 			<br />
 
 			<div class="buttonbottom">
-				<s:submit method="search" value="Search" cssClass="buttonsubmit" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<input type="submit" value="Close"
 					onclick="javascript:window.close()" class="button" />
 			</div>
 
-			<s:if test="%{grantSearchList.size!=0}">
+			<c:if test="%{grantSearchList.size!=0}">
 				<table width="100%" border="0" align="center" cellpadding="0"
 					cellspacing="0" class="tablebottom">
 
@@ -92,7 +94,7 @@
 							align="center">Grant Type</th>
 					</tr>
 					<c:set var="trclass" value="greybox" />
-					<s:iterator var="fa" value="grantSearchList" status="f">
+					<c:forEach var="fa" value="grantSearchList" status="f">
 						<tr>
 
 							<td class="<c:out value="${trclass}"/>"
@@ -100,8 +102,8 @@
 									value="#f.index+1" /></td>
 							<td class="<c:out value="${trclass}"/>"
 								style="text-align: center" align="center"><a href="#"
-								onclick="urlLoad('<s:property value="id"/>');" id="sourceLink" />
-								<s:property value="proceedingsNo" /> </a></td>
+								onclick="urlLoad('${id}');" id="sourceLink" />
+								${proceedingsNo} </a></td>
 							<td class="<c:out value="${trclass}"/>"
 								style="text-align: center" align="center"><s:property
 									value="grantType" /></td>
@@ -114,11 +116,11 @@
 								</c:when>
 							</c:choose>
 						</tr>
-					</s:iterator>
+					</c:forEach>
 
 				</table>
-			</s:if>
-			<s:if test="%{grantSearchList.size==0}">
+			</c:if>
+			<c:if test="%{grantSearchList.size==0}">
 				<div id="msgdiv" style="display: block">
 					<table align="center" class="tablebottom" width="80%">
 						<tr>
@@ -127,9 +129,9 @@
 						</tr>
 					</table>
 				</div>
-			</s:if>
+			</c:if>
 
-		</s:form>
+		</form:form>
 		<script>
 	function urlLoad(id){
 		url = "baseRevenue!beforeEdit.action?id="+id;

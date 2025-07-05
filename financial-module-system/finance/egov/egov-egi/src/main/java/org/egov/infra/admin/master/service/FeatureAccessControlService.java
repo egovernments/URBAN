@@ -48,7 +48,7 @@
 
 package org.egov.infra.admin.master.service;
 
-import org.egov.infra.admin.master.entity.Action;
+// TODO: Migrate from Struts/XWork: import org.egov.infra.admin.master.entity.Action;
 import org.egov.infra.admin.master.entity.Feature;
 import org.egov.infra.admin.master.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,24 +63,24 @@ public class FeatureAccessControlService {
     private FeatureService featureService;
 
     @Autowired
-    private ActionService actionService;
+// TODO: Migrate from Struts/XWork:     private ActionService actionService;
 
     public void grantAccess(Feature feature, Role role) {
-        for (Action action : feature.getActions()) {
-            action.addRole(role);
-            actionService.saveAction(action);
-        }
+        // TODO: Migrate from Struts/XWork: for (Action action : feature.getActions()) {
+        //     action.addRole(role);
+        //     actionService.saveAction(action);
+        // }
         feature.addRole(role);
         featureService.saveFeature(feature);
     }
 
     public void revokeAccess(Feature feature, Role role) {
-        for (Action action : feature.getActions()) {
-            if (featureService.getNumberOfFeatureByRoleAction(role, action) == 1) {
-                action.removeRole(role);
-                actionService.saveAction(action);
-            }
-        }
+        // TODO: Migrate from Struts/XWork: for (Action action : feature.getActions()) {
+        //     if (featureService.getNumberOfFeatureByRoleAction(role, action) == 1) {
+        //         action.removeRole(role);
+        //         actionService.saveAction(action);
+        //     }
+        // }
         feature.removeRole(role);
         featureService.saveFeature(feature);
     }

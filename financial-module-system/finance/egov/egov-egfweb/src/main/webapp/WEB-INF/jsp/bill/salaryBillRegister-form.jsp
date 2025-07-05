@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -314,13 +316,13 @@ function createDropdownFormatterForAccountCode(prefix){
 		}
 
 	var glcodeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.glcodeList">
-	    glcodeOptions.push({label:'<s:property value="glcode"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.glcodeList">
+	    glcodeOptions.push({label:'${glcode}', value:'${id}'})
+	</c:forEach>
 	var detailtypeOptions=[{label:"--- Select ---", value:"0"}];
-	<s:iterator value="dropdownData.detailTypeList">
-	    detailtypeOptions.push({label:'<s:property value="name"/>', value:'<s:property value="id"/>'})
-	</s:iterator>
+	<c:forEach value="dropdownData.detailTypeList">
+	    detailtypeOptions.push({label:'${name}', value:'${id}'})
+	</c:forEach>
 	
 		var EARNINGS_SUBLEDGER_TABLENAME="subledgerTable";
 		var makeSubledgerTable = function() {
@@ -360,19 +362,19 @@ function createDropdownFormatterForAccountCode(prefix){
 				}
 			}
 		});
-		<s:iterator value="subledgerList" status="stat">
+		<c:forEach value="subledgerList" status="stat">
 				subledgerTable.addRow({SlNo:subledgerTable.getRecordSet().getLength()+1,
-					"glcode":'<s:property value="subledgerCode"/>',
-					"glcode.id":'<s:property value="glcode.id"/>',
-					"accountDetailTypeId.id":'<s:property value="accountDetailTypeId"/>',
-					"detailTypeName":'<s:property value="detailTypeName"/>',
-					"detailCode":'<s:property value="detailCode"/>',
-					"accountDetailKeyId":'<s:property value="accountDetailKeyId"/>',
-					"narration":'<s:property value="narration"/>',
-					"debitAmount":'<s:property value="%{debitAmount}"/>',
-					"creditAmount":'<s:property value="%{creditAmount}"/>'
+					"glcode":'${subledgerCode}',
+					"glcode.id":'${glcode.id}',
+					"accountDetailTypeId.id":'${accountDetailTypeId}',
+					"detailTypeName":'${detailTypeName}',
+					"detailCode":'${detailCode}',
+					"accountDetailKeyId":'${accountDetailKeyId}',
+					"narration":'${narration}',
+					"debitAmount":'${%{debitAmount}}',
+					"creditAmount":'${%{creditAmount}}'
 				});
-			</s:iterator>
+			</c:forEach>
 		var tfoot = subledgerTable.getTbodyEl().parentNode.createTFoot();
 		var tr = tfoot.insertRow(-1);
 		var th = tr.appendChild(document.createElement('th'));
@@ -393,10 +395,10 @@ function createDropdownFormatterForAccountCode(prefix){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td width="9%" class="bluebox">&nbsp;</td>
-		<td width="18%" class="bluebox"><s:text name="billDate" /></>:<span
+		<td width="18%" class="bluebox"><!-- TODO: Manual migration required for custom Struts tag --></>:<span
 			class="mandatory">*</span></td>
 		<td width="23%" class="bluebox"><input type="text"
-			name="model.billdate" value='<s:property value="model.billdate"/>'
+			name="model.billdate" value='${model.billdate}'
 			id="billdate" onkeyup="DateFormat(this,this.value,event,false,'3')" />
 			<a href="javascript:show_calendar('salaryBill.billdate');"
 			style="text-decoration: none">&nbsp;<img tabIndex="-1"
@@ -409,7 +411,7 @@ function createDropdownFormatterForAccountCode(prefix){
 		<td class="greybox">&nbsp;</td>
 		<td class="greybox">For the Month of:<span class="mandatory">*</span></td>
 		<td class="greybox"><select name="billregistermis.month"
-			id="month" value='<s:property value="billregistermis.month"/>'>
+			id="month" value='${billregistermis.month}'>
 				<option value="-1" selected="selected">------Choose-----</option>
 				<option value="1">January</option>
 				<option value="2">February</option>
@@ -424,9 +426,9 @@ function createDropdownFormatterForAccountCode(prefix){
 				<option value="11">November</option>
 				<option value="12">December</option>
 		</select></td>
-		<td class="greybox"><s:text name="financialyear" />:<span
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 			class="mandatory">*</span></td>
-		<td class="greybox"><s:select
+		<td class="greybox"><form:select
 				name="billregistermis.financialyear.id" id="financialyear"
 				list="dropdownData.financialYearList" listKey="id"
 				listValue="finYearRange" headerKey="-1" headerValue="----Choose----"
@@ -434,23 +436,23 @@ function createDropdownFormatterForAccountCode(prefix){
 	</tr>
 	<tr>
 		<td class="bluebox">&nbsp;</td>
-		<td class="bluebox"><s:text name="department" />:<span
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:<span
 			class="mandatory">*</span></td>
-		<td class="bluebox"><s:select
+		<td class="bluebox"><form:select
 				name="billregistermis.departmentcode" id="department"
 				list="dropdownData.departmentList" listKey="code" listValue="name"
 				headerKey="-1" headerValue="----Choose----"
 				value="billregistermis.departmentcode" /></td>
-		<td class="bluebox"><s:text name="field" />:</td>
-		<td class="bluebox"><s:select name="billregistermis.fieldid.id"
+		<td class="bluebox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+		<td class="bluebox"><form:select path="billregistermis.fieldid.id"
 				id="fieldid" list="dropdownData.fieldList" listKey="id"
 				listValue="name" headerKey="-1" headerValue="----Choose----"
 				value="billregistermis.fieldid.id" /></td>
 	</tr>
 	<tr>
 		<td class="greybox">&nbsp;</td>
-		<td class="greybox"><s:text name="functionary" />:</td>
-		<td class="greybox"><s:select
+		<td class="greybox"><!-- TODO: Manual migration required for custom Struts tag -->:</td>
+		<td class="greybox"><form:select
 				name="billregistermis.functionaryid.id" id="functionaryid"
 				list="dropdownData.functionaryList" listKey="id" listValue="name"
 				headerKey="-1" headerValue="----Choose----"
@@ -472,7 +474,7 @@ function createDropdownFormatterForAccountCode(prefix){
 	class="tablebottom">
 	<tr>
 		<th colspan="8"><div class="subheadsmallnew">
-				<s:text name="bill.earnings" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div></th>
 	</tr>
 	<tr>
@@ -483,55 +485,55 @@ function createDropdownFormatterForAccountCode(prefix){
 		<th class="bluebgheadtd" width="50%">Account Description</th>
 		<th class="bluebgheadtd" width="50%">Debit Amount</th>
 	</tr>
-	<s:iterator value="earningsList" status="stat" var="a">
+	<c:forEach value="earningsList" status="stat" var="a">
 		<tr>
 			<td class="blueborderfortd"><div align="center">
 					<input name="textfield" type="text"
-						value='<s:property value="#stat.index+1"/>' size="3" />
+						value='${#stat.index+1}' size="3" />
 				</div></td>
 			<td class="blueborderfortd"><div align="center">
-					<input value='<s:property value="#a.functionid"/>'
-						name='earningsList[<s:property value="#stat.index"/>].functionid'
+					<input value='${#a.functionid}'
+						name='earningsList[${#stat.index}].functionid'
 						type="hidden" size="1"
-						id='earningsList[<s:property value="#stat.index"/>].functionid' />
+						id='earningsList[${#stat.index}].functionid' />
 					<input type="text" size="28"
-						name='earningsList[<s:property value="#stat.index"/>].functionDetail'
-						id='earningsList[<s:property value="#stat.index"/>].functionDetail'
+						name='earningsList[${#stat.index}].functionDetail'
+						id='earningsList[${#stat.index}].functionDetail'
 						class="yui-ac-input"
 						onkeyup='autocompletecodeFunction(this,event)' autocomplete='off'
 						onblur='fillNeighbourAfterSplitFunction(this,"earningsList")' />
 				</div></td>
 			<td class="blueborderfortd"><div align="center">
-					<input value='<s:property value="coaIdAndHead[#a.glcodeid]"/>'
+					<input value='${coaIdAndHead[#a.glcodeid]}'
 						type="text" size="28"
-						id='earningsList[<s:property value="#stat.index"/>].narration'
+						id='earningsList[${#stat.index}].narration'
 						readonly="readonly" />
 				</div></td>
 			<td class="blueborderfortd"><input
-				name='earningsList[<s:property value="#stat.index"/>].glcodeid'
+				name='earningsList[${#stat.index}].glcodeid'
 				type="hidden" size="1"
-				id='earningsList[<s:property value="#stat.index"/>].glcodeid'
-				value='<s:property value="#a.glcodeid"/>' /> <input type="text"
+				id='earningsList[${#stat.index}].glcodeid'
+				value='${#a.glcodeid}' /> <input type="text"
 				size="20"
-				id='earningsList[<s:property value="#stat.index"/>].glcode'
-				value='<s:property value="coaAndIds[#a.glcodeid].glcode"/>'
+				id='earningsList[${#stat.index}].glcode'
+				value='${coaAndIds[#a.glcodeid].glcode}'
 				readonly="readonly" /></td>
 			<td class="blueborderfortd"><input
-				value='<s:property value="coaAndIds[#a.glcodeid].name"/>'
-				name='earningsList[<s:property value="#stat.index"/>].narration'
+				value='${coaAndIds[#a.glcodeid].name}'
+				name='earningsList[${#stat.index}].narration'
 				type="text"
-				id='earningsList[<s:property value="#stat.index"/>].narration'
+				id='earningsList[${#stat.index}].narration'
 				size="25" readonly="readonly" /></td>
 			<td class="blueborderfortd"><div align="center">
 					<input
-						name='earningsList[<s:property value="#stat.index"/>].debitamount'
+						name='earningsList[${#stat.index}].debitamount'
 						type="text" class="amount" size="25"
-						id='earningsList[<s:property value="#stat.index"/>].debitamount'
+						id='earningsList[${#stat.index}].debitamount'
 						onblur="computeEarningsTotalAmount(this)"
-						value='<s:property value="earningsList[#stat.index].debitamount"/>' />
+						value='${earningsList[#stat.index].debitamount}' />
 				</div></td>
 		</tr>
-	</s:iterator>
+	</c:forEach>
 	<tr>
 		<td colspan="5" class="blueborderfortd1"><div align="right"
 				class="bold">Total Earnings:</div></td>
@@ -550,7 +552,7 @@ function createDropdownFormatterForAccountCode(prefix){
 	class="tablebottom">
 	<tr>
 		<th colspan="8"><div class="subheadsmallnew">
-				<s:text name="bill.deductions" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div></th>
 	</tr>
 	<tr>
@@ -561,55 +563,55 @@ function createDropdownFormatterForAccountCode(prefix){
 		<th class="bluebgheadtd" width="50%">Account Description</th>
 		<th class="bluebgheadtd" width="50%">Credit Amount</th>
 	</tr>
-	<s:iterator value="deductionsList" status="stat" var="a">
+	<c:forEach value="deductionsList" status="stat" var="a">
 		<tr>
 			<td class="blueborderfortd"><div align="center">
 					<input name="textfield" type="text"
-						value='<s:property value="#stat.index+1"/>' size="3" />
+						value='${#stat.index+1}' size="3" />
 				</div></td>
 			<td class="blueborderfortd"><div align="center">
-					<input value='<s:property value="functionid"/>'
-						name='deductionsList[<s:property value="#stat.index"/>].functionid'
+					<input value='${functionid}'
+						name='deductionsList[${#stat.index}].functionid'
 						type="hidden" size="1"
-						id='deductionsList[<s:property value="#stat.index"/>].functionid' />
+						id='deductionsList[${#stat.index}].functionid' />
 					<input type="text" size="28"
-						name='deductionsList[<s:property value="#stat.index"/>].functionDetail'
-						id='deductionsList[<s:property value="#stat.index"/>].functionDetail'
+						name='deductionsList[${#stat.index}].functionDetail'
+						id='deductionsList[${#stat.index}].functionDetail'
 						class="yui-ac-input"
 						onkeyup='autocompletecodeFunction(this,event)' autocomplete='off'
 						onblur='fillNeighbourAfterSplitFunction(this,"deductionsList")' />
 				</div></td>
 			<td class="blueborderfortd"><div align="center">
-					<input value='<s:property value="coaIdAndHead[#a.glcodeid]"/>'
+					<input value='${coaIdAndHead[#a.glcodeid]}'
 						type="text" size="28"
-						id='deductionsList[<s:property value="#stat.index"/>].narration'
+						id='deductionsList[${#stat.index}].narration'
 						readonly="readonly" />
 				</div></td>
 			<td class="blueborderfortd"><input
-				name='deductionsList[<s:property value="#stat.index"/>].glcodeid'
+				name='deductionsList[${#stat.index}].glcodeid'
 				type="hidden" size="1"
-				id='deductionsList[<s:property value="#stat.index"/>].glcodeid'
-				value='<s:property value="#a.glcodeid"/>' /> <input type="text"
+				id='deductionsList[${#stat.index}].glcodeid'
+				value='${#a.glcodeid}' /> <input type="text"
 				size="20"
-				id='deductionsList[<s:property value="#stat.index"/>].glcode'
-				value='<s:property value="coaAndIds[#a.glcodeid].glcode"/>'
+				id='deductionsList[${#stat.index}].glcode'
+				value='${coaAndIds[#a.glcodeid].glcode}'
 				readonly="readonly" /></td>
 			<td class="blueborderfortd"><input
-				value='<s:property value="coaAndIds[#a.glcodeid].name"/>'
-				name='deductionsList[<s:property value="#stat.index"/>].narration'
+				value='${coaAndIds[#a.glcodeid].name}'
+				name='deductionsList[${#stat.index}].narration'
 				type="text"
-				id='deductionsList[<s:property value="#stat.index"/>].narration'
+				id='deductionsList[${#stat.index}].narration'
 				size="25" readonly="readonly" /></td>
 			<td class="blueborderfortd"><div align="center">
 					<input
-						name='deductionsList[<s:property value="#stat.index"/>].creditamount'
+						name='deductionsList[${#stat.index}].creditamount'
 						type="text" class="amount" size="25"
-						id='deductionsList[<s:property value="#stat.index"/>].creditamount'
+						id='deductionsList[${#stat.index}].creditamount'
 						onblur="computeDeductionsTotalAmount(this)"
-						value='<s:property value="deductionsList[#stat.index].creditamount"/>' />
+						value='${deductionsList[#stat.index].creditamount}' />
 				</div></td>
 		</tr>
-	</s:iterator>
+	</c:forEach>
 	<tr>
 		<td colspan="5" class="blueborderfortd1"><div align="right"
 				class="bold">Total Deductions:</div></td>
@@ -624,16 +626,16 @@ function createDropdownFormatterForAccountCode(prefix){
 
 
 <div class="subheadsmallnew" align="center">
-	<s:text name="bill.subledger" />
+	<!-- TODO: Manual migration required for custom Struts tag -->
 </div>
 <div class="yui-skin-sam" align="center">
 	<div id="subledgerTable"></div>
 </div>
 <script>
 			makeSubledgerTable();
-			<s:if test="%{subledgerList.size() == 0 && getActionErrors().size()==0 && getFieldErrors().size()==0}">
+			<c:if test="%{subledgerList.size() == 0 && getActionErrors().size()==0 && getFieldErrors().size()==0}">
 				subledgerTable.addRow({SlNo:subledgerTable.getRecordSet().getLength()+1});
-			</s:if>
+			</c:if>
 		</script>
 <div id="detailcodescontainer"></div>
 <br />
@@ -644,7 +646,7 @@ function createDropdownFormatterForAccountCode(prefix){
 	class="tablebottom">
 	<tr>
 		<th colspan="8"><div class="subheadsmallnew">
-				<s:text name="bill.netpay" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div></th>
 	</tr>
 	<tr>
@@ -653,37 +655,37 @@ function createDropdownFormatterForAccountCode(prefix){
 		<th class="bluebgheadtd" width="50%">Account Description</th>
 		<th class="bluebgheadtd" width="50%">Total Amount</th>
 	</tr>
-	<s:iterator value="netPayList" status="stat" var="a">
+	<c:forEach value="netPayList" status="stat" var="a">
 		<tr>
 			<td class="blueborderfortd"><div align="center">
-					<input value='<s:property value="coaIdAndHead[#a.glcodeid]"/>'
+					<input value='${coaIdAndHead[#a.glcodeid]}'
 						type="text" size="28"
-						id='netPayList[<s:property value="#stat.index"/>].narration'
+						id='netPayList[${#stat.index}].narration'
 						readonly="readonly" />
 				</div></td>
 			<td class="blueborderfortd"><input
-				name='netPayList[<s:property value="#stat.index"/>].glcodeid'
+				name='netPayList[${#stat.index}].glcodeid'
 				type="hidden" size="1"
-				id='netPayList[<s:property value="#stat.index"/>].glcodeid'
-				value='<s:property value="#a.glcodeid"/>' /> <input type="text"
-				size="30" id='netPayList[<s:property value="#stat.index"/>].glcode'
-				value='<s:property value="coaAndIds[#a.glcodeid].glcode"/>'
+				id='netPayList[${#stat.index}].glcodeid'
+				value='${#a.glcodeid}' /> <input type="text"
+				size="30" id='netPayList[${#stat.index}].glcode'
+				value='${coaAndIds[#a.glcodeid].glcode}'
 				readonly="readonly" /></td>
 			<td class="blueborderfortd"><input
-				value='<s:property value="coaAndIds[#a.glcodeid].name"/>'
-				name='netPayList[<s:property value="#stat.index"/>].narration'
+				value='${coaAndIds[#a.glcodeid].name}'
+				name='netPayList[${#stat.index}].narration'
 				type="text"
-				id='netPayList[<s:property value="#stat.index"/>].narration'
+				id='netPayList[${#stat.index}].narration'
 				size="35" readonly="readonly" /></td>
 			<td class="blueborderfortd"><div align="center">
 					<input
-						name='netPayList[<s:property value="#stat.index"/>].creditamount'
+						name='netPayList[${#stat.index}].creditamount'
 						type="text" class="amount" size="25"
-						id='netPayList[<s:property value="#stat.index"/>].creditamount'
+						id='netPayList[${#stat.index}].creditamount'
 						readonly="readonly" value="0" />
 				</div></td>
 		</tr>
-	</s:iterator>
+	</c:forEach>
 </table>
 <br />
 
@@ -717,12 +719,12 @@ function validateSubledgerAmounts(){
 	var map = {};
 	var subLedgerMap = {};
 	var amount = 0;
-	<s:iterator value="earningsList" status="stat" var="a">
-		map[document.getElementById('earningsList[<s:property value="#stat.index"/>].glcode').value] = document.getElementById('earningsList[<s:property value="#stat.index"/>].debitamount').value;
-	</s:iterator>	
-	<s:iterator value="deductionsList" status="stat" var="a">
-		map[document.getElementById('deductionsList[<s:property value="#stat.index"/>].glcode').value] = document.getElementById('deductionsList[<s:property value="#stat.index"/>].creditamount').value;
-	</s:iterator>
+	<c:forEach value="earningsList" status="stat" var="a">
+		map[document.getElementById('earningsList[${#stat.index}].glcode').value] = document.getElementById('earningsList[${#stat.index}].debitamount').value;
+	</c:forEach>	
+	<c:forEach value="deductionsList" status="stat" var="a">
+		map[document.getElementById('deductionsList[${#stat.index}].glcode').value] = document.getElementById('deductionsList[${#stat.index}].creditamount').value;
+	</c:forEach>
 	for(j=0;j<subledgerTable.getRecordSet().getLength();j++){
 		element = document.getElementById("subledgerList["+j+"].glcode.id");
 		amount = subLedgerMap[element.options[element.selectedIndex].value] == null?0:subLedgerMap[element.options[element.selectedIndex].value];

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
  <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -48,14 +50,14 @@
 
 <%@ include file="/includes/taglibs.jsp"%>
 <head>
-<title><s:text name="collectionSummaryReport.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 </head>
 <body>
-	<s:form theme="simple" name="bankRemittanceReportForm"
+	<form:form theme="simple" name="bankRemittanceReportForm"
 		action="bankRemittanceReport-report.action">
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="bankRemittanceReport.title" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
 			<div class="subheadsmallnew">
 				<span class="subheadnew"><s:text
@@ -68,10 +70,10 @@
 						&nbsp;
 					</td>
 					<td width="10%" class="bluebox">
-						<s:text name="collectionReport.criteria.dept" />
+						<!-- TODO: Manual migration required for custom Struts tag -->
 					</td>
 					<td width="25%" class="bluebox">
-						<s:select name="deptId" id="dept" cssClass="selectwk"
+						<form:select path="deptId" id="dept" cssClass="selectwk"
 							list="dropdownData.departmentList" listKey="id"
 							listValue="name" value="%{deptId}" />
 					</td>
@@ -93,10 +95,10 @@
 			</label>
 			<label>
 				<input type="button" class="button" id="buttonClose"
-					value="<s:text name='common.buttons.close'/>"
+					value="<!-- TODO: Manual migration required for custom Struts tag -->"
 					onclick="window.close()" />
 			</label>
 		</div>
-	</s:form>
+	</form:form>
 </body>
 </html>

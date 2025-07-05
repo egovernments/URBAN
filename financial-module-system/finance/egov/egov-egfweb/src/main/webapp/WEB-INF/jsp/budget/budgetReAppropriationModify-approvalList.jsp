@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -52,7 +54,7 @@
 <%@ page import="org.egov.budget.model.*"%>
 <html>
 <head>
-<title><s:text name="budget.reappropriation.title" /></title>
+<title><!-- TODO: Manual migration required for custom Struts tag --></title>
 <link rel="stylesheet" href="/services/EGF/resources/css/tabber.css?rnd=${app_release_no}"
 	TYPE="text/css">
 <script type="text/javascript" src="/services/EGF/resources/javascript/tabber.js?rnd=${app_release_no}"></script>
@@ -68,21 +70,21 @@
 	}
 	
 	function onLoadTask(){
-		if('<s:property value="message"/>' != ''){
-			bootbox.alert('<s:property value="message"/>');
+		if('${message}' != ''){
+			bootbox.alert('${message}');
 			window.close();
 		}
 		return;
 	}
 	
 	function validateAppoveUser(name,value){
-		<s:if test="%{workFlowItem.currentState.value =='END'}">
+		<c:if test="%{workFlowItem.currentState.value =='END'}">
 			if(value == 'Approve' || value == 'Reject') {
 				document.getElementById("approverUserId").value=-1;
 				return true;
 			}
-		</s:if>
-		<s:else>
+		</c:if>
+		<c:otherwise>
 			if( (value == 'forward' || value == 'Forward') && null != document.getElementById("approverUserId") && document.getElementById("approverUserId").value == -1){
 				bootbox.alert("please select User");
 				return false;
@@ -95,15 +97,15 @@
 <body>
 	<%@ include file='common-includes.jsp'%>
 	<jsp:include page="budgetHeader.jsp" />
-	<s:form name="budgetReAppropriationForm"
+	<form:form name="budgetReAppropriationForm"
 		action="budgetReAppropriationModify" theme="simple">
 		<div class="formmainbox">
 			<div class="subheadnew">
-				<s:text name="budgetReApp" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 			</div>
-			<s:actionmessage theme="simple" />
-			<s:actionerror />
-			<s:fielderror />
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
+			<!-- TODO: Manual migration required for custom Struts tag -->
 		</div>
 		<div align="left">
 			<br />
@@ -113,7 +115,7 @@
 						<div class="tabber">
 							<div class="tabbertab">
 								<h2>Additional Appropriations</h2>
-								<span> <s:if
+								<span> <c:if
 										test="%{not savedBudgetReAppropriationList.empty}">
 										<div id="detail"
 											style="width: 100%; overflow-x: auto; overflow-y: hidden;">
@@ -125,34 +127,34 @@
 															name="budgetdetail.budget" /></th>
 													<th class="bluebgheadtd" width="11%"><s:text
 															name="budgetdetail.budgetGroup" /></th>
-													<s:if test="%{shouldShowField('executingDepartment')}">
+													<c:if test="%{shouldShowField('executingDepartment')}">
 														<th class="bluebgheadtd" width="16%"><s:text
 																name="budgetdetail.executingDepartment" /></th>
-													</s:if>
-													<s:if test="%{shouldShowField('fund')}">
+													</c:if>
+													<c:if test="%{shouldShowField('fund')}">
 														<th class="bluebgheadtd" width="10%"><s:text
 																name="budgetdetail.fund" /></th>
-													</s:if>
-													<s:if test="%{shouldShowField('function')}">
+													</c:if>
+													<c:if test="%{shouldShowField('function')}">
 														<th class="bluebgheadtd" width="10%"><s:text
 																name="budgetdetail.function" /></th>
-													</s:if>
-													<s:if test="%{shouldShowField('functionary')}">
+													</c:if>
+													<c:if test="%{shouldShowField('functionary')}">
 														<th class="bluebgheadtd" width="10%"><s:text
 																name="budgetdetail.functionary" /></th>
-													</s:if>
-													<s:if test="%{shouldShowField('scheme')}">
+													</c:if>
+													<c:if test="%{shouldShowField('scheme')}">
 														<th class="bluebgheadtd" width="10%"><s:text
 																name="budgetdetail.scheme" /></th>
-													</s:if>
-													<s:if test="%{shouldShowField('subScheme')}">
+													</c:if>
+													<c:if test="%{shouldShowField('subScheme')}">
 														<th class="bluebgheadtd" width="10%"><s:text
 																name="budgetdetail.subScheme" /></th>
-													</s:if>
-													<s:if test="%{shouldShowField('boundary')}">
+													</c:if>
+													<c:if test="%{shouldShowField('boundary')}">
 														<th class="bluebgheadtd" width="10%"><s:text
 																name="budgetdetail.field" /></th>
-													</s:if>
+													</c:if>
 													<th class="bluebgheadtd" width="16%">Sanctioned Budget</th>
 													<th class="bluebgheadtd" width="16%">Expenditure
 														Incurred</th>
@@ -163,121 +165,121 @@
 													<th class="bluebgheadtd" width="16%">Addition of<br />Funds
 														sought(Rs)
 													</th>
-													<s:if test="%{enableApprovedAmount()}">
+													<c:if test="%{enableApprovedAmount()}">
 														<th class="bluebgheadtd" width="16%">Addition of<br />Funds
 															sought Approved Amount(Rs)
 														</th>
-													</s:if>
+													</c:if>
 												</tr>
-												<s:iterator value="savedBudgetReAppropriationList"
+												<c:forEach value="savedBudgetReAppropriationList"
 													status="stat">
 													<tr>
 														<input type='hidden'
-															name="savedBudgetReAppropriationList[<s:property value='#stat.index'/>].id"
-															value="<s:property value='id'/>" />
+															name="savedBudgetReAppropriationList[<!-- TODO: Manual migration required for custom Struts tag -->].id"
+															value="<!-- TODO: Manual migration required for custom Struts tag -->" />
 														<td class="blueborderfortd"><s:property
 																value="budgetDetail.budget.name" /> &nbsp;</td>
 														<td class="blueborderfortd"><s:property
 																value="budgetDetail.budgetGroup.name" />&nbsp;</td>
-														<s:if test="%{shouldShowField('executingDepartment')}">
+														<c:if test="%{shouldShowField('executingDepartment')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.executingDepartment.deptName" />&nbsp;</td>
-														</s:if>
-														<s:if test="%{shouldShowField('fund')}">
+														</c:if>
+														<c:if test="%{shouldShowField('fund')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.fund.name" />&nbsp;</td>
-														</s:if>
-														<s:if test="%{shouldShowField('function')}">
+														</c:if>
+														<c:if test="%{shouldShowField('function')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.function.name" />&nbsp;</td>
-														</s:if>
-														<s:if test="%{shouldShowField('functionary')}">
+														</c:if>
+														<c:if test="%{shouldShowField('functionary')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.functionary.name" />&nbsp;</td>
-														</s:if>
-														<s:if test="%{shouldShowField('scheme')}">
+														</c:if>
+														<c:if test="%{shouldShowField('scheme')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.scheme.name" />&nbsp;</td>
-														</s:if>
-														<s:if test="%{shouldShowField('subScheme')}">
+														</c:if>
+														<c:if test="%{shouldShowField('subScheme')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.subScheme.name" />&nbsp;</td>
-														</s:if>
-														<s:if test="%{shouldShowField('boundary')}">
+														</c:if>
+														<c:if test="%{shouldShowField('boundary')}">
 															<td class="blueborderfortd"><s:property
 																	value="budgetDetail.boundary.name" />&nbsp;</td>
-														</s:if>
+														</c:if>
 														<td class="blueborderfortd">
 															<div style="text-align: right">
-																<s:text name="format.number">
-																	<s:param value="approvedAmount" />
+																<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
 																</s:text>
 															</div>
 														</td>
 														<td class="blueborderfortd">
 															<div style="text-align: right">
-																<s:text name="format.number">
-																	<s:param value="actuals" />
+																<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
 																</s:text>
 															</div>
 														</td>
 														<td class="blueborderfortd">
 															<div style="text-align: right">
-																<s:text name="format.number">
-																	<s:param value="addedReleased" />
+																<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
 																</s:text>
 															</div>
 														</td>
 														<td class="blueborderfortd">
 															<div style="text-align: right">
-																<s:text name="format.number">
-																	<s:param value="availableAmount" />
+																<!-- TODO: Manual migration required for custom Struts tag -->
+																	<!-- TODO: Manual migration required for custom Struts tag -->
 																</s:text>
 															</div>
 														</td>
 														<td class="blueborderfortd"><input type="hidden"
-															name='savedBudgetReAppropriationList[<s:property value="#stat.index"/>].changeRequestType'
-															id='savedBudgetReAppropriationList[<s:property value="#stat.index"/>].changeRequestType'
-															value='<s:property value="changeRequestType"/>' />
+															name='savedBudgetReAppropriationList[${#stat.index}].changeRequestType'
+															id='savedBudgetReAppropriationList[${#stat.index}].changeRequestType'
+															value='${changeRequestType}' />
 															<div style="text-align: right">
-																<s:property value="changeRequestType" />
+																${changeRequestType}
 															</div></td>
-														<s:if test="%{enableOriginalAmount()}">
+														<c:if test="%{enableOriginalAmount()}">
 															<td class="blueborderfortd">
 																<div style="text-align: right">
 																	<input type="text"
 																		style="text-align: right; size: 50px;"
-																		id='savedBudgetReAppropriationList[<s:property value="#stat.index"/>].deltaAmount'
-																		name='savedBudgetReAppropriationList[<s:property value="#stat.index"/>].deltaAmount'
-																		value='<s:property value="deltaAmount"/>' />
+																		id='savedBudgetReAppropriationList[${#stat.index}].deltaAmount'
+																		name='savedBudgetReAppropriationList[${#stat.index}].deltaAmount'
+																		value='${deltaAmount}' />
 																</div>
 															</td>
-														</s:if>
-														<s:else>
+														</c:if>
+														<c:otherwise>
 															<td class="blueborderfortd">
 																<div style="text-align: right">
-																	<s:text name="format.number">
-																		<s:param value="deltaAmount" />
+																	<!-- TODO: Manual migration required for custom Struts tag -->
+																		<!-- TODO: Manual migration required for custom Struts tag -->
 																	</s:text>
 																</div>
 															</td>
 														</s:else>
-														<s:if test="%{enableApprovedAmount()}">
+														<c:if test="%{enableApprovedAmount()}">
 															<td class="blueborderfortd">
 																<div style="text-align: right">
 																	<input type="text"
 																		style="text-align: right; size: 50px;"
-																		id='savedBudgetReAppropriationList[<s:property value="#stat.index"/>].approvedDeltaAmount'
-																		name='savedBudgetReAppropriationList[<s:property value="#stat.index"/>].approvedDeltaAmount'
-																		value='<s:property value="approvedDeltaAmount"/>' />
+																		id='savedBudgetReAppropriationList[${#stat.index}].approvedDeltaAmount'
+																		name='savedBudgetReAppropriationList[${#stat.index}].approvedDeltaAmount'
+																		value='${approvedDeltaAmount}' />
 																</div>
 															</td>
-														</s:if>
+														</c:if>
 													</tr>
-												</s:iterator>
+												</c:forEach>
 											</table>
 										</div>
-									</s:if>
+									</c:if>
 								</span>
 							</div>
 							<div class="tabbertab">
@@ -314,29 +316,29 @@
 				</tr>
 			</table>
 			Comments:
-			<s:textarea name="comment" cols="50" id="comment"
+			<form:textarea path="comment" cols="50" id="comment"
 				onkeydown="textCounter('comment',250)"
 				onkeyup="textCounter('comment',250)"
 				onblur="textCounter('comment',250)" />
 			<br />
 			<div class="buttonholderwk" id="buttonsDiv" align="center">
-				<s:hidden name="actionName" />
+				<!-- TODO: Manual migration required for custom Struts tag -->
 				<div class="buttonbottom">
-					<s:iterator value="%{validActions}">
+					<c:forEach value="%{validActions}">
 						<s:submit type="submit" cssClass="buttonsubmit"
 							value="%{capitalize(description)}" id="%{name}" name="%{name}"
 							method="performAction"
 							onclick="javascript:document.getElementById('actionName').value='%{name}';return validateAppoveUser('%{name}','%{description}')" />
-					</s:iterator>
+					</c:forEach>
 					<input type="submit" value="Close"
 						onclick="javascript:window.close()" class="button" />
 				</div>
 			</div>
 		</div>
-		<s:hidden id="scriptName" value="BudgetDetail.nextDesg" />
-		<s:hidden name="actionName" id="actionName" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
+		<!-- TODO: Manual migration required for custom Struts tag -->
 		<input type="hidden" name="miscId"
-			value='<s:property value="miscId"/>' />
-	</s:form>
+			value='${miscId}' />
+	</form:form>
 </body>
 </html>

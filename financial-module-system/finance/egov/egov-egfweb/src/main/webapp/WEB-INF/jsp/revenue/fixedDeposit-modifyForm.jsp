@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   ~    eGov  SmartCity eGovernance suite aims to improve the internal efficiency,transparency,
   ~    accountability and the service delivery of the government  organizations.
@@ -115,75 +117,75 @@
 			}
 		}
 	});
-		<s:iterator value="fixedDepositList" status="stat">
+		<c:forEach value="fixedDepositList" status="stat">
 			fdTableDT.addRow({"SlNo":fdTableDT.getRecordSet().getLength()+1,
-			"id":'<s:property value="id"/>',
-				"fileNo":'<s:property value="fileNo"/>',
-				"amount":'<s:property value="amount"/>',
-				"date":'<s:property value="date"/>',
-				"bankBranch":'<s:property value="bankBranch.id"/>',
-				"bankAccount":'<s:property value="bankAccount.id"/>',
-				//"bankAccountList":'<s:property value="bankAccountList"/>',
-				//"referenceNumber":'<s:property value="referenceNumber"/>',
-				"interestRate":'<s:property value="interestRate"/>',
-				"period":'<s:property value="period"/>',
-				"serialNumber":'<s:property value="serialNumber"/>',
-				"GJVvhid":'<s:property value="outFlowVoucher.id"/>',
-				"generalVoucher":'<s:property value="outFlowVoucher.voucherNumber"/>',
-				"GJVDate":'<s:property value="outFlowVoucher.voucherDate"/>',
-				"gjvAmount":'<s:property value="gjvAmount"/>',		
-				"maturityAmount":'<s:property value="maturityAmount"/>',
-				"maturityDate":'<s:property value="maturityDate"/>',
-				"WithdrawalDate":'<s:property value="withdrawalDate"/>',
-				"receiptGJVvhid":'<s:property value="inFlowVoucher.id"/>',
-				"inFlowVoucher":'<s:property value="inFlowVoucher.voucherNumber"/>',
-				"receiptGJVDate":'<s:property value="inFlowVoucher.voucherDate"/>',
-				"challanvhid":'<s:property value="challanReceiptVoucher.id"/>',
-				"challanGJV":'<s:property value="challanReceiptVoucher.voucherNumber"/>',
-				"challanGJVDate":'<s:property value="challanReceiptVoucher.voucherDate"/>',
-				"receiptAmount":'<s:property value="receiptAmount"/>',
-				"instrumentid":'<s:property value="instrumentHeader.id"/>',
-				"instrumentNumber":'<s:property value="instrumentHeader.instrumentNumber"/>',
-				"instrumentDate":'<s:property value="instrumentHeader.instrumentDate"/>',
-				"remarks":'<s:property value="remarks"/>',
-				"parentId":'<s:property value="parentId"/>',
-				"extend":'<s:property value="extend"/>'
+			"id":'${id}',
+				"fileNo":'${fileNo}',
+				"amount":'${amount}',
+				"date":'${date}',
+				"bankBranch":'${bankBranch.id}',
+				"bankAccount":'${bankAccount.id}',
+				//"bankAccountList":'${bankAccountList}',
+				//"referenceNumber":'${referenceNumber}',
+				"interestRate":'${interestRate}',
+				"period":'${period}',
+				"serialNumber":'${serialNumber}',
+				"GJVvhid":'${outFlowVoucher.id}',
+				"generalVoucher":'${outFlowVoucher.voucherNumber}',
+				"GJVDate":'${outFlowVoucher.voucherDate}',
+				"gjvAmount":'${gjvAmount}',		
+				"maturityAmount":'${maturityAmount}',
+				"maturityDate":'${maturityDate}',
+				"WithdrawalDate":'${withdrawalDate}',
+				"receiptGJVvhid":'${inFlowVoucher.id}',
+				"inFlowVoucher":'${inFlowVoucher.voucherNumber}',
+				"receiptGJVDate":'${inFlowVoucher.voucherDate}',
+				"challanvhid":'${challanReceiptVoucher.id}',
+				"challanGJV":'${challanReceiptVoucher.voucherNumber}',
+				"challanGJVDate":'${challanReceiptVoucher.voucherDate}',
+				"receiptAmount":'${receiptAmount}',
+				"instrumentid":'${instrumentHeader.id}',
+				"instrumentNumber":'${instrumentHeader.instrumentNumber}',
+				"instrumentDate":'${instrumentHeader.instrumentDate}',
+				"remarks":'${remarks}',
+				"parentId":'${parentId}',
+				"extend":'${extend}'
 		});
 		
-			var index = '<s:property value="#stat.index"/>';
-			updateYUIGrid(FDLIST,'id',index,'<s:property value="id"/>');
-			updateYUIGrid(FDLIST,'fileNo',index,'<s:property value="fileNo"/>');
-			updateYUIGrid(FDLIST,'amount',index,'<s:property value="amount"/>');
-			updateYUIGrid(FDLIST,'date',index,'<s:property value="date"/>');
-			updateYUIGrid(FDLIST,'bankBranch.id',index,'<s:property value="bankBranch.id"/>');
-			updateYUIGrid(FDLIST,'bankAccount.id',index,'<s:property value="bankAccount.id"/>');
-			//updateYUIGrid(FDLIST,'bankAccountList',index,'<s:property value="bankAccountList"/>');
+			var index = '${#stat.index}';
+			updateYUIGrid(FDLIST,'id',index,'${id}');
+			updateYUIGrid(FDLIST,'fileNo',index,'${fileNo}');
+			updateYUIGrid(FDLIST,'amount',index,'${amount}');
+			updateYUIGrid(FDLIST,'date',index,'${date}');
+			updateYUIGrid(FDLIST,'bankBranch.id',index,'${bankBranch.id}');
+			updateYUIGrid(FDLIST,'bankAccount.id',index,'${bankAccount.id}');
+			//updateYUIGrid(FDLIST,'bankAccountList',index,'${bankAccountList}');
 			//updateYUIGrid(FDLIST,'referenceNumber',index,index+1);
-			updateYUIGrid(FDLIST,'interestRate',index,'<s:property value="interestRate"/>');
-			updateYUIGrid(FDLIST,'period',index,'<s:property value="period"/>');
-			updateYUIGrid(FDLIST,'serialNumber',index,'<s:property value="serialNumber"/>');
-			updateYUIGrid(FDLIST,'outFlowVoucher.id',index,'<s:property value="outFlowVoucher.id"/>');
-			updateYUIGrid(FDLIST,'outFlowVoucher.voucherNumber',index,'<s:property value="outFlowVoucher.voucherNumber"/>');
-			updateYUIGrid(FDLIST,'outFlowVoucher.voucherDate',index,'<s:property value="outFlowVoucher.voucherDate"/>');
-			updateYUIGrid(FDLIST,'gjvAmount',index,'<s:property value="gjvAmount"/>');
-			updateYUIGrid(FDLIST,'maturityAmount',index,'<s:property value="maturityAmount"/>');
-			updateYUIGrid(FDLIST,'maturityDate',index,'<s:property value="maturityDate"/>');
-			updateYUIGrid(FDLIST,'withdrawalDate',index,'<s:property value="withdrawalDate"/>');
-			updateYUIGrid(FDLIST,'inFlowVoucher.id',index,'<s:property value="inFlowVoucher.id"/>');
-			updateYUIGrid(FDLIST,'inFlowVoucher.voucherNumber',index,'<s:property value="inFlowVoucher.voucherNumber"/>');
-			updateYUIGrid(FDLIST,'inFlowVoucher.voucherDate',index,'<s:property value="inFlowVoucher.voucherDate"/>');
-			updateYUIGrid(FDLIST,'challanReceiptVoucher.id',index,'<s:property value="challanReceiptVoucher.id"/>');
-			updateYUIGrid(FDLIST,'challanReceiptVoucher.voucherNumber',index,'<s:property value="challanReceiptVoucher.voucherNumber"/>');
-			updateYUIGrid(FDLIST,'challanReceiptVoucher.voucherDate',index,'<s:property value="challanReceiptVoucher.voucherDate"/>');
-			updateYUIGrid(FDLIST,'receiptAmount',index,'<s:property value="receiptAmount"/>');
-			updateYUIGrid(FDLIST,'instrumentHeader.id',index,'<s:property value="instrumentHeader.id"/>');
-			updateYUIGrid(FDLIST,'instrumentHeader.instrumentNumber',index,'<s:property value="instrumentHeader.instrumentNumber"/>');
-			updateYUIGrid(FDLIST,'instrumentHeader.instrumentDate',index,'<s:property value="instrumentHeader.instrumentDate"/>');
-			updateYUIGrid(FDLIST,'remarks',index,'<s:property value="remarks"/>');
-			updateYUIGrid(FDLIST,'parentId',index,'<s:property value="parentId.id"/>');
-			updateYUIGrid(FDLIST,'extend',index,'<s:property value="extend"/>');
+			updateYUIGrid(FDLIST,'interestRate',index,'${interestRate}');
+			updateYUIGrid(FDLIST,'period',index,'${period}');
+			updateYUIGrid(FDLIST,'serialNumber',index,'${serialNumber}');
+			updateYUIGrid(FDLIST,'outFlowVoucher.id',index,'${outFlowVoucher.id}');
+			updateYUIGrid(FDLIST,'outFlowVoucher.voucherNumber',index,'${outFlowVoucher.voucherNumber}');
+			updateYUIGrid(FDLIST,'outFlowVoucher.voucherDate',index,'${outFlowVoucher.voucherDate}');
+			updateYUIGrid(FDLIST,'gjvAmount',index,'${gjvAmount}');
+			updateYUIGrid(FDLIST,'maturityAmount',index,'${maturityAmount}');
+			updateYUIGrid(FDLIST,'maturityDate',index,'${maturityDate}');
+			updateYUIGrid(FDLIST,'withdrawalDate',index,'${withdrawalDate}');
+			updateYUIGrid(FDLIST,'inFlowVoucher.id',index,'${inFlowVoucher.id}');
+			updateYUIGrid(FDLIST,'inFlowVoucher.voucherNumber',index,'${inFlowVoucher.voucherNumber}');
+			updateYUIGrid(FDLIST,'inFlowVoucher.voucherDate',index,'${inFlowVoucher.voucherDate}');
+			updateYUIGrid(FDLIST,'challanReceiptVoucher.id',index,'${challanReceiptVoucher.id}');
+			updateYUIGrid(FDLIST,'challanReceiptVoucher.voucherNumber',index,'${challanReceiptVoucher.voucherNumber}');
+			updateYUIGrid(FDLIST,'challanReceiptVoucher.voucherDate',index,'${challanReceiptVoucher.voucherDate}');
+			updateYUIGrid(FDLIST,'receiptAmount',index,'${receiptAmount}');
+			updateYUIGrid(FDLIST,'instrumentHeader.id',index,'${instrumentHeader.id}');
+			updateYUIGrid(FDLIST,'instrumentHeader.instrumentNumber',index,'${instrumentHeader.instrumentNumber}');
+			updateYUIGrid(FDLIST,'instrumentHeader.instrumentDate',index,'${instrumentHeader.instrumentDate}');
+			updateYUIGrid(FDLIST,'remarks',index,'${remarks}');
+			updateYUIGrid(FDLIST,'parentId',index,'${parentId.id}');
+			updateYUIGrid(FDLIST,'extend',index,'${extend}');
 			updateFDTableIndex();	                          
-			</s:iterator>
+			</c:forEach>
 		
 				         
 			
@@ -202,11 +204,11 @@
 		var element=" <select  id='"+prefix+"["+index+"]"+suffix+"' name='"+prefix+"["+index+"]"+suffix+"'  style=width:90px  onchange=getbranchAccountId(this);return false;' >";
 		element=element+"<option value=-1 selected='selected' > --- Choose --- </option>  ";
 		
-		<s:iterator value="bankBranchList" status="stat">
-			var name='<s:property value="bank.name"/>'+"-"+'<s:property value="branchname"/>';
-			var id='<s:property value="id" />';
+		<c:forEach value="bankBranchList" status="stat">
+			var name='${bank.name}'+"-"+'${branchname}';
+			var id='${id}';
 			element=element+" <option value="+id +" > "+ name+" </option>  ";
-		</s:iterator>
+		</c:forEach>
 		element=element+" </select>";
 		el.innerHTML =element ;
 		}
@@ -314,19 +316,19 @@ function createCheckboxFieldFormatter(tableType,prefix,suffix,type){
 		var i=0;
 		var j=0;
 		var ind=indexobj[0].substring(indexobj[0].length,indexobj[0].length-1);
-		var listSize='<s:property value="fixedDepositList.size()"/>';
+		var listSize='${fixedDepositList.size()}';
 		var res1=new Array(listSize);
 		var resId=new Array(listSize);
 	
 		
-		<s:iterator var="p" value="fixedDepositList" status="fixedDep_staus">
-		//bootbox.alert('<s:property value="#fixedDep_staus.index"/>'+"   "+ind);
+		<c:forEach var="p" value="fixedDepositList" status="fixedDep_staus">
+		//bootbox.alert('${#fixedDep_staus.index}'+"   "+ind);
 		
-		if('<s:property value="#fixedDep_staus.index"/>'==ind){
+		if('${#fixedDep_staus.index}'==ind){
 		
-		<s:iterator value="#p.bankAccountList" status="bankAccount_status">
+		<c:forEach value="#p.bankAccountList" status="bankAccount_status">
 	
-			var accSize='<s:property value="#p.bankAccountList.size()"/>';
+			var accSize='${#p.bankAccountList.size()}';
 			if(i<listSize)
 			 {
 				res1[i]=new Array(accSize);
@@ -334,16 +336,16 @@ function createCheckboxFieldFormatter(tableType,prefix,suffix,type){
 				///bootbox.alert(accSize);
 				
 				if(j<accSize){
-					res1[i][j]='<s:property value="accountnumber"/>'+"-"+'<s:property value="%{chartofaccounts.glcode}"/>';
-			 		resId[i][j]='<s:property value="id" />';
+					res1[i][j]='${accountnumber}'+"-"+'${%{chartofaccounts.glcode}}';
+			 		resId[i][j]='${id}';
 			 		
 			 		j++;
 			}i++;
 		}
-		</s:iterator>
+		</c:forEach>
 		
 		}
-		</s:iterator>    
+		</c:forEach>    
 		//bootbox.alert(res1.length);
 		var accNumid1=selectedname;
 		accNumid1=accNumid1.replace('Branch','Account');
@@ -455,7 +457,7 @@ function updateFDTableIndex()
 
 <div id="labelAD" align="center">
 	<h1>
-		<s:text name="fixeddeposit.heading.view" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</h1>
 </div>
 <br></br>
@@ -463,7 +465,7 @@ function updateFDTableIndex()
 <div class="formmainbox">
 	<div class="formheading" />
 	<div class="subheadnew">
-		<s:text name="fixeddeposit.heading.detail" />
+		<!-- TODO: Manual migration required for custom Struts tag -->
 	</div>
 </div>
 </div>
