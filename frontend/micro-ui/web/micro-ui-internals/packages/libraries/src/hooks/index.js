@@ -563,6 +563,7 @@ const Hooks = {
   useBulkPdfDetails,
   useBillAmendmentInbox,
   useAudit,
+  useWorkflowDetailsV2
 };
 
 export default Hooks;

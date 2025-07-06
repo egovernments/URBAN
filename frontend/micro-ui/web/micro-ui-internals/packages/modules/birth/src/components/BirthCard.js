@@ -1,41 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { EmployeeModuleCard, PropertyHouse } from "@egovernments/digit-ui-react-components";
-import { CaseIcon } from "@egovernments/digit-ui-react-components";
-
-const BirthCard = () => {
-  if (!Digit.Utils.BnDAccess()) return null;
-
+import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+const BirthCard = ({ userType }) => {
+  // console.log("BirthCard");
   const { t } = useTranslation();
-  window.localStorage.setItem("Employee.locale", "en_IN");
-  window.localStorage.setItem("locale", "en_IN");
-  window.localStorage.setItem("Employee.tenant-id", Digit.ULBService.getCurrentTenantId());
-  window.localStorage.setItem("tenant-id",Digit.ULBService.getCurrentTenantId());
+  window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
+  // Check URL
+  const isCitizen = window?.location?.pathname?.toLowerCase().includes("citizen");
 
-  const links = [
-    {
-      label: t("BIRTH_REGISTRATION"),
-      link: `https://unified-demo.digit.org/employee/birth-employee/newRegistration`,
-      hyperlink: true
-    },
-    {
-      label: t("SEARCH_BIRTH_CERTIFICATE"),
-      link: `https://unified-demo.digit.org/employee/birth-common/getCertificate`,
-      hyperlink: true
-
-    }
-  ];
+  // console.log("Context Path:", window?.contextPath);
 
   const propsForModuleCard = {
-    Icon:<CaseIcon/>, 
-    moduleName: t("COMMON_BIRTH"),
-    links: links,
-    kpis: [
-    ],
-}
-
+     moduleName: isCitizen ? t("ACTION_TEST_BIRTH_CERTIFICATE") : t("COMMON_BIRTH"),
+    kpis: [],
+    links: isCitizen
+      ? [
+          {
+            label:  t("BND_BIRTH_APPLY_CERT"),
+            link: `/${window?.contextPath}/citizen/birth/birth-common/getCertificate`,
+          },
+          {
+            label: t("BND_MY_REQUESTS"),
+            link: `/${window?.contextPath}/citizen/birth/birth-citizen/myApplications`,
+          },
+        ]
+      : [
+          {
+    
+               label: t("BIRTH_REGISTRATION"),
+            link: `/${window?.contextPath}/employee/birth/birth-common/create-birth`,
+          },
+          {
+           
+                    label: t("SEARCH_BIRTH_CERTIFICATE"),
+            link: `/${window?.contextPath}/employee/birth/birth-common/getCertificate`,
+          }
+        
+        ],
+  };
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };
-
 export default BirthCard;
