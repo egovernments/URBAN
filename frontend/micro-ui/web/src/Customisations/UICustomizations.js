@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import React, { useState, Fragment, useEffect } from "react";
-import { Button as ButtonNew,Toast,Loader } from "@egovernments/digit-ui-components";
+import {
+  Button as ButtonNew,
+  Toast,
+  Loader,
+} from "@egovernments/digit-ui-components";
 
 //create functions here based on module name set in mdms(eg->SearchProjectConfig)
 //how to call these -> Digit?.Customizations?.[masterName]?.[moduleName]
 // these functions will act as middlewares
 var Digit = window.Digit || {};
 
-
-
 const businessServiceMap = {
- 
-  "muster roll": "MR"
+  "muster roll": "MR",
 };
 
 const inboxModuleNameMap = {
@@ -22,7 +23,6 @@ const inboxModuleNameMap = {
 export const UICustomizations = {
   businessServiceMap,
   updatePayload: (applicationDetails, data, action, businessService) => {
-    
     if (businessService === businessServiceMap.estimate) {
       const workflow = {
         comment: data.comments,
@@ -98,7 +98,7 @@ export const UICustomizations = {
         workflow,
       };
     }
-    if(businessService === businessServiceMap?.["works.purchase"]){
+    if (businessService === businessServiceMap?.["works.purchase"]) {
       const workflow = {
         comment: data.comments,
         documents: data?.documents?.map((document) => {
@@ -119,35 +119,41 @@ export const UICustomizations = {
       });
 
       const additionalFieldsToSet = {
-        projectId:applicationDetails.additionalDetails.projectId,
-        invoiceDate:applicationDetails.billDate,
-        invoiceNumber:applicationDetails.referenceId.split('_')?.[1],
-        contractNumber:applicationDetails.referenceId.split('_')?.[0],
-        documents:applicationDetails.additionalDetails.documents
-      }
+        projectId: applicationDetails.additionalDetails.projectId,
+        invoiceDate: applicationDetails.billDate,
+        invoiceNumber: applicationDetails.referenceId.split("_")?.[1],
+        contractNumber: applicationDetails.referenceId.split("_")?.[0],
+        documents: applicationDetails.additionalDetails.documents,
+      };
       return {
-        bill: {...applicationDetails,...additionalFieldsToSet},
+        bill: { ...applicationDetails, ...additionalFieldsToSet },
         workflow,
       };
     }
   },
-  enableModalSubmit:(businessService,action,setModalSubmit,data)=>{
-    if(businessService === businessServiceMap?.["muster roll"] && action.action==="APPROVE"){
-      setModalSubmit(data?.acceptTerms)
+  enableModalSubmit: (businessService, action, setModalSubmit, data) => {
+    if (
+      businessService === businessServiceMap?.["muster roll"] &&
+      action.action === "APPROVE"
+    ) {
+      setModalSubmit(data?.acceptTerms);
     }
   },
   enableHrmsSearch: (businessService, action) => {
     if (businessService === businessServiceMap.estimate) {
-      return action.action.includes("TECHNICALSANCTION") || action.action.includes("VERIFYANDFORWARD");
+      return (
+        action.action.includes("TECHNICALSANCTION") ||
+        action.action.includes("VERIFYANDFORWARD")
+      );
     }
     if (businessService === businessServiceMap.contract) {
       return action.action.includes("VERIFY_AND_FORWARD");
     }
-     if (businessService === businessServiceMap?.["muster roll"]) {
+    if (businessService === businessServiceMap?.["muster roll"]) {
       return action.action.includes("VERIFY");
     }
-    if(businessService === businessServiceMap?.["works.purchase"]){
-      return action.action.includes("VERIFY_AND_FORWARD")
+    if (businessService === businessServiceMap?.["works.purchase"]) {
+      return action.action.includes("VERIFY_AND_FORWARD");
     }
     return false;
   },
@@ -158,17 +164,13 @@ export const UICustomizations = {
       return businessServiceMap?.contract;
     } else if (moduleCode?.includes("muster roll")) {
       return businessServiceMap?.["muster roll"];
-    }
-    else if (moduleCode?.includes("works.purchase")) {
+    } else if (moduleCode?.includes("works.purchase")) {
       return businessServiceMap?.["works.purchase"];
-    }
-    else if (moduleCode?.includes("works.wages")) {
+    } else if (moduleCode?.includes("works.wages")) {
       return businessServiceMap?.["works.wages"];
-    }
-    else if (moduleCode?.includes("works.supervision")) {
+    } else if (moduleCode?.includes("works.supervision")) {
       return businessServiceMap?.["works.supervision"];
-    }
-    else {
+    } else {
       return businessServiceMap;
     }
   },
@@ -186,31 +188,43 @@ export const UICustomizations = {
 
   AttendanceInboxConfig: {
     preProcess: (data) => {
-      
       //set tenantId
       data.body.inbox.tenantId = Digit.ULBService.getCurrentTenantId();
-      data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.inbox.processSearchCriteria.tenantId =
+        Digit.ULBService.getCurrentTenantId();
 
-      const musterRollNumber = data?.body?.inbox?.moduleSearchCriteria?.musterRollNumber?.trim();
-      if(musterRollNumber) data.body.inbox.moduleSearchCriteria.musterRollNumber = musterRollNumber
+      const musterRollNumber =
+        data?.body?.inbox?.moduleSearchCriteria?.musterRollNumber?.trim();
+      if (musterRollNumber)
+        data.body.inbox.moduleSearchCriteria.musterRollNumber =
+          musterRollNumber;
 
-      const attendanceRegisterName = data?.body?.inbox?.moduleSearchCriteria?.attendanceRegisterName?.trim();
-      if(attendanceRegisterName) data.body.inbox.moduleSearchCriteria.attendanceRegisterName = attendanceRegisterName
+      const attendanceRegisterName =
+        data?.body?.inbox?.moduleSearchCriteria?.attendanceRegisterName?.trim();
+      if (attendanceRegisterName)
+        data.body.inbox.moduleSearchCriteria.attendanceRegisterName =
+          attendanceRegisterName;
 
       // deleting them for now(assignee-> need clarity from pintu,ward-> static for now,not implemented BE side)
       const assignee = _.clone(data.body.inbox.moduleSearchCriteria.assignee);
       delete data.body.inbox.moduleSearchCriteria.assignee;
       if (assignee?.code === "ASSIGNED_TO_ME") {
-        data.body.inbox.moduleSearchCriteria.assignee = Digit.UserService.getUser().info.uuid;
+        data.body.inbox.moduleSearchCriteria.assignee =
+          Digit.UserService.getUser().info.uuid;
       }
 
       //cloning locality and workflow states to format them
       // let locality = _.clone(data.body.inbox.moduleSearchCriteria.locality ? data.body.inbox.moduleSearchCriteria.locality : []);
-      
-      let selectedOrg =  _.clone(data.body.inbox.moduleSearchCriteria.orgId ? data.body.inbox.moduleSearchCriteria.orgId : null);
+
+      let selectedOrg = _.clone(
+        data.body.inbox.moduleSearchCriteria.orgId
+          ? data.body.inbox.moduleSearchCriteria.orgId
+          : null
+      );
       delete data.body.inbox.moduleSearchCriteria.orgId;
-      if(selectedOrg) {
-         data.body.inbox.moduleSearchCriteria.orgId = selectedOrg?.[0]?.applicationNumber;
+      if (selectedOrg) {
+        data.body.inbox.moduleSearchCriteria.orgId =
+          selectedOrg?.[0]?.applicationNumber;
       }
 
       // let selectedWard =  _.clone(data.body.inbox.moduleSearchCriteria.ward ? data.body.inbox.moduleSearchCriteria.ward : null);
@@ -219,8 +233,16 @@ export const UICustomizations = {
       //    data.body.inbox.moduleSearchCriteria.ward = selectedWard?.[0]?.code;
       // }
 
-      let states = _.clone(data.body.inbox.moduleSearchCriteria.state ? data.body.inbox.moduleSearchCriteria.state : []);
-      let ward = _.clone(data.body.inbox.moduleSearchCriteria.ward ? data.body.inbox.moduleSearchCriteria.ward : []);
+      let states = _.clone(
+        data.body.inbox.moduleSearchCriteria.state
+          ? data.body.inbox.moduleSearchCriteria.state
+          : []
+      );
+      let ward = _.clone(
+        data.body.inbox.moduleSearchCriteria.ward
+          ? data.body.inbox.moduleSearchCriteria.ward
+          : []
+      );
       // delete data.body.inbox.moduleSearchCriteria.locality;
       delete data.body.inbox.moduleSearchCriteria.state;
       delete data.body.inbox.moduleSearchCriteria.ward;
@@ -228,30 +250,43 @@ export const UICustomizations = {
       // locality = locality?.map((row) => row?.code);
       states = Object.keys(states)?.filter((key) => states[key]);
       ward = ward?.map((row) => row?.code);
-      
-      
+
       // //adding formatted data to these keys
       // if (locality.length > 0) data.body.inbox.moduleSearchCriteria.locality = locality;
-      if (states.length > 0) data.body.inbox.moduleSearchCriteria.status = states;  
+      if (states.length > 0)
+        data.body.inbox.moduleSearchCriteria.status = states;
       if (ward.length > 0) data.body.inbox.moduleSearchCriteria.ward = ward;
-      const projectType = _.clone(data.body.inbox.moduleSearchCriteria.projectType ? data.body.inbox.moduleSearchCriteria.projectType : {});
-      if (projectType?.code) data.body.inbox.moduleSearchCriteria.projectType = projectType.code;
+      const projectType = _.clone(
+        data.body.inbox.moduleSearchCriteria.projectType
+          ? data.body.inbox.moduleSearchCriteria.projectType
+          : {}
+      );
+      if (projectType?.code)
+        data.body.inbox.moduleSearchCriteria.projectType = projectType.code;
 
       //adding tenantId to moduleSearchCriteria
-      data.body.inbox.moduleSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.inbox.moduleSearchCriteria.tenantId =
+        Digit.ULBService.getCurrentTenantId();
 
-      //setting limit and offset becoz somehow they are not getting set in muster inbox 
-      data.body.inbox .limit = data.state.tableForm.limit
-      data.body.inbox.offset = data.state.tableForm.offset
-      delete data.state
+      //setting limit and offset becoz somehow they are not getting set in muster inbox
+      data.body.inbox.limit = data.state.tableForm.limit;
+      data.body.inbox.offset = data.state.tableForm.offset;
+      delete data.state;
       return data;
     },
     postProcess: (responseArray, uiConfig) => {
       const statusOptions = responseArray?.statusMap
         ?.filter((item) => item.applicationstatus)
-        ?.map((item) => ({ code: item.applicationstatus, i18nKey: `COMMON_MASTERS_${item.applicationstatus}` }));
+        ?.map((item) => ({
+          code: item.applicationstatus,
+          i18nKey: `COMMON_MASTERS_${item.applicationstatus}`,
+        }));
       if (uiConfig?.type === "filter") {
-        let fieldConfig = uiConfig?.fields?.filter((item) => item.type === "dropdown" && item.populators.name === "musterRollStatus");
+        let fieldConfig = uiConfig?.fields?.filter(
+          (item) =>
+            item.type === "dropdown" &&
+            item.populators.name === "musterRollStatus"
+        );
         if (fieldConfig.length) {
           fieldConfig[0].populators.options = statusOptions;
         }
@@ -262,15 +297,26 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link
-              to={`/${window.contextPath}/employee/attendencemgmt/view-attendance?tenantId=${Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${value}`}
+              to={`/${
+                window.contextPath
+              }/employee/attendencemgmt/view-attendance?tenantId=${Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${value}`}
             >
-              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              {String(
+                value
+                  ? column.translate
+                    ? t(column.prefix ? `${column.prefix}${value}` : value)
+                    : value
+                  : t("ES_COMMON_NA")
+              )}
             </Link>
           </span>
         );
       }
       if (key === "ATM_ATTENDANCE_WEEK") {
-        const week = `${Digit.DateUtils.ConvertTimestampToDate(value?.startDate, "dd/MM/yyyy")}-${Digit.DateUtils.ConvertTimestampToDate(
+        const week = `${Digit.DateUtils.ConvertTimestampToDate(
+          value?.startDate,
+          "dd/MM/yyyy"
+        )}-${Digit.DateUtils.ConvertTimestampToDate(
           value?.endDate,
           "dd/MM/yyyy"
         )}`;
@@ -279,8 +325,14 @@ export const UICustomizations = {
       if (key === "ATM_NO_OF_INDIVIDUALS") {
         return <div>{value?.length}</div>;
       }
-      if(key === "ATM_AMOUNT_IN_RS"){
-        return <span>{value ? Digit.Utils.dss.formatterWithoutRound(value, "number") : t("ES_COMMON_NA")}</span>;
+      if (key === "ATM_AMOUNT_IN_RS") {
+        return (
+          <span>
+            {value
+              ? Digit.Utils.dss.formatterWithoutRound(value, "number")
+              : t("ES_COMMON_NA")}
+          </span>
+        );
       }
       if (key === "ATM_SLA") {
         return parseInt(value) > 0 ? (
@@ -290,10 +342,10 @@ export const UICustomizations = {
         );
       }
       if (key === "COMMON_WORKFLOW_STATES") {
-        return <span>{t(`WF_MUSTOR_${value}`)}</span>
+        return <span>{t(`WF_MUSTOR_${value}`)}</span>;
       }
       //added this in case we change the key and not updated here , it'll throw that nothing was returned from cell error if that case is not handled here. To prevent that error putting this default
-      return <span>{t(`CASE_NOT_HANDLED`)}</span>
+      return <span>{t(`CASE_NOT_HANDLED`)}</span>;
     },
     MobileDetailsOnClick: (row, tenantId) => {
       let link;
@@ -311,9 +363,9 @@ export const UICustomizations = {
         body: {
           SearchCriteria: {
             tenantId: tenantId,
-            functions : {
-              type : "CBO"
-            }
+            functions: {
+              type: "CBO",
+            },
           },
         },
         config: {
@@ -325,17 +377,23 @@ export const UICustomizations = {
       };
     },
   },
-  SearchWageSeekerConfig:  {
+  SearchWageSeekerConfig: {
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
-      if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
+      if (
+        (createdFrom === "" && createdTo !== "") ||
+        (createdFrom !== "" && createdTo === "")
+      )
         return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
     preProcess: (data) => {
-      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId() };
+      data.params = {
+        ...data.params,
+        tenantId: Digit.ULBService.getCurrentTenantId(),
+      };
 
       let requestBody = { ...data.body.Individual };
       const pathConfig = {
@@ -349,7 +407,7 @@ export const UICustomizations = {
         wardCode: "wardCode[0].code",
         socialCategory: "socialCategory.code",
       };
-      const textConfig = ["name", "individualId"]
+      const textConfig = ["name", "individualId"];
       let Individual = Object.keys(requestBody)
         .map((key) => {
           if (selectConfig[key]) {
@@ -357,7 +415,7 @@ export const UICustomizations = {
           } else if (typeof requestBody[key] == "object") {
             requestBody[key] = requestBody[key]?.code;
           } else if (textConfig?.includes(key)) {
-            requestBody[key] = requestBody[key]?.trim()
+            requestBody[key] = requestBody[key]?.trim();
           }
           return key;
         })
@@ -366,7 +424,14 @@ export const UICustomizations = {
           if (pathConfig[curr]) {
             _.set(acc, pathConfig[curr], requestBody[curr]);
           } else if (dateConfig[curr] && dateConfig[curr]?.includes("day")) {
-            _.set(acc, curr, Digit.Utils.date.convertDateToEpoch(requestBody[curr], dateConfig[curr]));
+            _.set(
+              acc,
+              curr,
+              Digit.Utils.date.convertDateToEpoch(
+                requestBody[curr],
+                dateConfig[curr]
+              )
+            );
           } else {
             _.set(acc, curr, requestBody[curr]);
           }
@@ -384,28 +449,56 @@ export const UICustomizations = {
         case "MASTERS_WAGESEEKER_ID":
           return (
             <span className="link">
-              <Link to={`/${window.contextPath}/employee/masters/view-wageseeker?tenantId=${row?.tenantId}&individualId=${value}`}>
-                 {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              <Link
+                to={`/${window.contextPath}/employee/masters/view-wageseeker?tenantId=${row?.tenantId}&individualId=${value}`}
+              >
+                {String(
+                  value
+                    ? column.translate
+                      ? t(column.prefix ? `${column.prefix}${value}` : value)
+                      : value
+                    : t("ES_COMMON_NA")
+                )}
               </Link>
             </span>
           );
 
         case "MASTERS_SOCIAL_CATEGORY":
-          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(`MASTERS_${value}`))}</span> : t("ES_COMMON_NA");
+          return value ? (
+            <span style={{ whiteSpace: "nowrap" }}>
+              {String(t(`MASTERS_${value}`))}
+            </span>
+          ) : (
+            t("ES_COMMON_NA")
+          );
 
         case "CORE_COMMON_PROFILE_CITY":
-          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(Digit.Utils.locale.getCityLocale(value)))}</span> : t("ES_COMMON_NA");
+          return value ? (
+            <span style={{ whiteSpace: "nowrap" }}>
+              {String(t(Digit.Utils.locale.getCityLocale(value)))}
+            </span>
+          ) : (
+            t("ES_COMMON_NA")
+          );
 
         case "MASTERS_WARD":
           return value ? (
-            <span style={{ whiteSpace: "nowrap" }}>{String(t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId)))}</span>
+            <span style={{ whiteSpace: "nowrap" }}>
+              {String(
+                t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId))
+              )}
+            </span>
           ) : (
             t("ES_COMMON_NA")
           );
 
         case "MASTERS_LOCALITY":
           return value ? (
-            <span style={{ whiteSpace: "break-spaces" }}>{String(t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId)))}</span>
+            <span style={{ whiteSpace: "break-spaces" }}>
+              {String(
+                t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId))
+              )}
+            </span>
           ) : (
             t("ES_COMMON_NA")
           );
@@ -423,11 +516,15 @@ export const UICustomizations = {
     },
     additionalValidations: (type, data, keys) => {
       if (type === "date") {
-        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+        return data[keys.start] && data[keys.end]
+          ? () =>
+              new Date(data[keys.start]).getTime() <=
+              new Date(data[keys.end]).getTime()
+          : true;
       }
-    }
+    },
   },
-   searchDeathConfig: {
+  searchDeathConfig: {
     preProcess: (data) => {
       const tenantId = Digit.ULBService.getCurrentTenantId();
       const gender = data?.state?.searchForm?.gender?.code;
@@ -435,14 +532,13 @@ export const UICustomizations = {
         data.params.gender = 1;
       } else if (gender === "FEMALE") {
         data.params.gender = 2;
-      }else if (gender === "TRANSGENDER") {
-      data.params.gender = 3;
-    } else if (gender === "OTHER") {
-      data.params.gender=4;
-    }
-    else{
+      } else if (gender === "TRANSGENDER") {
+        data.params.gender = 3;
+      } else if (gender === "OTHER") {
+        data.params.gender = 4;
+      } else {
         delete data.params.gender;
-    }
+      }
       const fromDate = data?.state?.searchForm?.fromDate;
       if (fromDate) {
         const [yyyy, mm, dd] = fromDate.split("-");
@@ -458,31 +554,33 @@ export const UICustomizations = {
       // if (registrationNo && registrationNo.trim() !== "") {
       //   data.params.registrationNo = registrationNo.trim();
       // } else {
-      //   delete data.params.registrationNo; 
+      //   delete data.params.registrationNo;
       // }
-      
+
       const hospitalSelection = data?.state?.searchForm?.placeofdeath;
 
       if (hospitalSelection) {
-          let hospitalNameString = "";
+        let hospitalNameString = "";
 
-          if (typeof hospitalSelection === 'string') {
-              hospitalNameString = hospitalSelection.trim();
-          } else if (hospitalSelection.code && typeof hospitalSelection.code === 'string') {
-              hospitalNameString = hospitalSelection.code.trim();
-          }
+        if (typeof hospitalSelection === "string") {
+          hospitalNameString = hospitalSelection.trim();
+        } else if (
+          hospitalSelection.code &&
+          typeof hospitalSelection.code === "string"
+        ) {
+          hospitalNameString = hospitalSelection.code.trim();
+        }
 
-          if (hospitalNameString !== "") {
-              data.params.hospitalId = hospitalNameString;
-              data.params.placeofdeath = hospitalNameString;
-          } else {
-              delete data.params.hospitalId;
-              delete data.params.placeofdeath;
-          }
-      } else {
+        if (hospitalNameString !== "") {
+          data.params.hospitalId = hospitalNameString;
+          data.params.placeofdeath = hospitalNameString;
+        } else {
           delete data.params.hospitalId;
+          delete data.params.placeofdeath;
+        }
+      } else {
+        delete data.params.hospitalId;
       }
-
 
       // Add motherName if provided
       const motherName = data?.state?.searchForm?.motherName;
@@ -518,209 +616,6 @@ export const UICustomizations = {
 
       data.params.tenantId = tenantId;
       if (data?.params?.fromDate || data?.params?.toDate) {
-        const createdFrom =data.params?.fromDate;
-        const createdTo = data.params?.toDate;
-        data.params.fromDate = createdFrom;
-        data.params.toDate = createdTo;
-      }
-      return data;
-    },
-    additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      const ViewLinkButton = Digit.ComponentRegistryService.getComponent("ViewLinkButton");
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-
-
-      switch (key) {
-        case "View":
-          return <ViewLinkButton tenantId={tenantId} certificateId={row?.id} hospitalname={row?.hospitalname} />;
-        case "Death Date":
-          const epoch = row?.dateofdeath;
-          if (epoch) {
-            const date = new Date(epoch);
-            const dd = String(date.getDate()).padStart(2, '0');
-            const mm = String(date.getMonth() + 1).padStart(2, '0');
-            const yyyy = date.getFullYear();
-            return <span>{`${dd}-${mm}-${yyyy}`}</span>;
-          }
-          return <span>{t("ES_COMMON_NA")}</span>; 
-        default:
-          return t("ES_COMMON_NA");
-      }
-    },
-    additionalValidations: (type, data, keys) => {
-      if (type === "date") {
-        return data.fromDate && data.toDate ? () => new Date(data.fromDate).getTime() < new Date(data.toDate).getTime() : true;
-      }
-    },
-    customValidationCheck: (data) => {
-   const { fromDate, toDate } = data;
-
-
-      if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
-        return {type: "warning",warning: true, label:"DATE_VALIDATION_MSG"};
-      }
-      return false;
-    },
- },
- searchAndDownloadConfig: {
-     preProcess: (data) => {
-
-    let finalApiParams = {};
-    const formValues = data.state.searchForm || {};
-
-
-
-    // 1. Tenant ID
-    const tenantFromForm = formValues.tenantId;
-    if (tenantFromForm && tenantFromForm.code) {
-      finalApiParams.tenantId = tenantFromForm.code;
-    } else if (typeof tenantFromForm === 'string' && tenantFromForm) {
-      finalApiParams.tenantId = tenantFromForm;
-    } else {
-      console.warn("PreProcess: tenantId issue. Value:", tenantFromForm);
-    }
-   
-    // 2. Gender
-    const gender = formValues.gender?.code;
-    if (gender) {
-      if (gender === "MALE") finalApiParams.gender = 1;
-      else if (gender === "FEMALE") finalApiParams.gender = 2;
-      else if (gender === "TRANSGENDER") finalApiParams.gender = 3;
-    }
-   
-
-
-    // 3. Date of Death
-    const dateOfDeath = formValues.dateOfDeath;
-    if (dateOfDeath) {
-      try {
-        const [yyyy, mm, dd] = dateOfDeath.split("-");
-        finalApiParams.dateOfDeath = `${dd}-${mm}-${yyyy}`;
-      } catch (e) {
-        console.error("Error parsing dateOfDeath:", dateOfDeath, e);
-      }
-    }
-    
-
-    // 4. Registration Number
-    const registrationNo = formValues.registrationno;
-    if (registrationNo && String(registrationNo).trim() !== "") {
-      finalApiParams.registrationNo = String(registrationNo).trim();
-    }
-    
-
-
-    // 5. Hospital ID (from placeofdeath field) - DETAILED LOGGING
-    const placeOfDeathRawValue = formValues.placeofdeath;
-
-    let placeOfDeathCode = null;
-    if (typeof placeOfDeathRawValue === 'string' && placeOfDeathRawValue.trim() !== "") {
-      placeOfDeathCode = placeOfDeathRawValue.trim();
-    } else if (typeof placeOfDeathRawValue === 'object' && placeOfDeathRawValue !== null && placeOfDeathRawValue.code) {
-      placeOfDeathCode = String(placeOfDeathRawValue.code).trim();
-    } else {
-      console.log("placeofdeath is not a usable string or object with a code property.");
-    }
-
-
-    if (placeOfDeathCode) {
-      finalApiParams.hospitalId = placeOfDeathCode; 
-    } else {
-      delete finalApiParams.hospitalId;
-    }
-
-
-    // 6. Mother's Name
-    const motherName = formValues.MotherName;
-    if (motherName && motherName.trim() !== "") {
-      finalApiParams.motherName = motherName.trim();
-    }
-
-    // 7. Father's Name
-    const fatherName = formValues.FatherName;
-    if (fatherName && fatherName.trim() !== "") {
-      finalApiParams.fatherName = fatherName.trim();
-    }
-
-
-    // 8. Spouse's Name
-    const spouseName = formValues.spouseName;
-    if (spouseName && spouseName.trim() !== "") {
-      finalApiParams.spouseName = spouseName.trim();
-    }
-    
-
-    // 9. Name of Deceased
-    const nameOfDeceased = formValues.nameofdeceased;
-    if (nameOfDeceased && nameOfDeceased.trim() !== "") {
-      finalApiParams.name = nameOfDeceased.trim();
-    }
-   
-
-
-    data.params = finalApiParams;
-    return data;
-  },
-
-     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      const DownloadButton = Digit.ComponentRegistryService.getComponent("DownloadButton");
-      const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent("PayAndDownloadButton");
-      const tenantId = searchResult?.[0]?.tenantid;
-      const counter = row?.counter;
-
-      
-
-      switch (key) {
-        case "Action": 
-          if (counter === 0) {
-            return <DownloadButton tenantId={tenantId} certificateId={row?.id}  />;
-          } else if (counter >= 1) { 
-            return <PayAndDownloadButton tenantId={tenantId} certificateId={row?.id}  />;
-          }
-          return <span>{t("ES_COMMON_NA")}</span>;
-        case "Death Date":
-          const epoch = row?.dateofdeath;
-          if (epoch) {
-            const date = new Date(epoch);
-            const dd = String(date.getDate()).padStart(2, '0');
-            const mm = String(date.getMonth() + 1).padStart(2, '0');
-            const yyyy = date.getFullYear();
-            return <span>{`${dd}-${mm}-${yyyy}`}</span>;
-          }
-          return <span>{t("ES_COMMON_NA")}</span>; 
-        default:
-          return t("ES_COMMON_NA");
-      }
-    },
-     searchBirthConfig: {
-    preProcess: (data) => {
-      const tenantId = Digit.ULBService.getCurrentTenantId();
-      const gender = data?.state?.searchForm?.gender?.code;
-      if (gender === "MALE") {
-        data.params.gender = 1;
-      } else if (gender === "FEMALE") {
-        data.params.gender = 2;
-      } else if (gender === "TRANSGENDER") {
-        data.params.gender = 3;
-      } else if (gender === "OTHER") {
-        data.params.gender = 4;
-      } else {
-        data.params.gender = 0;
-      }
-      const fromDate = data?.state?.searchForm?.fromDate;
-      if (fromDate) {
-        const [yyyy, mm, dd] = fromDate.split("-");
-        data.params.fromDate = `${dd}-${mm}-${yyyy}`;
-      }
-      const toDate = data?.state?.searchForm?.toDate;
-      if (toDate) {
-        const [yyyy, mm, dd] = toDate.split("-");
-        data.params.toDate = `${dd}-${mm}-${yyyy}`;
-      }
-      data.params.tenantId = tenantId;
-
-      // console.log(data, "data in preProcess of search Birth Ui config");
-      if (data?.params?.fromDate || data?.params?.toDate) {
         const createdFrom = data.params?.fromDate;
         const createdTo = data.params?.toDate;
         data.params.fromDate = createdFrom;
@@ -729,23 +624,21 @@ export const UICustomizations = {
       return data;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      // console.log("key", key);
+      const ViewLinkButton =
+        Digit.ComponentRegistryService.getComponent("ViewLinkButton");
       const tenantId = Digit.ULBService.getCurrentTenantId();
-      const ViewBirthLinkButton = Digit.ComponentRegistryService.getComponent("ViewBirthLinkButton");
-      console.log(ViewBirthLinkButton, "*******");
-
-      // console.log("value", value);
-      // console.log("column", column);
-      // console.log("t", t);
-      // console.log("searchResult", searchResult);
 
       switch (key) {
-        case "view":
-          return <ViewBirthLinkButton tenantId={tenantId} certificateId={row?.id} />;
-
-        case "BND_BIRTH_DATE":
-          const epoch = row?.dateofbirth;
-          console.log(epoch, "changing the format of date");
+        case "View":
+          return (
+            <ViewLinkButton
+              tenantId={tenantId}
+              certificateId={row?.id}
+              hospitalname={row?.hospitalname}
+            />
+          );
+        case "Death Date":
+          const epoch = row?.dateofdeath;
           if (epoch) {
             const date = new Date(epoch);
             const dd = String(date.getDate()).padStart(2, "0");
@@ -760,31 +653,33 @@ export const UICustomizations = {
     },
     additionalValidations: (type, data, keys) => {
       if (type === "date") {
-        return data.fromDate && data.toDate ? () => new Date(data.fromDate).getTime() < new Date(data.toDate).getTime() : true;
+        return data.fromDate && data.toDate
+          ? () =>
+              new Date(data.fromDate).getTime() <
+              new Date(data.toDate).getTime()
+          : true;
       }
     },
     customValidationCheck: (data) => {
-      //checking both to and from date are present
       const { fromDate, toDate } = data;
-      if ((fromDate === "" && toDate !== "") || (fromDate !== "" && toDate === "")) return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
 
+      if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
+        return { type: "warning", warning: true, label: "DATE_VALIDATION_MSG" };
+      }
       return false;
     },
   },
-  searchAndDownloadBirthConfig: {
-    // preProcess function to transform form data into API query parameters
+  searchAndDownloadConfig: {
     preProcess: (data) => {
-      // console.log("BIRTH: UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
-
+      let finalApiParams = {};
       const formValues = data.state.searchForm || {};
-      // console.log("BIRTH: Form Values (data.state.searchForm):", JSON.stringify(formValues, null, 2));
 
       // 1. Tenant ID
       const tenantFromForm = formValues.tenantId;
       if (tenantFromForm && tenantFromForm.code) {
-        data.params.tenantId = tenantFromForm.code;
+        finalApiParams.tenantId = tenantFromForm.code;
       } else if (typeof tenantFromForm === "string" && tenantFromForm) {
-        data.params.tenantId = tenantFromForm;
+        finalApiParams.tenantId = tenantFromForm;
       } else {
         console.warn("PreProcess: tenantId issue. Value:", tenantFromForm);
       }
@@ -792,86 +687,335 @@ export const UICustomizations = {
       // 2. Gender
       const gender = formValues.gender?.code;
       if (gender) {
-        if (gender === "MALE") data.params.gender = 1;
-        else if (gender === "FEMALE") data.params.gender = 2;
-        else if (gender === "TRANSGENDER") data.params.gender = 3;
-        else  if (gender === "OTHER") data.params.gender = 4;
-        else data.params.gender = 0;
+        if (gender === "MALE") finalApiParams.gender = 1;
+        else if (gender === "FEMALE") finalApiParams.gender = 2;
+        else if (gender === "TRANSGENDER") finalApiParams.gender = 3;
       }
 
-      // 3. Date of Birth
-      const dateOfBirth = formValues.dateOfBirth;
-      if (dateOfBirth) {
+      // 3. Date of Death
+      const dateOfDeath = formValues.dateOfDeath;
+      if (dateOfDeath) {
         try {
-          const [yyyy, mm, dd] = dateOfBirth.split("-");
-          data.params.dateOfBirth = `${dd}-${mm}-${yyyy}`;
+          const [yyyy, mm, dd] = dateOfDeath.split("-");
+          finalApiParams.dateOfDeath = `${dd}-${mm}-${yyyy}`;
         } catch (e) {
-          console.error("Error parsing dateOfBirth:", dateOfBirth, e);
+          console.error("Error parsing dateOfDeath:", dateOfDeath, e);
         }
       }
 
       // 4. Registration Number
       const registrationNo = formValues.registrationno;
       if (registrationNo && String(registrationNo).trim() !== "") {
-        data.params.registrationNo = String(registrationNo).trim();
+        finalApiParams.registrationNo = String(registrationNo).trim();
       }
 
-      // 5. Hospital ID
-      const placeOfBirthRawValue = formValues.placeofbirth; // <-- CHANGED
-      // console.log("Raw value of formValues.placeofbirth:", JSON.stringify(placeOfBirthRawValue));
+      // 5. Hospital ID (from placeofdeath field) - DETAILED LOGGING
+      const placeOfDeathRawValue = formValues.placeofdeath;
 
-      let placeOfBirthCode = null;
-      if (typeof placeOfBirthRawValue === "string" && placeOfBirthRawValue.trim() !== "") {
-        placeOfBirthCode = placeOfBirthRawValue.trim();
-      } else if (typeof placeOfBirthRawValue === "object" && placeOfBirthRawValue !== null && placeOfBirthRawValue.code) {
-        placeOfBirthCode = String(placeOfBirthRawValue.code).trim();
+      let placeOfDeathCode = null;
+      if (
+        typeof placeOfDeathRawValue === "string" &&
+        placeOfDeathRawValue.trim() !== ""
+      ) {
+        placeOfDeathCode = placeOfDeathRawValue.trim();
+      } else if (
+        typeof placeOfDeathRawValue === "object" &&
+        placeOfDeathRawValue !== null &&
+        placeOfDeathRawValue.code
+      ) {
+        placeOfDeathCode = String(placeOfDeathRawValue.code).trim();
       } else {
-        // console.log("placeofbirth is not a usable string or object with a code property.");
+        console.log(
+          "placeofdeath is not a usable string or object with a code property."
+        );
       }
 
-      if (placeOfBirthCode) {
-        data.params.hospitalId = placeOfBirthCode;
-        // console.log(`PreProcess: Hospital ID set to: ${finalApiParams.hospitalId}`);
+      if (placeOfDeathCode) {
+        finalApiParams.hospitalId = placeOfDeathCode;
       } else {
-        delete data.params.hospitalId;
+        delete finalApiParams.hospitalId;
       }
 
+      // 6. Mother's Name
+      const motherName = formValues.MotherName;
+      if (motherName && motherName.trim() !== "") {
+        finalApiParams.motherName = motherName.trim();
+      }
+
+      // 7. Father's Name
+      const fatherName = formValues.FatherName;
+      if (fatherName && fatherName.trim() !== "") {
+        finalApiParams.fatherName = fatherName.trim();
+      }
+
+      // 8. Spouse's Name
+      const spouseName = formValues.spouseName;
+      if (spouseName && spouseName.trim() !== "") {
+        finalApiParams.spouseName = spouseName.trim();
+      }
+
+      // 9. Name of Deceased
+      const nameOfDeceased = formValues.nameofdeceased;
+      if (nameOfDeceased && nameOfDeceased.trim() !== "") {
+        finalApiParams.name = nameOfDeceased.trim();
+      }
+
+      data.params = finalApiParams;
       return data;
     },
 
-    // additionalCustomizations for rendering columns in the results table
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      const DownloadButton = Digit.ComponentRegistryService.getComponent("DownloadBirthButton");
-      const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent("PayAndDownloadBirthButton");
-      const colKey = column.key;
+      const DownloadButton =
+        Digit.ComponentRegistryService.getComponent("DownloadButton");
+      const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent(
+        "PayAndDownloadButton"
+      );
       const tenantId = searchResult?.[0]?.tenantid;
       const counter = row?.counter;
 
-      switch (colKey) {
-        case "action":
+      switch (key) {
+        case "Action":
           if (counter === 0) {
-            return <DownloadButton tenantId={tenantId} certificateId={row?.id} />;
+            return (
+              <DownloadButton tenantId={tenantId} certificateId={row?.id} />
+            );
           } else if (counter >= 1) {
-            return <PayAndDownloadButton tenantId={tenantId} certificateId={row?.id} />;
+            return (
+              <PayAndDownloadButton
+                tenantId={tenantId}
+                certificateId={row?.id}
+              />
+            );
           }
-
           return <span>{t("ES_COMMON_NA")}</span>;
-
-        case "dateOfBirth":
-          const epoch = row?.dateofbirth;
+        case "Death Date":
+          const epoch = row?.dateofdeath;
           if (epoch) {
             const date = new Date(epoch);
             const dd = String(date.getDate()).padStart(2, "0");
-            const mm = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+            const mm = String(date.getMonth() + 1).padStart(2, "0");
             const yyyy = date.getFullYear();
             return <span>{`${dd}-${mm}-${yyyy}`}</span>;
           }
           return <span>{t("ES_COMMON_NA")}</span>;
-
         default:
-          return <span>{t("ES_COMMON_NA")}</span>;
+          return t("ES_COMMON_NA");
       }
     },
+    searchBirthConfig: {
+      preProcess: (data) => {
+        const tenantId = Digit.ULBService.getCurrentTenantId();
+        const gender = data?.state?.searchForm?.gender?.code;
+        if (gender === "MALE") {
+          data.params.gender = 1;
+        } else if (gender === "FEMALE") {
+          data.params.gender = 2;
+        } else if (gender === "TRANSGENDER") {
+          data.params.gender = 3;
+        } else if (gender === "OTHER") {
+          data.params.gender = 4;
+        } else {
+          data.params.gender = 0;
+        }
+        const fromDate = data?.state?.searchForm?.fromDate;
+        if (fromDate) {
+          const [yyyy, mm, dd] = fromDate.split("-");
+          data.params.fromDate = `${dd}-${mm}-${yyyy}`;
+        }
+        const toDate = data?.state?.searchForm?.toDate;
+        if (toDate) {
+          const [yyyy, mm, dd] = toDate.split("-");
+          data.params.toDate = `${dd}-${mm}-${yyyy}`;
+        }
+        data.params.tenantId = tenantId;
+
+        // console.log(data, "data in preProcess of search Birth Ui config");
+        if (data?.params?.fromDate || data?.params?.toDate) {
+          const createdFrom = data.params?.fromDate;
+          const createdTo = data.params?.toDate;
+          data.params.fromDate = createdFrom;
+          data.params.toDate = createdTo;
+        }
+        return data;
+      },
+      additionalCustomizations: (row, key, column, value, t, searchResult) => {
+        // console.log("key", key);
+        const tenantId = Digit.ULBService.getCurrentTenantId();
+        const ViewBirthLinkButton = Digit.ComponentRegistryService.getComponent(
+          "ViewBirthLinkButton"
+        );
+        console.log(ViewBirthLinkButton, "*******");
+
+        // console.log("value", value);
+        // console.log("column", column);
+        // console.log("t", t);
+        // console.log("searchResult", searchResult);
+
+        switch (key) {
+          case "view":
+            return (
+              <ViewBirthLinkButton
+                tenantId={tenantId}
+                certificateId={row?.id}
+              />
+            );
+
+          case "BND_BIRTH_DATE":
+            const epoch = row?.dateofbirth;
+            console.log(epoch, "changing the format of date");
+            if (epoch) {
+              const date = new Date(epoch);
+              const dd = String(date.getDate()).padStart(2, "0");
+              const mm = String(date.getMonth() + 1).padStart(2, "0");
+              const yyyy = date.getFullYear();
+              return <span>{`${dd}-${mm}-${yyyy}`}</span>;
+            }
+            return <span>{t("ES_COMMON_NA")}</span>;
+          default:
+            return t("ES_COMMON_NA");
+        }
+      },
+      additionalValidations: (type, data, keys) => {
+        if (type === "date") {
+          return data.fromDate && data.toDate
+            ? () =>
+                new Date(data.fromDate).getTime() <
+                new Date(data.toDate).getTime()
+            : true;
+        }
+      },
+      customValidationCheck: (data) => {
+        //checking both to and from date are present
+        const { fromDate, toDate } = data;
+        if (
+          (fromDate === "" && toDate !== "") ||
+          (fromDate !== "" && toDate === "")
+        )
+          return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+
+        return false;
+      },
+    },
+    searchAndDownloadBirthConfig: {
+      // preProcess function to transform form data into API query parameters
+      preProcess: (data) => {
+        // console.log("BIRTH: UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
+
+        const formValues = data.state.searchForm || {};
+        // console.log("BIRTH: Form Values (data.state.searchForm):", JSON.stringify(formValues, null, 2));
+
+        // 1. Tenant ID
+        const tenantFromForm = formValues.tenantId;
+        if (tenantFromForm && tenantFromForm.code) {
+          data.params.tenantId = tenantFromForm.code;
+        } else if (typeof tenantFromForm === "string" && tenantFromForm) {
+          data.params.tenantId = tenantFromForm;
+        } else {
+          console.warn("PreProcess: tenantId issue. Value:", tenantFromForm);
+        }
+
+        // 2. Gender
+        const gender = formValues.gender?.code;
+        if (gender) {
+          if (gender === "MALE") data.params.gender = 1;
+          else if (gender === "FEMALE") data.params.gender = 2;
+          else if (gender === "TRANSGENDER") data.params.gender = 3;
+          else if (gender === "OTHER") data.params.gender = 4;
+          else data.params.gender = 0;
+        }
+
+        // 3. Date of Birth
+        const dateOfBirth = formValues.dateOfBirth;
+        if (dateOfBirth) {
+          try {
+            const [yyyy, mm, dd] = dateOfBirth.split("-");
+            data.params.dateOfBirth = `${dd}-${mm}-${yyyy}`;
+          } catch (e) {
+            console.error("Error parsing dateOfBirth:", dateOfBirth, e);
+          }
+        }
+
+        // 4. Registration Number
+        const registrationNo = formValues.registrationno;
+        if (registrationNo && String(registrationNo).trim() !== "") {
+          data.params.registrationNo = String(registrationNo).trim();
+        }
+
+        // 5. Hospital ID
+        const placeOfBirthRawValue = formValues.placeofbirth; // <-- CHANGED
+        // console.log("Raw value of formValues.placeofbirth:", JSON.stringify(placeOfBirthRawValue));
+
+        let placeOfBirthCode = null;
+        if (
+          typeof placeOfBirthRawValue === "string" &&
+          placeOfBirthRawValue.trim() !== ""
+        ) {
+          placeOfBirthCode = placeOfBirthRawValue.trim();
+        } else if (
+          typeof placeOfBirthRawValue === "object" &&
+          placeOfBirthRawValue !== null &&
+          placeOfBirthRawValue.code
+        ) {
+          placeOfBirthCode = String(placeOfBirthRawValue.code).trim();
+        } else {
+          // console.log("placeofbirth is not a usable string or object with a code property.");
+        }
+
+        if (placeOfBirthCode) {
+          data.params.hospitalId = placeOfBirthCode;
+          // console.log(`PreProcess: Hospital ID set to: ${finalApiParams.hospitalId}`);
+        } else {
+          delete data.params.hospitalId;
+        }
+
+        return data;
+      },
+
+      // additionalCustomizations for rendering columns in the results table
+      additionalCustomizations: (row, key, column, value, t, searchResult) => {
+        const DownloadButton = Digit.ComponentRegistryService.getComponent(
+          "DownloadBirthButton"
+        );
+        const PayAndDownloadButton =
+          Digit.ComponentRegistryService.getComponent(
+            "PayAndDownloadBirthButton"
+          );
+        const colKey = column.key;
+        const tenantId = searchResult?.[0]?.tenantid;
+        const counter = row?.counter;
+
+        switch (colKey) {
+          case "action":
+            if (counter === 0) {
+              return (
+                <DownloadButton tenantId={tenantId} certificateId={row?.id} />
+              );
+            } else if (counter >= 1) {
+              return (
+                <PayAndDownloadButton
+                  tenantId={tenantId}
+                  certificateId={row?.id}
+                />
+              );
+            }
+
+            return <span>{t("ES_COMMON_NA")}</span>;
+
+          case "dateOfBirth":
+            const epoch = row?.dateofbirth;
+            if (epoch) {
+              const date = new Date(epoch);
+              const dd = String(date.getDate()).padStart(2, "0");
+              const mm = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+              const yyyy = date.getFullYear();
+              return <span>{`${dd}-${mm}-${yyyy}`}</span>;
+            }
+            return <span>{t("ES_COMMON_NA")}</span>;
+
+          default:
+            return <span>{t("ES_COMMON_NA")}</span>;
+        }
+      },
+    },
   },
-  }
 };

@@ -8,7 +8,7 @@ export const searchAndDownloadConfig = (t) => {
             requestBody: {},
             minParametersForSearchForm: 3,
             masterName: "commonUiConfig",
-            moduleName: "searchAndDownloadConfig",
+            moduleName: "searchAndDownloadBirthConfig",
             tableFormJsonPath: "requestParam",
             filterFormJsonPath: "requestParam",
             searchFormJsonPath: "requestParam",

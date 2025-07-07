@@ -93,7 +93,7 @@ export const UICustomizations = {
       return false;
     },
   },
-  searchAndDownloadConfig: {
+  searchAndDownloadBirthConfig: {
     // preProcess function to transform form data into API query parameters
     preProcess: (data) => {
       // console.log("BIRTH: UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
