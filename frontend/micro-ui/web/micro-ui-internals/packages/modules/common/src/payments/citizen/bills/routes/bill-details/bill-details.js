@@ -1,5 +1,18 @@
-import { Card, CardSubHeader, Header, KeyNote, Loader, RadioButtons, SubmitBar, TextInput ,Dropdown, LabelFieldPair, CardLabel, CardSectionHeader} from "@egovernments/digit-ui-react-components";
-import React, { useEffect, useState ,useMemo} from "react";
+import {
+  Card,
+  CardSubHeader,
+  Header,
+  KeyNote,
+  Loader,
+  RadioButtons,
+  SubmitBar,
+  TextInput,
+  Dropdown,
+  LabelFieldPair,
+  CardLabel,
+  CardSectionHeader,
+} from "@egovernments/digit-ui-react-components";
+import React, { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation, useParams, Redirect } from "react-router-dom";
 import ArrearSummary from "./arrear-summary";
@@ -12,13 +25,13 @@ const BillDetails = ({ paymentRules, businessService }) => {
   const { state, pathname, search } = useLocation();
   const userInfo = Digit.UserService.getUser();
   // let { consumerCode } = useParams();
-   const { consumerCode: encodedConsumerCode } = useParams();
+  const { consumerCode: encodedConsumerCode } = useParams();
   const consumerCode = decodeURIComponent(encodedConsumerCode);
   const { workflow: wrkflow, tenantId: _tenantId, authorization, ConsumerName } = Digit.Hooks.useQueryParams();
   const [bill, setBill] = useState(state?.bill);
   const tenantId = state?.tenantId || _tenantId || Digit.UserService.getUser().info?.tenantId;
   const propertyId = state?.propertyId;
-  if (wrkflow === "WNS" && consumerCode.includes("?")) consumerCode = consumerCode.substring(0, consumerCode.indexOf("?"));
+  if (wrkflow === "WNS" && consumerCode && consumerCode.includes("?")) consumerCode = consumerCode.substring(0, consumerCode.indexOf("?"));
   const { data, isLoading } = state?.bill
     ? { isLoading: false }
     : Digit.Hooks.useFetchPayment({
@@ -28,7 +41,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
       });
 
   let Useruuid = data?.Bill?.[0]?.userId || "";
-  const isUserSearchEnabled = wrkflow !== 'death' && businessService !== 'DEATH_CERT' && !!Useruuid;
+  const isUserSearchEnabled = wrkflow !== "death" && businessService !== "DEATH_CERT" && !!Useruuid;
   let requestCriteria = [
     "/user/_search",
     {},
@@ -42,30 +55,33 @@ const BillDetails = ({ paymentRules, businessService }) => {
   ];
 
   const { isLoading: isUserLoading, data: userData, revalidate } = Digit.Hooks.useCustomAPIHook(...requestCriteria);
-  
-  const { isLoading: isFSMLoading, isError, error, data: application, error: errorApplication } = Digit.Hooks.fsm.useApplicationDetail(
-    t,
-    tenantId,
-    consumerCode,
-    { enabled: pathname.includes("FSM") ? true : false },
-    "CITIZEN"
-  );
+
+  const {
+    isLoading: isFSMLoading,
+    isError,
+    error,
+    data: application,
+    error: errorApplication,
+  } = Digit.Hooks.fsm.useApplicationDetail(t, tenantId, consumerCode, { enabled: pathname.includes("FSM") ? true : false }, "CITIZEN");
   let { minAmountPayable, isAdvanceAllowed } = paymentRules;
   minAmountPayable = wrkflow === "WNS" ? 100 : minAmountPayable;
   // const billDetails = bill?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod)?.[0] || [];
   const billDetails = useMemo(() => bill?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod)?.[0] || {}, [bill]);
-  const Arrears =useMemo(() =>
-    bill?.billDetails
-      ?.sort((a, b) => b.fromPeriod - a.fromPeriod)
-      ?.reduce((total, current, index) => (index === 0 ? total : total + current.amount), 0) || 0, [bill]);
+  const Arrears = useMemo(
+    () =>
+      bill?.billDetails
+        ?.sort((a, b) => b.fromPeriod - a.fromPeriod)
+        ?.reduce((total, current, index) => (index === 0 ? total : total + current.amount), 0) || 0,
+    [bill]
+  );
 
-  const { key, label } = Digit.Hooks.useApplicationsForBusinessServiceSearch({ businessService,tenantId }, { enabled: false });
+  // Removed all usage of 'label' as it is not defined in this component
 
   const getBillingPeriod = () => {
     const { fromPeriod, toPeriod } = billDetails;
     if (fromPeriod && toPeriod) {
       let from, to;
-      if (wrkflow === "mcollect" || wrkflow === "WNS" || wrkflow === "death") {
+      if (wrkflow === "mcollect" || wrkflow === "WNS" || wrkflow === "death" || wrkflow === "birth") {
         from =
           new Date(fromPeriod).getDate().toString() +
           " " +
@@ -78,21 +94,15 @@ const BillDetails = ({ paymentRules, businessService }) => {
       from = new Date(billDetails.fromPeriod).getFullYear().toString();
       to = new Date(billDetails.toPeriod).getFullYear().toString();
       if (from === to) {
-        if(window.location.href.includes("BPA"))
-        {
-          if(new Date(data?.Bill?.[0]?.billDate).getMonth()+1 < 4)
-          {
-            let newfrom =  (parseInt(from)-1).toString();
+        if (window.location.href.includes("BPA")) {
+          if (new Date(data?.Bill?.[0]?.billDate).getMonth() + 1 < 4) {
+            let newfrom = (parseInt(from) - 1).toString();
             return "FY " + newfrom + "-" + to;
-          }
-          else
-          {
-            let newTo = (parseInt(to)+1).toString();
+          } else {
+            let newTo = (parseInt(to) + 1).toString();
             return "FY " + from + "-" + newTo;
           }
-        }
-        else
-        return "FY " + from;
+        } else return "FY " + from;
       }
       return "FY " + from + "-" + to;
     } else return "N/A";
@@ -119,7 +129,14 @@ const BillDetails = ({ paymentRules, businessService }) => {
 
   useEffect(() => {
     if (paymentType == t("CS_PAYMENT_FULL_AMOUNT")) setAmount(getTotal());
-  }, [paymentType, bill,getTotal]);
+  }, [paymentType, bill, getTotal]);
+
+  useEffect(() => {
+    if (bill && wrkflow === "birth") {
+      const billPayerName = bill.payerName || "";
+      let originalBillMobileNumber = bill.mobileNumber || "";
+    }
+  }, [bill, wrkflow, Useruuid, userData, t]);
 
   useEffect(() => {
     let changeAdvanceAllowed = isAdvanceAllowed;
@@ -134,7 +151,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
       setPaymentAllowed(true);
       setPaymentType(t("CS_PAYMENT_ADV_COLLECTION"));
     }
-  },[isFSMLoading, application, setPaymentType]);
+  }, [isFSMLoading, application, setPaymentType]);
 
   useEffect(() => {
     if (!bill && data) {
@@ -143,7 +160,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
     }
   }, [isLoading, data, bill, consumerCode, wrkflow]);
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     let paymentAmount =
       paymentType === t("CS_PAYMENT_FULL_AMOUNT")
         ? getTotal()
@@ -171,48 +188,63 @@ const BillDetails = ({ paymentRules, businessService }) => {
       },
     };
 
-        if(wrkflow!=="death"){
-          try {
-          const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
-          sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
-          history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=mcollect`);
-        } catch (error) {
-          console.log("Error while creating receipt", error);
-          // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
-          // setTimeout(() => setToast(null), 5000);
-          return;
-        }
-
-        }
+    if (wrkflow !== "death") {
+      try {
+        const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+        sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
+        history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=mcollect`);
+      } catch (error) {
+        console.log("Error while creating receipt", error);
+        // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
+        // setTimeout(() => setToast(null), 5000);
+        return;
+      }
+    }
 
     if (wrkflow === "mcollect") {
-      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`)
-    } 
-     else if (wrkflow === "death" || businessService === "DEATH_CERT") { 
-        console.log("bill",bill,billDetails)
-        history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=death`, {
-          paymentAmount,
-          name: bill.payerName,
-          mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
-          bill: bill, 
-          tenantId: state?.tenantId || billDetails.tenantId,
-        });
-      }
-      else if (wrkflow === "WNS") {
-      history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=WNS&ConsumerName=${ConsumerName}`, {
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`);
+    } else if (wrkflow === "death" || businessService === "DEATH_CERT") {
+      console.log("bill", bill, billDetails);
+      history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=death`, {
         paymentAmount,
-        tenantId: billDetails.tenantId,
         name: bill.payerName,
         mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
+        bill: bill,
+        tenantId: state?.tenantId || billDetails.tenantId,
       });
+    } else if (wrkflow === "birth") {
+      history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=birth`, {
+        paymentAmount,
+        name: bill.payerName,
+        mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
+        bill: bill,
+        tenantId: state?.tenantId || billDetails.tenantId,
+        //payment
+        // history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`)
+      });
+    } else if (wrkflow === "WNS") {
+      history.push(
+        `/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=WNS&ConsumerName=${ConsumerName}`,
+        {
+          paymentAmount,
+          tenantId: billDetails.tenantId,
+          name: bill.payerName,
+          mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
+        }
+      );
     } else if (businessService === "PT") {
       history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}`, {
         paymentAmount,
         tenantId: billDetails.tenantId,
         name: bill.payerName,
-        mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,      });
+        mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
+      });
     } else {
-      history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, { paymentAmount, tenantId: billDetails.tenantId, propertyId: propertyId });
+      history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
+        paymentAmount,
+        tenantId: billDetails.tenantId,
+        propertyId: propertyId,
+      });
     }
   };
 
@@ -236,19 +268,20 @@ const BillDetails = ({ paymentRules, businessService }) => {
       <Card>
         <div>
           {/* <KeyNote
-            keyValue={t(businessService == "PT.MUTATION" ? "PDF_STATIC_LABEL_MUATATION_NUMBER_LABEL" : label)}
+            keyValue={t(businessService == "PT.MUTATION" ? "PDF_STATIC_LABEL_MUATATION_NUMBER_LABEL" : "")}
             note={wrkflow === "WNS" ? stringReplaceAll(consumerCode, "+", "/") : consumerCode}
           /> */}
-           <KeyNote
+          <KeyNote
             keyValue={
-              businessService === "DEATH_CERT"
+              businessService === "DEATH_CERT" || businessService === "BIRTH_CERT"
                 ? t("PAYMENT_BND_CONSUMER_CODE")
                 : businessService === "PT.MUTATION"
                 ? t("PDF_STATIC_LABEL_MUATATION_NUMBER_LABEL")
-                : t(label)
+                : t("")
             }
             note={wrkflow === "WNS" ? stringReplaceAll(consumerCode, "+", "/") : consumerCode}
           />
+
           {businessService !== "PT.MUTATION" && businessService !== "FSM.TRIP_CHARGES" && (
             <KeyNote keyValue={t("CS_PAYMENT_BILLING_PERIOD")} note={getBillingPeriod()} />
           )}
@@ -267,7 +300,13 @@ const BillDetails = ({ paymentRules, businessService }) => {
               ) : null}
             </div>
           ) : (
-            <BillSumary style={{ marginTop: "50px" }} billAccountDetails={getBillBreakDown()} total={getTotal()} businessService={businessService} arrears={Arrears} />
+            <BillSumary
+              style={{ marginTop: "50px" }}
+              billAccountDetails={getBillBreakDown()}
+              total={getTotal()}
+              businessService={businessService}
+              arrears={Arrears}
+            />
           )}
           <ArrearSummary bill={bill} />
         </div>
@@ -296,11 +335,17 @@ const BillDetails = ({ paymentRules, businessService }) => {
             >
               ₹
             </span>
-            {paymentType !== t("CS_PAYMENT_FULL_AMOUNT") && businessService !== "DEATH_CERT" ? (
+            {(paymentType !== t("CS_PAYMENT_FULL_AMOUNT") && businessService !== "DEATH_CERT") || businessService !== "BIRTH_CERT" ? (
               businessService === "FSM.TRIP_CHARGES" ? (
-                <TextInput style={{ width: "30%" }} onChange={() => {}} value={getAdvanceAmount()} disable={true}/>
+                <TextInput style={{ width: "30%" }} onChange={() => {}} value={getAdvanceAmount()} disable={true} />
               ) : (
-                <TextInput style={{ width: "30%" }} className="text-indent-xl" onChange={(e) => onChangeAmount(e.target.value)} value={amount} disable={getTotal() === 0} />
+                <TextInput
+                  style={{ width: "30%" }}
+                  className="text-indent-xl"
+                  onChange={(e) => onChangeAmount(e.target.value)}
+                  value={amount}
+                  disable={getTotal() === 0}
+                />
               )
             ) : (
               <TextInput className="text-indent-xl" value={getTotal()} onChange={() => {}} disable={true} />
