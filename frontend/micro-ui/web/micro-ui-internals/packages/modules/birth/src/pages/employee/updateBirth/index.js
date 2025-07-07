@@ -92,7 +92,6 @@ const UpdateBirth = () => {
   useEffect(() => {
     if (editData && hospitalListData?.hospitalListOptions) {
       const transformedApiData = transformApiDataToForm(editData, hospitalListData.hospitalListOptions);
-      // console.log("Transformed API Data for Initial Values:", transformedApiData);
       setInitialValues(transformedApiData);
 
       const initialSameAddress = !!transformedApiData.same_as_permanent_address;
@@ -125,23 +124,41 @@ const UpdateBirth = () => {
     }
   }, [editData, hospitalListData]);
 
+  // --- START: MODIFIED SECTION ---
   // Transform address data from API to form fields
   const transformAddressData = (apiData) => {
-    const presentAddr = apiData?.birthPresentaddr || {};
-    const permAddr = apiData?.birthPermaddr || {};
+    const presentAddr = apiData?.birthPresentaddr;
+    const permAddr = apiData?.birthPermaddr;
 
-    // Check if present and permanent address are the same
-    const checkSame = (addr1, addr2) => {
-      const keys1 = Object.keys(addr1);
-      const keys2 = Object.keys(addr2);
-      if (keys1.length === 0 && keys2.length === 0) return true;
-      if (keys1.length !== keys2.length) return false;
-      for (let key of keys1) {
-        if ((addr1[key] || "") !== (addr2[key] || "")) return false;
+    // A more robust check for address equality that only compares relevant fields.
+    // This prevents mismatches due to metadata like 'id' or 'fullAddress' fields.
+    const checkAddressEquality = (addr1, addr2) => {
+      // If either address is missing, they are not the same.
+      if (!addr1 || !addr2) {
+        return false;
+      }
+      const fieldsToCompare = ["buildingno", "houseno", "streetname", "locality", "tehsil", "district", "city", "state", "country", "pinno"];
+
+      // An address is considered "empty" if all its relevant fields are null or empty strings.
+      // We don't want to consider two empty addresses as "the same" for ticking the checkbox.
+      const isAddr1Empty = fieldsToCompare.every((field) => !addr1[field]);
+      const isAddr2Empty = fieldsToCompare.every((field) => !addr2[field]);
+      if (isAddr1Empty && isAddr2Empty) {
+        return false;
+      }
+
+      // Compare each relevant field, treating null/undefined as an empty string.
+      for (const field of fieldsToCompare) {
+        const val1 = addr1[field] || "";
+        const val2 = addr2[field] || "";
+        if (val1 !== val2) {
+          return false;
+        }
       }
       return true;
     };
-    const isSameAddress = checkSame(presentAddr, permAddr) && (Object.keys(presentAddr).length > 0 || Object.keys(permAddr).length > 0);
+
+    const isSameAddress = checkAddressEquality(presentAddr, permAddr);
 
     // Map address fields to form fields
     return {
@@ -156,6 +173,8 @@ const UpdateBirth = () => {
       birth_country: presentAddr?.country || "",
       birth_pincode: presentAddr?.pinno || "",
       same_as_permanent_address: isSameAddress,
+      // If addresses are the same, clear the permanent address form fields
+      // to avoid confusion and ensure they are not submitted when the section is hidden.
       permanent_building_number: isSameAddress ? "" : permAddr?.buildingno || "",
       permanent_house_no: isSameAddress ? "" : permAddr?.houseno || "",
       permanent_street_name: isSameAddress ? "" : permAddr?.streetname || "",
@@ -185,7 +204,8 @@ const UpdateBirth = () => {
 
     // Map all fields from API to form fields
     return {
-      checkbox_legacy: apiData?.isLegacyRecord || false,
+      // Use !! to ensure isLegacyRecord is converted to a clean boolean (true/false)
+      checkbox_legacy: !!apiData?.isLegacyRecord,
       registration_number: apiData?.registrationno || "",
       hospital_name: selectedHospital || undefined,
       date_of_registration: convertToDate(apiData.dateofreport),
@@ -221,6 +241,7 @@ const UpdateBirth = () => {
       remarks: apiData?.remarks || "",
     };
   };
+  // --- END: MODIFIED SECTION ---
 
   // Map gender object from form to API payload values
   const mapGenderToPayload = (genderObj) => {
@@ -336,7 +357,7 @@ const UpdateBirth = () => {
         middlename: formData?.father_middle_name || null,
         mobileno: formData?.father_mobile_number || null,
         nationality: formData?.father_nationality || null,
-        proffession: formData?.father_profession || null, // Corrected spelling
+        proffession: formData?.father_profession || null,
         religion: formData?.father_religion || null,
         fullName: createFullName(formData?.father_first_name, formData?.father_middle_name, formData?.father_last_name),
       },
@@ -350,7 +371,7 @@ const UpdateBirth = () => {
         middlename: formData?.mother_middle_name || null,
         mobileno: formData?.mother_mobile_number || null,
         nationality: formData?.mother_nationality || null,
-        proffession: formData?.mother_profession || null, // Corrected spelling
+        proffession: formData?.mother_profession || null,
         religion: formData?.mother_religion || null,
         fullName: createFullName(formData?.mother_first_name, formData?.mother_middle_name, formData?.mother_last_name),
       },
@@ -376,20 +397,17 @@ const UpdateBirth = () => {
 
   // Handle form submit
   const onSubmit = async (formData) => {
-    // console.log("Form Data before update transformation:", formData);
     const payload = {
       birthCerts: [transformFormDataForUpdate(formData)],
     };
-    // console.log("Submitting Update Payload:", JSON.stringify(payload, null, 2));
 
     await mutation.mutate(
       { body: payload },
       {
         onSuccess: (response) => {
-          // console.log("API Update Response:", response);
           if (response?.statsMap?.["Sucessful Records"] > 0) {
             setShowToast({ key: "success", label: "Birth Certificate Updated Successfully" });
-            setTimeout(() => history.push(`/${window.contextPath}employee/birth/birth-common/getCertificate`), 1000);
+            setTimeout(() => history.push(`/${window.contextPath}/employee/birth/birth-common/getCertificate`), 1000);
           } else {
             const errorMsg =
               response?.serviceError || response?.errorRowMap?.[Object.keys(response.errorRowMap)[0]]?.[0] || "Update failed with logical errors.";
@@ -427,10 +445,10 @@ const UpdateBirth = () => {
     return <div>Error: No data to edit. Please go back and select a record.</div>;
   }
 
-  // Render form
+
   return (
     <React.Fragment>
-      <Header>{t("BND_NEW_REGISTRATION")}</Header>
+      <Header>{t("BND_UPDATE_REGISTRATION")}</Header>
       <FormComposerV2
         config={formConfig}
         onSubmit={onSubmit}
