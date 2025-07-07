@@ -35,7 +35,7 @@ import React, { useState, Fragment, useEffect } from "react";
 //   );
 // };
 
-export const DownloadButton = ({ tenantId, certificateId }) => {
+export const DownloadBirthButton = ({ tenantId, certificateId }) => {
   const usePdfDownloader = Digit.ComponentRegistryService.getComponent("usePdfDownloader");
   const { initiateDownload, isDownloading, downloadError, isDownloaded } = usePdfDownloader(certificateId); // Assuming usePdfDownloader returns isDownloaded status
 
