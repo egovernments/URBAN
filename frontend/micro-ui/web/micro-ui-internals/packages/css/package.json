@@ -19,6 +19,11 @@
     "> 3%",
     "last 2 versions"
   ],
+  "resolutions": {
+    "**/minimatch": "7.4.6",
+    "**/glob": "7.2.3",
+    "**/chokidar": "3.5.3"
+  },
   "style": "./dist/index.css",
   "dependencies": {
     "node-sass": "4.14.1",
