@@ -52,7 +52,6 @@ import java.util.List;
 
 import org.egov.infra.admin.master.entity.Module;
 import org.egov.infra.admin.master.service.ModuleService;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -82,8 +81,7 @@ public class SearchAppConfigController {
     }
 
     @PostMapping
-	public String search(@RequestParam @SafeHtml String appConfigModuleName,
-			@RequestParam @SafeHtml String appConfigKeyName) {
+    public String searchAppConfig(@RequestParam("appConfigModuleName") String appConfigModuleName, @RequestParam("appConfigKeyName") String appConfigKeyName) {
         return "redirect:/app/config/update/" + appConfigModuleName + "/" + appConfigKeyName;
     }
 }

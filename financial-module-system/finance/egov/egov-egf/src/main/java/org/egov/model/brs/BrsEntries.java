@@ -53,7 +53,6 @@ import org.egov.commons.CVoucherHeader;
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.egov.model.instrument.InstrumentHeader;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -89,12 +88,10 @@ public class BrsEntries extends AbstractPersistable<Long>
     private Long id;
 
     @Length(max = 20)
-    @SafeHtml
     @NotNull
     private String refNo;
 
     @Length(max = 20)
-    @SafeHtml
     @NotNull
     private String type;
 
@@ -105,7 +102,6 @@ public class BrsEntries extends AbstractPersistable<Long>
     private BigDecimal txnAmount;
 
     @Length(max = 100)
-    @SafeHtml
     private String remarks;
     
     @ManyToOne
@@ -133,64 +129,44 @@ public class BrsEntries extends AbstractPersistable<Long>
 
     // added for DishonoredCheque
     @Transient
-    @SafeHtml
     private String voucherNumber = "";
     @Transient
-    @SafeHtml
     private String cgnum = "";
     @Transient
-    @SafeHtml
     private String payinSlipVHeaderId = "";
     @Transient
-    @SafeHtml
     private String fundId = "";
     @Transient
-    @SafeHtml
     private String fundSourceId = "";
     @Transient
-    @SafeHtml
     private String chequeNumber = "";
     @Transient
-    @SafeHtml
     private String chequeDate = "";
     @Transient
-    @SafeHtml
     private String amount = "";
     @Transient
-    @SafeHtml
     private String lotNumber = "";
     @Transient
-    @SafeHtml
     private String lotType = "";
     @Transient
-    @SafeHtml
     private String field = "";
     @Transient
-    @SafeHtml
     private String voucherType = "";
     @Transient
-    @SafeHtml
     private String bankName = "";
     @Transient
-    @SafeHtml
     private String accNumber = "";
     @Transient
-    @SafeHtml
     private String accIdParam = "";
     @Transient
-    @SafeHtml
     private String payTo = "";
     @Transient
-    @SafeHtml
     private String payCheque = "";
     @Transient
-    @SafeHtml
     private String departmentId;
     @Transient
-    @SafeHtml
     private String functionaryId;
     @Transient
-    @SafeHtml
     private String functionId = "";
 
     public Long getId() {

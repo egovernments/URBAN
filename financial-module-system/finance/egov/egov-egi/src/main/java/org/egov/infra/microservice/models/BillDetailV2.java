@@ -55,7 +55,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -77,19 +76,15 @@ import lombok.ToString;
 @EqualsAndHashCode(of = { "id" })
 public class BillDetailV2 {
 
-    @SafeHtml
     @JsonProperty("id")
     private String id = null;
 
-    @SafeHtml
     @JsonProperty("tenantId")
     private String tenantId = null;
 
-    @SafeHtml
     @JsonProperty("demandId")
     private String demandId = null;
 
-    @SafeHtml
     @JsonProperty("billId")
     private String billId = null;
 
@@ -112,19 +107,15 @@ public class BillDetailV2 {
     @JsonProperty("additionalDetails")
     private JsonNode additionalDetails = null;
 
-    @SafeHtml
     @JsonProperty("channel")
     private String channel = null;
 
-    @SafeHtml
     @JsonProperty("voucherHeader")
     private String voucherHeader = null;
 
-    @SafeHtml
     @JsonProperty("boundary")
     private String boundary = null;
 
-    @SafeHtml
     @JsonProperty("manualReceiptNumber")
     private String manualReceiptNumber = null;
 
@@ -141,19 +132,16 @@ public class BillDetailV2 {
     @JsonProperty("auditDetails")
     private AuditDetails auditDetails = null;
 
-    @SafeHtml
     private String billDescription;
 
     @NotNull
     @JsonProperty("expiryDate")
     private Long expiryDate;
 
-    @SafeHtml
     private String displayMessage;
 
     private Boolean callBackForApportioning;
 
-    @SafeHtml
     private String cancellationRemarks;
 
     public Boolean addBillAccountDetail(BillAccountDetail billAccountDetail) {

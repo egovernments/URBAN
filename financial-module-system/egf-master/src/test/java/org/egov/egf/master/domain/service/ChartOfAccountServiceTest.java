@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
+import static org.mockito.ArgumentMatchers.any;
 
 @Import(TestConfiguration.class)
 @RunWith(SpringRunner.class)

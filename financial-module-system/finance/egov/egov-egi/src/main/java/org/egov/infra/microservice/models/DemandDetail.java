@@ -43,21 +43,17 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DemandDetail {
 
-    @SafeHtml
     @JsonProperty("id")
     private String id;
     
-    @SafeHtml
     @JsonProperty("demandId")
     private String demandId;
 
-    @SafeHtml
     @NotNull @JsonProperty("taxHeadMasterCode")
     private String taxHeadMasterCode;
 
@@ -73,7 +69,6 @@ public class DemandDetail {
     @JsonProperty("auditDetails")
     private AuditDetails auditDetails;
 
-    @SafeHtml
     @JsonProperty("tenantId")
     private String tenantId;
 

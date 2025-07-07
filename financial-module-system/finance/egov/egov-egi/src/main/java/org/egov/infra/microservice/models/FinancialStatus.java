@@ -40,18 +40,12 @@
 
 package org.egov.infra.microservice.models;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class FinancialStatus {
-    @SafeHtml
     private String id;
-    @SafeHtml
     private String moduleType;
-    @SafeHtml
     private String code;
-    @SafeHtml
     private String name;
-    @SafeHtml
     private String description;
 
     public String getId() {

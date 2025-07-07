@@ -85,7 +85,6 @@ import org.egov.infra.exception.ApplicationRuntimeException;
 import org.egov.infra.filestore.entity.FileStoreMapper;
 import org.egov.infra.filestore.repository.FileStoreMapperRepository;
 import org.egov.infra.filestore.service.FileStoreService;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.HTTPUtilities;
 import org.slf4j.Logger;
@@ -119,8 +118,7 @@ public class FileStoreUtils {
 		return Optional.ofNullable(this.fileStoreMapperRepository.findByFileStoreId(fileStoreId));
 	}
 
-	public ResponseEntity<InputStreamResource> fileAsResponseEntity(@SafeHtml String fileStoreId,
-			@SafeHtml String moduleName, boolean toSave) {
+	public ResponseEntity<InputStreamResource> fileAsResponseEntity(String fileStoreId, String moduleName, boolean toSave) {
 		try {
 			Optional<FileStoreMapper> fileStoreMapper = getFileStoreMapper(fileStoreId);
 			if (fileStoreMapper.isPresent()) {

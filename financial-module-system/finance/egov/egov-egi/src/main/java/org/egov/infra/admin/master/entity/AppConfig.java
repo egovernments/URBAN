@@ -54,7 +54,6 @@ import org.egov.infra.persistence.validator.annotation.CompositeUnique;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -97,7 +96,6 @@ public class AppConfig extends AbstractAuditable {
     private Long id;
 
     @NotBlank
-    @SafeHtml
     @Length(max = 250)
     @Column(name = "key_name", updatable = false)
     private String keyName;
@@ -108,7 +106,6 @@ public class AppConfig extends AbstractAuditable {
     private Module module;
 
     @NotBlank
-    @SafeHtml
     @Length(max = 250)
     @Column(name = "description")
     private String description;

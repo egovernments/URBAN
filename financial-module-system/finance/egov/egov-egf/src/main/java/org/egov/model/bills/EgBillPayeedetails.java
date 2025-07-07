@@ -50,7 +50,6 @@ package org.egov.model.bills;
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.egov.model.recoveries.Recovery;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -98,11 +97,9 @@ public class EgBillPayeedetails extends AbstractPersistable<Integer> implements 
     private Date lastUpdatedTime;
 
     @Transient
-    @SafeHtml
     private String detailTypeName;
 
     @Transient
-    @SafeHtml
     private String detailKeyName;
 
     @Transient
@@ -113,7 +110,6 @@ public class EgBillPayeedetails extends AbstractPersistable<Integer> implements 
     private Recovery recovery;
 
     @Length(max = 250)
-    @SafeHtml
     private String narration;
 
     public Integer getAccountDetailKeyId() {

@@ -55,7 +55,6 @@ import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.AuditOverrides;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -91,19 +90,16 @@ public class CChartOfAccounts extends AbstractAuditable {
     @GeneratedValue(generator = SEQ_CHARTOFACCOUNTS, strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @SafeHtml
     @NotNull
     @Length(max = 50)
     private String glcode;
 
-    @SafeHtml
     @NotNull
     @Length(max = 150)
     private String name;
 
     private Long purposeId;
 
-    @SafeHtml
     @Column(name = "DESCRIPTION")
     private String desc;
 
@@ -125,7 +121,6 @@ public class CChartOfAccounts extends AbstractAuditable {
 
     private Boolean budgetCheckReq;
 
-    @SafeHtml
     @Length(max = 255)
     private String majorCode;
 

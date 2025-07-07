@@ -51,7 +51,6 @@ package org.egov.infra.notification.entity;
 import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.egov.infra.workflow.entity.OwnerGroup;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -78,11 +77,9 @@ public class NotificationGroup extends AbstractAuditable {
     private Long id;
 
     @Length(min = 1, max = 100)
-    @SafeHtml
     private String name;
 
     @Length(max = 250)
-    @SafeHtml
     private String description;
 
     @NotNull

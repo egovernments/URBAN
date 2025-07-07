@@ -55,7 +55,6 @@ import org.egov.commons.utils.BankAccountType;
 import org.egov.commons.utils.CommonsConstants;
 import org.egov.infra.persistence.validator.annotation.OptionalPattern;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * 
@@ -71,17 +70,13 @@ public class BankAccountSearchRequest {
 	private Long fundId;
 
 	@Length(max = 20)
-	@SafeHtml
 	@OptionalPattern(regex = CommonsConstants.numericwithoutspecialchar, message = "Special Characters are not allowed in Accountnumber")
 	private String accountnumber;
 
-	@SafeHtml
 	private String accounttype;
 
-	@SafeHtml
 	private String narration;
 
-	@SafeHtml
 	private String payTo;
 
 	@Enumerated(EnumType.STRING)
@@ -89,7 +84,6 @@ public class BankAccountSearchRequest {
 
 	private Boolean isactive;
 
-	@SafeHtml
 	@Length(max = 50)
 	private String glcode;
 

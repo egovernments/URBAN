@@ -24,9 +24,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.AdaptableJobFactory;
 import org.springframework.stereotype.Service;
 
-// TODO: Migrate from Struts/XWork: import freemarker.template.TemplateNotFoundException;
-import javassist.tools.rmi.ObjectNotFoundException;
-
 @Service
 public class AccountCodeTemplateService {
     

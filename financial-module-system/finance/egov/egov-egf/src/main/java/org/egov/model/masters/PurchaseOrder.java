@@ -72,7 +72,6 @@ import org.egov.infra.persistence.validator.annotation.OptionalPattern;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.egov.utils.FinancialConstants;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "EGF_PURCHASEORDER")
@@ -88,13 +87,11 @@ public class PurchaseOrder extends AbstractAuditable implements EntityType {
     @GeneratedValue(generator = SEQ_EGF_PURCHASEORDER, strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @SafeHtml
     @Length(max = 100, message = "Maximum of 100 Characters allowed for Order Number")
     @OptionalPattern(regex = FinancialConstants.alphaNumericwithspecialcharForContraWOAndSupplierName, message = "Special Characters are not allowed in Order Number")
     @Column(updatable = false)
     private String orderNumber;
 
-    @SafeHtml
     @Length(max = 100, message = "Maximum of 100 Characters allowed for Name")
     @OptionalPattern(regex = FinancialConstants.alphaNumericwithspecialcharForContraWOAndSupplierName, message = "Special Characters are not allowed in Name")
     private String name;
@@ -111,14 +108,12 @@ public class PurchaseOrder extends AbstractAuditable implements EntityType {
     @Min(1)
     private BigDecimal advancePayable;
 
-    @SafeHtml
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "fund")
     private Fund fund;
 
-    @SafeHtml
     private String department;
 
     @ManyToOne
@@ -129,7 +124,6 @@ public class PurchaseOrder extends AbstractAuditable implements EntityType {
     @JoinColumn(name = "subScheme")
     private SubScheme subScheme;
 
-    @SafeHtml
     private String sanctionNumber;
 
     private Date sanctionDate;

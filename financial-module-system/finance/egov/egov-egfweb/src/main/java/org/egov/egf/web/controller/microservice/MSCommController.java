@@ -21,7 +21,6 @@ import org.egov.infra.workflow.entity.StateAware;
 import org.egov.infra.workflow.inbox.InboxRenderServiceDelegate;
 import org.egov.infra.workflow.matrix.entity.WorkFlowMatrix;
 import org.egov.infra.workflow.service.WorkflowService;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,9 +81,8 @@ public class MSCommController {
 
 	@GetMapping(value = "/approvers/{deptId}/{desgId}")
 	@ResponseBody
-	public List<EmployeeInfo> getApprovers(@PathVariable(name = "deptId") @SafeHtml String deptId,
-			@PathVariable(name = "desgId") @SafeHtml String desgnId) {
-		return microserviceUtils.getApprovers(deptId, desgnId);
+	public List<EmployeeInfo> getApprovers(@PathVariable("deptId") Long deptId, @PathVariable("desgId") Long desgnId) {
+		return microserviceUtils.getApprovers(deptId.toString(), desgnId.toString());
 	}
 
     @PostMapping(value = "/rest/ClearToken")
@@ -111,9 +109,7 @@ public class MSCommController {
 
     @PostMapping(value = "/rest/refreshToken")
     @ResponseBody
-    public ResponseEntity<Object> refreshToken(@RequestParam(value = "oldToken") @SafeHtml String oldToken,
-            @RequestParam(value = "newToken") @SafeHtml String newToken) {
-
+    public ResponseEntity<Object> refreshToken(@RequestParam("oldToken") String oldToken, @RequestParam("newToken") String newToken) {
         try {
             if (null != oldToken && null != newToken) {
                 microserviceUtils.refreshToken(oldToken, newToken);

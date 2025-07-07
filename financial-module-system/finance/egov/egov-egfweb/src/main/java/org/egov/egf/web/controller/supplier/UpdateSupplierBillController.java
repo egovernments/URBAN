@@ -86,7 +86,6 @@ import org.egov.model.bills.EgBillPayeedetails;
 import org.egov.model.bills.EgBilldetails;
 import org.egov.model.bills.EgBillregister;
 import org.egov.utils.FinancialConstants;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -191,17 +190,16 @@ public class UpdateSupplierBillController extends BaseBillController {
     }
 
     @ModelAttribute(EG_BILLREGISTER)
-    public EgBillregister getEgBillregister(@PathVariable @SafeHtml String billId) {
-        if (billId.contains("showMode")) {
-            String[] billIds = billId.split("\\&");
+    public EgBillregister getEgBillregister(@RequestParam(value = "billId", required = false) String billId) {
+        if (billId != null && billId.contains("showMode")) {
+            String[] billIds = billId.split("&");
             billId = billIds[0];
         }
-        return supplierBillService.getById(Long.parseLong(billId));
+        return billId != null ? supplierBillService.getById(Long.parseLong(billId)) : null;
     }
 
     @GetMapping(value = "/update/{billId}")
-    public String updateForm(final Model model, @PathVariable @SafeHtml final String billId,
-            final HttpServletRequest request) throws ApplicationException {
+    public String update(@PathVariable("billId") String billId, final Model model, final HttpServletRequest request) throws ApplicationException {
         final EgBillregister egBillregister = supplierBillService.getById(Long.parseLong(billId));
         if (!commonsUtil.isApplicationOwner(securityUtils.getCurrentUser(), egBillregister))
             return UNAUTHORIZED;
@@ -251,19 +249,10 @@ public class UpdateSupplierBillController extends BaseBillController {
 
         if (egBillregister.getState() != null &&
                 (FinancialConstants.WORKFLOW_STATE_REJECTED.equals(egBillregister.getState().getValue()) ||
-                        financialUtils.isBillEditable(egBillregister.getState()))) {
-            model.addAttribute("mode", "edit");
-            return SUPPLIERBILL_UPDATE;
-        } else {
-            model.addAttribute("mode", "view");
-            if (egBillregister.getEgBillregistermis().getBudgetaryAppnumber() != null &&
-                    !egBillregister.getEgBillregistermis().getBudgetaryAppnumber().isEmpty()) {
-                budgetDetails = supplierBillService.getBudgetDetailsForBill(egBillregister);
-            }
-            model.addAttribute("budgetDetails", budgetDetails);
-            return SUPPLIERBILL_VIEW;
+                FinancialConstants.WORKFLOW_STATE_CANCELLED.equals(egBillregister.getState().getValue()))) {
+            prepareCheckList(egBillregister);
         }
-
+        return SUPPLIERBILL_UPDATE;
     }
 
     private void populateSubLedgerDetails(final EgBillregister egBillregister, final BindingResult resultBinder) {
@@ -353,12 +342,10 @@ public class UpdateSupplierBillController extends BaseBillController {
         }
     }
 
-    @PostMapping(value = "/update/{billId}")
-    public String update(@Valid @ModelAttribute(EG_BILLREGISTER) final EgBillregister egBillregister,
-            final BindingResult resultBinder, final RedirectAttributes redirectAttributes, final Model model,
-            final HttpServletRequest request, @RequestParam @SafeHtml final String workFlowAction)
-            throws ApplicationException, IOException {
-
+    @PostMapping(value = "/update")
+    public String update(@Valid @ModelAttribute("egBillregister") final EgBillregister egBillregister,
+                        final BindingResult resultBinder, final Model model, final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+        String workFlowAction = request.getParameter("workFlowAction");
         String mode = "";
         EgBillregister updatedEgBillregister = null;
 
@@ -470,8 +457,7 @@ public class UpdateSupplierBillController extends BaseBillController {
 	}
 
     @GetMapping(value = "/view/{billId}")
-    public String view(final Model model, @PathVariable @SafeHtml String billId,
-            final HttpServletRequest request) throws ApplicationException {
+    public String view(@PathVariable("billId") String billId, final Model model, final HttpServletRequest request) throws ApplicationException {
         if (billId.contains("showMode")) {
             String[] billIds = billId.split("\\&");
             billId = billIds[0];

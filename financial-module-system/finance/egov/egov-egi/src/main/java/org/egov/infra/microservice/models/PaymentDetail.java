@@ -52,7 +52,6 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -67,12 +66,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode
 public class PaymentDetail {
-    @SafeHtml
     @Size(max=64)
     @JsonProperty("id")
     private String id;
 
-    @SafeHtml
     @Size(max=64)
     @JsonProperty("tenantId")
     private String tenantId;
@@ -84,12 +81,10 @@ public class PaymentDetail {
     @JsonProperty("totalAmountPaid")
     private BigDecimal totalAmountPaid;
 
-    @SafeHtml
     @Size(max=64)
     @JsonProperty("receiptNumber")
     private String receiptNumber;
     
-    @SafeHtml
     @Size(max=64)
     @JsonProperty("manualReceiptNumber")
     private String manualReceiptNumber;
@@ -100,15 +95,12 @@ public class PaymentDetail {
     @JsonProperty("receiptDate")
     private Long receiptDate = null;
 
-    @SafeHtml
     @JsonProperty("receiptType")
     private String receiptType = null;
 
-    @SafeHtml
     @JsonProperty("businessService")
     private String businessService;
 
-    @SafeHtml
     @NotNull
     @Size(max=64)
     @JsonProperty("billId")

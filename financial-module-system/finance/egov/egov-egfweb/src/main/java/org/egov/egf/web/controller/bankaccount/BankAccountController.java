@@ -66,7 +66,6 @@ import org.egov.egf.utils.FinancialUtils;
 import org.egov.egf.web.controller.bankaccount.adaptor.BankAccountJsonAdaptor;
 import org.egov.model.masters.AccountCodePurpose;
 import org.egov.services.voucher.GeneralLedgerService;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -160,16 +159,15 @@ public class BankAccountController {
     }
 
     @PostMapping(value = "/search/{mode}")
-    public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
+    public String search(@PathVariable("mode") String mode, Model model) {
         final BankAccountSearchRequest bankAccountSearchRequest = new BankAccountSearchRequest();
         setDropDownValues(model);
         model.addAttribute(BANKACCOUNT_SEARCH_REQUEST, bankAccountSearchRequest);
         return "bankaccount-search";
-
     }
 
     @GetMapping(value = "/success/{id}/{mode}")
-    public String success(@PathVariable("id") final Long id, @PathVariable("mode") @SafeHtml final String mode, final Model model) {
+    public String success(@PathVariable("id") Long id, @PathVariable("mode") String mode, Model model) {
         final Bankaccount bankaccount = createBankAccountService.getById(id);
         model.addAttribute(BANKACCOUNT, bankaccount);
         model.addAttribute("mode", mode);
@@ -208,8 +206,7 @@ public class BankAccountController {
 
     @PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-           @Valid @ModelAttribute final BankAccountSearchRequest bankAccountSearchRequest) {
+    public String ajaxSearch(@PathVariable("mode") String mode, @Valid @ModelAttribute final BankAccountSearchRequest bankAccountSearchRequest) {
         final List<Bankaccount> searchResultList = createBankAccountService.search(bankAccountSearchRequest);
         return new StringBuilder("{ \"data\":")
                 .append(toSearchResultJson(searchResultList)).append("}")

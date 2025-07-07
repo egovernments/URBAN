@@ -84,7 +84,6 @@ import org.egov.infra.validation.exception.ValidationException;
 import org.egov.model.bills.DocumentUpload;
 import org.egov.model.bills.EgBillregister;
 import org.egov.utils.FinancialConstants;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.HTTPUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,7 +175,7 @@ public class CreateExpenseBillController extends BaseBillController {
 	@PostMapping(value = "/create")
 	public String create(@Valid @ModelAttribute("egBillregister") final EgBillregister egBillregister,
 			final Model model, final BindingResult resultBinder, final HttpServletRequest request,
-			@RequestParam @SafeHtml final String workFlowAction) throws IOException, ParseException {
+			@RequestParam("workFlowAction") String workFlowAction) {
 		LOGGER.info("ExpenseBill is creating with user ::" + ApplicationThreadLocals.getUserId());
 		if (FinancialConstants.BUTTONFORWARD.equalsIgnoreCase(workFlowAction) && !commonsUtil
 				.isValidApprover(egBillregister, Long.valueOf(request.getParameter(APPROVAL_POSITION)))) {
@@ -194,7 +193,11 @@ public class CreateExpenseBillController extends BaseBillController {
 		validateBillNumber(egBillregister, resultBinder);
 		validateLedgerAndSubledger(egBillregister, resultBinder);
 		if (workFlowAction.equals(FinancialConstants.CREATEANDAPPROVE))
-			validateCuttofDate(egBillregister, resultBinder);
+			try {
+				validateCuttofDate(egBillregister, resultBinder);
+			} catch (ParseException e) {
+				resultBinder.reject("msg.cutoff.date.parse.error", new String[] {}, null);
+			}
 		if (resultBinder.hasErrors()) {
 			populateDataOnErrors(egBillregister, model, request);
 			return EXPENSEBILL_FORM;
@@ -254,9 +257,11 @@ public class CreateExpenseBillController extends BaseBillController {
 	}
 
 	@GetMapping(value = "/success")
-	public String showSuccessPage(@RequestParam("billNumber") @SafeHtml final String billNumber, final Model model,
+	public String success(@RequestParam("approverDetails") String approverDetails,
+			@RequestParam("billNumber") String billNumber,
+			final Model model,
 			final HttpServletRequest request) {
-		final String[] keyNameArray = request.getParameter("approverDetails").split(",");
+		final String[] keyNameArray = approverDetails.split(",");
 		Long id = 0L;
 		String approverName = "";
 		String nextDesign = "";

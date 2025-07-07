@@ -61,7 +61,6 @@ import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Unique(fields = { "name", "code" }, enableDfltMsg = true)
@@ -79,22 +78,18 @@ public class EmployeeGrievanceType extends AbstractAuditable {
 
     @NotBlank
     @Length(max = 50)
-    @SafeHtml
     @Column(name = "code", unique = true)
     private String code;
 
     @NotBlank
-    @SafeHtml
     @Length(max = 100)
     @Column(name = "name", unique = true)
     private String name;
 
-    @SafeHtml
     @Length(max = 200)
     private String localName;
 
     @Length(max = 256)
-    @SafeHtml
     private String description;
 
     private boolean active;

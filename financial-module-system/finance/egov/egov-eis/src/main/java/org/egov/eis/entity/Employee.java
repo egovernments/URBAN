@@ -59,7 +59,6 @@ import org.hibernate.envers.AuditOverrides;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.joda.time.DateTime;
 
 import javax.persistence.CascadeType;
@@ -93,7 +92,6 @@ public class Employee extends User implements EntityType {
 
     private static final long serialVersionUID = -1105585841211211215L;
     @NotNull
-    @SafeHtml
     @Column(name = "code", unique = true)
     @Pattern(regexp = Constants.ALPHANUMERIC)
     @Audited

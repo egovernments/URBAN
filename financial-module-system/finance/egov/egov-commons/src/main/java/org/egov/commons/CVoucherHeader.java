@@ -73,7 +73,6 @@ import javax.validation.constraints.NotNull;
 
 import org.egov.infra.workflow.entity.StateAware;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "VOUCHERHEADER")
@@ -86,20 +85,16 @@ public class CVoucherHeader extends StateAware implements java.io.Serializable {
     @GeneratedValue(generator = SEQ_VOUCHERHEADER, strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @SafeHtml
     @NotNull
     @Length(max = 50)
     private String name;
 
-    @SafeHtml
     @NotNull
     @Length(max = 100)
     private String type;
 
-    @SafeHtml
     private String description;
     private Date effectiveDate;
-    @SafeHtml
     @Length(max = 30)
     @Column(updatable = false)
     private String voucherNumber;
@@ -112,17 +107,14 @@ public class CVoucherHeader extends StateAware implements java.io.Serializable {
     private Long originalvcId;
     private Integer isConfirmed;
     private Long refvhId;
-    @SafeHtml
     @Length(max = 50)
     private String cgvn;
     private Integer moduleId;
     @Transient
-    @SafeHtml
     private String voucherSubType;
     @Transient
     private Boolean isRestrictedtoOneFunctionCenter;
     @Transient
-    @SafeHtml
     private String voucherNumberPrefix;
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voucherHeaderId", targetEntity = CGeneralLedger.class)
     private Set<CGeneralLedger> generalLedger;
@@ -136,22 +128,18 @@ public class CVoucherHeader extends StateAware implements java.io.Serializable {
     private List<CGeneralLedgerDetail> subLedgerDetails = new ArrayList<>();
 
     @Transient
-    @SafeHtml
     private String partyName;
 
     @Transient
-    @SafeHtml
     private String partyBillNumber;
 
     @Transient
     private Date partyBillDate;
 
     @Transient
-    @SafeHtml
     private String billNumber;
 
     @Transient
-    @SafeHtml
     private String departmentName;
 
     @Transient
@@ -161,15 +149,12 @@ public class CVoucherHeader extends StateAware implements java.io.Serializable {
     private Long approvalDepartment;
 
     @Transient
-    @SafeHtml
     private String approvalComent;
 
     @Transient
-    @SafeHtml
     private String voucherNumType;
 
     @Transient
-    @SafeHtml
     private String fiscalName;
 
     public CVoucherHeader() {

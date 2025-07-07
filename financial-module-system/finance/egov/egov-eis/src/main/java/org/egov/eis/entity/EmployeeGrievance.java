@@ -78,7 +78,6 @@ import org.egov.infra.workflow.entity.StateAware;
 import org.egov.pims.commons.Position;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Unique(fields = { "grievanceNumber" }, enableDfltMsg = true)
@@ -96,7 +95,6 @@ public class EmployeeGrievance extends StateAware {
 
     @NotBlank
     @Length(max = 50)
-    @SafeHtml
     @Column(name = "grievanceNumber", unique = true)
     private String grievanceNumber;
 
@@ -116,12 +114,10 @@ public class EmployeeGrievance extends StateAware {
     private EmployeeGrievanceStatus status;
 
     @Length(min = 10, max = 500)
-    @SafeHtml
     @NotNull
     private String details;
 
     @Length(max = 500)
-    @SafeHtml
     private String grievanceResolution;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)

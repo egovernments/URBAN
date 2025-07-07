@@ -53,7 +53,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -70,7 +69,6 @@ public class CGeneralLedger implements Serializable {
     @NotNull
     private CChartOfAccounts glcodeId;
     
-    @SafeHtml
     @NotNull
     @Length(max = 50)
     private String glcode;
@@ -80,7 +78,6 @@ public class CGeneralLedger implements Serializable {
     @NotNull
     @Digits(fraction = 2, integer = 10)
     private Double creditAmount;
-    @SafeHtml
     private String description;
     private CVoucherHeader voucherHeaderId;
     private Integer functionId;

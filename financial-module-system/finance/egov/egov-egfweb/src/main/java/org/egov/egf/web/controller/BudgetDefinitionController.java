@@ -62,7 +62,6 @@ import org.egov.model.budget.BudgetDefinitionSearchRequest;
 import org.egov.model.budget.BudgetDetail;
 import org.egov.model.service.BudgetDefinitionService;
 import org.egov.utils.BeReType;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -172,17 +171,15 @@ public class BudgetDefinitionController {
 	}
 
 	@RequestMapping(value = "/search/{mode}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
-		final BudgetDefinitionSearchRequest budgetDefinitionSearchRequest = new BudgetDefinitionSearchRequest();
+	public String search(@ModelAttribute BudgetDefinitionSearchRequest budgetDefinitionSearchRequest, Model model) {
 		prepareNewForm(model);
 		model.addAttribute(BUDGET_DEFINITION_SEARCH_REQUEST, budgetDefinitionSearchRequest);
 		return BUDGET_SEARCH;
-
 	}
 
 	@PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public @ResponseBody String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-			@Valid @ModelAttribute final BudgetDefinitionSearchRequest budgetDefinitionSearchRequest) {
+	@ResponseBody
+	public String ajaxSearch(@Valid @ModelAttribute BudgetDefinitionSearchRequest budgetDefinitionSearchRequest) {
 		final List<Budget> searchResultList = budgetDefinitionService.search(budgetDefinitionSearchRequest);
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
 	}
@@ -194,22 +191,22 @@ public class BudgetDefinitionController {
 	}
 
 	@GetMapping(value = "/parents", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getParents(@RequestParam("financialYearId") @SafeHtml final String financialYearId,
-			@RequestParam("isBeRe") @SafeHtml final String isBere) {
+	@ResponseBody
+	public String getParents(@RequestParam String isBere, @RequestParam String financialYearId) {
 		final List<Budget> budgetList = budgetDefinitionService.parentList(isBere, Long.parseLong(financialYearId));
 		return toSearchResultJson(budgetList).toString();
 	}
 
 	@GetMapping(value = "/referencebudget", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getRefencebudget(
-			@RequestParam("financialYearId") @SafeHtml final String financialYearId) {
-		final List<Budget> referenceBudgetList = budgetDefinitionService
-				.referenceBudgetList(Long.parseLong(financialYearId));
+	@ResponseBody
+	public String getReferenceBudget(@RequestParam String financialYearId) {
+		final List<Budget> referenceBudgetList = budgetDefinitionService.referenceBudgetList(Long.parseLong(financialYearId));
 		return toSearchResultJson(referenceBudgetList).toString();
 	}
 
 	@GetMapping(value = "/ajaxgetdropdownsformodify", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getReferenceBudgetForModify(@RequestParam("budgetId") @SafeHtml final String budgetId) {
+	@ResponseBody
+	public String getDropdownsForModify(@RequestParam String budgetId) {
 		final Budget budget = budgetDefinitionService.findOne(Long.parseLong(budgetId));
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(budget)).append("}").toString();
 	}

@@ -49,7 +49,6 @@ package org.egov.portal.entity;
 
 import org.egov.infra.admin.master.entity.User;
 import org.egov.infra.persistence.entity.AbstractAuditable;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -76,13 +75,10 @@ public class FirmUser extends AbstractAuditable {
     @GeneratedValue(generator = SEQ_EGP_FIRMUSERS, strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @SafeHtml
     private String mobileNumber;
 
-    @SafeHtml
     private String emailId;
 
-    @SafeHtml
     @NotNull
     private String name;
 

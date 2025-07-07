@@ -51,7 +51,6 @@ package org.egov.infra.microservice.models;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -69,7 +68,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode
 public class PaymentWorkflow {
-    @SafeHtml
     @NotNull
     @Length(min = 1)
     private String paymentId;
@@ -78,11 +76,9 @@ public class PaymentWorkflow {
     // TODO: Migrate from Struts/XWork: private PaymentAction action;
     private String action;
 
-    @SafeHtml
     @NotNull
     @Length(min = 1)
     private String tenantId;
-    @SafeHtml
     private String reason;
     private JsonNode additionalDetails;
 

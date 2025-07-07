@@ -200,12 +200,7 @@ public class FinancialsUtil {
      */
 
     @Transactional
-    public void updateCheque_DD_Card_Deposit(final Map<String, Object> instrumentMap) {
-        contraService.updateCheque_DD_Card_Deposit(instrumentMap);
-    }
-
-    @Transactional
-    public void updateCheque_DD_Card_Deposit(final Map instrumentMap, final CVoucherHeader cVoucherHeader,
+    public void updateCheque_DD_Card_Deposit(final Map<String, Object> instrumentMap, final CVoucherHeader cVoucherHeader,
             final InstrumentHeader instrumentHeader, final Bankaccount bankaccount) {
         contraService.updateCheque_DD_Card_Deposit(instrumentMap, cVoucherHeader, instrumentHeader, bankaccount);
     }
@@ -220,23 +215,6 @@ public class FinancialsUtil {
     @Transactional
     public void updateCheque_DD_Card_Deposit_Receipt(final Map<String, Object> instrumentMap) {
         contraService.updateCheque_DD_Card_Deposit_Receipt(instrumentMap);
-    }
-
-    /**
-     * Update Cash Instrument Status after creating Pay in Slip Voucher
-     *
-     * @param Map containing Instrument and PayInSlip voucher information
-     */
-    @Deprecated
-    @Transactional
-    public void updateCashDeposit(final Map<String, Object> instrumentMap) {
-        contraService.updateCashDeposit(instrumentMap);
-    }
-
-    @Transactional
-    public void updateCashDeposit(final Map<String, Object> instrumentMap, final CVoucherHeader cVoucherHeader,
-            final InstrumentHeader instrumentHeader, final Bankaccount bankaccount) {
-        contraService.updateCashDeposit(instrumentMap, cVoucherHeader, instrumentHeader, bankaccount);
     }
 
     /**
@@ -321,6 +299,12 @@ public class FinancialsUtil {
 
     public void setInstrumentHeaderService(final PersistenceService<InstrumentHeader, Long> instrumentHeaderService) {
         this.instrumentHeaderService = instrumentHeaderService;
+    }
+
+    @Transactional
+    public void updateCashDeposit(final Map<String, Object> instrumentMap, final CVoucherHeader cVoucherHeader,
+            final InstrumentHeader instrumentHeader, final Bankaccount bankaccount) {
+        contraService.updateCashDeposit(instrumentMap, cVoucherHeader, instrumentHeader, bankaccount);
     }
 
 }

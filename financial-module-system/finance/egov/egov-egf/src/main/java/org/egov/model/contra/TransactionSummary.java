@@ -73,7 +73,6 @@ import org.egov.commons.Fund;
 import org.egov.commons.Fundsource;
 import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * @author msahoo
@@ -114,7 +113,6 @@ public class TransactionSummary extends AbstractAuditable {
     private CChartOfAccounts glcodeid;
 
     @Transient
-    @SafeHtml
     private String glcodeDetail;
 
     @NotNull
@@ -128,9 +126,7 @@ public class TransactionSummary extends AbstractAuditable {
     private Integer accountdetailkey;
 
     @Length(max = 300)
-    @SafeHtml
     private String narration;
-    @SafeHtml
     private String departmentCode;
 
     @ManyToOne

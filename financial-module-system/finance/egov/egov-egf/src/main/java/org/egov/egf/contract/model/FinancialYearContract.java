@@ -49,12 +49,10 @@ package org.egov.egf.contract.model;
 
 import java.util.Date;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class FinancialYearContract {
 
     private Long id;
-    @SafeHtml
     private String finYearRange;
     private Date startingDate;
     private Date endingDate;

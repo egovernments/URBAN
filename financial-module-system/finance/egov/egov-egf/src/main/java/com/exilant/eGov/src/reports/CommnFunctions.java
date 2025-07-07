@@ -55,8 +55,6 @@ package com.exilant.eGov.src.reports;
 
 import com.exilant.exility.common.TaskFailedException;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 import org.apache.log4j.Logger;
 import org.egov.infstr.services.PersistenceService;
 import org.hibernate.HibernateException;

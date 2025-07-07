@@ -64,11 +64,11 @@ public class CollectionSummaryHeadWiseReport {
     private Double cardAmount;
     private String cardCount;
 
-    private Double totalCashRebateAmount = new Double(0.0);
-    private Double totalChequeddRebateAmount = new Double(0.0);
-    private Double totalOnlineRebateAmount = new Double(0.0);
-    private Double totalCardRebateAmount = new Double(0.0);
-    private Double totalRebateAmount = new Double(0.0);
+    private Double totalCashRebateAmount = Double.valueOf(0.0);
+    private Double totalChequeddRebateAmount = Double.valueOf(0.0);
+    private Double totalOnlineRebateAmount = Double.valueOf(0.0);
+    private Double totalCardRebateAmount = Double.valueOf(0.0);
+    private Double totalRebateAmount = Double.valueOf(0.0);
 
     public String getSource() {
         return source;

@@ -96,7 +96,6 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Unique(fields = "domainURL", enableDfltMsg = true)
@@ -113,36 +112,28 @@ public class City extends AbstractAuditable {
 	@GeneratedValue(generator = SEQ_CITY, strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	@SafeHtml
 	@NotBlank
 	private String name;
 
-	@SafeHtml
 	@NotBlank
 	private String localName;
 
 	private boolean active;
 
-	@SafeHtml
 	@NotBlank
 	private String domainURL;
 
-	@SafeHtml
 	@NotBlank
 	private String code;
 
-	@SafeHtml
 	@NotBlank
 	private String districtCode;
 
-	@SafeHtml
 	@NotBlank
 	private String districtName;
 
-	@SafeHtml
 	private String regionName;
 
-	@SafeHtml
 	private String grade;
 
 	private Float longitude;

@@ -53,7 +53,6 @@ import com.google.gson.annotations.Expose;
 import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -87,7 +86,6 @@ public class AppConfigValues extends AbstractAuditable {
     private Long id;
 
     @NotBlank
-    @SafeHtml
     @Length(max = 4000)
     @Column(name = "value")
     private String value;

@@ -47,20 +47,15 @@
  */
 package org.egov.egf.contract.model;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class AccountDetailTypeContract {
 
     private Long id;
-    @SafeHtml
     private String name;
-    @SafeHtml
     private String description;
-    @SafeHtml
     private String tableName;
 
     private Boolean active;
-    @SafeHtml
     private String fullyQualifiedName;
 
     public Long getId() {

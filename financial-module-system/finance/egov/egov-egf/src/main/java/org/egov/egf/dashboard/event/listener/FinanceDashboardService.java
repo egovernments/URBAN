@@ -57,8 +57,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 @Transactional(readOnly = true)
 @Service
 public class FinanceDashboardService {

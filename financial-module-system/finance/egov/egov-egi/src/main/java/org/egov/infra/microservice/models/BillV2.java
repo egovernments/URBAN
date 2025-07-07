@@ -55,7 +55,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -81,38 +80,30 @@ public class BillV2 {
     // TODO some of the fields are mandatory in yml, lets discuss billdetail and
     // billaccountdetail also for more clarity
 
-    @SafeHtml
     @JsonProperty("id")
     private String id = null;
 
-    @SafeHtml
     @JsonProperty("mobileNumber")
     private String mobileNumber = null;
 
-    @SafeHtml
     @JsonProperty("paidBy")
     private String paidBy = null;
 
-    @SafeHtml
     @JsonProperty("payerName")
     private String payerName = null;
 
-    @SafeHtml
     @JsonProperty("payerAddress")
     private String payerAddress = null;
 
-    @SafeHtml
     @JsonProperty("payerEmail")
     private String payerEmail = null;
 
-    @SafeHtml
     @JsonProperty("payerId")
     private String payerId = null;
 
     @JsonProperty("status")
     private StatusEnum status = null;
 
-    @SafeHtml
     @JsonProperty("reasonForCancellation")
     private String reasonForCancellation = null;
 
@@ -126,7 +117,6 @@ public class BillV2 {
     @Valid
     private List<BillDetailV2> billDetails = null;
 
-    @SafeHtml
     @JsonProperty("tenantId")
     private String tenantId = null;
 
@@ -151,11 +141,9 @@ public class BillV2 {
     @JsonProperty("totalAmount")
     private BigDecimal totalAmount = null;
 
-    @SafeHtml
     @JsonProperty("consumerCode")
     private String consumerCode = null;
 
-    @SafeHtml
     @JsonProperty("billNumber")
     private String billNumber = null;
 
@@ -165,7 +153,6 @@ public class BillV2 {
     @JsonProperty("amountPaid")
     private BigDecimal amountPaid;
 
-    @SafeHtml
     @JsonProperty("fileStoreId")
     private String fileStoreId;
 

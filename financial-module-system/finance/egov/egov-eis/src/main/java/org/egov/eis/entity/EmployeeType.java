@@ -50,7 +50,6 @@ package org.egov.eis.entity;
 import org.egov.commons.CChartOfAccounts;
 import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.egov.infra.validation.regex.Constants;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,7 +72,6 @@ public class EmployeeType extends AbstractAuditable {
 
     public static final String SEQ_EMPLOYEETYPE = "SEQ_EGEIS_EMPLOYEETYPE";
     private static final long serialVersionUID = 747671541670667791L;
-    @SafeHtml
     @Column(name = "name", unique = true)
     @Pattern(regexp = Constants.ALPHABETS)
     public String name;

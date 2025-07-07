@@ -56,7 +56,6 @@ import org.egov.common.entity.UOM;
 import org.egov.commons.service.UOMCategoryService;
 import org.egov.commons.service.UOMService;
 import org.egov.commons.web.adaptor.UOMJsonAdaptor;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -151,21 +150,18 @@ public class UOMController {
     }
 
     @GetMapping(value = "/search/{mode}")
-    public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
+    public String search(@PathVariable("mode") String mode, Model model) {
         final UOM uom = new UOM();
         model.addAttribute("unitOfMeasurement", uomService.findAll());
         prepareNewForm(model);
         model.addAttribute("UOM", uom);
         return UOM_SEARCH;
-
     }
 
     @PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
-    public @ResponseBody String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-           @Valid @ModelAttribute final UOM uom) {
+    public @ResponseBody String ajaxsearch(@PathVariable("mode") String mode, Model model, @Valid @ModelAttribute UOM uom, BindingResult errors) {
         final List<UOM> searchResultList = uomService.search(uom);
-        return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}")
-                .toString();
+        return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
     }
 
     public Object toSearchResultJson(final Object object) {

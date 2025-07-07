@@ -64,7 +64,6 @@ import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.egov.infra.persistence.validator.annotation.DateFormat;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "fiscalperiod")
@@ -84,7 +83,6 @@ public class CFiscalPeriod extends AbstractAuditable {
 
     @Length(min = 1, max = 25)
     @NotNull
-    @SafeHtml
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

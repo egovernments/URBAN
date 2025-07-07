@@ -47,12 +47,10 @@
  */
 package org.egov.egf.contract.model;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class FunctionaryContract {
 
     private Long id;
-    @SafeHtml
     private String code;
 
     public Long getId() {

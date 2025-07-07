@@ -64,7 +64,6 @@ import org.egov.commons.CFiscalPeriod;
 import org.egov.commons.contracts.CFinanancialYearSearchRequest;
 import org.egov.commons.service.CFinancialYearService;
 import org.egov.egf.web.adaptor.CFinancialYearJsonAdaptor;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -209,19 +208,17 @@ public class CFinancialYearController {
 		return CFINANCIALYEAR_RESULT;
 	}
 
-	@RequestMapping(value = "/search/{mode}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
-		final CFinanancialYearSearchRequest cFinanancialYearSearchRequest = new CFinanancialYearSearchRequest();
+	@PostMapping(value = "/search")
+	public String search(@ModelAttribute final CFinanancialYearSearchRequest cFinanancialYearSearchRequest, final Model model) {
 		model.addAttribute("financialYears", cFinancialYearService.findAll());
 		prepareNewForm(model);
 		model.addAttribute(C_FINANCIAL_YEAR_SEARCH_REQUEST, cFinanancialYearSearchRequest);
 		return CFINANCIALYEAR_SEARCH;
-
 	}
 
 	@PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public @ResponseBody String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-			@Valid @ModelAttribute final CFinanancialYearSearchRequest cFinanancialYearSearchRequest) {
+	@ResponseBody
+	public String ajaxSearch(@Valid @ModelAttribute final CFinanancialYearSearchRequest cFinanancialYearSearchRequest) {
 		final List<CFinancialYear> searchResultList = cFinancialYearService.search(cFinanancialYearSearchRequest);
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
 	}

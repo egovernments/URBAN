@@ -74,7 +74,6 @@ import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.egov.infra.persistence.validator.annotation.OptionalPattern;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "BANKACCOUNT")
@@ -106,21 +105,17 @@ public class Bankaccount extends AbstractAuditable implements java.io.Serializab
 
     @NotNull
     @Length(max = 20)
-    @SafeHtml
     @OptionalPattern(regex = CommonsConstants.numericwithoutspecialchar, message = "Special Characters are not allowed in Accountnumber")
     private String accountnumber;
 
-    @SafeHtml
     @NotNull
     private String accounttype;
 
-    @SafeHtml
     private String narration;
 
     @NotNull
     private Boolean isactive;
 
-    @SafeHtml
     private String payTo;
 
     @NotNull

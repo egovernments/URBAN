@@ -61,7 +61,6 @@ import org.egov.infra.admin.master.service.AppConfigService;
 import org.egov.infra.admin.master.service.ModuleService;
 import org.egov.infra.web.contract.response.AppConfigJsonAdapter;
 import org.egov.infra.web.support.ui.DataTable;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,7 +83,7 @@ public class ViewAppConfigController {
 
     @GetMapping(value = "/formodule/{moduleName}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<AppConfig> getAppConfigsForModule(@PathVariable @SafeHtml String moduleName) {
+    public List<AppConfig> getAllAppConfigByModuleName(@PathVariable("moduleName") String moduleName) {
         return appConfigService.getAllAppConfigByModuleName(moduleName);
     }
 

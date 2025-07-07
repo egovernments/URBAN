@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class TaxAndPayment {
-    @SafeHtml
     @NotNull
     private String businessService;
     

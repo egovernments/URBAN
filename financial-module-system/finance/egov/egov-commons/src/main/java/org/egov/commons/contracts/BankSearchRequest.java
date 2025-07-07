@@ -50,7 +50,6 @@ package org.egov.commons.contracts;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * 
@@ -60,16 +59,13 @@ import org.hibernate.validator.constraints.SafeHtml;
 public class BankSearchRequest {
 
 	@Length(max = 50)
-	@SafeHtml
 	private String code;
 
 	@Length(max = 100)
-	@SafeHtml
 	private String name;
 
 	@JsonIgnore
 	@Length(max = 250)
-	@SafeHtml
 	private String narration;
 
 	@JsonIgnore

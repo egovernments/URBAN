@@ -51,7 +51,6 @@ import org.egov.commons.CChartOfAccounts;
 import org.egov.commons.CFunction;
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -102,7 +101,6 @@ public class EgBilldetails extends AbstractPersistable<Integer> implements java.
     private Date lastupdatedtime;
 
     @Length(max = 250)
-    @SafeHtml
     private String narration;
 
     @Transient

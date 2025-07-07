@@ -18,7 +18,6 @@ import org.egov.infra.microservice.models.BankAccountServiceMapping;
 import org.egov.infra.microservice.utils.MicroserviceUtils;
 import org.egov.infstr.services.PersistenceService;
 import org.egov.infstr.utils.EgovMasterDataCaching;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -78,8 +77,7 @@ public class ChequeDishonouredReportController {
 	}
 
     @GetMapping(value = "/service/{accountNumber}")
-    public @ResponseBody ResponseEntity getServiceByAccountNumber(
-            @PathVariable(name = "accountNumber", required = true) @SafeHtml String accountNumber) {
+    public @ResponseBody ResponseEntity getServiceByAccountNumber(@PathVariable("accountNumber") String accountNumber) {
         try {
             List<BankAccountServiceMapping> bankAcntServiceMappings = microserviceUtils
                     .getBankAcntServiceMappings(accountNumber, null);

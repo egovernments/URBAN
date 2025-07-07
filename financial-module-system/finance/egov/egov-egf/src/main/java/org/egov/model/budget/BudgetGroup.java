@@ -54,7 +54,6 @@ import org.egov.infra.persistence.validator.annotation.Unique;
 import org.egov.utils.BudgetAccountType;
 import org.egov.utils.BudgetingType;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -82,12 +81,10 @@ public class BudgetGroup extends AbstractAuditable {
     @Id
     @GeneratedValue(generator = SEQ_BUDGETGROUP, strategy = GenerationType.SEQUENCE)
     private Long id;
-    @SafeHtml
     @Required(message = "Name should not be empty")
     @Length(max = 250)
     private String name;
 
-    @SafeHtml
     @Length(max = 250, message = "Max 250 characters are allowed for description")
     private String description;
 

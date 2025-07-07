@@ -56,7 +56,6 @@ import org.egov.commons.Bank;
 import org.egov.commons.contracts.BankSearchRequest;
 import org.egov.egf.commons.bank.service.CreateBankService;
 import org.egov.egf.web.controller.bank.adaptor.BankJsonAdaptor;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -114,16 +113,14 @@ public class BankController {
 	}
 
 	@PostMapping(value = "/search/{mode}")
-	public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
+	public String search(@PathVariable("mode") String mode, Model model) {
 		final BankSearchRequest bankSearchRequest = new BankSearchRequest();
 		model.addAttribute(BANK_SEARCH_REQUEST, bankSearchRequest);
 		return "bank-search";
-
 	}
 
 	@GetMapping(value = "/success/{id}/{mode}")
-	public String success(@PathVariable("id") final Integer id, @PathVariable("mode") @SafeHtml final String mode,
-			final Model model) {
+	public String success(@PathVariable("id") Integer id, @PathVariable("mode") String mode, final Model model) {
 		final Bank bank = createBankService.getById(id);
 		model.addAttribute(BANK, bank);
 		model.addAttribute("mode", mode);
@@ -152,8 +149,7 @@ public class BankController {
 
 	@PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
-	public String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-			@Valid @ModelAttribute final BankSearchRequest bankSearchRequest) {
+	public String ajaxSearch(@PathVariable("mode") String mode, @Valid @ModelAttribute final BankSearchRequest bankSearchRequest) {
 		final List<Bank> searchResultList = createBankService.search(bankSearchRequest);
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
 	}

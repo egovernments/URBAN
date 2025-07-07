@@ -49,7 +49,7 @@ package org.egov.infstr.models;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 
@@ -87,20 +87,19 @@ public class EnumUserType implements UserType, ParameterizedType {
 		return clazz;
 	}
 
-	public Object nullSafeGet(ResultSet resultSet, String[] names, Object owner) throws HibernateException, SQLException {
-		String name = resultSet.getString(names[0]);
-		Object result = null;
-		if (!resultSet.wasNull()) {
-			result = Enum.valueOf(clazz, name);
+	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
+		String name = rs.getString(names[0]);
+		if (rs.wasNull()) {
+			return null;
 		}
-		return result;
+		return Enum.valueOf(clazz, name);
 	}
 
-	public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
-		if (null == value) {
-			preparedStatement.setNull(index, Types.VARCHAR);
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
+		if (value == null) {
+			st.setNull(index, Types.VARCHAR);
 		} else {
-			preparedStatement.setString(index, value.toString());
+			st.setString(index, value.toString());
 		}
 	}
 
@@ -134,17 +133,5 @@ public class EnumUserType implements UserType, ParameterizedType {
 		if (null == x || null == y)
 			return false;
 		return x.equals(y);
-	}
-
-	@Override
-	public Object nullSafeGet(ResultSet arg0, String[] arg1, SessionImplementor arg2, Object arg3) throws HibernateException, SQLException {
-
-		return null;
-	}
-
-	@Override
-	public void nullSafeSet(PreparedStatement arg0, Object arg1, int arg2, SessionImplementor arg3) throws HibernateException, SQLException {
-
-
 	}
 }

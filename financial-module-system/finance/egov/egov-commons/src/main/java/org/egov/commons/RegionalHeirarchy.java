@@ -53,7 +53,6 @@ import org.egov.infra.persistence.validator.annotation.Unique;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -83,7 +82,6 @@ public class RegionalHeirarchy extends AbstractAuditable {
     private Long id;
     
     @Length(max = 512)
-    @SafeHtml
     @NotNull
     private String name;
     

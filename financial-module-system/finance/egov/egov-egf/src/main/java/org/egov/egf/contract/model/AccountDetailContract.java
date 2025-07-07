@@ -52,7 +52,6 @@ import java.util.List;
 
 import org.egov.commons.CGeneralLedger;
 import org.egov.commons.CGeneralLedgerDetail;
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class AccountDetailContract {
 
@@ -62,7 +61,6 @@ public class AccountDetailContract {
 
     private Long id;
     private Long orderId;
-    @SafeHtml
     private String glcode;
     private Double debitAmount;
     private Double creditAmount;

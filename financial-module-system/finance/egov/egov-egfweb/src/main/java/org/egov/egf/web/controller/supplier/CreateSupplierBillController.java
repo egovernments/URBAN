@@ -96,7 +96,6 @@ import org.egov.model.bills.EgBilldetails;
 import org.egov.model.bills.EgBillregister;
 import org.egov.model.masters.PurchaseOrder;
 import org.egov.utils.FinancialConstants;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.HTTPUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -217,8 +216,8 @@ public class CreateSupplierBillController extends BaseBillController {
 
 	@PostMapping(value = "/create")
 	public String create(@Valid @ModelAttribute("egBillregister") final EgBillregister egBillregister,
-			final Model model, final BindingResult resultBinder, final HttpServletRequest request,
-			@RequestParam @SafeHtml final String workFlowAction) throws IOException, ParseException {
+			final BindingResult resultBinder, final Model model, final HttpServletRequest request) {
+		String workFlowAction = request.getParameter("workFlowAction");
 		if (FinancialConstants.BUTTONFORWARD.equalsIgnoreCase(workFlowAction) && !commonsUtil
 				.isValidApprover(egBillregister, Long.valueOf(request.getParameter(APPROVAL_POSITION)))) {
 			populateDataOnErrors(egBillregister, model, request);
@@ -236,8 +235,12 @@ public class CreateSupplierBillController extends BaseBillController {
 		validateBillNumber(egBillregister, resultBinder);
 		removeEmptyRows(egBillregister);
 		validateLedgerAndSubledger(egBillregister, resultBinder);
-		if (workFlowAction.equals(FinancialConstants.CREATEANDAPPROVE))
-			validateCuttofDate(egBillregister, resultBinder);
+		try {
+			if (workFlowAction.equals(FinancialConstants.CREATEANDAPPROVE))
+				validateCuttofDate(egBillregister, resultBinder);
+		} catch (ParseException e) {
+			resultBinder.reject("msg.cutoff.date.parse.error", new String[] {}, null);
+		}
 		if (resultBinder.hasErrors()) {
 			return populateDataOnErrors(egBillregister, model, request);
 		} else {
@@ -412,7 +415,8 @@ public class CreateSupplierBillController extends BaseBillController {
 	}
 
 	@GetMapping(value = "/success")
-	public String showSuccessPage(@RequestParam("billNumber") @SafeHtml final String billNumber, final Model model,
+	public String success(@RequestParam("approverDetails") String approverDetails, 
+			@RequestParam("billNumber") String billNumber, final Model model,
 			final HttpServletRequest request) {
 		final String[] keyNameArray = request.getParameter(APPROVER_DETAILS).split(",");
 		Long id = 0L;

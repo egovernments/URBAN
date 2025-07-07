@@ -63,7 +63,6 @@ import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -108,16 +107,13 @@ public class User extends AbstractAuditable {
 
     private String salutation;
 
-    @SafeHtml
     @Length(min = 2, max = 64)
     private String guardian;
 
-    @SafeHtml
     @Length(min = 2, max = 64)
     private String guardianRelation;
 
     @NotNull
-    @SafeHtml
     @Length(min = 2, max = 100)
     @Audited
     private String name;
@@ -126,25 +122,20 @@ public class User extends AbstractAuditable {
     private Gender gender;
 
     @Pattern(regexp = Constants.MOBILE_NUM)
-    @SafeHtml
     @Length(max = 15)
     @Audited
     private String mobileNumber;
 
     @Email(regexp = Constants.EMAIL)
-    @SafeHtml
     @Length(max = 128)
     @Audited
     private String emailId;
 
-    @SafeHtml
     private String altContactNumber;
 
-    @SafeHtml
     @Length(max = 10)
     private String pan;
 
-    @SafeHtml
     @Length(max = 20)
     private String aadhaarNumber;
 

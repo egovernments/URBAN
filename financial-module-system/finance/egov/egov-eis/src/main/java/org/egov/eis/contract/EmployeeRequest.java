@@ -51,7 +51,6 @@ package org.egov.eis.contract;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -60,7 +59,6 @@ public class EmployeeRequest {
 
     @JsonProperty("RequestInfo")
     private RequestInfo requestInfo;
-    @SafeHtml
     private String code;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -70,7 +68,6 @@ public class EmployeeRequest {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date toDate;
-    @SafeHtml
     private String positionName;
 
     private Boolean isPositionChanged;

@@ -50,8 +50,6 @@ package com.exilant.exility.common;
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -71,7 +71,6 @@ import org.egov.infra.persistence.validator.annotation.OptionalPattern;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.egov.infra.validation.regex.Constants;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -96,46 +95,36 @@ public class Bankbranch extends AbstractPersistable<Integer> {
 
     @NotNull
     @Length(max = 50)
-    @SafeHtml
     private String branchcode;
 
     @NotNull
     @Length(max = 50)
-    @SafeHtml
     private String branchname;
 
     @NotNull
     @Length(max = 50)
-    @SafeHtml
     private String branchaddress1;
 
-    @SafeHtml
     @Length(max = 50)
     private String branchaddress2;
 
-    @SafeHtml
     @Length(max = 50)
     private String branchcity;
 
-    @SafeHtml
     @Length(max = 50)
     private String branchstate;
 
-    @SafeHtml
     @Length(max = 50)
     @OptionalPattern(regex = CommonsConstants.alphaNumericwithoutspecialchar, message = "Special Characters are not allowed in EPF No")
     private String branchpin;
 
-    @SafeHtml
     @Length(max = 15)
     @OptionalPattern(regex = Constants.MOBILE_NUM, message = "Please enter valid mobile number")
     private String branchphone;
 
-    @SafeHtml
     @Length(max = 15)
     private String branchfax;
 
-    @SafeHtml
     @Length(max = 50)
     private String contactperson;
 
@@ -143,12 +132,10 @@ public class Bankbranch extends AbstractPersistable<Integer> {
     private Boolean isactive;
 
     @Length(max = 250)
-    @SafeHtml
     private String narration;
 
     @Length(max = 50)
     @Column(name = "micr")
-    @SafeHtml
     private String branchMICR;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bankbranch", targetEntity = Bankaccount.class)

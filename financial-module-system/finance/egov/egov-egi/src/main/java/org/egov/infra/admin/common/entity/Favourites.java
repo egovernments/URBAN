@@ -50,7 +50,6 @@ package org.egov.infra.admin.common.entity;
 
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -77,11 +76,9 @@ public class Favourites extends AbstractPersistable<Long> {
 
     private Integer actionId;
 
-    @SafeHtml
     @NotBlank
     private String name;
 
-    @SafeHtml
     @NotBlank
     private String contextRoot;
 

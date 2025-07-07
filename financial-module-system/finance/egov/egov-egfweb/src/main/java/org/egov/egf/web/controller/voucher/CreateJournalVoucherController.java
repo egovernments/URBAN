@@ -59,7 +59,6 @@ import org.egov.eis.web.contract.WorkflowContainer;
 import org.egov.infra.admin.master.service.AppConfigValueService;
 import org.egov.infra.validation.exception.ValidationException;
 import org.egov.utils.FinancialConstants;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -125,9 +124,9 @@ public class CreateJournalVoucherController extends BaseVoucherController {
     }
 
     @PostMapping(value = "/create")
-    public String create(@Valid @ModelAttribute("voucherHeader") final CVoucherHeader voucherHeader, final Model model,
-            final BindingResult resultBinder, final HttpServletRequest request, @RequestParam @SafeHtml final String workFlowAction) {
-
+    public String create(@Valid @ModelAttribute("voucherHeader") final CVoucherHeader voucherHeader, 
+                        final BindingResult resultBinder, final Model model, final HttpServletRequest request) {
+        String workFlowAction = request.getParameter("workFlowAction");
         voucherHeader.setType(FinancialConstants.STANDARD_VOUCHER_TYPE_JOURNAL);
         voucherHeader.setEffectiveDate(voucherHeader.getVoucherDate());
 
@@ -147,7 +146,7 @@ public class CreateJournalVoucherController extends BaseVoucherController {
             Long approvalPosition = 0l;
             String approvalComment = "";
             if (request.getParameter("approvalComment") != null)
-                approvalComment = request.getParameter("approvalComent");
+                approvalComment = request.getParameter("approvalComment");
             if (request.getParameter(APPROVAL_POSITION) != null && !request.getParameter(APPROVAL_POSITION).isEmpty())
                 approvalPosition = Long.valueOf(request.getParameter(APPROVAL_POSITION));
             CVoucherHeader savedVoucherHeader;
@@ -175,7 +174,7 @@ public class CreateJournalVoucherController extends BaseVoucherController {
     }
 
     @GetMapping(value = "/success")
-    public String showSuccessPage(@RequestParam("voucherNumber") @SafeHtml final String voucherNumber, final Model model,
+    public String success(@RequestParam("voucherNumber") final String voucherNumber, final Model model,
             final HttpServletRequest request) {
         final String workFlowAction = request.getParameter("workFlowAction");
         final String[] keyNameArray = request.getParameter("approverDetails").split(",");

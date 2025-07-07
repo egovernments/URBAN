@@ -261,19 +261,19 @@ public class CollectionReportHeadWiseService {
     public void rebateTotal(CollectionSummaryHeadWiseReport collectionSummaryHeadWiseReport,
             List<CollectionSummaryHeadWiseReport> rebateResultList) {
         for (final CollectionSummaryHeadWiseReport rebate : rebateResultList) {
-            if (!rebate.getCashAmount().equals(new Double(0.0)))
+            if (!rebate.getCashAmount().equals(Double.valueOf(0.0)))
                 collectionSummaryHeadWiseReport.setTotalCashRebateAmount(
                         Double.sum(collectionSummaryHeadWiseReport.getTotalCashRebateAmount(), rebate.getCashAmount()));
-            if (!rebate.getChequeddAmount().equals(new Double(0.0)))
+            if (!rebate.getChequeddAmount().equals(Double.valueOf(0.0)))
                 collectionSummaryHeadWiseReport.setTotalChequeddRebateAmount(
                         Double.sum(collectionSummaryHeadWiseReport.getTotalChequeddRebateAmount(), rebate.getChequeddAmount()));
-            if (!rebate.getCardAmount().equals(new Double(0.0)))
+            if (!rebate.getCardAmount().equals(Double.valueOf(0.0)))
                 collectionSummaryHeadWiseReport.setTotalCardRebateAmount(
                         Double.sum(collectionSummaryHeadWiseReport.getTotalCardRebateAmount(), rebate.getCardAmount()));
-            if (!rebate.getOnlineAmount().equals(new Double(0.0)))
+            if (!rebate.getOnlineAmount().equals(Double.valueOf(0.0)))
                 collectionSummaryHeadWiseReport.setTotalOnlineRebateAmount(
                         Double.sum(collectionSummaryHeadWiseReport.getTotalOnlineRebateAmount(), rebate.getOnlineAmount()));
-            if (!rebate.getTotalAmount().equals(new Double(0.0)))
+            if (!rebate.getTotalAmount().equals(Double.valueOf(0.0)))
                 collectionSummaryHeadWiseReport.setTotalRebateAmount(
                         Double.sum(collectionSummaryHeadWiseReport.getTotalRebateAmount(), rebate.getTotalAmount()));
         }

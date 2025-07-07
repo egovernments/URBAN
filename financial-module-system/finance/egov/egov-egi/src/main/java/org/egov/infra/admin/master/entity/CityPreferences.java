@@ -54,7 +54,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -88,47 +87,36 @@ public class CityPreferences extends AbstractAuditable {
     private FileStoreMapper municipalityLogo;
 
     @NotNull
-    @SafeHtml
     @Length(max = 50)
     private String municipalityName;
 
-    @SafeHtml
     @Length(max = 20)
     private String municipalityContactNo;
 
-    @SafeHtml
     @Length(max = 200)
     private String municipalityAddress;
 
-    @SafeHtml
     @Length(max = 50)
     private String municipalityContactEmail;
 
-    @SafeHtml
     @Length(max = 100)
     private String municipalityGisLocation;
 
-    @SafeHtml
     @Length(max = 20)
     private String municipalityCallCenterNo;
 
-    @SafeHtml
     @Length(max = 100)
     private String municipalityFacebookLink;
 
-    @SafeHtml
     @Length(max = 100)
     private String municipalityTwitterLink;
 
-    @SafeHtml
     @Length(max = 64)
     private String recaptchaPK;
 
-    @SafeHtml
     @Length(max = 64)
     private String recaptchaPub;
 
-    @SafeHtml
     @NotBlank
     @Length(max = 50)
     private String googleApiKey;

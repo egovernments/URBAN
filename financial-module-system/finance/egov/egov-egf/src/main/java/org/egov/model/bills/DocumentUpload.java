@@ -49,7 +49,6 @@ package org.egov.model.bills;
 
 import org.egov.infra.filestore.entity.FileStoreMapper;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -82,7 +81,6 @@ public class DocumentUpload implements Serializable {
     private Long objectId;
 
     @NotNull
-    @SafeHtml
     @Length(max = 128)
     private String objectType;
 

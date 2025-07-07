@@ -59,7 +59,6 @@ import org.egov.egf.web.adaptor.SupplierJsonAdaptor;
 import org.egov.model.masters.Supplier;
 import org.egov.model.masters.SupplierSearchRequest;
 import org.egov.utils.FinancialConstants;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -164,18 +163,15 @@ public class CreateSupplierController {
 	}
 
 	@PostMapping(value = "/search/{mode}")
-	public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
-		final SupplierSearchRequest supplierSearchRequest = new SupplierSearchRequest();
+	public String search(@ModelAttribute SupplierSearchRequest supplierSearchRequest, Model model) {
 		prepareNewForm(model);
 		model.addAttribute(STR_SUPPLIER_SEARCH_REQUEST, supplierSearchRequest);
 		return SEARCH;
-
 	}
 
 	@PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
-	public String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-			@Valid @ModelAttribute final SupplierSearchRequest supplierSearchRequest) {
+	public String ajaxSearch(@Valid @ModelAttribute SupplierSearchRequest supplierSearchRequest) {
 		final List<Supplier> searchResultList = supplierService.search(supplierSearchRequest);
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
 	}
@@ -187,8 +183,7 @@ public class CreateSupplierController {
 	}
 
 	@GetMapping(value = "/result/{id}/{mode}")
-	public String result(@PathVariable("id") final Long id, @PathVariable("mode") @SafeHtml final String mode,
-			final Model model) {
+	public String result(@PathVariable("id") Long id, @PathVariable("mode") String mode, Model model) {
 		final Supplier supplier = supplierService.getById(id);
 		model.addAttribute(STR_SUPPLIER, supplier);
 		model.addAttribute("mode", mode);

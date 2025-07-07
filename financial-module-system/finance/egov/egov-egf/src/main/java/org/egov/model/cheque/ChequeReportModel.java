@@ -5,20 +5,15 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import org.egov.infra.persistence.validator.annotation.DateFormat;
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class ChequeReportModel {
 
 	private int id;
 	private int fundId;
-	@SafeHtml
 	private String bankBranchId;
 	private int bankAccountId;
-	@SafeHtml
 	private String bankBranch;
-	@SafeHtml
 	private String bankAccountNumber;
-	@SafeHtml
 	private String surrenderReason;
 	@NotNull
 	@DateFormat
@@ -26,13 +21,10 @@ public class ChequeReportModel {
 	@NotNull
 	@DateFormat
 	private Date toDate;
-	@SafeHtml
 	private String chequeNumber;
 	@DateFormat
 	private Date chequeDate;
-	@SafeHtml
 	private String payTo;
-	@SafeHtml
 	private String voucherNumber;
 	@DateFormat
 	private Date voucherDate;

@@ -55,7 +55,6 @@ import org.egov.commons.CFunction;
 import org.egov.commons.Functionary;
 import org.egov.commons.Fund;
 import org.egov.commons.Fundsource;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * @author manoj
@@ -69,7 +68,6 @@ public class TransactionSummaryDto {
     private Fundsource fundsource;
 
     private Fund fund;
-    @SafeHtml
     private String departmentcode;
 
     private Functionary functionaryid;

@@ -66,7 +66,6 @@ import org.egov.infra.microservice.utils.MicroserviceUtils;
 import org.egov.infstr.services.PersistenceService;
 import org.egov.infstr.utils.EgovMasterDataCaching;
 import org.egov.model.remittance.RemittanceReportModel;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,8 +183,7 @@ public class RemittanceReportController {
 
 	@SuppressWarnings("rawtypes")
 	@GetMapping(value = "/service/{accountNumber}")
-	public @ResponseBody ResponseEntity getServiceByAccountNumber(
-			@PathVariable(name = "accountNumber", required = true) @SafeHtml String accountNumber) {
+	public @ResponseBody ResponseEntity getServiceByAccountNumber(@PathVariable("accountNumber") String accountNumber) {
 		try {
 			List<BankAccountServiceMapping> bankAcntServiceMappings = microserviceUtils
 					.getBankAcntServiceMappings(accountNumber, null);

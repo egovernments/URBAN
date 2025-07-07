@@ -47,7 +47,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -55,26 +54,21 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Demand {
 
-    @SafeHtml
     @JsonProperty("id")
     private String id;
 
-    @SafeHtml
     @NotNull
     @JsonProperty("tenantId")
     private String tenantId;
 
-    @SafeHtml
     @NotNull
     @JsonProperty("consumerCode")
     private String consumerCode;
 
-    @SafeHtml
     @NotNull
     @JsonProperty("consumerType")
     private String consumerType;
 
-    @SafeHtml
     @NotNull
     @JsonProperty("businessService")
     private String businessService;

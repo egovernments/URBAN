@@ -60,7 +60,6 @@ import org.egov.commons.contracts.AccountDetailTypeSearchRequest;
 import org.egov.commons.service.AccountdetailtypeService;
 import org.egov.egf.web.adaptor.AccountdetailtypeJsonAdaptor;
 import org.egov.infra.security.utils.SecurityUtils;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -164,8 +163,7 @@ public class AccountdetailtypeController {
 	}
 
 	@GetMapping(value = "/result/{id}/{mode}")
-	public String result(@PathVariable("id") final Integer id, @PathVariable("mode") @SafeHtml final String mode,
-			Model model) {
+	public String result(@PathVariable("id") Integer id, @PathVariable("mode") String mode, Model model) {
 		Accountdetailtype accountdetailtype = accountdetailtypeService.findOne(id);
 		model.addAttribute(ACCOUNTDETAILTYPE, accountdetailtype);
 		model.addAttribute("mode", mode);
@@ -173,19 +171,16 @@ public class AccountdetailtypeController {
 	}
 
 	@PostMapping(value = "/search/{mode}")
-	public String search(@PathVariable("mode") @SafeHtml final String mode, Model model) {
-		AccountDetailTypeSearchRequest accountDetailTypeSearchRequest = new AccountDetailTypeSearchRequest();
+	public String search(@ModelAttribute AccountDetailTypeSearchRequest accountDetailTypeSearchRequest, Model model) {
 		prepareNewForm(model);
 		model.addAttribute(ACCOUNTDETAILTYPE_SEARCH_REQUEST, accountDetailTypeSearchRequest);
 		return ACCOUNTDETAILTYPE_SEARCH;
-
 	}
 
 	@PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public @ResponseBody String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, Model model,
-			@Valid @ModelAttribute final AccountDetailTypeSearchRequest accountDetailTypeSearchRequest) {
-		List<Accountdetailtype> searchResultList = accountdetailtypeService.search(accountDetailTypeSearchRequest,
-				mode);
+	@ResponseBody
+	public String ajaxSearch(@Valid @ModelAttribute AccountDetailTypeSearchRequest accountDetailTypeSearchRequest, @PathVariable("mode") String mode) {
+		List<Accountdetailtype> searchResultList = accountdetailtypeService.search(accountDetailTypeSearchRequest, mode);
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
 	}
 

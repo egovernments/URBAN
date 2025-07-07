@@ -59,7 +59,6 @@ import org.egov.egf.web.adaptor.ContractorJsonAdaptor;
 import org.egov.model.masters.Contractor;
 import org.egov.model.masters.ContractorSearchRequest;
 import org.egov.utils.FinancialConstants;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
@@ -174,18 +173,16 @@ public class CreateContractorController {
 	}
 
 	@PostMapping(value = "/search/{mode}")
-	public String search(@PathVariable("mode") @SafeHtml final String mode, final Model model) {
+	public String search(@PathVariable("mode") String mode, Model model) {
 		final ContractorSearchRequest contractorSearchRequest = new ContractorSearchRequest();
 		prepareNewForm(model);
 		model.addAttribute(STR_CONTRACTOR_SEARCH_REQUEST, contractorSearchRequest);
 		return SEARCH;
-
 	}
 
 	@PostMapping(value = "/ajaxsearch/{mode}", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
-	public String ajaxsearch(@PathVariable("mode") @SafeHtml final String mode, final Model model,
-			@Valid @ModelAttribute final ContractorSearchRequest contractorSearchRequest) {
+	public String ajaxSearch(@PathVariable("mode") String mode, @Valid @ModelAttribute final ContractorSearchRequest contractorSearchRequest) {
 		final List<Contractor> searchResultList = contractorService.search(contractorSearchRequest);
 		return new StringBuilder("{ \"data\":").append(toSearchResultJson(searchResultList)).append("}").toString();
 	}
@@ -197,8 +194,7 @@ public class CreateContractorController {
 	}
 
 	@GetMapping(value = "/result/{id}/{mode}")
-	public String result(@PathVariable("id") final Long id, @PathVariable("mode") @SafeHtml final String mode,
-			final Model model) {
+	public String result(@PathVariable("id") Long id, @PathVariable("mode") String mode, final Model model) {
 		final Contractor contractor = contractorService.getById(id);
 		model.addAttribute(STR_CONTRACTOR, contractor);
 		model.addAttribute("mode", mode);

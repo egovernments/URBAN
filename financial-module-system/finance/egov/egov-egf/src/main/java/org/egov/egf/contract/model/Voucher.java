@@ -53,34 +53,24 @@ import java.util.List;
 
 import org.egov.commons.CGeneralLedger;
 import org.egov.commons.CVoucherHeader;
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class Voucher {
 
     private Long id;
-    @SafeHtml
     private String name;
-    @SafeHtml
     private String type;
-    @SafeHtml
     private String voucherNumber;
-    @SafeHtml
     private String description;
-    @SafeHtml
     private String voucherDate;
-    @SafeHtml
     private FundContract fund;
     private FunctionContract function;
     private FiscalPeriodContract fiscalPeriod;
     private EgwStatusContract status;
     private Long originalVhId;
     private Long refVhId;
-    @SafeHtml
     private String cgvn;
     private Long moduleId;
-    @SafeHtml
     private String department;
-    @SafeHtml
     private String source;
     private SchemeContract scheme;
     private SubSchemeContract subScheme;
@@ -88,11 +78,8 @@ public class Voucher {
     private FundsourceContract fundsource;
     private List<AccountDetailContract> ledgers = new ArrayList<>(0);
     // this is only to keep standard .As of now this field is not used
-    @SafeHtml
     private String tenantId;
-    @SafeHtml
     private String serviceName;
-    @SafeHtml
     private String referenceDocument;
 
     public Voucher(final CVoucherHeader vh) {

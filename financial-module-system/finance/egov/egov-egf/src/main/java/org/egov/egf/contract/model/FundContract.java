@@ -47,16 +47,12 @@
  */
 package org.egov.egf.contract.model;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class FundContract {
 
     private Long id;
-    @SafeHtml
     private String name;
-    @SafeHtml
     private String code;
-    @SafeHtml
     private String identifier;
     private Long level;
     private Long parentId;

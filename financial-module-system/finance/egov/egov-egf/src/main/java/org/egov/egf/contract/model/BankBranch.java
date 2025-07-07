@@ -2,7 +2,6 @@ package org.egov.egf.contract.model;
 
 import java.io.Serializable;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class BankBranch implements Serializable {
 
@@ -12,30 +11,18 @@ public class BankBranch implements Serializable {
     private static final long serialVersionUID = -1341882041083855081L;
     private Long id;
     private Bank bank;
-    @SafeHtml
     private String code;
-    @SafeHtml
     private String name;
-    @SafeHtml
     private String address;
-    @SafeHtml
     private String address2;
-    @SafeHtml
     private String city;
-    @SafeHtml
     private String state;
-    @SafeHtml
     private String pincode;
-    @SafeHtml
     private String phone;
-    @SafeHtml
     private String fax;
-    @SafeHtml
     private String contactPerson;
     private boolean active;
-    @SafeHtml
     private String description;
-    @SafeHtml
     private String micr;
     private AuditDetails auditDetails;
 

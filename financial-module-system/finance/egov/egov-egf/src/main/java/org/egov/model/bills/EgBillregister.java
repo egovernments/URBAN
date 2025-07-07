@@ -52,7 +52,6 @@ import org.egov.infra.admin.master.entity.User;
 import org.egov.infra.workflow.entity.StateAware;
 import org.egov.infstr.models.EgChecklists;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -77,7 +76,6 @@ public class EgBillregister extends StateAware implements java.io.Serializable {
     private Long id;
     
     @Length(min = 1,max=50)
-    @SafeHtml
     @Column(updatable = false)
     private String billnumber;
     
@@ -89,32 +87,24 @@ public class EgBillregister extends StateAware implements java.io.Serializable {
     private BigDecimal billamount;
     @Min(1)
     private BigDecimal fieldid;
-    @SafeHtml
     @Length(max = 50)
     private String billstatus;
-    @SafeHtml
     @Length(max = 1024)
     private String narration;
     @Min(1)
     private BigDecimal passedamount;
-    @SafeHtml
     @Length(max = 50)
     private String billtype;
-    @SafeHtml
     @Length(max = 20)
     private String expendituretype;
     private BigDecimal advanceadjusted;
-    @SafeHtml
     @Length(max = 20)
     private String zone;
-    @SafeHtml
     @Length(max = 50)
     private String division;
-    @SafeHtml
     @Length(max = 50)
     @Column(updatable = false)
     private String workordernumber;
-    @SafeHtml
     @Length(max = 50)
     private String billapprovalstatus;
     private Boolean isactive;
@@ -125,7 +115,6 @@ public class EgBillregister extends StateAware implements java.io.Serializable {
     private EgwStatus status;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "egBillregister", targetEntity = EgBillregistermis.class)
     private EgBillregistermis egBillregistermis;
-    @SafeHtml
     private String worksdetailId;
     @Transient
     private User approver;
@@ -149,10 +138,8 @@ public class EgBillregister extends StateAware implements java.io.Serializable {
     @Transient
     private List<DocumentUpload> documentDetail = new ArrayList<>();
     @Transient
-    @SafeHtml
     private String approvalDepartment;
     @Transient
-    @SafeHtml
     private String approvalComent;
 
     public EgBillregister() {

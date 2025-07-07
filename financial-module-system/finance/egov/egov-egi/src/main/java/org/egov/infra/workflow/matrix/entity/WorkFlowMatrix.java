@@ -49,7 +49,6 @@
 package org.egov.infra.workflow.matrix.entity;
 
 import org.egov.infra.persistence.entity.AbstractPersistable;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -76,32 +75,23 @@ public class WorkFlowMatrix extends AbstractPersistable<Long> implements Cloneab
     @GeneratedValue(generator = SEQ_WF_MATRIX, strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @SafeHtml
     private String department;
 
     @NotNull
-    @SafeHtml
     private String objectType;
 
-    @SafeHtml
     private String currentState;
 
-    @SafeHtml
     private String currentStatus;
 
-    @SafeHtml
     private String currentDesignation;
 
-    @SafeHtml
     private String additionalRule;
 
-    @SafeHtml
     private String nextState;
 
-    @SafeHtml
     private String nextDesignation;
 
-    @SafeHtml
     private String nextStatus;
 
     private BigDecimal fromQty;

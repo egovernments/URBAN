@@ -71,7 +71,6 @@ import org.egov.infra.persistence.validator.annotation.OptionalPattern;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.egov.utils.FinancialConstants;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "EGF_WORKORDER")
@@ -89,12 +88,10 @@ public class WorkOrder extends AbstractAuditable implements EntityType {
 
     @Length(max = 100, message = "Maximum of 100 Characters allowed for Order Number")
     @OptionalPattern(regex = FinancialConstants.alphaNumericwithspecialcharForContraWOAndSupplierName, message = "Special Characters are not allowed in Order Number")
-    @SafeHtml
     private String orderNumber;
 
     @Length(max = 100, message = "Maximum of 100 Characters allowed for Name")
     @OptionalPattern(regex = FinancialConstants.alphaNumericwithspecialcharForContraWOAndSupplierName, message = "Special Characters are not allowed in Name")
-    @SafeHtml
     private String name;
 
     private Date orderDate;
@@ -115,7 +112,6 @@ public class WorkOrder extends AbstractAuditable implements EntityType {
     @JoinColumn(name = "fund")
     private Fund fund;
 
-    @SafeHtml
     private String department;
 
     @ManyToOne
@@ -126,7 +122,6 @@ public class WorkOrder extends AbstractAuditable implements EntityType {
     @JoinColumn(name = "subScheme")
     private SubScheme subScheme;
 
-    @SafeHtml
     private String sanctionNumber;
 
     private Date sanctionDate;
@@ -134,7 +129,6 @@ public class WorkOrder extends AbstractAuditable implements EntityType {
     private Boolean active;
 
     @Transient
-    @SafeHtml
     private String departmentName;
 
     @Transient

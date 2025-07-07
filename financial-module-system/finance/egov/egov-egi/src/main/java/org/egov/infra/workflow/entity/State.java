@@ -76,7 +76,6 @@ import org.egov.infra.persistence.entity.AbstractAuditable;
 import org.egov.infra.utils.JsonUtils;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "EG_WF_STATES")
@@ -95,12 +94,10 @@ public class State/* <T extends OwnerGroup> */ extends AbstractAuditable {
 
 	@NotBlank
 	@Length(max = 255)
-	@SafeHtml
 	private String type;
 
 	@NotBlank
 	@Length(max = 255)
-	@SafeHtml
 	private String value;
 
 	// @ManyToOne(targetEntity = OwnerGroup.class, fetch = FetchType.LAZY)
@@ -116,23 +113,18 @@ public class State/* <T extends OwnerGroup> */ extends AbstractAuditable {
 	private Set<StateHistory> history = new HashSet<>();
 
 	@Length(max = 100)
-	@SafeHtml
 	private String senderName;
 
 	@Length(min = 1, max = 255)
-	@SafeHtml
 	private String nextAction;
 
 	@Length(max = 1024)
-	@SafeHtml
 	private String comments;
 
 	@Length(max = 100)
-	@SafeHtml
 	private String natureOfTask;
 
 	@Length(max = 1024)
-	@SafeHtml
 	private String extraInfo;
 
 	private Date dateInfo;

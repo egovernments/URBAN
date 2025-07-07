@@ -39,15 +39,11 @@
  */
 package org.egov.infra.microservice.models;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class InstrumentType {
 
-    @SafeHtml
     private String id;
-    @SafeHtml
     private String name;
-    @SafeHtml
     private String description;
 
     private Boolean active;

@@ -66,7 +66,6 @@ import javax.persistence.TemporalType;
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Table(name = "eg_filestoremap")
 @Entity
@@ -85,11 +84,9 @@ public class FileStoreMapper extends AbstractPersistable<Long> {
 
     @NotBlank
     @Length(max = 100)
-    @SafeHtml
     private String fileName;
 
     @Length(max = 100)
-    @SafeHtml
     private String contentType;
 
     @Temporal(TemporalType.TIMESTAMP)

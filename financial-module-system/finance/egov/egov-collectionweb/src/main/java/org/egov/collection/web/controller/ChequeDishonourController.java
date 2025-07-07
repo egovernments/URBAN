@@ -62,7 +62,6 @@ import org.egov.collection.integration.services.DishonorChequeService;
 import org.egov.commons.dao.BankBranchHibernateDAO;
 import org.egov.infstr.services.PersistenceService;
 import org.egov.services.instrument.InstrumentService;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +107,7 @@ public class ChequeDishonourController {
     protected PersistenceService persistenceService;
 
 	@RequestMapping(method = { RequestMethod.POST, RequestMethod.GET }, value = "/form")
-    public String getDishonourChequeForm(final Model model, @ModelAttribute(ERROR_MESSAGE) @SafeHtml final String errorMessage) {
+    public String form(@RequestParam(value = "errorMessage", required = false) String errorMessage, Model model) {
         if (errorMessage != null)
             model.addAttribute(ERROR_MESSAGE, errorMessage);
         model.addAttribute(CollectionConstants.DROPDOWN_DATA_BANKBRANCH_LIST,

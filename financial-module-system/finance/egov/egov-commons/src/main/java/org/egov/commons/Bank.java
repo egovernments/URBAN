@@ -66,7 +66,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "BANK")
@@ -85,17 +84,14 @@ public class Bank extends AbstractPersistable<Integer> {
 
 	@NotNull
 	@Length(max = 50)
-	@SafeHtml
 	private String code;
 
 	@NotNull
 	@Length(max = 100)
-	@SafeHtml
 	private String name;
 
 	@JsonIgnore
 	@Length(max = 250)
-	@SafeHtml
 	private String narration;
 
 	@JsonIgnore
@@ -104,7 +100,6 @@ public class Bank extends AbstractPersistable<Integer> {
 
 	@JsonIgnore
 	@Length(max = 50)
-	@SafeHtml
 	private String type;
 
 	@JsonIgnore

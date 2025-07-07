@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,13 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 public class Error {
-    @SafeHtml
     @JsonProperty("code")
     private String code = null;
-    @SafeHtml
     @JsonProperty("message")
     private String message = null;
-    @SafeHtml
     @JsonProperty("description")
     private String description = null;
 

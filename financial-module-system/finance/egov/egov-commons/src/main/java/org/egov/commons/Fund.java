@@ -66,7 +66,6 @@ import javax.validation.constraints.NotNull;
 import org.egov.infra.persistence.entity.AbstractPersistable;
 import org.egov.infra.persistence.validator.annotation.Unique;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "fund")
@@ -81,13 +80,11 @@ public class Fund extends AbstractPersistable<Long> {
     private Long id;
 
     @Length(max = 50, min = 2)
-    @SafeHtml
     @NotNull
     private String name;
 
     @Length(max = 50, min = 2)
     @NotNull
-    @SafeHtml
     private String code;
 
     private Character identifier;

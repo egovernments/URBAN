@@ -52,8 +52,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 import org.egov.infra.admin.master.contracts.BoundarySearchRequest;
 import org.egov.infra.admin.master.entity.Boundary;
 import org.egov.infra.admin.master.entity.BoundaryType;

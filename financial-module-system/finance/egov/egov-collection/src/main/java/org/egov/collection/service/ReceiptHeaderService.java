@@ -576,9 +576,13 @@ public class ReceiptHeaderService extends PersistenceService<ReceiptHeader, Long
                 final Map<String, Object> chequeMap = constructInstrumentMap(instrumentDepositeMap,
                         depositedBankAccount, instrumentHeader, voucherHeaderCheque, voucherDate);
                 if (voucherTypeForChequeDDCard)
-                    financialsUtil.updateCheque_DD_Card_Deposit_Receipt(chequeMap);
+                    financialsUtil.updateCheque_DD_Card_Deposit(
+                        chequeMap, voucherHeaderCheque, instrumentHeader, depositedBankAccount
+                    );
                 else
-                    financialsUtil.updateCheque_DD_Card_Deposit(chequeMap);
+                    financialsUtil.updateCheque_DD_Card_Deposit(
+                        chequeMap, voucherHeaderCheque, instrumentHeader, depositedBankAccount
+                    );
             }
             if (counter % 20 == 0) {
                 getSession().flush();
@@ -597,7 +601,9 @@ public class ReceiptHeaderService extends PersistenceService<ReceiptHeader, Long
             if (voucherHeaderCash.getId() != null && serviceGlCode != null) {
                 final Map<String, Object> cashMap = constructInstrumentMap(instrumentDepositeMap, depositedBankAccount,
                         instrumentHeader, voucherHeaderCash, voucherDate);
-                financialsUtil.updateCashDeposit(cashMap);
+                financialsUtil.updateCashDeposit(
+                    cashMap, voucherHeaderCash, instrumentHeader, depositedBankAccount
+                );
             }
             if (counter % 20 == 0) {
                 getSession().flush();

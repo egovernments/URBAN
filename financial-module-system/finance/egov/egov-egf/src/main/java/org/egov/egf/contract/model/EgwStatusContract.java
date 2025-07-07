@@ -47,15 +47,11 @@
  */
 package org.egov.egf.contract.model;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class EgwStatusContract {
     private Long id;
-    @SafeHtml
     private String moduleType;
-    @SafeHtml
     private String code;
-    @SafeHtml
     private String description;
 
     public Long getId() {

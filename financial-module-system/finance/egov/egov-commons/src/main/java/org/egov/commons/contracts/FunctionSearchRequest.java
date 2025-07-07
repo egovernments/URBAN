@@ -49,7 +49,6 @@
 package org.egov.commons.contracts;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * 
@@ -59,11 +58,9 @@ import org.hibernate.validator.constraints.SafeHtml;
 public class FunctionSearchRequest {
 	
 	@Length(max = 50, min = 2)
-	@SafeHtml
 	private String name;
 
 	@Length(max = 50, min = 2)
-	@SafeHtml
 	private String code;
 
 	private Boolean isActive;

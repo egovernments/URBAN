@@ -81,8 +81,6 @@ import org.springframework.stereotype.Service;
 import com.exilant.GLEngine.GeneralLedgerBean;
 import com.exilant.exility.common.TaskFailedException;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 /**
  * @author Administrator TODO To change the template for this generated type
  *         comment go to Window - Preferences - Java - Code Style - Code

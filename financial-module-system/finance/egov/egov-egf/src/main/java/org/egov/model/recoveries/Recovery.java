@@ -72,7 +72,6 @@ import org.egov.infra.persistence.validator.annotation.Unique;
 import org.egov.infra.validation.regex.Constants;
 import org.egov.utils.FinancialConstants;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "TDS")
@@ -92,7 +91,6 @@ public class Recovery extends AbstractAuditable {
 	private CChartOfAccounts chartofaccounts;
 
 	@Length(max = 20)
-	@SafeHtml
 	@NotNull
 	private String type;
 
@@ -101,12 +99,10 @@ public class Recovery extends AbstractAuditable {
 	private BigDecimal rate;
 
 	@Length(max = 100)
-	@SafeHtml
 	@NotNull
 	private String remitted;
 
 	@Length(max = 200)
-	@SafeHtml
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -120,21 +116,17 @@ public class Recovery extends AbstractAuditable {
 	private BigDecimal caplimit;
 
 	@Length(max = 50)
-	@SafeHtml
 	@NotNull
 	private String recoveryName;
 
 	@Length(max = 50)
-	@SafeHtml
 	private String calculationType;
 
-	@SafeHtml
 	@Length(min = 11, max = 11, message = "Maximum of 11 Characters allowed for IFSC Code")
 	@OptionalPattern(regex = Constants.ALPHANUMERIC, message = "Special Characters are not allowed in IFSC Code")
 	private String ifscCode;
 
 	@Length(max = 32)
-	@SafeHtml
 	@OptionalPattern(regex = FinancialConstants.numericwithoutspecialchar, message = "Special Characters are not allowed in accountNumber")
 	private String accountNumber;
 

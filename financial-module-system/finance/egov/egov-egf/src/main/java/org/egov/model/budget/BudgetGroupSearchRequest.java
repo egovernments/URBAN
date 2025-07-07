@@ -49,7 +49,6 @@
 package org.egov.model.budget;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 /**
  * 
@@ -58,7 +57,6 @@ import org.hibernate.validator.constraints.SafeHtml;
  */
 public class BudgetGroupSearchRequest {
 
-	@SafeHtml
 	@Length(max = 250)
 	private String name;
 

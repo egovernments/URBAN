@@ -58,8 +58,6 @@ package com.exilant.eGov.src.transactions;
 
 import com.exilant.exility.common.TaskFailedException;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 import org.apache.log4j.Logger;
 import org.egov.commons.CFiscalPeriod;
 import org.egov.infra.exception.ApplicationRuntimeException;

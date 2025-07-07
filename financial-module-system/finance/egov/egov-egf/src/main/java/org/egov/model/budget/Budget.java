@@ -54,7 +54,6 @@ import org.egov.infra.persistence.validator.annotation.Unique;
 import org.egov.infra.workflow.entity.State;
 import org.egov.infra.workflow.entity.StateAware;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -88,10 +87,8 @@ public class Budget extends StateAware {
 
     @Required(message = "Name should not be empty")
     @Length(max = 250, message = "Max 250 characters are allowed for description")
-    @SafeHtml
     private String name;
 
-    @SafeHtml
     @Length(max = 20)
     private String isbere;
 
@@ -105,7 +102,6 @@ public class Budget extends StateAware {
     private Budget parent;
 
     @Length(max = 250, message = "Max 250 characters are allowed for description")
-    @SafeHtml
     private String description;
 
     @Column(name = "AS_ON_DATE")
@@ -116,7 +112,6 @@ public class Budget extends StateAware {
     private boolean isPrimaryBudget;
 
     @Length(max = 10, message = "Max 10 characters are allowed for description")
-    @SafeHtml
     private String materializedPath;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -131,7 +126,6 @@ public class Budget extends StateAware {
     private EgwStatus status;
 
     @Transient
-    @SafeHtml
     private String searchBere;
 
 

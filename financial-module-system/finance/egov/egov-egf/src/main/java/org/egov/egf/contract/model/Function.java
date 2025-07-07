@@ -2,7 +2,6 @@ package org.egov.egf.contract.model;
 
 import java.io.Serializable;
 
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class Function implements Serializable {
 
@@ -11,9 +10,7 @@ public class Function implements Serializable {
 	 */
 	private static final long serialVersionUID = 944845081085224791L;
 	private Long id;
-	@SafeHtml
 	private String name;
-	@SafeHtml
 	private String code;
 	private Integer level;
 	private Boolean active;

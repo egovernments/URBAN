@@ -56,7 +56,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.egov.infra.persistence.entity.AbstractAuditable;
-import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Table(name = "EGF_BudgetControlType")
@@ -74,7 +73,6 @@ public class BudgetControlType extends AbstractAuditable {
     @GeneratedValue(generator = BudgetControlType.SEQ, strategy = GenerationType.SEQUENCE)
     private Long id;
     // @Audited
-    @SafeHtml
     private String value;
 
     @Override

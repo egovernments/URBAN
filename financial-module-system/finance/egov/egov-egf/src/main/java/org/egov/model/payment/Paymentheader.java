@@ -57,7 +57,6 @@ import org.egov.commons.CVoucherHeader;
 import org.egov.eis.entity.DrawingOfficer;
 import org.egov.infra.workflow.entity.StateAware;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.SafeHtml;
 
 public class Paymentheader extends StateAware {
 
@@ -65,10 +64,8 @@ public class Paymentheader extends StateAware {
 	private Long id;
 	@NotNull
 	private CVoucherHeader voucherheader;
-	@SafeHtml
 	private String isSelected;
 	@NotNull
-	@SafeHtml
 	@Length(max = 50)
 	private String type;
 	private Date concurrenceDate;

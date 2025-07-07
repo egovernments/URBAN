@@ -55,7 +55,6 @@ import org.egov.commons.Scheme;
 import org.egov.commons.SubScheme;
 import org.egov.infra.admin.master.entity.Boundary;
 import org.egov.infra.persistence.entity.AbstractPersistable;
-import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -88,7 +87,6 @@ public class BrsEntrieMis extends AbstractPersistable<Long>
     @JoinColumn(name = "fundId")
     private Fund fund;
     
-    @SafeHtml
     private String departmentcode;
 
     @ManyToOne
