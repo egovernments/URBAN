@@ -65,21 +65,21 @@
 	<artifactId>mdms-client</artifactId>
 	<version>2.9.0-SNAPSHOT</version>
    </dependency>
-<!--	<dependency>-->
-<!--		<groupId>org.egov</groupId>-->
-<!--		<artifactId>enc-client</artifactId>-->
-<!--		<version>2.9.0</version>-->
-<!--		<exclusions>-->
-<!--			<exclusion>-->
-<!--				<groupId>org.springframework.kafka</groupId>-->
-<!--				<artifactId>spring-kafka</artifactId>-->
-<!--			</exclusion>-->
-<!--			<exclusion>-->
-<!--				<groupId>org.apache.kafka</groupId>-->
-<!--				<artifactId>kafka-clients</artifactId>-->
-<!--			</exclusion>-->
-<!--		</exclusions>-->
-<!--	</dependency>-->
+	<dependency>
+		<groupId>org.egov</groupId>
+		<artifactId>enc-client</artifactId>
+		<version>2.9.0</version>
+		<exclusions>
+			<exclusion>
+				<groupId>org.springframework.kafka</groupId>
+				<artifactId>spring-kafka</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.kafka</groupId>
+				<artifactId>kafka-clients</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
           <dependency>
               <groupId>javax.validation</groupId>
               <artifactId>validation-api</artifactId>
