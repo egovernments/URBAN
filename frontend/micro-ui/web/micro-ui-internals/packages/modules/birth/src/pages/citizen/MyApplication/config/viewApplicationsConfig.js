@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components"; 
-import { usePdfDownloader } from "../../../../components/usePdfDownloader";
+import { usePdfBirthDownloader } from "../../../../components/usePdfBirthDownloader";
 
 const DownloadButton = ({ tenantId, idForFilenameAndMutation, directFileStoreId, t }) => {
-    const { initiateDownload, isDownloading, downloadError } = usePdfDownloader(idForFilenameAndMutation, directFileStoreId);
+    const { initiateDownload, isDownloading, downloadError } = usePdfBirthDownloader(idForFilenameAndMutation, directFileStoreId);
 
     const handleClick = () => {
         if (isDownloading) return;

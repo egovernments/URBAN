@@ -9,12 +9,13 @@ import CitizenApp from "./pages/citizen";
 import BirthCard from "./components/BirthCard";
 import Address from "./pages/employee/createBirth/components/Address";
 import EditButton from "./components/EditButton";
-import { usePdfDownloader } from "./components/usePdfDownloader.js";
-import { DownloadButton } from "./components/DownloadButton";
-import { PayAndDownloadButton } from "./components/PayAndDownloadButton";
+
+import { DownloadBirthButton } from "./components/DownloadBirthButton";
+import { PayAndDownloadBirthButton } from "./components/PayAndDownloadBirthButton.js";
 import useBirthDownload from "./components/useBirthDownload";
 import { overrideHooks, updateCustomConfigs } from "./utils";
 import ViewBirthLinkButton from "./components/ViewBirthLinkButton";
+import { usePdfBirthDownloader } from "./components/usePdfBirthDownloader.js";
 
 export const BirthModule = ({ stateCode, userType, tenants }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -43,11 +44,11 @@ const componentsToRegister = {
   Address,
   BirthCard,
   EditButton,
-  usePdfDownloader: usePdfDownloader,
+  usePdfBirthDownloader: usePdfBirthDownloader,
   useBirthDownload: useBirthDownload,
-  DownloadButton: DownloadButton,
+  DownloadBirthButton: DownloadBirthButton,
   ViewBirthLinkButton: ViewBirthLinkButton,
-  PayAndDownloadButton: PayAndDownloadButton,
+  PayAndDownloadBirthButton: PayAndDownloadBirthButton,
 };
 export const initBirthComponents = () => {
   overrideHooks();

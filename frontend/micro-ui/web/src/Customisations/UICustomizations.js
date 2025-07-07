@@ -977,6 +977,7 @@ export const UICustomizations = {
       const PayAndDownloadButton = Digit.ComponentRegistryService.getComponent(
         "PayAndDownloadBirthButton"
       );
+      console.log(PayAndDownloadButton);
       const colKey = column.key;
       const tenantId = searchResult?.[0]?.tenantid;
       const counter = row?.counter;

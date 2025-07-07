@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react'; // Added useRef
 
 
-export const usePdfDownloader = (initialCertificateIdForFilename) => {
+export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
   const [filestoreIdToFetch, setFilestoreIdToFetch] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(null);

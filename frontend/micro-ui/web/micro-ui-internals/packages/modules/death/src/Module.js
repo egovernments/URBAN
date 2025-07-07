@@ -14,7 +14,7 @@ import useDeathDownload from "./components/useDeathDownload";
 
 import { PayAndDownloadButton } from "./components/PayAndDownloadButton";
 import { ViewLinkButton } from "./components/ViewLinkButton";
-import { DownloadBirthButton } from "./components/DownloadBirthButton";
+import { DownloadButton } from "./components/DownloadButton";
 
 
 
@@ -45,7 +45,7 @@ const componentsToRegister = {
   EditButton,
   usePdfDownloader:usePdfDownloader,
   useDeathDownload:useDeathDownload,
-  DownloadBirthButton: DownloadBirthButton,
+  DownloadButton: DownloadButton,
   PayAndDownloadButton: PayAndDownloadButton,
   ViewLinkButton: ViewLinkButton,
 };

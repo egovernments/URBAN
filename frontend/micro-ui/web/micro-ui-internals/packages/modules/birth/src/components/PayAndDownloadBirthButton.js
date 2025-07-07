@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { useState, Fragment, useEffect } from "react";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components";
 
-export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) => {
+export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalName }) => {
   const useBirthDownload = Digit.ComponentRegistryService.getComponent("useBirthDownload");
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +17,13 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
 
       if (fetchedConsumerCode) {
         const businessService = "BIRTH_CERT.BIRTH_CERT";
-
-        // const businessService = "DEATH_CERT";
         const encodedConsumerCode = encodeURIComponent(fetchedConsumerCode);
-        history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=birth`);
+        // Defensive: onlsy navigate if businessService and encodedConsumerCode are valid
+        if (businessService && encodedConsumerCode) {
+          history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=birth`);
+        } else {
+          console.error("Missing businessService or consumerCode. Cannot proceed to payment.");
+        }
       } else {
         console.error("Could not retrieve consumer code. Cannot proceed to payment.");
       }
