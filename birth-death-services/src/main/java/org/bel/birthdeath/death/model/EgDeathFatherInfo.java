@@ -23,6 +23,8 @@ public class EgDeathFatherInfo {
 
 	private Long createdtime;
 
+	private String tenantid;
+
 	private String emailid;
 
 	private String firstname;

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.egov.common.contract.request.User;
 
 @Getter
 @Setter
@@ -68,6 +69,8 @@ public class EgDeathDtl{
 	private String hospitalid;
 	
 	private EgDeathFatherInfo deathFatherInfo;
+ 
+	private User user;
 	
 	private EgDeathMotherInfo deathMotherInfo;
 	

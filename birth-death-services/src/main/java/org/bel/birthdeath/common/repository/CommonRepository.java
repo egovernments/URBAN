@@ -25,6 +25,7 @@ import org.bel.birthdeath.common.model.EgHospitalDtl;
 import org.bel.birthdeath.common.repository.builder.CommonQueryBuilder;
 import org.bel.birthdeath.common.repository.rowmapper.CommonRowMapper;
 import org.bel.birthdeath.common.services.CommonService;
+import org.bel.birthdeath.common.services.UserService;
 import org.bel.birthdeath.death.model.EgDeathDtl;
 import org.bel.birthdeath.death.model.EgDeathFatherInfo;
 import org.bel.birthdeath.death.model.EgDeathMotherInfo;
@@ -80,6 +81,9 @@ public class CommonRepository {
 
 	@Autowired
 	private MultiStateInstanceUtil centralInstanceUtil;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	@Lazy
@@ -308,6 +312,7 @@ public class CommonRepository {
 		}
 		
 		log.info("completed " + finalCount);
+//			userService.manageOwner(response,false);
 		importBirthWrapper.finaliseStats(response.getBirthCerts().size(),finalCount);
 		List<EgHospitalDtl> hospitaldtls = getHospitalDtls(response.getBirthCerts().get(0).getTenantid());
 		List<String> hospitals = new ArrayList<String>();
@@ -617,6 +622,10 @@ public class CommonRepository {
 		}
 		
 		log.info("completed " + finalCount);
+		
+		// calling user service
+		userService.manageOwner(response,false);
+		
 		importDeathWrapper.finaliseStats(response.getDeathCerts().size(),finalCount);
 		List<EgHospitalDtl> hospitaldtls = getHospitalDtls(response.getDeathCerts().get(0).getTenantid());
 		List<String> hospitals = new ArrayList<String>();

@@ -93,8 +93,8 @@ public class BirthDeathConfiguration {
     @Value("${egov.url.shortner.endpoint}")
     private String urlShortnerEndpoint;
     
-	@Value("#{${egov.ui.app.host}}")
-	private Map<String, String> uiAppHostMap;
+//	@Value("#{${egov.ui.app.host}}")
+//	private Map<String, String> uiAppHostMap;
 
     @Value("${egov.bnd.default.limit}")
     private Integer defaultBndLimit;
@@ -122,5 +122,6 @@ public class BirthDeathConfiguration {
 
     @Value("${egov.pdf.deathcert.createEndPoint}")
     private String	egovPdfDeathEndPoint;
+
 
 }
