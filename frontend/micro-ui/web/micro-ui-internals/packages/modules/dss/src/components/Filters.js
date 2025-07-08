@@ -20,12 +20,14 @@ const Filters = ({
 }) => {
   const { value, setValue } = useContext(FilterContext);
 
-  const [selected, setSelected] = useState(() =>
+  const [selectedUlbs, setSelectedUlbs] = useState(() =>
     ulbTenants?.ulb.filter((tenant) => value?.filters?.tenantId?.find((selectedTenant) => selectedTenant === tenant?.code))
   );
 
-  useEffect(() => {
-    setSelected(ulbTenants?.ulb?.filter((tenant) => value?.filters?.tenantId?.find((selectedTenant) => selectedTenant === tenant?.code)));
+  const [selectedDDRs, setSelectedDDRs] = useState([]);
+
+ useEffect(() => {
+    setSelectedUlbs(ulbTenants?.ulb?.filter((tenant) => value?.filters?.tenantId?.find((selectedTenant) => selectedTenant === tenant?.code)));
   }, [value?.filters?.tenantId]);
 
   const [selectService, setSelectedService] = useState(() => 
@@ -40,37 +42,47 @@ const Filters = ({
     setValue({ ...value, ...data });
   };
 
-  const selectFilters = (e, data) => {
-    setValue({ ...value, filters: { tenantId: e.map((allPropsData) => allPropsData?.[1]?.code) } });
+  const selectUlbFilters = (e, data) => {
+    setValue({ ...value, filters: { ...value.filters, tenantId: e.map((allPropsData) => allPropsData?.[1]?.code) } });
   };
 
   const selectServicesFilters = (e, data) => {
     setValue({ ...value, moduleLevel: e?.code });
   };
 
-  const selectDDR = (e, data) => {
-    const DDRsSelectedByUser = ulbTenants.ulb.filter((ulb) => {
-      return !!e.find((tenant) => {
-        return ulb.ddrKey === tenant?.[1].ddrKey;
-      });
-    });
-    setValue({ ...value, filters: { tenantId: DDRsSelectedByUser.map((allPropsData) => allPropsData?.code) } });
+   const selectDDR = (e, data) => {
+    const selectedDDRItems = e.map(item => item[1]);
+    setSelectedDDRs(selectedDDRItems);
+    
+    setValue({ ...value, filters: { ...value.filters, tenantId: [] } });
   };
 
-  const selectedDDRs = useMemo(
-    () =>
-      selected
-        .map((ulb) => ulbTenants.ulb.filter((e) => e.code === ulb.code)[0])
-        .filter((item, i, arr) => i === arr.findIndex((t) => t.ddrKey === item.ddrKey)),
-    [selected, ulbTenants]
-  );
+
+   const ulbOptionsToShow = useMemo(() => {
+    // If no Districts (DDRs) are selected, show all available Localities (ULBs).
+    if (!selectedDDRs || selectedDDRs.length === 0) {
+      return ulbTenants?.ulb?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
+    }
+    
+   
+    const selectedDdrKeys = selectedDDRs.map(ddr => ddr.ddrKey);
+    return ulbTenants?.ulb
+      .filter(ulb => selectedDdrKeys.includes(ulb.ddrKey))
+      .sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
+  }, [selectedDDRs, ulbTenants]);
 
   const handleClear = () => {
     setValue({
       denomination: "Unit",
       range: Digit.Utils.dss.getInitialRange(),
+      filters: { tenantId: [] }, 
+      moduleLevel: ""
     });
+   
+    setSelectedDDRs([]);
   };
+
+
   return (
     <div className={`filters-wrapper ${isOpen ? "filters-modal" : ""}`} style={{
       justifyContent: window.location.href.includes("dss/dashboard/finance") && !isOpen ? "space-between" : "unset",
@@ -112,14 +124,15 @@ const Filters = ({
           <div className="mbsm">{t("ES_DSS_ULB")}</div>
           <MultiSelectDropdown
             options={
-              ulbTenants?.ulb?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey))
+              ulbOptionsToShow
+              // ulbTenants?.ulb?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey))
               /*    Removed filter for selected ddr/state rain-5426
               ulbTenants?.ulb && ulbTenants.ulb.filter((e) => Digit.Utils.dss.checkSelected(e, selectedDDRs))?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey))
              */
             }
             optionsKey="ulbKey"
-            onSelect={selectFilters}
-            selected={selected}
+            onSelect={selectUlbFilters}
+            selected={selectedUlbs}
             defaultLabel={t("ES_DSS_ALL_ULB_SELECTED")}
             defaultUnit={t("ES_DSS_DDR_SELECTED")}
           />
