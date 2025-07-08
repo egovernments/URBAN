@@ -92,7 +92,7 @@ public class EnrichmentServiceDeath {
 		ModuleDetail glCodeRequest = getGLCodeRequest(); 
 		List<ModuleDetail> moduleDetails = new LinkedList<>();
 		moduleDetails.add(glCodeRequest);
-		MdmsCriteria mdmsCriteria = MdmsCriteria.builder().moduleDetails(moduleDetails).tenantId("pg")
+		MdmsCriteria mdmsCriteria = MdmsCriteria.builder().moduleDetails(moduleDetails).tenantId(tenantId)
 				.build();
 		MdmsCriteriaReq mdmsCriteriaReq = MdmsCriteriaReq.builder().mdmsCriteria(mdmsCriteria)
 				.requestInfo(requestInfo).build();

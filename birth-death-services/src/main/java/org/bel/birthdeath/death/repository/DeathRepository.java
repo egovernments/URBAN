@@ -209,7 +209,7 @@ public class DeathRepository {
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");	
 			pdfApplicationRequest.getDeathCertificate().forEach(cert-> {
 				String stateLevelTenantId = centralInstanceUtil.getStateLevelTenant(cert.getTenantid());
-//				String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
+				String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
 				String deathCertPath = config.getDeathCertLink();
 				deathCertPath = deathCertPath.replace("$id",cert.getId());
 				deathCertPath = deathCertPath.replace("$tenantId",cert.getTenantid());
@@ -217,8 +217,8 @@ public class DeathRepository {
 				deathCertPath = deathCertPath.replace("$dateofdeath",format.format(cert.getDateofdeath()));
 				deathCertPath = deathCertPath.replace("$gender",cert.getGender().toString());
 				deathCertPath = deathCertPath.replace("$deathcertificateno",cert.getDeathcertificateno());
-//				String finalPath = uiHost + deathCertPath;
-//				cert.setEmbeddedUrl(getShortenedUrl(finalPath));
+				String finalPath = uiHost + deathCertPath;
+				cert.setEmbeddedUrl(getShortenedUrl(finalPath));
 	        });
 		
 		log.info(new Gson().toJson(pdfApplicationRequest));
@@ -261,17 +261,17 @@ public class DeathRepository {
 					"TenantId length is not sufficient to replace query schema in a multi state instance");
 		}
         List<EgDeathDtl> deathDtls =  jdbcTemplate.query(query, preparedStmtList.toArray(), allRowMapper);
-//		if(deathDtls != null) {
-//			deathDtls.forEach(deathDtl -> {
-//				deathDtl.setDeathFatherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathFatherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
-//				deathDtl.setDeathMotherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathMotherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
-//				deathDtl.setDeathSpouseInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathSpouseInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathSpouseInfo.class, requestInfo));
-//				EgDeathDtl dec = encryptionDecryptionUtil.decryptObject(deathDtl, "BndDetail", EgDeathDtl.class, requestInfo);
-//				deathDtl.setAadharno(dec.getAadharno());
-//				deathDtl.setIcdcode(dec.getIcdcode());
-//				commonUtils.maskAndShowLast4Chars(deathDtl);
-//			});
-//		}
+		if(deathDtls != null) {
+			deathDtls.forEach(deathDtl -> {
+				deathDtl.setDeathFatherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathFatherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
+				deathDtl.setDeathMotherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathMotherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
+				deathDtl.setDeathSpouseInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathSpouseInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathSpouseInfo.class, requestInfo));
+				EgDeathDtl dec = encryptionDecryptionUtil.decryptObject(deathDtl, "BndDetail", EgDeathDtl.class, requestInfo);
+				deathDtl.setAadharno(dec.getAadharno());
+				deathDtl.setIcdcode(dec.getIcdcode());
+				commonUtils.maskAndShowLast4Chars(deathDtl);
+			});
+		}
         return deathDtls;
 	}
 

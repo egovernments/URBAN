@@ -684,8 +684,7 @@ public class CommonRepository {
     }
 
     private MapSqlParameterSource getParametersForMotherInfo(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
-//		EgDeathMotherInfo deathMotherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathMotherInfo(), "BndDetail", EgDeathMotherInfo.class);
-        EgDeathMotherInfo deathMotherInfo = deathDtl.getDeathMotherInfo();
+		EgDeathMotherInfo deathMotherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathMotherInfo(), "BndDetail", EgDeathMotherInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", deathMotherInfo.getFirstname());
@@ -708,8 +707,7 @@ public class CommonRepository {
     }
 
     private MapSqlParameterSource getParametersForSpouseInfo(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
-//		EgDeathSpouseInfo deathSpouseInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathSpouseInfo(), "BndDetail", EgDeathSpouseInfo.class);
-        EgDeathSpouseInfo deathSpouseInfo = deathDtl.getDeathSpouseInfo();
+		EgDeathSpouseInfo deathSpouseInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathSpouseInfo(), "BndDetail", EgDeathSpouseInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", deathSpouseInfo.getFirstname());
@@ -733,8 +731,7 @@ public class CommonRepository {
 
     private MapSqlParameterSource getParametersForFatherInfo(EgDeathDtl deathDtl,
                                                              AuditDetails auditDetails, boolean isInsert) {
-//		EgDeathFatherInfo deathFatherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathFatherInfo(), "BndDetail", EgDeathFatherInfo.class);
-        EgDeathFatherInfo deathFatherInfo = deathDtl.getDeathFatherInfo();
+		EgDeathFatherInfo deathFatherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathFatherInfo(), "BndDetail", EgDeathFatherInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", deathFatherInfo.getFirstname());
@@ -758,7 +755,7 @@ public class CommonRepository {
 
     private MapSqlParameterSource getParametersForDeathDtl(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
-//		EgDeathDtl deathDtlEnc = encryptionDecryptionUtil.encryptObject(deathDtl, "BndDetail", EgDeathDtl.class);
+		EgDeathDtl deathDtlEnc = encryptionDecryptionUtil.encryptObject(deathDtl, "BndDetail", EgDeathDtl.class);
         String id = "";
         if (isInsert)
             id = UUID.randomUUID().toString();
@@ -791,12 +788,10 @@ public class CommonRepository {
         sqlParameterSource.addValue("hospitalid", deathDtl.getHospitalid());
         sqlParameterSource.addValue("age", deathDtl.getAge());
         sqlParameterSource.addValue("eidno", deathDtl.getEidno());
-//		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno() );
-        sqlParameterSource.addValue("aadharno", "123456789123");
+		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno() );
         sqlParameterSource.addValue("nationality", deathDtl.getNationality());
         sqlParameterSource.addValue("religion", deathDtl.getReligion());
-//		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode() );
-        sqlParameterSource.addValue("icdcode", "1234");
+		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode() );
         sqlParameterSource.addValue("islegacyrecord", deathDtl.getIsLegacyRecord());
         deathDtl.setId(id);
         return sqlParameterSource;

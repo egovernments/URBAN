@@ -206,7 +206,7 @@ public class BirthRepository {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");	
 		pdfApplicationRequest.getBirthCertificate().forEach(cert-> {
 			String stateLevelTenantId = centralInstanceUtil.getStateLevelTenant(cert.getTenantid());
-//			String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
+			String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
 			String birthCertPath = config.getBirthCertLink();
 			birthCertPath = birthCertPath.replace("$id",cert.getId());
 			birthCertPath = birthCertPath.replace("$tenantId",cert.getTenantid());
@@ -214,8 +214,8 @@ public class BirthRepository {
 			birthCertPath = birthCertPath.replace("$dateofbirth",format.format(cert.getDateofbirth()));
 			birthCertPath = birthCertPath.replace("$gender",cert.getGender().toString());
 			birthCertPath = birthCertPath.replace("$birthcertificateno",cert.getBirthcertificateno());
-//			String finalPath = uiHost + birthCertPath;
-//			cert.setEmbeddedUrl(getShortenedUrl(finalPath));
+			String finalPath = uiHost + birthCertPath;
+			cert.setEmbeddedUrl(getShortenedUrl(finalPath));
         });
 		log.info(new Gson().toJson(pdfApplicationRequest));
 
