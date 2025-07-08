@@ -37,7 +37,7 @@ public class DeathDtlsRowMapper implements ResultSetExtractor<List<EgDeathDtl>> 
 							.build();
 					motherInfo.setFullName(utils.addfullName(motherInfo.getFirstname(),motherInfo.getMiddlename(),motherInfo.getLastname()));
 					
-					EgDeathFatherInfo fatherInfo = EgDeathFatherInfo.builder().firstname(rs.getString("bfatfn")).middlename(rs.getString("bfatmn")).lastname(rs.getString("bfatln"))
+					EgDeathFatherInfo fatherInfo = EgDeathFatherInfo.builder().firstname(rs.getString("bfatfn")).middlename(rs.getString("bfatmn")).lastname(rs.getString("bfatln")).mobileno(rs.getString("bfatmobileno"))
 							.build();
 					fatherInfo.setFullName(utils.addfullName(fatherInfo.getFirstname(),fatherInfo.getMiddlename(),fatherInfo.getLastname()));
 					

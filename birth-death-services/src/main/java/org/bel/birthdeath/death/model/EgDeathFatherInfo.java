@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.bel.birthdeath.common.contract.ParentInfo;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EgDeathFatherInfo {
+public class EgDeathFatherInfo implements ParentInfo {
 
 	private String id;
 
@@ -40,4 +41,14 @@ public class EgDeathFatherInfo {
 	private Long lastmodifiedtime;
 	
 	private String fullName;
+
+	@Override
+	public String getFirstname() {
+		return firstname;
+	}
+
+	@Override
+	public String getMobileno() {
+		return mobileno;
+	}
 }

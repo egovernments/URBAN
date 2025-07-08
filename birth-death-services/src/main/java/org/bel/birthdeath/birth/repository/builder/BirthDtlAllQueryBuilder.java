@@ -26,7 +26,7 @@ public class BirthDtlAllQueryBuilder {
 			"CASE WHEN gender = '1' THEN 'Male' WHEN gender = '2' THEN 'Female' WHEN gender = '3' THEN 'Others'  END AS genderstr ," +
 			"(select bh.hospitalname from {schema}.eg_birth_death_hospitals bh where bh.id=hospitalid)  AS hospitalname, placeofbirth, dateofreport, remarks," +
 			"hospitalid , informantsname , informantsaddress , islegacyrecord, " +
-			"bfat.firstname bfatfn ,bmot.firstname bmotfn , bdtl.firstname bdtlfn ," + 
+			"bfat.firstname bfatfn , bfat.mobileno bfatfmobileno, bmot.firstname bmotfn , bdtl.firstname bdtlfn ," +
 			"bfat.middlename bfatmn ,bmot.middlename bmotmn , bdtl.middlename bdtlmn ," + 
 			"bfat.lastname bfatln ,bmot.lastname bmotln , bdtl.lastname bdtlln ," + 
 			"bfat.aadharno bfataadharno ,bmot.aadharno bmotaadharno ," + 
@@ -49,7 +49,7 @@ public class BirthDtlAllQueryBuilder {
     private static String QUERY_MASTER_ALL = "SELECT bdtl.id birthdtlid, bdtl.tenantid tenantid, registrationno, dateofbirth, counter, gender , "
     		+ "CASE WHEN gender = '1' THEN 'Male' WHEN gender = '2' THEN 'Female' WHEN gender = '3' THEN 'Others'  END AS genderstr ,"
     		+ " (select bh.hospitalname from {schema}.eg_birth_death_hospitals bh where bh.id=hospitalid)  AS hospitalname, placeofbirth, dateofreport, remarks, "
-    		+ "bfat.firstname bfatfn ,bmot.firstname bmotfn , bdtl.firstname bdtlfn ,"
+    		+ "bfat.firstname bfatfn ,bfat.mobileno bfatfmobileno, bmot.firstname bmotfn , bdtl.firstname bdtlfn ,"
     		+ "bfat.middlename bfatmn ,bmot.middlename bmotmn , bdtl.middlename bdtlmn ,"
     		+ "bfat.lastname bfatln ,bmot.lastname bmotln , bdtl.lastname bdtlln ,"
     		+ "bpmad.houseno pmhouseno,bpmad.buildingno pmbuildingno,bpmad.streetname pmstreetname,bpmad.locality pmlocality,bpmad.tehsil pmtehsil,"
@@ -66,7 +66,7 @@ public class BirthDtlAllQueryBuilder {
     private static final String QUERY_MASTER = "SELECT bdtl.id birthdtlid, tenantid, registrationno, dateofbirth, counter, gender ,hospitalname, "+
     		"CASE WHEN gender = '1' THEN 'Male' WHEN gender = '2' THEN 'Female' WHEN gender = '3' THEN 'Others'  END AS genderstr ," +
     		" (select bh.hospitalname from {schema}.eg_birth_death_hospitals bh where bh.id=hospitalid)  AS hospitalname ,"+
-    		"bfat.firstname bfatfn ,bmot.firstname bmotfn , bdtl.firstname bdtlfn ,"+
+    		"bfat.firstname bfatfn ,bfat.mobileno bfatfmobileno, bmot.firstname bmotfn , bdtl.firstname bdtlfn ,"+
     		"bfat.middlename bfatmn ,bmot.middlename bmotmn , bdtl.middlename bdtlmn ,"+
     		"bfat.lastname bfatln ,bmot.lastname bmotln , bdtl.lastname bdtlln "+
     		"FROM {schema}.eg_birth_dtls bdtl " +

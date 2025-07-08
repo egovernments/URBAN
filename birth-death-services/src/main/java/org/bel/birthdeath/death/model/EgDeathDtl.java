@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.egov.common.contract.request.User;
+import org.bel.birthdeath.common.contract.ParentInfo;
+import org.bel.birthdeath.common.contract.UserOwnerSearchCriteria;
+import org.bel.birthdeath.common.model.user.User;
 
 @Getter
 @Setter
@@ -16,7 +18,7 @@ import org.egov.common.contract.request.User;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EgDeathDtl{
+public class EgDeathDtl implements UserOwnerSearchCriteria {
 
 	private String id;
 
@@ -101,4 +103,14 @@ public class EgDeathDtl{
 	private String fullName;
 
 	private Boolean isLegacyRecord = false;
+
+	@Override
+	public String getTenantid() {
+		return this.tenantid;
+	}
+
+	@Override
+	public ParentInfo getFatherInfo() {
+		return this.deathFatherInfo;
+	}
 }

@@ -24,7 +24,9 @@ import org.bel.birthdeath.common.contract.BirthPdfApplicationRequest;
 import org.bel.birthdeath.common.contract.EgovPdfResp;
 import org.bel.birthdeath.common.contract.RequestInfoWrapper;
 import org.bel.birthdeath.common.model.AuditDetails;
+import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
+import org.bel.birthdeath.common.services.UserService;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
@@ -66,6 +68,9 @@ public class BirthService {
 	
 	@Autowired
 	ReceiptConsumer consumer;
+
+	@Autowired
+	UserService userService;
 	
 	public List<EgBirthDtl> search(SearchCriteria criteria, RequestInfo requestInfo) {
 		List<EgBirthDtl> birthDtls = new ArrayList<>() ;
@@ -79,6 +84,8 @@ public class BirthService {
 				birthDtls = repository.getBirthDtls(criteria);
 			}
 		}
+		UserDetailResponse userDetailResponse = userService.getOwner(birthDtls.get(0), requestInfo);
+		birthDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 		return birthDtls;
 	}
 
@@ -94,6 +101,8 @@ public class BirthService {
 		birthCertificate.setTenantId(criteria.getTenantId());
 		BirthCertRequest birthCertRequest = BirthCertRequest.builder().birthCertificate(birthCertificate).requestInfo(requestInfo).build();
 		List<EgBirthDtl> birtDtls = repository.getBirthDtlsAll(criteria,requestInfo);
+			UserDetailResponse userDetailResponse = userService.getOwner(birtDtls.get(0), requestInfo);
+			birtDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 			birthCertificate.setBirthPlace(birtDtls.get(0).getPlaceofbirth());
 			birthCertificate.setGender(birtDtls.get(0).getGenderStr());
 			birthCertificate.setWard(birtDtls.get(0).getBirthPermaddr().getTehsil());
@@ -110,7 +119,7 @@ public class BirthService {
 		enrichmentService.enrichCreateRequest(birthCertRequest);
 		enrichmentService.setIdgenIds(birthCertRequest);
 		if(birtDtls.get(0).getCounter()>0){
-			enrichmentService.setDemandParams(birthCertRequest);
+			enrichmentService.setDemandParams(birthCertRequest,birtDtls);
 			enrichmentService.setGLCode(birthCertRequest);
 			calculationService.addCalculation(birthCertRequest);
 			birthCertificate.setApplicationStatus(StatusEnum.ACTIVE);

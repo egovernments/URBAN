@@ -1,8 +1,6 @@
 package org.bel.birthdeath.common.model.user;
 
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.User;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;

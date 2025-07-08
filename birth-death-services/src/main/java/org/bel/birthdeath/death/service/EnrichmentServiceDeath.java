@@ -14,15 +14,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bel.birthdeath.common.Idgen.IdResponse;
 import org.bel.birthdeath.common.model.Amount;
 import org.bel.birthdeath.common.model.AuditDetails;
+import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.repository.IdGenRepository;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
 import org.bel.birthdeath.death.certmodel.DeathCertRequest;
 import org.bel.birthdeath.death.certmodel.DeathCertificate;
+import org.bel.birthdeath.death.model.EgDeathDtl;
 import org.bel.birthdeath.death.model.UserSearchRequest;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.user.UserDetailResponse;
 import org.egov.mdms.model.MasterDetail;
 import org.egov.mdms.model.MdmsCriteria;
 import org.egov.mdms.model.MdmsCriteriaReq;
@@ -91,7 +92,7 @@ public class EnrichmentServiceDeath {
 		ModuleDetail glCodeRequest = getGLCodeRequest(); 
 		List<ModuleDetail> moduleDetails = new LinkedList<>();
 		moduleDetails.add(glCodeRequest);
-		MdmsCriteria mdmsCriteria = MdmsCriteria.builder().moduleDetails(moduleDetails).tenantId(tenantId)
+		MdmsCriteria mdmsCriteria = MdmsCriteria.builder().moduleDetails(moduleDetails).tenantId("pg")
 				.build();
 		MdmsCriteriaReq mdmsCriteriaReq = MdmsCriteriaReq.builder().mdmsCriteria(mdmsCriteria)
 				.requestInfo(requestInfo).build();
@@ -114,7 +115,7 @@ public class EnrichmentServiceDeath {
 				.moduleName(BILLING_SERVICE).build();
 	}
 
-	public void setDemandParams(DeathCertRequest deathCertRequest) {
+	public void setDemandParams(DeathCertRequest deathCertRequest,List<EgDeathDtl> deathDtls) {
 		DeathCertificate deathCert = deathCertRequest.getDeathCertificate();
 		deathCert.setBusinessService(DEATH_CERT);
 		ArrayList<Amount> amounts = new ArrayList<>();
@@ -123,9 +124,11 @@ public class EnrichmentServiceDeath {
 		amount.setAmount(new BigDecimal(50));
 		amounts.add(amount);
 		deathCert.setAmount(amounts);
-		if(deathCertRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase("CITIZEN"))
-			deathCert.setCitizen(deathCertRequest.getRequestInfo().getUserInfo());
-		else{
+//		if(deathCertRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase("CITIZEN"))
+//			deathCert.setCitizen(deathCertRequest.getRequestInfo().getUserInfo());
+		if (deathDtls != null && !deathDtls.isEmpty() && deathDtls.get(0).getUser() != null) {
+			deathCert.setCitizen(deathDtls.get(0).getUser());
+		} else{
 			// fetch user using the id sent in deathcertRequest and then pass that user
 			UserSearchRequest userSearchRequest = getBaseUserSearchRequest(deathCertRequest.getRequestInfo().getUserInfo().getTenantId(), deathCertRequest.getRequestInfo());
 			UserDetailResponse userDetailResponse = getUser(userSearchRequest);

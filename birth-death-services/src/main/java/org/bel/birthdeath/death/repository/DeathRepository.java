@@ -261,17 +261,17 @@ public class DeathRepository {
 					"TenantId length is not sufficient to replace query schema in a multi state instance");
 		}
         List<EgDeathDtl> deathDtls =  jdbcTemplate.query(query, preparedStmtList.toArray(), allRowMapper);
-		if(deathDtls != null) {
-			deathDtls.forEach(deathDtl -> {
-				deathDtl.setDeathFatherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathFatherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
-				deathDtl.setDeathMotherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathMotherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
-				deathDtl.setDeathSpouseInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathSpouseInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathSpouseInfo.class, requestInfo));
-				EgDeathDtl dec = encryptionDecryptionUtil.decryptObject(deathDtl, "BndDetail", EgDeathDtl.class, requestInfo);
-				deathDtl.setAadharno(dec.getAadharno());
-				deathDtl.setIcdcode(dec.getIcdcode());
-				commonUtils.maskAndShowLast4Chars(deathDtl);
-			});
-		}
+//		if(deathDtls != null) {
+//			deathDtls.forEach(deathDtl -> {
+//				deathDtl.setDeathFatherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathFatherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
+//				deathDtl.setDeathMotherInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathMotherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
+//				deathDtl.setDeathSpouseInfo(encryptionDecryptionUtil.decryptObject(deathDtl.getDeathSpouseInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathSpouseInfo.class, requestInfo));
+//				EgDeathDtl dec = encryptionDecryptionUtil.decryptObject(deathDtl, "BndDetail", EgDeathDtl.class, requestInfo);
+//				deathDtl.setAadharno(dec.getAadharno());
+//				deathDtl.setIcdcode(dec.getIcdcode());
+//				commonUtils.maskAndShowLast4Chars(deathDtl);
+//			});
+//		}
         return deathDtls;
 	}
 

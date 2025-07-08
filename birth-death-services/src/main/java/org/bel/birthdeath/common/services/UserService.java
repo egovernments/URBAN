@@ -15,16 +15,19 @@ import java.util.stream.Collectors;
 
 import org.bel.birthdeath.common.config.CommonConfiguration;
 import org.bel.birthdeath.common.contract.DeathResponse;
+import org.bel.birthdeath.common.contract.ParentInfo;
+import org.bel.birthdeath.common.contract.UserOwnerSearchCriteria;
+import org.bel.birthdeath.common.model.user.User;
+import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.model.user.UserRequest;
 import org.bel.birthdeath.common.model.user.UserSearchRequest;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
 import org.bel.birthdeath.common.util.CommonErrorConstants;
 import org.bel.birthdeath.common.util.Constants;
 import org.bel.birthdeath.death.model.EgDeathDtl;
+import org.bel.birthdeath.death.model.SearchCriteria;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.Role;
-import org.egov.common.contract.request.User;
-import org.egov.common.contract.user.UserDetailResponse;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,65 +55,52 @@ public class UserService {
      *
      */
     @SuppressWarnings("null")
-    public void manageOwner(DeathResponse response, boolean isUpdate) {
+    public User manageOwner(String tenantId, ParentInfo fatherInfo, RequestInfo requestInfo, boolean isUpdate) {
 
-//        User owner = response.getUser();
-    	List<User> users = response.getDeathCerts().stream()
-    		    .map(EgDeathDtl::getUser)
-    		    .filter(Objects::nonNull)
-    		    .collect(Collectors.toList());
+        if (fatherInfo == null) {
+            throw new CustomException("FATHER_INFO_MISSING", "Father information is missing");
+        }
 
-      User owner = users.get(0);
+        User owner = new User();
+        owner.setTenantId(tenantId);
+        owner.setGender(Constants.MALE);
+        owner.setName(fatherInfo.getFirstname());
+        owner.setMobileNumber(fatherInfo.getMobileno());
 
-        UserDetailResponse userDetailResponse = null;
-        if (owner != null) {
-            userDetailResponse = userExists(owner);
+        if (owner.getMobileNumber() == null) {
+            throw new CustomException(CommonErrorConstants.INVALID_OWNER_ERROR,
+                    "MobileNo is mandatory for ownerInfo");
+        }
 
-            if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser()) && !isUpdate) {
+        UserDetailResponse userDetailResponse = userExists(owner);
 
-                Boolean notFoundUser = Boolean.FALSE;
-                for (int j = 0; j < userDetailResponse.getUser().size(); j++) {
-                    User user = userDetailResponse.getUser().get(j);
+        if (userDetailResponse != null && !CollectionUtils.isEmpty(userDetailResponse.getUser()) && !isUpdate) {
+            boolean notFoundUser = true;
 
-                    if ((user.getUserName().equalsIgnoreCase(user.getMobileNumber())
-                            && user.getName().equalsIgnoreCase(owner.getName()))
-                            || user.getName().equalsIgnoreCase(owner.getName())) {
-                        // found user with mobilenumber username not same and name as equal to the
-                        // applicnat name provided by ui
-                        // then consider that user as applicant
-                        owner = user;
-                        break;
-                    } else
-                        notFoundUser = Boolean.TRUE;
-
-                }
-                // users exists with mobile number but non of them have the same Name so create new
-                // user
-                if (notFoundUser) {
-                    owner = createFatherInfo(owner, response.getRequestInfo());
-
-                }
-
-            } else {
-                if (!isUpdate) {
-                    // User with mobile number itself not found then create new user and consider
-                    // the new user as applicant.
-                    owner = createFatherInfo(owner, response.getRequestInfo());
-                } else {
-
-                    HashMap<String, String> errorMap = new HashMap<>();
-                    owner = updateUserDetails(owner, response.getRequestInfo(), errorMap);
-
+            for (User user : userDetailResponse.getUser()) {
+                if ((user.getUserName().equalsIgnoreCase(user.getMobileNumber())
+                        && user.getName().equalsIgnoreCase(owner.getName()))
+                        || user.getName().equalsIgnoreCase(owner.getName())) {
+                    owner = user;
+                    notFoundUser = false;
+                    break;
                 }
             }
 
-//            vehicle.setOwner(owner);
+            if (notFoundUser) {
+                owner = createFatherInfo(owner, requestInfo);
+            }
 
         } else {
-            log.debug("MobileNo is not existed in Application.");
-            throw new CustomException(CommonErrorConstants.INVALID_OWNER_ERROR, "MobileNo is mandatory for ownerInfo");
+            if (!isUpdate) {
+                owner = createFatherInfo(owner, requestInfo);
+            } else {
+                HashMap<String, String> errorMap = new HashMap<>();
+                owner = updateUserDetails(owner, requestInfo, errorMap);
+            }
         }
 
+        return owner;
     }
 
     /**
@@ -146,12 +136,12 @@ public class UserService {
      */
     private User createFatherInfo(User owner, RequestInfo requestInfo) {
 
-        if (!isUserValid(owner)) {
-            throw new CustomException(CommonErrorConstants.INVALID_OWNER_ERROR,
-                    "Dob, relationShip, relation ship name and gender are mandaotry !");
-        }
-
-        addUserDefaultFields(owner.getTenantId(), null, owner);
+//        if (!isUserValid(owner)) {
+//            throw new CustomException(CommonErrorConstants.INVALID_OWNER_ERROR,
+//                    "Dob, relationShip, relation ship name and gender are mandaotry !");
+//        }
+        Role role = getCitizenRole();
+        addUserDefaultFields(owner.getTenantId(), role, owner);
         StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserContextPath())
                 .append(config.getUserCreateEndpoint());
 
@@ -164,6 +154,18 @@ public class UserService {
     }
 
     /**
+     * Creates citizen role
+     *
+     * @return Role object for citizen
+     */
+    private Role getCitizenRole() {
+        Role role = new Role();
+        role.setCode(Constants.CITIZEN);
+        role.setName("Citizen");
+        return role;
+    }
+
+    /**
      * Sets the role,type,active and tenantId for a Citizen
      *
      * @param tenantId  TenantId of the property
@@ -172,12 +174,9 @@ public class UserService {
      * @param applicant The user whose fields are to be set
      */
     private void addUserDefaultFields(String tenantId, Role role, User applicant) {
-//        applicant.setActive(true);
-        applicant.setTenantId(tenantId);
-
-        if (role != null)
-            applicant.setRoles(Collections.singletonList(role));
-
+        applicant.setActive(true);
+        applicant.setTenantId(tenantId.split("\\.")[0]);
+        applicant.setRoles(Collections.singletonList(role));
         applicant.setType(Constants.CITIZEN);
     }
 
@@ -220,7 +219,6 @@ public class UserService {
     }
 
     /**
-     *
      * @return
      */
     private Role getRolObj(String roleCode, String roleName) {
@@ -275,7 +273,6 @@ public class UserService {
     }
 
     /**
-     *
      * @param ownerRequest
      * @param uri
      * @return
@@ -299,7 +296,7 @@ public class UserService {
 
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void parseResponse(LinkedHashMap responeMap, String dobFormat) {
         List<LinkedHashMap> owners = (List<LinkedHashMap>) responeMap.get("user");
         String format1 = "dd-MM-yyyy HH:mm:ss";
@@ -327,71 +324,24 @@ public class UserService {
         return d != null ? d.getTime() : 0;
     }
 
-//    public UserDetailResponse getOwner(VehicleSearchCriteria criteria, RequestInfo requestInfo) {
-//        UserSearchRequest ownerSearchRequest = getOwnerSearchRequest(criteria, requestInfo);
-//        StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
-//        return ownerCall(ownerSearchRequest, uri);
-//    }
-
-//	public User getUser(String uuid, String tenantId, RequestInfo requestInfo) {
-//        UserSearchRequest ownerSearchRequest = new UserSearchRequest();
-//        ownerSearchRequest.setRequestInfo(requestInfo);
-//        ownerSearchRequest.setTenantId(tenantId.split("\\.")[0]);
-//        ownerSearchRequest.setActive(true);
-//        List ids = new ArrayList<String>();
-//        ids.add(uuid);
-//        ownerSearchRequest.setUuid(ids);
-//        StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
-//        UserDetailResponse ownerDetailResponse = ownerCall(ownerSearchRequest, uri);
-//        if (ownerDetailResponse != null && ownerDetailResponse.getUser() != null
-//                && !ownerDetailResponse.getUser().isEmpty()) {
-//            return ownerDetailResponse.getUser().get(0);
-//        } else {
-//            return null;
-//        }
-//    }
-
-//	private UserSearchRequest getOwnerSearchRequest(VehicleSearchCriteria criteria, RequestInfo requestInfo) {
-//        UserSearchRequest userSearchRequest = new UserSearchRequest();
-//        userSearchRequest.setRequestInfo(requestInfo);
-//        userSearchRequest.setTenantId(criteria.getTenantId());
-//        userSearchRequest.setMobileNumber(criteria.getMobileNumber());
-//        userSearchRequest.setActive(true);
-//        if (!CollectionUtils.isEmpty(criteria.getOwnerId()))
-//            userSearchRequest.setUuid(criteria.getOwnerId());
-//        return userSearchRequest;
-//    }
-
-    /**
-     * Validates the mandatory fields for the user
-     *
-     * @param user
-     * @return
-     */
-    @SuppressWarnings("deprecation")
-    private Boolean isUserValid(User user) {
-        if (StringUtils.isEmpty(user.getTenantId()) || StringUtils.isEmpty(user.getName())
-//                || StringUtils.isEmpty(user.getFatherOrHusbandName()) || StringUtils.isEmpty(user.getRelationship())
-//                || StringUtils.isEmpty(user.getDob()) || StringUtils.isEmpty(user.getGender())
-                || StringUtils.isEmpty(user.getEmailId())) {
-
-            return Boolean.FALSE;
-        }
-
-        return Boolean.TRUE;
-    }
-
-    public UserDetailResponse searchUsersByCriteria(UserSearchRequest userSearchRequest) {
-
+    public UserDetailResponse getOwner(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
+        UserSearchRequest ownerSearchRequest = getOwnerSearchRequest(criteria, requestInfo);
         StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
-        UserDetailResponse ownerDetailResponse = ownerCall(userSearchRequest, uri);
+        return ownerCall(ownerSearchRequest, uri);
+    }
+    private UserSearchRequest getOwnerSearchRequest(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
+        UserSearchRequest searchRequest = new UserSearchRequest();
+        searchRequest.setRequestInfo(requestInfo);
 
-        if (ownerDetailResponse != null && ownerDetailResponse.getUser() != null
-                && !ownerDetailResponse.getUser().isEmpty()) {
-            return ownerDetailResponse;
-        } else {
-            return null;
+        searchRequest.setTenantId(criteria.getTenantid().split("\\.")[0]);
+
+        ParentInfo fatherInfo = criteria.getFatherInfo();
+        if (fatherInfo != null) {
+            searchRequest.setName(fatherInfo.getFirstname());
+            searchRequest.setMobileNumber(fatherInfo.getMobileno());
         }
+
+        return searchRequest;
     }
 
 }
