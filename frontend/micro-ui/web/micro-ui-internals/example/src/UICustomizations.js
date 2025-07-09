@@ -154,7 +154,6 @@ export const UICustomizations = {
 
   searchAndDownloadConfig: {
     preProcess: (data) => {
-    
       let finalApiParams = {};
       const formValues = data.state.searchForm || {};
 
@@ -350,10 +349,10 @@ export const UICustomizations = {
   searchAndDownloadBirthConfig: {
     // preProcess function to transform form data into API query parameters
     preProcess: (data) => {
-    
+      // console.log("BIRTH: UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
 
       const formValues = data.state.searchForm || {};
-   
+      // console.log("BIRTH: Form Values (data.state.searchForm):", JSON.stringify(formValues, null, 2));
 
       // 1. Tenant ID
       const tenantFromForm = formValues.tenantId;

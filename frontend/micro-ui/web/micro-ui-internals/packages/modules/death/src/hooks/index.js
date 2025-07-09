@@ -16,10 +16,8 @@
 // };
 
 import utils from "../utils";
-import useCustomInboxSearch from "./useCustomInboxSearch";
 
 const Death = {
-  useCustomInboxSearch
 };
 
 const Hooks = {

@@ -359,7 +359,7 @@ const createDeathConfig = [
         inline: true,
         label: "Mobile Number",
         type: "number",
-        isMandatory: true,
+        isMandatory: false,
         placeholder: "Mobile Number",
         populators: {
           name: "MobileNumber",
@@ -452,7 +452,6 @@ const createDeathConfig = [
         inline: true,
         label: "Mobile Number",
         type: "number",
-           isMandatory: true,
         placeholder: "Mobile Number",
         populators: {
           name: "MobileNumber2",
@@ -547,7 +546,7 @@ const createDeathConfig = [
         label: "Mobile Number",
         type: "number",
         placeholder: "Mobile Number",
-        isMandatory: true,
+        isMandatory: false,
         populators: {
           name: "mobileNumber3",
           error: "Valid Mobile Number is required!Minimum 10 digits required",

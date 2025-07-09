@@ -8,7 +8,7 @@ export const searchAndDownloadConfig = (t) => {
     apiDetails: {
       serviceName: "/birth-death-services/death/_search",
       requestParam: {},
-      requestBody: {},
+      requestBody:{},
       minParametersForSearchForm: 3,
       masterName: "commonUiConfig",
       moduleName: "searchAndDownloadConfig",
@@ -28,7 +28,7 @@ export const searchAndDownloadConfig = (t) => {
             tenantId: "",
             dateOfDeath: "",
             gender: "",
-            placeofdeath: "",
+            placeofdeath:"",
             nameofdeceased: "",
             spouseName: "",
             registrationno: "",
@@ -37,13 +37,13 @@ export const searchAndDownloadConfig = (t) => {
           },
           fields: [
             {
-              label: t("City"),
+              label:t("City"),
               key: "tenantId",
               type: "dropdown",
               isMandatory: true,
               disable: true,
-              preProcess: {
-                updateDependent: ["populators.options"],
+               preProcess : {
+                        updateDependent : ["populators.options"]
               },
               populators: {
                 name: "tenantId",
@@ -57,7 +57,7 @@ export const searchAndDownloadConfig = (t) => {
                 //   // localePrefix:"",
                 //   localePrefix: "COMMON_CITY",
                 // },
-              },
+              }
             },
             {
               label: t("BND_DEATH_DOB"),
@@ -109,16 +109,16 @@ export const searchAndDownloadConfig = (t) => {
               type: "dropdown",
               isMandatory: false,
               disable: false,
-              preProcess: {
-                updateDependent: ["populators.options"],
+              preProcess : {
+                  updateDependent : ["populators.options"]
               },
               populators: {
                 name: "placeofdeath",
-                optionsKey: "originalName",
-                valueKey: "code",
-                options: [],
-                error: "Hospital Name is Required!",
-                required: false,
+                "optionsKey": "originalName",
+                "valueKey": "code",
+                options:[],
+                "error": "Hospital Name is Required!",
+                "required": false
               },
             },
             {
@@ -167,9 +167,9 @@ export const searchAndDownloadConfig = (t) => {
               jsonPath: "registrationno",
             },
             {
-              key: "nameofdeceased",
-              label: t("BND_COMMON_NAME"),
-              jsonPath: "fullName",
+                key: "nameofdeceased",
+                label: t("BND_COMMON_NAME"),
+                jsonPath: "fullName",
             },
             {
               key: "dateOfDeath",
@@ -178,9 +178,9 @@ export const searchAndDownloadConfig = (t) => {
               additionalCustomization: true,
             },
             {
-              key: "gender",
-              label: t("BND_COMMON_GENDER"),
-              jsonPath: "genderStr",
+                key:"gender",
+                label: t("BND_COMMON_GENDER"),
+                jsonPath: "genderStr",
             },
             {
               key: "MotherName",
@@ -212,7 +212,6 @@ export const searchAndDownloadConfig = (t) => {
         show: true,
       },
     },
-    customHookName: "Death.useCustomInboxSearch",
     additionalSections: {},
   };
 };

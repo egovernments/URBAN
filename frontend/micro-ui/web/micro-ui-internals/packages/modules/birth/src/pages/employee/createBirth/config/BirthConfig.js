@@ -244,7 +244,6 @@ export const BirthConfig = [
         inline: true,
         label: "CORE_COMMON_PROFILE_MOBILE_NUMBER",
         type: "number",
-        isMandatory: true,
         placeholder: "Mobile Number",
         populators: {
           name: "father_mobile_number",
@@ -403,7 +402,6 @@ export const BirthConfig = [
         label: "CORE_COMMON_PROFILE_MOBILE_NUMBER",
         type: "number",
         placeholder: "Mobile Number",
-        isMandatory: true,
         populators: {
           name: "mother_mobile_number",
           error: "Invalid Mobile Number (10 digits)",

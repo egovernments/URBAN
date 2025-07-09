@@ -8,11 +8,10 @@ export const searchAndDownloadConfig = (t) => {
             requestBody: {},
             minParametersForSearchForm: 3,
             masterName: "commonUiConfig",
-            moduleName: "searchAndDownloadBirthConfig", 
+            moduleName: "searchAndDownloadBirthConfig",
             tableFormJsonPath: "requestParam",
             filterFormJsonPath: "requestParam",
             searchFormJsonPath: "requestParam",
-          
         },
         sections: {
             search: {
@@ -177,7 +176,6 @@ export const searchAndDownloadConfig = (t) => {
                 show: true,
             },
         },
-          customHookName:"Birth.useCustomInboxSearch",
         additionalSections: {},
     };
 };

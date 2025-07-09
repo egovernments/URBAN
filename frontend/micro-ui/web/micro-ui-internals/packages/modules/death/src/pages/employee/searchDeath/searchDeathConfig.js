@@ -194,8 +194,6 @@ export const searchDeathConfig = (t) => {
         show: true,
       },
     },
-     customHookName: "Death.useCustomInboxSearch",
     additionalSections: {},
-      
   };
 };
