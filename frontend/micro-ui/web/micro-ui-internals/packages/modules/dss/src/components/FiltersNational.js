@@ -59,20 +59,24 @@ const Filters = ({
     setValue({ ...value, filters: { ...value.filters, state: selectedStateCodes, ulb: newUlbSelection } });
   };
 
-  const handleClear = () => {
+   const handleClear = () => {
     setValue({
       denomination: "Unit",
       range: Digit.Utils.dss.getInitialRange(),
+      filters: { ulb: [], state: [] }, 
     });
   };
 
-  const ulbOptionsToShow = useMemo(() => {
-    // If no state is selected, return an empty array for ULB options.
+ 
+   const ulbOptionsToShow = useMemo(() => {
+    // If no state is selected, return ALL ULB options.
     if (!selectedSt || selectedSt.length === 0) {
-      return [];
+      return ulbTenants?.ulb
+        ?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey)) || [];
     }
+    
+    // Otherwise, filter ULBs based on the selected states.
     const selectedStateDdrKeys = selectedSt.map(state => state.ddrKey);
-    // Filter ULBs whose ddrKey matches one of the selected states' ddrKeys.
     return ulbTenants?.ulb
       ?.filter(ulb => selectedStateDdrKeys.includes(ulb.ddrKey))
       .sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
