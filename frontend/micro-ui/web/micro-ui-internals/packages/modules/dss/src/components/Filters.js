@@ -57,10 +57,14 @@ const Filters = ({
     setValue({ ...value, filters: { ...value.filters, tenantId: [] } });
   };
 
-  const ulbOptionsToShow = useMemo(() => {
+
+   const ulbOptionsToShow = useMemo(() => {
+    // If no Districts (DDRs) are selected, show all available Localities (ULBs).
     if (!selectedDDRs || selectedDDRs.length === 0) {
-      return [];
+      return ulbTenants?.ulb?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
     }
+    
+   
     const selectedDdrKeys = selectedDDRs.map(ddr => ddr.ddrKey);
     return ulbTenants?.ulb
       .filter(ulb => selectedDdrKeys.includes(ulb.ddrKey))
@@ -71,9 +75,13 @@ const Filters = ({
     setValue({
       denomination: "Unit",
       range: Digit.Utils.dss.getInitialRange(),
+      filters: { tenantId: [] }, 
+      moduleLevel: ""
     });
+   
     setSelectedDDRs([]);
   };
+
 
   return (
     <div className={`filters-wrapper ${isOpen ? "filters-modal" : ""}`} style={{
