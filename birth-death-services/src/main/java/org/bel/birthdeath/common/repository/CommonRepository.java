@@ -755,7 +755,7 @@ public class CommonRepository {
 
     private MapSqlParameterSource getParametersForDeathDtl(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
-		EgDeathDtl deathDtlEnc = encryptionDecryptionUtil.encryptObject(deathDtl, "BndDetail", EgDeathDtl.class);
+//		EgDeathDtl deathDtlEnc = encryptionDecryptionUtil.encryptObject(deathDtl, "BndDetail", EgDeathDtl.class);
         String id = "";
         if (isInsert)
             id = UUID.randomUUID().toString();
@@ -788,10 +788,10 @@ public class CommonRepository {
         sqlParameterSource.addValue("hospitalid", deathDtl.getHospitalid());
         sqlParameterSource.addValue("age", deathDtl.getAge());
         sqlParameterSource.addValue("eidno", deathDtl.getEidno());
-		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno() );
+//		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno() );
         sqlParameterSource.addValue("nationality", deathDtl.getNationality());
         sqlParameterSource.addValue("religion", deathDtl.getReligion());
-		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode() );
+//		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode() );
         sqlParameterSource.addValue("islegacyrecord", deathDtl.getIsLegacyRecord());
         deathDtl.setId(id);
         return sqlParameterSource;
