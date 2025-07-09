@@ -50,17 +50,33 @@ const Filters = ({
     setValue({ ...value, moduleLevel: e?.code });
   };
 
-   const selectDDR = (e, data) => {
+  const selectDDR = (e, data) => {
     const selectedDDRItems = e.map(item => item[1]);
+    
     setSelectedDDRs(selectedDDRItems);
     
-    setValue({ ...value, filters: { ...value.filters, tenantId: [] } });
+    const selectedDdrKeys = selectedDDRItems.map(ddr => ddr.ddrKey);
+    const ulbsToSelect = ulbTenants?.ulb
+      .filter(ulb => selectedDdrKeys.includes(ulb.ddrKey))
+      .map(ulb => ulb.code); 
+      
+    setValue({ 
+      ...value, 
+      filters: { 
+        ...value.filters, 
+        tenantId: ulbsToSelect 
+      } 
+    });
   };
+  
 
-  const ulbOptionsToShow = useMemo(() => {
+
+   const ulbOptionsToShow = useMemo(() => {
     if (!selectedDDRs || selectedDDRs.length === 0) {
-      return [];
+      return ulbTenants?.ulb?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
     }
+    
+   
     const selectedDdrKeys = selectedDDRs.map(ddr => ddr.ddrKey);
     return ulbTenants?.ulb
       .filter(ulb => selectedDdrKeys.includes(ulb.ddrKey))
@@ -71,9 +87,13 @@ const Filters = ({
     setValue({
       denomination: "Unit",
       range: Digit.Utils.dss.getInitialRange(),
+      filters: { tenantId: [] }, 
+      moduleLevel: ""
     });
+   
     setSelectedDDRs([]);
   };
+
 
   return (
     <div className={`filters-wrapper ${isOpen ? "filters-modal" : ""}`} style={{

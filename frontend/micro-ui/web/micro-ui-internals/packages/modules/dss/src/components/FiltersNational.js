@@ -46,33 +46,39 @@ const Filters = ({
     setValue({ ...value, filters: { ...value.filters, ulb: ulbs, state: newStates } });
   };
   const selectStFilters = (e, data) => {
-    // setValue({ ...value, filters: { ...value.filters, state: e.map((allPropsData) => allPropsData?.[1]?.code) } });
-    const selectedStateCodes = e.map((allPropsData) => allPropsData?.[1]?.code);
-    const selectedStateDdrKeys = e.map(item => item[1].ddrKey);
+    const selectedStates = e.map((allPropsData) => allPropsData?.[1]);
+    const selectedStateCodes = selectedStates.map(st => st.code);
+    const selectedStateDdrKeys = selectedStates.map(st => st.ddrKey);
 
-    // Filter the currently selected ULBs to keep only those that belong to the newly selected states
-    const newUlbSelection = (value?.filters?.ulb || []).filter(ulbCode => {
-      const ulb = ulbTenants.ulb.find(u => u.code === ulbCode);
-      return ulb && selectedStateDdrKeys.includes(ulb.ddrKey);
-    });
+    const ulbsToSelect = ulbTenants.ulb
+      .filter(ulb => selectedStateDdrKeys.includes(ulb.ddrKey))
+      .map(ulb => ulb.code);
     
-    setValue({ ...value, filters: { ...value.filters, state: selectedStateCodes, ulb: newUlbSelection } });
+    setValue({ 
+      ...value, 
+      filters: { 
+        ...value.filters, 
+        state: selectedStateCodes, 
+        ulb: ulbsToSelect 
+      } 
+    });
   };
 
-  const handleClear = () => {
+   const handleClear = () => {
     setValue({
       denomination: "Unit",
       range: Digit.Utils.dss.getInitialRange(),
+      filters: { ulb: [], state: [] }, 
     });
   };
 
-  const ulbOptionsToShow = useMemo(() => {
-    // If no state is selected, return an empty array for ULB options.
+ 
+   const ulbOptionsToShow = useMemo(() => {
     if (!selectedSt || selectedSt.length === 0) {
-      return [];
+      return ulbTenants?.ulb
+        ?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey)) || [];
     }
     const selectedStateDdrKeys = selectedSt.map(state => state.ddrKey);
-    // Filter ULBs whose ddrKey matches one of the selected states' ddrKeys.
     return ulbTenants?.ulb
       ?.filter(ulb => selectedStateDdrKeys.includes(ulb.ddrKey))
       .sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey));
