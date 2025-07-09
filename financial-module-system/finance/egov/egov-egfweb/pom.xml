@@ -76,7 +76,12 @@
             <artifactId>egov-egi</artifactId>
             <version>3.0.2-COE-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- VIEWS RELATED END -->
         <dependency>
             <groupId>org.apache.tiles</groupId>

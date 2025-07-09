@@ -51,7 +51,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.egov.infstr.models.BaseModel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString(callSuper = true)
 @SuppressWarnings("deprecation")
 public class InstrumentType extends BaseModel {
 	/**
@@ -61,36 +67,4 @@ public class InstrumentType extends BaseModel {
 	private String type;
 	private Boolean isActive;
 	private Set<InstrumentAccountCodes> instrumentAccountCodes = new HashSet<>();
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(final String type) {
-		this.type = type;
-	}
-
-	public Set<InstrumentAccountCodes> getInstrumentAccountCodes() {
-		return instrumentAccountCodes;
-	}
-
-	public void setInstrumentAccountCodes(final Set<InstrumentAccountCodes> instrumentAccountCodes) {
-		this.instrumentAccountCodes = instrumentAccountCodes;
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder itBuffer = new StringBuilder();
-		itBuffer.append("[id=" + id).append(",type=" + type).append(",isActive=" + isActive).append("]");
-		return itBuffer.toString();
-	}
-
-	public Boolean getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
-
 }

@@ -45,43 +45,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-//@AllArgsConstructor
-//@EqualsAndHashCode
-//@Getter
-//@NoArgsConstructor
-//@Setter
-//@ToString
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class PositionResponse {
 
 	@JsonProperty("ResponseInfo")
 	private ResponseInfo responseInfo;
 
 	@JsonProperty("Position")
-	private List<Position> position = new ArrayList<Position>();
-
-	public PositionResponse(ResponseInfo responseInfo, List<Position> position) {
-		this.responseInfo = responseInfo;
-		this.position = position;
-	}
-	
-	public PositionResponse(){}
-
-	public ResponseInfo getResponseInfo() {
-		return responseInfo;
-	}
-
-	public void setResponseInfo(ResponseInfo responseInfo) {
-		this.responseInfo = responseInfo;
-	}
-
-	public List<Position> getPosition() {
-		return position;
-	}
-
-	public void setPosition(List<Position> position) {
-		this.position = position;
-	}
-	
-	
-
+	private List<Position> position = new ArrayList<>();
 }

@@ -55,6 +55,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@EqualsAndHashCode
+@RequiredArgsConstructor
 @XStreamAlias("bill")
 public class BillDetails {
 
@@ -79,87 +86,11 @@ public class BillDetails {
     @XStreamAlias("accounts")
     private final List<BillAccountDetails> accounts = new ArrayList<BillAccountDetails>(0);
 
-    public BillDetails(final String refNo, final Date billDate, final String consumerCode, final String consumerType,
-            final String boundaryNum, final String boundaryType, final String description, final BigDecimal totalAmount,
-            final BigDecimal minimumAmount) {
-        this.refNo = refNo;
-        this.billDate = billDate;
-        this.boundaryNum = boundaryNum;
-        this.boundaryType = boundaryType;
-        this.description = description;
-        this.totalAmount = totalAmount;
-        this.minimumAmount = minimumAmount;
-        this.consumerCode = consumerCode;
-        this.consumerType = consumerType;
-    }
-
-    public String getRefNo() {
-        return refNo;
-    }
-
-    public List<BillAccountDetails> getAccounts() {
-        return accounts;
-    }
-
     public void addBillAccountDetails(final BillAccountDetails billAccountDetail) {
         accounts.add(billAccountDetail);
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Date getBilldate() {
         return billDate;
     }
-
-    public String getBoundaryNum() {
-        return boundaryNum;
-    }
-
-    public String getBoundaryType() {
-        return boundaryType;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public BigDecimal getMinimumAmount() {
-        return minimumAmount;
-    }
-
-    public String getConsumerCode() {
-        return consumerCode;
-    }
-    
-    public String getConsumerType() {
-        return consumerType;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof BillDetails) {
-            final BillDetails billDetail = (BillDetails) obj;
-            if (refNo.equals(billDetail.refNo) && billDate.equals(billDetail.billDate)
-                    && boundaryNum.equals(billDetail.boundaryNum) && boundaryType.equals(billDetail.boundaryType)
-                    && description.equals(billDetail.description) && minimumAmount.equals(billDetail.minimumAmount)
-                    && consumerCode.equals(billDetail.consumerCode) && totalAmount.equals(billDetail.totalAmount)
-                    && consumerType.equals(billDetail.consumerType))
-                return true;
-        }
-        return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return billDate.hashCode() + refNo.hashCode() + boundaryNum.hashCode() + boundaryType.hashCode()
-                + description.hashCode() + minimumAmount.hashCode() + consumerCode.hashCode() + totalAmount.hashCode()
-                + consumerType.hashCode();
-    }
-
 }

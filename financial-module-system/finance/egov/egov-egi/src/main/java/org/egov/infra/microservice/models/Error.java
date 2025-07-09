@@ -8,6 +8,10 @@ import javax.validation.constraints.NotNull;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Error object will be returned as a part of reponse body in conjunction with
@@ -16,16 +20,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * HTTP 400.
  */
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Error {
-    @JsonProperty("code")
-    private String code = null;
-    @JsonProperty("message")
-    private String message = null;
-    @JsonProperty("description")
-    private String description = null;
+    private String code;
+    private String message;
+    private String description;
 
-    @JsonProperty("params")
-    private List<String> params = null;
+    private List<String> params;
 
     public Error code(String code) {
         this.code = code;
@@ -103,7 +107,7 @@ public class Error {
 
     public Error addParamsItem(String paramsItem) {
         if (this.params == null) {
-            this.params = new ArrayList<String>();
+            this.params = new ArrayList<>();
         }
         this.params.add(paramsItem);
         return this;
@@ -124,47 +128,5 @@ public class Error {
 
     public void setParams(List<String> params) {
         this.params = params;
-    }
-
-    @Override
-    public boolean equals(java.lang.Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Error error = (Error) o;
-        return Objects.equals(this.code, error.code) && Objects.equals(this.message, error.message)
-                && Objects.equals(this.description, error.description) && Objects.equals(this.params, error.params);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(code, message, description, params);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Error {\n");
-
-        sb.append("    code: ").append(toIndentedString(code)).append("\n");
-        sb.append("    message: ").append(toIndentedString(message)).append("\n");
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    params: ").append(toIndentedString(params)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

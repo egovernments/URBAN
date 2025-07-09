@@ -51,7 +51,15 @@ import java.math.BigDecimal;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import lombok.Getter;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 @XStreamAlias("account")
 public class BillAccountDetails implements Comparable<BillAccountDetails> {
 
@@ -111,74 +119,11 @@ public class BillAccountDetails implements Comparable<BillAccountDetails> {
     }
 
     @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(order).append(",").append(glCode).append(",").append(crAmount).append(",").append(crAmount)
-                .append(",").append(description).append(",").append(isActualDemand);
-        return sb.toString();
-    }
-
-    public String getGlCode() {
-        return glCode;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-
-    public BigDecimal getDrAmount() {
-        return drAmount;
-    }
-
-    public BigDecimal getCrAmount() {
-        return crAmount;
-    }
-
-    public String getFunctionCode() {
-        return functionCode;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Boolean getIsActualDemand() {
-        return isActualDemand;
-    }
-
-    public PURPOSE getPurpose() {
-        return purpose;
-    }
-
-    @Override
     public int compareTo(final BillAccountDetails obj) {
         return order - obj.order;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof BillAccountDetails) {
-            final BillAccountDetails account = (BillAccountDetails) obj;
-            if (glCode.equals(account.glCode) && order.equals(account.order) && crAmount.equals(account.crAmount)
-                    && drAmount.equals(account.drAmount) && description.equals(account.description)
-                    && functionCode.equals(account.functionCode) && isActualDemand.equals(account.isActualDemand))
-                return true;
-        }
-        return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return glCode.hashCode() + order.hashCode() + crAmount.hashCode() + drAmount.hashCode()
-                + description.hashCode() + functionCode.hashCode() + isActualDemand.hashCode();
     }
 
     public Integer getGroupId() {
         return groupId;
     }
-
 }
