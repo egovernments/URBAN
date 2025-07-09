@@ -789,9 +789,11 @@ public class CommonRepository {
         sqlParameterSource.addValue("age", deathDtl.getAge());
         sqlParameterSource.addValue("eidno", deathDtl.getEidno());
 //		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno() );
+        sqlParameterSource.addValue("aadharno", "567346251423" );
         sqlParameterSource.addValue("nationality", deathDtl.getNationality());
         sqlParameterSource.addValue("religion", deathDtl.getReligion());
 //		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode() );
+        sqlParameterSource.addValue("icdcode", "2345");
         sqlParameterSource.addValue("islegacyrecord", deathDtl.getIsLegacyRecord());
         deathDtl.setId(id);
         return sqlParameterSource;
