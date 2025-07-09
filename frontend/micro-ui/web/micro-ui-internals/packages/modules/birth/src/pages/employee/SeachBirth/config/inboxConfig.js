@@ -1,6 +1,3 @@
-
-
-
 export const inboxConfig = () => {
   const id = Digit.ULBService.getCurrentTenantId();
   return {
@@ -9,7 +6,7 @@ export const inboxConfig = () => {
     apiDetails: {
       serviceName: "/birth-death-services/birth/_search",
       requestParam: {},
-      requestBody:{},
+      requestBody: {},
       minParametersForSearchForm: 1,
       masterName: "commonUiConfig",
       moduleName: "searchBirthConfig",
@@ -78,7 +75,6 @@ export const inboxConfig = () => {
                   localePrefix: "COMMON_GENDER",
                 },
               },
-              
             },
             {
               label: "BND_REG_NO_LABEL",
@@ -105,7 +101,6 @@ export const inboxConfig = () => {
                 name: "motherName",
               },
             },
-       
           ],
         },
         label: "",
@@ -141,7 +136,7 @@ export const inboxConfig = () => {
               label: "BND_COMMON_FATHERSNAME",
               jsonPath: "birthFatherInfo.fullName",
             },
-          
+
             {
               key: "view",
               label: "view",
@@ -157,28 +152,9 @@ export const inboxConfig = () => {
         show: true,
       },
     },
+    customHookName: "Birth.useCustomInboxSearch",
     additionalSections: {},
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default inboxConfig;

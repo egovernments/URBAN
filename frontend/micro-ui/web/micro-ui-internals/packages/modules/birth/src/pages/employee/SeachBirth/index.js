@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "@egovernments/digit-ui-react-components";
 import { InboxSearchComposer } from "@egovernments/digit-ui-components";
@@ -6,7 +6,7 @@ import inboxConfig from "./config/inboxConfig";
 
 const SearchBirth = () => {
   const { t } = useTranslation();
-  const configs = inboxConfig();
+  const configs = useMemo(() => inboxConfig(), []);
 
   return (
     <React.Fragment>
@@ -19,4 +19,3 @@ const SearchBirth = () => {
 };
 
 export default SearchBirth;
-

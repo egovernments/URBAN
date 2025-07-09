@@ -20,8 +20,7 @@
     "micro-ui-internals/packages/modules/commonPt",
     "micro-ui-internals/packages/modules/finance",
     "micro-ui-internals/packages/modules/common",
-    "micro-ui-internals/packages/modules/tl",
-    "micro-ui-internals/packages/modules/*"
+    "micro-ui-internals/packages/modules/tl"
   ],
   "engines": {
     "node": ">=14"
@@ -84,7 +83,7 @@
     "build": "GENERATE_SOURCEMAP=false SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "build:webpack": "webpack --mode production",
     "build:prepare": "./build.sh",
-    "clean": "rm -rf node_modules"
+     "cleancmd": "find . \\( -name 'node_modules' -o -name 'dist' \\) -type d -prune -exec rm -rf '{}' +"
   },
   "eslintConfig": {
     "extends": [

@@ -1,16 +1,20 @@
 
+import useCustomInboxSearch from "./useCustomInboxSearch";
 import utils from "../utils";
 
+
+
 const Birth = {
+  useCustomInboxSearch,
 };
 
 const Hooks = {
-  Birth
+  Birth,
 };
 
 const Utils = {
   browser: {
-    Birth: () => { },
+    Birth: () => {},
   },
   Birth: {
     ...utils,
