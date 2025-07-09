@@ -46,17 +46,22 @@ const Filters = ({
     setValue({ ...value, filters: { ...value.filters, ulb: ulbs, state: newStates } });
   };
   const selectStFilters = (e, data) => {
-    // setValue({ ...value, filters: { ...value.filters, state: e.map((allPropsData) => allPropsData?.[1]?.code) } });
-    const selectedStateCodes = e.map((allPropsData) => allPropsData?.[1]?.code);
-    const selectedStateDdrKeys = e.map(item => item[1].ddrKey);
+    const selectedStates = e.map((allPropsData) => allPropsData?.[1]);
+    const selectedStateCodes = selectedStates.map(st => st.code);
+    const selectedStateDdrKeys = selectedStates.map(st => st.ddrKey);
 
-    // Filter the currently selected ULBs to keep only those that belong to the newly selected states
-    const newUlbSelection = (value?.filters?.ulb || []).filter(ulbCode => {
-      const ulb = ulbTenants.ulb.find(u => u.code === ulbCode);
-      return ulb && selectedStateDdrKeys.includes(ulb.ddrKey);
-    });
+    const ulbsToSelect = ulbTenants.ulb
+      .filter(ulb => selectedStateDdrKeys.includes(ulb.ddrKey))
+      .map(ulb => ulb.code);
     
-    setValue({ ...value, filters: { ...value.filters, state: selectedStateCodes, ulb: newUlbSelection } });
+    setValue({ 
+      ...value, 
+      filters: { 
+        ...value.filters, 
+        state: selectedStateCodes, 
+        ulb: ulbsToSelect 
+      } 
+    });
   };
 
    const handleClear = () => {
@@ -69,13 +74,10 @@ const Filters = ({
 
  
    const ulbOptionsToShow = useMemo(() => {
-    // If no state is selected, return ALL ULB options.
     if (!selectedSt || selectedSt.length === 0) {
       return ulbTenants?.ulb
         ?.sort((x, y) => x?.ulbKey?.localeCompare(y?.ulbKey)) || [];
     }
-    
-    // Otherwise, filter ULBs based on the selected states.
     const selectedStateDdrKeys = selectedSt.map(state => state.ddrKey);
     return ulbTenants?.ulb
       ?.filter(ulb => selectedStateDdrKeys.includes(ulb.ddrKey))
