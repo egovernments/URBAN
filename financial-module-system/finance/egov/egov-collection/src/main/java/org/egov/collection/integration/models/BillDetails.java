@@ -59,32 +59,31 @@ import lombok.Getter;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
+ 
 @Getter
-@EqualsAndHashCode
-@RequiredArgsConstructor
 @XStreamAlias("bill")
 public class BillDetails {
 
     @XStreamAsAttribute
-    private final String refNo;
+    private String refNo;
 
     @XStreamAsAttribute
-    private final Date billDate;
+    private Date billDate;
 
     @XStreamAsAttribute
-    private final String consumerCode;
+    private String consumerCode;
 
-    private final String consumerType;
+    private String consumerType;
 
-    private final String boundaryNum;
-    private final String boundaryType;
-    private final String description;
+    private String boundaryNum;
+    private String boundaryType;
+    private String description;
 
-    private final BigDecimal totalAmount;
-    private final BigDecimal minimumAmount;
+    private BigDecimal totalAmount;
+    private BigDecimal minimumAmount;
 
     @XStreamAlias("accounts")
-    private final List<BillAccountDetails> accounts = new ArrayList<BillAccountDetails>(0);
+    private List<BillAccountDetails> accounts = new ArrayList<BillAccountDetails>(0);
 
     public void addBillAccountDetails(final BillAccountDetails billAccountDetail) {
         accounts.add(billAccountDetail);

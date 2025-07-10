@@ -47,15 +47,14 @@
  */
 package com.exilant.exility.common;
 
-import org.apache.log4j.Logger;
-import org.xml.sax.Attributes;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * Static utility Class to set/get field of/from an object we will not worry about any exception. We only promised that we will
@@ -271,10 +270,10 @@ public class ObjectGetSetter {
      * @throws InvocationTargetException 
      * @throws InstantiationException 
      */
-    public static void setAll(final Object object, final Attributes values) throws InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+   /* public static void setAll(final Object object, final Attributes values) throws InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
         for (int i = 0; i < values.getLength(); i++)
             ObjectGetSetter.set(object, values.getQName(i), values.getValue(i));
-    }
+    }*/
     /*
      * public static String unescapeXMLChars(String value){ return
      * value.replaceAll("&gt;",">").replaceAll("&lt;","<").replaceAll("&quot;","\"").replaceAll("&amp;", "&"); }

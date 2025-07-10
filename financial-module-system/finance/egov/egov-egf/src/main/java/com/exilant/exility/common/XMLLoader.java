@@ -218,7 +218,11 @@ public class XMLLoader extends DefaultHandler {
             // 'type'
             // attribute
             try {
-                ObjectGetSetter.setAll(objectToLoad, atts);
+                HashMap<String, String> map = new HashMap<>();
+                for (int i = 0; i < atts.getLength(); i++) {
+                    map.put(atts.getQName(i), atts.getValue(i));
+                }
+                ObjectGetSetter.setAll(objectToLoad, map);
             } catch (InstantiationException e) {
                 LOGGER.error("Exp=" + e.getMessage());
 
