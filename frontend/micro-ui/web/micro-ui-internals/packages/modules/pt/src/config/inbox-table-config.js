@@ -141,11 +141,13 @@ export const TableConfig = (t) => ({
         Header: t("ES_INBOX_SLA_DAYS_REMAINING"),
         accessor: "createdTime",
         Cell: ({ row }) => {
-          const wf = row.original.workflowData;
+          const wf = row.original.searchData?.serviceSla;
           const math = Math.round((wf?.businesssServiceSla || 0) / (24 * 60 * 60 * 1000)) || "-";
-          return GetSlaCell(math);
+          return GetSlaCell(wf);
         },
-        mobileCell: (original) => GetSlaCell(Math.round((original?.workflowData?.["businesssServiceSla"] || 0) / (24 * 60 * 60 * 1000))),
+        // mobileCell: (original) => GetSlaCell(Math.round((original?.searchData?.serviceSla || 0) / (24 * 60 * 60 * 1000))),
+        mobileCell :(original) => GetSlaCell(original?.searchData?.serviceSla?.businesssServiceSla),
+        
       },
     ],
     serviceRequestIdKey: (original) => original?.[t("ES_INBOX_UNIQUE_PROPERTY_ID")]?.props?.children,
