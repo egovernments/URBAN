@@ -739,7 +739,7 @@ public class CommonRepository {
         sqlParameterSource.addValue("lastname", deathFatherInfo.getLastname());
         sqlParameterSource.addValue("aadharno", deathFatherInfo.getAadharno());
         sqlParameterSource.addValue("emailid", deathFatherInfo.getEmailid());
-        sqlParameterSource.addValue("mobileno", deathFatherInfo.getMobileno());
+        sqlParameterSource.addValue("mobileno", deathDtl.getDeathFatherInfo().getMobileno());
         if (isInsert) {
             sqlParameterSource.addValue("createdtime", auditDetails.getCreatedTime());
             sqlParameterSource.addValue("createdby", auditDetails.getCreatedBy());
