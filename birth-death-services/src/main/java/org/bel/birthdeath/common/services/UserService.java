@@ -2,15 +2,7 @@ package org.bel.birthdeath.common.services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.bel.birthdeath.common.config.CommonConfiguration;
@@ -329,6 +321,29 @@ public class UserService {
         StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
         return ownerCall(ownerSearchRequest, uri);
     }
+//public UserDetailResponse getOwners(List<UserOwnerSearchCriteria> criteriaList, RequestInfo requestInfo) {
+//    UserSearchRequest searchRequest = new UserSearchRequest();
+//    searchRequest.setRequestInfo(requestInfo);
+//
+//    Set<String> mobileNumbers = new HashSet<>();
+//    Set<String> names = new HashSet<>();
+//
+//    for (UserOwnerSearchCriteria criteria : criteriaList) {
+//        ParentInfo fatherInfo = criteria.getFatherInfo();
+//        if (fatherInfo != null) {
+//            if (fatherInfo.getMobileno() != null) mobileNumbers.add(fatherInfo.getMobileno());
+//            if (fatherInfo.getFirstname() != null) names.add(fatherInfo.getFirstname());
+//        }
+//    }
+//
+//    searchRequest.setMobileNumber(String.join(",", mobileNumbers));
+//    searchRequest.setName(String.join(",", names));
+//    searchRequest.setTenantId(criteriaList.get(0).getTenantid().split("\\.")[0]);
+//
+//    StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
+//    return ownerCall(searchRequest, uri);
+//}
+
     private UserSearchRequest getOwnerSearchRequest(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
         UserSearchRequest searchRequest = new UserSearchRequest();
         searchRequest.setRequestInfo(requestInfo);

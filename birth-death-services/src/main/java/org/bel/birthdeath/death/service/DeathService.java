@@ -24,12 +24,13 @@ import org.bel.birthdeath.death.certmodel.DeathCertAppln;
 import org.bel.birthdeath.death.certmodel.DeathCertRequest;
 import org.bel.birthdeath.death.certmodel.DeathCertificate;
 import org.bel.birthdeath.death.certmodel.DeathCertificate.StatusEnum;
-import org.bel.birthdeath.death.model.EgDeathDtl;
-import org.bel.birthdeath.death.model.SearchCriteria;
+import org.bel.birthdeath.death.model.*;
 import org.bel.birthdeath.death.repository.DeathRepository;
 import org.bel.birthdeath.death.validator.DeathValidator;
+import org.bel.birthdeath.utils.BirthDeathConstants;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.encryption.EncryptionService;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,8 +53,8 @@ public class DeathService {
 	ObjectMapper objectMapper;
 
 	@Autowired
-	private EncryptionDecryptionUtil encryptionDecryptionUtil;
-	
+	EncryptionDecryptionUtil encryptionDecryptionUtil;
+
 	@Autowired
 	DeathValidator validator;
 	
@@ -89,8 +90,28 @@ public class DeathService {
 		}
 		// ✅ Decrypt full list
 		if (!deathDtls.isEmpty()) {
+			// Decrypt top-level fields like aadharno, icdcode
 			deathDtls = encryptionDecryptionUtil.decryptObject(deathDtls, "BndDetail", EgDeathDtl.class, requestInfo);
+
+			// Explicitly decrypt nested parent info
+			for (EgDeathDtl dtl : deathDtls) {
+				if (dtl.getDeathFatherInfo() != null) {
+					dtl.setDeathFatherInfo(encryptionDecryptionUtil.decryptObject(dtl.getDeathFatherInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
+				}
+
+				if (dtl.getDeathMotherInfo() != null) {
+					dtl.setDeathMotherInfo(encryptionDecryptionUtil.decryptObject(dtl.getDeathMotherInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
+				}
+
+				if (dtl.getDeathSpouseInfo() != null) {
+					dtl.setDeathSpouseInfo(encryptionDecryptionUtil.decryptObject(dtl.getDeathSpouseInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathSpouseInfo.class, requestInfo));
+				}
+			}
 		}
+
 
 		// Set owner/user info if records are found
 		if (!deathDtls.isEmpty()) {
