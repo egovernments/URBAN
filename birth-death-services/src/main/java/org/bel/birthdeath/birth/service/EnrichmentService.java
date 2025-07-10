@@ -1,5 +1,6 @@
 package org.bel.birthdeath.birth.service;
 
+import static org.bel.birthdeath.common.util.UserUtil.convertToCustomUser;
 import static org.bel.birthdeath.utils.BirthDeathConstants.*;
 
 import java.math.BigDecimal;
@@ -115,8 +116,11 @@ public class EnrichmentService {
 		amount.setAmount(new BigDecimal(50));
 		amounts.add(amount);
 		birthCert.setAmount(amounts);
-		birthCert.setCitizen(birtDtls.get(0).getUser());
-//		birthCert.setCitizen(birthCertRequest.getRequestInfo().getUserInfo());
+		if (birthCertRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase("CITIZEN"))
+			birthCert.setCitizen(convertToCustomUser(birthCertRequest.getRequestInfo().getUserInfo()));
+		else
+			birthCert.setCitizen(birtDtls.get(0).getUser());
+
 		birthCert.setTaxPeriodFrom(System.currentTimeMillis());
 		birthCert.setTaxPeriodTo(System.currentTimeMillis()+86400000);
 	}

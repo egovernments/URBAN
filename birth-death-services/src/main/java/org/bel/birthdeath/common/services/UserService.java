@@ -335,13 +335,22 @@ public <T extends ParentInfoProvider> UserDetailResponse getOwners(List<T> dtls,
 
     if (mobileNumbers.isEmpty()) return new UserDetailResponse();
 
-    UserSearchRequest searchRequest = new UserSearchRequest();
-    searchRequest.setRequestInfo(requestInfo);
-    searchRequest.setTenantId(tenantId.split("\\.")[0]);
-    searchRequest.setMobileNumber(String.join(",", mobileNumbers));
+    List<User> allUsers = new ArrayList<>();
+    for (String mobile : mobileNumbers) {
+        UserSearchRequest searchRequest = new UserSearchRequest();
+        searchRequest.setRequestInfo(requestInfo);
+        searchRequest.setTenantId(tenantId.split("\\.")[0]);
+        searchRequest.setMobileNumber(mobile);
 
-    StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
-    return ownerCall(searchRequest, uri);
+        StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
+        UserDetailResponse response = ownerCall(searchRequest, uri);
+
+        if (response != null && response.getUser() != null) {
+            allUsers.addAll(response.getUser());
+        }
+    }
+
+    return UserDetailResponse.builder().user(allUsers).build();
 }
 
 

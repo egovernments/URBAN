@@ -1,5 +1,6 @@
 package org.bel.birthdeath.death.service;
 
+import static org.bel.birthdeath.common.util.UserUtil.convertToCustomUser;
 import static org.bel.birthdeath.utils.BirthDeathConstants.*;
 
 import java.math.BigDecimal;
@@ -124,9 +125,9 @@ public class EnrichmentServiceDeath {
 		amount.setAmount(new BigDecimal(50));
 		amounts.add(amount);
 		deathCert.setAmount(amounts);
-//		if(deathCertRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase("CITIZEN"))
-//			deathCert.setCitizen(deathCertRequest.getRequestInfo().getUserInfo());
-		if (deathDtls != null && !deathDtls.isEmpty() && deathDtls.get(0).getUser() != null) {
+		if(deathCertRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase("CITIZEN"))
+			deathCert.setCitizen(convertToCustomUser(deathCertRequest.getRequestInfo().getUserInfo()));
+		else if (deathDtls != null && !deathDtls.isEmpty() && deathDtls.get(0).getUser() != null) {
 			deathCert.setCitizen(deathDtls.get(0).getUser());
 		} else{
 			// fetch user using the id sent in deathcertRequest and then pass that user
