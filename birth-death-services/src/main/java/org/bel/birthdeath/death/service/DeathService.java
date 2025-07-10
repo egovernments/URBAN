@@ -13,6 +13,7 @@ import org.bel.birthdeath.common.calculation.collections.models.PaymentSearchCri
 import org.bel.birthdeath.common.consumer.ReceiptConsumer;
 import org.bel.birthdeath.common.contract.DeathPdfApplicationRequest;
 import org.bel.birthdeath.common.contract.EgovPdfResp;
+import org.bel.birthdeath.common.contract.EncryptionDecryptionUtil;
 import org.bel.birthdeath.common.contract.RequestInfoWrapper;
 import org.bel.birthdeath.common.model.AuditDetails;
 import org.bel.birthdeath.common.model.user.UserDetailResponse;
@@ -49,6 +50,9 @@ public class DeathService {
 	@Autowired
 	@Qualifier("objectMapperBnd")
 	ObjectMapper objectMapper;
+
+	@Autowired
+	private EncryptionDecryptionUtil encryptionDecryptionUtil;
 	
 	@Autowired
 	DeathValidator validator;
@@ -83,8 +87,16 @@ public class DeathService {
 				deathDtls = repository.getDeathDtls(criteria);
 			}
 		}
-		UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
-		deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+		// ✅ Decrypt full list
+		if (!deathDtls.isEmpty()) {
+			deathDtls = encryptionDecryptionUtil.decryptObject(deathDtls, "BndDetail", EgDeathDtl.class, requestInfo);
+		}
+
+		// Set owner/user info if records are found
+		if (!deathDtls.isEmpty()) {
+			UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
+			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+		}
 		return deathDtls;
 	}
 

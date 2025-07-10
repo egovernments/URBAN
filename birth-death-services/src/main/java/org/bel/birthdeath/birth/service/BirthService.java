@@ -22,6 +22,7 @@ import org.bel.birthdeath.common.calculation.collections.models.PaymentSearchCri
 import org.bel.birthdeath.common.consumer.ReceiptConsumer;
 import org.bel.birthdeath.common.contract.BirthPdfApplicationRequest;
 import org.bel.birthdeath.common.contract.EgovPdfResp;
+import org.bel.birthdeath.common.contract.EncryptionDecryptionUtil;
 import org.bel.birthdeath.common.contract.RequestInfoWrapper;
 import org.bel.birthdeath.common.model.AuditDetails;
 import org.bel.birthdeath.common.model.user.UserDetailResponse;
@@ -53,6 +54,9 @@ public class BirthService {
 	
 	@Autowired
 	BirthValidator validator;
+
+	@Autowired
+	private EncryptionDecryptionUtil encryptionDecryptionUtil;
 	
 	@Autowired
 	EnrichmentService enrichmentService;
@@ -84,8 +88,16 @@ public class BirthService {
 				birthDtls = repository.getBirthDtls(criteria);
 			}
 		}
-		UserDetailResponse userDetailResponse = userService.getOwner(birthDtls.get(0), requestInfo);
-		birthDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+		// Bulk decryption
+		if (!birthDtls.isEmpty()) {
+			birthDtls = encryptionDecryptionUtil.decryptObject(birthDtls, "BndDetail", EgBirthDtl.class, requestInfo);
+		}
+
+		// Set owner/user info if records are found
+		if (!birthDtls.isEmpty()) {
+			UserDetailResponse userDetailResponse = userService.getOwner(birthDtls.get(0), requestInfo);
+			birthDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+		}
 		return birthDtls;
 	}
 

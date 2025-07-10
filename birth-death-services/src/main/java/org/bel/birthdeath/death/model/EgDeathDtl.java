@@ -2,6 +2,7 @@ package org.bel.birthdeath.death.model;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import org.bel.birthdeath.common.model.user.User;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EgDeathDtl implements UserOwnerSearchCriteria {
 
 	private String id;
