@@ -1,10 +1,9 @@
 package org.bel.birthdeath.birth.service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bel.birthdeath.birth.certmodel.BirthCertAppln;
@@ -20,15 +19,18 @@ import org.bel.birthdeath.common.calculation.collections.models.PaymentDetail;
 import org.bel.birthdeath.common.calculation.collections.models.PaymentResponse;
 import org.bel.birthdeath.common.calculation.collections.models.PaymentSearchCriteria;
 import org.bel.birthdeath.common.consumer.ReceiptConsumer;
-import org.bel.birthdeath.common.contract.BirthPdfApplicationRequest;
-import org.bel.birthdeath.common.contract.EgovPdfResp;
-import org.bel.birthdeath.common.contract.EncryptionDecryptionUtil;
-import org.bel.birthdeath.common.contract.RequestInfoWrapper;
+import org.bel.birthdeath.common.contract.*;
 import org.bel.birthdeath.common.model.AuditDetails;
+import org.bel.birthdeath.common.model.user.User;
 import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
 import org.bel.birthdeath.common.services.UserService;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
+import org.bel.birthdeath.death.model.EgDeathDtl;
+import org.bel.birthdeath.death.model.EgDeathFatherInfo;
+import org.bel.birthdeath.death.model.EgDeathMotherInfo;
+import org.bel.birthdeath.death.model.EgDeathSpouseInfo;
+import org.bel.birthdeath.utils.BirthDeathConstants;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.tracer.model.CustomException;
@@ -88,15 +90,43 @@ public class BirthService {
 				birthDtls = repository.getBirthDtls(criteria);
 			}
 		}
-		// Bulk decryption
+
+		// ✅ Decrypt full list
 		if (!birthDtls.isEmpty()) {
-			birthDtls = encryptionDecryptionUtil.decryptObject(birthDtls, "BndDetail", EgBirthDtl.class, requestInfo);
+			// Decrypt top-level fields like aadharno, icdcode
+			birthDtls = encryptionDecryptionUtil.decryptObject(birthDtls, "BndDetail", EgDeathDtl.class, requestInfo);
+
+			// Explicitly decrypt nested parent info
+			for (EgBirthDtl btl : birthDtls) {
+				if (btl.getBirthFatherInfo() != null) {
+					btl.setBirthFatherInfo(encryptionDecryptionUtil.decryptObject(btl.getBirthFatherInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
+				}
+
+				if (btl.getBirthMotherInfo() != null) {
+					btl.setBirthMotherInfo(encryptionDecryptionUtil.decryptObject(btl.getBirthMotherInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
+				}
+			}
 		}
 
-		// Set owner/user info if records are found
+
 		if (!birthDtls.isEmpty()) {
-			UserDetailResponse userDetailResponse = userService.getOwner(birthDtls.get(0), requestInfo);
-			birthDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+			UserDetailResponse userDetailResponse = userService.getOwners(birthDtls, requestInfo);
+
+			if (userDetailResponse != null && userDetailResponse.getUser() != null) {
+				Map<String, User> mobileToUserMap = userDetailResponse.getUser().stream()
+						.filter(user -> user.getMobileNumber() != null)
+						.collect(Collectors.toMap(User::getMobileNumber, Function.identity(), (u1, u2) -> u1)); // avoid duplicates
+
+				for (EgBirthDtl btl : birthDtls) {
+					ParentInfo fatherInfo = btl.getFatherInfo();
+					if (fatherInfo != null && fatherInfo.getMobileno() != null) {
+						User user = mobileToUserMap.get(fatherInfo.getMobileno());
+						if (user != null) btl.setUser(user);
+					}
+				}
+			}
 		}
 		return birthDtls;
 	}
@@ -113,7 +143,7 @@ public class BirthService {
 		birthCertificate.setTenantId(criteria.getTenantId());
 		BirthCertRequest birthCertRequest = BirthCertRequest.builder().birthCertificate(birthCertificate).requestInfo(requestInfo).build();
 		List<EgBirthDtl> birtDtls = repository.getBirthDtlsAll(criteria,requestInfo);
-			UserDetailResponse userDetailResponse = userService.getOwner(birtDtls.get(0), requestInfo);
+			UserDetailResponse userDetailResponse = userService.getOwners(birtDtls, requestInfo);
 			birtDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 			birthCertificate.setBirthPlace(birtDtls.get(0).getPlaceofbirth());
 			birthCertificate.setGender(birtDtls.get(0).getGenderStr());

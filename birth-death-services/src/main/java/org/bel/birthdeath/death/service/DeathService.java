@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bel.birthdeath.common.calculation.collections.models.Payment;
@@ -11,10 +14,7 @@ import org.bel.birthdeath.common.calculation.collections.models.PaymentDetail;
 import org.bel.birthdeath.common.calculation.collections.models.PaymentResponse;
 import org.bel.birthdeath.common.calculation.collections.models.PaymentSearchCriteria;
 import org.bel.birthdeath.common.consumer.ReceiptConsumer;
-import org.bel.birthdeath.common.contract.DeathPdfApplicationRequest;
-import org.bel.birthdeath.common.contract.EgovPdfResp;
-import org.bel.birthdeath.common.contract.EncryptionDecryptionUtil;
-import org.bel.birthdeath.common.contract.RequestInfoWrapper;
+import org.bel.birthdeath.common.contract.*;
 import org.bel.birthdeath.common.model.AuditDetails;
 import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
@@ -31,6 +31,7 @@ import org.bel.birthdeath.utils.BirthDeathConstants;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.encryption.EncryptionService;
+import org.bel.birthdeath.common.model.user.User;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -113,10 +114,28 @@ public class DeathService {
 		}
 
 
-		// Set owner/user info if records are found
+//		// Set owner/user info if records are found
+//		if (!deathDtls.isEmpty()) {
+//			UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
+//			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+//		}
+
 		if (!deathDtls.isEmpty()) {
-			UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
-			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+			UserDetailResponse userDetailResponse = userService.getOwners(deathDtls, requestInfo);
+
+			if (userDetailResponse != null && userDetailResponse.getUser() != null) {
+				Map<String, User> mobileToUserMap = userDetailResponse.getUser().stream()
+						.filter(user -> user.getMobileNumber() != null)
+						.collect(Collectors.toMap(User::getMobileNumber, Function.identity(), (u1, u2) -> u1)); // avoid duplicates
+
+				for (EgDeathDtl dtl : deathDtls) {
+					ParentInfo fatherInfo = dtl.getDeathFatherInfo();
+					if (fatherInfo != null && fatherInfo.getMobileno() != null) {
+						User user = mobileToUserMap.get(fatherInfo.getMobileno());
+						if (user != null) dtl.setUser(user);
+					}
+				}
+			}
 		}
 		return deathDtls;
 	}
@@ -133,7 +152,7 @@ public class DeathService {
 		deathCertificate.setTenantId(criteria.getTenantId());
 		DeathCertRequest deathCertRequest = DeathCertRequest.builder().deathCertificate(deathCertificate).requestInfo(requestInfo).build();
 		List<EgDeathDtl> deathDtls = repository.getDeathDtlsAll(criteria,requestInfo);
-			UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
+			UserDetailResponse userDetailResponse = userService.getOwners(deathDtls, requestInfo);
 			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 			deathCertificate.setGender(deathDtls.get(0).getGenderStr());
 			deathCertificate.setAge(deathDtls.get(0).getAge());

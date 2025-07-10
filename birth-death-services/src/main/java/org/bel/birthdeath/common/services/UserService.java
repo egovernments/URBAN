@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.bel.birthdeath.common.config.CommonConfiguration;
 import org.bel.birthdeath.common.contract.DeathResponse;
 import org.bel.birthdeath.common.contract.ParentInfo;
-import org.bel.birthdeath.common.contract.UserOwnerSearchCriteria;
+import org.bel.birthdeath.common.contract.ParentInfoProvider;
 import org.bel.birthdeath.common.model.user.User;
 import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.model.user.UserRequest;
@@ -316,47 +316,48 @@ public class UserService {
         return d != null ? d.getTime() : 0;
     }
 
-    public UserDetailResponse getOwner(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
-        UserSearchRequest ownerSearchRequest = getOwnerSearchRequest(criteria, requestInfo);
-        StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
-        return ownerCall(ownerSearchRequest, uri);
+//    public UserDetailResponse getOwner(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
+//        UserSearchRequest ownerSearchRequest = getOwnerSearchRequest(criteria, requestInfo);
+//        StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
+//        return ownerCall(ownerSearchRequest, uri);
+//    }
+public <T extends ParentInfoProvider> UserDetailResponse getOwners(List<T> dtls, RequestInfo requestInfo) {
+    Set<String> mobileNumbers = new HashSet<>();
+    String tenantId = null;
+
+    for (T dtl : dtls) {
+        ParentInfo fatherInfo = dtl.getFatherInfo();
+        if (fatherInfo != null && fatherInfo.getMobileno() != null) {
+            mobileNumbers.add(fatherInfo.getMobileno());
+            if (tenantId == null) tenantId = dtl.getTenantid();
+        }
     }
-//public UserDetailResponse getOwners(List<UserOwnerSearchCriteria> criteriaList, RequestInfo requestInfo) {
-//    UserSearchRequest searchRequest = new UserSearchRequest();
-//    searchRequest.setRequestInfo(requestInfo);
+
+    if (mobileNumbers.isEmpty()) return new UserDetailResponse();
+
+    UserSearchRequest searchRequest = new UserSearchRequest();
+    searchRequest.setRequestInfo(requestInfo);
+    searchRequest.setTenantId(tenantId.split("\\.")[0]);
+    searchRequest.setMobileNumber(String.join(",", mobileNumbers));
+
+    StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
+    return ownerCall(searchRequest, uri);
+}
+
+
+//    private UserSearchRequest getOwnerSearchRequest(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
+//        UserSearchRequest searchRequest = new UserSearchRequest();
+//        searchRequest.setRequestInfo(requestInfo);
 //
-//    Set<String> mobileNumbers = new HashSet<>();
-//    Set<String> names = new HashSet<>();
+//        searchRequest.setTenantId(criteria.getTenantid().split("\\.")[0]);
 //
-//    for (UserOwnerSearchCriteria criteria : criteriaList) {
 //        ParentInfo fatherInfo = criteria.getFatherInfo();
 //        if (fatherInfo != null) {
-//            if (fatherInfo.getMobileno() != null) mobileNumbers.add(fatherInfo.getMobileno());
-//            if (fatherInfo.getFirstname() != null) names.add(fatherInfo.getFirstname());
+//            searchRequest.setName(fatherInfo.getFirstname());
+//            searchRequest.setMobileNumber(fatherInfo.getMobileno());
 //        }
+//
+//        return searchRequest;
 //    }
-//
-//    searchRequest.setMobileNumber(String.join(",", mobileNumbers));
-//    searchRequest.setName(String.join(",", names));
-//    searchRequest.setTenantId(criteriaList.get(0).getTenantid().split("\\.")[0]);
-//
-//    StringBuilder uri = new StringBuilder(config.getUserHost()).append(config.getUserSearchEndpoint());
-//    return ownerCall(searchRequest, uri);
-//}
-
-    private UserSearchRequest getOwnerSearchRequest(UserOwnerSearchCriteria criteria, RequestInfo requestInfo) {
-        UserSearchRequest searchRequest = new UserSearchRequest();
-        searchRequest.setRequestInfo(requestInfo);
-
-        searchRequest.setTenantId(criteria.getTenantid().split("\\.")[0]);
-
-        ParentInfo fatherInfo = criteria.getFatherInfo();
-        if (fatherInfo != null) {
-            searchRequest.setName(fatherInfo.getFirstname());
-            searchRequest.setMobileNumber(fatherInfo.getMobileno());
-        }
-
-        return searchRequest;
-    }
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.bel.birthdeath.common.contract.ParentInfo;
-import org.bel.birthdeath.common.contract.UserOwnerSearchCriteria;
+import org.bel.birthdeath.common.contract.ParentInfoProvider;
 import org.bel.birthdeath.common.model.user.User;
 
 @Getter
@@ -20,7 +20,7 @@ import org.bel.birthdeath.common.model.user.User;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EgBirthDtl implements UserOwnerSearchCriteria {
+public class EgBirthDtl implements ParentInfoProvider {
 
 	private String id;
 
