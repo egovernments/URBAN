@@ -11,6 +11,8 @@ import org.bel.birthdeath.birth.certmodel.BirthCertRequest;
 import org.bel.birthdeath.birth.certmodel.BirthCertificate;
 import org.bel.birthdeath.birth.certmodel.BirthCertificate.StatusEnum;
 import org.bel.birthdeath.birth.model.EgBirthDtl;
+import org.bel.birthdeath.birth.model.EgBirthFatherInfo;
+import org.bel.birthdeath.birth.model.EgBirthMotherInfo;
 import org.bel.birthdeath.birth.model.SearchCriteria;
 import org.bel.birthdeath.birth.repository.BirthRepository;
 import org.bel.birthdeath.birth.validator.BirthValidator;
@@ -27,9 +29,6 @@ import org.bel.birthdeath.common.repository.ServiceRequestRepository;
 import org.bel.birthdeath.common.services.UserService;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
 import org.bel.birthdeath.death.model.EgDeathDtl;
-import org.bel.birthdeath.death.model.EgDeathFatherInfo;
-import org.bel.birthdeath.death.model.EgDeathMotherInfo;
-import org.bel.birthdeath.death.model.EgDeathSpouseInfo;
 import org.bel.birthdeath.utils.BirthDeathConstants;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
@@ -94,18 +93,18 @@ public class BirthService {
 		// ✅ Decrypt full list
 		if (!birthDtls.isEmpty()) {
 			// Decrypt top-level fields like aadharno, icdcode
-			birthDtls = encryptionDecryptionUtil.decryptObject(birthDtls, "BndDetail", EgDeathDtl.class, requestInfo);
+			birthDtls = encryptionDecryptionUtil.decryptObject(birthDtls, "BndDetail", EgBirthDtl.class, requestInfo);
 
 			// Explicitly decrypt nested parent info
 			for (EgBirthDtl btl : birthDtls) {
 				if (btl.getBirthFatherInfo() != null) {
 					btl.setBirthFatherInfo(encryptionDecryptionUtil.decryptObject(btl.getBirthFatherInfo(),
-							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathFatherInfo.class, requestInfo));
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgBirthFatherInfo.class, requestInfo));
 				}
 
 				if (btl.getBirthMotherInfo() != null) {
 					btl.setBirthMotherInfo(encryptionDecryptionUtil.decryptObject(btl.getBirthMotherInfo(),
-							BirthDeathConstants.BND_DESCRYPT_KEY, EgDeathMotherInfo.class, requestInfo));
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgBirthMotherInfo.class, requestInfo));
 				}
 			}
 		}
