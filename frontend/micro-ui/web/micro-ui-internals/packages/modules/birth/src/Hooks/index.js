@@ -1,7 +1,9 @@
 
 import utils from "../utils";
+import userCustomInboxHook from "./userCustomInboxHook";
 
 const Birth = {
+  userCustomInboxHook
 };
 
 const Hooks = {

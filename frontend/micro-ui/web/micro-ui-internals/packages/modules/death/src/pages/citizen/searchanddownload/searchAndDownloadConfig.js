@@ -212,6 +212,7 @@ export const searchAndDownloadConfig = (t) => {
         show: true,
       },
     },
+       customHookName: "Death.userCustomInboxHook",
     additionalSections: {},
   };
 };

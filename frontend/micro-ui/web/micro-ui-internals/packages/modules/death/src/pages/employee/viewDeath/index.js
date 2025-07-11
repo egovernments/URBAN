@@ -34,23 +34,34 @@ const ViewDeath = () => {
 
 
   // --- Fetch Certificate View Data ---
-  const {
+const {
     data: certificateViewData,
     isLoading: isViewDataLoading,
     error: viewDataError,
-  } = Digit.Hooks.useCustomAPIHook({
-    url: "/birth-death-services/death/_viewfullcertdata",
-    method: "POST",
-    params: { tenantId: currentLocalTenantId, id },
-    body: {
-      RequestInfo: { apiId: "Rainmaker", ver: ".01", /* ... other RequestInfo params ... */ authToken },
+  } = Digit.Hooks.useCustomAPIHook(
+    "/birth-death-services/death/_viewfullcertdata",
+    { tenantId: currentLocalTenantId, id },
+    {
+      RequestInfo: {
+        apiId: "Rainmaker",
+        ver: ".01",
+        action: "_viewcertdata",
+        did: "1",
+        key: "",
+        msgId: "20170310130900|en_IN",
+        requesterId: "",
+        authToken,
+      },
     },
-    headers: { "Content-Type": "application/json" },
-    changeQueryName: `deathCertData_${id}`,
-    config: {
+    {},
+    {
+      headers: { "Content-Type": "application/json" },
+      queryKey: `deathCertData_${id}`,
       enabled: !!id && !!currentLocalTenantId,
-    },
-  });
+    }
+  );
+
+  
 
   // --- Effect to set up ViewComposer config and determine button type ---
   useEffect(() => {
@@ -98,37 +109,39 @@ const ViewDeath = () => {
 
   
   const handlePayAndDownload = async () => {
-  // let consumerCode;
+  let consumerCode;
   
-  // try {
-  //   consumerCode = await downloadApi(tenantId, id);
-  // } catch (error) {
-  //   console.error("Error fetching consumer code:", error);
-  //   consumerCode = `DT-FALLBACK-${Date.now()}`; // Example fallback
-  // }
+  try {
+    consumerCode = await downloadApi(tenantId, id);
 
-
-  // const businessService = "DEATH_CERT";
-  // history.push(`/digit-ui/employee/payment/collect/${businessService}/${consumerCode}/tenantId=${tenantId}?workflow=death`);
-   const fallbackConsumerCode = `DT-${id}-${Date.now()}`;
+  } catch (error) {
+    console.error("Error fetching consumer code:", error);
   
-  const apiPromise = downloadApi(tenantId, id)
-    .then(realCode => realCode || fallbackConsumerCode)
-    .catch(() => fallbackConsumerCode);
-
-  // Navigate immediately with fallback code
-  const businessService = "DEATH_CERT";
-  history.push(
-    `/digit-ui/employee/payment/collect/${businessService}/${fallbackConsumerCode}/tenantId=${tenantId}?workflow=death`
-  );
-
-  // If we get a different code from API, update the URL
-  const finalConsumerCode = await apiPromise;
-  if (finalConsumerCode !== fallbackConsumerCode) {
-    history.replace(
-      `/digit-ui/employee/payment/collect/${businessService}/${finalConsumerCode}/tenantId=${tenantId}?workflow=death`
-    );
   }
+  const encodedConsumerCode = encodeURIComponent(consumerCode);
+  console.log("Encoded Consumer Code:", encodedConsumerCode);
+
+
+  const businessService = "DEATH_CERT";
+  history.push(`/digit-ui/employee/payment/collect/${businessService}/${encodedConsumerCode}/tenantId=${tenantId}?workflow=death`);
+  
+  // const apiPromise = downloadApi(tenantId, id)
+  //   .then(realCode => realCode || fallbackConsumerCode)
+  //   .catch(() => fallbackConsumerCode);
+
+  // // Navigate immediately with fallback code
+  // const businessService = "DEATH_CERT";
+  // history.push(
+  //   `/digit-ui/employee/payment/collect/${businessService}/${fallbackConsumerCode}/tenantId=${tenantId}?workflow=death`
+  // );
+
+  // // If we get a different code from API, update the URL
+  // const finalConsumerCode = await apiPromise;
+  // if (finalConsumerCode !== fallbackConsumerCode) {
+  //   history.replace(
+  //     `/digit-ui/employee/payment/collect/${businessService}/${finalConsumerCode}/tenantId=${tenantId}?workflow=death`
+  //   );
+  // }
 };
 
 

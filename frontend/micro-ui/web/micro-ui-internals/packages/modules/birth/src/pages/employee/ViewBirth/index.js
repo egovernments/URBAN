@@ -17,11 +17,10 @@ const ViewBirth = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const authToken = window?.Digit?.UserService?.getUser()?.access_token;
 
-  const { data, isLoading, error } = Digit.Hooks.useCustomAPIHook({
-    url: "/birth-death-services/birth/_viewfullcertdata",
-    method: "POST",
-    params: { tenantId, id },
-    body: {
+ const { data, isLoading, error } = Digit.Hooks.useCustomAPIHook(
+    "/birth-death-services/birth/_viewfullcertdata",
+    { tenantId, id },
+    {
       RequestInfo: {
         apiId: "Rainmaker",
         ver: ".01",
@@ -33,10 +32,13 @@ const ViewBirth = () => {
         authToken,
       },
     },
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   useEffect(() => {
     if (data?.BirthCertificate?.length > 0) {

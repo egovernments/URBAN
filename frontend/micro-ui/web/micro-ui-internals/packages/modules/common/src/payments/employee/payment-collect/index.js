@@ -23,7 +23,12 @@ export const CollectPayment = (props) => {
   if (window.location.href.includes("ISWSAPP")) consumerCode = new URLSearchParams(search).get("applicationNumber");
   if (window.location.href.includes("ISWSCON") || ModuleWorkflow === "WS") consumerCode = decodeURIComponent(consumerCode);
 
-  const { data: paymentdetails, isLoading } = Digit.Hooks.useFetchPayment({ tenantId: tenantId, consumerCode, businessService });
+  console.log("CollectPayment consumerCode", consumerCode);
+
+ const decodedConsumerCode = decodeURIComponent(consumerCode);
+ console.log("Decoded Consumer Code:", decodedConsumerCode);
+
+  const { data: paymentdetails, isLoading } = Digit.Hooks.useFetchPayment({ tenantId: tenantId, consumerCode:decodedConsumerCode, businessService });
   const bill = paymentdetails?.Bill ? paymentdetails?.Bill[0] : {};
   const { data: applicationData } = Digit.Hooks.fsm.useSearch(
     tenantId,

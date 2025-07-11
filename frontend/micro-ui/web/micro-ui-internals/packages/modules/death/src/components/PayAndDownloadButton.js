@@ -20,6 +20,7 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
         const businessService = "DEATH_CERT";
        
         const encodedConsumerCode = encodeURIComponent(fetchedConsumerCode);
+        // console.log("Encoded Consumer Code:", encodedConsumerCode);
         history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=death`,
           {
             tenantId: tenantId,

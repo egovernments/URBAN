@@ -157,6 +157,7 @@ export const inboxConfig = () => {
         show: true,
       },
     },
+    customHookName: "Birth.userCustomInboxHook",
     additionalSections: {},
   };
 };

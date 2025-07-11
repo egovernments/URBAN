@@ -176,6 +176,7 @@ export const searchAndDownloadConfig = (t) => {
                 show: true,
             },
         },
+          customHookName: "Birth.userCustomInboxHook",
         additionalSections: {},
     };
 };

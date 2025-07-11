@@ -158,35 +158,35 @@ const SelectPaymentType = (props) => {
   };
 
   const onSubmit = async () => {
-    let recieptRequest = {
-      Payment: {
-        mobileNumber: bill.mobileNumber,
-        paymentDetails: [
-          {
-            businessService,
-            billId: bill.id,
-            totalDue: bill.totalAmount,
-            totalAmountPaid: bill.totalAmount,
-          },
-        ],
-        tenantId: bill.tenantId,
-        totalDue: bill.totalAmount,
-        totalAmountPaid: bill.totalAmount,
-        paymentMode: "CASH",
-        payerName: bill.payerName,
-        paidBy: "OWNER",
-      },
-    };
-    try {
-      const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
-      sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
-      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
-    } catch (error) {
-      console.log("Error while creating receipt", error);
-      // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
-      // setTimeout(() => setToast(null), 5000);
-      return;
-    }
+    // let recieptRequest = {
+    //   Payment: {
+    //     mobileNumber: bill.mobileNumber,
+    //     paymentDetails: [
+    //       {
+    //         businessService,
+    //         billId: bill.id,
+    //         totalDue: bill.totalAmount,
+    //         totalAmountPaid: bill.totalAmount,
+    //       },
+    //     ],
+    //     tenantId: bill.tenantId,
+    //     totalDue: bill.totalAmount,
+    //     totalAmountPaid: bill.totalAmount,
+    //     paymentMode: "CASH",
+    //     payerName: bill.payerName,
+    //     paidBy: "OWNER",
+    //   },
+    // };
+    // try {
+    //   const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+    //   sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
+    //   history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
+    // } catch (error) {
+    //   console.log("Error while creating receipt", error);
+    //   // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
+    //   // setTimeout(() => setToast(null), 5000);
+    //   return;
+    // }
 
     if (wrkflow === "birth") {
       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=birth`);

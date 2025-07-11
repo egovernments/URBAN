@@ -29,7 +29,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
   const consumerCode = decodeURIComponent(encodedConsumerCode);
   const { workflow: wrkflow, tenantId: _tenantId, authorization, ConsumerName } = Digit.Hooks.useQueryParams();
   const [bill, setBill] = useState(state?.bill);
-  const tenantId = state?.tenantId || _tenantId || Digit.UserService.getUser().info?.tenantId;
+  const tenantId = Digit.UserService.getUser().info?.tenantId || state?.tenantId || _tenantId ;
   const propertyId = state?.propertyId;
   if (wrkflow === "WNS" && consumerCode && consumerCode.includes("?")) consumerCode = consumerCode.substring(0, consumerCode.indexOf("?"));
   const { data, isLoading } = state?.bill

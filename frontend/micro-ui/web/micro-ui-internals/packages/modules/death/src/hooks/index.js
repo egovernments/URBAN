@@ -1,23 +1,10 @@
-// import utils from "../utils";
 
-// const tl = {
-// };
-
-// const Hooks = {
-//   tl,
-// };
-
-// const Utils = {
-  
-// }
-
-// export const CustomisedHooks = {
-//   Hooks,
-// };
 
 import utils from "../utils";
+import userCustomInboxHook from "./userCustomInboxHook";
 
 const Death = {
+  userCustomInboxHook
 };
 
 const Hooks = {
