@@ -174,7 +174,7 @@ export const CreateBirth = () => {
       hospitalname: formData?.hospital_name?.code || "Unknown",
       isLegacyRecord: !!formData?.checkbox_legacy,
       excelrowindex: -1,
-      counter: 0,
+      counter: !!formData?.checkbox_legacy ? 1 : 0,
       tenantid: Digit.ULBService.getCurrentTenantId(),
     };
   };
@@ -206,7 +206,6 @@ export const CreateBirth = () => {
       },
       {
         onSuccess: (response) => {
-        
           if (response?.serviceError) {
             setShowToast({ key: "error", label: `Failed: ${response.serviceError}` });
           } else {

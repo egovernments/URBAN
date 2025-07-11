@@ -179,7 +179,7 @@ import useServiceTypeFromApplicationType from "./obps/useServiceTypeFromApplicat
 import useBusinessServiceBasedOnServiceType from "./obps/useBusinessServiceBasedOnServiceType";
 import useBusinessServiceData from "./obps/useBusinessServiceData";
 import useBPATaxDocuments from "./obps/useBPATaxDocuments";
-
+import useCustomAPIHookV2 from "./useCustomAPIHookV2";
 import useEventInbox from "./events/useEventInbox";
 import useEventDetails from "./events/useEventDetails";
 import { useEngagementMDMS } from "./engagement/useMdms";
@@ -553,6 +553,7 @@ const Hooks = {
   ws,
   useCustomMDMS,
   useCustomAPIHook,
+  useCustomAPIHookV2,
   reports,
   useGetHowItWorksJSON,
   useGetFAQsJSON,

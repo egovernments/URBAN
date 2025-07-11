@@ -161,7 +161,7 @@ export const usePdfDownloader = (initialCertificateIdForFilename) => {
     // or when a new download is initiated. React Query's remove() or reset() on queryClient
     // could be used if you have access to queryClient, or by changing queryKey more drastically.
     // For now, we rely on `enabled` and careful state management.
-  } = Digit.Hooks.useCustomAPIHook({
+  } = Digit.Hooks.useCustomAPIHookV2({
     url: "/filestore/v1/files/url",
     method: "GET",
     params: {
@@ -190,7 +190,7 @@ export const usePdfDownloader = (initialCertificateIdForFilename) => {
       const fileUrl = fileData?.url;
 
       if (fileUrl && currentCertificateIdForFilename) {
-        console.log("usePdfDownloader: File URL obtained, attempting download:", fileUrl);
+      
         const link = document.createElement('a');
         link.href = fileUrl;
         link.target = '_blank';
@@ -200,7 +200,7 @@ export const usePdfDownloader = (initialCertificateIdForFilename) => {
         document.body.removeChild(link);
         setDownloadError(null);
         setIsDownloaded(true);
-        console.log("usePdfDownloader: Download link clicked.");
+       
       } else {
         console.error("usePdfDownloader: Filestore response no URL or missing filename ID.");
         setDownloadError("Could not retrieve download link.");
@@ -229,7 +229,7 @@ export const usePdfDownloader = (initialCertificateIdForFilename) => {
 
 
   const initiateDownload = (tenantIdForMutation, idForMutationOrFilename, directFileStoreId = null) => {
-    console.log("usePdfDownloader: initiateDownload called with:", { tenantIdForMutation, idForMutationOrFilename, directFileStoreId });
+
 
     setCurrentCertificateIdForFilename(idForMutationOrFilename);
     setDownloadError(null); // Clear previous errors
@@ -237,7 +237,7 @@ export const usePdfDownloader = (initialCertificateIdForFilename) => {
     downloadAttemptedForId.current = null; // Reset attempt flag for new download request
 
     if (directFileStoreId) {
-      console.log(`usePdfDownloader: Using direct FileStore ID: ${directFileStoreId}`);
+
       // If filestoreIdToFetch is already this directFileStoreId and the hook is enabled,
       // React Query might not refetch unless cacheTime is up or data is marked stale.
       // Setting it to null first then to the ID might force a refetch if queryKey changes enough
@@ -259,12 +259,12 @@ export const usePdfDownloader = (initialCertificateIdForFilename) => {
     // For mutation, ensure filestoreIdToFetch is null initially so it doesn't conflict
     setFilestoreIdToFetch(null); 
 
-    console.log(`usePdfDownloader: Initiating 2-step download for ID: ${idForMutationOrFilename}`);
+   
     downloadIdMutation.mutate(
       { params: { tenantId: tenantIdForMutation, id: idForMutationOrFilename, source: "web" } },
       {
         onSuccess: (response) => {
-          console.log("usePdfDownloader: Mutation successful, filestoreId:", response?.filestoreId);
+        
           if (!response?.filestoreId) {
             setDownloadError("Failed to get download reference.");
             setIsDownloading(false); // Stop loading if mutation gives no ID

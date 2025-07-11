@@ -17,6 +17,7 @@ export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalNam
 
       if (fetchedConsumerCode) {
         const businessService = "BIRTH_CERT.BIRTH_CERT";
+
         const encodedConsumerCode = encodeURIComponent(fetchedConsumerCode);
         // Defensive: onlsy navigate if businessService and encodedConsumerCode are valid
         if (businessService && encodedConsumerCode) {

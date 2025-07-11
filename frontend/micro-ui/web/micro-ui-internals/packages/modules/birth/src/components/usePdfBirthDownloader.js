@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react'; // Added useRef
 
 
@@ -20,7 +19,7 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
     isLoading: isFileLinkLoading,
     isFetching: isFileLinkFetching,
     error: fileStoreLinkError,
-  } = Digit.Hooks.useCustomAPIHook({
+  } = Digit.Hooks.useCustomAPIHookV2({
     url: "/filestore/v1/files/url",
     method: "GET",
     params: {
@@ -85,53 +84,57 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
   ]);
 
 
+  // Added detailed console.log statements for all steps in the PDF download flow
   const initiateDownload = (tenantIdForMutation, idForMutationOrFilename, directFileStoreId = null) => {
-    // console.log("usePdfDownloader: initiateDownload called with:", { tenantIdForMutation, idForMutationOrFilename, directFileStoreId });
+
 
     setCurrentCertificateIdForFilename(idForMutationOrFilename);
     setDownloadError(null); // Clear previous errors
     setIsDownloading(true); // Set loading true immediately
+
+
     downloadAttemptedForId.current = null; // Reset attempt flag for new download request
 
     if (directFileStoreId) {
-      // console.log(`usePdfDownloader: Using direct FileStore ID: ${directFileStoreId}`);
-      // If filestoreIdToFetch is already this directFileStoreId and the hook is enabled,
-      // React Query might not refetch unless cacheTime is up or data is marked stale.
-      // Setting it to null first then to the ID might force a refetch if queryKey changes enough
-      // or if React Query's `enabled` toggling handles it.
-      // Forcing a distinct value change:
+
       setFilestoreIdToFetch(null); 
-      setTimeout(() => setFilestoreIdToFetch(directFileStoreId), 0); // Trigger filestore hook
+      setTimeout(() => {
+
+        setFilestoreIdToFetch(directFileStoreId);
+      }, 0); // Trigger filestore hook
       return;
     }
 
-    // Fallback to 2-step download (mutation)
     if (!idForMutationOrFilename || !tenantIdForMutation) {
       console.error("usePdfDownloader: For 2-step, ID or Tenant ID missing.");
       setDownloadError("Missing info for 2-step download.");
       setIsDownloading(false);
+      console.log("usePdfDownloader: Download aborted due to missing ID or Tenant ID.");
       return;
     }
-    
-    // For mutation, ensure filestoreIdToFetch is null initially so it doesn't conflict
+
     setFilestoreIdToFetch(null); 
 
-    // console.log(`usePdfDownloader: Initiating 2-step download for ID: ${idForMutationOrFilename}`);
+
     downloadIdMutation.mutate(
       { params: { tenantId: tenantIdForMutation, id: idForMutationOrFilename, source: "web" } },
       {
         onSuccess: (response) => {
-          // console.log("usePdfDownloader: Mutation successful, filestoreId:", response?.filestoreId);
+         
           if (!response?.filestoreId) {
             setDownloadError("Failed to get download reference.");
             setIsDownloading(false); // Stop loading if mutation gives no ID
+            console.log("usePdfDownloader: Mutation failed to provide filestoreId.");
             return;
           }
           setFilestoreIdToFetch(response.filestoreId); // This will trigger filestore hook
+        
         },
         onError: (error) => {
+          console.error("usePdfDownloader: Error in mutation step:", error);
           setDownloadError("Error in mutation step.");
           setIsDownloading(false);
+        
         },
       }
     );
@@ -142,7 +145,10 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
     const mutationIsLoading = downloadIdMutation.isLoading;
 
     if (mutationIsLoading || (filestoreIdToFetch && (isFileLinkLoading || isFileLinkFetching))) {
-        if (!isDownloading) setIsDownloading(true);
+        if (!isDownloading) {
+          setIsDownloading(true);
+          console.log("usePdfDownloader: Combined isDownloading state set to true.");
+        }
     }
     
   }, [downloadIdMutation.isLoading, filestoreIdToFetch, isFileLinkLoading, isFileLinkFetching, isDownloading]);

@@ -53,11 +53,11 @@ const ViewBirth = () => {
   const useBirthDownload = Digit.ComponentRegistryService.getComponent("useBirthDownload");
 //  console.log(useBirthDownload); 
   const { downloadApi } = useBirthDownload();
-  const handlePayAndDownload = () => {
-    const api = downloadApi(tenantId, id);
-    // console.log(api, "*****");
+  const handlePayAndDownload = async () => {
+    const api = await downloadApi(tenantId, id);
+    const encodedConsumerCode= encodeURIComponent(api);
     const businessService = "BIRTH_CERT.BIRTH_CERT";
-    history.push(`/digit-ui/employee/payment/collect/${businessService}/${id}/tenantId=${tenantId}?workflow=birth`);
+    history.push(`/digit-ui/employee/payment/collect/${businessService}/${encodedConsumerCode}/tenantId=${tenantId}?workflow=birth`);
   };
 
   const handleFreeDownload = () => {
