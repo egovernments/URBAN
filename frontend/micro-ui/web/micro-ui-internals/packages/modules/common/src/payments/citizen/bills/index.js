@@ -1,5 +1,5 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams, useHistory, useRouteMatch, useLocation } from "react-router-dom";
 import Routes from "./routes";
 // import { myBillMap } from "./myBillsKeysMap";

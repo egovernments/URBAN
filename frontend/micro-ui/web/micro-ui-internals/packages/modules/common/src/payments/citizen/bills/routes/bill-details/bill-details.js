@@ -7,10 +7,6 @@ import {
   RadioButtons,
   SubmitBar,
   TextInput,
-  Dropdown,
-  LabelFieldPair,
-  CardLabel,
-  CardSectionHeader,
 } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
