@@ -1,6 +1,5 @@
 package org.bel.birthdeath.common.repository;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,6 +46,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.bel.birthdeath.config.BirthDeathConfiguration;
+import org.bel.birthdeath.common.Idgen.IdGenerationResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,6 +86,12 @@ public class CommonRepository {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BirthDeathConfiguration config;
+
+    @Autowired
+    private IdGenRepository idGenRepository;
 
     @Autowired
     @Lazy
@@ -176,7 +183,6 @@ public class CommonRepository {
             + "locality = :locality, tehsil = :tehsil, district = :district, city = :city, state = :state, pinno = :pinno, country = :country, "
             + "lastmodifiedby = :lastmodifiedby, lastmodifiedtime = :lastmodifiedtime WHERE birthdtlid = :birthdtlid;";
 
-
     private static final String DEATHDTLUPDATEQRY = "UPDATE {schema}.eg_death_dtls SET registrationno = :registrationno, hospitalname = :hospitalname, dateofreport = :dateofreport, "
             + "dateofdeath = :dateofdeath , firstname= :firstname, middlename = :middlename, lastname = :lastname, placeofdeath= :placeofdeath, informantsname = :informantsname, "
             + "informantsaddress = :informantsaddress, lastmodifiedtime = :lastmodifiedtime, lastmodifiedby= :lastmodifiedby, gender = :gender, remarks = :remarks, "
@@ -198,7 +204,6 @@ public class CommonRepository {
     private static final String DEATHPRESENTADDRUPDATEQRY = "UPDATE {schema}.eg_death_presentaddr SET buildingno = :buildingno, houseno = :houseno, streetname = :streetname, "
             + "locality = :locality, tehsil = :tehsil, district = :district, city = :city, state = :state, pinno = :pinno, country = :country, "
             + "lastmodifiedby = :lastmodifiedby, lastmodifiedtime = :lastmodifiedtime WHERE deathdtlid = :deathdtlid;";
-
 
     public List<EgHospitalDtl> getHospitalDtls(String tenantId) {
         List<Object> preparedStmtList = new ArrayList<>();
@@ -223,6 +228,22 @@ public class CommonRepository {
                 if (null != bdtl.getRejectReason()) {
                     importBirthWrapper.updateMaps(BirthDeathConstants.EXCEL_DATA_ERROR, bdtl);
                 } else {
+                    boolean isLegacy = bdtl.getIsLegacyRecord() != null && bdtl.getIsLegacyRecord();
+                    // Always set id as random UUID
+                    bdtl.setId(UUID.randomUUID().toString());
+                    if (!isLegacy && (bdtl.getRegistrationno() == null || bdtl.getRegistrationno().isEmpty())) {
+                        // Generate registrationno from IdGen
+                        IdGenerationResponse idGenResp = idGenRepository.getId(requestInfo, bdtl.getTenantid(),
+                                config.getBirthApplNumberIdgenName(), config.getBirthApplNumberIdgenFormat(), 1);
+                        if (idGenResp != null && idGenResp.getIdResponses() != null
+                                && !idGenResp.getIdResponses().isEmpty()) {
+                            bdtl.setRegistrationno(idGenResp.getIdResponses().get(0).getId());
+                        } else {
+                            importBirthWrapper.updateMaps(BirthDeathConstants.REG_EMPTY, bdtl);
+                            importBirthWrapper.setServiceError(BirthDeathConstants.REG_EMPTY);
+                            return;
+                        }
+                    }
                     if (bdtl.getRegistrationno() != null) {
                         if (uniqueList.get(bdtl.getRegistrationno()) == null) {
                             birthValidator.removeSpaceChars(bdtl);
@@ -261,12 +282,14 @@ public class CommonRepository {
             AuditDetails auditDetails;
             for (Entry<String, EgBirthDtl> entry : uniqueList.entrySet()) {
                 EgBirthDtl birthDtl = entry.getValue();
-                birthDtl.setGenderStr(birthDtl.getGenderStr() == null ? "" : birthDtl.getGenderStr().trim().toLowerCase());
+                birthDtl.setGenderStr(
+                        birthDtl.getGenderStr() == null ? "" : birthDtl.getGenderStr().trim().toLowerCase());
                 if (birthDtl.getIsLegacyRecord() != null && birthDtl.getIsLegacyRecord()) {
                     auditDetails = commUtils.getAuditDetails("import-user", true);
                 } else {
                     auditDetails = commUtils.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
                 }
+                log.info("Gender String: {}", birthDtl.getGenderStr());
                 switch (birthDtl.getGenderStr()) {
                     case "male":
                         birthDtl.setGender(1);
@@ -274,20 +297,34 @@ public class CommonRepository {
                     case "female":
                         birthDtl.setGender(2);
                         break;
-                    case "others":
+                    case "transgender":
                         birthDtl.setGender(3);
+                        break;
+                    case "other":
+                        birthDtl.setGender(4);
                         break;
                     default:
                         birthDtl.setGender(0);
                         break;
                 }
-                if (birthValidator.validateUniqueRegNo(birthDtl, importBirthWrapper) && birthValidator.validateImportFields(birthDtl, importBirthWrapper)) {
+                if (birthValidator.validateUniqueRegNo(birthDtl, importBirthWrapper)
+                        && birthValidator.validateImportFields(birthDtl, importBirthWrapper)) {
                     try {
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHDTLSAVEQRY, birthDtl.getTenantid()), getParametersForBirthDtl(birthDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHFATHERINFOSAVEQRY, birthDtl.getTenantid()), getParametersForFatherInfo(birthDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHMOTHERINFOSAVEQRY, birthDtl.getTenantid()), getParametersForMotherInfo(birthDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHPERMADDRSAVEQRY, birthDtl.getTenantid()), getParametersForPermAddr(birthDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHPRESENTADDRSAVEQRY, birthDtl.getTenantid()), getParametersForPresentAddr(birthDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHDTLSAVEQRY, birthDtl.getTenantid()),
+                                getParametersForBirthDtl(birthDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHFATHERINFOSAVEQRY, birthDtl.getTenantid()),
+                                getParametersForFatherInfo(birthDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHMOTHERINFOSAVEQRY, birthDtl.getTenantid()),
+                                getParametersForMotherInfo(birthDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHPERMADDRSAVEQRY, birthDtl.getTenantid()),
+                                getParametersForPermAddr(birthDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHPRESENTADDRSAVEQRY, birthDtl.getTenantid()),
+                                getParametersForPresentAddr(birthDtl, auditDetails, true));
                         finalCount++;
                     } catch (Exception e) {
                         birthDtl.setRejectReason(BirthDeathConstants.DATA_ERROR);
@@ -295,20 +332,18 @@ public class CommonRepository {
                         Map<String, String> params = new HashMap<>();
                         params.put("tenantid", birthDtl.getTenantid());
                         params.put("registrationno", birthDtl.getRegistrationno());
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHDTLDELETEQRY, birthDtl.getTenantid()), params);
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHDTLDELETEQRY, birthDtl.getTenantid()), params);
                         e.printStackTrace();
                     }
                 }
             }
 
             log.info("completed " + finalCount);
-//			userService.manageOwner(response,false);
-
             EgBirthDtl bdtl = response.getBirthCerts().get(0);
             User owner = userService.manageOwner(bdtl.getTenantid(), bdtl.getBirthFatherInfo(), response.getRequestInfo(), false);
-            bdtl.setUser(owner);
-
-            importBirthWrapper.finaliseStats(response.getBirthCerts().size(), finalCount);
+            bdtl.setUser(owner);  
+                      importBirthWrapper.finaliseStats(response.getBirthCerts().size(), finalCount);
             List<EgHospitalDtl> hospitaldtls = getHospitalDtls(response.getBirthCerts().get(0).getTenantid());
             List<String> hospitals = new ArrayList<String>();
             for (EgHospitalDtl hospitalDtl : hospitaldtls) {
@@ -333,7 +368,8 @@ public class CommonRepository {
             for (String hospName : uniqueHospList.keySet()) {
                 if (!dbHospNameIdMap.containsKey(hospName)) {
                     String id = tenantid.split("\\.")[1] + "_" + (dbHospNameIdMap.keySet().size() + 1);
-                    jdbcTemplate.update(callToReplaceSchemaPlaceHolder(HOSPITALINSERTSQL, tenantid), id, hospName, tenantid);
+                    jdbcTemplate.update(callToReplaceSchemaPlaceHolder(HOSPITALINSERTSQL, tenantid), id, hospName,
+                            tenantid);
                     dbHospNameIdMap.put(hospName, id);
                 }
                 for (EgBirthDtl bdtl : uniqueHospList.get(hospName)) {
@@ -354,7 +390,8 @@ public class CommonRepository {
             for (String hospName : uniqueHospList.keySet()) {
                 if (!dbHospNameIdMap.containsKey(hospName)) {
                     String id = tenantid.split("\\.")[1] + "_" + (dbHospNameIdMap.keySet().size() + 1);
-                    jdbcTemplate.update(callToReplaceSchemaPlaceHolder(HOSPITALINSERTSQL, tenantid), id, hospName, tenantid);
+                    jdbcTemplate.update(callToReplaceSchemaPlaceHolder(HOSPITALINSERTSQL, tenantid), id, hospName,
+                            tenantid);
                     dbHospNameIdMap.put(hospName, id);
                 }
                 for (EgDeathDtl bdtl : uniqueHospList.get(hospName)) {
@@ -364,7 +401,8 @@ public class CommonRepository {
         }
     }
 
-    private MapSqlParameterSource getParametersForPresentAddr(EgBirthDtl birthDtl, AuditDetails auditDetails, boolean isInsert) {
+    private MapSqlParameterSource getParametersForPresentAddr(EgBirthDtl birthDtl, AuditDetails auditDetails,
+            boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         EgBirthPresentaddr presentaddr = birthDtl.getBirthPresentaddr();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
@@ -393,7 +431,8 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForPermAddr(EgBirthDtl birthDtl, AuditDetails auditDetails, boolean isInsert) {
+    private MapSqlParameterSource getParametersForPermAddr(EgBirthDtl birthDtl, AuditDetails auditDetails,
+            boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         EgBirthPermaddr permaddr = birthDtl.getBirthPermaddr();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
@@ -422,8 +461,10 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForMotherInfo(EgBirthDtl birthDtl, AuditDetails auditDetails, boolean isInsert) {
-        EgBirthMotherInfo birthMotherInfo = encryptionDecryptionUtil.encryptObject(birthDtl.getBirthMotherInfo(), "BndDetail", EgBirthMotherInfo.class);
+    private MapSqlParameterSource getParametersForMotherInfo(EgBirthDtl birthDtl, AuditDetails auditDetails,
+            boolean isInsert) {
+        EgBirthMotherInfo birthMotherInfo = encryptionDecryptionUtil.encryptObject(birthDtl.getBirthMotherInfo(),
+                "BndDetail", EgBirthMotherInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", birthMotherInfo.getFirstname());
@@ -449,8 +490,10 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForFatherInfo(EgBirthDtl birthDtl, AuditDetails auditDetails, boolean isInsert) {
-        EgBirthFatherInfo birthFatherInfo = encryptionDecryptionUtil.encryptObject(birthDtl.getBirthFatherInfo(), "BndDetail", EgBirthFatherInfo.class);
+    private MapSqlParameterSource getParametersForFatherInfo(EgBirthDtl birthDtl, AuditDetails auditDetails,
+            boolean isInsert) {
+        EgBirthFatherInfo birthFatherInfo = encryptionDecryptionUtil.encryptObject(birthDtl.getBirthFatherInfo(),
+                "BndDetail", EgBirthFatherInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", birthFatherInfo.getFirstname());
@@ -477,7 +520,8 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForBirthDtl(EgBirthDtl birthDtl, AuditDetails auditDetails, boolean isInsert) {
+    private MapSqlParameterSource getParametersForBirthDtl(EgBirthDtl birthDtl, AuditDetails auditDetails,
+            boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         String id = "";
         if (isInsert)
@@ -515,7 +559,6 @@ public class CommonRepository {
 
     }
 
-
     public ImportDeathWrapper saveDeathImport(DeathResponse response, RequestInfo requestInfo) {
         ImportDeathWrapper importDeathWrapper = new ImportDeathWrapper();
         try {
@@ -527,6 +570,22 @@ public class CommonRepository {
                     importDeathWrapper.updateMaps(BirthDeathConstants.EXCEL_DATA_ERROR, deathtl);
                     importDeathWrapper.setServiceError(BirthDeathConstants.EXCEL_DATA_ERROR);
                 } else {
+                    boolean isLegacy = deathtl.getIsLegacyRecord() != null && deathtl.getIsLegacyRecord();
+                    // Always set id as random UUID
+                    deathtl.setId(UUID.randomUUID().toString());
+                    if (!isLegacy && (deathtl.getRegistrationno() == null || deathtl.getRegistrationno().isEmpty())) {
+                        // Generate registrationno from IdGen
+                        IdGenerationResponse idGenResp = idGenRepository.getId(requestInfo, deathtl.getTenantid(),
+                                config.getDeathApplNumberIdgenName(), config.getDeathApplNumberIdgenFormat(), 1);
+                        if (idGenResp != null && idGenResp.getIdResponses() != null
+                                && !idGenResp.getIdResponses().isEmpty()) {
+                            deathtl.setRegistrationno(idGenResp.getIdResponses().get(0).getId());
+                        } else {
+                            importDeathWrapper.updateMaps(BirthDeathConstants.REG_EMPTY, deathtl);
+                            importDeathWrapper.setServiceError(BirthDeathConstants.REG_EMPTY);
+                            return;
+                        }
+                    }
                     if (deathtl.getRegistrationno() != null) {
                         if (uniqueList.get(deathtl.getRegistrationno()) == null) {
                             deathValidator.removeSpaceChars(deathtl);
@@ -544,7 +603,6 @@ public class CommonRepository {
                                     uniqueHospList.get(deathtl.getHospitalname()).add(deathtl);
                                 }
                             }
-
                         } else {
                             importDeathWrapper.updateMaps(BirthDeathConstants.DUPLICATE_REG_EXCEL, deathtl);
                             importDeathWrapper.setServiceError(BirthDeathConstants.DUPLICATE_REG_EXCEL);
@@ -571,7 +629,8 @@ public class CommonRepository {
                 } else {
                     auditDetails = commUtils.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
                 }
-                deathDtl.setGenderStr(deathDtl.getGenderStr() == null ? "" : deathDtl.getGenderStr().trim().toLowerCase());
+                deathDtl.setGenderStr(
+                        deathDtl.getGenderStr() == null ? "" : deathDtl.getGenderStr().trim().toLowerCase());
                 switch (deathDtl.getGenderStr()) {
                     case "male":
                         deathDtl.setGender(1);
@@ -582,18 +641,34 @@ public class CommonRepository {
                     case "transgender":
                         deathDtl.setGender(3);
                         break;
+                    case "other":
+                        deathDtl.setGender(4);
+                        break;
                     default:
                         deathDtl.setGender(0);
                         break;
                 }
-                if (deathValidator.validateUniqueRegNo(deathDtl, importDeathWrapper) && deathValidator.validateImportFields(deathDtl, importDeathWrapper)) {
+                if (deathValidator.validateUniqueRegNo(deathDtl, importDeathWrapper)
+                        && deathValidator.validateImportFields(deathDtl, importDeathWrapper)) {
                     try {
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHDTLSAVEQRY, deathDtl.getTenantid()), getParametersForDeathDtl(deathDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHFATHERINFOSAVEQRY, deathDtl.getTenantid()), getParametersForFatherInfo(deathDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHMOTHERINFOSAVEQRY, deathDtl.getTenantid()), getParametersForMotherInfo(deathDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHSPOUSEINFOSAVEQRY, deathDtl.getTenantid()), getParametersForSpouseInfo(deathDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHPERMADDRSAVEQRY, deathDtl.getTenantid()), getParametersForPermAddr(deathDtl, auditDetails, true));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHPRESENTADDRSAVEQRY, deathDtl.getTenantid()), getParametersForPresentAddr(deathDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHDTLSAVEQRY, deathDtl.getTenantid()),
+                                getParametersForDeathDtl(deathDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHFATHERINFOSAVEQRY, deathDtl.getTenantid()),
+                                getParametersForFatherInfo(deathDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHMOTHERINFOSAVEQRY, deathDtl.getTenantid()),
+                                getParametersForMotherInfo(deathDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHSPOUSEINFOSAVEQRY, deathDtl.getTenantid()),
+                                getParametersForSpouseInfo(deathDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHPERMADDRSAVEQRY, deathDtl.getTenantid()),
+                                getParametersForPermAddr(deathDtl, auditDetails, true));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHPRESENTADDRSAVEQRY, deathDtl.getTenantid()),
+                                getParametersForPresentAddr(deathDtl, auditDetails, true));
                         finalCount++;
                     } catch (Exception e) {
                         deathDtl.setRejectReason(BirthDeathConstants.DATA_ERROR);
@@ -601,7 +676,8 @@ public class CommonRepository {
                         Map<String, String> params = new HashMap<>();
                         params.put("tenantid", deathDtl.getTenantid());
                         params.put("registrationno", deathDtl.getRegistrationno());
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHDTLDELETEQRY, deathDtl.getTenantid()), params);
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHDTLDELETEQRY, deathDtl.getTenantid()), params);
                         e.printStackTrace();
                     }
                 }
@@ -609,9 +685,7 @@ public class CommonRepository {
 
             log.info("completed " + finalCount);
 
-            // calling user service
-            // ✅ Call user service after saving death details
-            EgDeathDtl dtl = response.getDeathCerts().get(0);
+ EgDeathDtl dtl = response.getDeathCerts().get(0);
             User owner = userService.manageOwner(dtl.getTenantid(), dtl.getDeathFatherInfo(), response.getRequestInfo(), false);
             dtl.setUser(owner);
 
@@ -629,7 +703,8 @@ public class CommonRepository {
         return importDeathWrapper;
     }
 
-    private MapSqlParameterSource getParametersForPresentAddr(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
+    private MapSqlParameterSource getParametersForPresentAddr(EgDeathDtl deathDtl, AuditDetails auditDetails,
+            boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         EgDeathPresentaddr presentaddr = deathDtl.getDeathPresentaddr();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
@@ -656,7 +731,8 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForPermAddr(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
+    private MapSqlParameterSource getParametersForPermAddr(EgDeathDtl deathDtl, AuditDetails auditDetails,
+            boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         EgDeathPermaddr permaddr = deathDtl.getDeathPermaddr();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
@@ -683,8 +759,10 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForMotherInfo(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
-		EgDeathMotherInfo deathMotherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathMotherInfo(), "BndDetail", EgDeathMotherInfo.class);
+    private MapSqlParameterSource getParametersForMotherInfo(EgDeathDtl deathDtl, AuditDetails auditDetails,
+            boolean isInsert) {
+        EgDeathMotherInfo deathMotherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathMotherInfo(),
+                "BndDetail", EgDeathMotherInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", deathMotherInfo.getFirstname());
@@ -706,8 +784,10 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForSpouseInfo(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
-		EgDeathSpouseInfo deathSpouseInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathSpouseInfo(), "BndDetail", EgDeathSpouseInfo.class);
+    private MapSqlParameterSource getParametersForSpouseInfo(EgDeathDtl deathDtl, AuditDetails auditDetails,
+            boolean isInsert) {
+        EgDeathSpouseInfo deathSpouseInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathSpouseInfo(),
+                "BndDetail", EgDeathSpouseInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", deathSpouseInfo.getFirstname());
@@ -730,8 +810,9 @@ public class CommonRepository {
     }
 
     private MapSqlParameterSource getParametersForFatherInfo(EgDeathDtl deathDtl,
-                                                             AuditDetails auditDetails, boolean isInsert) {
-		EgDeathFatherInfo deathFatherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathFatherInfo(), "BndDetail", EgDeathFatherInfo.class);
+            AuditDetails auditDetails, boolean isInsert) {
+        EgDeathFatherInfo deathFatherInfo = encryptionDecryptionUtil.encryptObject(deathDtl.getDeathFatherInfo(),
+                "BndDetail", EgDeathFatherInfo.class);
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", UUID.randomUUID().toString());
         sqlParameterSource.addValue("firstname", deathFatherInfo.getFirstname());
@@ -753,9 +834,10 @@ public class CommonRepository {
         return sqlParameterSource;
     }
 
-    private MapSqlParameterSource getParametersForDeathDtl(EgDeathDtl deathDtl, AuditDetails auditDetails, boolean isInsert) {
+    private MapSqlParameterSource getParametersForDeathDtl(EgDeathDtl deathDtl, AuditDetails auditDetails,
+            boolean isInsert) {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
-		EgDeathDtl deathDtlEnc = encryptionDecryptionUtil.encryptObject(deathDtl, "BndDetail", EgDeathDtl.class);
+        EgDeathDtl deathDtlEnc = encryptionDecryptionUtil.encryptObject(deathDtl, "BndDetail", EgDeathDtl.class);
         String id = "";
         if (isInsert)
             id = UUID.randomUUID().toString();
@@ -788,12 +870,12 @@ public class CommonRepository {
         sqlParameterSource.addValue("hospitalid", deathDtl.getHospitalid());
         sqlParameterSource.addValue("age", deathDtl.getAge());
         sqlParameterSource.addValue("eidno", deathDtl.getEidno());
-		sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno() );
-//        sqlParameterSource.addValue("aadharno", "567346251423" );
+        sqlParameterSource.addValue("aadharno", deathDtlEnc.getAadharno());
+        // sqlParameterSource.addValue("aadharno", "567346251423" );
         sqlParameterSource.addValue("nationality", deathDtl.getNationality());
         sqlParameterSource.addValue("religion", deathDtl.getReligion());
-		sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode() );
-//        sqlParameterSource.addValue("icdcode", "2345");
+        sqlParameterSource.addValue("icdcode", deathDtlEnc.getIcdcode());
+        // sqlParameterSource.addValue("icdcode", "2345");
         sqlParameterSource.addValue("islegacyrecord", deathDtl.getIsLegacyRecord());
         deathDtl.setId(id);
         return sqlParameterSource;
@@ -859,7 +941,8 @@ public class CommonRepository {
                 } else {
                     auditDetails = commUtils.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
                 }
-                birthDtl.setGenderStr(birthDtl.getGenderStr() == null ? "" : birthDtl.getGenderStr().trim().toLowerCase());
+                birthDtl.setGenderStr(
+                        birthDtl.getGenderStr() == null ? "" : birthDtl.getGenderStr().trim().toLowerCase());
                 switch (birthDtl.getGenderStr()) {
                     case "male":
                         birthDtl.setGender(1);
@@ -867,8 +950,11 @@ public class CommonRepository {
                     case "female":
                         birthDtl.setGender(2);
                         break;
-                    case "others":
+                    case "transgender":
                         birthDtl.setGender(3);
+                        break;
+                    case "other":
+                        birthDtl.setGender(4);
                         break;
                     default:
                         birthDtl.setGender(0);
@@ -876,11 +962,21 @@ public class CommonRepository {
                 }
                 if (birthValidator.validateImportFields(birthDtl, importBirthWrapper)) {
                     try {
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHDTLUPDATEQRY, birthDtl.getTenantid()), getParametersForBirthDtl(birthDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHFATHERINFOUPDATEQRY, birthDtl.getTenantid()), getParametersForFatherInfo(birthDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHMOTHERINFOUPDATEQRY, birthDtl.getTenantid()), getParametersForMotherInfo(birthDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHPERMADDRUPDATEQRY, birthDtl.getTenantid()), getParametersForPermAddr(birthDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(BIRTHPRESENTADDRUPDATEQRY, birthDtl.getTenantid()), getParametersForPresentAddr(birthDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHDTLUPDATEQRY, birthDtl.getTenantid()),
+                                getParametersForBirthDtl(birthDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHFATHERINFOUPDATEQRY, birthDtl.getTenantid()),
+                                getParametersForFatherInfo(birthDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHMOTHERINFOUPDATEQRY, birthDtl.getTenantid()),
+                                getParametersForMotherInfo(birthDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHPERMADDRUPDATEQRY, birthDtl.getTenantid()),
+                                getParametersForPermAddr(birthDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(BIRTHPRESENTADDRUPDATEQRY, birthDtl.getTenantid()),
+                                getParametersForPresentAddr(birthDtl, auditDetails, false));
                         finalCount++;
                     } catch (Exception e) {
                         birthDtl.setRejectReason(BirthDeathConstants.DATA_ERROR);
@@ -892,11 +988,9 @@ public class CommonRepository {
             }
 
             log.info("completed " + finalCount);
-
-            EgBirthDtl bdtl = response.getBirthCerts().get(0);
+             EgBirthDtl bdtl = response.getBirthCerts().get(0);
             User owner = userService.manageOwner(bdtl.getTenantid(), bdtl.getBirthFatherInfo(), response.getRequestInfo(), false);
             bdtl.setUser(owner);
-
             importBirthWrapper.finaliseStats(response.getBirthCerts().size(), finalCount);
             List<EgHospitalDtl> hospitaldtls = getHospitalDtls(response.getBirthCerts().get(0).getTenantid());
             List<String> hospitals = new ArrayList<String>();
@@ -914,7 +1008,7 @@ public class CommonRepository {
     public ImportDeathWrapper updateDeathImport(DeathResponse response, RequestInfo requestInfo) {
         ImportDeathWrapper importDeathWrapper = new ImportDeathWrapper();
         try {
-            //DeathResponse response= mapper.convertValue(importJSon, DeathResponse.class);
+            // DeathResponse response= mapper.convertValue(importJSon, DeathResponse.class);
             Map<String, EgDeathDtl> uniqueList = new HashMap<String, EgDeathDtl>();
             Map<String, List<EgDeathDtl>> uniqueHospList = new HashMap<String, List<EgDeathDtl>>();
             Set<String> duplicates = new HashSet<String>();
@@ -971,7 +1065,8 @@ public class CommonRepository {
                 } else {
                     auditDetails = commUtils.getAuditDetails(requestInfo.getUserInfo().getUuid(), true);
                 }
-                deathDtl.setGenderStr(deathDtl.getGenderStr() == null ? "" : deathDtl.getGenderStr().trim().toLowerCase());
+                deathDtl.setGenderStr(
+                        deathDtl.getGenderStr() == null ? "" : deathDtl.getGenderStr().trim().toLowerCase());
                 switch (deathDtl.getGenderStr()) {
                     case "male":
                         deathDtl.setGender(1);
@@ -982,18 +1077,33 @@ public class CommonRepository {
                     case "transgender":
                         deathDtl.setGender(3);
                         break;
+                    case "other":
+                        deathDtl.setGender(4);
+                        break;
                     default:
                         deathDtl.setGender(0);
                         break;
                 }
                 if (deathValidator.validateImportFields(deathDtl, importDeathWrapper)) {
                     try {
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHDTLUPDATEQRY, deathDtl.getTenantid()), getParametersForDeathDtl(deathDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHFATHERINFOUPDATEQRY, deathDtl.getTenantid()), getParametersForFatherInfo(deathDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHMOTHERINFOUPDATEQRY, deathDtl.getTenantid()), getParametersForMotherInfo(deathDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHSPOUSEINFOUPDATEQRY, deathDtl.getTenantid()), getParametersForSpouseInfo(deathDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHPERMADDRUPDATEQRY, deathDtl.getTenantid()), getParametersForPermAddr(deathDtl, auditDetails, false));
-                        namedParameterJdbcTemplate.update(callToReplaceSchemaPlaceHolder(DEATHPRESENTADDRUPDATEQRY, deathDtl.getTenantid()), getParametersForPresentAddr(deathDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHDTLUPDATEQRY, deathDtl.getTenantid()),
+                                getParametersForDeathDtl(deathDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHFATHERINFOUPDATEQRY, deathDtl.getTenantid()),
+                                getParametersForFatherInfo(deathDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHMOTHERINFOUPDATEQRY, deathDtl.getTenantid()),
+                                getParametersForMotherInfo(deathDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHSPOUSEINFOUPDATEQRY, deathDtl.getTenantid()),
+                                getParametersForSpouseInfo(deathDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHPERMADDRUPDATEQRY, deathDtl.getTenantid()),
+                                getParametersForPermAddr(deathDtl, auditDetails, false));
+                        namedParameterJdbcTemplate.update(
+                                callToReplaceSchemaPlaceHolder(DEATHPRESENTADDRUPDATEQRY, deathDtl.getTenantid()),
+                                getParametersForPresentAddr(deathDtl, auditDetails, false));
                         finalCount++;
                     } catch (Exception e) {
                         deathDtl.setRejectReason(BirthDeathConstants.DATA_ERROR);
@@ -1005,11 +1115,9 @@ public class CommonRepository {
             }
 
             log.info("completed " + finalCount);
-
             EgDeathDtl dtl = response.getDeathCerts().get(0);
             User owner = userService.manageOwner(dtl.getTenantid(), dtl.getDeathFatherInfo(), response.getRequestInfo(), false);
             dtl.setUser(owner);
-
             importDeathWrapper.finaliseStats(response.getDeathCerts().size(), finalCount);
             List<EgHospitalDtl> hospitaldtls = getHospitalDtls(response.getDeathCerts().get(0).getTenantid());
             List<String> hospitals = new ArrayList<String>();
@@ -1026,7 +1134,7 @@ public class CommonRepository {
 
     public String callToReplaceSchemaPlaceHolder(String query, String tenantId) {
         try {
-            //TODO: Need to check with kavi if we need to do this or if its correct
+            // TODO: Need to check with kavi if we need to do this or if its correct
             query = centralInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
         } catch (InvalidTenantIdException e) {
             throw new CustomException("WS_AS_TENANTID_ERROR",

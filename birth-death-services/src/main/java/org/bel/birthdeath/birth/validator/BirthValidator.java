@@ -201,7 +201,7 @@ public class BirthValidator {
 			importBirthWrapper.setServiceError(BirthDeathConstants.PERMENANT_PINCODE_EMPTY);
 			return false;
 		}
-		if(birthDtl.getGender().intValue()!=1 && birthDtl.getGender().intValue()!=2 && birthDtl.getGender().intValue()!=3 ) {
+		if(birthDtl.getGender().intValue()!=1 && birthDtl.getGender().intValue()!=2 && birthDtl.getGender().intValue()!=3 && birthDtl.getGender().intValue()!=4 ) {
 			setRejectionReason(BirthDeathConstants.GENDER_INVALID,birthDtl,importBirthWrapper);
 			importBirthWrapper.setServiceError(BirthDeathConstants.GENDER_INVALID);
 			return false;
