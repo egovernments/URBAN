@@ -158,40 +158,44 @@ const SelectPaymentType = (props) => {
   };
 
   const onSubmit = async () => {
-    // let recieptRequest = {
-    //   Payment: {
-    //     mobileNumber: bill.mobileNumber,
-    //     paymentDetails: [
-    //       {
-    //         businessService,
-    //         billId: bill.id,
-    //         totalDue: bill.totalAmount,
-    //         totalAmountPaid: bill.totalAmount,
-    //       },
-    //     ],
-    //     tenantId: bill.tenantId,
-    //     totalDue: bill.totalAmount,
-    //     totalAmountPaid: bill.totalAmount,
-    //     paymentMode: "CASH",
-    //     payerName: bill.payerName,
-    //     paidBy: "OWNER",
-    //   },
-    // };
-    // try {
-    //   const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
-    //   sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
-    //   history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
-    // } catch (error) {
-    //   console.log("Error while creating receipt", error);
-    //   // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
-    //   // setTimeout(() => setToast(null), 5000);
-    //   return;
-    // }
+    let recieptRequest = {
+      Payment: {
+        mobileNumber: bill.mobileNumber,
+        paymentDetails: [
+          {
+            businessService,
+            billId: bill.id,
+            totalDue: bill.totalAmount,
+            totalAmountPaid: bill.totalAmount,
+          },
+        ],
+        tenantId: bill.tenantId,
+        totalDue: bill.totalAmount,
+        totalAmountPaid: bill.totalAmount,
+        paymentMode: "CASH",
+        payerName: bill.payerName,
+        paidBy: "OWNER",
+      },
+    };
+    try {
+      const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+      sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
+
+      // console.log("Birth,", wrkflow);
+    } catch (error) {
+      console.log("Error while creating receipt", error);
+      // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
+      // setTimeout(() => setToast(null), 5000);
+      return;
+    }
 
     if (wrkflow === "birth") {
+      // console.log("Pushing to birth success page");
       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=birth`);
-    }else
-    if (wrkflow === "WNS") {
+    } else if (wrkflow === "death") {
+      // console.log("Pushing to death success page");
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
+    } else if (wrkflow === "WNS") {
       history.push(
         `/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}?workflow=WNS&consumerCode=${stringReplaceAll(consumerCode, "+", "/")}`,
         {
@@ -208,8 +212,6 @@ const SelectPaymentType = (props) => {
               : payersMobileNumber,
         }
       );
-    } else if (wrkflow === "death") {
-      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
     } else {
       history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
         paymentAmount: paymentAmt,

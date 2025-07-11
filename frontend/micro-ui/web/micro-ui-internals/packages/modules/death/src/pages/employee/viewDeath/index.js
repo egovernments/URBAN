@@ -119,7 +119,7 @@ const {
   
   }
   const encodedConsumerCode = encodeURIComponent(consumerCode);
-  console.log("Encoded Consumer Code:", encodedConsumerCode);
+  // console.log("Encoded Consumer Code:", encodedConsumerCode);
 
 
   const businessService = "DEATH_CERT";
