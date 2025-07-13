@@ -1,13 +1,4 @@
-import {
-  Card,
-  CardSubHeader,
-  Header,
-  KeyNote,
-  Loader,
-  RadioButtons,
-  SubmitBar,
-  TextInput,
-} from "@egovernments/digit-ui-react-components";
+import { Card, CardSubHeader, Header, KeyNote, Loader, RadioButtons, SubmitBar, TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation, useParams, Redirect } from "react-router-dom";
@@ -25,7 +16,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
   const consumerCode = decodeURIComponent(encodedConsumerCode);
   const { workflow: wrkflow, tenantId: _tenantId, authorization, ConsumerName } = Digit.Hooks.useQueryParams();
   const [bill, setBill] = useState(state?.bill);
-  const tenantId = Digit.UserService.getUser().info?.tenantId || state?.tenantId || _tenantId ;
+  const tenantId = Digit.UserService.getUser().info?.tenantId || state?.tenantId || _tenantId;
   const propertyId = state?.propertyId;
   if (wrkflow === "WNS" && consumerCode && consumerCode.includes("?")) consumerCode = consumerCode.substring(0, consumerCode.indexOf("?"));
   const { data, isLoading } = state?.bill
@@ -184,11 +175,14 @@ const BillDetails = ({ paymentRules, businessService }) => {
       },
     };
 
-    if (wrkflow !== "death") {
+
+    if (wrkflow === "mcollect") {
       try {
+        // console.log("recieptRequest", recieptRequest);
         const resposne = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
         sessionStorage.setItem("PaymentResponse", JSON.stringify(resposne));
         history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=mcollect`);
+        return; // Exit early after cash receipt creation
       } catch (error) {
         console.log("Error while creating receipt", error);
         // setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
