@@ -59,7 +59,7 @@
     "dev:birth": "cd packages/modules/birth && yarn start",
     "dev:death": "cd packages/modules/death && yarn start",
     "dev:finance": "cd packages/modules/finance && yarn start",
-    "build": "run-p build:**",
+    "build": "run-s build:**",
     "build:libraries": "cd packages/libraries && yarn build",
     "build:components": "cd packages/react-components && yarn build",
     "build:firenoc": "cd packages/modules/firenoc && yarn build",
