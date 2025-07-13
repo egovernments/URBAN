@@ -1,15 +1,19 @@
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import React, { useState, Fragment, useEffect } from "react";
-import { Button as ButtonNew} from "@egovernments/digit-ui-components";
+import { Button as ButtonNew, Toast } from "@egovernments/digit-ui-components";
+import { useTranslation } from "react-i18next";
 
 export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) => {
   const useDeathDownload= Digit.ComponentRegistryService.getComponent("useDeathDownload");
   const history = useHistory();
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  // const { consumerCode } = useDeathDownload(tenantId, certificateId);
+  const [showToast, setShowToast] = useState(null);
   const { downloadApi } = useDeathDownload();
+  
   console.log("tenantId of PayAndDownloadButton", tenantId);
+  
   const handleClick = async () => {
      setIsLoading(true); 
     try {
@@ -27,26 +31,39 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
           }
         );
       } else {
-        
         console.error("Could not retrieve consumer code. Cannot proceed to payment.");
-       
+        setShowToast({ 
+          key: "error", 
+          label: t("BND_DEATH_CONSUMER_CODE_NOT_RETRIEVED") 
+        });
       }
     } catch (error) {
       console.error("An error occurred while fetching consumer code:", error);
+      setShowToast({ 
+        key: "error", 
+        label: t("BND_DEATH_UNEXPECTED_ERROR_OCCURRED") 
+      });
     } finally {
       setIsLoading(false);
     }
-  // const businessService = "DEATH_CERT";
-  //   const encodedConsumerCode = encodeURIComponent(consumerCode);
-  //   history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=death`);
   };
 
   return (
-     <ButtonNew
-    className="custom-class"
-    label="Pay and Download"
-    onClick={handleClick}
-    variation="link"
-  />
+    <Fragment>
+      <ButtonNew 
+        className="custom-class" 
+        label="Pay and Download" 
+        onClick={handleClick} 
+        variation="link" 
+        disabled={isLoading}
+      />
+      {showToast && (
+        <Toast
+          error={showToast.key === "error"}
+          label={showToast.label}
+          onClose={() => setShowToast(null)}
+        />
+      )}
+    </Fragment>
   );
 };

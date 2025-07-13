@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { ViewComposer, Loader, Header } from "@egovernments/digit-ui-react-components";
+import { ViewComposer, Loader, Header, Toast } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { viewBirthApplicationConfig } from "./config/viewApplicationsConfig.js";
 
@@ -8,6 +8,7 @@ import { viewBirthApplicationConfig } from "./config/viewApplicationsConfig.js";
 const MyApplications = () => {
     const { t } = useTranslation();
     const [config, setConfig] = useState(null);
+    const [showToast, setShowToast] = useState(null);
 
     const tenantId = Digit.ULBService.getStateId();
     const authToken = window?.Digit?.UserService?.getUser()?.access_token;
@@ -30,6 +31,16 @@ const MyApplications = () => {
         }
     }, [data, t, tenantId]);
 
+    // Show critical errors only
+    useEffect(() => {
+        if (error) {
+            setShowToast({ 
+                key: "error", 
+                label: t("BND_ERROR_FETCHING_APPLICATIONS") 
+            });
+        }
+    }, [error, t]);
+
     if (isLoading) return <Loader />;
     if (error) return <div>Error fetching applications. Please try again.</div>;
 
@@ -39,6 +50,13 @@ const MyApplications = () => {
             <div>
                 {ViewComposer && config ? <ViewComposer data={config} /> : <div>Loading View...</div>}
             </div>
+            {showToast && (
+                <Toast
+                    error={showToast.key === "error"}
+                    label={showToast.label}
+                    onClose={() => setShowToast(null)}
+                />
+            )}
         </React.Fragment>
     );
 };

@@ -207,9 +207,9 @@ export const CreateBirth = () => {
       {
         onSuccess: (response) => {
           if (response?.serviceError) {
-            setShowToast({ key: "error", label: `Failed: ${response.serviceError}` });
+            setShowToast({ key: "error", label: `${t("BND_BIRTH_CREATION_FAILED")}: ${response.serviceError}` });
           } else {
-            setShowToast({ key: "success", label: "Birth Certificate Created Successfully" });
+            setShowToast({ key: "success", label: t("BND_BIRTH_CERTIFICATE_CREATED_SUCCESSFULLY") });
             setTimeout(() => {
               window.location.reload();
             }, 3000);
@@ -218,7 +218,7 @@ export const CreateBirth = () => {
         onError: (error) => {
           // Show error toast on API failure
           console.error("API Error:", error);
-          setShowToast({ key: "error", label: "Failed to Create Birth Certificate" });
+          setShowToast({ key: "error", label: t("BND_BIRTH_CREATION_FAILED") });
         },
       }
     );

@@ -197,7 +197,7 @@ export const CreateDeath = () => {
 
   const onSubmit = async (formData) => {
     if (!checkDateOrderValidity(formData)) {
-      setShowToast({ key: "error", label: "Date of Registration must be on or after Date of Death." });
+      setShowToast({ key: "error", label: t("BND_DEATH_DATE_VALIDATION_ERROR") });
       setIsSubmitDisabledByDateError(true);
       return;
     }
@@ -213,7 +213,7 @@ export const CreateDeath = () => {
       },
       {
         onSuccess: (response) => {
-          setShowToast({ key: "success", label: "Death Certificate Created Successfully" });
+          setShowToast({ key: "success", label: t("BND_DEATH_CERTIFICATE_CREATED_SUCCESSFULLY") });
            setTimeout(() => {
               window.location.reload();
             }, 3000);
@@ -221,7 +221,7 @@ export const CreateDeath = () => {
         },
         onError: (error) => {
           console.error("API Error:", error);
-          setShowToast({ key: "error", label: "Failed to Create Death Certificate" });
+          setShowToast({ key: "error", label: t("BND_DEATH_CREATION_FAILED") });
         },
       }
     );

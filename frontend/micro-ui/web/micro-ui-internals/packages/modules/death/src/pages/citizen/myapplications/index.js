@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation,useHistory } from "react-router-dom";
 import {Button,Footer} from "@egovernments/digit-ui-components";
-import { ViewComposer,Loader,Header } from "@egovernments/digit-ui-react-components";
+import { ViewComposer,Loader,Header,Toast } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import {viewApplicationConfig} from "./viewApplicationsConfig";
 
@@ -9,6 +9,7 @@ const MyApplications = () => {
   
   const { t } = useTranslation();
   const [config, setConfig] = useState(null);
+  const [showToast, setShowToast] = useState(null);
 
   const tenantId = Digit.ULBService.getStateId();
   const authToken = window?.Digit?.UserService?.getUser()?.access_token;
@@ -34,6 +35,17 @@ useEffect(() => {
         setConfig(viewConfig);
     }
   }, [data, t, tenantId]);
+
+// Show critical errors only
+useEffect(() => {
+    if (error) {
+        setShowToast({ 
+            key: "error", 
+            label: t("BND_ERROR_FETCHING_DEATH_APPLICATIONS") 
+        });
+    }
+}, [error, t]);
+
 if (isLoading) {
   return <Loader />;
 }
@@ -49,7 +61,14 @@ if (error) {
        <Header>{t("BND_CITIZEN_MY_APPLICATIONS")}</Header>
         <div >
             {ViewComposer && config ? <ViewComposer data={config} /> : <div>Loading View...</div>}
-        </div>  
+        </div>
+        {showToast && (
+            <Toast
+                error={showToast.key === "error"}
+                label={showToast.label}
+                onClose={() => setShowToast(null)}
+            />
+        )}
       </React.Fragment>
         
       
