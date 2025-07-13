@@ -119,8 +119,6 @@ const {
   
   }
   const encodedConsumerCode = encodeURIComponent(consumerCode);
-  // console.log("Encoded Consumer Code:", encodedConsumerCode);
-
 
   const businessService = "DEATH_CERT";
   history.push(`/digit-ui/employee/payment/collect/${businessService}/${encodedConsumerCode}/tenantId=${tenantId}?workflow=death`);

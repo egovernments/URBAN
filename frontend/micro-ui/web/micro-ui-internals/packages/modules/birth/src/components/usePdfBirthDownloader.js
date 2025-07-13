@@ -47,7 +47,6 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
       const fileUrl = fileData?.url;
 
       if (fileUrl && currentCertificateIdForFilename) {
-        // console.log("usePdfDownloader: File URL obtained, attempting download:", fileUrl);
         const link = document.createElement('a');
         link.href = fileUrl;
         link.target = '_blank';
@@ -56,7 +55,6 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
         link.click();
         document.body.removeChild(link);
         setDownloadError(null);
-        // console.log("usePdfDownloader: Download link clicked.");
       } else {
         console.error("usePdfDownloader: Filestore response no URL or missing filename ID.");
         setDownloadError("Could not retrieve download link.");
@@ -83,8 +81,6 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
     // isFileLinkLoading, isFileLinkFetching // Less critical here if data is present
   ]);
 
-
-  // Added detailed console.log statements for all steps in the PDF download flow
   const initiateDownload = (tenantIdForMutation, idForMutationOrFilename, directFileStoreId = null) => {
 
 
@@ -109,7 +105,6 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
       console.error("usePdfDownloader: For 2-step, ID or Tenant ID missing.");
       setDownloadError("Missing info for 2-step download.");
       setIsDownloading(false);
-      console.log("usePdfDownloader: Download aborted due to missing ID or Tenant ID.");
       return;
     }
 
@@ -124,7 +119,6 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
           if (!response?.filestoreId) {
             setDownloadError("Failed to get download reference.");
             setIsDownloading(false); // Stop loading if mutation gives no ID
-            console.log("usePdfDownloader: Mutation failed to provide filestoreId.");
             return;
           }
           setFilestoreIdToFetch(response.filestoreId); // This will trigger filestore hook
@@ -147,7 +141,6 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
     if (mutationIsLoading || (filestoreIdToFetch && (isFileLinkLoading || isFileLinkFetching))) {
         if (!isDownloading) {
           setIsDownloading(true);
-          console.log("usePdfDownloader: Combined isDownloading state set to true.");
         }
     }
     

@@ -8,8 +8,6 @@ import { Route } from "react-router-dom/cjs/react-router-dom.min";
 
 
 const CitizenApp = ({ path, url, userType }) => {
-  // console.log(userType, "****");
-  // console.log(path);
   return (
     <span className={"birth-citizen"}>
       <Switch>

@@ -450,8 +450,6 @@ const PaymentComponent = (props) => {
   // Retrieve stored payment data
   const storedPaymentData = JSON.parse(sessionStorage.getItem("PaymentResponse"));
 
-  console.log("storedPaymentData:", storedPaymentData);
-
   const { isLoading, data, isError } = Digit.Hooks.usePaymentUpdate({ egId }, business_service, {
     retry: false,
     staleTime: Infinity,
@@ -484,7 +482,6 @@ const PaymentComponent = (props) => {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
-console.log("data",data)
   const payments = data?.payments;
 
   useEffect(() => {
@@ -510,7 +507,6 @@ console.log("data",data)
 
 
   if (!storedPaymentData || !storedPaymentData.Payments || storedPaymentData.Payments.length === 0) {
-    console.log("failure")
     return (
       <Card>
         <Banner

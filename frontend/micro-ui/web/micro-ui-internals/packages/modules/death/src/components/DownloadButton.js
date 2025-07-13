@@ -1,23 +1,6 @@
 import _ from "lodash";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components";
-import React, { useState, Fragment, useEffect } from "react";
-
-// export const DownloadButton = ({ tenantId, certificateId }) => {
-// const usePdfDownloader= Digit.ComponentRegistryService.getComponent("usePdfDownloader");
-//     console.log(usePdfDownloader,"usePdfDownloaderusePdfDownloaderusePdfDownloader")
-//   const { initiateDownload, isDownloading, downloadError } = usePdfDownloader(certificateId);
-
-//   const handleClick = (event) => {
-//     event.preventDefault();
-//     if (isDownloading) {
-//       console.log("Download already in progress for certificate:", certificateId);
-//       return;
-//     }
-//     console.log(`DownloadButton clicked for cert: ${certificateId}, tenant: ${tenantId}`);
-//     initiateDownload(tenantId, certificateId);
-//   };
-
-//   useEffect(() => {
+import React, { useEffect } from "react";
 //     if (downloadError) {
 //       console.error(`Download error for certificate ${certificateId}:`, downloadError);
 //     }
@@ -42,10 +25,8 @@ export const DownloadButton = ({ tenantId, certificateId }) => {
   const handleClick = (event) => {
     event.preventDefault();
     if (isDownloading) {
-      console.log("Download already in progress for certificate:", certificateId);
       return;
     }
-    console.log(`DownloadButton clicked for cert: ${certificateId}, tenant: ${tenantId}`);
     initiateDownload(tenantId, certificateId);
   };
 

@@ -2,13 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 const BirthCard = ({ userType }) => {
-  // console.log("BirthCard");
   const { t } = useTranslation();
   window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
   // Check URL
   const isCitizen = window?.location?.pathname?.toLowerCase().includes("citizen");
-
-  // console.log("Context Path:", window?.contextPath);
 
   const propsForModuleCard = {
     moduleName: isCitizen ? t("ACTION_TEST_BIRTH_CERTIFICATE") : t("COMMON_BIRTH"),

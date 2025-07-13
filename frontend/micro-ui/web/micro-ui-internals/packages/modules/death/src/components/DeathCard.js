@@ -4,9 +4,6 @@ import { useTranslation } from "react-i18next";
 import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 
 const DeathCard = ({userType}) => {  
-
-  console.log("DeathCard");
-  
   const { t } = useTranslation();
 
   // Check URL

@@ -192,7 +192,6 @@ export const CreateDeath = () => {
     config: { enabled: true },
   };
 
-  // console.log(Digit.Hooks.useCustomAPIMutationHook);
   const mutation = Digit.Hooks.useCustomAPIMutationHook(reqCreate);
 
   const onSubmit = async (formData) => {

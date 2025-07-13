@@ -98,10 +98,6 @@ export const viewBirthApplicationConfig = (applicationsArray, t, props = {}) => 
     }
 
     const applicationCards = applicationsArray.map((appData, index) => {
-        if (index === 0) {
-            console.log(`Processing birth appData[0]:`, JSON.parse(JSON.stringify(appData)));
-        }
-
         const rawStatus = appData.status;
         const translatedStatusDisplay = getTranslatedApplicationStatus(rawStatus, t);
 

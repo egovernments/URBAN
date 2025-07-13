@@ -73,7 +73,6 @@ export const UICustomizations = {
           }
 
           if (hospitalNameString !== "") {
-            console.log("hospitalNameString", hospitalNameString);
               data.params.hospitalId = hospitalNameString;
                data.params.placeofdeath = hospitalNameString;
           } else {
@@ -118,7 +117,6 @@ export const UICustomizations = {
       }
 
       data.params.tenantId = tenantId;
-      console.log(data, "data in preProcess of searchDeathConfig");
       if (data?.params?.fromDate || data?.params?.toDate) {
         const createdFrom =data.params?.fromDate;
         const createdTo = data.params?.toDate;
@@ -129,14 +127,7 @@ export const UICustomizations = {
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
       const ViewLinkButton = Digit.ComponentRegistryService.getComponent("ViewLinkButton");
-      console.log("key", key);
       const tenantId = Digit.ULBService.getCurrentTenantId();
-      console.log("key", key);
-      console.log("value", value);
-      console.log("column", column);
-      console.log("t", t);
-      console.log("searchResult", searchResult);
-
 
       switch (key) {
         case "View":
@@ -163,10 +154,7 @@ export const UICustomizations = {
     customValidationCheck: (data) => {
    const { fromDate, toDate } = data;
 
-   console.log("customValidationCheck called with data:", data);
-
       if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
-        console.log("Validation error: To date before From date");
         return {type: "warning",warning: true, label:"DATE_VALIDATION_MSG" };
       }
       return false;
@@ -176,11 +164,8 @@ export const UICustomizations = {
 
  searchAndDownloadConfig: {
      preProcess: (data) => {
-    console.log("UICustomization preProcess START - received data:", JSON.stringify(data, null, 2));
-
     let finalApiParams = {};
     const formValues = data.state.searchForm || {};
-    console.log("Form Values (data.state.searchForm):", JSON.stringify(formValues, null, 2));
 
 
     // 1. Tenant ID
@@ -223,29 +208,20 @@ export const UICustomizations = {
     
 
 
-    // 5. Hospital ID (from placeofdeath field) - DETAILED LOGGING
+    // 5. Hospital ID (from placeofdeath field)
     const placeOfDeathRawValue = formValues.placeofdeath;
-    console.log("Raw value of formValues.placeofdeath:", JSON.stringify(placeOfDeathRawValue));
 
     let placeOfDeathCode = null;
     if (typeof placeOfDeathRawValue === 'string' && placeOfDeathRawValue.trim() !== "") {
       placeOfDeathCode = placeOfDeathRawValue.trim();
-      console.log("placeofdeath is a string:", placeOfDeathCode);
     } else if (typeof placeOfDeathRawValue === 'object' && placeOfDeathRawValue !== null && placeOfDeathRawValue.code) {
       placeOfDeathCode = String(placeOfDeathRawValue.code).trim();
-      console.log("placeofdeath is an object, extracted code:", placeOfDeathCode);
-    } else {
-      console.log("placeofdeath is not a usable string or object with a code property.");
     }
 
-   console.log("PreProcess: Value of placeOfDeathCode (raw hospital name):", placeOfDeathCode);
-
     if (placeOfDeathCode) {
-      finalApiParams.hospitalId = placeOfDeathCode; 
-      console.log(`PreProcess: Hospital ID set RAW (no explicit encoding): ${finalApiParams.hospitalId}`);
+      finalApiParams.hospitalId = placeOfDeathCode;
     } else {
       delete finalApiParams.hospitalId;
-      console.log("PreProcess: Hospital ID NOT set because placeOfDeathCode is null or empty.");
     }
 
 

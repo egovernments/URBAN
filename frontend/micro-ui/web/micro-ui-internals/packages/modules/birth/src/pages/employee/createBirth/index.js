@@ -195,8 +195,6 @@ export const CreateBirth = () => {
       birthCerts: [transformFormData(formData)],
     };
 
-    console.log("Payload being sent:", JSON.stringify(payload, null, 2));
-
     await mutation.mutate(
       {
         url: "/birth-death-services/common/savebirthimport",

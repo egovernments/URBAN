@@ -1,5 +1,3 @@
-import { add } from "lodash";
-
 export const searchDeathConfig = (t) => {
   const id = Digit.ULBService.getCurrentTenantId();
   return {

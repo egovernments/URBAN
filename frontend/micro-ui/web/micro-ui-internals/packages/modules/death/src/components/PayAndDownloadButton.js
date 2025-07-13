@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import { Button as ButtonNew, Toast } from "@egovernments/digit-ui-components";
 import { useTranslation } from "react-i18next";
 
@@ -12,8 +12,6 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
   const [showToast, setShowToast] = useState(null);
   const { downloadApi } = useDeathDownload();
   
-  console.log("tenantId of PayAndDownloadButton", tenantId);
-  
   const handleClick = async () => {
      setIsLoading(true); 
     try {
@@ -24,7 +22,6 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
         const businessService = "DEATH_CERT";
        
         const encodedConsumerCode = encodeURIComponent(fetchedConsumerCode);
-        // console.log("Encoded Consumer Code:", encodedConsumerCode);
         history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=death`,
           {
             tenantId: tenantId,
