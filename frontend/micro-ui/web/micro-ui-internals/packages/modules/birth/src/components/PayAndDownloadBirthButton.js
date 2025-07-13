@@ -26,15 +26,15 @@ export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalNam
           history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=birth`);
         } else {
           console.error("Missing businessService or consumerCode. Cannot proceed to payment.");
-          setShowToast({ key: "error", label: t("BND_PAYMENT_NAVIGATION_FAILED") });
+          setShowToast({ key: "error", label: t("BND_BIRTH_UNEXPECTED_ERROR_OCCURRED") });
         }
       } else {
         console.error("Could not retrieve consumer code. Cannot proceed to payment.");
-        setShowToast({ key: "error", label: t("BND_CONSUMER_CODE_NOT_RETRIEVED") });
+        setShowToast({ key: "error", label: t("BND_BIRTH_CONSUMER_CODE_NOT_RETRIEVED") });
       }
     } catch (error) {
       console.error("An error occurred while fetching consumer code:", error);
-      setShowToast({ key: "error", label: t("BND_UNEXPECTED_ERROR_OCCURRED") });
+      setShowToast({ key: "error", label: t("BND_BIRTH_UNEXPECTED_ERROR_OCCURRED") });
     } finally {
       setIsLoading(false);
     }

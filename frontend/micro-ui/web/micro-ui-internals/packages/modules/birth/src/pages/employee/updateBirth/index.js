@@ -406,19 +406,19 @@ const UpdateBirth = () => {
       {
         onSuccess: (response) => {
           if (response?.statsMap?.["Sucessful Records"] > 0) {
-            setShowToast({ key: "success", label: "Birth Certificate Updated Successfully" });
+            setShowToast({ key: "success", label: t("BND_BIRTH_CERTIFICATE_UPDATED_SUCCESSFULLY") });
             setTimeout(() => history.push(`/${window.contextPath}/employee/birth/birth-common/getCertificate`), 1000);
           } else {
             const errorMsg =
               response?.serviceError || response?.errorRowMap?.[Object.keys(response.errorRowMap)[0]]?.[0] || "Update failed with logical errors.";
-            setShowToast({ key: "error", label: `Failed to Update: ${errorMsg}` });
+            setShowToast({ key: "error", label: `${t("BND_BIRTH_UPDATE_FAILED")}: ${errorMsg}` });
           }
         },
         onError: (error) => {
           console.error("API Update Error:", error);
           setShowToast({
             key: "error",
-            label: "Failed to Update Birth Certificate: " + (error?.response?.data?.Errors?.[0]?.message || error.message),
+            label: t("BND_BIRTH_UPDATE_FAILED") + ": " + (error?.response?.data?.Errors?.[0]?.message || error.message),
           });
         },
       }

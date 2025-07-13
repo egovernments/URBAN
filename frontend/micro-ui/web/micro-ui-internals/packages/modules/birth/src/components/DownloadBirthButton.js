@@ -27,7 +27,7 @@ export const DownloadBirthButton = ({ tenantId, certificateId }) => {
       console.error(`Download error for certificate ${certificateId}:`, downloadError);
       setShowToast({ 
         key: "error", 
-        label: t("BND_DOWNLOAD_FAILED") 
+        label: t("BND_CERT_GEN_ERROR") 
       });
     }
   }, [downloadError, certificateId, t]);

@@ -197,7 +197,7 @@ export const CreateDeath = () => {
 
   const onSubmit = async (formData) => {
     if (!checkDateOrderValidity(formData)) {
-      setShowToast({ key: "error", label: t("BND_DEATH_DATE_VALIDATION_ERROR") });
+      setShowToast({ key: "error", label: t("BND_INVALID_REGISTRATION_DATE") });
       setIsSubmitDisabledByDateError(true);
       return;
     }

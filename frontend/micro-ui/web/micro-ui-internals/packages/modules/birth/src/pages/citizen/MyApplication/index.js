@@ -36,7 +36,7 @@ const MyApplications = () => {
         if (error) {
             setShowToast({ 
                 key: "error", 
-                label: t("BND_ERROR_FETCHING_APPLICATIONS") 
+                label: t("BND_ERROR_FETCHING_BIRTH_APPLICATIONS") 
             });
         }
     }, [error, t]);

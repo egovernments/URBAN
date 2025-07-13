@@ -1,10 +1,11 @@
 import { useHistory } from "react-router-dom";
-import _ from "lodash";
-import React, { useState, Fragment, useEffect } from "react";
+import React from "react";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components";
+import { useTranslation } from "react-i18next";
 
 export const ViewLinkButton = ({ tenantId, certificateId,hospitalname }) => {
   const history = useHistory();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     history.push(
@@ -19,10 +20,10 @@ export const ViewLinkButton = ({ tenantId, certificateId,hospitalname }) => {
 
   return (
     <ButtonNew
-    className="custom-class"
-    label="View"
-    onClick={handleClick}
-    variation="link"
-  />
+      className="custom-class"
+      label={t("BND_COMMON_VIEW")}
+      onClick={handleClick}
+      variation="link"
+    />
   );
 };
