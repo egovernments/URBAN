@@ -63,11 +63,11 @@ const UpdateDeath = () => {
           ...section,
           body: section.body.map((field) => ({
             ...field,
-            isMandatory: isChecked ? true : (createDeathConfig.find(s => s.head === section.head)?.body.find(f => f.populators?.name === field.populators?.name)?.isMandatory || false),
+            isMandatory: isChecked ? false : (createDeathConfig.find(s => s.head === section.head)?.body.find(f => f.populators?.name === field.populators?.name)?.isMandatory || false),
           })),
         };
       }
-      if (section.head === "BND_DEATH_ADDR_PERM" && isChecked) { // Ensure this head key matches createDeathConfig
+      if (section.head === "BND_DEATH_ADDR_PERM" && isChecked) { // Hide permanent address section when same address is checked
         return null; 
       }
       return section;
@@ -147,16 +147,25 @@ const UpdateDeath = () => {
     const permAddr = apiData?.deathPermaddr || {};
     
     const checkSame = (addr1, addr2) => {
-        const keys1 = Object.keys(addr1);
-        const keys2 = Object.keys(addr2);
-        if (keys1.length === 0 && keys2.length === 0) return true;
-        if (keys1.length !== keys2.length) return false;
-        for (let key of keys1) {
-            if ((addr1[key] || "") !== (addr2[key] || "")) return false;
+        // Get relevant address fields to compare
+        const addressFields = ['buildingno', 'houseno', 'streetname', 'locality', 'tehsil', 'district', 'city', 'state', 'country', 'pinno'];
+        
+        // If both addresses are empty, they are not the same
+        const hasAddr1Data = addressFields.some(field => addr1[field] && addr1[field].trim() !== "");
+        const hasAddr2Data = addressFields.some(field => addr2[field] && addr2[field].trim() !== "");
+        
+        if (!hasAddr1Data && !hasAddr2Data) return false;
+        if (!hasAddr1Data || !hasAddr2Data) return false;
+        
+        // Compare each field
+        for (let field of addressFields) {
+            const val1 = (addr1[field] || "").trim();
+            const val2 = (addr2[field] || "").trim();
+            if (val1 !== val2) return false;
         }
         return true;
     };
-    const isSameAddress = checkSame(presentAddr, permAddr) && (Object.keys(presentAddr).length > 0 || Object.keys(permAddr).length > 0);
+    const isSameAddress = checkSame(presentAddr, permAddr);
 
     return {
       buildingNumber: presentAddr?.buildingno || "", // Key for present address building no
@@ -346,6 +355,18 @@ const UpdateDeath = () => {
       prevCheckboxRef.current = currentIsSameAddressChecked;
       setSameAddressChecked(currentIsSameAddressChecked);
 
+      // Clear permanent address fields when same address is checked
+      if (currentIsSameAddressChecked) {
+        const permanentFields = [
+          'permanentBuildingNumber', 'permanentHouseNo', 'permanentStreetName', 
+          'permanentLocality', 'permanentTehsil', 'permanentDistrict', 
+          'permanentCity', 'permanentState', 'permanentCountry', 'permanentPincode'
+        ];
+        permanentFields.forEach(field => {
+          setValue(field, "");
+        });
+      }
+
       setFormConfig(prevCurrentConfig =>
         updateConfigBasedOnSameAddressCheckbox(currentIsSameAddressChecked, prevCurrentConfig)
       );
@@ -375,7 +396,7 @@ const UpdateDeath = () => {
         }))
       );
     }
-  }; // <-- Add this closing brace to properly end onFormValueChange
+  };
 
   if (hospitalListLoading || (!initialValues && editData)) {
     return <Loader />;

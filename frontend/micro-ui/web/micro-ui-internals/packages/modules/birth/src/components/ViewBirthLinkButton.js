@@ -1,10 +1,12 @@
 
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 import React, { useState, Fragment, useEffect } from "react";
 import { Button as ButtonNew } from "@egovernments/digit-ui-components";
 const ViewBirthLinkButton = ({ tenantId, certificateId,hospitalname }) => {
   const history = useHistory();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     history.push(
@@ -21,7 +23,7 @@ const ViewBirthLinkButton = ({ tenantId, certificateId,hospitalname }) => {
   return (
     <ButtonNew
     className="custom-class"
-    label="View"
+     label={t("BND_COMMON_VIEW")}
     onClick={handleClick}
     variation="link"
   />
