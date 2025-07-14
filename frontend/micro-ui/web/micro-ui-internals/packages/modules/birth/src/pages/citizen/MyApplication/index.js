@@ -41,11 +41,21 @@ const MyApplications = () => {
         }
     }, [error, t]);
 
+    // Auto-dismiss toast after 5 seconds
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => {
+                setShowToast(null);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [showToast]);
+
     if (isLoading) return <Loader />;
     if (error) return <div>Error fetching applications. Please try again.</div>;
 
     return (
-        <React.Fragment>
+        <div className="myapplication" style={{ padding: "16px" }}>
             <Header>{t("BND_CITIZEN_MY_APPLICATIONS")}</Header>
             <div>
                 {ViewComposer && config ? <ViewComposer data={config} /> : <div>Loading View...</div>}
@@ -57,7 +67,8 @@ const MyApplications = () => {
                     onClose={() => setShowToast(null)}
                 />
             )}
-        </React.Fragment>
+            </div>
+
     );
 };
 

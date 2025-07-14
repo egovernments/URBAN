@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+
 const BirthCard = ({ userType }) => {
   const { t } = useTranslation();
   window.contextPath = window?.globalConfigs?.getConfig("CONTEXT_PATH");
@@ -32,6 +33,13 @@ const BirthCard = ({ userType }) => {
           },
         ],
   };
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return (
+    <div className="birth-card-module" style={{
+      marginLeft: isCitizen ? "30px" : "0px",
+      marginTop: isCitizen ? "30px" : "0px"
+    }}>
+      <EmployeeModuleCard {...propsForModuleCard} />
+    </div>
+  );
 };
 export default BirthCard;

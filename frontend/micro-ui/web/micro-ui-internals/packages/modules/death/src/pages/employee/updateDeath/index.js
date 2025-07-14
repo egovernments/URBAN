@@ -132,6 +132,15 @@ const UpdateDeath = () => {
     }
   }, [editData, hospitalListData]);
 
+  // Auto-dismiss toast after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   const transformAddressData = (apiData) => {
     const presentAddr = apiData?.deathPresentaddr || {};
@@ -311,7 +320,13 @@ const UpdateDeath = () => {
         onSuccess: (response) => {
           if (response?.statsMap?.["Sucessful Records"] > 0) {
             setShowToast({ key: "success", label: t("BND_DEATH_CERTIFICATE_UPDATED_SUCCESSFULLY") });
-            setTimeout(() => history.push(`/${window.contextPath}/employee/death/death-common/getCertificate`), 1000); 
+   
+            setTimeout(() => {
+             
+              history.replace(`/${window.contextPath}/employee/death/death-common/getCertificate`);
+          
+              window.location.reload();
+            }, 1000); 
           } else {
             const errorMsg = response?.serviceError || response?.errorRowMap?.[Object.keys(response.errorRowMap)[0]]?.[0] || "Update failed with logical errors.";
             setShowToast({ key: "error", label: `${t("BND_DEATH_UPDATE_FAILED")}: ${errorMsg}` });

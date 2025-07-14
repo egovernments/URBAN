@@ -36,7 +36,7 @@ const SearchDeath = () => {
 
     useEffect(() => {
         const baseConfig = searchDeathConfig(t);
-
+        
         if (hospitalListData?.hospitalListOptions) {
             const updatedFields = baseConfig.sections.search.uiConfig.fields.map(field => {
                 if (field.key === "placeofdeath") { 

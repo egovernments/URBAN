@@ -46,6 +46,16 @@ useEffect(() => {
     }
 }, [error, t]);
 
+// Auto-dismiss toast after 5 seconds
+useEffect(() => {
+    if (showToast) {
+        const timer = setTimeout(() => {
+            setShowToast(null);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }
+}, [showToast]);
+
 if (isLoading) {
   return <Loader />;
 }

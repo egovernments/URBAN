@@ -66,6 +66,16 @@ export const CreateBirth = () => {
     }
   }, [hospitalListData]);
 
+  // Auto-dismiss toast after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
   // Update form config based on "Same as Permanent Address" checkbox
   const updateConfigBasedOnCheckbox = (sameAddressChecked) => {
     return BirthConfig.map((section) => {
@@ -119,7 +129,7 @@ export const CreateBirth = () => {
       pinno: formData?.birth_pincode || "",
     };
 
-    const permanentAddress = {
+    const permanentAddress = formData?.same_as_permanent_address ? presentAddress : {
       buildingno: formData?.permanent_building_number || "",
       houseno: formData?.permanent_house_no || "",
       streetname: formData?.permanent_street_name || "",
@@ -170,7 +180,7 @@ export const CreateBirth = () => {
       informantname: formData?.informant_name || "",
       informantaddress: formData?.informant_address || "",
 
-      birthPermaddr: isSameAddress ? presentAddress : permanentAddress,
+      birthPermaddr: permanentAddress,
       hospitalname: formData?.hospital_name?.code || "Unknown",
       isLegacyRecord: !!formData?.checkbox_legacy,
       excelrowindex: -1,

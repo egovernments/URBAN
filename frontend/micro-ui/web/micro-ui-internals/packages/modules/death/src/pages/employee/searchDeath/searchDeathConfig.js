@@ -66,7 +66,7 @@ export const searchDeathConfig = (t) => {
               },
             },
             {
-              isMandatory: false,
+              isMandatory: true,
               type: "dropdown",
               key: "gender",
               label: t("BND_COMMON_GENDER"),

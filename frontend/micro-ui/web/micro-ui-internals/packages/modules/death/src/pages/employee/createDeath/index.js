@@ -65,6 +65,17 @@ export const CreateDeath = () => {
       );
     }
   }, [hospitalListData]); 
+
+  // Auto-dismiss toast after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
   const checkDateOrderValidity = (formData) => {
     const dobStr = formData.dob;
     const doRegStr = formData.doRegistration;

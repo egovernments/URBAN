@@ -12,6 +12,16 @@ export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalNam
   const [showToast, setShowToast] = useState(null);
   const { downloadApi } = useBirthDownload();
 
+  // Auto-dismiss toast after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
   const handleClick = async () => {
     setIsLoading(true);
     try {

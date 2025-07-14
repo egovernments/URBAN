@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Button as ButtonNew, Toast } from "@egovernments/digit-ui-components";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +11,16 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(null);
   const { downloadApi } = useDeathDownload();
+  
+  // Auto-dismiss toast after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
   
   const handleClick = async () => {
      setIsLoading(true); 

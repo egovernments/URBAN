@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { FormComposerV2, Header, Toast, Loader } from "@egovernments/digit-ui-components";
+import { Header } from "@egovernments/digit-ui-react-components";
+import { FormComposerV2, Toast, Loader } from "@egovernments/digit-ui-components";
 import { BirthConfig } from "../createBirth/config/BirthConfig";
 import { useTranslation } from "react-i18next";
 
@@ -68,7 +69,7 @@ const UpdateBirth = () => {
   const updateConfigBasedOnSameAddressCheckbox = (isChecked, currentConfigToUpdate) => {
     return currentConfigToUpdate
       .map((section) => {
-        if (section.head === "Address of Parents at the Time of Birth") {
+        if (section.head === "BND_PRESENT_ADDR_DURING_BIRTH") {
           return {
             ...section,
             body: section.body.map((field) => ({
@@ -80,7 +81,7 @@ const UpdateBirth = () => {
             })),
           };
         }
-        if (section.head === "Permanent Address of Parents" && isChecked) {
+        if (section.head === "BND_BIRTH_ADDR_PERM" && isChecked) {
           return null; // Hide permanent address section if checkbox is checked
         }
         return section;
@@ -123,6 +124,16 @@ const UpdateBirth = () => {
       setFormConfig(newConfig);
     }
   }, [editData, hospitalListData]);
+
+  // Auto-dismiss toast after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   // --- START: MODIFIED SECTION ---
   // Transform address data from API to form fields
@@ -222,7 +233,7 @@ const UpdateBirth = () => {
       father_email_id: apiData?.birthFatherInfo?.emailid || "",
       father_mobile_number: apiData?.birthFatherInfo?.mobileno || "",
       father_education: apiData?.birthFatherInfo?.education || "",
-      father_profession: apiData?.birthFatherInfo?.profession || "",
+      father_profession: apiData?.birthFatherInfo?.proffession || "",
       father_nationality: apiData?.birthFatherInfo?.nationality || "",
       father_religion: apiData?.birthFatherInfo?.religion || "",
       mother_first_name: apiData?.birthMotherInfo?.firstname || "",
@@ -232,7 +243,7 @@ const UpdateBirth = () => {
       mother_email_id: apiData?.birthMotherInfo?.emailid || "",
       mother_mobile_number: apiData?.birthMotherInfo?.mobileno || "",
       mother_education: apiData?.birthMotherInfo?.education || "",
-      mother_profession: apiData?.birthMotherInfo?.profession || "",
+      mother_profession: apiData?.birthMotherInfo?.proffession || "",
       mother_nationality: apiData?.birthMotherInfo?.nationality || "",
       mother_religion: apiData?.birthMotherInfo?.religion || "",
       ...transformAddressData(apiData),
@@ -322,12 +333,12 @@ const UpdateBirth = () => {
       dateofreport: dorMs,
       dateofbirthepoch: dobMs ? Math.floor(dobMs / 1000) : null,
       dateofreportepoch: dorMs ? Math.floor(dorMs / 1000) : null,
-      excelrowindex: -1, // As per working example
+      excelrowindex: editData?.excelrowindex || -1, // As per working example
       dateofissue: editData?.dateofissue || null,
       firstname: formData?.child_first_name || null,
       gender,
       genderStr,
-      hospitalname: formData?.hospital_name?.code || formData?.hospital_name?.originalName || editData?.hospitalname,
+      hospitalname: formData?.hospital_name?.originalName || formData?.hospital_name?.code || editData?.hospitalname,
       informantsaddress: formData?.informant_address || null,
       informantsname: formData?.informant_name || null,
       lastname: formData?.child_last_name || null,
@@ -407,7 +418,12 @@ const UpdateBirth = () => {
         onSuccess: (response) => {
           if (response?.statsMap?.["Sucessful Records"] > 0) {
             setShowToast({ key: "success", label: t("BND_BIRTH_CERTIFICATE_UPDATED_SUCCESSFULLY") });
-            setTimeout(() => history.push(`/${window.contextPath}/employee/birth/birth-common/getCertificate`), 1000);
+           setTimeout(() => {
+             
+              history.replace(`/${window.contextPath}/employee/death/death-common/getCertificate`);
+          
+              window.location.reload();
+            }, 1000); 
           } else {
             const errorMsg =
               response?.serviceError || response?.errorRowMap?.[Object.keys(response.errorRowMap)[0]]?.[0] || "Update failed with logical errors.";
