@@ -11,7 +11,9 @@ const UpdateDeath = () => {
   const certificateId = location.state?.certificateId;
   const { t } = useTranslation();
 
-  const [formConfig, setFormConfig] = useState(() => JSON.parse(JSON.stringify(createDeathConfig)));
+  const baseFormConfigRef = useRef(null);
+
+  const [formConfig, setFormConfig] = useState(null);
   const [initialValues, setInitialValues] = useState(null);
   const [showToast, setShowToast] = useState(null);
   const [sameAddressChecked, setSameAddressChecked] = useState(false);
@@ -56,45 +58,49 @@ const UpdateDeath = () => {
     }
   };
   
-  const updateConfigBasedOnSameAddressCheckbox = (isChecked, currentConfigToUpdate) => {
-    return currentConfigToUpdate.map((section) => {
-      if (section.head === "BND_PRESENT_ADDR_DURING_DEATH") { // Ensure this head key matches createDeathConfig
-        return {
-          ...section,
-          body: section.body.map((field) => ({
-            ...field,
-            isMandatory: isChecked ? false : (createDeathConfig.find(s => s.head === section.head)?.body.find(f => f.populators?.name === field.populators?.name)?.isMandatory || false),
-          })),
-        };
-      }
-      if (section.head === "BND_DEATH_ADDR_PERM" && isChecked) { // Hide permanent address section when same address is checked
+    const updateConfigBasedOnSameAddressCheckbox = (isChecked, config) => {
+    if (!isChecked) {
+      return config; 
+    }
+   
+    return config.map((section) => {
+      if (section.head === "BND_DEATH_ADDR_PERM") {
         return null; 
       }
       return section;
-    }).filter(Boolean); 
+    }).filter(Boolean);
   };
-
-  useEffect(() => {
+  
+   useEffect(() => {
     if (editData && hospitalListData?.hospitalListOptions) {
       const transformedApiData = transformApiDataToForm(editData, hospitalListData.hospitalListOptions);
       setInitialValues(transformedApiData);
 
-      const initialSameAddress = !!transformedApiData.sameAddressCheckbox;
-      setSameAddressChecked(initialSameAddress);
-      prevCheckboxRef.current = initialSameAddress;
-
       const initialIsLegacy = !!transformedApiData.checkboxlabel;
+      const initialSameAddress = !!transformedApiData.sameAddressCheckbox;
+      
       prevLegacyCheckboxRef.current = initialIsLegacy;
-
-      let newConfig = JSON.parse(JSON.stringify(createDeathConfig));
-
-      newConfig = newConfig.map(section => ({
+      prevCheckboxRef.current = initialSameAddress;
+      
+      // 1. Create the base configuration with all fields disabled that should NOT be changed on update.
+      let baseConfig = JSON.parse(JSON.stringify(createDeathConfig));
+      baseConfig = baseConfig.map((section) => ({
         ...section,
-        body: section.body.map(field => {
+        body: section.body.map((field) => {
+          if (field.populators?.name === "checkboxlabel" || field.populators?.name === "HospitalName" || field.populators?.name === "RegistrationNumber") {
+             return { ...field, disable: true };
+          }
+          return field;
+        }),
+      }));
+      
+      // 2. Add dynamic options to the disabled HospitalName dropdown
+      baseConfig = baseConfig.map((section) => ({
+        ...section,
+        body: section.body.map((field) => {
           if (field.populators?.name === "HospitalName") {
             return {
               ...field,
-              disable: true, 
               populators: {
                 ...field.populators,
                 options: hospitalListData.hospitalListOptions,
@@ -105,43 +111,28 @@ const UpdateDeath = () => {
           return field;
         }),
       }));
-
-      newConfig = newConfig.map(section => ({
-        ...section,
-        body: section.body.map(field => {
-          if (field.populators?.name === "RegistrationNumber") {
-            return {
-              ...field,
-              disable: true,
-              isMandatory: initialIsLegacy,
-              validation: { ...(field.validation || {}), required: initialIsLegacy },
-              populators: {
-                ...field.populators,
-                error: initialIsLegacy ? (field.populators?.error || "Registration Number is Required!") : undefined,
-              },
-            };
-          }
-
-          return field;
-        })
-      }));
       
-      newConfig = updateConfigBasedOnSameAddressCheckbox(initialSameAddress, newConfig);
-      
-      setFormConfig(newConfig);
+      // 3. Store this base configuration in the ref. This is our master copy for this render.
+      baseFormConfigRef.current = baseConfig;
+
+      // 4. Create the initial visible config by hiding the permanent address if needed.
+      const initialVisibleConfig = updateConfigBasedOnSameAddressCheckbox(initialSameAddress, baseConfig);
+
+      // 5. Set the form config for the first render.
+      setFormConfig(initialVisibleConfig);
     }
   }, [editData, hospitalListData]);
 
-  // Auto-dismiss toast after 5 seconds
+
   useEffect(() => {
     if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(null);
-      }, 2000);
+      const timer = setTimeout(() => { setShowToast(null); }, 2000);
       return () => clearTimeout(timer);
     }
   }, [showToast]);
 
+
+  
   const transformAddressData = (apiData) => {
     const presentAddr = apiData?.deathPresentaddr || {};
     const permAddr = apiData?.deathPermaddr || {};
@@ -168,7 +159,7 @@ const UpdateDeath = () => {
     const isSameAddress = checkSame(presentAddr, permAddr);
 
     return {
-      buildingNumber: presentAddr?.buildingno || "", // Key for present address building no
+      buildingNumber: presentAddr?.buildingno || "", 
       houseNo: presentAddr?.houseno || "",
       streetName: presentAddr?.streetname || "",
       locality: presentAddr?.locality || "",
@@ -348,14 +339,14 @@ const UpdateDeath = () => {
       }
     );
   };
-
+  
   const onFormValueChange = (setValue, formData, formState) => {
+    // A. Handle "Same Address" checkbox change
     const currentIsSameAddressChecked = !!formData?.sameAddressCheckbox;
     if (prevCheckboxRef.current !== currentIsSameAddressChecked) {
       prevCheckboxRef.current = currentIsSameAddressChecked;
-      setSameAddressChecked(currentIsSameAddressChecked);
 
-      // Clear permanent address fields when same address is checked
+      // When the box is checked, clear the permanent address fields to avoid stale data.
       if (currentIsSameAddressChecked) {
         const permanentFields = [
           'permanentBuildingNumber', 'permanentHouseNo', 'permanentStreetName', 
@@ -366,41 +357,26 @@ const UpdateDeath = () => {
           setValue(field, "");
         });
       }
-
-      setFormConfig(prevCurrentConfig =>
-        updateConfigBasedOnSameAddressCheckbox(currentIsSameAddressChecked, prevCurrentConfig)
+      
+      const newVisibleConfig = updateConfigBasedOnSameAddressCheckbox(
+        currentIsSameAddressChecked,
+        baseFormConfigRef.current 
       );
+      
+      // Update the state to re-render the form.
+      setFormConfig(newVisibleConfig);
     }
 
     const currentIsLegacy = !!formData?.checkboxlabel;
     if (prevLegacyCheckboxRef.current !== currentIsLegacy) {
       prevLegacyCheckboxRef.current = currentIsLegacy;
-
-      setFormConfig(prevCurrentConfig =>
-        prevCurrentConfig.map(section => ({
-          ...section,
-          body: section.body.map(field => {
-            if (field.populators?.name === "RegistrationNumber") {
-              return {
-                ...field,
-                isMandatory: currentIsLegacy,
-                validation: { ...(field.validation || {}), required: currentIsLegacy },
-                populators: {
-                  ...field.populators,
-                  error: currentIsLegacy ? (field.populators?.error || "Registration Number is Required!") : undefined,
-                },
-              };
-            }
-            return field;
-          })
-        }))
-      );
     }
   };
-
-  if (hospitalListLoading || (!initialValues && editData)) {
+  
+  if (hospitalListLoading || !formConfig || (!initialValues && editData)) {
     return <Loader />;
   }
+
   if(!editData) {
     return <div>Error: No data to edit. Please go back and select a record.</div>;
   }
