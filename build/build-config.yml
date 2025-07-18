@@ -368,7 +368,7 @@ config:
         
   - name: "builds/urban/egf-instrument"
     build:
-      - work-dir: financial-module-system/egf-instrument"
+      - work-dir: "financial-module-system/egf-instrument"
         image-name: "egf-instrument"
         dockerfile: "build/maven/Dockerfile"
       - work-dir: "financial-module-system/egf-instrument/src/main/resources/db"
@@ -384,9 +384,8 @@ config:
   
   - name: "builds/urban/finance-collections-voucher-consumer"
     build:
-      - work-dir: "builds/urban/financial-module-system/finance-collections-voucher-consumer"
+      - work-dir: "financial-module-system/finance-collections-voucher-consumer"
         image-name: "finance-collections-voucher-consumer"
         dockerfile: "build/maven/Dockerfile"
-      - work-dir: "urban/financial-module-system/finance-collections-voucher-consumer/src/main/resources/db"
+      - work-dir: "financial-module-system/finance-collections-voucher-consumer/src/main/resources/db"
         image-name: "finance-collections-voucher-consumer-db"  
-
