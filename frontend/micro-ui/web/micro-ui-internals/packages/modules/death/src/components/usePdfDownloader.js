@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react'; // Added useRef
-
+import { useState, useEffect, useRef } from 'react'; 
 
 export const usePdfDownloader = (initialCertificateIdForFilename) => {
   const [filestoreIdToFetch, setFilestoreIdToFetch] = useState(null);

@@ -5,21 +5,23 @@ import { FormComposerV2, Toast, Loader } from "@egovernments/digit-ui-components
 import { BirthConfig } from "../createBirth/config/BirthConfig";
 import { useTranslation } from "react-i18next";
 
-// Main component for updating a birth certificate
+
 const UpdateBirth = () => {
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
-  // Get data passed from previous page (edit data and certificate id)
   const editData = location.state?.editdata;
   const certificateId = location.state?.certificateId;
 
-  // State for form config, initial values, toast, and address checkbox
-  const [formConfig, setFormConfig] = useState(() => JSON.parse(JSON.stringify(BirthConfig)));
+  
+   const baseFormConfigRef = useRef(null);
+  const [formConfig, setFormConfig] = useState(null);
   const [initialValues, setInitialValues] = useState(null);
   const [showToast, setShowToast] = useState(null);
   const [sameAddressChecked, setSameAddressChecked] = useState(false);
   const prevCheckboxRef = useRef(false);
+   const prevLegacyCheckboxRef = useRef(false); 
+   const prevSameAddressCheckboxRef = useRef(false);
 
   // Fetch hospital list from MDMS
   const hospitalTenantId = Digit.ULBService.getCurrentTenantId();
@@ -65,50 +67,52 @@ const UpdateBirth = () => {
     }
   };
 
-  // Update form config based on "same as permanent address" checkbox
-  const updateConfigBasedOnSameAddressCheckbox = (isChecked, currentConfigToUpdate) => {
-    return currentConfigToUpdate
-      .map((section) => {
-        if (section.head === "BND_PRESENT_ADDR_DURING_BIRTH") {
-          return {
-            ...section,
-            body: section.body.map((field) => ({
-              ...field,
-              isMandatory: isChecked
-                ? true
-                : BirthConfig.find((s) => s.head === section.head)?.body.find((f) => f.populators?.name === field.populators?.name)?.isMandatory ||
-                  false,
-            })),
-          };
-        }
-        if (section.head === "BND_BIRTH_ADDR_PERM" && isChecked) {
-          return null; // Hide permanent address section if checkbox is checked
+ 
+  const updateConfigBasedOnSameAddressCheckbox = (isChecked, config) => {
+    if (!isChecked) {
+      return config; // If not checked, return the config as is (with permanent address visible)
+    }
+    // If checked, filter out (hide) the permanent address section
+    return config.map((section) => {
+        if (section.head === "BND_BIRTH_ADDR_PERM") {
+          return null;
         }
         return section;
-      })
-      .filter(Boolean);
+      }).filter(Boolean);
   };
+  
 
-  // On mount or when editData/hospitalListData changes, set initial form values and config
-  useEffect(() => {
+   useEffect(() => {
     if (editData && hospitalListData?.hospitalListOptions) {
       const transformedApiData = transformApiDataToForm(editData, hospitalListData.hospitalListOptions);
       setInitialValues(transformedApiData);
 
+      const initialIsLegacy = !!transformedApiData.checkbox_legacy;
       const initialSameAddress = !!transformedApiData.same_as_permanent_address;
-      setSameAddressChecked(initialSameAddress);
-      prevCheckboxRef.current = initialSameAddress;
-
-      let newConfig = JSON.parse(JSON.stringify(BirthConfig));
-
-      // Set hospital dropdown options and disable field
-      newConfig = newConfig.map((section) => ({
+      
+      prevLegacyCheckboxRef.current = initialIsLegacy;
+      prevSameAddressCheckboxRef.current = initialSameAddress;
+      
+      // 1. Create the base configuration with all fields disabled that should NOT be changed on update.
+      let baseConfig = JSON.parse(JSON.stringify(BirthConfig));
+      baseConfig = baseConfig.map((section) => ({
+        ...section,
+        body: section.body.map((field) => {
+          // Disable the fields that should not be editable on update
+          if (field.populators?.name === "checkbox_legacy" || field.populators?.name === "hospital_name" || field.populators?.name === "registration_number") {
+             return { ...field, disable: true };
+          }
+          return field;
+        }),
+      }));
+      
+      // 2. Add dynamic options to the disabled HospitalName dropdown
+      baseConfig = baseConfig.map((section) => ({
         ...section,
         body: section.body.map((field) => {
           if (field.populators?.name === "hospital_name") {
             return {
               ...field,
-              disable: true,
               populators: {
                 ...field.populators,
                 options: hospitalListData.hospitalListOptions,
@@ -118,12 +122,19 @@ const UpdateBirth = () => {
           return field;
         }),
       }));
+      
+      // 3. Store this base configuration in the ref. This is our master copy for this render.
+      baseFormConfigRef.current = baseConfig;
 
-      // Update config based on address checkbox
-      newConfig = updateConfigBasedOnSameAddressCheckbox(initialSameAddress, newConfig);
-      setFormConfig(newConfig);
+      // 4. Create the initial visible config by hiding the permanent address if needed.
+      const initialVisibleConfig = updateConfigBasedOnSameAddressCheckbox(initialSameAddress, baseConfig);
+
+      // 5. Set the form config for the first render.
+      setFormConfig(initialVisibleConfig);
     }
   }, [editData, hospitalListData]);
+  
+  
 
   // Auto-dismiss toast after 5 seconds
   useEffect(() => {
@@ -135,8 +146,7 @@ const UpdateBirth = () => {
     }
   }, [showToast]);
 
-  // --- START: MODIFIED SECTION ---
-  // Transform address data from API to form fields
+
   const transformAddressData = (apiData) => {
     const presentAddr = apiData?.birthPresentaddr;
     const permAddr = apiData?.birthPermaddr;
@@ -201,7 +211,7 @@ const UpdateBirth = () => {
 
   // Transform API data to form initial values
   const transformApiDataToForm = (apiData, hospitalOptions = []) => {
-    // Convert epoch to date string (YYYY-MM-DD)
+
     const convertToDate = (epoch) => {
       if (!epoch && epoch !== 0) return "";
       const date = new Date(epoch);
@@ -209,11 +219,10 @@ const UpdateBirth = () => {
       return date.toISOString().split("T")[0];
     };
 
-    // Find selected hospital option
+  
     const hospitalNameFromApi = apiData?.hospitalname;
     const selectedHospital = hospitalOptions.find((option) => option.originalName === hospitalNameFromApi || option.code === hospitalNameFromApi);
 
-    // Map all fields from API to form fields
     return {
       // Use !! to ensure isLegacyRecord is converted to a clean boolean (true/false)
       checkbox_legacy: !!apiData?.isLegacyRecord,
@@ -252,7 +261,7 @@ const UpdateBirth = () => {
       remarks: apiData?.remarks || "",
     };
   };
-  // --- END: MODIFIED SECTION ---
+
 
   // Map gender object from form to API payload values
   const mapGenderToPayload = (genderObj) => {
@@ -291,7 +300,6 @@ const UpdateBirth = () => {
         .filter(Boolean)
         .join(" ");
 
-    // Prepare present address object
     const presentAddressData = {
       buildingno: formData?.birth_building_number || null,
       houseno: formData?.birth_house_no || null,
@@ -306,7 +314,7 @@ const UpdateBirth = () => {
     };
     presentAddressData.fullAddress = createFullAddress(presentAddressData);
 
-    // Prepare permanent address object (copy present if checkbox checked)
+    
     const permanentAddressData = formData?.same_as_permanent_address
       ? presentAddressData
       : {
@@ -333,7 +341,7 @@ const UpdateBirth = () => {
       dateofreport: dorMs,
       dateofbirthepoch: dobMs ? Math.floor(dobMs / 1000) : null,
       dateofreportepoch: dorMs ? Math.floor(dorMs / 1000) : null,
-      excelrowindex: editData?.excelrowindex || -1, // As per working example
+      excelrowindex: editData?.excelrowindex || -1,
       dateofissue: editData?.dateofissue || null,
       firstname: formData?.child_first_name || null,
       gender,
@@ -441,21 +449,44 @@ const UpdateBirth = () => {
     );
   };
 
-  // Handle form value change (especially for address checkbox)
+ 
   const onFormValueChange = (setValue, formData, formState) => {
+    // Handle "Same Address" checkbox change
     const currentIsSameAddressChecked = !!formData?.same_as_permanent_address;
-    if (prevCheckboxRef.current !== currentIsSameAddressChecked) {
-      prevCheckboxRef.current = currentIsSameAddressChecked;
-      setSameAddressChecked(currentIsSameAddressChecked);
+    if (prevSameAddressCheckboxRef.current !== currentIsSameAddressChecked) {
+      prevSameAddressCheckboxRef.current = currentIsSameAddressChecked;
 
-      setFormConfig((prevCurrentConfig) => updateConfigBasedOnSameAddressCheckbox(currentIsSameAddressChecked, prevCurrentConfig));
+      // When the box is checked, clear the permanent address fields
+      if (currentIsSameAddressChecked) {
+        const permanentFields = [
+          'permanent_building_number', 'permanent_house_no', 'permanent_street_name',
+          'permanent_locality', 'permanent_tehsil', 'permanent_district',
+          'permanent_city', 'permanent_state', 'permanent_country', 'permanent_pincode'
+        ];
+        permanentFields.forEach(field => {
+          setValue(field, "");
+        });
+      }
+
+      const newVisibleConfig = updateConfigBasedOnSameAddressCheckbox(
+        currentIsSameAddressChecked,
+        baseFormConfigRef.current
+      );
+      
+      setFormConfig(newVisibleConfig);
+    }
+
+    const currentIsLegacy = !!formData?.checkbox_legacy;
+    if (prevLegacyCheckboxRef.current !== currentIsLegacy) {
+      prevLegacyCheckboxRef.current = currentIsLegacy;
     }
   };
 
-  // Show loader while fetching data
-  if (hospitalListLoading || (!initialValues && editData)) {
+ 
+  if (hospitalListLoading || !formConfig || (!initialValues && editData)) {
     return <Loader />;
   }
+
   // Show error if no data to edit
   if (!editData) {
     return <div>Error: No data to edit. Please go back and select a record.</div>;
