@@ -111,6 +111,8 @@ const ViewBirth = () => {
           />,
           actionButton,
         ]}
+        className=""
+        style={{ paddingLeft: "70px" }}
       />
     </React.Fragment>
   );

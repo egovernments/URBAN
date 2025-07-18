@@ -215,7 +215,7 @@ const {
           actionButton, 
         ]}
         className=""
-        style={{ paddingLeft: "70px" }} // Add some space above the footer
+        style={{ paddingLeft: "70px" }} 
       />
     </div>
   );

@@ -11,7 +11,7 @@ const SearchBirth = () => {
   return (
     <React.Fragment>
       <Header>{t(configs?.label)}</Header>
-      <div className="inbox-search-wrapper">
+      <div className="digit-inbox-search-wrapper">
         <InboxSearchComposer configs={configs} />
       </div>
     </React.Fragment>
