@@ -8,7 +8,7 @@ export const DownloadBirthButton = ({ tenantId, certificateId }) => {
   const [showToast, setShowToast] = useState(null);
 
   const usePdfDownloader = Digit.ComponentRegistryService.getComponent("usePdfBirthDownloader");
-  const { initiateDownload, isDownloading, downloadError } = usePdfDownloader(certificateId);
+  const { initiateDownload, isDownloading, downloadError,isDownloaded } = usePdfDownloader(certificateId);
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -28,6 +28,12 @@ export const DownloadBirthButton = ({ tenantId, certificateId }) => {
       });
     }
   }, [downloadError, certificateId, t]);
+
+   useEffect(() => {
+      if (isDownloaded) {
+        window.location.reload(); // Refresh the page when download is complete
+      }
+    }, [isDownloaded]);
 
   return (
     <Fragment>

@@ -6,7 +6,7 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(null);
   const [currentCertificateIdForFilename, setCurrentCertificateIdForFilename] = useState(initialCertificateIdForFilename);
-
+   const [isDownloaded, setIsDownloaded] = useState(false);
 
   const downloadAttemptedForId = useRef(null);
 
@@ -55,6 +55,7 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
         link.click();
         document.body.removeChild(link);
         setDownloadError(null);
+        setIsDownloaded(true);
       } else {
         console.error("usePdfDownloader: Filestore response no URL or missing filename ID.");
         setDownloadError("Could not retrieve download link.");
@@ -146,9 +147,21 @@ export const usePdfBirthDownloader = (initialCertificateIdForFilename) => {
     
   }, [downloadIdMutation.isLoading, filestoreIdToFetch, isFileLinkLoading, isFileLinkFetching, isDownloading]);
 
+
+  
+   useEffect(() => {
+    if (isDownloaded) {
+      const timer = setTimeout(() => {
+        setIsDownloaded(false);
+      }, 3000); // Reset after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [isDownloaded]);
+
   return {
     initiateDownload,
     isDownloading,
     downloadError,
+    isDownloaded,
   };
 };
