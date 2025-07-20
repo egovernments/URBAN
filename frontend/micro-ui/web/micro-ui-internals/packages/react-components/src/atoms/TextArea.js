@@ -10,7 +10,7 @@ const TextArea = (props) => {
       placeholder={props.placeholder}
       name={props.name}
       ref={props.inputRef}
-      style={props.style}
+      style={{...props.style,borderRadius:"10px"}}
       id={props.id}
       value={props.value}
       onChange={props.onChange}

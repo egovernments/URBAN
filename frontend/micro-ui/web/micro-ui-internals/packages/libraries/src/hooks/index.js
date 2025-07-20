@@ -102,6 +102,7 @@ import usePtMDMS from "./pt/useMDMS";
 import usePropertyAssessment from "./pt/usePropertyAssessment";
 import usePtCalculationEstimate from "./pt/usePtCalculationEstimate";
 import useGenderMDMS from "./pt/useGenderMDMS";
+import useSalutationsMDMS from "./pt/useSalutationsMDMS";
 import usePTGenderMDMS from "./pt/usePTGenderMDMS";
 import useMyPropertyPayments from "./pt/useMyPropertyPayments";
 import useGenericViewProperty from "./pt/useGenericViewProperty";
@@ -327,6 +328,7 @@ const pt = {
   usePropertyAssessment,
   usePtCalculationEstimate,
   useGenderMDMS,
+  useSalutationsMDMS,
   usePTGenderMDMS,
   useMyPropertyPayments,
   useGenericViewProperty,

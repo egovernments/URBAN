@@ -36,7 +36,7 @@ function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSel
   return (
     <React.Fragment>
       {!workflowDetails?.isLoading && isMenuBotton && !isSingleButton && (
-        <ActionBar style={{...ActionBarStyle}}>
+        <ActionBar style={{...ActionBarStyle,position:"relative",boxShadow:"none"}}>
           {displayMenu && (workflowDetails?.data?.actionState?.nextActions || workflowDetails?.data?.nextActions) ? (
             <Menu
               localeKeyPrefix={forcedActionPrefix || `WF_EMPLOYEE_${businessService?.toUpperCase()}`}

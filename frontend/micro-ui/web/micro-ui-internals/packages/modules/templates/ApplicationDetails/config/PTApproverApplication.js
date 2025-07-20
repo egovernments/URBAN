@@ -22,23 +22,23 @@ export const configPTApproverApplication = ({
     form: [
       {
         body: [
+          // {
+          //   label: action.isTerminateState || action?.action === "SENDBACKTOCITIZEN" ? null : t(assigneeLabel || `WF_ROLE_${action.assigneeRoles?.[0]}`),
+          //   // isMandatory: !action.isTerminateState,
+          //   type: "dropdown",
+          //   populators: action.isTerminateState || action?.action === "SENDBACKTOCITIZEN" ? null : (
+          //     <Dropdown
+          //       option={approvers}
+          //       autoComplete="off"
+          //       optionKey="name"
+          //       id="fieldInspector"
+          //       select={setSelectedApprover}
+          //       selected={selectedApprover}
+          //     />
+          //   ),
+          // },
           {
-            label: action.isTerminateState || action?.action === "SENDBACKTOCITIZEN" ? null : t(assigneeLabel || `WF_ROLE_${action.assigneeRoles?.[0]}`),
-            // isMandatory: !action.isTerminateState,
-            type: "dropdown",
-            populators: action.isTerminateState || action?.action === "SENDBACKTOCITIZEN" ? null : (
-              <Dropdown
-                option={approvers}
-                autoComplete="off"
-                optionKey="name"
-                id="fieldInspector"
-                select={setSelectedApprover}
-                selected={selectedApprover}
-              />
-            ),
-          },
-          {
-            label: t("ES_PT_ACTION_COMMENTS"),
+            label: t("Remark"),
             type: "textarea",
             populators: {
               name: "comments",
