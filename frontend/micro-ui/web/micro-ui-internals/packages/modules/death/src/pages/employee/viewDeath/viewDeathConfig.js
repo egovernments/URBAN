@@ -60,7 +60,7 @@ const viewDeathConfig = (deathCertArray, applicationNumber, tenantId, t) => {
               { key: t("BND_LASTNAME_LABEL"), value: getValue(DeathData.deathSpouseInfo?.lastname) },
               { key: t("BND_AADHAR_NO"), value: getValue(DeathData.deathSpouseInfo?.aadharno) },
               { key: t("BND_EMAIL_ID"), value: getValue(DeathData.deathSpouseInfo?.emailid) },
-              { key: t("Mobile Number"), value: getValue(DeathData.deathSpouseInfo?.mobileno) }
+              { key: t("CORE_COMMON_PROFILE_MOBILE_NUMBER"), value: getValue(DeathData.deathSpouseInfo?.mobileno) }
             ],
           },
           {
@@ -72,7 +72,7 @@ const viewDeathConfig = (deathCertArray, applicationNumber, tenantId, t) => {
               { key: t("BND_LASTNAME_LABEL"), value: getValue(DeathData.deathFatherInfo?.lastname) },
               { key: t("BND_AADHAR_NO"), value: getValue(DeathData.deathFatherInfo?.aadharno) },
               { key:  t("BND_EMAIL_ID"), value: getValue(DeathData.deathFatherInfo?.emailid) },
-              { key: t("Mobile Number"), value: getValue(DeathData.deathFatherInfo?.mobileno) }
+              { key: t("CORE_COMMON_PROFILE_MOBILE_NUMBER"), value: getValue(DeathData.deathFatherInfo?.mobileno) }
             ],
           },
           {
@@ -84,7 +84,7 @@ const viewDeathConfig = (deathCertArray, applicationNumber, tenantId, t) => {
               { key: t("BND_LASTNAME_LABEL"), value: getValue(DeathData.deathMotherInfo?.lastname) },
               { key: t("BND_AADHAR_NO"), value: getValue(DeathData.deathMotherInfo?.aadharno) },
               { key: t("BND_EMAIL_ID"), value: getValue(DeathData.deathMotherInfo?.emailid) },
-              { key: t("Mobile Number"), value: getValue(DeathData.deathMotherInfo?.mobileno) }
+              { key: t("CORE_COMMON_PROFILE_MOBILE_NUMBER"), value: getValue(DeathData.deathMotherInfo?.mobileno) }
             ],
           },
           {

@@ -161,43 +161,43 @@ export const searchAndDownloadConfig = (t) => {
           columns: [
             {
               key: "registrationno",
-              label: t("BND_COMMON_TABLE_REGNO"),
+              label: "BND_COMMON_TABLE_REGNO",
               jsonPath: "registrationno",
             },
             {
                 key: "nameofdeceased",
-                label: t("BND_COMMON_NAME"),
+                label: "BND_COMMON_NAME",
                 jsonPath: "fullName",
             },
             {
               key: "dateOfDeath",
-              label: t("BND_DEATH_DATE"),
+              label: "BND_DEATH_DATE",
               jsonPath: "dateofdeath",
               additionalCustomization: true,
             },
             {
                 key:"gender",
-                label: t("BND_COMMON_GENDER"),
+                label: "BND_COMMON_GENDER",
                 jsonPath: "genderStr",
             },
             {
               key: "MotherName",
-              label: t("BND_MOTHERS_NAME_LABEL"),
+              label: "BND_MOTHERS_NAME_LABEL",
               jsonPath: "deathMotherInfo.fullName",
             },
             {
               key: "FatherName",
-              label: t("BND_COMMON_FATHERSNAME"),
+              label: "BND_COMMON_FATHERSNAME",
               jsonPath: "deathFatherInfo.fullName",
             },
             {
               key: "spouseName",
-              label: t("BND_SPOUSE_NAME_LABEL"),
+              label: "BND_SPOUSE_NAME_LABEL",
               jsonPath: "deathSpouseInfo.fullName",
             },
             {
               key: "action",
-              label: t("BND_COMMON_TABLE_ACTION"),
+              label: "BND_COMMON_TABLE_ACTION",
               jsonPath: "id",
               additionalCustomization: true,
             },

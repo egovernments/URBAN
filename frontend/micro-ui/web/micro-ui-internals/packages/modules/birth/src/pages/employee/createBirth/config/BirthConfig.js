@@ -10,7 +10,7 @@ export const BirthConfig = [
         withoutLabel: true,
         populators: {
           name: "checkbox_legacy",
-          title: "This is a Legacy Record",
+          title: "BND_IS_LEGACY_RECORD",
         },
       },
       {

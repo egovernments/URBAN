@@ -9,7 +9,7 @@ const BirthCard = ({ userType }) => {
   const isCitizen = window?.location?.pathname?.toLowerCase().includes("citizen");
 
   const propsForModuleCard = {
-    moduleName: isCitizen ? t("ACTION_TEST_BIRTH_CERTIFICATE") : t("COMMON_BIRTH"),
+    moduleName: isCitizen ? t("ACTION_TEST_BIRTH_CERTIFICATE") : t("ACTION_TEST_BIRTH_NEW_REGISTRATION"),
     kpis: [],
     links: isCitizen
       ? [
@@ -24,11 +24,11 @@ const BirthCard = ({ userType }) => {
         ]
       : [
           {
-            label: t("BIRTH_REGISTRATION"),
+            label: t("ACTION_TEST_NEW_REGISTRATION"),
             link: `/${window?.contextPath}/employee/birth/birth-common/create-birth`,
           },
           {
-            label: t("SEARCH_BIRTH_CERTIFICATE"),
+            label: t("ACTION_TEST_BIRTH_SEARCH_CERTIFICATE"),
             link: `/${window?.contextPath}/employee/birth/birth-common/getCertificate`,
           },
         ],

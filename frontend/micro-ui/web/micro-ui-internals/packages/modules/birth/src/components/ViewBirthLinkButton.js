@@ -23,7 +23,7 @@ const ViewBirthLinkButton = ({ tenantId, certificateId,hospitalname }) => {
   return (
     <ButtonNew
     className="custom-class"
-     label={t("BND_COMMON_VIEW")}
+     label={t("BND_VIEW_CERTIFICATE")}
     onClick={handleClick}
     variation="link"
   />

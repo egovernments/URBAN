@@ -364,7 +364,7 @@ export const CreateDeath = () => {
 
   return (
     <React.Fragment>
-      <Header>Create {t("ACTION_TEST_DEATH_CERTIFICATE")}</Header>
+      <Header>{t("ACTION_TEST_DEATH_CERTIFICATE")}</Header>
       <div className="jk-header-btn-wrapper">
         <Header>{t("BND_NEW_REGISTRATION")}</Header>
         <p>{t("BND_NEW_REGISTRATION_SUBTEXT")}</p>

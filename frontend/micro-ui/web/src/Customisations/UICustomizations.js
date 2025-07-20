@@ -637,7 +637,7 @@ export const UICustomizations = {
               hospitalname={row?.hospitalname}
             />
           );
-        case "Death Date":
+        case "BND_DEATH_DATE":
           const epoch = row?.dateofdeath;
           if (epoch) {
             const date = new Date(epoch);
@@ -774,7 +774,7 @@ export const UICustomizations = {
       const counter = row?.counter;
 
       switch (key) {
-        case "Action":
+        case "BND_COMMON_TABLE_ACTION":
           if (counter === 0) {
             return (
               <DownloadButton tenantId={tenantId} certificateId={row?.id} />
@@ -788,7 +788,7 @@ export const UICustomizations = {
             );
           }
           return <span>{t("ES_COMMON_NA")}</span>;
-        case "Death Date":
+        case "BND_DEATH_DATE":
           const epoch = row?.dateofdeath;
           if (epoch) {
             const date = new Date(epoch);

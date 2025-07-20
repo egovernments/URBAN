@@ -153,33 +153,33 @@ export const searchDeathConfig = (t) => {
           columns: [
             {
               key: "registrationno",
-              label: t("BND_COMMON_TABLE_REGNO"),
+              label: "BND_COMMON_TABLE_REGNO",
               jsonPath: "registrationno",
             },
             {
               key: "fromDate",
-              label: t("BND_DEATH_DATE"),
+              label: "BND_DEATH_DATE",
               jsonPath: "dateofdeath",
               additionalCustomization: true,
             },
             {
               key: "MotherName",
-              label: t("BND_MOTHERS_NAME_LABEL"),
+              label: "BND_MOTHERS_NAME_LABEL",
               jsonPath: "deathMotherInfo.fullName",
             },
             {
               key: "FatherName",
-              label: t("BND_COMMON_FATHERSNAME"),
+              label: "BND_COMMON_FATHERSNAME",
               jsonPath: "deathFatherInfo.fullName",
             },
             {
               key: "spouseName",
-              label: t("BND_SPOUSE_NAME_LABEL"),
+              label: "BND_SPOUSE_NAME_LABEL",
               jsonPath: "deathSpouseInfo.fullName",
             },
             {
-              key: "view",
-              label: t("BND_VIEW_CERTIFICATE"),
+              key: "View",
+              label: "View",
               jsonPath: "id",
               additionalCustomization: true,
             },

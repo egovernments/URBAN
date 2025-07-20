@@ -248,7 +248,7 @@ export const CreateBirth = () => {
             key: `${i}-${j}`,
           })),
         }))}
-        label="SUBMIT"
+        label={t("CORE_COMMON_SUBMIT")}
         onSubmit={onSubmit}
         showSecondaryLabel={true}
         // Handle form value changes for checkboxes and update config accordingly
@@ -288,7 +288,8 @@ export const CreateBirth = () => {
             setFormConfig(updatedForm);
           }
         }}
-        secondaryLabel="Reset"
+        secondaryLabel={t("BND_COMMON_NEW")}
+         actionClassName={"actionBarClass microplan-actionbar"}
         // Reset all form fields on secondary action
         onSecondayActionClick={() => {
           if (setValueRef.current) {

@@ -9,7 +9,7 @@ const createDeathConfig = [
         withoutLabel: true,
         populators: {
           name: "checkboxlabel",
-          title: "This is a Legacy Record",
+          title: "BND_IS_LEGACY_RECORD",
         },
       },
     ],
