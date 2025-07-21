@@ -133,6 +133,14 @@ export const setDocsForEditFlow = async (state, dispatch) => {
     prepareFinalObject("documentsUploadRedux", uploadedDocuments)
   );
 };
+    const addressPath = "fireNOCDetails.propertyDetails.address.pincode";
+    let pincode = get(payload[0], addressPath);
+    if (pincode === null || typeof pincode === "undefined") {
+      set(payload[0], addressPath, "");
+    } else {
+      set(payload[0], addressPath, String(pincode));
+    }
+
 
 export const createUpdateNocApplication = async (state, dispatch, status) => {
   let nocId = get(
