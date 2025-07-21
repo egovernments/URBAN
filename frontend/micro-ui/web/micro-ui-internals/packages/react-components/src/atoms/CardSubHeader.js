@@ -9,7 +9,7 @@ const CardSubHeader = (props) => {
       // style={props.style}
         style={{ color: "#3F0071", fontWeight: "bold", textDecoration: "underline" ,fontSize:"16px",marginTop:"1rem", ...(props.style || {}) }}
     >
-      {props.children}
+      {/* {props.children} */}
     </header>
   );
 };

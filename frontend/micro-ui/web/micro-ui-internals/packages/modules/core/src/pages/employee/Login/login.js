@@ -335,11 +335,40 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
   ) : (
 
     <Background>
+ <div style={topBarStyle}>
+  <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/MP%20Emblem%201%201.svg" alt="MP Logo" style={mpLogoStyle} />
+  
+  {/* This new div will act as a container for the two text lines */}
+  <div> 
+    <div>मध्य प्रदेश सरकार</div>
+    <div style={mpGovtTextEnglishStyle}>Government of Madhya Pradesh</div>
+  </div>
+</div>
       <div className="employeeBackbuttonAlign">
         <BackButton variant="white" style={{ borderBottom: "none" }} />
       </div>
-      <div style={{ display: "flex", width: "100%", height: "100%" }}>
-        <div style={{ background: "white", height: "100%" }}>
+      <div>
+        <div style={{ background: "white", height: "100%", display: "flex" }}>
+        <div>
+        <div style={cardLeftSectionStyle}>
+            {/* NEW WRAPPER FOR LOGO AND TEXT */}
+            <div style={logoAndTextStyle}>
+              <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/image%2014.svg" alt="IMC Logo" style={imcLogoStyle} />
+              <div style={headingGroupStyle}> {/* Grouping the two text divs */}
+                <div style={indoreHeadingStyle}>इंदौर नगर निगम</div>
+                <div style={indoreSubHeadingStyle}>Indore Municipal Corporation</div>
+              </div>
+            </div>
+            <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/image%201807.svg" alt="Indore Map" style={mapImageStyle} />
+            <div style={versionStyle}>Version v1.1</div>
+          </div>
+        </div>
+
+          <div>
+          <div><h2 style={welcomeHeadingStyle}>Welcome to</h2>
+            <h1 style={emcHeadingStyle}>e-Indore Municipal Corporation (e-IMC)</h1>
+            <hr style={dividerStyle} />
+            <h3 style={imcLoginStyle}>IMC Login</h3></div>
           <FormComposer
             onSubmit={onLogin}
             isDisabled={isDisabled || disable}
@@ -358,60 +387,11 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
           >
             <Header />
           </FormComposer>
-        </div>
-        <div style={{ width: "100%", position: "relative",background: "linear-gradient(180deg, rgba(5, 117, 230, 0.5) 0%, rgba(89, 50, 234, 0.5) 84.79%, rgba(2, 27, 121, 0.5) 100%)" }}>
-          <div style={{marginTop:"200px"}}>
-            <div style={headingStyle}>e-<strong>NagarPalika</strong></div>
-            <div style={subtitleStyle}><em>Your City, Your Services – One Login Away!</em></div>
-          </div>
-          <div style={containerStyle}>
-            <div style={innerContainerStyle}>
-              <div style={columnStyle}>
-                <div style={titleStyle}>Term and Policies</div>
-                <a href="#" style={linkStyle}>Privacy Policy</a>
-                <a href="#" style={linkStyle}>Hyperlink Policy</a>
-                <a href="#" style={linkStyle}>Website Policies</a>
-                <a href="#" style={linkStyle}>Content Policies</a>
-                <a href="#" style={linkStyle}>Contingency Plan</a>
-              </div>
-              <div style={columnStyle}>
-                <div style={titleStyle}>About</div>
-                <a href="#" style={linkStyle}>About Us</a>
-                <a href="#" style={linkStyle}>Sitemap</a>
-                <a href="#" style={linkStyle}>Terms of Use</a>
-                <a href="#" style={linkStyle}>MoRTH</a>
-              </div>
-              <div style={columnStyle}>
-                <div style={titleStyle}>Recources</div>
-                <a href="#" style={linkStyle}>Fees and User Charges</a>
-                <a href="#" style={linkStyle}>Act, Rule and Policies</a>
-                <a href="#" style={linkStyle}>Permit Fees and Period</a>
-                <a href="#" style={linkStyle}>Manual</a>
-                <a href="#" style={linkStyle}>Homologation</a>
-              </div>
-              <div style={columnStyle}>
-                <div style={titleStyle}>Need Help</div>
-                <a href="#" style={linkStyle}>Contact Us</a>
-                <a href="#" style={linkStyle}>FAQ's</a>
-                <a href="#" style={linkStyle}>Raise a Concern</a>
-                <a href="#" style={linkStyle}>Calendar</a>
-                <a href="#" style={linkStyle}>Web Information Manager</a>
-              </div>
-            </div>
-            <div style={bottomBarStyle}>
-              <div>© 2025 Copyright Indore Municipal Corporation</div>
-              <div style={socialIconsStyle}>
-                <img src="facebook-icon-url" alt="Facebook" style={iconStyle} />
-                <img src="x-icon-url" alt="X" style={iconStyle} />
-                <img src="instagram-icon-url" alt="Instagram" style={iconStyle} />
-                <img src="linkedin-icon-url" alt="LinkedIn" style={iconStyle} />
-                <img src="youtube-icon-url" alt="YouTube" style={iconStyle} />
-              </div>
-            </div>
           </div>
         </div>
-
       </div>
+
+      <div style={bottomFooterStyle}>© 2025 Copyright Indore Municipal Corporation</div>
 
       {showToast && <Toast error={true} label={t(showToast)} onClose={closeToast} />}
 
@@ -438,82 +418,183 @@ Login.propTypes = {
 Login.defaultProps = {
   loginParams: null,
 };
-const headingStyle = {
-  fontFamily: "Poppins, sans-serif",
-  fontWeight: 700,
-  fontSize: "40px",
-  lineHeight: "100%",
-  letterSpacing: "0%",
-  textAlign: "center",
-  color: "white"
+const logoAndTextStyle = {
+  display: "flex",        
+  alignItems: "center",   
+  justifyContent: "center",
+  marginBottom: "15px", 
+  width: "100%",        
 };
-const subtitleStyle = {
-  fontFamily: "Poppins, sans-serif",
-  fontWeight: 500,
-  fontStyle: "italic",
-  fontSize: "18px",
-  lineHeight: "100%",
-  letterSpacing: "0%",
-  textAlign: "center",
-  marginTop: "10px",
-  color: "white"
-};
-const containerStyle = {
-  backgroundColor: "#f9f9f9",
-  padding: "30px 20px",
-  borderTop: "1px solid #eee",
-  fontFamily: "Arial, sans-serif",
-  fontSize: "14px",
-  color: "#333",
-  position: "absolute",
-  bottom: 0,
-  width: "100%"
-
-};
-
-const innerContainerStyle = {
+const headingGroupStyle = {
   display: "flex",
-  justifyContent: "space-between",
-  flexWrap: "wrap",
+  flexDirection: "column", // Stack the two text divs vertically
+  alignItems: "flex-start", // Align text to the left within this group
+};
+
+const indoreHeadingStyle = {
+  marginLeft: "10px",
+  fontSize: "20px",
+  fontWeight: "bold",
+  color: "#333",
+  marginBottom: "5px", // Space between "इंदौर नगर निगम" and "Indore Municipal Corporation"
+  fontFamily: "Noto Sans Devanagari, sans-serif",
+  textAlign: "left", // Align text to the left within its container
+};
+
+const indoreSubHeadingStyle = {
+  marginLeft: "10px",
+  fontSize: "14px",
+  color: "#555",
+  marginBottom: "0px", // No bottom margin needed here as it's the last in its group
+  textAlign: "left", // Align text to the left within its container
+};
+
+const versionStyle = {
+  fontSize: "12px",
+  color: "#888",
+  marginTop: "auto",
+};
+
+
+const topBarStyle = {
+  backgroundColor: "#6b133f",
+  color: "white",
+  padding: "10px 20px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  gap: "10px",
+  fontSize: "16px",
+  fontFamily: "Roboto, sans-serif",
+  position: "fixed",
+  width: "100%",
+  top: 0,
+  left: 0,
+  zIndex: 1000,
+};
+
+const mpLogoStyle = {
+  height: "60px",
+  width: "auto",
+};
+
+const mpGovtTextEnglishStyle = {
+    fontSize: "12px",
+  opacity: 0.9,
+};
+
+const mainCardContainerStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  minHeight: "calc(100vh - 80px)",
+  padding: "20px",
+  paddingTop: "60px",
+  boxSizing: "border-box",
+};
+
+const mainCardStyle = {
+  backgroundColor: "white", // Main card background remains white
+  borderRadius: "10px",
+  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+  display: "flex",
+  overflow: "hidden",
+  maxWidth: "850px",
+  width: "100%",
+  minHeight: "480px",
+};
+
+const cardLeftSectionStyle = {
+  flex: "1",
+  minWidth: "300px",
+  padding: "30px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "space-around",
+  backgroundColor: "#ffffff", // Remains light grey
+  borderRight: "1px solid #eee",
+  textAlign: "center",
+  boxSizing: "border-box",
+};
+
+
+const imcLogoStyle = {
+  height: "70px",
+  width: "auto",
+  marginBottom: "15px",
+
+};
+
+
+
+const mapImageStyle = {
+  width: "auto",
+  height: "250px",
   marginBottom: "20px",
 };
 
-const columnStyle = {
+
+const cardRightSectionStyle = {
   flex: "1",
-  minWidth: "155px",
-  margin: "10px 0",
+  minWidth: "400px",
+  padding: "40px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  boxSizing: "border-box",
+  backgroundColor: 'rgba(94, 142, 217, 0.05)'
 };
 
-const titleStyle = {
+const welcomeHeadingStyle = {
+  marginTop: '30px',
+  fontSize: "19px",
   fontWeight: "bold",
-  color: "#6b133f",
-  marginBottom: "8px",
+  color: "#6B133F",
+  textAlign: "center",
 };
 
-const linkStyle = {
-  display: "block",
-  textDecoration: "none",
-  color: "#333",
-  marginBottom: "5px",
+const emcHeadingStyle = {
+  fontSize: "19px",
+  fontWeight: "bold",
+  color: "#6B133F",
+  textAlign: "center",
 };
 
-const bottomBarStyle = {
-  borderTop: "1px solid #eee",
-  paddingTop: "15px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  flexWrap: "wrap",
+const dividerStyle = {
+  width: "30%",
+  border: "none",
+  borderTop: "5px solid #6b133f",
+  marginBottom: '10px',
+  marginLeft: '35%'
 };
 
-const socialIconsStyle = {
-  display: "flex",
-  gap: "12px",
-  alignItems: "center",
+const imcLoginStyle = {
+  fontSize: "19px",
+  fontWeight: "bold",
+  color: "#6B133F",
+  textAlign: "center",
+
 };
 
-const iconStyle = {
-  height: "20px",
-  width: "20px",
+const bottomFooterStyle = {
+  backgroundColor: "#6b133f",
+  color: "white",
+  padding: "10px 20px",
+  textAlign: "center",
+  fontSize: "14px",
+  fontFamily: "Roboto, sans-serif",
+  position: "fixed",
+  width: "100%",
+  bottom: 0,
+  left: 0,
+  zIndex: 1000,
 };
+
+
+
+
+
+
 export default Login;

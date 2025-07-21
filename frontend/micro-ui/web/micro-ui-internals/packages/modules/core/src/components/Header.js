@@ -34,9 +34,9 @@ const Header = () => {
 
   return (
     <div className="bannerHeader">
-      <img className="bannerLogo" style={{width:"77px",height:"77px"}} src="https://tse4.mm.bing.net/th/id/OIP.LcAu4hLmyz-LQqUVPtVC9AHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" />
+      {/* <img className="bannerLogo" style={{width:"77px",height:"77px"}} src="https://tse4.mm.bing.net/th/id/OIP.LcAu4hLmyz-LQqUVPtVC9AHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" /> */}
       {/* <p>{t(`TENANT_TENANTS_${stateInfo?.code.toUpperCase()}`)}</p> */}
-      <p>IMC</p>
+      {/* <p>IMC</p> */}
     </div>
   );
 }
