@@ -133,13 +133,7 @@ export const setDocsForEditFlow = async (state, dispatch) => {
     prepareFinalObject("documentsUploadRedux", uploadedDocuments)
   );
 };
-    const addressPath = "fireNOCDetails.propertyDetails.address.pincode";
-    let pincode = get(payload[0], addressPath);
-    if (pincode === null || typeof pincode === "undefined") {
-      set(payload[0], addressPath, "");
-    } else {
-      set(payload[0], addressPath, String(pincode));
-    }
+
 
 
 export const createUpdateNocApplication = async (state, dispatch, status) => {
@@ -158,6 +152,14 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
       "FireNOCs",
       []
     );
+    // Ensure pincode is always a string
+    const addressPath = "fireNOCDetails.propertyDetails.address.pincode";
+    let pincode = get(payload[0], addressPath);
+    if (pincode === null || typeof pincode === "undefined") {
+      set(payload[0], addressPath, "");
+    } else {
+      set(payload[0], addressPath, String(pincode));
+    }
     let tenantId = get(
       state.screenConfiguration.preparedFinalObject,
       "FireNOCs[0].fireNOCDetails.propertyDetails.address.city",
