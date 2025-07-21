@@ -376,7 +376,7 @@ config:
 
   - name: "builds/urban/egf-master"
     build:
-      - work-dir: "builds/urban/financial-module-system/egf-master"
+      - work-dir: "financial-module-system/egf-master"
         image-name: "egf-master"
         dockerfile: "build/maven/Dockerfile"
       - work-dir: "financial-module-system/egf-master/src/main/resources/db"
