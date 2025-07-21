@@ -18,12 +18,7 @@ export const loginConfig = [
         name: "password",
         error: "ERR_HRMS_WRONG_PASSWORD",
       },
-      {
-        label: "CORE_COMMON_CITY",
-        type: "custom",
-        name: "city",
-        error: "ERR_HRMS_INVALID_CITY",
-      },
+     
     ],
   },
 ];
