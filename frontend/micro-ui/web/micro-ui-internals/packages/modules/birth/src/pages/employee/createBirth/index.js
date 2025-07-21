@@ -41,6 +41,8 @@ export const CreateBirth = () => {
     }
   );
 
+  console.log(hospitalListData,"qwerty")
+
   // Update form config with hospital list options when data is loaded
   useEffect(() => {
     if (hospitalListData?.hospitalListOptions) {

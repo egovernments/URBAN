@@ -59,7 +59,7 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
     <Fragment>
       <ButtonNew 
         className="custom-class" 
-        label="Pay and Download" 
+        label={t("PAY_AND_DOWNLOAD")}
         onClick={handleClick} 
         variation="link" 
         disabled={isLoading}

@@ -33,7 +33,7 @@ export const BirthConfig = [
         disable: false,
         populators: {
           name: "hospital_name",
-          optionsKey: "originalName",
+          optionsKey: "name",
           valueKey: "code",
           error: "Hospital Name is Required!",
         },
@@ -639,7 +639,7 @@ export const BirthConfig = [
         withoutLabel: true,
         populators: {
           name: "same_as_permanent_address",
-          title: "If Permanent Address of Parents is same as Address of Parents at the time of Birth",
+          title: "PRESENT_TO_PERM_ADDR_SWITCH_BIRTH",
         },
       },
     ],

@@ -43,7 +43,7 @@ const createDeathConfig = [
         "placeholder": "Don't select if NA",
         "populators": {
           "name": "HospitalName",
-          "optionsKey": "originalName",
+          "optionsKey": "name",
           "valueKey": "code",
           "error": "Hospital Name is Required!",
           "required": false
@@ -694,7 +694,7 @@ const createDeathConfig = [
         withoutLabel: false,
         populators: {
           name: "sameAddressCheckbox",
-          title: "If Permanent Address is same as Address at time of Death",
+          title: "PRESENT_TO_PERM_ADDR_SWITCH_DEATH",
         },
       },
     ],

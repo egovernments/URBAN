@@ -52,7 +52,7 @@ export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalNam
 
   return (
     <Fragment>
-      <ButtonNew className="custom-class" label="Pay and Download" onClick={handleClick} variation="link" />
+      <ButtonNew className="custom-class" label={t("PAY_AND_DOWNLOAD")} onClick={handleClick} variation="link" />
       {showToast && (
         <Toast
           error={showToast.key === "error"}

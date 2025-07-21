@@ -176,7 +176,7 @@ const {
     actionButton = (
       <Button
         key="pay-download-btn"
-        label={t("BND_PAY_AND_DOWNLOAD_BUTTON_LABEL", "Pay and Download")}
+        label={t("PAY_AND_DOWNLOAD", "PAY_AND_DOWNLOAD")}
         onClick={handlePayAndDownload}
         className={"employee-pay-download-btn-className"} 
         variation="secondary"
@@ -187,7 +187,7 @@ const {
     actionButton = (
       <Button
         key="download-btn"
-        label={t("BND_FREE_DOWNLOAD_BUTTON_LABEL", "Download")}
+        label={t("BND_DOWNLOAD_CERT", "BND_DOWNLOAD_CERT")}
         onClick={handleFreeDownload}
         className={"employee-download-btn-className"}
         variation="secondary"

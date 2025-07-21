@@ -495,7 +495,8 @@ const UpdateBirth = () => {
 
   return (
     <React.Fragment>
-      <Header>{t("BND_UPDATE_REGISTRATION")}</Header>
+       <Header>{t("ACTION_TEST_BIRTH_CERTIFICATE")}</Header>
+        <Header>{t("BND_NEW_REGISTRATION")}</Header>
       <FormComposerV2
         config={formConfig}
         onSubmit={onSubmit}

@@ -383,7 +383,8 @@ const UpdateDeath = () => {
 
   return (
     <React.Fragment >
-      <Header>Update Death Certificate</Header>
+      <Header>{t("ACTION_TEST_DEATH_CERTIFICATE")}</Header>
+      <Header>{t("BND_NEW_REGISTRATION")}</Header>
       <FormComposerV2
         config={formConfig} 
         onSubmit={onSubmit}

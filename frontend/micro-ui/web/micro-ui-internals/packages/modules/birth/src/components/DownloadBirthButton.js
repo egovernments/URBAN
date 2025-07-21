@@ -39,9 +39,9 @@ export const DownloadBirthButton = ({ tenantId, certificateId }) => {
     <Fragment>
       <ButtonNew
         className="custom-class"
-        label={isDownloading ? "Downloading..." : "Download"}
+        label={isDownloading ? t("DOWNLOADING") : t("FREE_DOWNLOAD")}
         onClick={!isDownloading ? handleClick : undefined}
-        title={isDownloading ? "Download in progress..." : "Download Certificate"}
+        title={isDownloading ? t("DOWNLOAD_IN_PROGRESS") : t("DOWNLOAD_CERTIFICATE")}
         variation="link"
         disabled={isDownloading}
       />

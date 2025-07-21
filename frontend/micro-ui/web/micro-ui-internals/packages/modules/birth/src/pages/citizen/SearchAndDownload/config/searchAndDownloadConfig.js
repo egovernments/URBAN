@@ -18,8 +18,8 @@ export const searchAndDownloadConfig = (t) => {
                 uiConfig: {
                     headerStyle: null,
                     formClassName: "",
-                    primaryLabel: "ES_COMMON_SEARCH",
-                    secondaryLabel: "ES_COMMON_CLEAR_SEARCH",
+                    primaryLabel: t("ES_COMMON_SEARCH"),
+                    secondaryLabel: t("ES_COMMON_CLEAR_SEARCH"),
                     minReqFields: 1,
                     defaultValues: {
                         tenantId: "",
