@@ -252,60 +252,21 @@ import StaticDynamicCard from "./StaticDynamicComponent/StaticDynamicCard";
 import AcknowledgementCF from "../../components/AcknowledgementCF";
 import CitizenFeedback from "../../components/CitizenFeedback";
 import Search from "./SearchApp";
-const containerStyle = {
-    backgroundColor: "#f9f9f9",
-    padding: "30px 20px",
-    borderTop: "1px solid #eee",
-    fontFamily: "Arial, sans-serif",
-    fontSize: "14px",
-    color: "#333",
-  };
 
-  const innerContainerStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    marginBottom: "20px",
-  };
+const styles = {
+  header: {
+    backgroundColor: "#6B133F",
+    color: "white",
+    padding: "10px",
+    textAlign: "center",
+    fontWeight: 600,
+    marginTop: "16px",
+    fontFamily: "Inter",
+    fontSize: "16px",
 
-  const columnStyle = {
-    flex: "1",
-    minWidth: "200px",
-    margin: "10px 0",
-  };
+  },
+}
 
-  const titleStyle = {
-    fontWeight: "bold",
-    color: "#1a5fc2",
-    marginBottom: "8px",
-  };
-
-  const linkStyle = {
-    display: "block",
-    textDecoration: "none",
-    color: "#333",
-    marginBottom: "5px",
-  };
-
-  const bottomBarStyle = {
-    borderTop: "1px solid #eee",
-    paddingTop: "15px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexWrap: "wrap",
-  };
-
-  const socialIconsStyle = {
-    display: "flex",
-    gap: "12px",
-    alignItems: "center",
-  };
-
-  const iconStyle = {
-    height: "20px",
-    width: "20px",
-  };
 const sidebarHiddenFor = [
   "digit-ui/citizen/register/name",
   "/digit-ui/citizen/select-language",
@@ -384,37 +345,37 @@ const Home = ({
         return a.orderNumber - b.orderNumber;
       });
     // }
-  
 
-  const headerStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "24px",
-  };
 
-  const titleStyle = {
-    fontSize: "20px",
-    fontWeight: "700",
-    color: "#6b133f", // purple-700
-  };
+    const headerStyle = {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "24px",
+    };
 
-  const linkStyle = {
-    fontSize: "14px",
-    fontWeight: "600",
-    color: "#6b133f",
-    textDecoration: "none",
-  };
+    const titleStyle = {
+      fontSize: "20px",
+      fontWeight: "700",
+      color: "#6b133f", // purple-700
+    };
 
-  const serviceItemStyle = {
-    display: "flex",
-    alignItems: "center",
-    color: "#282828",
-    fontWeight: "400",
-    fontSize: "16px",
-    cursor: "pointer",
-    marginBottom: "16px",
-  };
+    const linkStyle = {
+      fontSize: "14px",
+      fontWeight: "600",
+      color: "#6b133f",
+      textDecoration: "none",
+    };
+
+    const serviceItemStyle = {
+      display: "flex",
+      alignItems: "center",
+      color: "#282828",
+      fontWeight: "400",
+      fontSize: "16px",
+      cursor: "pointer",
+      marginBottom: "16px",
+    };
 
 
     return (
@@ -423,8 +384,8 @@ const Home = ({
       // /digit-ui/citizen/pt/property/new-application/info
       <React.Fragment>
         <Route key={index} path={`${path}/${code.toLowerCase()}-home`}>
-          <div className="moduleLinkHomePage" style={{marginTop: "0px"}}>
-                <div
+          <div className="moduleLinkHomePage" style={{ marginTop: "0px" }}>
+            <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
@@ -441,7 +402,7 @@ const Home = ({
                   background: "linear-gradient(90deg, #EDEDED 0%, #FFFFFF 100%)",
                   padding: "16px",
                 }}
-               
+
               >
                 <div style={headerStyle}>
                   <span style={titleStyle}>Property Tax</span>
@@ -449,14 +410,14 @@ const Home = ({
                     View all
                   </Link>
                 </div>
-                <div style={serviceItemStyle}  onClick={() => history.push("/digit-ui/citizen/pt/property/citizen-search")}>Search and Pay</div>
-                <div style={serviceItemStyle}  onClick={() => history.push("/digit-ui/citizen/pt/property/new-application")}>Create Property</div>
+                <div style={serviceItemStyle} onClick={() => history.push("/digit-ui/citizen/pt/property/citizen-search")}>Search and Pay</div>
+                <div style={serviceItemStyle} onClick={() => history.push("/digit-ui/citizen/pt/property/new-application")}>Create Property</div>
                 <div style={serviceItemStyle} onClick={() => history.push("/digit-ui/citizen/pt/property/my-applications")}  >My Applications</div>
                 {/* More content */}
               </Card>
-            
-             
-            
+
+
+
               {/* Add more Cards as needed */}
             </div>
             {/* <img src={bannerImage || stateInfo?.bannerUrl} alt="noimagefound" />
@@ -515,7 +476,7 @@ const Home = ({
 
       <div className={`main center-container citizen-home-container mb-25`}>
         {hideSidebar ? null : (
-          <div className="SideBarStatic" style={{height:"100%",marginTop:"-55px"}}>
+          <div className="SideBarStatic" style={{ height: "100%", marginTop: "-55px" }}>
             <StaticCitizenSideBar linkData={linkData} islinkDataLoading={islinkDataLoading} />
           </div>
         )}
@@ -584,51 +545,9 @@ const Home = ({
           }}
         />
       </div> */}
-       <div style={containerStyle}>
-      <div style={innerContainerStyle}>
-        <div style={columnStyle}>
-          <div style={titleStyle}>Term and Policies</div>
-          <a href="#" style={linkStyle}>Privacy Policy</a>
-          <a href="#" style={linkStyle}>Hyperlink Policy</a>
-          <a href="#" style={linkStyle}>Website Policies</a>
-          <a href="#" style={linkStyle}>Content Policies</a>
-          <a href="#" style={linkStyle}>Contingency Plan</a>
-        </div>
-        <div style={columnStyle}>
-          <div style={titleStyle}>About</div>
-          <a href="#" style={linkStyle}>About Us</a>
-          <a href="#" style={linkStyle}>Sitemap</a>
-          <a href="#" style={linkStyle}>Terms of Use</a>
-          <a href="#" style={linkStyle}>MoRTH</a>
-        </div>
-        <div style={columnStyle}>
-          <div style={titleStyle}>Recources</div>
-          <a href="#" style={linkStyle}>Fees and User Charges</a>
-          <a href="#" style={linkStyle}>Act, Rule and Policies</a>
-          <a href="#" style={linkStyle}>Permit Fees and Period</a>
-          <a href="#" style={linkStyle}>Manual</a>
-          <a href="#" style={linkStyle}>Homologation</a>
-        </div>
-        <div style={columnStyle}>
-          <div style={titleStyle}>Need Help</div>
-          <a href="#" style={linkStyle}>Contact Us</a>
-          <a href="#" style={linkStyle}>FAQ's</a>
-          <a href="#" style={linkStyle}>Raise a Concern</a>
-          <a href="#" style={linkStyle}>Calendar</a>
-          <a href="#" style={linkStyle}>Web Information Manager</a>
-        </div>
+      <div style={styles.header}>
+        © 2025 Copyright Indore Municipal Corporation
       </div>
-      <div style={bottomBarStyle}>
-        <div>© 2025 Copyright Indore Municipal Corporation</div>
-        <div style={socialIconsStyle}>
-          <img src="facebook-icon-url" alt="Facebook" style={iconStyle} />
-          <img src="x-icon-url" alt="X" style={iconStyle} />
-          <img src="instagram-icon-url" alt="Instagram" style={iconStyle} />
-          <img src="linkedin-icon-url" alt="LinkedIn" style={iconStyle} />
-          <img src="youtube-icon-url" alt="YouTube" style={iconStyle} />
-        </div>
-      </div>
-    </div>
     </div>
   );
 };

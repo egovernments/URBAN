@@ -435,10 +435,11 @@ import { values } from "lodash";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PropertyDocuments from "./PropertyDocuments";
-
+import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
 import TLCaption from "./TLCaption";
 import { CollectPayment } from "@egovernments/digit-ui-module-common/src/payments/employee/payment-collect";
 import { useQueryClient } from "react-query";
+
 
 const styles = {
   container: { fontFamily: "Arial", padding: "20px", fontSize: "14px" },
@@ -703,6 +704,8 @@ const ApplicationDetailsContent = ({
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
   const [selectedModes, setSelectedModes] = useState([]);
   const [estimateData, setEstimateData] = useState("");
+  const [remarks, setRemarks] = useState("");
+
   const [chequeDetails, setChequeDetails] = useState({
     issueDate: "",
     chequeNumber: "",
@@ -720,7 +723,9 @@ const ApplicationDetailsContent = ({
   const [upiMobile, setUPIMobile] = useState("");
   const [paymentType, setPaymentType] = useState("full");
   const [billFetch, setBillFetch] = useState(null);
-  const [formErrors, setFormErrors] = useState({});
+  const [billFopayment, setBillFopayment] = useState(null);
+
+  const [formErrors, setFormErrors] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
   const [receiptNumber, setReceiptNumber] = useState("");
   const stateId = Digit.ULBService.getStateId();
@@ -870,7 +875,10 @@ const ApplicationDetailsContent = ({
     const tenantId = billData?.tenantId || "pg.citya";
     const consumerCode = applicationData?.propertyId;
     const selectedPaymentMode = selectedMode; // Make sure this is coming from your UI
-
+    if (!remarks.trim()) {
+      setFormErrors("Remarks are required.");
+      return;
+    }
     try {
       // ✅ Fetch fresh bill before processing
       const billResponse = await Digit.PTService.fetchPaymentDetails({
@@ -891,13 +899,14 @@ const ApplicationDetailsContent = ({
       // ✅ Construct receipt request
       const receiptRequest = {
         Payment: {
-          mobileNumber: "9877272554" || bill?.mobileNumber,
+          mobileNumber: bill?.mobileNumber,
           paymentDetails: [
             {
               billId: bill.id,
               businessService: bill.businessService,
               totalDue: bill.totalAmount,
               totalAmountPaid: bill.totalAmount,
+              remarks: remarks,
             },
           ],
           tenantId,
@@ -938,10 +947,12 @@ const ApplicationDetailsContent = ({
       setReceiptNumber(receiptNumber);
       setShowConfirmation(true);
       fetchBill(); // Refresh bill data after payment
+       setFormErrors("");
     } catch (error) {
       const errorMsg = error?.response?.data?.Errors?.map((e) => e?.code)?.join(", ");
       // console.error("❌ Error creating receipt:", errorMsg || error);
       // alert(`Failed to create receipt: ${errorMsg || "Unknown error"}`);
+       setFormErrors("");
     }
   };
   const fetchBill = async () => {
@@ -959,45 +970,119 @@ const ApplicationDetailsContent = ({
         setBillFetch(null);
         return;
       }
-
+      setBillFopayment(billResponse); // set fresh bill
       setBillFetch(BillList[0]); // set fresh bill
     } catch (err) {
       // console.error("Error fetching bill:", err);
     }
   };
-  // useEffect(() => {
-  //   const propertyIdValid = applicationData?.propertyId;
-  //   const tenantIdValid = tenantId && tenantId !== "undefined";
 
-  //   if (propertyIdValid && tenantIdValid) {
-  //     console.log("✅ Fetching bill with:", {
-  //       propertyId: applicationData.propertyId,
-  //       tenantId,
-  //     });
-  //     fetchBill();
-  //   }
-  // }, [applicationData?.propertyId, tenantId]);
- useEffect(() => {
-  const propertyIdValid = applicationData?.propertyId;
-  const tenantIdValid = tenantId && tenantId !== "undefined";
+  useEffect(() => {
+    const propertyIdValid = applicationData?.propertyId;
+    const tenantIdValid = tenantId && tenantId !== "undefined";
 
-  let intervalId;
+    let intervalId;
 
-  if (propertyIdValid && tenantIdValid) {
-    // Start interval loop
-    intervalId = setInterval(() => {
-      fetchBill();
-    }, 1000); // every 1 second
-  }
+    if (propertyIdValid && tenantIdValid) {
+      // Start interval loop
+      intervalId = setInterval(() => {
+        fetchBill();
+      }, 1000); // every 1 second
+    }
 
-  // Cleanup function to stop interval on unmount or dependency change
-  return () => {
-    if (intervalId) clearInterval(intervalId);
+    // Cleanup function to stop interval on unmount or dependency change
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [applicationData?.propertyId, tenantId]);
+
+  // ======================================Payment===================================================================
+
+  const { state = {} } = useLocation();
+  const userInfo = Digit.UserService.getUser();
+  const [showToast, setShowToast] = useState(null);
+  const { tenantId: __tenantId, authorization, workflow: wrkflow, consumerCode: connectionNo } = Digit.Hooks.useQueryParams();
+  console.log("wrkflow", wrkflow);
+  const paymentAmount = state?.paymentAmount;
+  // const history = useHistory();
+  const { pathname, search } = useLocation();
+  // const menu = ["AXIS"];
+  let { consumerCode } = useParams();
+  const tenantIdEs = state?.tenantId || __tenantId || Digit.ULBService.getCurrentTenantId();
+  const propertyId = state?.propertyId;
+  const stateTenant = Digit.ULBService.getStateId();
+  // const { control, handleSubmit } = useForm();
+  const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
+  const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment(
+    { tenantId: tenantIdEs, consumerCode: wrkflow === "WNS" ? connectionNo : consumerCode, businessService },
+    {}
+  );
+  if (window.location.href.includes("ISWSCON") || wrkflow === "WNS") consumerCode = decodeURIComponent(consumerCode);
+  if (wrkflow === "WNS") consumerCode = stringReplaceAll(consumerCode, "+", "/")
+  useEffect(() => {
+    if (billFopayment?.Bill && billFopayment.Bill.length == 0) {
+      setShowToast({ key: true, label: "CS_BILL_NOT_FOUND" });
+    }
+  }, [billFopayment]);
+  useEffect(() => {
+    localStorage.setItem("BillPaymentEnabled", "true");
+  }, []);
+  const { name, mobileNumber } = state;
+
+  const billDetails = billFopayment?.Bill ? billFopayment?.Bill[0] : {};
+  const handlePaymentMethod = async () => {
+    if (!remarks.trim()) {
+      setFormErrors("Remarks are required.");
+      return;
+    }
+    const consumerCode = applicationData?.propertyId;
+    const filterData = {
+      Transaction: {
+        tenantId: billDetails?.tenantId,
+        txnAmount: paymentAmount || billDetails.totalAmount,
+        module: businessService,
+        billId: billDetails.id,
+        consumerCode: consumerCode,
+        productInfo: "Common Payment",
+        gateway: selectedMode,
+        taxAndPayments: [
+          {
+            billId: billDetails.id,
+            amountPaid: billDetails.totalAmount,
+          },
+        ],
+        user: {
+          name: userInfo?.info?.name || billDetails?.payerName,
+          mobileNumber: userInfo?.info?.mobileNumber || billDetails?.mobileNumber,
+          tenantId: billDetails?.tenantId,
+        },
+        // success
+        callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
+          ? `${window.location.protocol}//${window.location.host}/digit-ui/citizen/payment/success/${businessService}/${wrkflow === "WNS" ? encodeURIComponent(consumerCode) : consumerCode}/${tenantId}?workflow=${wrkflow === "WNS" ? wrkflow : "mcollect"}`
+          : `${window.location.protocol}//${window.location.host}/digit-ui/citizen/payment/success/${businessService}/${wrkflow === "WNS" ? encodeURIComponent(consumerCode) : consumerCode}/${tenantId}?propertyId=${consumerCode}`,
+        additionalDetails: {
+          isWhatsapp: false,
+        },
+      },
+    };
+
+    try {
+      const data = await Digit.PaymentService.createCitizenReciept(billDetails?.tenantId, filterData);
+      const redirectUrl = data?.Transaction?.redirectUrl;
+      window.location = redirectUrl;
+      setFormErrors("");
+    } catch (error) {
+      let messageToShow = "CS_PAYMENT_UNKNOWN_ERROR_ON_SERVER";
+      if (error.response?.data?.Errors?.[0]) {
+        setFormErrors("");
+        const { code, message } = error.response?.data?.Errors?.[0];
+        messageToShow = code;
+      }
+      setFormErrors("");
+      setShowToast({ key: true, label: t(messageToShow) });
+    }
   };
-}, [applicationData?.propertyId, tenantId]);
 
-
-console.log("Bill Fetch Data:", billFetch);
   return (
 
     <div>
@@ -1304,7 +1389,7 @@ console.log("Bill Fetch Data:", billFetch);
 
 
         <div style={styles.checkboxGroup}>
-          {["CASH", "POS", "UPI", "Cheque"].map((method) => (
+          {["CASH", "EASEBUZZ"].map((method) => (
             <label key={method}>
               <input
                 type="radio"
@@ -1494,21 +1579,33 @@ console.log("Bill Fetch Data:", billFetch);
           <textarea
             rows="3"
             style={styles.remarkBox}
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
           />
+          {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
         </div>
 
         <div style={{ marginTop: "30px" }}>
-          <button
-            style={{
-              ...styles.paymentButton,
-              backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
-              cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
-            }}
-            onClick={() => handlePayment()}
-            disabled={billFetch?.totalAmount === 0}
-          >
-            Collect Payment
-          </button>
+          {selectedModes.includes("CASH") && (
+            <button
+              style={{
+                ...styles.paymentButton,
+                backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
+                cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
+              }}
+              onClick={() => handlePayment()}
+              disabled={billFetch?.totalAmount === 0}
+            >
+              Collect Payment
+            </button>
+          )}
+          {selectedModes.includes("EASEBUZZ") && (
+            <button style={{
+              ...styles.paymentButton
+            }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
+              Pay Now
+            </button>
+          )}
         </div>
 
       </div>

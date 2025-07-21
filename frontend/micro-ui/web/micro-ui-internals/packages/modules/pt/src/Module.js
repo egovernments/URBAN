@@ -13,6 +13,7 @@ import PropertyBasementDetails from "./pageComponents/PropertyBasementDetails";
 import PropertyFloorDetails from "./pageComponents/PropertyFloorDetails";
 import PropertyTax from "./pageComponents/PropertyTax";
 import PreviewDemand from "./pageComponents/PreviewDemand";
+import PreviewView from "./pageComponents/PreviewView";
 import PropertyType from "./pageComponents/PropertyType";
 import PropertyUsageType from "./pageComponents/PropertyUsageType";
 import ProvideSubUsageType from "./pageComponents/ProvideSubUsageType";
@@ -140,6 +141,7 @@ const componentsToRegister = {
   PTAcknowledgement,
   PropertyTax,
   PreviewDemand,
+  PreviewView,
   PTSelectPincode,
   PTSelectAddress,
   PTSelectStreet,

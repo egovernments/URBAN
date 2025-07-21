@@ -119,7 +119,7 @@ const EmployeeModuleCard = ({
       <div style={{ padding: "0", backgroundColor: "#6b133f" }}>
         {/* KPIs */}
         {kpis.length !== 0 && (
-          <div style={{ padding: isCitizen ? "0 0 0 17px" : "0", display: "flex", flexWrap: "wrap", gap: "12px", backgroundColor: "#fff", paddingTop: "12px", paddingLeft: "12px", paddingRight: "12px" }}>
+          <div style={{ padding: isCitizen ? "0 0 0 17px" : "0", display: "flex", gap: "12px", backgroundColor: "#fff", paddingTop: "12px", paddingLeft: "12px", paddingRight: "12px" }}>
             {kpis.map(({ count, label, link }, index) => (
               <div key={index} style={{ flex: "1 1 100%", textAlign: "left" }}>
                 <div style={{ fontSize: "18px", fontWeight: "600" }}>{count || count === 0 ? count : "0"}</div>

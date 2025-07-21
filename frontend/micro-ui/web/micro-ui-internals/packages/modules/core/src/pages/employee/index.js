@@ -249,60 +249,19 @@ import UserProfile from "../citizen/Home/UserProfile";
 import ErrorComponent from "../../components/ErrorComponent";
 
 const userScreensExempted = ["user/profile", "user/error"];
-const containerStyle = {
-  backgroundColor: "#f9f9f9",
-  padding: "30px 20px",
-  borderTop: "1px solid #eee",
-  fontFamily: "Arial, sans-serif",
-  fontSize: "14px",
-  color: "#333",
-};
+const styles = {
+  header: {
+    backgroundColor: "#6B133F",
+    color: "white",
+    padding: "10px",
+    textAlign: "center",
+    fontWeight: 600,
+    marginTop: "16px",
+    fontFamily: "Inter",
+    fontSize: "16px",
 
-const innerContainerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  flexWrap: "wrap",
-  marginBottom: "20px",
-};
-
-const columnStyle = {
-  flex: "1",
-  minWidth: "200px",
-  margin: "10px 0",
-};
-
-const titleStyle = {
-  fontWeight: "bold",
-  color: "#6b133f",
-  marginBottom: "8px",
-};
-
-const linkStyle = {
-  display: "block",
-  textDecoration: "none",
-  color: "#333",
-  marginBottom: "5px",
-};
-
-const bottomBarStyle = {
-  borderTop: "1px solid #eee",
-  paddingTop: "15px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  flexWrap: "wrap",
-};
-
-const socialIconsStyle = {
-  display: "flex",
-  gap: "12px",
-  alignItems: "center",
-};
-
-const iconStyle = {
-  height: "20px",
-  width: "20px",
-};
+  },
+}
 
 const EmployeeApp = ({
   stateInfo,
@@ -419,51 +378,9 @@ const EmployeeApp = ({
                 }}
               />
             </div> */}
-                <div style={containerStyle}>
-                  <div style={innerContainerStyle}>
-                    <div style={columnStyle}>
-                      <div style={titleStyle}>Term and Policies</div>
-                      <a href="#" style={linkStyle}>Privacy Policy</a>
-                      <a href="#" style={linkStyle}>Hyperlink Policy</a>
-                      <a href="#" style={linkStyle}>Website Policies</a>
-                      <a href="#" style={linkStyle}>Content Policies</a>
-                      <a href="#" style={linkStyle}>Contingency Plan</a>
-                    </div>
-                    <div style={columnStyle}>
-                      <div style={titleStyle}>About</div>
-                      <a href="#" style={linkStyle}>About Us</a>
-                      <a href="#" style={linkStyle}>Sitemap</a>
-                      <a href="#" style={linkStyle}>Terms of Use</a>
-                      <a href="#" style={linkStyle}>MoRTH</a>
-                    </div>
-                    <div style={columnStyle}>
-                      <div style={titleStyle}>Recources</div>
-                      <a href="#" style={linkStyle}>Fees and User Charges</a>
-                      <a href="#" style={linkStyle}>Act, Rule and Policies</a>
-                      <a href="#" style={linkStyle}>Permit Fees and Period</a>
-                      <a href="#" style={linkStyle}>Manual</a>
-                      <a href="#" style={linkStyle}>Homologation</a>
-                    </div>
-                    <div style={columnStyle}>
-                      <div style={titleStyle}>Need Help</div>
-                      <a href="#" style={linkStyle}>Contact Us</a>
-                      <a href="#" style={linkStyle}>FAQ's</a>
-                      <a href="#" style={linkStyle}>Raise a Concern</a>
-                      <a href="#" style={linkStyle}>Calendar</a>
-                      <a href="#" style={linkStyle}>Web Information Manager</a>
-                    </div>
-                  </div>
-                  <div style={bottomBarStyle}>
-                    <div>© 2025 Copyright Indore Municipal Corporation</div>
-                    <div style={socialIconsStyle}>
-                      <img src="facebook-icon-url" alt="Facebook" style={iconStyle} />
-                      <img src="x-icon-url" alt="X" style={iconStyle} />
-                      <img src="instagram-icon-url" alt="Instagram" style={iconStyle} />
-                      <img src="linkedin-icon-url" alt="LinkedIn" style={iconStyle} />
-                      <img src="youtube-icon-url" alt="YouTube" style={iconStyle} />
-                    </div>
-                  </div>
-                </div>
+                <div style={styles.header}>
+        © 2025 Copyright Indore Municipal Corporation
+      </div>
               </div>
             </div>
           </div>

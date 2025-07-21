@@ -53,7 +53,7 @@ const EmployeeApp = ({ path, url, userType }) => {
     ["/digit-ui/employee/pt/new-application"]: "ES_TITLE_NEW_PROPERTY_APPLICATION",
     ["/digit-ui/employee/pt/search"]: "PT_COMMON_SEARCH_PROPERTY_SUB_HEADER",
     ["/digit-ui/employee/pt/application-search"]: "ES_COMMON_APPLICATION_SEARCH",
-     ["/digit-ui/employee/pt/PreviewDemand"]: "PreviewDemand",
+    ["/digit-ui/employee/pt/PreviewDemand"]: "PreviewDemand",
   };
 
   const getBreadCrumb = () => {
@@ -151,6 +151,7 @@ const EmployeeApp = ({ path, url, userType }) => {
   const NewApplication = Digit?.ComponentRegistryService?.getComponent("PTNewApplication");
   const PTPropertyTaxForm = Digit?.ComponentRegistryService?.getComponent("PropertyTaxForm");
   const PreviewDemand = Digit?.ComponentRegistryService?.getComponent("PreviewDemand");
+  const PreviewView = Digit?.ComponentRegistryService?.getComponent("PreviewView");
   const ApplicationDetails = Digit?.ComponentRegistryService?.getComponent("ApplicationDetails");
   const PropertyDetails = Digit?.ComponentRegistryService?.getComponent("PTPropertyDetails");
   const AssessmentDetails = Digit?.ComponentRegistryService?.getComponent("PTAssessmentDetails");
@@ -188,6 +189,8 @@ const EmployeeApp = ({ path, url, userType }) => {
           />
           <PrivateRoute path={`${path}/new-application`} component={() => <NewApplication parentUrl={url} />} />
           <PrivateRoute path={`${path}/PreviewDemand`} component={PreviewDemand} />
+          <PrivateRoute path={`${path}/PreviewView`} component={PreviewView} />
+          
           <PrivateRoute path={`${path}/PTPropertyTaxForm/:id`} component={PTPropertyTaxForm} />
 
           <PrivateRoute path={`${path}/application-details/:id`} component={() => <ApplicationDetails parentRoute={path} />} />
