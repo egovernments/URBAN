@@ -81,6 +81,17 @@ const LanguageSelection = () => {
       fontSize: "24px",
 
     },
+    footerStyle: {
+      backgroundColor: "#6B133F",
+      color: "white",
+      padding: "10px",
+      textAlign: "center",
+      fontWeight: "bold",
+      marginTop: "16px",
+      fontFamily: "Inter",
+      fontSize: "16px",
+
+    },
     banner: {
       display: "flex",
       justifyContent: "space-between",
@@ -254,7 +265,7 @@ const LanguageSelection = () => {
           <h2 style={styles.yourUrban}>Your Urban Services<br />One Login Away!</h2>
           <div style={styles.loginButtons}>
             <button style={styles.loginButton} > Citizen Login</button>
-            <button style={styles.loginButton}  onClick={() => window.location.href = "/digit-ui/employee/user/login"}> IMC Login</button>
+            <button style={styles.loginButton} onClick={() => window.location.href = "/digit-ui/employee/user/login"}> IMC Login</button>
           </div>
         </div>
       </div>
@@ -370,7 +381,9 @@ const LanguageSelection = () => {
           </div>
         </div>
       </div>
-
+      <div style={styles.footerStyle}>
+        © 2025 Copyright Indore Municipal Corporation
+      </div>
     </div>
   );
 };
