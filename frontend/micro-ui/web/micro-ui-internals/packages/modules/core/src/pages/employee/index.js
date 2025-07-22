@@ -312,9 +312,8 @@ const EmployeeApp = ({
             style={
               isUserProfile
                 ? { padding: 0, paddingTop: "80px", marginLeft: mobileView ? "" : "64px" }
-                : { "--banner-url": `url(https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/image%201809.svg)`, padding: "0px" }
-                // { "--banner-url": `url(${stateInfo?.bannerUrl})`, padding: "0px" }
-                
+                :  { "--banner-url": `url(https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/image%201809.svg)`, padding: "0px" }
+                // { "--banner-url": `url(${stateInfo?.bannerUrl})`, padding: "0px" }  
             }
           >
             <Switch>
