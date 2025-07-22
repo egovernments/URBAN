@@ -527,15 +527,25 @@ const NewApplication = () => {
           relationship: owner.relationship || "FATHER",
           samagraId: owner.samagraID || "Samagra ID",
           documents: [
-            // {
-            //   fileStoreId:
-            //     documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
-            //   documentType: "Sellers Registry Copy",
-            // },
             {
-              fileStoreId:
-                documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
               documentType: "Photo ID",
+              fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
+              documentUid: documents.photoId?.documentUid || "default-uid-photoid"
+            },
+            {
+              documentType: "Ownership Document",
+              fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
+              documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
+            },
+            {
+              documentType: "Sellers Registry Copy",
+              fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
+              documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
+            },
+            {
+              documentType: "Last Tax Paid Receipt By Seller",
+              fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
+              documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
             },
           ],
         })),
@@ -553,11 +563,11 @@ const NewApplication = () => {
             fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
             documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
           },
-          // {
-          //   documentType: "Sellers Registry Copy",
-          //   fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
-          //   documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
-          // },
+          {
+            documentType: "Sellers Registry Copy",
+            fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
+            documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
+          },
           {
             documentType: "Last Tax Paid Receipt By Seller",
             fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",

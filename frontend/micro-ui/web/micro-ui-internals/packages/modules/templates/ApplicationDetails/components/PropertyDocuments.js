@@ -144,7 +144,7 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }
                   }
                 }
               >
-                {t("Documents")}
+                {t(document?.title)}
               </CardSubHeader>
             ) : null}
             <div
@@ -178,7 +178,7 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }
 
                     }}
                   >
-                    <PDFSvg style={{ width: "16px", height: "16px", fill: "#6B133F" }} />
+                    <PDFSvg style={{ width: "16px", height: "16px", fill: "#4729A3" }} />
                     {t(value?.title)}
                   </a>
                 ))

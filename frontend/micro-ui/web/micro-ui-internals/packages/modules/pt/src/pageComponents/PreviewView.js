@@ -280,7 +280,7 @@ const PropertyForm = () => {
                                     <td style={styles.td}>₹ {item.jalNikas}</td>
                                     <td style={styles.td}>₹ {item.sevaKar}</td>
                                     <td style={styles.td}>₹ {item.totalTax}</td>
-                                    <td style={styles.td}>₹ {item.rebate}</td>
+                                    <td style={styles.td}>₹ {Math.abs(item.rebate)}</td>
                                     <td style={styles.td}>₹ {item.penalty}</td>
                                     <td style={styles.td}>₹ {item.netTax}</td>
                                 </tr>

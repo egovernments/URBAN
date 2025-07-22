@@ -269,131 +269,81 @@ const SubMenu = ({ items = [], handleLogout, userDetails }) => {
         zIndex: 1000,
       }}
     >
-      {menuItems.map((item, index) => {
-        const isActive = activeTab === item.name;
-        const isDropdown = item.links && item.links.length > 0;
-        const tooltipId = `menu-tooltip-${index}`;
-        const showTooltip = item.name?.includes("...");
 
-        return (
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          padding: "6px 14px",
+          borderRadius: "20px",
+
+          color: "#FFFFFF",
+          fontWeight: "600",
+          fontSize: "14px",
+          cursor: "pointer",
+          marginRight: "12px",
+          transition: "background 0.2s",
+          flexDirection: "column",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
+          {/* <span>{item.icon}</span> */}
           <div
-            key={index}
-            onClick={() => handleClick(item)}
+           
             style={{
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "6px 14px",
-              borderRadius: "20px",
-              backgroundColor: isActive ? "#A3BBF3" : "transparent",
-              color: isActive ? "#FFFFFF" : "#D6D6D6",
-              fontWeight: isActive ? "600" : "400",
+              fontFamily: "Noto Sans",
+              fontWeight: 700,
               fontSize: "14px",
-              cursor: "pointer",
-              marginRight: "12px",
-              transition: "background 0.2s",
-              flexDirection: "column",
+              color: "#FFFFFF"
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              {/* <span>{item.icon}</span> */}
-              <span
-                data-tip
-                data-for={tooltipId}
-                style={{
-                  fontFamily: "Noto Sans",
-                  fontWeight: 700,
-                  fontSize: "14px",
-                  color: "#FFFFFF"
-                }}
-              >
-                {item.name}
-              </span>
-              {showTooltip && (
-                <ReactTooltip
-                  id={tooltipId}
-                  place="bottom"
-                  type="info"
-                  effect="solid"
-                  backgroundColor="grey"
-                  textColor="white"
-                >
-                  {item.fullName}
-                </ReactTooltip>
-              )}
-            </div>
-
-            {isDropdown && dropdownOpen === item.name && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  backgroundColor: "#FFFFFF",
-                  borderRadius: "8px",
-                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                  minWidth: "180px",
-                  zIndex: 1001,
-                  marginTop: "6px",
-                  padding: "8px 0"
-                }}
-              >
-                {item.links.map((link, idx) => {
-                  const subIconRaw = link?.leftIcon || "";
-                  const subIconKey = subIconRaw.split(":")[1] || "";
-                  const displayKey = link?.displayName?.replace(/[ -]/g, "_")?.toUpperCase();
-                  const translatedSub = t(`ACTION_TEST_${displayKey}`);
-                  const trimSub = translatedSub.length > 20 ? translatedSub.slice(0, 20) + "..." : translatedSub;
-                  const subTooltipId = `submenu-tooltip-${index}-${idx}`;
-                  const subLinkHref = link.navigationURL?.includes("/digit-ui")
-                    ? link.navigationURL
-                    : `${getOrigin}/employee/${link.navigationURL}`;
-
-                  return (
-                    <a
-                      key={idx}
-                      href={subLinkHref}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDropdownOpen(null);
-                      }}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        padding: "8px 16px",
-                        textDecoration: "none",
-                        color: "#333",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        gap: "8px",
-                        transition: "background 0.2s"
-                      }}
-                      data-tip
-                      data-for={subTooltipId}
-                    >
-                      <span>{iconMap[subIconKey] || "📄"}</span>
-                      <span>{trimSub}</span>
-                      {trimSub?.includes("...") && (
-                        <ReactTooltip
-                          id={subTooltipId}
-                          place="right"
-                          type="info"
-                          effect="solid"
-                          backgroundColor="grey"
-                          textColor="white"
-                        >
-                          {translatedSub}
-                        </ReactTooltip>
-                      )}
-                    </a>
-                  );
-                })}
-              </div>
-            )}
+            <a href="/digit-ui/employee" style={{ color: "#FFFFFF", textDecoration: "none" }}>
+              Home
+            </a>
           </div>
-        );
-      })}
+          <div
+       
+            style={{
+              fontFamily: "Noto Sans",
+              fontWeight: 700,
+              fontSize: "14px",
+              color: "#FFFFFF"
+            }}
+          >
+            <a href="/digit-ui/employee/pt/PropertyLandingPage" style={{ color: "#FFFFFF", textDecoration: "none" }}>
+              
+            Property Tax
+            </a>
+          </div>
+            <div
+       
+            style={{
+              fontFamily: "Noto Sans",
+              fontWeight: 700,
+              fontSize: "14px",
+              color: "#FFFFFF"
+            }}
+          >
+            Water Tax
+          </div>
+            <div
+       
+            style={{
+              fontFamily: "Noto Sans",
+              fontWeight: 700,
+              fontSize: "14px",
+              color: "#FFFFFF"
+            }}
+          >
+            Rental
+          </div>
+        </div>
+
+
+      </div>
+
 
     </div>
   );
