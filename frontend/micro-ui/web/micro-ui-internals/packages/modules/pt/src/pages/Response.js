@@ -262,7 +262,7 @@ const Response = (props) => {
     <div>
       <div style={{ width: "100%", textAlign: "right" }}>
         {(mutation.isSuccess || !!successData) && !mutation.isError && (
-          <SubmitBar style={{ overflow: "hidden", marginTop: "0px", backgroundColor: "#4729A3" }} label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />
+          <SubmitBar style={{ overflow: "hidden", marginTop: "0px", backgroundColor: "#6B133F" }} label={t("PT_DOWNLOAD_ACK_FORM")} onSubmit={handleDownloadPdf} />
         )}
       </div>
       {/* <Card> */}

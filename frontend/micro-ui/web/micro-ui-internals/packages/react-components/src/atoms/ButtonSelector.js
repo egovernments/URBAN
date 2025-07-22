@@ -61,7 +61,7 @@ import PropTypes from "prop-types";
 
 const styles = {
   primary: {
-    backgroundColor: "#4729A3", // Solid purple
+    backgroundColor: "#6B133F", // Solid purple
     color: "white",
     border: "none",
     borderRadius: "5px",

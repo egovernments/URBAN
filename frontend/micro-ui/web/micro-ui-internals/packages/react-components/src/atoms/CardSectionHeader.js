@@ -4,7 +4,7 @@ const CardSectionHeader = (props) => {
   return (
     <header id={props.id} className="card-section-header" 
     // style={props.style}
-      style={{ color: "#4729A3", ...(props.style || {}) }}
+      style={{ color: "#6B133F", ...(props.style || {}) }}
     >
       {props.children}
     </header>

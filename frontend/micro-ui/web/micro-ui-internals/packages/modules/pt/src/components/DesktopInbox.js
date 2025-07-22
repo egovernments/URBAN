@@ -174,7 +174,7 @@ const tableStyle = {
 };
 
 const thStyle = {
-  backgroundColor: "#4729A34D",
+  backgroundColor: "#6B133F",
   padding: "12px 16px",
   textAlign: "left",
   borderBottom: "1px solid #ddd",

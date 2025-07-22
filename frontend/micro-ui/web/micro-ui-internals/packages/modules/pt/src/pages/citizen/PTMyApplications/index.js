@@ -105,7 +105,7 @@ export const PTMyApplications = () => {
           <div style={{ overflowX: "auto" }}>
             <Card style={{ maxWidth: "none", padding: "0px" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
-                <thead style={{ backgroundColor: "#4729A34D" }}>
+                <thead style={{ backgroundColor: "#6B133F4D" }}>
                   <tr>
                     {tableHeaders.map((head, i) => (
                       <th

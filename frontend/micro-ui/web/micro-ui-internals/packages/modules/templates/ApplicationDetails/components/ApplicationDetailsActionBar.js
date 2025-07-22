@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { SubmitBar, ActionBar, Menu } from "@egovernments/digit-ui-react-components";
+import { useHistory, useLocation } from "react-router-dom";
 
 function ApplicationDetailsActionBar({ workflowDetails, displayMenu, onActionSelect, setDisplayMenu, businessService, forcedActionPrefix, ActionBarStyle = {}, MenuStyle = {} ,applicationData}) {
   console.log("ApplicationDetailsActionBar Props:",  applicationData );
+   const history = useHistory();
   const { t } = useTranslation();
   let user = Digit.UserService.getUser();
   const menuRef = useRef();
@@ -100,7 +102,7 @@ const toYear = getCurrentFinancialYear();
         console.log("Estimate success:", data);
       },
       onError: (error) => {
-        alert("Estimate error:", error);
+        console.log("Estimate error:", error);
       },
     });
   };

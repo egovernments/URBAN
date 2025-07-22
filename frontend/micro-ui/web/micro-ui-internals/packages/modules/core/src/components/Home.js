@@ -312,7 +312,7 @@ export const AppHome = ({ userType, modules, getCitizenMenu, fetchedCitizen, isL
 //     letterSpacing: '0%',
 //     textAlign: 'center',
 //     verticalAlign: 'middle',
-//     color: '#4729A3'
+//     color: '#6B133F'
 //   };
 
 //   const subHeaderStyle = {
@@ -336,7 +336,7 @@ export const AppHome = ({ userType, modules, getCitizenMenu, fetchedCitizen, isL
 //   };
 
 //   const cardStyle = {
-//     backgroundColor: "#4729A3",
+//     backgroundColor: "#6B133F",
 //     borderRadius: "10px",
 //     padding: "10px",
 //     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -372,7 +372,7 @@ export const AppHome = ({ userType, modules, getCitizenMenu, fetchedCitizen, isL
 //   };
 
 //   const dropdownStyle = {
-//     backgroundColor: "#4729A3",
+//     backgroundColor: "#6B133F",
 //     borderRadius: "10px",
 //     padding: "10px",
 //     marginTop: "5px",
@@ -403,7 +403,7 @@ export const AppHome = ({ userType, modules, getCitizenMenu, fetchedCitizen, isL
 //   const viewMoreButton = {
 //     height: "45px",
 //     width: "217px",
-//     backgroundColor: "#4729A3",
+//     backgroundColor: "#6B133F",
 //     color: "#FFFFFF",
 //     borderRadius: "20px",
 //     fontFamily: 'Noto Sans',

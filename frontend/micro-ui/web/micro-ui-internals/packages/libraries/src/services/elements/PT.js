@@ -42,6 +42,17 @@ export const PTService = {
       params: {},
       auth: true,
     }),
+    updateContent: (details, tenantId) =>
+    Request({
+      url: Urls.pt.update,
+      data: details,
+      useCache: false,
+      setTimeParam: false,
+      userService: true,
+      method: "PUT",
+      params: {},
+      auth: true,
+    }),
   ptCalculationEstimate: (details, tenantId) =>
     Request({
       url: Urls.pt.pt_calculation_estimate,

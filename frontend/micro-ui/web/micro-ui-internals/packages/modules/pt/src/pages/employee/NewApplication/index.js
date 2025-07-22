@@ -134,10 +134,10 @@ const NewApplication = () => {
   // ];
 
   let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
-
+  console.log("userInfo1", userInfo1?.authToken);
   const tenantId = userInfo1?.tenantId;
   const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId, true);
-  const mutationUpdate = Digit.Hooks.pt.usePropertyAPI(tenantId, false);
+  const mutationUpdate = Digit.Hooks.pt.useUpdateContent(tenantId, true);
   let tenantIdss = Digit.ULBService.getCurrentTenantId();
   console.log(tenantIdss, "tenantIdss")
   const {
@@ -146,7 +146,7 @@ const NewApplication = () => {
     mutate: ptCalculationEstimateMutate,
     error,
   } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
- 
+
   const handleEstimate = () => {
     // const errors = {};
     // if (!selectedAssessmentYear) {
@@ -191,7 +191,7 @@ const NewApplication = () => {
       onSuccess: (data) => {
         history.push({
           pathname: "/digit-ui/employee/pt/PreviewDemand",
-          state: { data, proOwnerDetail,documents, propertyDocuments, checkboxes, rateZones ,owners,unit,assessmentDetails,assessmentDetails,propertyDetails,addressDetails,ownershipType,correspondenceAddress}// send full object
+          state: { data, proOwnerDetail, documents, propertyDocuments, checkboxes, rateZones, owners, unit, assessmentDetails, assessmentDetails, propertyDetails, addressDetails, ownershipType, correspondenceAddress }// send full object
         });
         console.log("Estimate success:", data);
       },
@@ -204,7 +204,7 @@ const NewApplication = () => {
 
     const payload = {
       Property: {
-        updateIMC: true,
+        // updateIMC: true,
         id: addressDetailsSet?.id,
         propertyId: generalDetails?.propertyId || "PG-PT-2025-07-15-000565",
         accountId: generalDetails?.accountId || "PG-PT-2025-07-15-000565",
@@ -491,7 +491,7 @@ const NewApplication = () => {
       Property: {
         updateIMC: true,
         tenantId: userInfo1?.tenantId,
-        oldPropertyId: assessmentDetails.oldPropertyId || null,
+        // oldPropertyId: assessmentDetails.oldPropertyId || null,
         address: {
           city: "CityA",
           locality: {
@@ -527,15 +527,15 @@ const NewApplication = () => {
           relationship: owner.relationship || "FATHER",
           samagraId: owner.samagraID || "Samagra ID",
           documents: [
-            {
-              fileStoreId:
-                documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
-              documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
-            },
+            // {
+            //   fileStoreId:
+            //     documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
+            //   documentType: "Sellers Registry Copy",
+            // },
             {
               fileStoreId:
                 documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
-              documentType: "OWNER.IDENTITYPROOF.AADHAAR",
+              documentType: "Photo ID",
             },
           ],
         })),
@@ -544,22 +544,22 @@ const NewApplication = () => {
 
         documents: [
           {
-            documentType: "OWNER.IDENTITYPROOF.VOTERID",
+            documentType: "Photo ID",
             fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
             documentUid: documents.photoId?.documentUid || "default-uid-photoid"
           },
           {
-            documentType: "OWNER.REGISTRATIONPROOF.SALEDEED",
+            documentType: "Ownership Document",
             fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
             documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
           },
+          // {
+          //   documentType: "Sellers Registry Copy",
+          //   fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
+          //   documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
+          // },
           {
-            documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
-            fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
-            documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
-          },
-          {
-            documentType: "OWNER.USAGEPROOF.ELECTRICITYBILL",
+            documentType: "Last Tax Paid Receipt By Seller",
             fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
             documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
           },

@@ -166,7 +166,7 @@ const AttachmentsSection = ({ t, styles, handleFileChange, formErrors }) => {
       <div className="form-section" style={styles.formSection}>
         {renderFileInput("photoId", "Photo ID", true)}
         {renderFileInput("ownershipDoc", "Ownership Document", true)}
-        {renderFileInput("sellersRegistry", "Sellers Registry Copy")}
+        {/* {renderFileInput("sellersRegistry", "Sellers Registry Copy")} */}
       </div>
       <div style={{ ...styles.flex45, width: "32%", marginTop: "20px" }}>
         {renderFileInput("lastTaxReceipt", "Last Tax Paid Receipt By Seller")}

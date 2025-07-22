@@ -93,6 +93,7 @@ import useEmployeeSearch from "./useEmployeeSearch";
 
 import usePropertyMDMS from "./pt/usePropertyMDMS";
 import usePropertyAPI from "./pt/usePropertyAPI";
+import useUpdateContent from "./pt/useUpdateContent";
 import usePropertyCreateNUpdateAPI from "./pt/usePropertyCreateNUpdateAPI";
 import usePropertyDocumentSearch from "./pt/usePropertyDocumentSearch";
 import useTenantsPT from "./pt/useTenants";
@@ -319,6 +320,7 @@ const pt = {
   usePropertyMDMS,
   usePropertySearchWithDue,
   usePropertyAPI,
+  useUpdateContent,
   usePropertyCreateNUpdateAPI,
   usePropertyDocumentSearch,
   useTenants: useTenantsPT,

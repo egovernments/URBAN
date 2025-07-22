@@ -202,7 +202,7 @@ const PTinboxTable = () => {
                             padding: "8px 16px",
                             borderRadius: "8px",
                             border: "1px solid #ccc",
-                            backgroundColor: offset === 0 ? "#f0f0f0" : "#4729A3",
+                            backgroundColor: offset === 0 ? "#f0f0f0" : "#6B133F",
                             color: offset === 0 ? "#999" : "#fff",
                             cursor: offset === 0 ? "not-allowed" : "pointer",
                             transition: "background-color 0.2s ease"
@@ -222,7 +222,7 @@ const PTinboxTable = () => {
                             padding: "8px 16px",
                             borderRadius: "8px",
                             border: "1px solid #ccc",
-                            backgroundColor: offset + limit >= totalCount ? "#f0f0f0" : "#4729A3",
+                            backgroundColor: offset + limit >= totalCount ? "#f0f0f0" : "#6B133F",
                             color: offset + limit >= totalCount ? "#999" : "#fff",
                             cursor: offset + limit >= totalCount ? "not-allowed" : "pointer",
                             transition: "background-color 0.2s ease"

@@ -128,7 +128,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
             fontSize: "16px",
             lineHeight: "100%",
             letterSpacing: "0%",
-            color: "#4729A3",
+            color: "#6B133F",
           }}>Application Details</div>
             {(type === "mobile" || mobileView) && (
               <div className="complaint-header">

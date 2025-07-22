@@ -171,10 +171,10 @@ export default {
     letterSpacing: '0',
     textDecoration: 'underline',
     textDecorationStyle: 'solid',
-    textDecorationColor: '#4729A3',
+    textDecorationColor: '#6B133F',
     textDecorationThickness: '1px',
     textDecorationOffset: '2px',
-    color: '#4729A3',
+    color: '#6B133F',
     marginBottom: '20px'
   },
   docBox: {

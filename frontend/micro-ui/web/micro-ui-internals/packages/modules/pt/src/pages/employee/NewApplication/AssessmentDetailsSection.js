@@ -53,7 +53,7 @@ const AssessmentDetailsSection = ({
       </div>
 
       {/* Old Property ID */}
-      <div style={styles.flex30}>
+      {/* <div style={styles.flex30}>
         <div style={styles.poppinsLabel}>{t("Old Property Id")}</div>
         <TextInput
           style={styles.widthInput}
@@ -62,7 +62,7 @@ const AssessmentDetailsSection = ({
           onChange={handleAssessmentInputChange}
           placeholder={t("Enter")}
         />
-      </div>
+      </div> */}
 
       {/* Plot Area */}
       <div style={styles.flex30}>

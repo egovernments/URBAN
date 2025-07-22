@@ -67,7 +67,7 @@ export default {
     textAlign: "left",
     padding: "8px",
     border: "1px solid #ccc",
-    background: "rgba(163, 187, 243, 0.5)",
+    background: "#6B133F4D",
     color: "#282828",
     width: "240px",
     fontFamily: "Inter",

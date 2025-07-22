@@ -64,7 +64,166 @@
 import React from "react";
 
 const LanguageSelection = () => {
-  const styles = {
+ 
+  return (
+    <div style={styles.container}>
+      <div style={styles.header}>
+        Welcome to e-Indore Municipal Corporation (e-IMC)
+      </div>
+
+      <div style={styles.banner}>
+        <img
+          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Rectangle%2010.svg"
+          alt="Rajwada"
+          style={styles.image}
+        />
+        <div style={styles.bannerText}>
+          <h2 style={styles.yourUrban}>Your Urban Services<br />One Login Away!</h2>
+          <div style={styles.loginButtons}>
+            <button style={styles.loginButton} > <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector.svg" />{" "} Citizen Login</button>
+            <button style={styles.loginButton} onClick={() => window.location.href = "/digit-ui/employee/user/login"}><img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector.svg" />{" "} IMC Login</button>
+          </div>
+        </div>
+      </div>
+
+      <div style={styles.section}>
+        <div style={styles.sectionTitle}>
+          <img
+            src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/currency-coin-rupee.svg"
+            style={{ margin: "auto" }} />
+          Quick Payments</div>
+        <div style={styles.verticalDivider}></div>
+        <div style={styles.card}>  <img
+          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector%20(1).svg"
+        /> Property Tax</div>
+        <div style={styles.verticalDivider}></div>
+        <div style={styles.card}> <img
+          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/water_voc.svg"
+        /> Water Tax</div>
+        <div style={styles.verticalDivider}></div>
+        <div style={styles.card}><img
+          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313953.svg"
+        /> Shop Rent</div>
+      </div>
+
+      <div style={styles.section}>
+        <div style={styles.sectionTitle}>
+          <img
+            src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/user-profile-star.svg"
+            style={{ margin: "auto" }} />
+          Other Services</div>
+        <div style={styles.verticalDivider}></div>
+        <div style={styles.card}><img
+          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201000006503.svg"
+        /> Marriage Registration</div>
+        <div style={styles.verticalDivider}></div>
+        <div style={styles.card}><img
+          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/delivery.svg"
+        /> Funeral Van</div>
+        <div style={styles.verticalDivider}></div>
+        <div style={styles.card}><img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/08dbb3cd-e05f-4b0e-870c-60f8b7bacc29.svg" /> Road Cutting</div>
+      </div>
+
+
+      <div style={{ ...styles.footer, display: "flex", gap: "20px" }}>
+        {/* Social Media Column */}
+        <div style={{ flex: 1 }}>
+          <div style={styles.sectionTitle}>Social Media</div>
+          <div style={styles.column}>
+            {/* ... Social Media Content ... */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313967.svg"
+                  alt="News Thumbnail" />
+                <p>
+                  <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
+                  <span style={styles.parraStyle}>
+                    Another year of Swachh Legacy!<br />
+                    This New chapter begins with new tasks and responsibilities..
+                  </span>
+                </p>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313964.svg"
+                  alt="News Thumbnail" />
+                <p style={{ marginTop: "20px" }}>
+                  <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
+                  <span style={styles.parraStyle}>
+                    Another year of Swachh Legacy!<br />
+                    This New chapter begins with new tasks and responsibilities..
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div style={styles.viewMore}>View More +</div>
+          </div>
+        </div>
+
+        {/* Vertical Divider */}
+        <div style={{
+          width: "2px",
+          backgroundColor: "#6B133F",
+          // height: "100%",
+          margin: "0 10px"
+        }}></div>
+
+        {/* Latest News Column */}
+        <div style={{ flex: 1 }}>
+          <div style={styles.sectionTitle}>Latest News</div>
+          <div style={styles.column}>
+            <div style={styles.newsItem}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313966.svg"
+                  alt="News Thumbnail" />
+                <p>
+                  <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
+                  <span style={styles.parraStyle}>
+                    Another year of Swachh Legacy!<br />
+                    This New chapter begins with new tasks and responsibilities..
+                  </span>
+                </p>
+              </div>
+              <p>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div style={styles.figtreeBoldTextStyle}>Today</div>
+                  <div style={styles.figtreeBoldTextStyle}> • <a href="#">Read More</a></div>
+                </div>
+              </p>
+            </div>
+            <div style={styles.newsItem}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313965.svg"
+                  alt="News Thumbnail" />
+                <p style={{ marginTop: "20px" }}>
+                  <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
+                  <span style={styles.parraStyle}>
+                    Another year of Swachh Legacy!<br />
+                    This New chapter begins with new tasks and responsibilities..
+                  </span>
+                </p>
+              </div>
+              <p>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div style={styles.figtreeBoldTextStyle}>18-07-2024</div>
+                  <div style={styles.figtreeBoldTextStyle}>• <a href="#">Read More</a></div>
+                </div>
+              </p>
+            </div>
+            <div style={styles.viewMore}>View More +</div>
+          </div>
+        </div>
+      </div>
+      <div style={styles.footerStyle}>
+        © 2025 Copyright Indore Municipal Corporation
+      </div>
+    </div>
+  );
+};
+ const styles = {
     container: {
       fontFamily: "sans-serif",
       backgroundColor: "#f5f1f7",
@@ -137,7 +296,10 @@ const LanguageSelection = () => {
       fontSize: "20px",
       lineHeight: "100%",
       color: "#FFFFFF",
-      letterSpacing: "3%"
+      letterSpacing: "3%",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "10px",
     },
     section: {
       display: "flex",
@@ -248,145 +410,5 @@ const LanguageSelection = () => {
       color: "#6B133F",
     }
   };
-
-  return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        Welcome to e-Indore Municipal Corporation (e-IMC)
-      </div>
-
-      <div style={styles.banner}>
-        <img
-          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Rectangle%2010.svg"
-          alt="Rajwada"
-          style={styles.image}
-        />
-        <div style={styles.bannerText}>
-          <h2 style={styles.yourUrban}>Your Urban Services<br />One Login Away!</h2>
-          <div style={styles.loginButtons}>
-            <button style={styles.loginButton} > Citizen Login</button>
-            <button style={styles.loginButton} onClick={() => window.location.href = "/digit-ui/employee/user/login"}> IMC Login</button>
-          </div>
-        </div>
-      </div>
-
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>
-          <img
-            src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/currency-coin-rupee.svg"
-            style={{ margin: "auto" }} />
-          Quick Payments</div>
-        <div style={styles.verticalDivider}></div>
-        <div style={styles.card}>  <img
-          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector%20(1).svg"
-        /> Property Tax</div>
-        <div style={styles.verticalDivider}></div>
-        <div style={styles.card}> <img
-          src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/water_voc.svg"
-        /> Water Tax</div>
-        <div style={styles.verticalDivider}></div>
-        <div style={styles.card}>🏪 Shop Rent</div>
-      </div>
-
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>Other Services</div>
-        <div style={styles.verticalDivider}></div>
-        <div style={styles.card}>💍 Marriage Registration</div>
-        <div style={styles.verticalDivider}></div>
-        <div style={styles.card}>🚐 Funeral Van</div>
-        <div style={styles.verticalDivider}></div>
-        <div style={styles.card}>🛣️ Road Cutting</div>
-      </div>
-
-
-      <div style={{ ...styles.footer, display: "flex", gap: "20px" }}>
-        {/* Social Media Column */}
-        <div style={{ flex: 1 }}>
-          <div style={styles.sectionTitle}>Social Media</div>
-          <div style={styles.column}>
-            {/* ... Social Media Content ... */}
-            <div>
-              <p>
-                <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
-                <span style={styles.parraStyle}>
-                  Another year of Swachh Legacy!<br />
-                  This New chapter begins with new tasks and responsibilities..
-                </span>
-              </p>
-              <p style={{ marginTop: "20px" }}>
-                <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
-                <span style={styles.parraStyle}>
-                  Another year of Swachh Legacy!<br />
-                  This New chapter begins with new tasks and responsibilities..
-                </span>
-              </p>
-            </div>
-            <div style={styles.viewMore}>View More +</div>
-          </div>
-        </div>
-
-        {/* Vertical Divider */}
-        <div style={{
-          width: "2px",
-          backgroundColor: "#6B133F",
-          // height: "100%",
-          margin: "0 10px"
-        }}></div>
-
-        {/* Latest News Column */}
-        <div style={{ flex: 1 }}>
-          <div style={styles.sectionTitle}>Latest News</div>
-          <div style={styles.column}>
-            <div style={styles.newsItem}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313966.svg"
-                  alt="News Thumbnail" />
-                <p>
-                  <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
-                  <span style={styles.parraStyle}>
-                    Another year of Swachh Legacy!<br />
-                    This New chapter begins with new tasks and responsibilities..
-                  </span>
-                </p>
-              </div>
-              <p>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <div style={styles.figtreeBoldTextStyle}>Today</div>
-                  <div style={styles.figtreeBoldTextStyle}> • <a href="#">Read More</a></div>
-                </div>
-              </p>
-            </div>
-            <div style={styles.newsItem}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321313965.svg"
-                  alt="News Thumbnail" />
-                <p style={{ marginTop: "20px" }}>
-                  <span style={styles.headDropStyle}>Indore Municipal Corporation @SwachhIndore</span><br />
-                  <span style={styles.parraStyle}>
-                    Another year of Swachh Legacy!<br />
-                    This New chapter begins with new tasks and responsibilities..
-                  </span>
-                </p>
-              </div>
-              <p>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <div style={styles.figtreeBoldTextStyle}>18-07-2024</div>
-                  <div style={styles.figtreeBoldTextStyle}>• <a href="#">Read More</a></div>
-                </div>
-              </p>
-            </div>
-            <div style={styles.viewMore}>View More +</div>
-          </div>
-        </div>
-      </div>
-      <div style={styles.footerStyle}>
-        © 2025 Copyright Indore Municipal Corporation
-      </div>
-    </div>
-  );
-};
-
 export default LanguageSelection;
 

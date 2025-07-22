@@ -654,7 +654,7 @@ const styles = {
   homeButton: {
     marginTop: "20px",
     padding: "8px 20px",
-    backgroundColor: "indigo",
+    backgroundColor: "#6b133f",
     color: "white",
     border: "none",
     borderRadius: "6px",
@@ -947,12 +947,12 @@ const ApplicationDetailsContent = ({
       setReceiptNumber(receiptNumber);
       setShowConfirmation(true);
       fetchBill(); // Refresh bill data after payment
-       setFormErrors("");
+      setFormErrors("");
     } catch (error) {
       const errorMsg = error?.response?.data?.Errors?.map((e) => e?.code)?.join(", ");
       // console.error("❌ Error creating receipt:", errorMsg || error);
       // alert(`Failed to create receipt: ${errorMsg || "Unknown error"}`);
-       setFormErrors("");
+      setFormErrors("");
     }
   };
   const fetchBill = async () => {
@@ -1179,7 +1179,7 @@ const ApplicationDetailsContent = ({
         </div>
       </div>
 
-      <div style={styles.section}>
+      {/* <div style={styles.section}>
         {applicationDetails?.applicationDetails?.map((detail, index) => (
           <>
 
@@ -1187,7 +1187,7 @@ const ApplicationDetailsContent = ({
 
           </>
         ))}
-      </div>
+      </div> */}
       {/* Property Area Details */}
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Property Area Details</div>
@@ -1387,8 +1387,11 @@ const ApplicationDetailsContent = ({
           </div>
         )}
 
-
+        <div style={styles.label}>
+          Payment Method <span style={{ color: "red" }}>*</span>
+        </div>
         <div style={styles.checkboxGroup}>
+
           {["CASH", "EASEBUZZ"].map((method) => (
             <label key={method}>
               <input

@@ -137,7 +137,7 @@
 //   return (
 //     <div style={{ padding: "1rem 0" }}>
 //       {/* Note */}
-//       <div style={{ fontSize: "14px", color: "#4729A3", fontWeight: "500", fontFamily: "Poppins", marginBottom: "1rem" }}>
+//       <div style={{ fontSize: "14px", color: "#6B133F", fontWeight: "500", fontFamily: "Poppins", marginBottom: "1rem" }}>
 //         <span style={{ textDecoration: "underline", cursor: "pointer" }}>
 //           Attachments
 //         </span>{" "}
@@ -148,7 +148,7 @@
 //       {fields.map((field) => (
 //         <div key={field.key} style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
 //           <div style={{ width: "200px", fontSize: "14px", fontFamily: "Poppins", fontWeight: field.required ? "500" : "400", color: "#282828" }}>
-//             <span style={{ textDecoration: "underline", color: "#4729A3", cursor: "pointer" }}>
+//             <span style={{ textDecoration: "underline", color: "#6B133F", cursor: "pointer" }}>
 //               {t(field.label)}
 //             </span>
 //             {field.required && <span style={{ color: "#d4351c" }}> *</span>}
@@ -168,7 +168,7 @@
 //             />
 //           </div>
 //           <div style={{ marginLeft: "10px" }}>
-//             <UploadIcon fill="#4729A3" width="18px" height="18px" />
+//             <UploadIcon fill="#6B133F" width="18px" height="18px" />
 //           </div>
 //         </div>
 //       ))}
@@ -234,7 +234,7 @@ const AttachmentsSection = ({ t, config, onSelect, formData = {}, userType }) =>
   return (
     <div style={{ padding: "1rem 0" }}>
       {/* Note */}
-      <div style={{ fontSize: "14px", color: "#4729A3", fontWeight: "500", fontFamily: "Poppins", marginBottom: "1rem" }}>
+      <div style={{ fontSize: "14px", color: "#6B133F", fontWeight: "500", fontFamily: "Poppins", marginBottom: "1rem" }}>
         <span style={{ textDecoration: "underline", cursor: "pointer" }}>
           Attachments
         </span>{" "}
@@ -245,7 +245,7 @@ const AttachmentsSection = ({ t, config, onSelect, formData = {}, userType }) =>
       {fields.map((field) => (
         <div key={field.key} style={{ display: "flex", alignItems: "center", marginBottom: "1rem", position: "relative" }}>
           <div style={{ width: "200px", fontSize: "14px", fontFamily: "Poppins", fontWeight: field.required ? "500" : "400", color: "#282828" }}>
-            <span style={{ textDecoration: "underline", color: "#4729A3", cursor: "pointer" }}>
+            <span style={{ textDecoration: "underline", color: "#6B133F", cursor: "pointer" }}>
               {t(field.label)}
             </span>
             {field.required && <span style={{ color: "#d4351c" }}> *</span>}

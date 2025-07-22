@@ -634,7 +634,7 @@ const sectionHeader = {
     textDecorationStyle: "solid",
     textDecorationOffset: "0%",
     textDecorationThickness: "0%",
-    color: "#4729A3",
+    color: "#6B133F",
 };
 
 const inlineRow = {
@@ -654,7 +654,7 @@ const checkboxGroup = {
 
 const submitButton = {
     marginTop: "24px",
-    backgroundColor: "#4729A3",
+    backgroundColor: "#6B133F",
     color: "#fff",
     border: "none",
     padding: "12px 24px",

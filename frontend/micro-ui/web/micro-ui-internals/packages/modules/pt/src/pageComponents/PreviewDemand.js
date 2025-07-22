@@ -467,7 +467,7 @@ const PropertyForm = () => {
             <div style={styles.cardD}>
                 {/* Table 2 - Tax Summary */}
                 <div style={styles.sectionHeader}>Property tax summary</div>
-                <table style={styles.table}>
+                 <table style={styles.table}>
                     <thead>
                         <tr>
                             {["Year", "ALV", "TPV", "PTAX", "Sam Tax", "Urban Tax", "Edu Tax", "Jal Abhi", "Jal Nikas", "Sewa Kar", "Total Tax", "Reb", "Penality", "Net Tax"].map((h) => (
@@ -481,29 +481,32 @@ const PropertyForm = () => {
                                 <td style={styles.td}>{item.year}</td>
                                 <td style={styles.td}>{item.alv}</td>
                                 <td style={styles.td}>{item.tpv}</td>
-                                <td style={styles.td}>{item.propertyTax}</td>
-                                <td style={styles.td}>{item.samekit}</td>
-                                <td style={styles.td}>{item.urbanTax}</td>
-                                <td style={styles.td}>{item.educationCess}</td>
-                                <td style={styles.td}>{item.jalKar}</td>
-                                <td style={styles.td}>{item.jalNikas}</td>
-                                <td style={styles.td}>{item.sevaKar}</td>
-                                <td style={styles.td}>{item.totalTax}</td>
-                                <td style={styles.td}>{item.rebate}</td>
-                                <td style={styles.td}>{item.penalty}</td>
-                                <td style={styles.td}>{item.netTax}</td>
+                                <td style={styles.td}>₹ {item.propertyTax}</td>
+                                <td style={styles.td}>₹ {item.samekit}</td>
+                                <td style={styles.td}>₹ {item.urbanTax}</td>
+                                <td style={styles.td}>₹ {item.educationCess}</td>
+                                <td style={styles.td}>₹ {item.jalKar}</td>
+                                <td style={styles.td}>₹ {item.jalNikas}</td>
+                                <td style={styles.td}>₹ {item.sevaKar}</td>
+                                <td style={styles.td}>₹ {item.totalTax}</td>
+                                <td style={styles.td}>₹ {item.rebate}</td>
+                                <td style={styles.td}>₹ {item.penalty}</td>
+                                <td style={styles.td}>₹ {item.netTax}</td>
                             </tr>
                         ))}
                         <tr>
                             <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
                             <td style={styles.td}>
-                                {
+                               ₹ {
                                     taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)
                                 }
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                 <div style={styles.bottomText}>
+                    All values mentioned are in “₹” (Indian Rupees).
+                </div>
                 <div style={{ display: "flex", width: "224px", marginLeft: "auto" }}>
                     <button style={styles.confirmBtn} onClick={() => handleGobackEdit(true)}>Back</button>
                     <button style={styles.confirmBtn} onClick={() => setShowConfirmPopup(true)}>Confirm</button>

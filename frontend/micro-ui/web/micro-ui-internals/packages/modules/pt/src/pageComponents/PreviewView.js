@@ -150,7 +150,11 @@ const styles = {
         display: "flex",
         marginLeft: "auto"
     },
-
+    bottomText: {
+        color: "red",
+        fontSize: "12px",
+        marginTop: "8px",
+    },
 };
 
 const InputField = ({ label, value }) => (
@@ -170,7 +174,7 @@ const PropertyForm = () => {
     let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
 
     const location = useLocation();
-    const { data, applicationData} = location.state || {}; // receive full object
+    const { data, applicationData } = location.state || {}; // receive full object
     const calculation = data?.Calculation?.[0];
 
     const propertyFYDetails = calculation?.propertyFYDetails || [];
@@ -178,8 +182,8 @@ const PropertyForm = () => {
     console.log("propertyDetail", applicationData)
     const ownersDetail = applicationData?.owners || [];
     const address = applicationData?.address || {};
-   
-  
+
+
     return (
         <div style={{ position: "relative" }}>
             <button style={styles.downloadBtn}>⬇ Download</button>
@@ -265,36 +269,41 @@ const PropertyForm = () => {
                                 <td style={styles.td}>{item.year}</td>
                                 <td style={styles.td}>{item.alv}</td>
                                 <td style={styles.td}>{item.tpv}</td>
-                                <td style={styles.td}>{item.propertyTax}</td>
-                                <td style={styles.td}>{item.samekit}</td>
-                                <td style={styles.td}>{item.urbanTax}</td>
-                                <td style={styles.td}>{item.educationCess}</td>
-                                <td style={styles.td}>{item.jalKar}</td>
-                                <td style={styles.td}>{item.jalNikas}</td>
-                                <td style={styles.td}>{item.sevaKar}</td>
-                                <td style={styles.td}>{item.totalTax}</td>
-                                <td style={styles.td}>{item.rebate}</td>
-                                <td style={styles.td}>{item.penalty}</td>
-                                <td style={styles.td}>{item.netTax}</td>
+                                <td style={styles.td}>₹ {item.propertyTax}</td>
+                                <td style={styles.td}>₹ {item.samekit}</td>
+                                <td style={styles.td}>₹ {item.urbanTax}</td>
+                                <td style={styles.td}>₹ {item.educationCess}</td>
+                                <td style={styles.td}>₹ {item.jalKar}</td>
+                                <td style={styles.td}>₹ {item.jalNikas}</td>
+                                <td style={styles.td}>₹ {item.sevaKar}</td>
+                                <td style={styles.td}>₹ {item.totalTax}</td>
+                                <td style={styles.td}>₹ {item.rebate}</td>
+                                <td style={styles.td}>₹ {item.penalty}</td>
+                                <td style={styles.td}>₹ {item.netTax}</td>
                             </tr>
                         ))}
                         <tr>
                             <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
                             <td style={styles.td}>
-                                {
+                                ₹ {
                                     taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)
                                 }
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div style={styles.bottomText}>
+                    All values mentioned are in “₹” (Indian Rupees).
+                </div>
                 <div style={{ display: "flex", width: "224px", marginLeft: "auto" }}>
-                    <button style={styles.confirmBtn} >Back</button>
+                    <button style={styles.confirmBtn} onClick={() => window.history.back()}>
+                        Back
+                    </button>
                     {/* <button style={styles.confirmBtn} onClick={() => setShowConfirmPopup(true)}>Confirm</button> */}
                 </div>
             </div>
 
-          
+
         </div>
 
     );
