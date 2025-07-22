@@ -499,7 +499,8 @@ function ApplicationDetailsContentVerifier({
     if (checkpoint.state === "OPEN" || (checkpoint.status === "INITIATED" && !window.location.href.includes("/obps/"))) {
       const caption = {
         date: checkpoint?.auditDetails?.created,
-        source: applicationData?.channel || "",
+        source: ""
+        // source: applicationData?.channel || "",
       };
       return <TLCaption data={caption} />;
     } else if (window.location.href.includes("/obps/") || window.location.href.includes("/noc/") || window.location.href.includes("/ws/")) {
@@ -1043,7 +1044,7 @@ const styles = {
     textAlign: "left",
     padding: "8px",
     border: "1px solid #ccc",
-    background: "rgba(163, 187, 243, 0.5)",
+    background: "#6B133F4D",
     color: "#282828",
     width: "240px",
     fontFamily: "Inter",

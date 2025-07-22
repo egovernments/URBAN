@@ -150,7 +150,11 @@ const styles = {
         display: "flex",
         marginLeft: "auto"
     },
-
+    bottomText: {
+        color: "red",
+        fontSize: "12px",
+        marginTop: "8px",
+    },
 };
 
 const InputField = ({ label, value }) => (
@@ -174,7 +178,7 @@ const PropertyForm = () => {
     const tenantId = userInfo1?.tenantId;
     const mutationUpdate = Digit.Hooks.pt.usePropertyAPI(tenantId, false);
     const location = useLocation();
-    const { data, proOwnerDetail,documents, checkboxes, rateZones ,owners,unit,assessmentDetails,propertyDetails,addressDetails,ownershipType,correspondenceAddress} = location.state || {}; // receive full object
+    const { data, proOwnerDetail, documents, checkboxes, rateZones, owners, unit, assessmentDetails, propertyDetails, addressDetails, ownershipType, correspondenceAddress } = location.state || {}; // receive full object
     const calculation = data?.Calculation?.[0];
 
     const propertyFYDetails = calculation?.propertyFYDetails || [];
@@ -212,169 +216,169 @@ const PropertyForm = () => {
         });
     };
     const handleSubmitUpdate = async () => {
-    const payload = {
-      Property: {
-        updateIMC: true,
-        id: proOwnerDetail.address?.id,
-        propertyId: proOwnerDetail?.propertyId,
-        accountId: proOwnerDetail?.accountId,
-        acknowldgementNumber: proOwnerDetail?.acknowldgementNumber,
-        status: proOwnerDetail?.status,
-        tenantId: userInfo1?.tenantId,
-        oldPropertyId: assessmentDetails?.oldPropertyId,
-        address: {
-          city: "CityA",
-          locality: {
-            code: addressDetails.address?.colony?.code || "SUN02",
-            name: addressDetails.address?.colony?.name || "map with zone"
-          },
-          zone: addressDetails.address?.zone?.code || "SUN02",
-          street: addressDetails.address?.address || "main",
-          doorNo: addressDetails.address?.doorNo || "23",
-          pincode: addressDetails.address?.pincode || "",
-          ward: addressDetails.address?.ward?.code || "1",
-          documents: []
-        },
-        ownershipCategory: ownershipType || "INDIVIDUAL.SINGLEOWNER",
-         owners: owners?.map((owner, index) => ({
-          salutation: owner.title || "mr",
-          title: "title",
-          name: owner.name || `Owner ${index + 1}`,
-          salutationHindi: owner.hindiTitle,
-          hindiName: owner.hindiName || "",
-          fatherOrHusbandName: owner.fatherHusbandName || "UnitTest",
-          gender: "MALE",
-          aadhaarNumber: owner.aadhaar || "",
-          altContactNumber: owner.altNumber || "",
-          isCorrespondenceAddress: correspondenceAddress,
-          mobileNumber: owner.mobile || "9999999999",
-          emailId: owner.email || "",
-          ownerType: propertyDetails.exemption.code,
-          permanentAddress:
-            addressDetails.address || "23, main, PG_CITYA_REVENUE_SUN20, City A, ",
-          relationship: owner.relationship || "FATHER",
-          samagraId: owner.samagraID || "Samagra ID",
-          documents: [
-            {
-              fileStoreId:
-                documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
-              documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
+        const payload = {
+            Property: {
+                updateIMC: true,
+                id: proOwnerDetail.address?.id,
+                propertyId: proOwnerDetail?.propertyId,
+                accountId: proOwnerDetail?.accountId,
+                acknowldgementNumber: proOwnerDetail?.acknowldgementNumber,
+                status: proOwnerDetail?.status,
+                tenantId: userInfo1?.tenantId,
+                oldPropertyId: assessmentDetails?.oldPropertyId,
+                address: {
+                    city: "CityA",
+                    locality: {
+                        code: addressDetails.address?.colony?.code || "SUN02",
+                        name: addressDetails.address?.colony?.name || "map with zone"
+                    },
+                    zone: addressDetails.address?.zone?.code || "SUN02",
+                    street: addressDetails.address?.address || "main",
+                    doorNo: addressDetails.address?.doorNo || "23",
+                    pincode: addressDetails.address?.pincode || "",
+                    ward: addressDetails.address?.ward?.code || "1",
+                    documents: []
+                },
+                ownershipCategory: ownershipType || "INDIVIDUAL.SINGLEOWNER",
+                owners: owners?.map((owner, index) => ({
+                    salutation: owner.title || "mr",
+                    title: "title",
+                    name: owner.name || `Owner ${index + 1}`,
+                    salutationHindi: owner.hindiTitle,
+                    hindiName: owner.hindiName || "",
+                    fatherOrHusbandName: owner.fatherHusbandName || "UnitTest",
+                    gender: "MALE",
+                    aadhaarNumber: owner.aadhaar || "",
+                    altContactNumber: owner.altNumber || "",
+                    isCorrespondenceAddress: correspondenceAddress,
+                    mobileNumber: owner.mobile || "9999999999",
+                    emailId: owner.email || "",
+                    ownerType: propertyDetails.exemption.code,
+                    permanentAddress:
+                        addressDetails.address || "23, main, PG_CITYA_REVENUE_SUN20, City A, ",
+                    relationship: owner.relationship || "FATHER",
+                    samagraId: owner.samagraID || "Samagra ID",
+                    documents: [
+                        {
+                            fileStoreId:
+                                documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
+                            documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
+                        },
+                        {
+                            fileStoreId:
+                                documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
+                            documentType: "OWNER.IDENTITYPROOF.AADHAAR",
+                        },
+                    ],
+                })),
+                documents: [
+                    {
+                        documentType: "OWNER.IDENTITYPROOF.VOTERID",
+                        fileStoreId: documents.photoId?.fileStoreId,
+                        documentUid: documents.photoId?.documentUid
+                    },
+                    {
+                        documentType: "OWNER.REGISTRATIONPROOF.SALEDEED",
+                        fileStoreId: documents.sellersRegistry?.fileStoreId,
+                        documentUid: documents.sellersRegistry?.documentUid
+                    },
+                    {
+                        documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
+                        fileStoreId: documents.ownershipDoc?.fileStoreId,
+                        documentUid: documents.ownershipDoc?.documentUid
+                    },
+                    {
+                        documentType: "OWNER.USAGEPROOF.ELECTRICITYBILL",
+                        fileStoreId: documents.lastTaxReceipt?.fileStoreId,
+                        documentUid: documents.lastTaxReceipt?.documentUid
+                    }
+                ],
+                units: unit.map(unit => ({
+                    usageCategory: unit.usageType,
+                    usesCategoryMajor: unit.usageType,
+                    occupancyType: unit.usageFactor,
+                    constructionDetail: {
+                        builtUpArea: unit.area,
+                        constructionType: unit.constructionType
+                    },
+                    floorNo: parseInt(unit.floorNo),
+                    rateZone: rateZones?.[0]?.code,
+                    roadFactor: assessmentDetails?.roadFactor?.code,
+                    fromYear: unit.fromYear,
+                    toYear: unit.toYear
+                })),
+                landArea: assessmentDetails?.plotArea,
+                propertyType: propertyDetails?.propertyType?.code,
+                noOfFloors: parseInt(unit.floorNo) || 1,
+                superBuiltUpArea: null,
+                // usageCategory: unit.usageType || "RESIDENTIAL",
+                usageCategory: unit.find(u => u.usageType) ? unit.find(u => u.usageType).usageType : "RESIDENTIAL",
+                additionalDetails: {
+                    inflammable: false,
+                    heightAbove36Feet: false,
+                    propertyType: {
+                        i18nKey: "COMMON_PROPTYPE_BUILTUP_INDEPENDENTPROPERTY",
+                        code: propertyDetails?.propertyType?.code
+                    },
+                    mobileTower: checkboxes?.mobileTower,
+                    bondRoad: checkboxes?.broadRoad,
+                    advertisement: checkboxes?.advertisement,
+                    builtUpArea: null,
+                    noOfFloors: {
+                        i18nKey: "PT_GROUND_FLOOR_OPTION",
+                        code: 0
+                    },
+                    noOofBasements: {
+                        i18nKey: "PT_NO_BASEMENT_OPTION",
+                        code: 0
+                    },
+                    unit: unit.map(unit => ({
+                        usageCategory: unit.usageType,
+                        usesCategoryMajor: unit.usageType,
+                        occupancyType: unit.usageFactor,
+                        constructionDetail: {
+                            builtUpArea: unit.area,
+                            constructionType: unit.constructionType
+                        },
+                        floorNo: parseInt(unit.floorNo),
+                        rateZone: rateZones?.[0]?.code,
+                        roadFactor: assessmentDetails?.roadFactor?.code,
+                        fromYear: unit.fromYear,
+                        toYear: unit.toYear
+                    })),
+                    basement1: null,
+                    basement2: null
+                },
+                workflow: {
+                    action: "OPEN",
+                    moduleName: "PT",
+                    businessService: "PT.UPDATE"
+                },
+                channel: "CFC_COUNTER",
+                creationReason: "UPDATE",
+                source: "MUNICIPAL_RECORDS"
             },
-            {
-              fileStoreId:
-                documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
-              documentType: "OWNER.IDENTITYPROOF.AADHAAR",
-            },
-          ],
-        })),
-        documents: [
-          {
-            documentType: "OWNER.IDENTITYPROOF.VOTERID",
-            fileStoreId: documents.photoId?.fileStoreId,
-            documentUid: documents.photoId?.documentUid
-          },
-          {
-            documentType: "OWNER.REGISTRATIONPROOF.SALEDEED",
-            fileStoreId: documents.sellersRegistry?.fileStoreId,
-            documentUid: documents.sellersRegistry?.documentUid
-          },
-          {
-            documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
-            fileStoreId: documents.ownershipDoc?.fileStoreId,
-            documentUid: documents.ownershipDoc?.documentUid
-          },
-          {
-            documentType: "OWNER.USAGEPROOF.ELECTRICITYBILL",
-            fileStoreId: documents.lastTaxReceipt?.fileStoreId,
-            documentUid: documents.lastTaxReceipt?.documentUid
-          }
-        ],
-        units: unit.map(unit => ({
-          usageCategory: unit.usageType,
-          usesCategoryMajor: unit.usageType,
-          occupancyType: unit.usageFactor,
-          constructionDetail: {
-            builtUpArea: unit.area,
-            constructionType: unit.constructionType
-          },
-          floorNo: parseInt(unit.floorNo),
-          rateZone: rateZones?.[0]?.code,
-          roadFactor: assessmentDetails?.roadFactor?.code,
-          fromYear: unit.fromYear,
-          toYear: unit.toYear
-        })),
-        landArea: assessmentDetails?.plotArea,
-        propertyType: propertyDetails?.propertyType?.code,
-       noOfFloors: parseInt(unit.floorNo) || 1,
-        superBuiltUpArea: null,
-        // usageCategory: unit.usageType || "RESIDENTIAL",
-        usageCategory: unit.find(u => u.usageType) ? unit.find(u => u.usageType).usageType : "RESIDENTIAL",
-        additionalDetails: {
-          inflammable: false,
-          heightAbove36Feet: false,
-          propertyType: {
-            i18nKey: "COMMON_PROPTYPE_BUILTUP_INDEPENDENTPROPERTY",
-            code: propertyDetails?.propertyType?.code
-          },
-          mobileTower: checkboxes?.mobileTower,
-          bondRoad: checkboxes?.broadRoad,
-          advertisement: checkboxes?.advertisement,
-          builtUpArea: null,
-          noOfFloors: {
-            i18nKey: "PT_GROUND_FLOOR_OPTION",
-            code: 0
-          },
-          noOofBasements: {
-            i18nKey: "PT_NO_BASEMENT_OPTION",
-            code: 0
-          },
-          unit: unit.map(unit => ({
-            usageCategory: unit.usageType,
-            usesCategoryMajor: unit.usageType,
-            occupancyType: unit.usageFactor,
-            constructionDetail: {
-              builtUpArea: unit.area,
-              constructionType: unit.constructionType
-            },
-            floorNo: parseInt(unit.floorNo),
-            rateZone: rateZones?.[0]?.code,
-            roadFactor: assessmentDetails?.roadFactor?.code,
-            fromYear: unit.fromYear,
-            toYear: unit.toYear
-          })),
-          basement1: null,
-          basement2: null
-        },
-        workflow: {
-          action: "OPEN",
-          moduleName: "PT",
-          businessService: "PT.UPDATE"
-        },
-        channel: "CFC_COUNTER",
-        creationReason: "UPDATE",
-        source: "MUNICIPAL_RECORDS"
-      },
-      RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: userInfo1?.authToken,
-        userInfo: {
-          id: userInfo1?.id,
-          uuid: userInfo1?.uuid,
-          userName: userInfo1?.userName,
-          name: userInfo1?.name,
-          mobileNumber: userInfo1?.mobileNumber,
-          emailId: userInfo1?.emailId,
-          locale: userInfo1?.locale,
-          type: userInfo1?.type,
-          roles: userInfo1?.roles,
-          active: userInfo1?.active !== false,
-          tenantId: userInfo1?.tenantId,
-          permanentCity: userInfo1?.permanentCity
-        },
-        msgId: "1749797151521|en_IN",
-        plainAccessRequest: {}
-      }
-    };
+            RequestInfo: {
+                apiId: "Rainmaker",
+                authToken: userInfo1?.authToken,
+                userInfo: {
+                    id: userInfo1?.id,
+                    uuid: userInfo1?.uuid,
+                    userName: userInfo1?.userName,
+                    name: userInfo1?.name,
+                    mobileNumber: userInfo1?.mobileNumber,
+                    emailId: userInfo1?.emailId,
+                    locale: userInfo1?.locale,
+                    type: userInfo1?.type,
+                    roles: userInfo1?.roles,
+                    active: userInfo1?.active !== false,
+                    tenantId: userInfo1?.tenantId,
+                    permanentCity: userInfo1?.permanentCity
+                },
+                msgId: "1749797151521|en_IN",
+                plainAccessRequest: {}
+            }
+        };
 
         mutationUpdate.mutate(payload, {
             onSuccess: (data) => {
@@ -440,6 +444,7 @@ const PropertyForm = () => {
             <div style={styles.cardD}>
                 {/* Table 1 - Property Details */}
                 <div style={styles.sectionHeader}>Tax Details</div>
+                   <div style={{ overflowX: 'auto', width: '100%' }}>
                 <table style={styles.table}>
                     <thead>
                         <tr>
@@ -463,11 +468,13 @@ const PropertyForm = () => {
                         ))}
                     </tbody>
                 </table>
+                </div>
             </div>
             <div style={styles.cardD}>
                 {/* Table 2 - Tax Summary */}
                 <div style={styles.sectionHeader}>Property tax summary</div>
-                 <table style={styles.table}>
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                <table style={styles.table}>
                     <thead>
                         <tr>
                             {["Year", "ALV", "TPV", "PTAX", "Sam Tax", "Urban Tax", "Edu Tax", "Jal Abhi", "Jal Nikas", "Sewa Kar", "Total Tax", "Reb", "Penality", "Net Tax"].map((h) => (
@@ -489,7 +496,7 @@ const PropertyForm = () => {
                                 <td style={styles.td}>₹ {item.jalNikas}</td>
                                 <td style={styles.td}>₹ {item.sevaKar}</td>
                                 <td style={styles.td}>₹ {item.totalTax}</td>
-                                <td style={styles.td}>₹ {item.rebate}</td>
+                               <td style={styles.td}>₹ {Math.abs(item.rebate)}</td>
                                 <td style={styles.td}>₹ {item.penalty}</td>
                                 <td style={styles.td}>₹ {item.netTax}</td>
                             </tr>
@@ -497,14 +504,15 @@ const PropertyForm = () => {
                         <tr>
                             <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
                             <td style={styles.td}>
-                               ₹ {
+                                ₹ {
                                     taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)
                                 }
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                 <div style={styles.bottomText}>
+                </div>
+                <div style={styles.bottomText}>
                     All values mentioned are in “₹” (Indian Rupees).
                 </div>
                 <div style={{ display: "flex", width: "224px", marginLeft: "auto" }}>

@@ -1392,7 +1392,7 @@ const ApplicationDetailsContent = ({
         </div>
         <div style={styles.checkboxGroup}>
 
-          {["CASH", "EASEBUZZ"].map((method) => (
+          {["CASH", "POS"].map((method) => (
             <label key={method}>
               <input
                 type="radio"

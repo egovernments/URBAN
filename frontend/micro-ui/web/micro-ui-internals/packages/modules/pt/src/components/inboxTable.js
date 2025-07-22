@@ -96,9 +96,10 @@
 
 
 import React, { useState, useMemo } from "react";
-
+import { useTranslation } from "react-i18next";
 const PTinboxTable = () => {
     const [offset, setOffset] = useState(0);
+      const { t } = useTranslation();
     const limit = 10;
 
     const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -139,7 +140,7 @@ const PTinboxTable = () => {
                     <thead>
                         <tr style={{ backgroundColor: "#6b133f" }}>
                             <th style={headerStyle}>Application No</th>
-                            <th style={headerStyle}>Property ID</th>
+                            <th style={headerStyle}>Unique ID</th>
                             <th style={headerStyle}>Owner Name</th>
                             <th style={headerStyle}>Application Type</th>
                             <th style={headerStyle}>Status</th>
@@ -172,7 +173,7 @@ const PTinboxTable = () => {
                                             </a>
                                         </td>
                                         <td style={cellStyle}>{ownerNames}</td>
-                                        <td style={cellStyle}>{applicationType}</td>
+                                        <td style={cellStyle}>{t(applicationType)}</td>
                                         <td style={cellStyle}>{status}</td>
                                     </tr>
                                 );
@@ -247,6 +248,7 @@ const headerStyle = {
     fontSize: "14px",
     color: "white",
     borderBottom: "1px solid #ddd",
+    background: "#6b133f",
 };
 
 const cellStyle = {

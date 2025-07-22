@@ -228,70 +228,74 @@ const PropertyForm = () => {
             <div style={styles.cardD}>
                 {/* Table 1 - Property Details */}
                 <div style={styles.sectionHeader}>Tax Details</div>
-                <table style={styles.table}>
-                    <thead>
-                        <tr>
-                            {["Year", "Usage Type", "User", " Floor Number", "Construction Type", " Area (Sq feet)", "Rate", "ALV"].map((h) => (
-                                <th key={h} style={styles.th}>{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {propertyFYDetails.map((item) => (
-                            <tr key={item.year}>
-                                <td style={styles.td}>{item.year}</td>
-                                <td style={styles.td}>{item.usageType}</td>
-                                <td style={styles.td}>{item.usageFactor}</td>
-                                <td style={styles.td}>{item.floorNo}</td>
-                                <td style={styles.td}>{item.constructionType}</td>
-                                <td style={styles.td}>{item.area}</td>
-                                <td style={styles.td}>{item.factor}</td>
-                                <td style={styles.td}>{item.alv}</td>
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                    <table style={styles.table}>
+                        <thead>
+                            <tr>
+                                {["Year", "Usage Type", "User", " Floor Number", "Construction Type", " Area (Sq feet)", "Rate", "ALV"].map((h) => (
+                                    <th key={h} style={styles.th}>{h}</th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {propertyFYDetails.map((item) => (
+                                <tr key={item.year}>
+                                    <td style={styles.td}>{item.year}</td>
+                                    <td style={styles.td}>{item.usageType}</td>
+                                    <td style={styles.td}>{item.usageFactor}</td>
+                                    <td style={styles.td}>{item.floorNo}</td>
+                                    <td style={styles.td}>{item.constructionType}</td>
+                                    <td style={styles.td}>{item.area}</td>
+                                    <td style={styles.td}>{item.factor}</td>
+                                    <td style={styles.td}>{item.alv}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div style={styles.cardD}>
                 {/* Table 2 - Tax Summary */}
                 <div style={styles.sectionHeader}>Property tax summary</div>
-                <table style={styles.table}>
-                    <thead>
-                        <tr>
-                            {["Year", "ALV", "TPV", "PTAX", "Sam Tax", "Urban Tax", "Edu Tax", "Jal Abhi", "Jal Nikas", "Sewa Kar", "Total Tax", "Reb", "Penality", "Net Tax"].map((h) => (
-                                <th key={h} style={styles.th}>{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {taxSummaries.map((item) => (
-                            <tr key={item.year}>
-                                <td style={styles.td}>{item.year}</td>
-                                <td style={styles.td}>{item.alv}</td>
-                                <td style={styles.td}>{item.tpv}</td>
-                                <td style={styles.td}>₹ {item.propertyTax}</td>
-                                <td style={styles.td}>₹ {item.samekit}</td>
-                                <td style={styles.td}>₹ {item.urbanTax}</td>
-                                <td style={styles.td}>₹ {item.educationCess}</td>
-                                <td style={styles.td}>₹ {item.jalKar}</td>
-                                <td style={styles.td}>₹ {item.jalNikas}</td>
-                                <td style={styles.td}>₹ {item.sevaKar}</td>
-                                <td style={styles.td}>₹ {item.totalTax}</td>
-                                <td style={styles.td}>₹ {item.rebate}</td>
-                                <td style={styles.td}>₹ {item.penalty}</td>
-                                <td style={styles.td}>₹ {item.netTax}</td>
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                    <table style={styles.table}>
+                        <thead>
+                            <tr>
+                                {["Year", "ALV", "TPV", "PTAX", "Sam Tax", "Urban Tax", "Edu Tax", "Jal Abhi", "Jal Nikas", "Sewa Kar", "Total Tax", "Reb", "Penality", "Net Tax"].map((h) => (
+                                    <th key={h} style={styles.th}>{h}</th>
+                                ))}
                             </tr>
-                        ))}
-                        <tr>
-                            <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
-                            <td style={styles.td}>
-                                ₹ {
-                                    taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)
-                                }
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {taxSummaries.map((item) => (
+                                <tr key={item.year}>
+                                    <td style={styles.td}>{item.year}</td>
+                                    <td style={styles.td}>{item.alv}</td>
+                                    <td style={styles.td}>{item.tpv}</td>
+                                    <td style={styles.td}>₹ {item.propertyTax}</td>
+                                    <td style={styles.td}>₹ {item.samekit}</td>
+                                    <td style={styles.td}>₹ {item.urbanTax}</td>
+                                    <td style={styles.td}>₹ {item.educationCess}</td>
+                                    <td style={styles.td}>₹ {item.jalKar}</td>
+                                    <td style={styles.td}>₹ {item.jalNikas}</td>
+                                    <td style={styles.td}>₹ {item.sevaKar}</td>
+                                    <td style={styles.td}>₹ {item.totalTax}</td>
+                                    <td style={styles.td}>₹ {item.rebate}</td>
+                                    <td style={styles.td}>₹ {item.penalty}</td>
+                                    <td style={styles.td}>₹ {item.netTax}</td>
+                                </tr>
+                            ))}
+                            <tr>
+                                <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
+                                <td style={styles.td}>
+                                    ₹ {
+                                        taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div style={styles.bottomText}>
                     All values mentioned are in “₹” (Indian Rupees).
                 </div>

@@ -295,6 +295,7 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
   const { data: Menu = {}, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "UsageCategoryMajor") || {};
   const { data: MenuP = {}, isLoadings } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "ConstructionType") || {};
   const { data: FloorAll = {}, isLoadingF } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "Floor") || {};
+  console.log("FloorAll", FloorAll)
   const { data: OccupancyData = {}, isLoadingO } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "OccupancyType") || {};
 
   const [usageTypes, setUsageTypes] = useState([]);
@@ -342,18 +343,40 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
     }
   }, [isLoadings, MenuP]);
 
+  // useEffect(() => {
+  //   if (!isLoadingF && FloorAll?.PropertyTax?.Floor) {
+  //     const floorData = FloorAll.PropertyTax.Floor;
+  //     const mappedFloors = floorData
+  //       ?.filter((f) => f?.code && f?.active)
+  //       ?.map((floor) => ({
+  //         i18nKey: floor.name,
+  //         code: floor.code,
+  //       }));
+  //     setFloorList(mappedFloors);
+  //   }
+  // }, [isLoadingF, FloorAll]);
   useEffect(() => {
-    if (!isLoadingF && FloorAll?.PropertyTax?.Floor) {
-      const floorData = FloorAll.PropertyTax.Floor;
-      const mappedFloors = floorData
-        ?.filter((f) => f?.code && f?.active)
-        ?.map((floor) => ({
-          i18nKey: floor.name,
-          code: floor.code,
-        }));
-      setFloorList(mappedFloors);
-    }
-  }, [isLoadingF, FloorAll]);
+  if (isLoadingF) return;
+
+  const floors = FloorAll?.PropertyTax?.Floor || [];
+
+  const mappedFloors = floors
+    .filter(floor => floor?.code && floor?.active)
+    .map(floor => ({
+      i18nKey: floor.name,
+      code: floor.code,
+    }))
+    .sort((a, b) => {
+      const getSortValue = (val) => {
+        const num = parseInt(val, 10);
+        return isNaN(num) ? Number.MAX_SAFE_INTEGER : num;
+      };
+      return getSortValue(b.code) - getSortValue(a.code);
+    });
+
+  setFloorList(mappedFloors);
+}, [isLoadingF, FloorAll]);
+
 
   useEffect(() => {
     if (!isLoadingO && OccupancyData?.PropertyTax?.OccupancyType) {

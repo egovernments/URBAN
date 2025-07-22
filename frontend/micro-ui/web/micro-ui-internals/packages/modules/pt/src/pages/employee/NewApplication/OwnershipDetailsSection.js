@@ -128,9 +128,9 @@ const OwnershipDetailsSection = ({
             <Dropdown
               t={t}
               option={[
-                { code: "FATHER", name: t("Father") },
-                { code: "HUSBAND", name: t("Husband") },
-                { code: "GUARDIAN", name: t("Guardian") }
+                { code: "SONOF", name: t("Son of") },
+                { code: "DAUGHTEROF", name: t("Daughter of") },
+                { code: "WIFEOF", name: t("Wife of") }
               ]}
               selected={{ name: owner.relationship }}
               select={(val) => updateOwner(index, "relationship", val.name)}
@@ -195,7 +195,7 @@ const OwnershipDetailsSection = ({
               value={owner.samagraID}
               onChange={(e) => updateOwner(index, "samagraID", e.target.value)}
               style={styles.widthInput}
-             disabled={owner.noSamagra === true}
+              disabled={owner.noSamagra === true}
             />
             <div style={{ marginTop: "4px" }}>
               <label style={{ fontSize: "14px" }}>
@@ -229,7 +229,7 @@ const OwnershipDetailsSection = ({
           t={t}
           option={dropdownOptions}
           // selected={"ownershipType"}
-           selected={dropdownOptions.find(opt => opt.code === ownershipType)}
+          selected={dropdownOptions.find(opt => opt.code === ownershipType)}
           select={handleOwnershipTypeChange}
           optionKey="name"
           placeholder={t("Select")}

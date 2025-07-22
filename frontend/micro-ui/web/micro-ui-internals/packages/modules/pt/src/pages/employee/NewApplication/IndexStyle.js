@@ -192,14 +192,14 @@ export default {
     backgroundColor: "#f9f9f9"
   },
   assessmentStyle: {
-    background: '#95667D',
+    background: '#6b133f',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
     fontSize: '16px',
     lineHeight: '100%',
     letterSpacing: '0px',
     textDecorationStyle: 'solid',
-    textDecorationColor: '#95667D',
+    textDecorationColor: '#6b133f',
     textDecorationThickness: '1px',
     color: 'white',
     marginBottom: '20px',
