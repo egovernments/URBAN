@@ -1082,7 +1082,17 @@ const ApplicationDetailsContent = ({
       setShowToast({ key: true, label: t(messageToShow) });
     }
   };
+  const totalNetTax = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.reduce(
+    (acc, curr) => acc + (curr.netTax || 0),
+    0
+  );
+  const taxSummaries = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries || [];
 
+  const totalNetTaxPay = taxSummaries.reduce((acc, curr) => acc + (curr.netTax || 0), 0);
+
+  const lastNetTax = taxSummaries.length > 0 ? (taxSummaries[taxSummaries.length - 1].netTax || 0) : 0;
+
+  const netTaxMinusLast = totalNetTaxPay - lastNetTax;
   return (
 
     <div>
@@ -1191,7 +1201,7 @@ const ApplicationDetailsContent = ({
       {/* Property Area Details */}
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Property Area Details</div>
-        <div style={{ borderRadius: "16px", overflow: "hidden" }}>
+        <div style={{ overflowX: 'auto', width: '100%' }}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -1203,8 +1213,8 @@ const ApplicationDetailsContent = ({
                   "Area (Sq feet)",
                   "Rate",
                   "ALV",
-                  "Discount",
-                  "TPV"
+                  "Discount (%)",
+                  // "TPV"
                 ].map((head, i) => (
                   <th key={i} style={styles.th}>
                     {head}
@@ -1222,8 +1232,8 @@ const ApplicationDetailsContent = ({
                   <td style={styles.td}>{detail.area || "N/A"}</td>
                   <td style={styles.td}>{detail.factor || "N/A"}</td>
                   <td style={styles.td}>{detail.alv || 0}</td>
-                  <td style={styles.td}>0</td> {/* Assuming Discount not provided */}
-                  <td style={styles.td}>{detail.tpv || 0}</td>
+                  <td style={styles.td}>{detail.constructionType === "OPENLAND" ? "0" : "10"}</td> {/* Assuming Discount not provided */}
+                  {/* <td style={styles.td}>{detail.tpv || 0}</td> */}
                 </tr>
               ))}
             </tbody>
@@ -1235,7 +1245,7 @@ const ApplicationDetailsContent = ({
       {/* Tax Summary */}
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Tax Summary</div>
-        <div style={{ borderRadius: "16px", overflow: "hidden" }}>
+        <div style={{ overflowX: 'auto', width: '100%' }}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -1322,7 +1332,7 @@ const ApplicationDetailsContent = ({
               <div style={styles.label}>Amount</div>
               <input
                 placeholder="XX.XX"
-                value={billFetch?.totalAmount || ""}
+                value={lastNetTax || billFetch?.totalAmount}
                 style={styles.input}
               />
             </div>
@@ -1330,7 +1340,7 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Arrear</div>
               <input
-                value={"0"}
+                value={netTaxMinusLast}
                 readOnly
                 style={styles.input}
               />
@@ -1339,7 +1349,7 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Payments Receivable</div>
               <input
-                value={billFetch?.totalAmount || ""}
+                value={totalNetTax || ""}
                 readOnly
                 style={styles.input}
               />
@@ -1348,7 +1358,7 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Advance Payment</div>
               <input
-                value="View Only"
+                value="0"
                 readOnly
                 style={styles.input}
               />
@@ -1567,6 +1577,12 @@ const ApplicationDetailsContent = ({
                 <br />
                 {receiptNumber}
               </div>
+              <div style={styles.receiptText}>
+                Total Amount Received
+                <br />
+                ₹{totalNetTax}
+              </div>
+
               <button style={styles.homeButton} onClick={() => {
                 // 🏠 Navigate home or reset form here
                 window.location.href = "/digit-ui/employee"; // or use React Router
