@@ -55,12 +55,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-
- 
-@Getter
 @XStreamAlias("bill")
 public class BillDetails {
 
@@ -89,7 +83,77 @@ public class BillDetails {
         accounts.add(billAccountDetail);
     }
 
-    public Date getBilldate() {
-        return billDate;
+    public String getRefNo() { return refNo; }
+    public void setRefNo(String refNo) { this.refNo = refNo; }
+
+    public Date getBillDate() { return billDate; }
+    public void setBillDate(Date billDate) { this.billDate = billDate; }
+
+    public String getConsumerCode() { return consumerCode; }
+    public void setConsumerCode(String consumerCode) { this.consumerCode = consumerCode; }
+
+    public String getConsumerType() { return consumerType; }
+    public void setConsumerType(String consumerType) { this.consumerType = consumerType; }
+
+    public String getBoundaryNum() { return boundaryNum; }
+    public void setBoundaryNum(String boundaryNum) { this.boundaryNum = boundaryNum; }
+
+    public String getBoundaryType() { return boundaryType; }
+    public void setBoundaryType(String boundaryType) { this.boundaryType = boundaryType; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
+
+    public BigDecimal getMinimumAmount() { return minimumAmount; }
+    public void setMinimumAmount(BigDecimal minimumAmount) { this.minimumAmount = minimumAmount; }
+
+    public List<BillAccountDetails> getAccounts() { return accounts; }
+    public void setAccounts(List<BillAccountDetails> accounts) { this.accounts = accounts; }
+
+    // For backward compatibility
+    public Date getBilldate() { return billDate; }
+
+    // Builder pattern implementation
+    public static Builder builder() { return new Builder(); }
+    public static class Builder {
+        private String refNo;
+        private Date billDate;
+        private String consumerCode;
+        private String consumerType;
+        private String boundaryNum;
+        private String boundaryType;
+        private String description;
+        private BigDecimal totalAmount;
+        private BigDecimal minimumAmount;
+        private List<BillAccountDetails> accounts = new ArrayList<>();
+
+        public Builder refNo(String refNo) { this.refNo = refNo; return this; }
+        public Builder billDate(Date billDate) { this.billDate = billDate; return this; }
+        public Builder consumerCode(String consumerCode) { this.consumerCode = consumerCode; return this; }
+        public Builder consumerType(String consumerType) { this.consumerType = consumerType; return this; }
+        public Builder boundaryNum(String boundaryNum) { this.boundaryNum = boundaryNum; return this; }
+        public Builder boundaryType(String boundaryType) { this.boundaryType = boundaryType; return this; }
+        public Builder description(String description) { this.description = description; return this; }
+        public Builder totalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; return this; }
+        public Builder minimumAmount(BigDecimal minimumAmount) { this.minimumAmount = minimumAmount; return this; }
+        public Builder accounts(List<BillAccountDetails> accounts) { this.accounts = accounts; return this; }
+        public Builder addAccount(BillAccountDetails account) { this.accounts.add(account); return this; }
+        public BillDetails build() {
+            BillDetails details = new BillDetails();
+            details.setRefNo(this.refNo);
+            details.setBillDate(this.billDate);
+            details.setConsumerCode(this.consumerCode);
+            details.setConsumerType(this.consumerType);
+            details.setBoundaryNum(this.boundaryNum);
+            details.setBoundaryType(this.boundaryType);
+            details.setDescription(this.description);
+            details.setTotalAmount(this.totalAmount);
+            details.setMinimumAmount(this.minimumAmount);
+            details.setAccounts(this.accounts);
+            return details;
+        }
     }
 }

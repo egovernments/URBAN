@@ -51,15 +51,6 @@ import java.math.BigDecimal;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import lombok.Getter;
-import lombok.ToString;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
 @XStreamAlias("account")
 public class BillAccountDetails implements Comparable<BillAccountDetails> {
 
@@ -91,6 +82,18 @@ public class BillAccountDetails implements Comparable<BillAccountDetails> {
     @XStreamAsAttribute
     private Integer groupId;
 
+    // Explicit getters for all fields
+    public String getGlCode() { return glCode; }
+    public Integer getOrder() { return order; }
+    public String getDescription() { return description; }
+    public BigDecimal getCrAmount() { return crAmount; }
+    public BigDecimal getDrAmount() { return drAmount; }
+    public String getFunctionCode() { return functionCode; }
+    public Boolean getIsActualDemand() { return isActualDemand; }
+    public PURPOSE getPurpose() { return purpose; }
+    public Integer getGroupId() { return groupId; }
+    public void setGroupId(Integer groupId) { this.groupId = groupId; }
+
     public BillAccountDetails(final String glCode, final Integer order, final BigDecimal crAmount,
             final BigDecimal drAmount, final String functionCode, final String description, final Boolean isActualDemand,
             final PURPOSE purpose) {
@@ -121,9 +124,5 @@ public class BillAccountDetails implements Comparable<BillAccountDetails> {
     @Override
     public int compareTo(final BillAccountDetails obj) {
         return order - obj.order;
-    }
-
-    public Integer getGroupId() {
-        return groupId;
     }
 }

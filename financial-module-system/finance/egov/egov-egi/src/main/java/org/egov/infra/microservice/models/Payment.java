@@ -56,21 +56,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@EqualsAndHashCode
 public class Payment {
     @Size(max=64)
     @JsonProperty("id")
@@ -225,4 +213,79 @@ public class Payment {
     
     public PaymentStatusEnum getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(PaymentStatusEnum paymentStatus) { this.paymentStatus = paymentStatus; }
+
+    // Remove the old, incorrect builder() instance method
+    // Add a static Builder class and builder() method
+    public static Builder builder() { return new Builder(); }
+    public static class Builder {
+        private String id;
+        private String tenantId;
+        private BigDecimal totalDue;
+        private BigDecimal totalAmountPaid;
+        private String transactionNumber;
+        private Long transactionDate;
+        private PaymentModeEnum paymentMode;
+        private Long instrumentDate;
+        private String instrumentNumber;
+        private InstrumentStatusEnum instrumentStatus;
+        private String ifscCode;
+        private AuditDetails auditDetails;
+        private JsonNode additionalDetails;
+        private List<PaymentDetail> paymentDetails;
+        private String paidBy;
+        private String mobileNumber;
+        private String payerName;
+        private String payerAddress;
+        private String payerEmail;
+        private String payerId;
+        private PaymentStatusEnum paymentStatus;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder tenantId(String tenantId) { this.tenantId = tenantId; return this; }
+        public Builder totalDue(BigDecimal totalDue) { this.totalDue = totalDue; return this; }
+        public Builder totalAmountPaid(BigDecimal totalAmountPaid) { this.totalAmountPaid = totalAmountPaid; return this; }
+        public Builder transactionNumber(String transactionNumber) { this.transactionNumber = transactionNumber; return this; }
+        public Builder transactionDate(Long transactionDate) { this.transactionDate = transactionDate; return this; }
+        public Builder paymentMode(PaymentModeEnum paymentMode) { this.paymentMode = paymentMode; return this; }
+        public Builder instrumentDate(Long instrumentDate) { this.instrumentDate = instrumentDate; return this; }
+        public Builder instrumentNumber(String instrumentNumber) { this.instrumentNumber = instrumentNumber; return this; }
+        public Builder instrumentStatus(InstrumentStatusEnum instrumentStatus) { this.instrumentStatus = instrumentStatus; return this; }
+        public Builder ifscCode(String ifscCode) { this.ifscCode = ifscCode; return this; }
+        public Builder auditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; return this; }
+        public Builder additionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; return this; }
+        public Builder paymentDetails(List<PaymentDetail> paymentDetails) { this.paymentDetails = paymentDetails; return this; }
+        public Builder paidBy(String paidBy) { this.paidBy = paidBy; return this; }
+        public Builder mobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; return this; }
+        public Builder payerName(String payerName) { this.payerName = payerName; return this; }
+        public Builder payerAddress(String payerAddress) { this.payerAddress = payerAddress; return this; }
+        public Builder payerEmail(String payerEmail) { this.payerEmail = payerEmail; return this; }
+        public Builder payerId(String payerId) { this.payerId = payerId; return this; }
+        public Builder paymentStatus(PaymentStatusEnum paymentStatus) { this.paymentStatus = paymentStatus; return this; }
+
+        public Payment build() {
+            Payment payment = new Payment();
+            payment.setId(this.id);
+            payment.setTenantId(this.tenantId);
+            payment.setTotalDue(this.totalDue);
+            payment.setTotalAmountPaid(this.totalAmountPaid);
+            payment.setTransactionNumber(this.transactionNumber);
+            payment.setTransactionDate(this.transactionDate);
+            payment.setPaymentMode(this.paymentMode);
+            payment.setInstrumentDate(this.instrumentDate);
+            payment.setInstrumentNumber(this.instrumentNumber);
+            payment.setInstrumentStatus(this.instrumentStatus);
+            payment.setIfscCode(this.ifscCode);
+            payment.setAuditDetails(this.auditDetails);
+            payment.setAdditionalDetails(this.additionalDetails);
+            payment.setPaymentDetails(this.paymentDetails);
+            payment.setPaidBy(this.paidBy);
+            payment.setMobileNumber(this.mobileNumber);
+            payment.setPayerName(this.payerName);
+            payment.setPayerAddress(this.payerAddress);
+            payment.setPayerEmail(this.payerEmail);
+            payment.setPayerId(this.payerId);
+            payment.setPaymentStatus(this.paymentStatus);
+            return payment;
+        }
+    }
 }

@@ -67,4 +67,28 @@ public class InstrumentType extends BaseModel {
 	private String type;
 	private Boolean isActive;
 	private Set<InstrumentAccountCodes> instrumentAccountCodes = new HashSet<>();
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Set<InstrumentAccountCodes> getInstrumentAccountCodes() {
+		return instrumentAccountCodes;
+	}
+
+	public void setInstrumentAccountCodes(Set<InstrumentAccountCodes> instrumentAccountCodes) {
+		this.instrumentAccountCodes = instrumentAccountCodes;
+	}
 }

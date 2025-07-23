@@ -70,14 +70,10 @@ import org.egov.commons.CFunction;
 import org.egov.infstr.models.BaseModel;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "EGF_DISHONORCHEQUE_DETAIL")
 @SequenceGenerator(name = DishonorChequeDetails.SEQ_EGF_DISHONORCHEQUE_DETAIL, sequenceName = DishonorChequeDetails.SEQ_EGF_DISHONORCHEQUE_DETAIL, allocationSize = 1)
-@Getter
-@Setter
 @EqualsAndHashCode(callSuper = true)
 public class DishonorChequeDetails extends BaseModel {
 
@@ -109,4 +105,28 @@ public class DishonorChequeDetails extends BaseModel {
 
     @Transient
     private CFunction function;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public DishonorCheque getHeader() { return header; }
+    public void setHeader(DishonorCheque header) { this.header = header; }
+
+    public CChartOfAccounts getGlcodeId() { return glcodeId; }
+    public void setGlcodeId(CChartOfAccounts glcodeId) { this.glcodeId = glcodeId; }
+
+    public BigDecimal getDebitAmt() { return debitAmt; }
+    public void setDebitAmt(BigDecimal debitAmt) { this.debitAmt = debitAmt; }
+
+    public BigDecimal getCreditAmount() { return creditAmount; }
+    public void setCreditAmount(BigDecimal creditAmount) { this.creditAmount = creditAmount; }
+
+    public Integer getFunctionId() { return functionId; }
+    public void setFunctionId(Integer functionId) { this.functionId = functionId; }
+
+    public Set<DishonorChequeSubLedgerDetails> getSubLedgerDetails() { return subLedgerDetails; }
+    public void setSubLedgerDetails(Set<DishonorChequeSubLedgerDetails> subLedgerDetails) { this.subLedgerDetails = subLedgerDetails; }
+
+    public CFunction getFunction() { return function; }
+    public void setFunction(CFunction function) { this.function = function; }
 }

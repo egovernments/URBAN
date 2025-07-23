@@ -50,7 +50,6 @@ package org.egov.infstr.utils;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.xerces.xni.parser.XMLConfigurationException;
 import org.egov.infra.exception.ApplicationRuntimeException;
 import org.hibernate.PropertyAccessException;
 import org.slf4j.Logger;
@@ -147,7 +146,7 @@ public final class EGovConfig {
 			final XMLConfiguration configurationXML = getXMLConfiguration(xmlFileName);
 			final String output = configurationXML.getString(categoryName + "." + key);
 			return output == null ? defaultValue : output;
-		} catch (final XMLConfigurationException exp) {
+		} catch (final ClassCastException | NullPointerException exp) {
 			LOGGER.error("Error occurred in while getting property from given xml file", exp);
 			throw new ApplicationRuntimeException("Error occurred in while getting property from given xml file", exp);
 		}

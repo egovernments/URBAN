@@ -85,15 +85,13 @@
         <dependency>
             <groupId>org.egov</groupId>
             <artifactId>egov-egi</artifactId>
-            <version>3.0.2-COE-SNAPSHOT</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.egov</groupId>
             <artifactId>egov-commons</artifactId>
-            <version>3.0.2-COE-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- VIEWS RELATED END -->

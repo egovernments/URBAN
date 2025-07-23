@@ -49,22 +49,12 @@
 package org.egov.infra.microservice.models;
 
 import java.math.BigDecimal;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@EqualsAndHashCode
 public class PaymentDetail {
     @Size(max=64)
     @JsonProperty("id")
@@ -157,4 +147,56 @@ public class PaymentDetail {
     
     public AuditDetails getAuditDetails() { return auditDetails; }
     public void setAuditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; }
+
+    // Builder pattern implementation
+    public static Builder builder() { return new Builder(); }
+    public static class Builder {
+        private String id;
+        private String tenantId;
+        private BigDecimal totalDue;
+        private BigDecimal totalAmountPaid;
+        private String receiptNumber;
+        private String manualReceiptNumber;
+        private Long manualReceiptDate;
+        private Long receiptDate;
+        private String receiptType;
+        private String businessService;
+        private String billId;
+        private BillV2 bill;
+        private JsonNode additionalDetails;
+        private AuditDetails auditDetails;
+
+        public Builder id(String id) { this.id = id; return this; }
+        public Builder tenantId(String tenantId) { this.tenantId = tenantId; return this; }
+        public Builder totalDue(BigDecimal totalDue) { this.totalDue = totalDue; return this; }
+        public Builder totalAmountPaid(BigDecimal totalAmountPaid) { this.totalAmountPaid = totalAmountPaid; return this; }
+        public Builder receiptNumber(String receiptNumber) { this.receiptNumber = receiptNumber; return this; }
+        public Builder manualReceiptNumber(String manualReceiptNumber) { this.manualReceiptNumber = manualReceiptNumber; return this; }
+        public Builder manualReceiptDate(Long manualReceiptDate) { this.manualReceiptDate = manualReceiptDate; return this; }
+        public Builder receiptDate(Long receiptDate) { this.receiptDate = receiptDate; return this; }
+        public Builder receiptType(String receiptType) { this.receiptType = receiptType; return this; }
+        public Builder businessService(String businessService) { this.businessService = businessService; return this; }
+        public Builder billId(String billId) { this.billId = billId; return this; }
+        public Builder bill(BillV2 bill) { this.bill = bill; return this; }
+        public Builder additionalDetails(JsonNode additionalDetails) { this.additionalDetails = additionalDetails; return this; }
+        public Builder auditDetails(AuditDetails auditDetails) { this.auditDetails = auditDetails; return this; }
+        public PaymentDetail build() {
+            PaymentDetail detail = new PaymentDetail();
+            detail.setId(this.id);
+            detail.setTenantId(this.tenantId);
+            detail.setTotalDue(this.totalDue);
+            detail.setTotalAmountPaid(this.totalAmountPaid);
+            detail.setReceiptNumber(this.receiptNumber);
+            detail.setManualReceiptNumber(this.manualReceiptNumber);
+            detail.setManualReceiptDate(this.manualReceiptDate);
+            detail.setReceiptDate(this.receiptDate);
+            detail.setReceiptType(this.receiptType);
+            detail.setBusinessService(this.businessService);
+            detail.setBillId(this.billId);
+            detail.setBill(this.bill);
+            detail.setAdditionalDetails(this.additionalDetails);
+            detail.setAuditDetails(this.auditDetails);
+            return detail;
+        }
+    }
 }

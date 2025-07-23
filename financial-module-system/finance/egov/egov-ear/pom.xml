@@ -114,6 +114,11 @@
             <type>war</type>
         </dependency>
         <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-spring</artifactId>
+            <version>3.15.3.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.egov</groupId>
             <artifactId>egov-egi</artifactId>
             <version>${project.parent.version}</version>
