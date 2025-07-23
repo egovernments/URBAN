@@ -105,14 +105,14 @@
     <repository>
       <id>repo.egovernments.org</id>
       <name>eGov ERP Releases Repository</name>
-      <url>https://nexus-repo.egovernments.org/nexus/content/repositories/releases/</url>
+      <url>https://nexus-repo.digit.org/nexus/content/repositories/releases/</url>
     </repository>
   </repositories>
   <distributionManagement>
     <repository>
       <id>repo.egovernments.org</id>
       <name>eGov ERP Releases Repository</name>
-      <url>https://nexus-repo.egovernments.org/nexus/content/repositories/releases/</url>
+      <url>https://nexus-repo.digit.org/nexus/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
       <id>repo.egovernments.org</id>
