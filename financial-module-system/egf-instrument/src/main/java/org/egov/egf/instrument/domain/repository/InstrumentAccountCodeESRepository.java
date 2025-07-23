@@ -3,17 +3,22 @@ package org.egov.egf.instrument.domain.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.egov.common.domain.model.Pagination;
 import org.egov.common.persistence.repository.ESRepository;
 import org.egov.egf.instrument.domain.model.InstrumentAccountCode;
 import org.egov.egf.instrument.persistence.entity.InstrumentAccountCodeEntity;
 import org.egov.egf.instrument.web.contract.InstrumentAccountCodeSearchContract;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,25 +31,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class InstrumentAccountCodeESRepository extends ESRepository {
 
-    private TransportClient esClient;
+    private RestHighLevelClient restHighLevelClient;
     private ElasticSearchQueryFactory elasticSearchQueryFactory;
     public static final Logger logger = LoggerFactory.getLogger(InstrumentAccountCodeESRepository.class);
 
-    public InstrumentAccountCodeESRepository(TransportClient esClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
-        this.esClient = esClient;
+    public InstrumentAccountCodeESRepository(RestHighLevelClient restHighLevelClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
+        this.restHighLevelClient = restHighLevelClient;
         this.elasticSearchQueryFactory = elasticSearchQueryFactory;
     }
 
-    public Pagination<InstrumentAccountCode> search(InstrumentAccountCodeSearchContract instrumentAccountCodeSearchContract) {
-        final SearchRequestBuilder searchRequestBuilder = getSearchRequest(instrumentAccountCodeSearchContract);
-        final SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
+    public Pagination<InstrumentAccountCode> search(InstrumentAccountCodeSearchContract criteria) {
+        SearchRequest searchRequest = getSearchRequest(criteria);
+        SearchResponse searchResponse;
+
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("Elasticsearch search failed", e);
+        }
+
         return mapToInstrumentAccountCodeList(searchResponse);
     }
 
     @SuppressWarnings("deprecation")
     private Pagination<InstrumentAccountCode> mapToInstrumentAccountCodeList(SearchResponse searchResponse) {
         Pagination<InstrumentAccountCode> page = new Pagination<>();
-        if (searchResponse.getHits() == null || searchResponse.getHits().getTotalHits() == 0L)
+        if (searchResponse.getHits() == null || searchResponse.getHits().getHits().length == 0)
             return page;
         List<InstrumentAccountCode> instrumentAccountCodes = new ArrayList<InstrumentAccountCode>();
         InstrumentAccountCode instrumentAccountCode = null;
@@ -68,31 +80,40 @@ public class InstrumentAccountCodeESRepository extends ESRepository {
             instrumentAccountCodes.add(instrumentAccountCode);
         }
 
-        page.setTotalResults(Long.valueOf(searchResponse.getHits().getTotalHits()).intValue());
+        page.setTotalResults((int) Objects.requireNonNull(searchResponse.getHits().getTotalHits()).value);
         page.setPagedData(instrumentAccountCodes);
 
         return page;
     }
 
-    private SearchRequestBuilder getSearchRequest(InstrumentAccountCodeSearchContract criteria) {
-        List<String> orderByList = new ArrayList<>();
+    private SearchRequest getSearchRequest(InstrumentAccountCodeSearchContract criteria) {
+        List<SortBuilder<?>> sortBuilders = new ArrayList<>();
         if (criteria.getSortBy() != null && !criteria.getSortBy().isEmpty()) {
             validateSortByOrder(criteria.getSortBy());
             validateEntityFieldName(criteria.getSortBy(), InstrumentAccountCodeEntity.class);
-            orderByList = elasticSearchQueryFactory.prepareOrderBys(criteria.getSortBy());
+            List<String> orderByList = elasticSearchQueryFactory.prepareOrderBys(criteria.getSortBy());
+
+            for (String orderBy : orderByList) {
+                String[] parts = orderBy.split(" ");
+                SortOrder sortOrder = parts[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC;
+                sortBuilders.add(SortBuilders.fieldSort(parts[0]).order(sortOrder));
+            }
         }
 
         final BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchInstrumentAccountCode(criteria);
-        SearchRequestBuilder searchRequestBuilder = esClient
-                .prepareSearch(InstrumentAccountCode.class.getSimpleName().toLowerCase())
-                .setTypes(InstrumentAccountCode.class.getSimpleName().toLowerCase());
-        if (!orderByList.isEmpty())
-            for (String orderBy : orderByList)
-                searchRequestBuilder = searchRequestBuilder.addSort(orderBy.split(" ")[0],
-                        orderBy.split(" ")[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC);
 
-        searchRequestBuilder.setQuery(boolQueryBuilder);
-        return searchRequestBuilder;
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(boolQueryBuilder);
+
+        for (SortBuilder<?> sortBuilder : sortBuilders) {
+            sourceBuilder.sort(sortBuilder);
+        }
+
+        SearchRequest searchRequest = new SearchRequest(InstrumentAccountCode.class.getSimpleName().toLowerCase());
+        searchRequest.source(sourceBuilder);
+
+        return searchRequest;
     }
+
 
 }

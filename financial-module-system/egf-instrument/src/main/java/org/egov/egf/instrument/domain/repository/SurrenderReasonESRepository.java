@@ -3,17 +3,19 @@ package org.egov.egf.instrument.domain.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.egov.common.domain.model.Pagination;
 import org.egov.common.persistence.repository.ESRepository;
 import org.egov.egf.instrument.domain.model.SurrenderReason;
 import org.egov.egf.instrument.persistence.entity.SurrenderReasonEntity;
 import org.egov.egf.instrument.web.contract.SurrenderReasonSearchContract;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.*;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,25 +28,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class SurrenderReasonESRepository extends ESRepository {
 
-    private TransportClient esClient;
+    private RestHighLevelClient restHighLevelClient;
+
     private ElasticSearchQueryFactory elasticSearchQueryFactory;
     public static final Logger logger = LoggerFactory.getLogger(SurrenderReasonESRepository.class);
 
-    public SurrenderReasonESRepository(TransportClient esClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
-        this.esClient = esClient;
+    public SurrenderReasonESRepository(RestHighLevelClient restHighLevelClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
+        this.restHighLevelClient = restHighLevelClient;
         this.elasticSearchQueryFactory = elasticSearchQueryFactory;
     }
 
     public Pagination<SurrenderReason> search(SurrenderReasonSearchContract surrenderReasonSearchContract) {
-        final SearchRequestBuilder searchRequestBuilder = getSearchRequest(surrenderReasonSearchContract);
-        final SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        return mapToSurrenderReasonList(searchResponse);
+        try {
+            SearchRequest searchRequest = getSearchRequest(surrenderReasonSearchContract); // updated method
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            return mapToSurrenderReasonList(searchResponse);
+        } catch (IOException e) {
+            logger.error("Elasticsearch search failed: {}", e.getMessage(), e);
+            return new Pagination<>();
+        }
     }
+
 
     @SuppressWarnings("deprecation")
     private Pagination<SurrenderReason> mapToSurrenderReasonList(SearchResponse searchResponse) {
         Pagination<SurrenderReason> page = new Pagination<>();
-        if (searchResponse.getHits() == null || searchResponse.getHits().getTotalHits() == 0L)
+        if (searchResponse.getHits() == null || searchResponse.getHits().getHits().length == 0)
             return page;
         List<SurrenderReason> surrenderReasons = new ArrayList<SurrenderReason>();
         SurrenderReason surrenderReason = null;
@@ -68,13 +77,13 @@ public class SurrenderReasonESRepository extends ESRepository {
             surrenderReasons.add(surrenderReason);
         }
 
-        page.setTotalResults(Long.valueOf(searchResponse.getHits().getTotalHits()).intValue());
+        page.setTotalResults((int) Objects.requireNonNull(searchResponse.getHits().getTotalHits()).value);
         page.setPagedData(surrenderReasons);
 
         return page;
     }
 
-    private SearchRequestBuilder getSearchRequest(SurrenderReasonSearchContract criteria) {
+    private SearchRequest getSearchRequest(SurrenderReasonSearchContract criteria) {
         List<String> orderByList = new ArrayList<>();
         if (criteria.getSortBy() != null && !criteria.getSortBy().isEmpty()) {
             validateSortByOrder(criteria.getSortBy());
@@ -83,15 +92,22 @@ public class SurrenderReasonESRepository extends ESRepository {
         }
 
         final BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchSurrenderReason(criteria);
-        SearchRequestBuilder searchRequestBuilder = esClient.prepareSearch(SurrenderReason.class.getSimpleName().toLowerCase())
-                .setTypes(SurrenderReason.class.getSimpleName().toLowerCase());
-        if (!orderByList.isEmpty())
-            for (String orderBy : orderByList)
-                searchRequestBuilder = searchRequestBuilder.addSort(orderBy.split(" ")[0],
-                        orderBy.split(" ")[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC);
 
-        searchRequestBuilder.setQuery(boolQueryBuilder);
-        return searchRequestBuilder;
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(boolQueryBuilder);
+
+        if (!orderByList.isEmpty()) {
+            for (String orderBy : orderByList) {
+                String[] parts = orderBy.split(" ");
+                String field = parts[0];
+                SortOrder order = parts[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC;
+                sourceBuilder.sort(field, order);
+            }
+        }
+
+        SearchRequest searchRequest = new SearchRequest("surrenderreason"); // index name
+        searchRequest.source(sourceBuilder);
+        return searchRequest;
     }
 
 }

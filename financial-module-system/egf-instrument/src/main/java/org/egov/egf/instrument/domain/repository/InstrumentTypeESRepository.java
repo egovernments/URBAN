@@ -3,17 +3,23 @@ package org.egov.egf.instrument.domain.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.egov.common.domain.model.Pagination;
 import org.egov.common.persistence.repository.ESRepository;
 import org.egov.egf.instrument.domain.model.InstrumentType;
 import org.egov.egf.instrument.persistence.entity.InstrumentTypeEntity;
+import org.egov.egf.instrument.persistence.entity.SurrenderReasonEntity;
 import org.egov.egf.instrument.web.contract.InstrumentTypeSearchContract;
+import org.egov.egf.instrument.web.contract.SurrenderReasonSearchContract;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,25 +32,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class InstrumentTypeESRepository extends ESRepository {
 
-    private TransportClient esClient;
+    private RestHighLevelClient restHighLevelClient;
     private ElasticSearchQueryFactory elasticSearchQueryFactory;
     public static final Logger logger = LoggerFactory.getLogger(InstrumentTypeESRepository.class);
 
-    public InstrumentTypeESRepository(TransportClient esClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
-        this.esClient = esClient;
+    public InstrumentTypeESRepository(RestHighLevelClient restHighLevelClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
+        this.restHighLevelClient = restHighLevelClient;
         this.elasticSearchQueryFactory = elasticSearchQueryFactory;
     }
 
+
     public Pagination<InstrumentType> search(InstrumentTypeSearchContract instrumentTypeSearchContract) {
-        final SearchRequestBuilder searchRequestBuilder = getSearchRequest(instrumentTypeSearchContract);
-        final SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        return mapToInstrumentTypeList(searchResponse);
+        SearchRequest searchRequest = getSearchRequest(instrumentTypeSearchContract);
+        try {
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            return mapToInstrumentTypeList(searchResponse);
+        } catch (IOException e) {
+            logger.error("Error during Elasticsearch search", e);
+            return new Pagination<>();
+        }
     }
 
     @SuppressWarnings("deprecation")
     private Pagination<InstrumentType> mapToInstrumentTypeList(SearchResponse searchResponse) {
         Pagination<InstrumentType> page = new Pagination<>();
-        if (searchResponse.getHits() == null || searchResponse.getHits().getTotalHits() == 0L)
+        if (searchResponse.getHits() == null || searchResponse.getHits().getHits().length == 0)
             return page;
         List<InstrumentType> instrumentTypes = new ArrayList<InstrumentType>();
         InstrumentType instrumentType = null;
@@ -68,30 +80,37 @@ public class InstrumentTypeESRepository extends ESRepository {
             instrumentTypes.add(instrumentType);
         }
 
-        page.setTotalResults(Long.valueOf(searchResponse.getHits().getTotalHits()).intValue());
+        page.setTotalResults((int) Objects.requireNonNull(searchResponse.getHits().getTotalHits()).value);
         page.setPagedData(instrumentTypes);
 
         return page;
     }
 
-    private SearchRequestBuilder getSearchRequest(InstrumentTypeSearchContract criteria) {
+    private SearchRequest getSearchRequest(InstrumentTypeSearchContract criteria) {
         List<String> orderByList = new ArrayList<>();
         if (criteria.getSortBy() != null && !criteria.getSortBy().isEmpty()) {
             validateSortByOrder(criteria.getSortBy());
-            validateEntityFieldName(criteria.getSortBy(), InstrumentTypeEntity.class);
+            validateEntityFieldName(criteria.getSortBy(), SurrenderReasonEntity.class);
             orderByList = elasticSearchQueryFactory.prepareOrderBys(criteria.getSortBy());
         }
 
         final BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchInstrumentType(criteria);
-        SearchRequestBuilder searchRequestBuilder = esClient.prepareSearch(InstrumentType.class.getSimpleName().toLowerCase())
-                .setTypes(InstrumentType.class.getSimpleName().toLowerCase());
-        if (!orderByList.isEmpty())
-            for (String orderBy : orderByList)
-                searchRequestBuilder = searchRequestBuilder.addSort(orderBy.split(" ")[0],
-                        orderBy.split(" ")[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC);
 
-        searchRequestBuilder.setQuery(boolQueryBuilder);
-        return searchRequestBuilder;
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(boolQueryBuilder);
+
+        if (!orderByList.isEmpty()) {
+            for (String orderBy : orderByList) {
+                String[] parts = orderBy.split(" ");
+                String field = parts[0];
+                SortOrder order = parts[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC;
+                sourceBuilder.sort(field, order);
+            }
+        }
+
+        SearchRequest searchRequest = new SearchRequest("surrenderreason"); // index name
+        searchRequest.source(sourceBuilder);
+        return searchRequest;
     }
 
 }
