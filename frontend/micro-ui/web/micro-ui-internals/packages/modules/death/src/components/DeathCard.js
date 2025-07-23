@@ -4,15 +4,14 @@ import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 import { checkForEmployee } from "../utils";
 
 const DeathCard = () => {
-  const { t } = useTranslation();
 
-
-  const isCitizen = window.location.href.includes("/citizen/");
-
-  if (!isCitizen && !Digit.Utils.BnDAccess()) {
+  if (!Digit.Utils.BnDAccess()) {
     return null;
   }
-  
+
+  const { t } = useTranslation();
+  const isCitizen = window.location.href.includes("/citizen/");
+
 
   const employeeLinks = [
     {
@@ -25,6 +24,13 @@ const DeathCard = () => {
       link: `/${window.contextPath}/employee/death/death-common/getCertificate`,
       role: "BND_CEMP",
     },
+
+    {
+      label: t("ACCESSCONTROL_ROLES_ROLES_DASHBOARD_REPORT_VIEWER"), 
+      link: `/${window.contextPath}/employee/dss/dashboard/birth-death`,
+      role: "DEATH_REPORT_VIEWER",
+    },
+
   ];
 
   const filteredEmployeeLinks = employeeLinks.filter(
@@ -46,7 +52,6 @@ const DeathCard = () => {
   const propsForModuleCard = {
     moduleName: isCitizen ? t("ACTION_TEST_DEATH_CERTIFICATE") : t("ACTION_TEST_DEATH_NEW_REGISTRATION"),
     kpis: [],
-
     links: isCitizen ? citizenLinks : filteredEmployeeLinks,
   };
 
