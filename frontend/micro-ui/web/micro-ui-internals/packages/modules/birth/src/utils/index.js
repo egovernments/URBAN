@@ -37,6 +37,15 @@ const setupLibraries = (Library, service, method) => {
   window.Digit[Library][service] = method;
 };
 
+export const checkForEmployee = (role) => {
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const userInfo = Digit.UserService.getUser();
+  const rolearray = userInfo?.info?.roles.filter((item) => {
+    if (item.code == role && item.tenantId === tenantId) return true;
+  });
+  return rolearray?.length;
+};
+
 /* To Overide any existing config/middlewares  we need to use similar method */
 export const updateCustomConfigs = () => {
   // console.log(UICustomizations, "UICustomizations");

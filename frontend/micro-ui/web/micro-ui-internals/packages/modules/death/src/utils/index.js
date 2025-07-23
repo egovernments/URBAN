@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { CustomisedHooks } from "../hooks";
-import  {UICustomizations}  from "../configs/UICustomizations";
-
-
+import { UICustomizations } from "../configs/UICustomizations";
 
 export const overrideHooks = () => {
   Object.keys(CustomisedHooks).map((ele) => {
@@ -25,6 +23,14 @@ export const overrideHooks = () => {
     }
   });
 };
+export const checkForEmployee = (role) => {
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const userInfo = Digit.UserService.getUser();
+  const rolearray = userInfo?.info?.roles.filter((item) => {
+    if (item.code == role && item.tenantId === tenantId) return true;
+  });
+  return rolearray?.length;
+};
 const setupHooks = (HookName, HookFunction, method, isHook = true) => {
   window.Digit = window.Digit || {};
   window.Digit[isHook ? "Hooks" : "Utils"] = window.Digit[isHook ? "Hooks" : "Utils"] || {};
@@ -40,9 +46,9 @@ const setupLibraries = (Library, service, method) => {
 };
 
 /* To Overide any existing config/middlewares  we need to use similar method */
- export const updateCustomConfigs = () => {
-   setupLibraries("Customizations", "commonUiConfig", { ...window?.Digit?.Customizations?.commonUiConfig,...UICustomizations });
-   // setupLibraries("Utils", "parsingUtils", { ...window?.Digit?.Utils?.parsingUtils, ...parsingUtils });
- };
+export const updateCustomConfigs = () => {
+  setupLibraries("Customizations", "commonUiConfig", { ...window?.Digit?.Customizations?.commonUiConfig, ...UICustomizations });
+  // setupLibraries("Utils", "parsingUtils", { ...window?.Digit?.Utils?.parsingUtils, ...parsingUtils });
+};
 
 export default {};

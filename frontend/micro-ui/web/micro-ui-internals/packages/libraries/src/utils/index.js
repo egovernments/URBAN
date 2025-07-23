@@ -178,15 +178,25 @@ const FirenocAccess = () => {
   return Firenoc_ACCESS?.length > 0;
 };
 
+// --- AFTER (The Solution) ---
 const BnDAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
 
-  const NOC_ROLES = [
-    "BND_CEMP"
-  ]
+  // This list now includes all the roles you provided.
+  const BND_ROLES = [
+    "BND_CEMP",
+    "DEATH_APPLICATION_CREATOR",
+    "DEATH_APPLICATION_EDITOR",
+    "DEATH_APPLICATION_VIEWER",
+    "BIRTH_REPORT_VIEWER",
+    "BIRTH_APPLICATION_EDITOR",
+    "BIRTH_APPLICATION_VIEWER",
+    "DEATH_REPORT_VIEWER",
+    "BIRTH_APPLICATION_CREATOR"
+  ];
 
-  const BND_ACCESS = userRoles?.filter((role) => NOC_ROLES?.includes(role));
+  const BND_ACCESS = userRoles?.filter((role) => BND_ROLES?.includes(role));
 
   return BND_ACCESS?.length > 0;
 };
