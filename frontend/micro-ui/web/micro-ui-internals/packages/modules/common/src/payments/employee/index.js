@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-// import { useTranslation } from "react-i18next";
+import React, { useState } from "react";
+
 import { useRouteMatch, Switch, Route, Link } from "react-router-dom";
 import { CollectPayment } from "./payment-collect";
 import { SuccessfulPayment, FailedPayment } from "./response";

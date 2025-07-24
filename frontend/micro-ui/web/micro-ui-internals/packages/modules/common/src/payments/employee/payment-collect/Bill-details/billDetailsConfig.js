@@ -228,4 +228,65 @@ export const BillDetailsKeyNoteConfig = () => ({
       },
     ],
   },
+  DEATH_CERT: {
+    heading: "COMMON_PAY_SCREEN_HEADER",
+    details: [
+      {
+        // You will need to add this translation key to your localization files
+        // This assumes the consumerCode is the application number for the death certificate
+        keyValue: "BND_APPLICATION_NO",
+        keyPath: ["consumerCode"],
+        fallback: "",
+      },
+      {
+        keyValue: "CS_BILL_NO",
+        keyPath: ["billNumber"],
+        fallback: "N/A",
+      },
+      {
+        keyValue: "CS_BILL_DUEDATE",
+        keyPath: [
+          "billDetails",
+          (d) => {
+            // Access the expiryDate from the first item in the billDetails array
+            const { expiryDate } = d[0] || {};
+            if (expiryDate) {
+              return new Date(expiryDate).toLocaleDateString();
+            } else return "N/A";
+          },
+        ],
+        fallback: "N/A",
+      },
+    ],
+  },
+  BIRTH_CERT: {
+    heading: "COMMON_PAY_SCREEN_HEADER",
+    details: [
+      {
+        
+        keyValue: "BND_APPLICATION_NO",
+        keyPath: ["consumerCode"],
+        fallback: "",
+      },
+      {
+        keyValue: "CS_BILL_NO",
+        keyPath: ["billNumber"],
+        fallback: "N/A",
+      },
+      {
+        keyValue: "CS_BILL_DUEDATE",
+        keyPath: [
+          "billDetails",
+          (d) => {
+            // Access the expiryDate from the first item in the billDetails array
+            const { expiryDate } = d[0] || {};
+            if (expiryDate) {
+              return new Date(expiryDate).toLocaleDateString();
+            } else return "N/A";
+          },
+        ],
+        fallback: "N/A",
+      },
+    ],
+  },
 });

@@ -179,7 +179,7 @@ import useServiceTypeFromApplicationType from "./obps/useServiceTypeFromApplicat
 import useBusinessServiceBasedOnServiceType from "./obps/useBusinessServiceBasedOnServiceType";
 import useBusinessServiceData from "./obps/useBusinessServiceData";
 import useBPATaxDocuments from "./obps/useBPATaxDocuments";
-
+import useCustomAPIHookV2 from "./useCustomAPIHookV2";
 import useEventInbox from "./events/useEventInbox";
 import useEventDetails from "./events/useEventDetails";
 import { useEngagementMDMS } from "./engagement/useMdms";
@@ -251,6 +251,10 @@ import useWSConfigMDMS from "./ws/useWSConfigMDMS";
 import useFeedBackSearch from "./useFeedBackSearch";
 import useBPAInboxV1 from "./obps/useBPAInboxV1";
 
+import useCustomAPIMutationHook from "./useCustomAPIMutationHook";
+import useWorkflowDetailsV2 from "./useWorkflowDetailsV2";
+import useUpdateCustom from "./useUpdateCustom";
+
 const pgr = {
   useComplaintDetails,
   useComplaintsList,
@@ -268,6 +272,8 @@ const pgr = {
   useComplaintStatusCount,
   useTradeLicenseBillingslab,
   useMDMS: usePGRMDMS,
+  useWorkflowDetailsV2,
+  useUpdateCustom,
 };
 
 const fsm = {
@@ -529,6 +535,8 @@ const Hooks = {
   useCancelBill,
   useTenantsBills,
   usePrivacyContext,
+  useCustomAPIMutationHook,
+  useRouteSubscription,
   pgr,
   fsm,
   pt,
@@ -545,6 +553,7 @@ const Hooks = {
   ws,
   useCustomMDMS,
   useCustomAPIHook,
+  useCustomAPIHookV2,
   reports,
   useGetHowItWorksJSON,
   useGetFAQsJSON,
@@ -555,6 +564,7 @@ const Hooks = {
   useBulkPdfDetails,
   useBillAmendmentInbox,
   useAudit,
+  useWorkflowDetailsV2
 };
 
 export default Hooks;

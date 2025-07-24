@@ -1,42 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { EmployeeModuleCard, PropertyHouse } from "@egovernments/digit-ui-react-components";
-import { CaseIcon } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+import { checkForEmployee } from "../utils";
 
 const DeathCard = () => {
 
-   if (!Digit.Utils.BnDAccess()) return null;
+  if (!Digit.Utils.BnDAccess()) {
+    return null;
+  }
 
   const { t } = useTranslation();
+  const isCitizen = window.location.href.includes("/citizen/");
 
-  window.localStorage.setItem("Employee.locale", "en_IN");
-  window.localStorage.setItem("locale", "en_IN");
-  window.localStorage.setItem("Employee.tenant-id", Digit.ULBService.getCurrentTenantId());
-  window.localStorage.setItem("tenant-id",Digit.ULBService.getCurrentTenantId());
 
-  const links = [
+  const employeeLinks = [
     {
-      label: t("DEATH_REGISTRATION"),
-      link: `https://unified-demo.digit.org/employee/death-employee/newRegistration`,
-      hyperlink: true
-
+      label: t("ACTION_TEST_NEW_REGISTRATION"),
+      link: `/${window.contextPath}/employee/death/death-common/create-death`,
+      role: "DEATH_APPLICATION_CREATOR",
     },
     {
-      label: t("SEARCH_DEATH_CERTIFICATE"),
-      link: `https://unified-demo.digit.org/employee/death-common/getCertificate`,
-      hyperlink: true
+      label: t("ACTION_TEST_DEATH_SEARCH_CERTIFICATE"),
+      link: `/${window.contextPath}/employee/death/death-common/getCertificate`,
+      role: "BND_CEMP",
+    },
 
+    {
+      label: t("ACCESSCONTROL_ROLES_ROLES_DASHBOARD_REPORT_VIEWER"), 
+      link: `/${window.contextPath}/employee/dss/dashboard/birth-death`,
+      role: "DEATH_REPORT_VIEWER",
+    },
+
+  ];
+
+  const filteredEmployeeLinks = employeeLinks.filter(
+    (link) => (link.role ? checkForEmployee(link.role) : true)
+  );
+
+
+  const citizenLinks = [
+    {
+      label: t("BND_DEATH_APPLY_CERT"),
+      link: `/${window.contextPath}/citizen/death/death-common/getCertificate`,
+    },
+    {
+      label: t("BND_MY_REQUESTS"),
+      link: `/${window.contextPath}/citizen/death/death-citizen/myApplications`,
     },
   ];
 
   const propsForModuleCard = {
-    Icon:<CaseIcon/>, 
-    moduleName: t("COMMON_DEATH"),
-    links: links,
-    kpis: [
-    ],
-}
+    moduleName: isCitizen ? t("ACTION_TEST_DEATH_CERTIFICATE") : t("ACTION_TEST_DEATH_NEW_REGISTRATION"),
+    kpis: [],
+    links: isCitizen ? citizenLinks : filteredEmployeeLinks,
+  };
 
   return <EmployeeModuleCard {...propsForModuleCard} />;
 };

@@ -1,6 +1,5 @@
 import React from "react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
-import { PrivateRoute } from "@egovernments/digit-ui-react-components";
 import PayersDetails from "./payers-details";
 
 import { MyBills } from "./bills";
@@ -18,13 +17,13 @@ const CitizenPayment = ({ stateCode, cityCode, moduleCode }) => {
           <Route path={`${currentPath}/my-bills/:businessService`}>
             <MyBills stateCode={stateCode} />
           </Route>
-          <Route path={`${currentPath}/billDetails/:businessService/:consumerCode/:paymentAmt`}>
+          <Route path={`${currentPath}/billDetails/:businessService/:consumerCode(.*)/:paymentAmt`}>
             <PayersDetails {...commonProps} stateCode={stateCode} basePath={currentPath} />
           </Route>
-          <Route path={`${currentPath}/collect/:businessService/:consumerCode`}>
+          <Route path={`${currentPath}/collect/:businessService/:consumerCode(.*)`}>
             <SelectPaymentType {...commonProps} stateCode={stateCode} basePath={currentPath} />
           </Route>
-          <Route path={`${currentPath}/success/:businessService/:consumerCode/:tenantId`}>
+          <Route path={`${currentPath}/success/:businessService/:consumerCode(.*)/:tenantId`}>
             <SuccessPayment {...commonProps} />
           </Route>
           <Route path={`${currentPath}/failure`}>

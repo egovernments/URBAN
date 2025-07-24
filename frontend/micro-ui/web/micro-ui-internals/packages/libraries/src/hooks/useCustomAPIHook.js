@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from "react-query";
 import { CustomService } from "../services/elements/CustomService";
+import { useMemo } from "react";
 
 /**
  * Custom hook which can gives the privacy functions to access
@@ -12,8 +13,9 @@ import { CustomService } from "../services/elements/CustomService";
  *         const { privacy , updatePrivacy } = Digit.Hooks.usePrivacyContext()
  *
  * @returns {Object} Returns the object which contains privacy value and updatePrivacy method
- */
+//  */
 const useCustomAPIHook = (url, params, body, plainAccessRequest, options = {}) => {
+
   const client = useQueryClient();
   //api name, querystr, reqbody
   const { isLoading, data } = useQuery(
@@ -31,3 +33,4 @@ const useCustomAPIHook = (url, params, body, plainAccessRequest, options = {}) =
 };
 
 export default useCustomAPIHook;
+

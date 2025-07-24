@@ -63,6 +63,11 @@ const refObj = (tenantId, filters) => {
       key: "consumerCode",
       label: "REFERENCE_NO",
     },
+    "death_cert": { 
+      searchFn: () => advtApplications(tenantId, filters), // Assuming death cert fees are like mcollect challans
+      key: "consumerCode",
+      label: "PAYMENT_BND_CONSUMER_CODE", // BND: Birth and Death
+    },
   };
 };
 

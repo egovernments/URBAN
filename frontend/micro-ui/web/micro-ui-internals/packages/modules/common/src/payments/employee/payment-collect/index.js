@@ -23,7 +23,9 @@ export const CollectPayment = (props) => {
   if (window.location.href.includes("ISWSAPP")) consumerCode = new URLSearchParams(search).get("applicationNumber");
   if (window.location.href.includes("ISWSCON") || ModuleWorkflow === "WS") consumerCode = decodeURIComponent(consumerCode);
 
-  const { data: paymentdetails, isLoading } = Digit.Hooks.useFetchPayment({ tenantId: tenantId, consumerCode, businessService });
+  const decodedConsumerCode = decodeURIComponent(consumerCode);
+
+  const { data: paymentdetails, isLoading } = Digit.Hooks.useFetchPayment({ tenantId: tenantId, consumerCode: decodedConsumerCode, businessService });
   const bill = paymentdetails?.Bill ? paymentdetails?.Bill[0] : {};
   const { data: applicationData } = Digit.Hooks.fsm.useSearch(
     tenantId,
@@ -184,12 +186,13 @@ export const CollectPayment = (props) => {
       const resposne = await Digit.PaymentService.createReciept(tenantId, recieptRequest);
       queryClient.invalidateQueries();
       history.push(
-        IsDisconnectionFlow ? `${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${
-          resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode
-        }?IsDisconnectionFlow=${IsDisconnectionFlow}` : 
-        `${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${
-          resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode
-        }?IsDisconnectionFlow=${IsDisconnectionFlow}`
+        IsDisconnectionFlow
+          ? `${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${
+              resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode
+            }?IsDisconnectionFlow=${IsDisconnectionFlow}`
+          : `${props.basePath}/success/${businessService}/${resposne?.Payments[0]?.paymentDetails[0]?.receiptNumber.replace(/\//g, "%2F")}/${
+              resposne?.Payments[0]?.paymentDetails[0]?.bill?.consumerCode
+            }?IsDisconnectionFlow=${IsDisconnectionFlow}`
       );
     } catch (error) {
       setToast({ key: "error", action: error?.response?.data?.Errors?.map((e) => t(e.code)) })?.join(" , ");
@@ -307,7 +310,7 @@ export const CollectPayment = (props) => {
   ];
 
   const getDefaultValues = () => ({
-    payerName: ((bill?.payerName || formState?.payerName || "")?.trim()) || "",
+    payerName: (bill?.payerName || formState?.payerName || "")?.trim() || "",
   });
 
   const getFormConfig = () => {

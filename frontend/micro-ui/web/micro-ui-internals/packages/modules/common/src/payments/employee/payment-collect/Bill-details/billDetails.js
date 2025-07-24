@@ -147,6 +147,38 @@ export const BillDetailsFormConfig = (props, t) => ({
       ],
     },
   ],
+  DEATH_CERT: [
+    {
+      head: t("COMMON_PAY_SCREEN_HEADER"),
+      body: [
+        {
+          withoutLabel: true,
+          type: "custom",
+          populators: {
+            name: "amount",
+            customProps: { businessService: "death", consumerCode: props.consumerCode },
+            component: (props, customProps) => <BillDetails onChange={props.onChange} amount={props.value} {...customProps} />,
+          },
+        },
+      ],
+    },
+  ],
+   BIRTH_CERT: [
+    {
+      head: t("COMMON_PAY_SCREEN_HEADER"),
+      body: [
+        {
+          withoutLabel: true,
+          type: "custom",
+          populators: {
+            name: "amount",
+            customProps: { businessService: "birth", consumerCode: props.consumerCode },
+            component: (props, customProps) => <BillDetails onChange={props.onChange} amount={props.value} {...customProps} />,
+          },
+        },
+      ],
+    },
+  ],
 });
 
 const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {

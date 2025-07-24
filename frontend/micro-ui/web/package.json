@@ -75,7 +75,7 @@
   "resolutions": {
     "**/@babel/traverse": "7.25.9",
     "**/styled-components": "5.0.0",
-    "minimatch": "^3.0.4",
+    "**/minimatch": "^3.0.4",
     "glob": "^7.1.2"
   },
   "scripts": {

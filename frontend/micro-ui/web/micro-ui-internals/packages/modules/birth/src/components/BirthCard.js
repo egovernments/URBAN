@@ -1,41 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { EmployeeModuleCard, PropertyHouse } from "@egovernments/digit-ui-react-components";
-import { CaseIcon } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+import { checkForEmployee } from "../utils"; // Import the utility function
 
 const BirthCard = () => {
-  if (!Digit.Utils.BnDAccess()) return null;
+
+  if (!Digit.Utils.BnDAccess()) {
+    return null;
+  }
 
   const { t } = useTranslation();
-  window.localStorage.setItem("Employee.locale", "en_IN");
-  window.localStorage.setItem("locale", "en_IN");
-  window.localStorage.setItem("Employee.tenant-id", Digit.ULBService.getCurrentTenantId());
-  window.localStorage.setItem("tenant-id",Digit.ULBService.getCurrentTenantId());
+  const isCitizen = window.location.href.includes("/citizen/");
 
-  const links = [
+
+  const employeeLinks = [
     {
-      label: t("BIRTH_REGISTRATION"),
-      link: `https://unified-demo.digit.org/employee/birth-employee/newRegistration`,
-      hyperlink: true
+      label: t("ACTION_TEST_NEW_REGISTRATION"),
+      link: `/${window.contextPath}/employee/birth/birth-common/create-birth`,
+      role: "BIRTH_APPLICATION_CREATOR", // Role for creating
     },
     {
-      label: t("SEARCH_BIRTH_CERTIFICATE"),
-      link: `https://unified-demo.digit.org/employee/birth-common/getCertificate`,
-      hyperlink: true
+      label: t("ACTION_TEST_BIRTH_SEARCH_CERTIFICATE"),
+      link: `/${window.contextPath}/employee/birth/birth-common/getCertificate`,
+      role: "BND_CEMP", 
+    },
 
-    }
+    {
+      label: t("ACCESSCONTROL_ROLES_ROLES_DASHBOARD_REPORT_VIEWER"), 
+      link: `/${window.contextPath}/employee/dss/dashboard/birth-death`,
+      role: "BIRTH_REPORT_VIEWER",
+    },
+
+  ];
+
+
+  const filteredEmployeeLinks = employeeLinks.filter(
+    (link) => (link.role ? checkForEmployee(link.role) : true)
+  );
+
+
+  const citizenLinks = [
+    {
+      label: t("BND_BIRTH_APPLY_CERT"),
+      link: `/${window.contextPath}/citizen/birth/birth-citizen/myApplications`,
+    },
+    {
+      label: t("BND_MY_REQUESTS"),
+      link: `/${window.contextPath}/citizen/birth/birth-common/getCertificate`,
+    },
   ];
 
   const propsForModuleCard = {
-    Icon:<CaseIcon/>, 
-    moduleName: t("COMMON_BIRTH"),
-    links: links,
-    kpis: [
-    ],
-}
+    moduleName: isCitizen ? t("ACTION_TEST_BIRTH_CERTIFICATE") : t("ACTION_TEST_BIRTH_NEW_REGISTRATION"),
+    kpis: [],
+    links: isCitizen ? citizenLinks : filteredEmployeeLinks,
+  };
 
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return (
+    <div className="birth-card-module" style={{
+      marginLeft: isCitizen ? "30px" : "0px",
+      marginTop: isCitizen ? "30px" : "0px"
+    }}>
+      <EmployeeModuleCard {...propsForModuleCard} />
+    </div>
+  );
 };
 
 export default BirthCard;
