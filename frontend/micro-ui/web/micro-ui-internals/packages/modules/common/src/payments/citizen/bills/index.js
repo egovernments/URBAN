@@ -18,9 +18,10 @@ export const MyBills = ({ stateCode }) => {
   const { url } = useRouteMatch();
   const location = useLocation();
 
-  const { tenantId } = Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
+  const userInfo = Digit.UserService.getUser();
+  const { tenantId, uuid } = userInfo?.info || location?.state || { tenantId: _tenantId } || {};
 
-  if (!tenantId && !location?.state?.fromSearchResults) {
+  if ((!tenantId || !uuid) && !location?.state?.fromSearchResults) {
     history.replace(`/digit-ui/citizen/login`, { from: url });
   }
 

@@ -23,6 +23,11 @@ export const SelectPaymentType = (props) => {
   const userInfo = Digit.UserService.getUser();
   const [showToast, setShowToast] = useState(null);
   const { tenantId: __tenantId, authorization, workflow: wrkflow , consumerCode : connectionNo } = Digit.Hooks.useQueryParams();
+  
+  // Ensure user info and tenant are complete before proceeding
+  if ((!userInfo?.info?.uuid && !authorization) || !userInfo?.info?.tenantId) {
+    return <Redirect to={`/digit-ui/citizen/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`} />;
+  }
   const paymentAmount = state?.paymentAmount;
   const { t } = useTranslation();
   const history = useHistory();
@@ -53,9 +58,15 @@ export const SelectPaymentType = (props) => {
   const billDetails = paymentdetails?.Bill ? paymentdetails?.Bill[0] : {};
 
   const onSubmit = async (d) => {
+    const effectiveTenantId = billDetails?.tenantId || tenantId || userInfo?.info?.tenantId;
+    if (!effectiveTenantId) {
+      setShowToast({ key: true, label: "CS_ERROR_INVALID_TENANT" });
+      return;
+    }
+
     const filterData = {
       Transaction: {
-        tenantId: billDetails?.tenantId,
+        tenantId: effectiveTenantId,
         txnAmount: paymentAmount || billDetails.totalAmount,
         module: businessService,
         billId: billDetails.id,
@@ -71,7 +82,8 @@ export const SelectPaymentType = (props) => {
         user: {
           name: name || userInfo?.info?.name || billDetails?.payerName,
           mobileNumber: mobileNumber || userInfo?.info?.mobileNumber || billDetails?.mobileNumber,
-          tenantId: billDetails?.tenantId,
+          tenantId: effectiveTenantId,
+          uuid: userInfo?.info?.uuid
         },
         // success
         callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
