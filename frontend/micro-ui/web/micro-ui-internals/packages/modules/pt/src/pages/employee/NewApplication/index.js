@@ -542,11 +542,11 @@ const NewApplication = () => {
               fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
               documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
             },
-            {
-              documentType: "Last Tax Paid Receipt By Seller",
-              fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
-              documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
-            },
+            // {
+            //   documentType: "Last Tax Paid Receipt By Seller",
+            //   fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
+            //   documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
+            // },
           ],
         })),
 
@@ -568,11 +568,11 @@ const NewApplication = () => {
             fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
             documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
           },
-          {
-            documentType: "Last Tax Paid Receipt By Seller",
-            fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
-            documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
-          },
+          // {
+          //   documentType: "Last Tax Paid Receipt By Seller",
+          //   fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
+          //   documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
+          // },
         ],
 
         units: unit.map(unit => (

@@ -236,12 +236,14 @@ const TopBar = ({
 
   return (
     <div style={{
-      // background: "#F7F7FE",
-      padding: "10px 20px",
+      backgroundColor: "#801d46",
+      color: "white",
+      borderBottomLeftRadius: "25px",
+      borderBottomRightRadius: "25px",
+      padding: "0px 20px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      borderBottom: "3px solid #6b133f",
       width: "100%",
       position: "absolute",
       right: "0",
@@ -249,7 +251,7 @@ const TopBar = ({
     }}>
       {/* Left Side */}
 
-      <div> <img
+      {/* <div> <img
         src="https://tse4.mm.bing.net/th/id/OIP.LcAu4hLmyz-LQqUVPtVC9AHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
         alt="Logo"
         style={{
@@ -257,8 +259,17 @@ const TopBar = ({
           height: "51px",
           marginRight: "16px",
           borderRadius: "50%",
-        }} /></div>
+        }} /></div> */}
       {/* Right Side */}
+      <div style={styles.logoContainer}>
+        <div style={styles.logo}>
+          <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/MP%20Emblem%201%201.svg" alt="MP Government Logo" style={{ width: "100%", height: "100%" }} />
+        </div>
+        <div style={styles.logoText}>
+          <h3 style={styles.logoTextHeading}>मध्य प्रदेश सरकार</h3>
+          <p style={styles.logoTextSub}>Government of Madhya Pradesh</p>
+        </div>
+      </div>
       <div style={{ display: "flex", alignItems: "center", gap: "20px", marginLeft: "auto" }}>
         <button onClick={() => document.documentElement.style.fontSize = "smaller"} style={{ background: "none", border: "none" }}>A-</button>
         <button onClick={() => document.documentElement.style.fontSize = "larger"} style={{ background: "none", border: "none" }}>A+</button>
@@ -285,26 +296,60 @@ const TopBar = ({
           )}
         </div>
         {loggedIn && (
-            <div style={{height:"40px"}}>
-          <Dropdown
-            option={userOptions}
-            optionKey={"name"}
-            select={handleUserDropdownSelection}
-            showArrow={true}
-            freeze={true}
-            customSelector={
-              profilePic ? (
-                <img src={profilePic} alt="user" style={{ width: 40, height: 40, borderRadius: "50%" }} />
-              ) : (
-                <TextToImg name={userDetails?.info?.name || "E"} />
-              )
-            }
-          />
+          <div style={{ height: "40px" }}>
+            <Dropdown
+              option={userOptions}
+              optionKey={"name"}
+              select={handleUserDropdownSelection}
+              showArrow={true}
+              freeze={true}
+              customSelector={
+                profilePic ? (
+                  <img src={profilePic} alt="user" style={{ width: 40, height: 40, borderRadius: "50%" }} />
+                ) : (
+                  <TextToImg name={userDetails?.info?.name || "E"} />
+                )
+              }
+            />
           </div>
         )}
       </div>
     </div>
   );
 };
-
+const styles = {
+  sidebar: {
+    width: "240px",
+    background: "white",
+    height: "100vh",
+    padding: "16px",
+    boxSizing: "border-box",
+  },
+  logoContainer: {
+    display: "flex",
+    alignItems: "center",
+    // marginBottom: "24px",
+  },
+  logo: {
+    // width: "40px",
+    // height: "40px",
+    marginRight: "12px",
+  },
+  logoText: {
+    fontFamily: "Barlow",
+    color: "white",
+  },
+  logoTextHeading: {
+    fontWeight: 600,
+    fontSize: "18px",
+    margin: 0,
+    lineHeight: "24px",
+  },
+  logoTextSub: {
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "18px",
+    margin: 0,
+  }
+}
 export default TopBar;

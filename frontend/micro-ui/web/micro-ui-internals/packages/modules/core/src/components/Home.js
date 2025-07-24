@@ -16,6 +16,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+
 export const processLinkData = (newData, code, t) => {
   const obj = newData?.[`${code}`];
   if (obj) {
@@ -129,409 +130,260 @@ const CitizenHome = ({ modules, getCitizenMenu, fetchedCitizen, isLoading }) => 
 const EmployeeHome = ({ modules }) => {
 
 
-  const styles = {
-    main: {
-      marginLeft: "auto",
-      background: "#f3f2f7",
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
+  const applicationData = [
+    {
+      name: "Last 7 days",
+      Approved: 20000,
+      Pending: 15000,
+      Rejected: 18000,
+    },
+    {
+      name: "Last 15 days",
+      Approved: 21000,
+      Pending: 15000,
+      Rejected: 18500,
+    },
+    {
+      name: "1 Month",
+      Approved: 22000,
+      Pending: 15500,
+      Rejected: 19000,
+    },
+  ];
 
-      // width: "80%"
-    },
-    wrapper: {
-      padding: "20px 30px",
-      flex: 1,
-    },
-    header: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      background: "#fff",
-      padding: "15px 20px",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-      borderRadius: "10px",
-      marginBottom: "20px",
-    },
-    toggleBtn: {
-      fontSize: "20px",
-      cursor: "pointer",
-    },
-    headerRight: {
-      display: "flex",
-      alignItems: "center",
-      gap: "20px",
-    },
-    userProfile: {
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-    },
-    avatar: {
-      width: "35px",
-      height: "35px",
-      borderRadius: "50%",
-      overflow: "hidden",
-    },
-    avatarImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-    },
-    contentHeader: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: "20px",
-    },
-    filter: {
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-      background: "#fff",
-      padding: "10px",
-      borderRadius: "8px",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    },
-    statusCards: {
-      display: "flex",
-      gap: "20px",
-      marginBottom: "30px",
-    },
-    statusCard: {
-      background: "#fff",
-      borderRadius: "10px",
-      padding: "15px",
-      flex: 1,
-      display: "flex",
-      alignItems: "center",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    },
-    cardIcon: {
-      width: "50px",
-      height: "50px",
-      marginRight: "15px",
-      display: "flex",
-    },
-    cardContent: {
-      flex: 1,
-    },
-    graphArea: {
-      display: "flex",
-      gap: "20px",
-      marginBottom: "30px",
-    },
-    chartContainer: {
-      flex: 1,
-      background: "#fff",
-      borderRadius: "10px",
-      padding: "20px",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    },
-    bar: {
-      height: "16px",
-      background: "#6B133F",
-      margin: "10px 0",
-      borderRadius: "6px",
-    },
-    infoContainer: {
-      margin: "10px 0",
-    },
-    infoPill: {
-      display: "flex",
-      justifyContent: "space-between",
-      padding: "8px 12px",
-      background: "#f1f1f1",
-      borderRadius: "6px",
-      marginBottom: "8px",
-      fontSize: "14px",
-    },
-    favoriteCard: {
-      // background: "#fff",
-      // padding: "20px",
-      borderRadius: "10px",
-      // boxShadow: "0 0 6px rgba(0,0,0,0.1)",
-      marginBottom: "30px",
-      marginTop: "20px",
-    },
-    actionCards: {
-      display: "grid",
-      gridTemplateColumns: "repeat(4, 1fr)",
-      gap: "20px",
-      marginTop: "15px",
-    },
-    actionCard: {
-      textAlign: "center",
-      padding: "15px",
-      borderRadius: "10px",
-      background: "white",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-
-      fontFamily: "Barlow",
-      fontWeight: 600,
-      fontSize: "16px",
-      fontStyle: "normal", // 'SemiBold' is not valid for fontStyle
-      lineHeight: "23px",
-      letterSpacing: "0px",
-      color: "#000000"
-
-    },
-    footer: {
-      textAlign: "center",
-      padding: "15px",
-      background: "#6B133F",
-      color: "#fff",
-      fontSize: "14px",
-    },
-    styleHtwo: {
-      fontFamily: "Poppins",
-      fontWeight: 800, // React expects numeric value for weight
-      fontStyle: "normal", // 'ExtraBold' is not a valid value; use fontWeight for boldness
-      fontSize: "35px",
-      lineHeight: "100%",
-      letterSpacing: "0px",
-      color: "#000000",
-      textAlign: "center",
-    },
-    styletitle: {
-      fontFamily: "Barlow",
-      fontWeight: 600, // 'SemiBold' should be set using numeric weight
-      fontStyle: "normal", // 'SemiBold' is not valid for fontStyle
-      fontSize: "22px",
-      lineHeight: "100%",
-      letterSpacing: "0px",
-      color: "#6B133F",
-      textAlign: "center",
-    }
-  };
+  const collectionData = [
+    { name: "Cheque", amount: 15000 },
+    { name: "PoS", amount: 20000 },
+    { name: "Cash", amount: 25000 },
+    { name: "UPI", amount: 30000 },
+    { name: "Online (Web/Mobile)", amount: 36000 },
+  ];
   console.log("module", modules)
   if (window.Digit.SessionStorage.get("PT_CREATE_EMP_TRADE_NEW_FORM")) window.Digit.SessionStorage.set("PT_CREATE_EMP_TRADE_NEW_FORM", {});
-  const barStyle = (height, color) => ({
-    height: `${height}px`,
-    width: "30px",
-    backgroundColor: color,
-    borderRadius: "6px",
-    margin: "0 4px",
-  });
-
-  const sectionTitleStyle = {
-    color: "#464255",
-    fontFamily: "Barlow",
-    fontWeight: 600,
-    fontSize: "32px",
-    lineHeight: "100%",
-    letterSpacing: "0px"
-  };
-
-  const labelStyle = {
-    fontSize: "12px",
-    fontFamily: "Barlow",
-    color: "#3E4954",
-    textAlign: "center",
-    marginTop: "8px",
-  };
-
-  const boxStyle = {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "12px",
-    padding: "16px",
-    width: "48%",
-    // boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",  
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)"
-
-  };
-
-  const containerStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: "2%",
-    fontFamily: "Barlow",
-  };
-
-  const barGroupStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    flex: 1,
-  };
-
-  const barStack = {
-    display: "flex",
-    justifyContent: "space-around",
-    alignItems: "flex-end",
-    height: "180px",
-    marginTop: "16px",
-  };
+ 
   return (
-    <div className="employee-app-container">
-      {/* <div className="ground-container moduleCardWrapper gridModuleWrapper" style={{ padding: "0px", margin: "0px",justifyContent:"space-between" }}>
-        {modules?.map(({ code }, index) => {
-          const Card = Digit.ComponentRegistryService.getComponent(`${code}Card`) || (() => <React.Fragment />);
-          return <Card key={index} />;
-        })}
-     
+    <div
+      className="main-content"
+      style={{ display: "flex", flexDirection: "column", transition: "margin-left 0.3s" }}
+    >
+      <div className="main-content-wrapper" style={{ flex: 1 }}>
+        {/* <div
+          className="header"
+          style={{
+            height: "70px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 20px",
+            backgroundColor: "#801d46",
+            color: "white",
+            borderBottomLeftRadius: "25px",
+            borderBottomRightRadius: "25px"
+          }}
+        >
+          <div className="toggle-btn" id="toggle-sidebar" style={{ fontSize: "20px", cursor: "pointer", position: "absolute" }}>
+            <i className="fas fa-bars"></i>
+          </div>
 
-      </div> */}
-      <div style={styles.main}>
-        <div style={styles.wrapper}>
-          {/* Header */}
+          <div className="header-right-nav" style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+            <div className="header-actions" style={{ display: "flex", gap: "20px" }}>
+              {["bell", "comment", "gift", "cog"].map((icon) => (
+                <a
+                  key={icon}
+                  href="javascript:void(0);"
+                  style={{
+                    color: "#fff",
+                    fontSize: "18px",
+                    background: "rgba(255,255,255,0.15)",
+                    padding: "8px",
+                    borderRadius: "50%",
+                    cursor: "pointer",
+                    width: "40px",
+                    height: "40px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textDecoration: "none"
+                  }}
+                >
+                  <i className={`fas fa-${icon}`}></i>
+                </a>
+              ))}
+            </div>
 
-          {/* Page Header */}
-          <div style={styles.contentHeader}>
-            <h2 style={{
-              fontFamily: "Barlow",
-              fontWeight: 600,
-              fontSize: "32px",
-              lineHeight: "100%",
-              letterSpacing: "0px",
-              color: "#464255"
-            }}>Dashboard</h2>
-            <div style={styles.filter}>
-              <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon%20(1).svg" />
-              <div>
-                <span style={{
-                  fontFamily: "Barlow",
-                  fontWeight: 500,
-                  fontSize: "18px",
-                  lineHeight: "100%",
-                  letterSpacing: "0px",
-                  color: "#3E4954"
-                }}>Filter Period</span>
-                <p style={{
-                  fontFamily: "Barlow",
-                  fontWeight: 400,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  letterSpacing: "0px",
-                  color: "#3E4954"
-                }}> 17 April 2025 - 21 Jul 2025</p>
+            <div className="user-profile" style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "20px" }}>
+              <span>Hello, Samantha</span>
+              <div className="avatar" style={{ width: "35px", height: "35px", borderRadius: "50%", overflow: "hidden", border: "2px solid white" }}>
+                <img src="https://i.imgur.com/vT8WQEA.jpg" alt="User Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ color: "#B9BBBD", width: "19px", height: "10px" }}>
-                ⌄
+            </div>
+          </div>
+        </div> */}
+
+        <div className="content-area" style={{ padding: "20px" }}>
+          <div className="content-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+            <h2>Home</h2>
+            <div
+              className="filter"
+              style={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px 20px",
+                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                width: "270px"
+              }}
+            >
+              <div className="filter-container" style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+                <i className="far fa-calendar" style={{ color: "#801d46", fontSize: "24px" }}></i>
+                <div>
+                  <span style={{ fontSize: "14px", color: "#333" }}>Filter Period</span>
+                  <p style={{ fontSize: "12px", color: "#666", margin: 0 }}>17 April 2025 - 21 Jul 2025</p>
+                </div>
               </div>
+              <i className="fas fa-chevron-down"></i>
             </div>
           </div>
 
           {/* Status Cards */}
-          <div style={styles.statusCards}>
-            <div style={styles.statusCard}>
-              <div style={styles.cardIcon}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg" alt="Property" style={{ width: "100%" }} />
+          <div
+            className="status-cards home-stats-card"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "20px",
+              marginBottom: "20px"
+            }}
+          >
+            {[
+              { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
+              { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
+              { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" }
+            ].map((card, index) => (
+              <div key={index} className="card" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", alignItems: "center", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
+                <div className={`card-icon ${card.className}`} style={{ maxWidth: "70px", width: "70px" }}>
+                  <img src={card.icon} alt={card.label} style={{ maxWidth: "100%" }} />
+                </div>
+                <div className="card-content" style={{ marginLeft: "20px" }}>
+                  <h2 style={{ fontSize: "25px", fontWeight: "800", marginBottom: "6px" }}>{card.count}</h2>
+                  <p style={{ margin: 0, fontSize: "14px", fontWeight: "500", color: card.color }}>{card.label}</p>
+                </div>
               </div>
-              <div style={styles.cardContent}>
-                <h2 style={styles.styleHtwo}>100</h2>
-                <p style={styles.styletitle}>Property</p>
-              </div>
-            </div>
+            ))}
+          </div>
 
-            <div style={styles.statusCard}>
-              <div style={styles.cardIcon}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg" alt="Water" style={{ width: "100%" }} />
-              </div>
-              <div style={styles.cardContent}>
-                <h2 style={styles.styleHtwo}>50</h2>
-                <p style={styles.styletitle}>Water</p>
-              </div>
-            </div>
+          {/* Chart Section */}
+          <div className="graph-view-area" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px", marginBottom: "20px" }}>
+            <div className="chart-container" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "start", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
+              <h2 style={{ fontSize: "18px", marginBottom: "15px" }}>Application Details</h2>
+              <canvas id="applicationDetails"></canvas>
 
-            <div style={styles.statusCard}>
-              <div style={styles.cardIcon}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg" alt="Rental" style={{ width: "100%" }} />
+            </div>
+            <div className="chart-container" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "start", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
+              <h2 style={{ fontSize: "18px", marginBottom: "15px" }}>Collection</h2>
+              <div className="info-container" style={{ display: "flex", gap: "20px", marginBottom: "15px" }}>
+                {[
+                  { label: "Total Till Date", value: "₹ 12,34,567" },
+                  { label: "Last 15 days", value: "₹ 12,34,567" }
+                ].map((info, idx) => (
+                  <div key={idx} className="info-pill" style={{ backgroundColor: "#f1f3f5", padding: "10px 16px", borderRadius: "8px", boxShadow: "0 0 5px rgba(0,0,0,0.05)", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", fontSize: "14px" }}>
+                    <span style={{ color: "#555", fontWeight: "500", marginRight: "15px" }}>{info.label}</span>
+                    <span style={{ fontWeight: "bold", color: "#111" }}>{info.value}</span>
+                  </div>
+                ))}
               </div>
-              <div style={styles.cardContent}>
-                <h2 style={styles.styleHtwo}>30</h2>
-                <p style={styles.styletitle}>Send Back</p>
-              </div>
+              <canvas id="collectionChart"></canvas>
             </div>
           </div>
 
-          {/* Graphs */}
-          {/* <div style={containerStyle}>
-     
-            <div style={boxStyle}>
-              <div style={sectionTitleStyle}>Application Details</div>
-              <div style={{ display: "flex", justifyContent: "space-around" }}>
-                {["Last 7 days", "Last 15 days", "1 Month"].map((label, i) => (
-                  <div key={i} style={barGroupStyle}>
-                    <div style={barStack}>
-                      <div style={barStyle(120, "#F9E37A")}></div>
-                      <div style={barStyle(150, "#45C977")}></div>
-                      <div style={barStyle(130, "#F15B5B")}></div>
-                    </div>
-                    <div style={labelStyle}>{label}</div>
-                  </div>
-                ))}
-              </div>
+          {/* Favorite Cards */}
+          <div className="favorite-card">
+            <div className="card-header-view" style={{ marginBottom: "15px" }}>
+              <h2 style={{ fontWeight: "700", fontSize: "20px", display: "flex", alignItems: "center", margin: 0 }}>
+                <i className="fa-regular fa-star" style={{ marginRight: "10px" }}></i>
+                Favorites
+              </h2>
             </div>
 
-          
-            <div style={boxStyle}>
-              <div style={sectionTitleStyle}>Collection</div>
-
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
-                <div>
-                  <div style={{ fontSize: "12px", color: "#3E4954" }}>Total Till date</div>
-                  <div style={{ fontSize: "14px", fontWeight: "600" }}>₹ 12,34,567</div>
+            <div
+              className="action-cards"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                gap: "20px",
+                marginBottom: "20px",
+              }}
+            >
+              {[
+                {
+                  label: "Property Register",
+                  image:
+                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315418.svg",
+                  url: "/digit-ui/employee/pt/new-application",
+                },
+                {
+                  label: "Property Cash Desk",
+                  image:
+                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417.svg",
+                  url: "/digit-ui/employee/pt/search",
+                },
+                {
+                  label: "Track Application",
+                  image:
+                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417%20(1).svg",
+                  url: "/digit-ui/employee/pt/application-search",
+                },
+                {
+                  label: "Daily Collection Report",
+                  image:
+                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315419.svg",
+                  url: "/digit-ui/employee/pt/inbox",
+                },
+              ].map((action, index) => (
+                <div
+                  key={index}
+                  className="action-card"
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                    transition: "transform 0.2s",
+                  }}
+                >
+                  <img
+                    src={action.image}
+                    alt={action.label}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      marginBottom: "10px",
+                    }}
+                  />
+                  <a
+                    href={action.url}
+                    style={{
+                      fontSize: "14px",
+                      margin: 0,
+                      color: "#333",
+                      fontWeight: "500",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {action.label}
+                  </a>
                 </div>
-                <div>
-                  <div style={{ fontSize: "12px", color: "#3E4954" }}>Last 15 days</div>
-                  <div style={{ fontSize: "14px", fontWeight: "600" }}>₹ 12,34,567</div>
-                </div>
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "space-around" }}>
-                {[
-                  { label: "Cheque", color: "#F89C3A", height: 100 },
-                  { label: "PoS", color: "#45C977", height: 130 },
-                  { label: "Cash", color: "#3F8CFF", height: 160 },
-                  { label: "UPI", color: "#005DA4", height: 180 },
-                  { label: "Online (Web/Mobile)", color: "#4B0E2C", height: 180 },
-                ].map((item, i) => (
-                  <div key={i} style={barGroupStyle}>
-                    <div style={barStyle(item.height, item.color)}></div>
-                    <div style={labelStyle}>{item.label}</div>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
-          </div> */}
 
-          {/* Favorites */}
-          <div style={styles.favoriteCard}>
-            <h3 style={{
-              color: "#464255",
-              fontFamily: "Barlow",
-              fontWeight: 600,
-              fontSize: "32px",
-              lineHeight: "100%",
-              letterSpacing: "0px",
-              display: "flex",
-              alignItems: "center",
-            }}> Favorites{" "} <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon%20Button.svg" /></h3>
-            <div style={styles.actionCards}>
-              <div style={styles.actionCard}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315418.svg" alt="Water" style={{ margin: "auto" }} />
-                <p><a href="/digit-ui/employee/pt/new-application">Property Register</a></p>
-              </div>
-              <div style={styles.actionCard}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417.svg" alt="Water" style={{ margin: "auto" }} />
-
-                <p><a href="/digit-ui/employee/pt/search">Property Cash Desk</a></p>
-              </div>
-              <div style={styles.actionCard}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417%20(1).svg" alt="Water" style={{ margin: "auto" }} />
-
-                <p><a href="/digit-ui/employee/pt/application-search">Track Application</a></p>
-              </div>
-              <div style={styles.actionCard}>
-                <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315419.svg" alt="Water" style={{ margin: "auto" }} />
-                <p><a href="/digit-ui/employee/pt/inbox">Daily Collection Report</a></p>
-              </div>
-            </div>
           </div>
         </div>
-
-
       </div>
     </div>
   );
