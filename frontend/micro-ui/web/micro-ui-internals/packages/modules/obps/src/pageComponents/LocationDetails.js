@@ -29,27 +29,17 @@ const LocationDetails = ({ t, config, onSelect, userType, formData, ownerIndex =
   formData = { address: { ...formData?.address } };
   const isMobile = window.Digit.Utils.browser.isMobile();
 
-  useEffect(() => {
-    if (!selectedCity || !localities) {
-      cities =
-      userType && userType === "employee"
-          ? allCities.filter((city) => city.code === tenantId)
-          : pincode
-            ? allCities.filter((city) => city?.pincode?.some((pin) => pin == Number(pincode)))
-            : allCities;
-      setcitiesopetions(cities);
-      if (cities?.length == 0) {
+   useEffect(() => {
+    if (pincode && selectedCity) {
+      const cityPincodes = selectedCity?.pincode;
+      // If the city has a list of pincodes and the current one is not in it, show an error.
+      if (cityPincodes && cityPincodes.length > 0 && !cityPincodes.includes(Number(pincode))) {
         setPinerror("BPA_PIN_NOT_VALID_ERROR");
-      } else if ( cities.length == 1) {
-        let selectCity = selectedCity?.code ? selectedCity?.code : selectedCity ? selectedCity : "";
-        if (cities?.[0].code != selectCity) {
-          setPinerror("BPA_PIN_NOT_VALID_ERROR")
-        }
+      } else {
+        setPinerror(null);
       }
     }
-
-  }, [pincode]);
-
+  }, [pincode, selectedCity]);
 
   useEffect(() =>{
 
@@ -89,28 +79,35 @@ const LocationDetails = ({ t, config, onSelect, userType, formData, ownerIndex =
   const [selectedLocality, setSelectedLocality] = useState(formData.address.locality || null);
 
   useEffect(() => {
-    if (selectedCity && fetchedLocalities  && !Pinerror) {
-      let __localityList = fetchedLocalities;
-      let filteredLocalityList = [];
+    if (selectedCity && fetchedLocalities) {
+      const allLocalitiesForCity = fetchedLocalities;
+      let filteredLocalities = [];
 
-      if (formData?.address?.locality && formData?.address?.locality?.code === selectedLocality?.code) {
-        setSelectedLocality(formData.address.locality);
+      // Filter localities based on the current pincode
+      if (pincode) {
+        filteredLocalities = allLocalitiesForCity.filter((locality) => locality.pincode?.includes(pincode) || locality.pincode?.includes(Number(pincode)));
       }
 
-      if ((formData?.address?.pincode || pincode) && !Pinerror) {
-        filteredLocalityList = __localityList.filter((obj) => obj.pincode?.find((item) => item == pincode));
-        if (!formData?.address?.locality && filteredLocalityList.length<=0) setSelectedLocality();
+      // If filtering results in localities, use them. Otherwise, use all localities for the city.
+      const finalLocalities = filteredLocalities.length > 0 ? filteredLocalities : allLocalitiesForCity;
+      setLocalities(finalLocalities);
+
+      // If the filtering results in exactly ONE locality, auto-select it.
+      // This handles your 144001-144006 requirement.
+      if (finalLocalities.length === 1) {
+        // Check if it's not already selected to avoid an infinite loop
+        if (selectedLocality?.code !== finalLocalities[0].code) {
+          setSelectedLocality(finalLocalities[0]);
+          sessionStorage.setItem("currLocality", JSON.stringify(finalLocalities[0]));
+        }
       }
-      if(!localities || (filteredLocalityList.length > 0 && localities.length !== filteredLocalityList.length) || (filteredLocalityList.length <=0 && localities && localities.length !==__localityList.length))
-      {
-        setLocalities(() => (filteredLocalityList.length > 0 ? filteredLocalityList : __localityList));
-      }
-      if (filteredLocalityList.length === 1 && ((selectedLocality == null) || (selectedLocality && filteredLocalityList[0]?.code !== selectedLocality?.code))) {
-        setSelectedLocality(filteredLocalityList[0]);
-        sessionStorage.setItem("currLocality", JSON.stringify(filteredLocalityList[0]));
+      // If the current `selectedLocality` is not present in the new list of `finalLocalities`, clear it
+      else if (selectedLocality && !finalLocalities.find(loc => loc.code === selectedLocality.code)) {
+         setSelectedLocality(null);
       }
     }
-  }, [selectedCity, formData?.pincode, fetchedLocalities, pincode,geoLocation]);
+  }, [selectedCity, pincode, fetchedLocalities]);
+
 
 
   const handleGIS = () => {
@@ -157,7 +154,7 @@ const LocationDetails = ({ t, config, onSelect, userType, formData, ownerIndex =
     sessionStorage.setItem("currentCity", JSON.stringify({ }));
     sessionStorage.setItem("currLocality", JSON.stringify({ }));
     setSelectedLocality(null);
-    setLocalities(null);
+    // setLocalities(null);
     //setSelectedCity(null);
   }
 
@@ -197,6 +194,7 @@ const LocationDetails = ({ t, config, onSelect, userType, formData, ownerIndex =
     setSelectedLocality(locality);
     sessionStorage.setItem("currLocality", JSON.stringify(locality));
   }
+  
 
   return (
     <div>
