@@ -4,13 +4,22 @@ import { EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
 import { checkForEmployee } from "../utils";
 
 const DeathCard = () => {
+   const isCitizen = window.location.href.includes("/citizen/");
 
-  if (!Digit.Utils.BnDAccess()) {
-    return null;
-  }
+    if(isCitizen) {
+      if(!Digit.Utils.bndCitizenAccess()) {
+        return null;
+      }
+    }else {
+      if(!Digit.Utils.BnDAccess()) {
+        return null;
+      }
+    }
+
+
 
   const { t } = useTranslation();
-  const isCitizen = window.location.href.includes("/citizen/");
+
 
 
   const employeeLinks = [
