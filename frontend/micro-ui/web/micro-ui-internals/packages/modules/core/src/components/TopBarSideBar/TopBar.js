@@ -205,14 +205,21 @@ const TopBar = ({
   const { pathname } = useLocation();
   const history = useHistory();
 
+  const conditionsToDisableNotificationCountTrigger = () => {
+    if (Digit.UserService?.getUser()?.info?.type === "EMPLOYEE") return false;
+    if (Digit.UserService?.getUser()?.info?.type === "CITIZEN") {
+      if (!CitizenHomePageTenantId) return false;
+      else return true;
+    }
+    return false;
+  };
   // Notification Hook
-  const { data: { unreadCount = 0 } = {}, isSuccess: notificationCountLoaded } =
-    Digit.Hooks.useNotificationCount({
-      tenantId: CitizenHomePageTenantId,
-      config: {
-        enabled: Digit.UserService?.getUser()?.info?.type === "CITIZEN" && !!CitizenHomePageTenantId,
-      },
-    });
+  const { data: { unreadCount: unreadNotificationCount } = {}, isSuccess: notificationCountLoaded } = Digit.Hooks.useNotificationCount({
+    tenantId: CitizenHomePageTenantId,
+    config: {
+      enabled: conditionsToDisableNotificationCountTrigger(),
+    },
+  });
 
   // Profile Image Fetch
   React.useEffect(() => {
@@ -232,8 +239,66 @@ const TopBar = ({
     history.push("/digit-ui/citizen/engagement/notifications");
   };
 
-  const loggedIn = !!userDetails?.access_token;
 
+  React.useEffect(async () => {
+    const tenant = Digit.ULBService.getCurrentTenantId();
+    const uuid = userDetails?.info?.uuid;
+    if (uuid) {
+      const usersResponse = await Digit.UserService.userSearch(tenant, { uuid: [uuid] }, {});
+      if (usersResponse && usersResponse.user && usersResponse.user.length) {
+        const userDetails = usersResponse.user[0];
+        const thumbs = userDetails?.photo?.split(",");
+        setProfilePic(thumbs?.at(0));
+      }
+    }
+  }, [profilePic !== null, userDetails?.info?.uuid]);
+
+
+
+
+
+
+
+
+  const updateSidebar = () => {
+    if (!Digit.clikOusideFired) {
+      toggleSidebar(true);
+      setSideBarScrollTop(true);
+    } else {
+      Digit.clikOusideFired = false;
+    }
+  };
+
+  function onNotificationIconClick() {
+    history.push("/digit-ui/citizen/engagement/notifications");
+  }
+
+  const urlsToDisableNotificationIcon = (pathname) =>
+    !!Digit.UserService?.getUser()?.access_token
+      ? false
+      : ["/digit-ui/citizen/select-language", "/digit-ui/citizen/select-location"].includes(pathname);
+
+  if (CITIZEN) {
+    return (
+      <div>
+        <TopBarComponent
+          img={stateInfo?.statelogo}
+          isMobile={true}
+          toggleSidebar={updateSidebar}
+          logoUrl={stateInfo?.logoUrlWhite}
+          onLogout={handleLogout}
+          userDetails={userDetails}
+          notificationCount={unreadNotificationCount < 99 ? unreadNotificationCount : 99}
+          notificationCountLoaded={notificationCountLoaded}
+          cityOfCitizenShownBesideLogo={t(CitizenHomePageTenantId)}
+          onNotificationIconClick={onNotificationIconClick}
+          hideNotificationIconOnSomeUrlsWhenNotLoggedIn={urlsToDisableNotificationIcon(pathname)}
+          changeLanguage={!mobileView ? <ChangeLanguage dropdown={true} /> : null}
+        />
+      </div>
+    );
+  }
+  const loggedIn = userDetails?.access_token ? true : false;
   return (
     <div style={{
       backgroundColor: "#801d46",

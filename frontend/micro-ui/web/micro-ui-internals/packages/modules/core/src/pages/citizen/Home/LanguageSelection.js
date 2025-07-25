@@ -67,7 +67,7 @@ const LanguageSelection = () => {
         <div style={styles.bannerText}>
           <h2 style={styles.yourUrban}>Your Urban Services<br />One Login Away!</h2>
           <div style={styles.loginButtons}>
-            <button style={styles.loginButton} > <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector.svg" />{" "} Citizen Login</button>
+            <button style={styles.loginButton} onClick={() => window.location.href = "/digit-ui/citizen/login"}> <img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector.svg" />{" "} Citizen Login</button>
             <button style={styles.loginButton} onClick={() => window.location.href = "/digit-ui/employee/user/login"}><img src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Vector.svg" />{" "} IMC Login</button>
           </div>
         </div>

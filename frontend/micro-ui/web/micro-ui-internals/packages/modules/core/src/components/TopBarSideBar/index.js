@@ -22,6 +22,8 @@ const TopBarSideBar = ({
   const [isSideBarScroll, setSideBarScrollTop] = useState(false);
   const history = useHistory();
   const [showDialog, setShowDialog] = useState(false);
+  const { data: storeData } = Digit.Hooks.useStore.getInitData();
+  console.log("storeData", storeData)
   const handleLogout = () => {
     toggleSidebar(false);
     setShowDialog(true);

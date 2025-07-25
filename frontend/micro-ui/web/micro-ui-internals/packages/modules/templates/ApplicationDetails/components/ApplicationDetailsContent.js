@@ -429,6 +429,7 @@
 import {
   Card,
   Dropdown,
+  Loader,
   SubmitBar
 } from "@egovernments/digit-ui-react-components";
 import { values } from "lodash";
@@ -816,7 +817,7 @@ const ApplicationDetailsContent = ({
       onSuccess: (data) => {
 
         setEstimateData(data);
-        fetchBill()
+        // fetchBill()
       },
       onError: (error) => {
         alert("Estimate error:", error);
@@ -856,11 +857,13 @@ const ApplicationDetailsContent = ({
     };
 
     assessmentMutate(payload, {
-      onError: (error, variables) => {
-        // fetchBill()
-      },
       onSuccess: (data, variables) => {
+        fetchBill()
+      },
+      onError: (error, variables) => {
+        // 
       }
+
     });
   }
 
@@ -977,24 +980,24 @@ const ApplicationDetailsContent = ({
     }
   };
 
-  useEffect(() => {
-    const propertyIdValid = applicationData?.propertyId;
-    const tenantIdValid = tenantId && tenantId !== "undefined";
+  // useEffect(() => {
+  //   const propertyIdValid = applicationData?.propertyId;
+  //   const tenantIdValid = tenantId && tenantId !== "undefined";
 
-    let intervalId;
+  //   let intervalId;
 
-    if (propertyIdValid && tenantIdValid) {
-      // Start interval loop
-      intervalId = setInterval(() => {
-        fetchBill();
-      }, 1000); // every 1 second
-    }
+  //   if (propertyIdValid && tenantIdValid) {
+  //     // Start interval loop
+  //     intervalId = setInterval(() => {
+  //       fetchBill();
+  //     }, 1000); // every 1 second
+  //   }
 
-    // Cleanup function to stop interval on unmount or dependency change
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [applicationData?.propertyId, tenantId]);
+  //   // Cleanup function to stop interval on unmount or dependency change
+  //   return () => {
+  //     if (intervalId) clearInterval(intervalId);
+  //   };
+  // }, [applicationData?.propertyId, tenantId]);
 
   // ======================================Payment===================================================================
 
@@ -1052,18 +1055,38 @@ const ApplicationDetailsContent = ({
           },
         ],
         user: {
-          name: userInfo?.info?.name || billDetails?.payerName,
-          mobileNumber: userInfo?.info?.mobileNumber || billDetails?.mobileNumber,
+          name: billDetails?.payerName,
+          mobileNumber: billDetails?.mobileNumber,
           tenantId: billDetails?.tenantId,
         },
         // success
         callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
-          ? `${window.location.protocol}//${window.location.host}/digit-ui/citizen/payment/success/${businessService}/${wrkflow === "WNS" ? encodeURIComponent(consumerCode) : consumerCode}/${tenantId}?workflow=${wrkflow === "WNS" ? wrkflow : "mcollect"}`
-          : `${window.location.protocol}//${window.location.host}/digit-ui/citizen/payment/success/${businessService}/${wrkflow === "WNS" ? encodeURIComponent(consumerCode) : consumerCode}/${tenantId}?propertyId=${consumerCode}`,
+          ? `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`
+          : `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`,
         additionalDetails: {
           isWhatsapp: false,
         },
       },
+      RequestInfo: {
+        apiId: "Rainmaker",
+        authToken: userInfo1?.authToken || "default-token",
+        userInfo: {
+          id: userInfo1?.id || 1,
+          uuid: userInfo1?.uuid || "default-uuid",
+          userName: userInfo1?.userName || "defaultuser",
+          name: userInfo1?.name || "Default User",
+          mobileNumber: userInfo1?.mobileNumber || "9999999999",
+          emailId: userInfo1?.emailId || "default@example.com",
+          locale: userInfo1?.locale || "en_IN",
+          type: userInfo1?.type || "CITIZEN",
+          roles: userInfo1?.roles || [],
+          active: userInfo1?.active !== false,
+          tenantId: userInfo1?.tenantId || tenantId,
+          permanentCity: userInfo1?.permanentCity || tenantId
+        },
+        msgId: "1749797151521|en_IN",
+        plainAccessRequest: {}
+      }
     };
 
     try {
@@ -1093,6 +1116,10 @@ const ApplicationDetailsContent = ({
   const lastNetTax = taxSummaries.length > 0 ? (taxSummaries[taxSummaries.length - 1].netTax || 0) : 0;
 
   const netTaxMinusLast = totalNetTaxPay - lastNetTax;
+
+  if (assessmentLoading) {
+    return <Loader />;
+  }
   return (
 
     <div>
@@ -1189,7 +1216,7 @@ const ApplicationDetailsContent = ({
         </div>
       </div>
 
-      {/* <div style={styles.section}>
+      <div style={styles.section}>
         {applicationDetails?.applicationDetails?.map((detail, index) => (
           <>
 
@@ -1197,7 +1224,7 @@ const ApplicationDetailsContent = ({
 
           </>
         ))}
-      </div> */}
+      </div>
       {/* Property Area Details */}
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Property Area Details</div>
@@ -1402,7 +1429,7 @@ const ApplicationDetailsContent = ({
         </div>
         <div style={styles.checkboxGroup}>
 
-          {["CASH", "POS"].map((method) => (
+          {["CASH", "EASEBUZZ"].map((method) => (
             <label key={method}>
               <input
                 type="radio"

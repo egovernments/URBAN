@@ -13,14 +13,33 @@ const OwnershipDetailsSection = ({
   const stateId = Digit.ULBService.getStateId();
   const { data: SubOwnerShipCategoryOb, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "SubOwnerShipCategory");
   const { data: OwnerShipCategoryOb, isLoading: ownerShipCatLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "OwnerShipCategory");
-const dropdownOptions = (Array.isArray(OwnerShipCategoryOb) ? OwnerShipCategoryOb : []).map(item => ({
-  code: item.code,
-  name: t(item.name)
-}));
-console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
+
+  const { data: Menu } = Digit.Hooks.pt.useSalutationsMDMS(stateId, "common-masters", "Salutations");
+  const salutationOptions = (Menu || []).map((item) => ({
+    code: item.code,
+    name: t(item.name), // Use i18nKey for translation
+  }));
+  console.log("Menu", Menu)
+  const dropdownOptions = (Array.isArray(OwnerShipCategoryOb) ? OwnerShipCategoryOb : []).map(item => ({
+    code: item.code,
+    name: t(item.name)
+  }));
+  console.log("OwnerShipCategoryOb", OwnerShipCategoryOb)
+  // const updateOwner = (index, field, value) => {
+  //   const updated = [...owners];
+  //   updated[index][field] = value;
+  //   setOwners(updated);
+  // };
+
   const updateOwner = (index, field, value) => {
     const updated = [...owners];
     updated[index][field] = value;
+
+    // Optional logic: clear samagraID if checkbox ticked
+    if (field === "noSamagra" && value === true) {
+      updated[index]["samagraID"] = "";
+    }
+
     setOwners(updated);
   };
 
@@ -38,18 +57,14 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
           {/* Name with Title */}
           <div style={styles.flex30}>
             <div style={styles.poppinsLabel}>
-              {t("Name")} <span className="mandatory" style={styles.mandatory}>*</span>
+              {t("Owner Name")} <span className="mandatory" style={styles.mandatory}>*</span>
             </div>
             <div style={styles.nameInputContainer}>
               <Dropdown
                 t={t}
-                option={[
-                  { code: "MR", name: t("Mr") },
-                  { code: "MRS", name: t("Mrs") },
-                  { code: "MISS", name: t("Miss") }
-                ]}
-                selected={{ name: owner.title }}
-                select={(val) => updateOwner(index, "title", val.name)}
+                option={salutationOptions}
+                selected={salutationOptions.find(opt => opt.code === owner.title)}
+                select={(val) => updateOwner(index, "title", val.code)}
                 optionKey="name"
                 style={styles.dropdown30}
                 placeholder={t("Mr")}
@@ -65,20 +80,6 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
               <p style={{ color: "red", fontSize: "12px" }}>{formErrors.ownerName}</p>
             )}
           </div>
-
-          {/* Aadhaar */}
-          <div style={styles.flex30}>
-            <div style={styles.poppinsLabel}>{t("Aadhaar id")} <span className="mandatory" style={styles.mandatory}>*</span></div>
-            <TextInput
-              style={styles.widthInput}
-              value={owner.aadhaar}
-              onChange={(e) => updateOwner(index, "aadhaar", e.target.value)}
-            />
-            {formErrors.aadhaar && (
-              <p style={{ color: "red", fontSize: "12px" }}>{formErrors.aadhaar}</p>
-            )}
-          </div>
-
           {/* Hindi Name */}
           <div style={styles.flex30}>
             <div style={styles.poppinsLabel}>
@@ -87,13 +88,9 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
             <div style={styles.nameInputContainer}>
               <Dropdown
                 t={t}
-                option={[
-                  { code: "MR", name: t("Mr") },
-                  { code: "MRS", name: t("Mrs") },
-                  { code: "MISS", name: t("Miss") }
-                ]}
-                selected={{ name: owner.hindiTitle }}
-                select={(val) => updateOwner(index, "hindiTitle", val.name)}
+                option={salutationOptions}
+                selected={salutationOptions.find(opt => opt.code === owner.hindiTitle)}
+                select={(val) => updateOwner(index, "hindiTitle", val.code)}
                 optionKey="name"
                 style={styles.dropdown30}
                 placeholder={t("Mr")}
@@ -109,11 +106,10 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
               <p style={{ color: "red", fontSize: "12px" }}>{formErrors.hindiName}</p>
             )}
           </div>
-
           {/* Father/Husband Name */}
           <div style={styles.flex30}>
             <div style={styles.poppinsLabel}>
-              {t("Father/Husband name")} <span className="mandatory" style={styles.mandatory}>*</span>
+              {t("Father/Husband Name")} <span className="mandatory" style={styles.mandatory}>*</span>
             </div>
             <TextInput
               style={styles.widthInput}
@@ -124,7 +120,6 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
               <p style={{ color: "red", fontSize: "12px" }}>{formErrors.fatherHusbandName}</p>
             )}
           </div>
-
           {/* Relationship */}
           <div style={styles.flex30}>
             <div style={styles.poppinsLabel}>
@@ -147,27 +142,15 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
               <p style={{ color: "red", fontSize: "12px" }}>{formErrors.relationship}</p>
             )}
           </div>
-
           {/* Email */}
           <div style={styles.flex30}>
-            <div style={styles.poppinsLabel}>{t("Email")}</div>
+            <div style={styles.poppinsLabel}>{t("Email ID")}</div>
             <TextInput
               value={owner.email}
               onChange={(e) => updateOwner(index, "email", e.target.value)}
               style={styles.widthInput}
             />
           </div>
-
-          {/* Alternative Number */}
-          <div style={styles.flex30}>
-            <div style={styles.poppinsLabel}>{t("Alternative Number")}</div>
-            <TextInput
-              value={owner.altNumber}
-              onChange={(e) => updateOwner(index, "altNumber", e.target.value)}
-              style={styles.widthInput}
-            />
-          </div>
-
           {/* Mobile */}
           <div style={styles.flex30}>
             <div style={styles.poppinsLabel}>
@@ -182,19 +165,54 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
               <p style={{ color: "red", fontSize: "12px" }}>{formErrors.mobile}</p>
             )}
           </div>
+          {/* Alternative Number */}
+          <div style={styles.flex30}>
+            <div style={styles.poppinsLabel}>{t("Alternative Number")}</div>
+            <TextInput
+              value={owner.altNumber}
+              onChange={(e) => updateOwner(index, "altNumber", e.target.value)}
+              style={styles.widthInput}
+            />
+          </div>
+          {/* Aadhaar */}
+          <div style={styles.flex30}>
+            <div style={styles.poppinsLabel}>{t("Aadhaar ID")} <span className="mandatory" style={styles.mandatory}>*</span></div>
+            <TextInput
+              style={styles.widthInput}
+              value={owner.aadhaar}
+              onChange={(e) => updateOwner(index, "aadhaar", e.target.value)}
+            />
+            {formErrors.aadhaar && (
+              <p style={{ color: "red", fontSize: "12px" }}>{formErrors.aadhaar}</p>
+            )}
+          </div>
+
           <div style={styles.flex30}>
             <div style={styles.poppinsLabel}>
-              {t("SamagraID")} <span className="mandatory" style={styles.mandatory}>*</span>
+              {t("Samagra ID")} <span className="mandatory" style={styles.mandatory}>*</span>
             </div>
             <TextInput
               value={owner.samagraID}
               onChange={(e) => updateOwner(index, "samagraID", e.target.value)}
               style={styles.widthInput}
+             disabled={owner.noSamagra === true}
             />
+            <div style={{ marginTop: "4px" }}>
+              <label style={{ fontSize: "14px" }}>
+                <input
+                  type="checkbox"
+                  checked={owner.noSamagra}
+                  onChange={(e) => updateOwner(index, "noSamagra", e.target.checked)}
+                  style={{ marginRight: "8px" }}
+                />
+                {t("I don't have Samagra ID")}
+              </label>
+            </div>
             {formErrors?.samagraID && (
               <p style={{ color: "red", fontSize: "12px" }}>{formErrors.samagraID}</p>
             )}
           </div>
+
         </div>
       </div>
     );
@@ -204,13 +222,14 @@ console.log("OwnerShipCategoryOb",OwnerShipCategoryOb)
     <div>
       <div style={styles.flex45}>
         <div style={styles.poppinsLabel}>
-          {t("Provide Ownership details")} <span className="mandatory" style={styles.mandatory}>*</span>
+          {t("Provide Ownership Details")} <span className="mandatory" style={styles.mandatory}>*</span>
         </div>
         <Dropdown
           style={styles.widthInput300}
           t={t}
           option={dropdownOptions}
-          selected={"ownershipType"}
+          // selected={"ownershipType"}
+           selected={dropdownOptions.find(opt => opt.code === ownershipType)}
           select={handleOwnershipTypeChange}
           optionKey="name"
           placeholder={t("Select")}

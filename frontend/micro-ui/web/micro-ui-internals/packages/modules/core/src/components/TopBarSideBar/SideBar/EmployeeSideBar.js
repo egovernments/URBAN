@@ -175,7 +175,8 @@ const EmployeeSideBar = () => {
   };
 
   return (
-    <div  ref={sidebarRef} onMouseOver={expandNav} onMouseLeave={collapseNav} style={{background: "white",height: "100%",}}>
+    <div  ref={sidebarRef}
+     onMouseOver={expandNav} onMouseLeave={collapseNav} style={{background: "white",height: "100%",}}>
       {/* {renderSearch()} */}
       {/* {splitKeyValue()} */}
       <SubMenu item=""/>

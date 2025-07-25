@@ -10,7 +10,7 @@ const SuccessModal = ({ t, applicationNumber, propertyId, status, onClose, style
       <p style={{ color: "gray" }}>
         {t("Application Number")}
         <br />
-        {propertyId && <strong>{t("Property ID")}: {propertyId}</strong>}
+        {propertyId && <strong> {propertyId}</strong>}
       </p>
       <button onClick={onClose} style={styles.successButton}>
         {t("Home")}

@@ -425,7 +425,7 @@ const SubMenu = ({ item }) => {
       borderRadius: "4px",
     },
     activeTab: {
-      backgroundColor: "#E0E0E0",
+      // backgroundColor: "#6B133F33",
       fontWeight: 600,
     },
   };

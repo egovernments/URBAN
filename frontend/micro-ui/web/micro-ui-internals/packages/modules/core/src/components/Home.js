@@ -130,34 +130,6 @@ const CitizenHome = ({ modules, getCitizenMenu, fetchedCitizen, isLoading }) => 
 const EmployeeHome = ({ modules }) => {
 
 
-  const applicationData = [
-    {
-      name: "Last 7 days",
-      Approved: 20000,
-      Pending: 15000,
-      Rejected: 18000,
-    },
-    {
-      name: "Last 15 days",
-      Approved: 21000,
-      Pending: 15000,
-      Rejected: 18500,
-    },
-    {
-      name: "1 Month",
-      Approved: 22000,
-      Pending: 15500,
-      Rejected: 19000,
-    },
-  ];
-
-  const collectionData = [
-    { name: "Cheque", amount: 15000 },
-    { name: "PoS", amount: 20000 },
-    { name: "Cash", amount: 25000 },
-    { name: "UPI", amount: 30000 },
-    { name: "Online (Web/Mobile)", amount: 36000 },
-  ];
   console.log("module", modules)
   if (window.Digit.SessionStorage.get("PT_CREATE_EMP_TRADE_NEW_FORM")) window.Digit.SessionStorage.set("PT_CREATE_EMP_TRADE_NEW_FORM", {});
  

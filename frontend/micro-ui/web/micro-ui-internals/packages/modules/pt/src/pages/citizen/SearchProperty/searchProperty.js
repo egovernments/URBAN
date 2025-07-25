@@ -92,7 +92,7 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
               optionsKey: "name",
               options: [
                 { code: 0, name: "PT_KNOW_PT_ID" },
-                { code: 1, name: "PT_KNOW_PT_DETAIL" },
+                // { code: 1, name: "PT_KNOW_PT_DETAIL" },
               ],
             },
             component: (props, customProps) => (
@@ -113,32 +113,32 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
             ),
           },
         },
-        {
-          label: "PT_SELECT_CITY",
-          isMandatory: true,
-          type: "custom",
-          populators: {
-            name: "city",
-            defaultValue: null,
-            rules: { required: true },
-            customProps: { t, isMandatory: true, option: [...allCities], optionKey: "i18nKey" },
-            component: (props, customProps) => (
-              <Dropdown
-                {...customProps}
-                selected={props.value}
-                select={(d) => {
-                  Digit.LocalizationService.getLocale({
-                    modules: [`rainmaker-${props?.value?.code}`],
-                    locale: Digit.StoreData.getCurrentLanguage(),
-                    tenantId: `${props?.value?.code}`,
-                  });
-                  if (d.code !== cityCode) props.setValue("locality", null);
-                  props.onChange(d);
-                }}
-              />
-            ),
-          },
-        },
+        // {
+        //   label: "PT_SELECT_CITY",
+        //   isMandatory: true,
+        //   type: "custom",
+        //   populators: {
+        //     name: "city",
+        //     defaultValue: null,
+        //     rules: { required: true },
+        //     customProps: { t, isMandatory: true, option: [...allCities], optionKey: "i18nKey" },
+        //     component: (props, customProps) => (
+        //       <Dropdown
+        //         {...customProps}
+        //         selected={props.value}
+        //         select={(d) => {
+        //           Digit.LocalizationService.getLocale({
+        //             modules: [`rainmaker-${props?.value?.code}`],
+        //             locale: Digit.StoreData.getCurrentLanguage(),
+        //             tenantId: `${props?.value?.code}`,
+        //           });
+        //           if (d.code !== cityCode) props.setValue("locality", null);
+        //           props.onChange(d);
+        //         }}
+        //       />
+        //     ),
+        //   },
+        // },
         {
           label: t("PT_PROVIDE_ONE_MORE_PARAM"),
           isInsideBox: true,
@@ -180,18 +180,18 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
           isInsideBox: true,
           placementinbox: 1,
         },
-        {
-          label: oldProperty.label,
-          type: oldProperty.type,
-          populators: {
-            name: oldProperty.name,
-            defaultValue: "",
-            validation: oldProperty?.validation,
-          },
-          isMandatory: false,
-          isInsideBox: true,
-          placementinbox: 2,
-        },
+        // {
+        //   label: oldProperty.label,
+        //   type: oldProperty.type,
+        //   populators: {
+        //     name: oldProperty.name,
+        //     defaultValue: "",
+        //     validation: oldProperty?.validation,
+        //   },
+        //   isMandatory: false,
+        //   isInsideBox: true,
+        //   placementinbox: 2,
+        // },
       ],
       body1: [
         {
@@ -321,10 +321,10 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
       seterrorShown(true);
       return;
     }
-    if (!data?.city?.code) {
-      setShowToast({ warning: true, label: "ERR_PT_FILL_VALID_FIELDS"});
-      return;
-    }
+    // if (!data?.city?.code) {
+    //   setShowToast({ warning: true, label: "ERR_PT_FILL_VALID_FIELDS"});
+    //   return;
+    // }
     if (action == 0) {
       if (!(data?.mobileNumber || data?.propertyIds || data?.oldPropertyId)) {
         setShowToast({ warning: true, label: "ERR_PT_FILL_VALID_FIELDS" });
@@ -370,8 +370,8 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
     let tempObject = Object.keys(data)
       .filter((k) => data[k])
       .reduce((acc, key) => ({ ...acc, [key]: typeof data[key] === "object" ? data[key].code : data[key] }), {});
-    let city = tempObject.city;
-    
+    // let city = tempObject.city;
+    const city = "pg.citya";
     delete tempObject.addParam;
     delete tempObject.addParam1;
     delete tempObject.city;
@@ -391,6 +391,8 @@ const SearchProperty = ({ config: propsConfig, onSelect }) => {
 
     if (city?.code !== cityCode) {
       setCityCode(city?.code);
+      // setCityCode("pg.citya");
+      
     }
 
     if (!_.isEqual(data, formValue)) {

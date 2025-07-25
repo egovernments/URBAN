@@ -29,9 +29,9 @@ const App = () => {
   const MutateProperty = Digit?.ComponentRegistryService?.getComponent("PTMutateProperty");
   const PropertyInformation = Digit?.ComponentRegistryService?.getComponent("PropertyInformation");
   const PropertyOwnerHistory = Digit?.ComponentRegistryService?.getComponent("PropertyOwnerHistory");
-  // const PreviewDemand = Digit?.ComponentRegistryService?.getComponent("PreviewDemand");
-  
-  console.log("Digit.ComponentRegistryService.getComponent", 
+  const PreviewDemand = Digit?.ComponentRegistryService?.getComponent("PreviewDemand");
+
+  console.log("Digit.ComponentRegistryService.getComponent",
     Digit.ComponentRegistryService)
 
   return (
@@ -40,10 +40,12 @@ const App = () => {
         <AppContainer>
           {!shouldHideBackButton(hideBackButtonConfig) ? <BackButton>Back</BackButton> : ""}
           <PrivateRoute path={`${path}/property/new-application`} component={CreateProperty} />
-             {/* <PrivateRoute path={`${path}/property/PreviewDemand`} component={PreviewDemand} /> */}
-          
+          {/* <PrivateRoute path={`${path}/property/PreviewDemand`} component={PreviewDemand} /> */}
+
           <PrivateRoute path={`${path}/property/edit-application`} component={EditProperty} />
           <Route path={`${path}/property/citizen-search`} component={SearchPropertyComponent} />
+          <Route path={`${path}/property/PreviewDemand`} component={PreviewDemand} />
+
           <Route path={`${path}/property/search-results`} component={SearchResultsComponent} />
           <PrivateRoute path={`${path}/property/application/:acknowledgementIds/:tenantId`} component={PTApplicationDetails}></PrivateRoute>
           <PrivateRoute path={`${path}/property/my-applications`} component={PTMyApplications}></PrivateRoute>

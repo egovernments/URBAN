@@ -10,7 +10,8 @@ const CorrespondenceAddressSection = ({
 }) => {
   return (
     <div style={{ marginBottom: "20px" }}>
-      <div style={styles.assessmentStyle}>{t("Correspondence address")}</div>
+      <div style={styles.styleMtop}></div>
+      <div style={styles.assessmentStyle}>{t("Correspondence Address")}</div>
       <div style={{ display: "flex" }}>
         <textarea
           style={styles.widthInputs}

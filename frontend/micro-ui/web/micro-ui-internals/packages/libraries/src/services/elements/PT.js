@@ -44,12 +44,12 @@ export const PTService = {
     }),
     updateContent: (details, tenantId) =>
     Request({
-      url: Urls.pt.update,
+      url: Urls.pt.update_content,
       data: details,
       useCache: false,
       setTimeParam: false,
       userService: true,
-      method: "PUT",
+      method: "POST",
       params: {},
       auth: true,
     }),
