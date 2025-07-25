@@ -337,6 +337,14 @@ const tlCitizenAccess = () => {
   return TL_ACCESS?.length > 0;
 }
 
+const bndCitizenAccess = () => {
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
+  const bndRoles = ["BND_CITIZEN", "CITIZEN"];
+  const BND_ACCESS = userRoles?.filter((role) => bndRoles?.includes(role));
+  return BND_ACCESS?.length > 0;
+}
+
 const BPACitizenAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
@@ -421,6 +429,7 @@ export default {
   bdCitizenAccess,
   preProcessMDMSConfigInboxSearch,
   didEmployeeHasAtleastOneRole,
+  bndCitizenAccess,
 
   ...privacy
 };

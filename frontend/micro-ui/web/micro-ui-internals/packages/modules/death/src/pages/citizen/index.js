@@ -20,7 +20,6 @@ const CitizenApp = ({ path, url, userType }) => {
       <Switch>
         <Route exact path={path}>
           <AppContainer>
-            <BackButton style={{ top: "55px" }}>{t("Back")}</BackButton>
             <DeathCard userType={userType} />
           </AppContainer>
         </Route>
