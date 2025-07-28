@@ -1,8 +1,6 @@
-FROM egovio/flyway:4.1.2
+FROM egovio/flyway:10.7.1
 
 COPY ./migration/main /flyway/sql
-
-COPY ./migration/seed /flyway/seed
 
 COPY migrate.sh /usr/bin/migrate.sh
 
