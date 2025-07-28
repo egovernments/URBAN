@@ -38,12 +38,9 @@
  *   In case of any queries, you can reach eGovernments Foundation at contact@egovernments.org.
  */
 package org.egov.egf.master.web.contract;
-
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
@@ -63,11 +60,11 @@ public class FunctionContract extends AuditableContract {
 
 	private String id;
 
-	@Length(max = 128, min = 2)
+	@Size(max = 128, min = 2)
 	@NotNull
 	private String name;
 
-	@Length(max = 16, min = 2)
+	@Size(max = 16, min = 2)
 	@NotNull
 	private String code;
 

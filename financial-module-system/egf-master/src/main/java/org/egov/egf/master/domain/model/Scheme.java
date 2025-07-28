@@ -41,10 +41,9 @@ package org.egov.egf.master.domain.model;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,10 +64,10 @@ public class Scheme extends Auditable {
 
 	private Fund fund;
 
-	@Length(max = 25, min = 1)
+	@Size(max = 25, min = 1)
 	private String code;
 
-	@Length(max = 25, min = 1)
+	@Size(max = 25, min = 1)
 	private String name;
 
 	@NotNull
@@ -80,7 +79,7 @@ public class Scheme extends Auditable {
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 256)
+	@Size(max = 256)
 	private String description;
 
 	private String boundary;

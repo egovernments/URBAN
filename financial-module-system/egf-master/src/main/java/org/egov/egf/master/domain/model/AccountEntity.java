@@ -39,10 +39,10 @@
  */
 package org.egov.egf.master.domain.model;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -66,17 +66,17 @@ public class AccountEntity extends Auditable {
 	private AccountDetailType accountDetailType;
 
 	@NotNull
-	@Length(max = 25, min = 1)
+	@Size(max = 25, min = 1, message = "Code must be between 1 and 25 characters")
 	private String code;
 
 	@NotNull
-	@Length(max = 350, min = 1)
+	@Size(max = 350, min = 1, message = "Name must be between 1 and 350 characters")
 	private String name;
 
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 256)
+	@Size(max = 256, message = "Description must be less than 256 characters")
 	private String description;
 
 }

@@ -1,11 +1,11 @@
 package org.egov.common.web.contract;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class TaskContract {
      * Implementation it is same as the class name of the java object under
      * going work flow. example businessKey "Voucher"
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     @NotNull
     private String businessKey = null;
     /**
@@ -43,7 +43,7 @@ public class TaskContract {
      * Work flow Each process is different .Another example is Property might
      * have different flows like 1.Create,Transfer,Bifurcation,Update etc.
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String type = null;
     /**
      * assignee is the position of the user to be set while creating a
@@ -58,7 +58,7 @@ public class TaskContract {
      * comments is the comment provided by the user while he is initiating a
      * process
      */
-    @Length(max = 1024, min = 1)
+    @Size(max = 1024, min = 1)
     private String comments = null;
     /**
      * createDate is the date on which the process is instantiated. This is set
@@ -84,13 +84,13 @@ public class TaskContract {
      * state gives the current state of the process.
      */
 
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String state = null;
 
     /**
      * status also another representation of the status of the process
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String status = null;
     /**
      * url provides the complete url of the work flow item. This link takes you
@@ -99,7 +99,7 @@ public class TaskContract {
      * read only . UI Can consider this field to redirect to the page or UI can
      * be build without consuming this.
      */
-    @Length(max = 256, min = 1)
+    @Size(max = 256, min = 1)
     private String url = null;
     /**
      * action represents the action performed by the end user . it can be
@@ -109,7 +109,7 @@ public class TaskContract {
      * data in case of manual work flow
      */
     @NotBlank
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String action = null;
 
     /**
@@ -118,7 +118,7 @@ public class TaskContract {
      * the logged in users primary position.
      */
 
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String senderName;
 
     /**
@@ -128,7 +128,7 @@ public class TaskContract {
      * internally by the system which is configured in work flow type
      */
 
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String details;
     /**
      * natureOfTask Detaild Description of the task or process . For example in
@@ -136,7 +136,7 @@ public class TaskContract {
      * data is also configured by the display name of the workflowtype object.
      * This data is read only. .
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String natureOfTask;
     /**
      * entity Maps to the json representation of the item under workflow. This

@@ -1,13 +1,12 @@
 package org.egov.common.domain.model;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Setter
@@ -23,7 +22,7 @@ public class DeletedTransaction {
 
     protected String identifier;
 
-    @Length(max = 250)
+    @Size(max = 250)
     protected String deleteReason;
 
     protected Date updatedDate;
@@ -31,6 +30,6 @@ public class DeletedTransaction {
     protected String data;
 
     @NotNull
-    @Length(max = 50, min = 5)
+    @Size(max = 50, min = 5)
     protected String tenantId;
 }

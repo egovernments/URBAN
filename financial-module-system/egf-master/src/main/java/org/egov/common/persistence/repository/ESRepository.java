@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.egov.common.domain.exception.InvalidDataException;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public abstract class ESRepository {
 
-    protected TransportClient esClient;
+    private RestHighLevelClient restHighLevelClient;
 
     public void validateSortByOrder(final String sortBy) {
         List<String> sortByList = new ArrayList<String>();

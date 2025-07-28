@@ -40,10 +40,9 @@
 
 package org.egov.egf.master.domain.model;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -85,7 +84,7 @@ public class Fund extends Auditable {
 	 * name is the name of the fund . Example :Municipal Fund,Capital Fund. Also
 	 * name is unique.
 	 */
-	@Length(max = 50, min = 2)
+	@Size(max = 50, min = 2)
 	@NotNull
 	protected String name;
 
@@ -93,7 +92,7 @@ public class Fund extends Auditable {
 	 * code is a unique number given to each fund . ULB may refer this for the
 	 * short name
 	 */
-	@Length(max = 50, min = 2)
+	@Size(max = 50, min = 2)
 	@NotNull
 	protected String code;
 	/**

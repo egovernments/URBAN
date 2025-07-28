@@ -41,10 +41,9 @@ package org.egov.egf.master.domain.model;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,11 +67,11 @@ public class SubScheme extends Auditable {
 	private Scheme scheme;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	private String code;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	private String name;
 
 	@NotNull

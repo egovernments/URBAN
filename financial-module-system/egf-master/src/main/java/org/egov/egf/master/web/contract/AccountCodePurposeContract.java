@@ -38,11 +38,9 @@
  *   In case of any queries, you can reach eGovernments Foundation at contact@egovernments.org.
  */
 package org.egov.egf.master.web.contract;
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
@@ -62,7 +60,7 @@ public class AccountCodePurposeContract extends AuditableContract {
 	private String id;
 
 	@NotNull
-	@Length(max = 256, min = 3)
+	@Size(max = 256, min = 3)
 	private String name;
 
 	public AccountCodePurposeContract(String id) {

@@ -41,10 +41,9 @@ package org.egov.egf.master.domain.model;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -78,7 +77,7 @@ public class FiscalPeriod extends Auditable {
 	 */
 	private String id;
 
-	@Length(min = 1, max = 25)
+	@Size(min = 1, max = 25)
 	@NotNull
 	private String name = "";
 

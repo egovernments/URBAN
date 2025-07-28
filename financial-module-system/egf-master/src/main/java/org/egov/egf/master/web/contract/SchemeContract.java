@@ -41,10 +41,9 @@ package org.egov.egf.master.web.contract;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
-import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -67,10 +66,10 @@ public class SchemeContract extends AuditableContract {
 
 	private FundContract fund;
 
-	@Length(max = 25, min = 1)
+	@Size(max = 25, min = 1)
 	private String code;
 
-	@Length(max = 25, min = 1)
+	@Size(max = 25, min = 1)
 	private String name;
 
 	@NotNull
@@ -82,7 +81,7 @@ public class SchemeContract extends AuditableContract {
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 256)
+	@Size(max = 256)
 	private String description;
 
 	private String boundary;

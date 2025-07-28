@@ -3,17 +3,20 @@ package org.egov.egf.master.domain.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.egov.common.domain.model.Pagination;
 import org.egov.common.persistence.repository.ESRepository;
 import org.egov.egf.master.domain.model.BankAccount;
 import org.egov.egf.master.persistence.entity.BankAccountEntity;
 import org.egov.egf.master.web.contract.BankAccountSearchContract;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,26 +29,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class BankAccountESRepository extends ESRepository {
 
-    private TransportClient esClient;
+    private static final Logger logger = LoggerFactory.getLogger(BankAccountESRepository.class);
+    private RestHighLevelClient restHighLevelClient;
     private ElasticSearchQueryFactory elasticSearchQueryFactory;
     public static final Logger LOGGER = LoggerFactory.getLogger(BankAccountESRepository.class);
 
-    public BankAccountESRepository(TransportClient esClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
-        this.esClient = esClient;
+    public BankAccountESRepository(RestHighLevelClient restHighLevelClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
+        this.restHighLevelClient = restHighLevelClient;
         this.elasticSearchQueryFactory = elasticSearchQueryFactory;
     }
 
     public Pagination<BankAccount> search(BankAccountSearchContract bankAccountSearchContract) {
-        final SearchRequestBuilder searchRequestBuilder = getSearchRequest(bankAccountSearchContract);
-        final SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        return mapToBankAccountList(searchResponse, bankAccountSearchContract);
+        SearchRequest searchRequest = getSearchRequest(bankAccountSearchContract); // Updated method returning SearchRequest
+        try {
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            return mapToBankAccountList(searchResponse, bankAccountSearchContract);
+        } catch (IOException e) {
+            logger.error("Error while executing Elasticsearch search", e);
+            return new Pagination<>();
+        }
     }
+
 
     @SuppressWarnings("deprecation")
     private Pagination<BankAccount> mapToBankAccountList(SearchResponse searchResponse,
             BankAccountSearchContract bankAccountSearchContract) {
         Pagination<BankAccount> page = new Pagination<>();
-        if (searchResponse.getHits() == null || searchResponse.getHits().getTotalHits() == 0L) {
+        if (searchResponse.getHits() == null || searchResponse.getHits().getHits().length == 0) {
             return page;
         }
         List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
@@ -70,13 +80,13 @@ public class BankAccountESRepository extends ESRepository {
             bankAccounts.add(bankAccount);
         }
 
-        page.setTotalResults(Long.valueOf(searchResponse.getHits().getTotalHits()).intValue());
+        page.setTotalResults((int) Objects.requireNonNull(searchResponse.getHits().getTotalHits()).value);
         page.setPagedData(bankAccounts);
 
         return page;
     }
 
-    private SearchRequestBuilder getSearchRequest(BankAccountSearchContract criteria) {
+    private SearchRequest getSearchRequest(BankAccountSearchContract criteria) {
         List<String> orderByList = new ArrayList<>();
         if (criteria.getSortBy() != null && !criteria.getSortBy().isEmpty()) {
             validateSortByOrder(criteria.getSortBy());
@@ -84,18 +94,31 @@ public class BankAccountESRepository extends ESRepository {
             orderByList = elasticSearchQueryFactory.prepareOrderBys(criteria.getSortBy());
         }
 
-        final BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchBankAccount(criteria);
-        SearchRequestBuilder searchRequestBuilder = esClient.prepareSearch(BankAccount.class.getSimpleName().toLowerCase())
-                .setTypes(BankAccount.class.getSimpleName().toLowerCase());
-        if (!orderByList.isEmpty()) {
-            for (String orderBy : orderByList) {
-                searchRequestBuilder = searchRequestBuilder.addSort(orderBy.split(" ")[0],
-                        orderBy.split(" ")[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC);
-            }
+        BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchBankAccount(criteria);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        // Apply sorting
+        for (String orderBy : orderByList) {
+            String[] parts = orderBy.split(" ");
+            String field = parts[0];
+            SortOrder sortOrder = parts[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC;
+            searchSourceBuilder.sort(field, sortOrder);
         }
 
-        searchRequestBuilder.setQuery(boolQueryBuilder);
-        return searchRequestBuilder;
+        // Optional: Add pagination if needed
+        if (criteria.getPageSize() != null) {
+            searchSourceBuilder.size(criteria.getPageSize());
+        }
+        if (criteria.getOffset() != null) {
+            searchSourceBuilder.from(criteria.getOffset());
+        }
+
+        SearchRequest searchRequest = new SearchRequest(BankAccount.class.getSimpleName().toLowerCase());
+        searchRequest.source(searchSourceBuilder);
+        return searchRequest;
     }
+
 
 }

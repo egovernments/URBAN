@@ -41,11 +41,9 @@
 package org.egov.egf.master.domain.model;
 
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -89,14 +87,14 @@ public class ChartOfAccount extends Auditable {
 	 * 
 	 */
 	@NotNull
-	@Length(max = 16, min = 1)
+	@Size(max = 16, min = 1)
 	private String glcode;
 	/**
 	 * name is the name of the account code . for example 110 glcode has the
 	 * name "Tax Revenue"
 	 */
 	@NotNull
-	@Length(max = 128, min = 5)
+	@Size(max = 128, min = 5)
 	private String name;
 	/**
 	 * accountCodePurpose is the mapped AccountCodePurpose . This mapping can
@@ -112,7 +110,7 @@ public class ChartOfAccount extends Auditable {
 	/**
 	 * description is the more detailed description about the account code
 	 */
-	@Length(max = 256)
+	@Size(max = 256)
 	private String description;
 
 	/**
@@ -174,7 +172,7 @@ public class ChartOfAccount extends Auditable {
 	 * glcode is major code then this value is true . all minor,subminor
 	 * detailed code will have this property as false
 	 */
-	@Length(max = 16)
+	@Size(max = 16)
 	private String majorCode;
 
 	/**

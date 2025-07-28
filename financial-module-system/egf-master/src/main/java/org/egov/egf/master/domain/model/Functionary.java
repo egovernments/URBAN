@@ -38,11 +38,9 @@
  *   In case of any queries, you can reach eGovernments Foundation at contact@egovernments.org.
  */
 package org.egov.egf.master.domain.model;
-
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,14 +77,14 @@ public class Functionary extends Auditable {
 	 * code is uniue identifier and ULB may refer this for short name.
 	 */
 	@NotNull
-	@Length(max = 16, min = 1)
+	@Size(max = 16, min = 1)
 	private String code;
 
 	/**
 	 * name is the name of the functionary
 	 */
 	@NotNull
-	@Length(max = 256, min = 1)
+	@Size(max = 256, min = 1)
 	private String name;
 
 	/**

@@ -39,11 +39,11 @@
  */
 package org.egov.egf.master.web.contract;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
 import org.egov.egf.master.web.contract.enums.BankAccountTypeContract;
-import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -75,19 +75,19 @@ public class BankAccountContract extends AuditableContract {
 	private FundContract fund;
 
 	@NotNull
-	@Length(max = 25)
+	@Size(max = 25, message = "AccountNumber must be less than 25 characters")
 	private String accountNumber;
 
 	// is this required ?
 	private String accountType;
 
-	@Length(max = 256)
+	@Size(max = 256, message = "Description must be less than 256 characters")
 	private String description;
 
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 100)
+	@Size(max = 100, message = "PayTo must be less than 100 characters")
 	private String payTo;
 
 	@NotNull

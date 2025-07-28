@@ -40,11 +40,10 @@
 
 package org.egov.egf.master.persistence.entity;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.persistence.entity.AuditableEntity;
 import org.egov.egf.master.domain.model.Fund;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -67,11 +66,11 @@ public class FundEntity extends AuditableEntity {
 
 	protected String id;
 
-	@Length(max = 50, min = 2)
+	@Size(max = 50, min = 2)
 	@NotNull
 	protected String name;
 
-	@Length(max = 50, min = 2)
+	@Size(max = 50, min = 2)
 	@NotNull
 	protected String code;
 	@NotNull

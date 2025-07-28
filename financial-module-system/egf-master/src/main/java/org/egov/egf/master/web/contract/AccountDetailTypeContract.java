@@ -39,12 +39,9 @@
  */
 
 package org.egov.egf.master.web.contract;
-
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
@@ -65,20 +62,20 @@ public class AccountDetailTypeContract extends AuditableContract {
 	private String id;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	private String name;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	private String description;
 
-	@Length(max = 25)
+	@Size(max = 25)
 	private String tableName;
 
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 250, min = 1)
+	@Size(max = 250, min = 1)
 	private String fullyQualifiedName;
 
 	public AccountDetailTypeContract(String id) {

@@ -3,17 +3,21 @@ package org.egov.egf.master.domain.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import lombok.extern.log4j.Log4j;
 import org.egov.common.domain.model.Pagination;
 import org.egov.common.persistence.repository.ESRepository;
 import org.egov.egf.master.domain.model.AccountDetailKey;
 import org.egov.egf.master.persistence.entity.AccountDetailKeyEntity;
 import org.egov.egf.master.web.contract.AccountDetailKeySearchContract;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,28 +30,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class AccountDetailKeyESRepository extends ESRepository {
 
-    private TransportClient esClient;
+    private static final Logger logger = LoggerFactory.getLogger(SubSchemeESRepository.class);
+
+    private RestHighLevelClient restHighLevelClient;
+
     private ElasticSearchQueryFactory elasticSearchQueryFactory;
     public static final Logger LOGGER = LoggerFactory.getLogger(AccountDetailKeyESRepository.class);
 
-    public AccountDetailKeyESRepository(TransportClient esClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
-        this.esClient = esClient;
+    public AccountDetailKeyESRepository(RestHighLevelClient restHighLevelClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
+        this.restHighLevelClient = restHighLevelClient;
         this.elasticSearchQueryFactory = elasticSearchQueryFactory;
     }
 
     public Pagination<AccountDetailKey> search(AccountDetailKeySearchContract accountCodeKeySearchContract) {
-        final SearchRequestBuilder searchRequestBuilder = getSearchRequest(accountCodeKeySearchContract);
-        final SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        return mapToAccountDetailKeyList(searchResponse, accountCodeKeySearchContract);
+        SearchRequest searchRequest = getSearchRequest(accountCodeKeySearchContract); // Build with SearchSourceBuilder
+        try {
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            return mapToAccountDetailKeyList(searchResponse, accountCodeKeySearchContract);
+        } catch (IOException e) {
+            logger.error("Error while executing Elasticsearch search", e);
+            return new Pagination<>();
+        }
     }
 
     @SuppressWarnings("deprecation")
     private Pagination<AccountDetailKey> mapToAccountDetailKeyList(SearchResponse searchResponse,
             AccountDetailKeySearchContract accountCodePurposeSearchContract) {
         Pagination<AccountDetailKey> page = new Pagination<>();
-        if (searchResponse.getHits() == null || searchResponse.getHits().getTotalHits() == 0L) {
+        if (searchResponse.getHits() == null || searchResponse.getHits().getHits().length == 0)
             return page;
-        }
         List<AccountDetailKey> accountDetailkeys = new ArrayList<AccountDetailKey>();
         AccountDetailKey accountDetailKey = null;
         for (SearchHit hit : searchResponse.getHits()) {
@@ -70,13 +81,14 @@ public class AccountDetailKeyESRepository extends ESRepository {
             accountDetailkeys.add(accountDetailKey);
         }
 
-        page.setTotalResults(Long.valueOf(searchResponse.getHits().getTotalHits()).intValue());
+        page.setTotalResults((int) Objects.requireNonNull(searchResponse.getHits().getTotalHits()).value);
         page.setPagedData(accountDetailkeys);
 
         return page;
     }
 
-    private SearchRequestBuilder getSearchRequest(AccountDetailKeySearchContract criteria) {
+    private SearchRequest getSearchRequest(AccountDetailKeySearchContract criteria)
+    {
         List<String> orderByList = new ArrayList<>();
         if (criteria.getSortBy() != null && !criteria.getSortBy().isEmpty()) {
             validateSortByOrder(criteria.getSortBy());
@@ -85,18 +97,22 @@ public class AccountDetailKeyESRepository extends ESRepository {
         }
 
         final BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchAccountDetailKey(criteria);
-        SearchRequestBuilder searchRequestBuilder = esClient
-                .prepareSearch(AccountDetailKey.class.getSimpleName().toLowerCase())
-                .setTypes(AccountDetailKey.class.getSimpleName().toLowerCase());
+
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(boolQueryBuilder);
+
         if (!orderByList.isEmpty()) {
             for (String orderBy : orderByList) {
-                searchRequestBuilder = searchRequestBuilder.addSort(orderBy.split(" ")[0],
-                        orderBy.split(" ")[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC);
+                String[] parts = orderBy.split(" ");
+                String field = parts[0];
+                SortOrder order = parts[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC;
+                sourceBuilder.sort(field, order);
             }
         }
 
-        searchRequestBuilder.setQuery(boolQueryBuilder);
-        return searchRequestBuilder;
+        SearchRequest searchRequest = new SearchRequest("surrenderreason"); // index name
+        searchRequest.source(sourceBuilder);
+        return searchRequest;
     }
 
 }

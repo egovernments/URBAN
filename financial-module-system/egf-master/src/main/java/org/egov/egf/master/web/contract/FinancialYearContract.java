@@ -41,11 +41,9 @@ package org.egov.egf.master.web.contract;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
@@ -66,7 +64,7 @@ public class FinancialYearContract extends AuditableContract {
 
 	private String id;
 
-	@Length(min = 1, max = 25)
+	@Size(min = 1, max = 25)
 
 	private String finYearRange;
 

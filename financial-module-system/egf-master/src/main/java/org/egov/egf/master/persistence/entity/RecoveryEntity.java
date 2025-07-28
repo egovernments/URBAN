@@ -40,13 +40,12 @@
 
 package org.egov.egf.master.persistence.entity;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.egov.common.persistence.entity.AuditableEntity;
 import org.egov.egf.master.domain.model.ChartOfAccount;
 import org.egov.egf.master.domain.model.Recovery;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -63,11 +62,11 @@ public class RecoveryEntity extends AuditableEntity {
 
     protected String id;
 
-    @Length(max = 50, min = 2)
+    @Size(max = 50, min = 2, message = "Name must be between 2 and 50 characters")
     @NotNull
     protected String name;
 
-    @Length(max = 50, min = 2)
+    @Size(max = 50, min = 2, message = "Code must be between 1 and 50 characters")
     @NotNull
     protected String code;
 
@@ -83,17 +82,17 @@ public class RecoveryEntity extends AuditableEntity {
     @NotNull
     protected Boolean active;
 
-    @Length(max = 100)
+    @Size(max = 100, message = "Remitted must be less than 100 characters")
     protected String remitted;
 
-    @Length(max = 16)
+    @Size(max = 16, message = "IfscCode must be less than 16 characters")
     protected String ifscCode;
 
     protected Character mode;
 
     protected Character remittanceMode;
 
-    @Length(max = 32)
+    @Size(max = 32, message = "AccountNumber must be less than 32 characters")
     protected String accountNumber;
 
 

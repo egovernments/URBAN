@@ -41,11 +41,9 @@ package org.egov.egf.master.domain.model;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -88,7 +86,7 @@ public class FinancialYear extends Auditable {
 	 * 
 	 */
 	@NotNull
-	@Length(min = 1, max = 25)
+	@Size(min = 1, max = 25)
 	private String finYearRange;
 
 	/**

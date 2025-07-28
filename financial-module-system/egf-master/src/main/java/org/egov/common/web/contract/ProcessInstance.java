@@ -7,15 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
-
-import org.egov.common.web.contract.AttributeContract;
-import org.egov.common.web.contract.PositionContract;
-import org.egov.common.web.contract.TaskContract;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +36,7 @@ public class ProcessInstance {
      * process may be defined with a businessKey of "voucher_workflow" . For eGov internal work flow Implementation it is same as
      * the class name of the java object under going work flow. example businessKey "Voucher"
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     @NotNull
     private String businessKey = null;
     /**
@@ -49,7 +44,7 @@ public class ProcessInstance {
      * Expense Work flow 2. Contractor Journal Work flow 3. Supplier Journal Work flow 4. General JV Work flow Each process is
      * different .Another example is Property might have different flows like 1.Create,Transfer,Bifurcation,Update etc.
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String type = null;
     /**
      * assignee is the position of the user to be set while creating a instantiating of Process. For Automatic work flow this
@@ -61,7 +56,7 @@ public class ProcessInstance {
     /**
      * comments is the comment provided by the user while he is initiating a process
      */
-    @Length(max = 1024, min = 1)
+    @Size(max = 1024, min = 1)
     private String comments = null;
     /**
      * createDate is the date on which the process is instantiated. This is set internally by the system . For clients it is read
@@ -87,20 +82,20 @@ public class ProcessInstance {
      * state gives the current state of the process.
      */
 
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String state = null;
 
     /**
      * status also another representation of the status of the process
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String status = null;
 
     /**
      * senderName represents who initiated the work flow process. This is the logged in users primary position . Also this is set
      * by system by taking the logged in users primary position.
      */
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String senderName;
 
     /**
@@ -109,7 +104,7 @@ public class ProcessInstance {
      * which is configured in work flow type
      */
 
-    @Length(max = 128, min = 1)
+    @Size(max = 128, min = 1)
     private String details;
 
     /**

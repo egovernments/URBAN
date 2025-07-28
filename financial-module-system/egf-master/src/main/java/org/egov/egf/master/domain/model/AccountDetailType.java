@@ -40,10 +40,10 @@
 
 package org.egov.egf.master.domain.model;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
+import jakarta.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,20 +62,20 @@ public class AccountDetailType extends Auditable {
 	private String id;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1, message = "Name must be between 1 and 50 characters")
 	private String name;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1, message = "Description must be between 1 and 50 characters")
 	private String description;
 
-	@Length(max = 25)
+	@Size(max = 25, message = "TableName must be less than 25 characters")
 	private String tableName;
 
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 250, min = 1)
+	@Size(max = 250, min = 1, message = "FullyQualifiedName must be between 1 and 250 characters")
 	private String fullyQualifiedName;
 
 }

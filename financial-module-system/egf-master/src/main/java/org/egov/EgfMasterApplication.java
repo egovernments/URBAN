@@ -3,12 +3,12 @@ package org.egov;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import jakarta.annotation.PostConstruct;
+import org.apache.http.HttpHost;
 import org.egov.tracer.config.TracerConfiguration;
 import org.egov.tracer.kafka.LogAwareKafkaTemplate;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -20,10 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.PostConstruct;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.TimeZone;
 
@@ -44,12 +42,12 @@ public class EgfMasterApplication {
 	private String elasticSearchHost;
 
 	@Value("${es.transport.port}")
-	private Integer elasticSearchTransportPort;
+	private Integer elasticSearchHttpPort;
 
 	@Value("${es.cluster.name}")
 	private String elasticSearchClusterName;
 
-	private TransportClient client;
+	private RestHighLevelClient restHighLevelClient;
 
 	@Autowired
 	private LogAwareKafkaTemplate<String, Object> logAwareKafkaTemplate;
@@ -57,10 +55,15 @@ public class EgfMasterApplication {
 	@PostConstruct
 	public void init() throws UnknownHostException {
 		TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
-		Settings settings = Settings.builder().put(CLUSTER_NAME, elasticSearchClusterName).build();
-		final InetAddress esAddress = InetAddress.getByName(elasticSearchHost);
-		final TransportAddress transportAddress = new TransportAddress(esAddress, elasticSearchTransportPort);
-		client = new PreBuiltTransportClient(settings).addTransportAddress(transportAddress);
+		// Set JVM time zone
+		TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
+
+		// Create HTTP-based Elasticsearch client
+		restHighLevelClient = new RestHighLevelClient(
+				RestClient.builder(
+						new HttpHost(elasticSearchHost, elasticSearchHttpPort, "http")
+				)
+		);
 	}
 
 	@Bean
@@ -76,8 +79,8 @@ public class EgfMasterApplication {
 	}
 
 	@Bean
-	public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
-		return new WebMvcConfigurerAdapter() {
+	public WebMvcConfigurer webMvcConfigurerAdapter() {
+		return new WebMvcConfigurer() {
 
 			@Override
 			public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
@@ -93,10 +96,10 @@ public class EgfMasterApplication {
 	}
 
 	@Bean
-	public TransportClient getTransportClient() {
-		return client;
+	public RestHighLevelClient getRestHighLevelClient() {
+		return restHighLevelClient;
 	}
-	
+
 	@Bean
     public FlywayMigrationStrategy cleanMigrateStrategy() {
         return flyway -> {
@@ -104,4 +107,10 @@ public class EgfMasterApplication {
             flyway.migrate();
         };
     }
+
+	public void close() throws Exception {
+		if (restHighLevelClient != null) {
+			restHighLevelClient.close();
+		}
+	}
 }

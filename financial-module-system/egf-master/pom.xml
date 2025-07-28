@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.6.RELEASE</version>
+    <version>3.2.2</version>
     <relativePath></relativePath>
   </parent>
   <groupId>org.egov</groupId>
@@ -16,14 +16,17 @@
   <properties>
     <log4j2.version>2.17.1</log4j2.version>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>1.8</java.version>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <lombok.version>1.18.30</lombok.version>
+    <lombok.version>1.18.22</lombok.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
+      <version>9.22.3</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -38,10 +41,15 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <version>5.2.20.RELEASE</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-to-slf4j</artifactId>
+      <version>2.8.2</version>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework</groupId>-->
+<!--      <artifactId>spring-beans</artifactId>-->
+<!--      <version>5.2.20.RELEASE</version>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
@@ -50,6 +58,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
+      <version>42.7.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -64,11 +73,13 @@
     </dependency>
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
-      <artifactId>transport</artifactId>
+      <artifactId>elasticsearch-rest-high-level-client</artifactId>
+      <version>7.17.13</version>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
+      <version>8.11.0 </version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -95,34 +106,40 @@
       <artifactId>tracer</artifactId>
       <version>2.9.0-SNAPSHOT</version>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.egov.services</groupId>-->
+<!--      <artifactId>services-common</artifactId>-->
+<!--      <version>0.11.1</version>-->
+<!--    </dependency>-->
     <dependency>
-      <groupId>org.egov.services</groupId>
-      <artifactId>services-common</artifactId>
-      <version>0.11.1</version>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>8.0.1.Final</version> <!-- Compatible with Java 17 -->
     </dependency>
   </dependencies>
   <repositories>
     <repository>
       <id>repo.digit.org.snapshots</id>
-      <name>eGov DIGIT Releases Repository</name>
+      <name>eGov DIGIT Snapshots Repository</name>
       <url>https://nexus-repo.digit.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
       <id>repo.digit.org</id>
-      <name>eGov ERP Releases Repository</name>
+      <name>eGov DIGIT Releases Repository</name>
       <url>https://nexus-repo.digit.org/nexus/content/repositories/releases/</url>
     </repository>
   </repositories>
+
   <distributionManagement>
     <repository>
-      <id>repo.egovernments.org</id>
-      <name>eGov ERP Releases Repository</name>
+      <id>repo.digit.org</id>
+      <name>eGov DIGIT Releases Repository</name>
       <url>https://nexus-repo.digit.org/nexus/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
-      <id>repo.egovernments.org</id>
-      <name>eGov ERP Snapshots Repository</name>
-      <url>https://nexus-repo.egovernments.org/nexus/content/repositories/snapshots/</url>
+      <id>repo.digit.org.snapshots</id>
+      <name>eGov DIGIT Snapshots Repository</name>
+      <url>https://nexus-repo.digit.org/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
   <build>

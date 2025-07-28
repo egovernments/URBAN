@@ -39,12 +39,10 @@
  */
 package org.egov.egf.master.domain.model;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -86,13 +84,13 @@ public class BankBranch extends Auditable {
 	 * code is the branch code
 	 */
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	private String code;
     /**
      * name is the branch name
      */
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
 	private String name;
 
@@ -100,51 +98,51 @@ public class BankBranch extends Auditable {
 	 * address is the address of the branch
 	 */
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1)
 	private String address;
 
 	/**
 	 * address2 is the secondary address of the branch
 	 */
-	@Length(max = 50)
+	@Size(max = 50)
 	private String address2;
 
 	/**
 	 * city is the name of the bank branches city
 	 */
 	
-	@Length(max = 50)
+	@Size(max = 50)
 	private String city;
 	
 	/**
 	 * state is the name of the state
 	 */
 
-	@Length(max = 50)
+	@Size(max = 50)
 	private String state;
 
 	/**
 	 * pincode is the pincode of the branch
 	 */
-	@Length(max = 50)
+	@Size(max = 50)
 	private String pincode;
 
 	/**
 	 * phone is the phone number of the branch
 	 */
-	@Length(max = 15)
+	@Size(max = 15)
 	private String phone;
 
 	/**
 	 * fax is the fax number of the branch
 	 */
-	@Length(max = 15)
+	@Size(max = 15)
 	private String fax;
 
 	/**
 	 * contactPerson is the name of the person in contact 
 	 */
-	@Length(max = 50)
+	@Size(max = 50)
 	private String contactPerson;
 
 	/**
@@ -157,13 +155,13 @@ public class BankBranch extends Auditable {
 	/**
 	 * description is the more detailed description of the branch
 	 */
-	@Length(max = 256)
+	@Size(max = 256)
 	private String description;
 
 	/**
 	 * micr is the micr code of the bank branch
 	 */
-	@Length(max = 50)
+	@Size(max = 50)
 	private String micr;
 
 }

@@ -39,11 +39,10 @@
  */
 package org.egov.egf.master.domain.model;
 
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.model.Auditable;
 import org.egov.egf.master.domain.enums.BankAccountType;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,19 +72,19 @@ public class BankAccount extends Auditable {
 	private Fund fund;
 
 	@NotNull
-	@Length(max = 25)
+	@Size(max = 25)
 	private String accountNumber;
 
 	// is this required ?
 	private String accountType;
 
-	@Length(max = 256)
+	@Size(max = 256)
 	private String description;
 
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 100)
+	@Size(max = 100)
 	private String payTo;
 
 	@NotNull

@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.egov.common.contract.request.User;
-import org.hibernate.validator.constraints.Length;
+import jakarta.validation.constraints.Size;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 @Setter
@@ -22,7 +22,7 @@ public class Auditable {
      */
 
     @NotNull
-    @Length(max = 50, min = 5)
+    @Size(max = 50, min = 5, message = "TenantId must be between 5 and 50 characters")
     protected String tenantId;
     /**
      * createdBy is the logged in use who is conducting transaction

@@ -39,12 +39,10 @@
  */
 package org.egov.egf.master.web.contract;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.egov.common.web.contract.AuditableContract;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
@@ -69,46 +67,46 @@ public class BankBranchContract extends AuditableContract {
 	private BankContract bank;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1, message = "Name must be between 1 and 50 characters")
 	private String code;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1, message = "Name must be between 1 and 50 characters")
 	@Pattern(regexp = "^[a-zA-Z0-9_]*$")
 	private String name;
 
 	@NotNull
-	@Length(max = 50, min = 1)
+	@Size(max = 50, min = 1, message = "Address must be between 1 and 50 characters")
 	private String address;
 
-	@Length(max = 50)
+	@Size(max = 50, message = "Address2 must be less than 50 characters")
 	private String address2;
 
-	@Length(max = 50)
+	@Size(max = 50, message = "City must be less than 50 characters")
 	private String city;
 
-	@Length(max = 50)
+	@Size(max = 50, message = "State must be less than 50 characters")
 	private String state;
 
-	@Length(max = 50)
+	@Size(max = 50, message = "Pincode must be less than 50 characters")
 	private String pincode;
 
-	@Length(max = 15)
+	@Size(max = 15, message = "Phone must be less than 15 characters")
 	private String phone;
 
-	@Length(max = 15)
+	@Size(max = 15, message = "Fax must be less than 15 characters")
 	private String fax;
 
-	@Length(max = 50)
+	@Size(max = 50, message = "ContactPerson must be less than 50 characters")
 	private String contactPerson;
 
 	@NotNull
 	private Boolean active;
 
-	@Length(max = 256)
+	@Size(max = 256, message = "Description must be less than 256 characters")
 	private String description;
 
-	@Length(max = 50)
+	@Size(max = 50, message = "Micr must be less than 50 characters")
 	private String micr;
 
 	public BankBranchContract(final String id) {

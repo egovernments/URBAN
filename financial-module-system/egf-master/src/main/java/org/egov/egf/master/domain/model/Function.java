@@ -42,11 +42,10 @@ package org.egov.egf.master.domain.model;
 /**
  * @author mani
  */
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.egov.common.domain.annotation.Unique;
 import org.egov.common.domain.model.Auditable;
-import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -81,7 +80,7 @@ public class Function extends Auditable {
 	/**
 	 * name is the name of the function .
 	 */
-	@Length(max = 128, min = 2)
+	@Size(max = 128, min = 2)
 	@NotNull
 	@Unique
 	private String name;
@@ -90,7 +89,7 @@ public class Function extends Auditable {
 	 * code is a unique number given to each function . ULBs may refer this for
 	 * the short name.
 	 */
-	@Length(max = 16, min = 2)
+	@Size(max = 16, min = 2)
 	@NotNull
 	private String code;
 	/**

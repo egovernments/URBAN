@@ -1,7 +1,7 @@
 package org.egov.common.domain.model;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import lombok.Data;
 
@@ -12,14 +12,14 @@ public class Designation {
 	private Long id;
 
 	@NotNull
-	@Size(min = 3, max = 100)
+	@Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
 	private String name;
 
 	@NotNull
-	@Size(min = 3, max = 20)
+	@Size(min = 3, max = 20, message = "Code must be between 3 and 20 characters")
 	private String code;
 
-	@Size(max = 250)
+	@Size(max = 250, message = "Description must be less than 250 characters")
 	private String description;
 
 	private String chartOfAccounts;
