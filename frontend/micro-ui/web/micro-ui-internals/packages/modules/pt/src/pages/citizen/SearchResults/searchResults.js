@@ -3,6 +3,7 @@ import { Header, ResponseComposer, Loader, Modal, Card, KeyNote, SubmitBar, Citi
 import PropTypes from "prop-types";
 import { useHistory, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import PropertyTable from "./PropertyTable";
 
 
 const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation, onSelect, config, clearParams = () => {} }) => {
@@ -133,7 +134,8 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
             {t(header)} ({searchResults?.length})
           </Header>
         )}
-        <ResponseComposer data={searchResults} template={template} actionButtonLabel={actionButtonLabel} onSubmit={onSubmit} />
+        {/* <ResponseComposer data={searchResults} template={template} actionButtonLabel={actionButtonLabel} onSubmit={onSubmit} /> */}
+        <PropertyTable data={searchResults} template={template} actionButtonLabel={actionButtonLabel} onSubmit={onSubmit}/>
       </div>
 
       {modalData ? (

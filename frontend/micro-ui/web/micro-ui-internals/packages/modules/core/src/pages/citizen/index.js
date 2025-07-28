@@ -699,7 +699,7 @@ const Home = ({
 
       <div className={`main center-container citizen-home-container mb-25`}>
         {hideSidebar ? null : (
-          <div className="SideBarStatic" style={{ height: "100%", marginTop: "-55px" }}>
+          <div className="SideBarStatic" style={{ height: "100%"}}>
             <StaticCitizenSideBar linkData={linkData} islinkDataLoading={islinkDataLoading} />
           </div>
         )}
