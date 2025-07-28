@@ -116,6 +116,30 @@
       <artifactId>hibernate-validator</artifactId>
       <version>8.0.1.Final</version> <!-- Compatible with Java 17 -->
     </dependency>
+    <!-- JUnit 4 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito -->
+    <!-- Mockito Core -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.12.4</version> <!-- Compatible and widely available -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>4.11.0</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <repositories>
     <repository>
@@ -127,6 +151,11 @@
       <id>repo.digit.org</id>
       <name>eGov DIGIT Releases Repository</name>
       <url>https://nexus-repo.digit.org/nexus/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>central</id>
+      <name>Maven Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
     </repository>
   </repositories>
 
