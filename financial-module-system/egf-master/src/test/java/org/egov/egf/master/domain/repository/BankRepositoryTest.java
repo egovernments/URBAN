@@ -229,7 +229,7 @@ public class BankRepositoryTest {
 		info.setApiId("apiId");
 		info.setKey("key");
 		info.setMsgId("msgId");
-		info.setTs(new Date());
+		info.setTs(new Date().getTime());
 		info.setUserInfo(user);
 		info.setAuthToken("null");
 		return info;
