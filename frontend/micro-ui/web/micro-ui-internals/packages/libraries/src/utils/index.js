@@ -340,7 +340,7 @@ const tlCitizenAccess = () => {
 const bndCitizenAccess = () => {
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
-  const bndRoles = ["BND_CITIZEN", "CITIZEN"];
+  const bndRoles = ["CITIZEN","BD_CITIZEN"];
   const BND_ACCESS = userRoles?.filter((role) => bndRoles?.includes(role));
   return BND_ACCESS?.length > 0;
 }
