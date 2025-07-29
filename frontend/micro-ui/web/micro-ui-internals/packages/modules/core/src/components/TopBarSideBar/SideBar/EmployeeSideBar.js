@@ -15,7 +15,7 @@ const EmployeeSideBar = () => {
       return <Loader />;
     }
     sidebarRef.current.style.cursor = "pointer";
-    collapseNav();
+    // collapseNav();
   }, [isLoading]);
 
   const expandNav = () => {
@@ -175,8 +175,11 @@ const EmployeeSideBar = () => {
   };
 
   return (
-    <div  ref={sidebarRef}
-     onMouseOver={expandNav} onMouseLeave={collapseNav} style={{background: "white",height: "100%",}}>
+    <div  
+    ref={sidebarRef}
+    //  onMouseOver={expandNav} 
+    //  onMouseLeave={collapseNav}
+      style={{background: "white",height: "100%",width:"230px"}}>
       {/* {renderSearch()} */}
       {/* {splitKeyValue()} */}
       <SubMenu item=""/>

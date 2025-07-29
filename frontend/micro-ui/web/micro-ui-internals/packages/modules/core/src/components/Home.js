@@ -15,6 +15,45 @@ import {
 } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell
+} from "recharts";
+const applicationData = [
+  {
+    name: "Last 7 days",
+    Approved: 18000,
+    Pending: 9000,
+    Rejected: 9000
+  },
+  {
+    name: "Last 15 days",
+    Approved: 18000,
+    Pending: 9000,
+    Rejected: 9000
+  },
+  {
+    name: "1 Month",
+    Approved: 18000,
+    Pending: 9000,
+    Rejected: 9000
+  }
+];
+
+const collectionData = [
+  { mode: "Cheque", value: 9000, fill: "#FF8A00" },
+  { mode: "PoS", value: 18000, fill: "#3BB85E" },
+  { mode: "Cash", value: 21000, fill: "#0076CE" },
+  { mode: "UPI", value: 27000, fill: "#C5D5EA" },
+  { mode: "Online (Web/Mobile)", value: 30000, fill: "#4B1D59" }
+];
 
 
 export const processLinkData = (newData, code, t) => {
@@ -132,7 +171,7 @@ const EmployeeHome = ({ modules }) => {
 
   console.log("module", modules)
   if (window.Digit.SessionStorage.get("PT_CREATE_EMP_TRADE_NEW_FORM")) window.Digit.SessionStorage.set("PT_CREATE_EMP_TRADE_NEW_FORM", {});
- 
+
   return (
     <div
       className="main-content"
@@ -234,7 +273,7 @@ const EmployeeHome = ({ modules }) => {
               { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
               { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" }
             ].map((card, index) => (
-              <div key={index} className="card" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", alignItems: "center", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
+              <div key={index} className="" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", alignItems: "center", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
                 <div className={`card-icon ${card.className}`} style={{ maxWidth: "70px", width: "70px" }}>
                   <img src={card.icon} alt={card.label} style={{ maxWidth: "100%" }} />
                 </div>
@@ -247,7 +286,7 @@ const EmployeeHome = ({ modules }) => {
           </div>
 
           {/* Chart Section */}
-          <div className="graph-view-area" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px", marginBottom: "20px" }}>
+          {/* <div className="graph-view-area" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px", marginBottom: "20px" }}>
             <div className="chart-container" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "start", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
               <h2 style={{ fontSize: "18px", marginBottom: "15px" }}>Application Details</h2>
               <canvas id="applicationDetails"></canvas>
@@ -268,13 +307,91 @@ const EmployeeHome = ({ modules }) => {
               </div>
               <canvas id="collectionChart"></canvas>
             </div>
-          </div>
+          </div> */}
+          <div style={{ display: "flex", gap: "20px", fontFamily: "Barlow" }}>
+            {/* Application Details Card */}
+            <div
+              style={{
+                flex: 1,
+                background: "white",
+                borderRadius: "12px",
+                padding: "20px",
+                boxShadow: "0 0 8px rgba(0,0,0,0.05)"
+              }}
+            >
+              <h3 style={{ fontWeight: "700",color: "#464255", fontSize: "20px", marginBottom: "10px" }}>
+                Application Details
+              </h3>
+              <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: "#3BB85E" }} />
+                  <span style={{ fontSize: "14px", color: "#333" }}>Approved</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: "#FFD400" }} />
+                  <span style={{ fontSize: "14px", color: "#333" }}>Pending</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: "#EF4C60" }} />
+                  <span style={{ fontSize: "14px", color: "#333" }}>Rejected</span>
+                </div>
+              </div>
+              <ResponsiveContainer width="100%" height={230}>
+                <BarChart data={applicationData} barCategoryGap={20}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="Approved" fill="#3BB85E" />
+                  <Bar dataKey="Pending" fill="#FFD400" />
+                  <Bar dataKey="Rejected" fill="#EF4C60" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
 
+            {/* Collection Card */}
+            <div
+              style={{
+                flex: 1,
+                background: "white",
+                borderRadius: "12px",
+                padding: "20px",
+                boxShadow: "0 0 8px rgba(0,0,0,0.05)"
+              }}
+            >
+              <h3 style={{ fontWeight: "700",color: "#464255", fontSize: "20px", marginBottom: "10px" }}>Collection</h3>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  marginBottom: "10px"
+                }}
+              >
+                <span>Total Till date: ₹ 12,34,567</span>
+                <span>Last 15 days: ₹ 12,34,567</span>
+              </div>
+              <ResponsiveContainer width="100%" height={230}>
+                <BarChart data={collectionData} barSize={40}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="mode" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="value">
+                    {collectionData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
           {/* Favorite Cards */}
           <div className="favorite-card">
             <div className="card-header-view" style={{ marginBottom: "15px" }}>
-              <h2 style={{ fontWeight: "700", fontSize: "20px", display: "flex", alignItems: "center", margin: 0 }}>
-                <i className="fa-regular fa-star" style={{ marginRight: "10px" }}></i>
+              <h2 style={{ color:"#464255",fontWeight: "700", fontSize: "20px", display: "flex", alignItems: "center", marginLeft:0,marginTop: 15 }}>
+                {/* <i className="fa-regular fa-star" style={{ marginRight: "10px" }}></i> */}
                 Favorites
               </h2>
             </div>

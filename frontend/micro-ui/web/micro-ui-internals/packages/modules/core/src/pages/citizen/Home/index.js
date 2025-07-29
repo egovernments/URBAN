@@ -482,10 +482,10 @@ const Home = () => {
                   boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
                   width: "100%",
                   // maxWidth: "400px",
-                  margin: "auto",
+                  // margin: "auto",
                   position: "relative",
                   rowGap: "20px",
-                  width:"500px",
+                  // width:"500px",
                   height:"150px"
                 }}
               >
