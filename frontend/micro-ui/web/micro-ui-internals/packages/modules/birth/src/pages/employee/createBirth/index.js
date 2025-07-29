@@ -145,6 +145,7 @@ export const CreateBirth = () => {
     };
 
     const isSameAddress = !!formData?.same_as_permanent_address;
+    const isLegacy = !!formData?.checkbox_legacy;
 
     return {
       dateofbirthepoch: toEpoch(formData?.date_of_birth),
@@ -177,16 +178,15 @@ export const CreateBirth = () => {
         religion: formData?.mother_religion || "",
       },
       placeofbirth: formData?.birth_place || "",
-      registrationno: formData?.registration_number || "",
+      registrationno: isLegacy ? (formData?.registration_number || "") : "",
       birthPresentaddr: presentAddress,
       informantname: formData?.informant_name || "",
       informantaddress: formData?.informant_address || "",
-
       birthPermaddr: permanentAddress,
       hospitalname: formData?.hospital_name?.code || "Unknown",
-      isLegacyRecord: !!formData?.checkbox_legacy,
+      isLegacyRecord: isLegacy,
       excelrowindex: -1,
-      counter: !!formData?.checkbox_legacy ? 1 : 0,
+      counter: isLegacy ? 1 : 0,
       tenantid: Digit.ULBService.getCurrentTenantId(),
     };
   };
@@ -288,6 +288,10 @@ export const CreateBirth = () => {
               }),
             }));
             setFormConfig(updatedForm);
+            // Clear registration_number field if legacy is unchecked
+            if (!isLegacy && setValueRef.current) {
+              setValueRef.current("registration_number", "");
+            }
           }
         }}
         secondaryLabel={t("BND_COMMON_NEW")}
