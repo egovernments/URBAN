@@ -360,10 +360,11 @@ const SelectPTUnits = React.memo(({ t, config, onSelect, userType, formData }) =
           </div>
         );
       })}
-      <div style={{ justifyContent: "left", display: "flex", paddingBottom: "15px", color: "#FF8C00" }}>
-        <button type="button" style={{ paddingTop: "10px" }} onClick={() => handleAdd()}>
+      <div style={{ justifyContent: "left", display: "flex", paddingBottom: "15px" }}>
+        <LinkButton label={t("PT_ADD_UNIT")} onClick={() => handleAdd()} style={{ color: "orange", width: "175px" }}></LinkButton>
+        {/* <button type="button" style={{ paddingTop: "10px" }} onClick={() => handleAdd()}>
           {`${t("PT_ADD_UNIT")}`}
-        </button>
+        </button> */}
       </div>
     </FormStep>
     </React.Fragment>

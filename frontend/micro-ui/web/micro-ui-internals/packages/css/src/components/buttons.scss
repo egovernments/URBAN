@@ -12,7 +12,7 @@
 
 .selector-button-border {
   @apply h-8 bg-border text-center border-b-2 border-input-border border-solid outline-none px-lg;
-
+  background-color: #d6d5d4 !important; 
   &:focus {
     @apply outline-none;
   }
@@ -35,7 +35,7 @@
 }
 
 .selector-button-primary-disabled {
-  @apply h-8 bg-primary-main text-center border-b-2 border-input-border border-solid outline-none px-lg opacity-50;
+  @apply h-8 bg-border text-center border-b-2 border-input-border border-solid outline-none px-lg opacity-50;
 
   &:focus {
     @apply outline-none;
@@ -47,4 +47,22 @@
 }
 .submit-bar:focus {
   @apply outline-none !important;
+}
+
+.proof-upload-file-container {
+  .proof-upload-button {
+    background-color: #d6d5d4 !important;
+  }
+}
+
+.app-container{
+  form{
+    .card{
+      .button{
+        .selector-button-border{
+        background-color: #d6d5d4 !important;
+      }
+      }    
+    }
+  }
 }
