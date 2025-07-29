@@ -46,7 +46,7 @@ const getPropertyAddress = (property,t) => {
   const street = property?.street;
   const landMark = property?.landmark;
   const locality = property?.locality?.name;
-  const city = t(`TENANT_TENANTS_${property?.tenantId?.toUpperCase?.()?.replace(".", "_")}`);
+  const city = property?.tenantId ? t(`TENANT_TENANTS_${property?.tenantId?.split('.')[1]?.toUpperCase()}`) : '';
   const pinCode = property?.pincode;
   const formattedAddress = `${doorNo ? doorNo + ", " : ""}${street ? street + ", " : ""}${landMark ? landMark + ", " : ""}${locality ? locality + ", " : ""}${city ? city : ""}${pinCode ? ", " + pinCode : ""}`
   return formattedAddress;
