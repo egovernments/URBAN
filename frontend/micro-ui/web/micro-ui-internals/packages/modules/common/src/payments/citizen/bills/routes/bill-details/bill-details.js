@@ -346,7 +346,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
   return (
     <div style={styles.container}>
       {/* Applicant Details */}
-      <div style={styles.section}>Applicant Details</div>
+      <div style={styles.section}>Applicant Details {" "}</div>
       <div style={styles.formGroup}>
         <div style={styles.labelInput}>
           <label style={styles.label}>Property ID *</label>
