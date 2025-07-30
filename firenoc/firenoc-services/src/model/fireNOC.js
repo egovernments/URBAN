@@ -199,7 +199,7 @@ const Address = {
         type: ["string", "null"],
         description: "Name of the building",
         maxLength: 64,
-        minLength: 2
+        minLength: 0
       },
     street: {
       type: "string",
