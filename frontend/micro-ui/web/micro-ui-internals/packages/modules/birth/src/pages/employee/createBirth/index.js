@@ -79,10 +79,10 @@ export const CreateBirth = () => {
   }, [showToast]);
 
   // Update form config based on "Same as Permanent Address" checkbox
-  const updateConfigBasedOnCheckbox = (sameAddressChecked) => {
-    return BirthConfig.map((section) => {
-      if (section.head === "BND_PRESENT_ADDR_DURING_BIRTH") {
-        return {
+  const updateConfigBasedOnCheckbox = (sameAddressChecked, currentConfig) => {
+  return currentConfig.map((section) => { // Use currentConfig, not BirthConfig
+    if (section.head === "BND_PRESENT_ADDR_DURING_BIRTH") {
+       return {
           ...section,
           body: section.body.map((field) => {
             if (field.populators?.name !== "same_as_permanent_address") {
@@ -94,13 +94,13 @@ export const CreateBirth = () => {
             return field;
           }),
         };
-      }
-      if (section.head === "BND_BIRTH_ADDR_PERM" && sameAddressChecked) {
-        return null;
-      }
-      return section;
-    }).filter(Boolean);
-  };
+    }
+    if (section.head === "BND_BIRTH_ADDR_PERM" && sameAddressChecked) {
+      return null;
+    }
+    return section;
+  }).filter(Boolean);
+};
 
   // API request configuration for creating birth certificate
   const reqCreate = {
@@ -150,6 +150,8 @@ export const CreateBirth = () => {
       dateofbirthepoch: toEpoch(formData?.date_of_birth),
       dateofreportepoch: toEpoch(formData?.date_of_registration),
       firstname: formData?.child_first_name || "",
+      middlename: formData?.child_middle_name || "",
+      lastname: formData?.child_last_name || "",
       genderStr: formData?.gender?.code || "",
       checkboxforaddress: isSameAddress,
       birthFatherInfo: {
@@ -188,6 +190,9 @@ export const CreateBirth = () => {
       excelrowindex: -1,
       counter: !!formData?.checkbox_legacy ? 1 : 0,
       tenantid: Digit.ULBService.getCurrentTenantId(),
+      remarks: formData?.remarks || "",
+      informantsname: formData?.informant_name || "",
+      informantsaddress: formData?.informant_address || "",
     };
   };
 
@@ -235,9 +240,9 @@ export const CreateBirth = () => {
   };
 
   // Reset form config to initial config on mount
-  useEffect(() => {
-    setFormConfig(BirthConfig);
-  }, []);
+  // useEffect(() => {
+  //   setFormConfig(BirthConfig);
+  // }, []);
 
   return (
     <React.Fragment>
@@ -259,35 +264,43 @@ export const CreateBirth = () => {
           const isLegacy = !!formData["checkbox_legacy"];
           const isSameAddressChecked = !!formData["same_as_permanent_address"];
 
-          // Update config if "Same as Permanent Address" checkbox changes
+          // --- Handle "Same Address" checkbox ---
           if (prevCheckboxRef.current !== isSameAddressChecked) {
             prevCheckboxRef.current = isSameAddressChecked;
             setSameAddressChecked(isSameAddressChecked);
             setPermanent(isSameAddressChecked);
-            const updatedConfig = updateConfigBasedOnCheckbox(isSameAddressChecked);
-            setFormConfig(updatedConfig);
+
+            // Use functional update to preserve the hospital list
+            setFormConfig(prevConfig =>
+              updateConfigBasedOnCheckbox(isSameAddressChecked, prevConfig)
+            );
           }
-          // Update config if "Legacy Record" checkbox changes
+
+          // --- Handle "Legacy Record" checkbox ---
           if (prevLegacyCheckboxRef.current !== isLegacy) {
             prevLegacyCheckboxRef.current = isLegacy;
-            const updatedForm = formConfig.map((section) => ({
-              ...section,
-              body: section.body.map((field) => {
-                if (field.populators?.name === "registration_number") {
-                  return {
-                    ...field,
-                    disable: !isLegacy,
-                    isMandatory: isLegacy,
-                    populators: {
-                      ...field.populators,
-                      error: isLegacy ? "Registration Number is Required!" : undefined,
-                    },
-                  };
-                }
-                return field;
-              }),
-            }));
-            setFormConfig(updatedForm);
+
+            // Use functional update here as well
+            setFormConfig(prevConfig =>
+              prevConfig.map((section) => ({
+                ...section,
+                body: section.body.map((field) => {
+                  if (field.populators?.name === "registration_number") {
+                    return {
+                      ...field,
+                      disable: !isLegacy,
+                      isMandatory: isLegacy,
+                      validation: { ...(field.validation || {}), required: isLegacy },
+                      populators: {
+                        ...field.populators,
+                        error: isLegacy ? (field.populators?.error || "Registration Number is Required!") : undefined,
+                      },
+                    };
+                  }
+                  return field;
+                }),
+              }))
+            );
           }
         }}
         secondaryLabel={t("BND_COMMON_NEW")}
