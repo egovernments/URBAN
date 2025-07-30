@@ -82,6 +82,10 @@ export const SuccessfulPayment = (props)=>{
     }
   }, [data]);
 
+  if ((window.location.href.includes("bpa") || window.location.href.includes("BPA")) && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
+    return <Loader />;
+  }
+
   if (isLoading || recieptDataLoading) {
     return <Loader />;
   }
@@ -496,6 +500,11 @@ const PaymentComponent = (props) => {
       setallowFetchBill(true);
     }
   }, [data]);
+
+  // Show loader until bpaData is loaded and valid if BPA is in the URL
+  if ((window.location.href.includes("bpa") || window.location.href.includes("BPA")) && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
+    return <Loader />;
+  }
 
   if (isLoading || recieptDataLoading) {
     return <Loader />;

@@ -227,6 +227,16 @@ const BillDetails = ({ paymentRules, businessService }) => {
         name: bill.payerName,
         mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
       });
+    } else if (businessService === "BPA.NC_APP_FEE" || (businessService && businessService.includes("BPA"))) {
+     
+      try {
+        const response = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+        sessionStorage.setItem("PaymentResponse", JSON.stringify(response));
+      } catch (error) {
+        console.log("Error while creating receipt for BPA", error);
+        
+      }
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`);
     } else {
       history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
         paymentAmount,
