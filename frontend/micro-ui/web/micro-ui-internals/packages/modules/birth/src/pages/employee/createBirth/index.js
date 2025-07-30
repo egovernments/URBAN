@@ -145,6 +145,7 @@ export const CreateBirth = () => {
     };
 
     const isSameAddress = !!formData?.same_as_permanent_address;
+    const isLegacy = !!formData?.checkbox_legacy;
 
     return {
       dateofbirthepoch: toEpoch(formData?.date_of_birth),
@@ -179,16 +180,15 @@ export const CreateBirth = () => {
         religion: formData?.mother_religion || "",
       },
       placeofbirth: formData?.birth_place || "",
-      registrationno: formData?.registration_number || "",
+      registrationno: isLegacy ? (formData?.registration_number || "") : "",
       birthPresentaddr: presentAddress,
       informantname: formData?.informant_name || "",
       informantaddress: formData?.informant_address || "",
-
       birthPermaddr: permanentAddress,
       hospitalname: formData?.hospital_name?.code || "Unknown",
-      isLegacyRecord: !!formData?.checkbox_legacy,
+      isLegacyRecord: isLegacy,
       excelrowindex: -1,
-      counter: !!formData?.checkbox_legacy ? 1 : 0,
+      counter: isLegacy ? 1 : 0,
       tenantid: Digit.ULBService.getCurrentTenantId(),
       remarks: formData?.remarks || "",
       informantsname: formData?.informant_name || "",
@@ -279,28 +279,29 @@ export const CreateBirth = () => {
           // --- Handle "Legacy Record" checkbox ---
           if (prevLegacyCheckboxRef.current !== isLegacy) {
             prevLegacyCheckboxRef.current = isLegacy;
+            const updatedForm = formConfig.map((section) => ({
+              ...section,
+              body: section.body.map((field) => {
+                if (field.populators?.name === "registration_number") {
+                  return {
+                    ...field,
+                    disable: !isLegacy,
+                    isMandatory: isLegacy,
+                    populators: {
+                      ...field.populators,
+                      error: isLegacy ? "Registration Number is Required!" : undefined,
+                    },
+                  };
+                }
+                return field;
+              }),
+            }));
+            setFormConfig(updatedForm);
+            // Clear registration_number field if legacy is unchecked
+            if (!isLegacy && setValueRef.current) {
+              setValueRef.current("registration_number", "");
+            }
 
-            // Use functional update here as well
-            setFormConfig(prevConfig =>
-              prevConfig.map((section) => ({
-                ...section,
-                body: section.body.map((field) => {
-                  if (field.populators?.name === "registration_number") {
-                    return {
-                      ...field,
-                      disable: !isLegacy,
-                      isMandatory: isLegacy,
-                      validation: { ...(field.validation || {}), required: isLegacy },
-                      populators: {
-                        ...field.populators,
-                        error: isLegacy ? (field.populators?.error || "Registration Number is Required!") : undefined,
-                      },
-                    };
-                  }
-                  return field;
-                }),
-              }))
-            );
           }
         }}
         secondaryLabel={t("BND_COMMON_NEW")}
