@@ -118,6 +118,7 @@ const Proof = ({ t, config, onSelect, userType, formData }) => {
           message={uploadedFile ? `1 ${t(`PT_ACTION_FILEUPLOADED`)}` : t(`PT_ACTION_NO_FILEUPLOADED`)}
           error={error}
           className={"proof-upload-file-container custom-uploadfile-propertycreate"}
+
           buttonClassName={"proof-upload-button"}
         />
         {error ? <div style={{ height: "20px", width: "100%", fontSize: "20px", color: "red", marginTop: "5px" }}>{error}</div> : ""}
