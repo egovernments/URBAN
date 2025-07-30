@@ -206,7 +206,7 @@ const Address = {
       description: "Street Name",
       valid_htmlData: true,
       maxLength: 64,
-      minLength: 2
+      minLength: 0
     },
     locality: {
       type: "object",
