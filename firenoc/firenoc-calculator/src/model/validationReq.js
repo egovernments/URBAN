@@ -195,7 +195,7 @@ const Address = {
       type: "string",
       description: "Street Name",
       maxLength: 64,
-      minLength: 2
+      minLength: 0
     }
   }
 };
