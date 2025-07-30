@@ -376,7 +376,7 @@ import ReactTooltip from "react-tooltip";
 const SubMenu = ({ item }) => {
   const styles = {
     sidebar: {
-      width: "240px",
+      // width: "240px",
       background: "white",
       height: "100%",
       // padding: "16px",
@@ -412,12 +412,13 @@ const SubMenu = ({ item }) => {
       display: "flex",
       flexDirection: "column",
       gap: "12px",
+      // padding:"20px 0px"
     },
     menuItem: {
       display: "flex",
       alignItems: "center",
       gap: "12px",
-      padding: "10px 0px",
+      padding: "10px 20px",
       textDecoration: "none",
       fontFamily: "Barlow",
       fontSize: "14px",
@@ -442,62 +443,62 @@ const SubMenu = ({ item }) => {
   //   { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315418.svg", label: "Tree Cutting", link: "javascript:void(0);", isActive: false },
   //   { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315418.svg", label: "Other Services", link: "javascript:void(0);", isActive: false },
   // ];
-const menuItems = [
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Dashboard.svg", // Home Icon
-    label: "Home",
-    link: "/digit-ui/employee",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/passkey.svg", // Property Tax Icon
-    label: "Property Tax",
-    link: "/digit-ui/employee/pt/PropertyLandingPage",
-    isActive: true
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/water_ph.svg", // Water Tax Icon
-    label: "Water Tax",
-    link: "javascript:void(0);",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/real_estate_agent.svg", // Rental Icon
-    label: "Rental",
-    link: "javascript:void(0);",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Diploma.svg", // Marriage Registration Icon
-    label: "Marriage Registration",
-    link: "javascript:void(0);",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Road.svg", // Road Cutting Icon
-    label: "Road Cutting",
-    link: "javascript:void(0);",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Truck.svg", // Funeral Van Icon
-    label: "Funeral Van",
-    link: "javascript:void(0);",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Oak%20Tree.svg", // Tree Cutting Icon
-    label: "Tree Cutting",
-    link: "javascript:void(0);",
-    isActive: false
-  },
-  {
-    icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/More.svg", // Other Services Icon
-    label: "Other Services",
-    link: "javascript:void(0);",
-    isActive: false
-  }
-];
+  const menuItems = [
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Dashboard.svg", // Home Icon
+      label: "Home",
+      link: "/digit-ui/employee",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/passkey.svg", // Property Tax Icon
+      label: "Property Tax",
+      link: "/digit-ui/employee/pt/PropertyLandingPage",
+      isActive: true
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/water_ph.svg", // Water Tax Icon
+      label: "Water Tax",
+      link: "javascript:void(0);",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/real_estate_agent.svg", // Rental Icon
+      label: "Rental",
+      link: "javascript:void(0);",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Diploma.svg", // Marriage Registration Icon
+      label: "Marriage Registration",
+      link: "javascript:void(0);",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Road.svg", // Road Cutting Icon
+      label: "Road Cutting",
+      link: "javascript:void(0);",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Truck.svg", // Funeral Van Icon
+      label: "Funeral Van",
+      link: "javascript:void(0);",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Oak%20Tree.svg", // Tree Cutting Icon
+      label: "Tree Cutting",
+      link: "javascript:void(0);",
+      isActive: false
+    },
+    {
+      icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/More.svg", // Other Services Icon
+      label: "Other Services",
+      link: "javascript:void(0);",
+      isActive: false
+    }
+  ];
 
   return (
     <div style={styles.sidebar}>
@@ -521,8 +522,16 @@ const menuItems = [
               ...(item.isActive ? styles.activeTab : {}),
             }}
           >
-            <img style={{width:"50px",height:"38px"}} src={item.icon} />
-            <span style={{color:"black"}}>{item.label}</span>
+            <img style={{ width: "19px", height: "19px" }} src={item.icon} />
+            <h4 style={{
+              fontFamily: "Barlow",
+              fontWeight: 600,
+              fontStyle: "normal", // 'SemiBold' isn't a valid CSS value; use 'normal' or set the correct font if available
+              fontSize: "14px",
+              lineHeight: "100%",
+              letterSpacing: "0px",
+              color: "#464255"
+            }}>{item.label}</h4>
           </a>
         ))}
       </div>

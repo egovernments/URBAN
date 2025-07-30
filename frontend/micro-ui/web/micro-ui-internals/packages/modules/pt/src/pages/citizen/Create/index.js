@@ -579,6 +579,7 @@ const CreateProperty = () => {
     });
   };
   const handleSubmit = async () => {
+      const tenantIdDefine = Digit.ULBService.getCurrentTenantId();
     const errors = {};
 
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
@@ -671,7 +672,7 @@ const CreateProperty = () => {
     const payload = {
       Property: {
         updateIMC: false,
-        tenantId: userInfo1?.tenantId,
+        tenantId: "pg.citya",
         address: {
           city: "CityA",
           locality: {

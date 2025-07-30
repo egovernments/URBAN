@@ -19,7 +19,6 @@ const styles = {
     row: {
         display: "flex",
         flexWrap: "wrap",
-        gap: "20px",
         marginBottom: "16px",
         justifyContent: "space-between",
         width: "100%"
@@ -33,7 +32,7 @@ const styles = {
         width: "100%"
     },
     field: {
-        display: "flex",
+        display: "block",
         // flexDirection: "column",
         alignItems: "center",
 
@@ -44,6 +43,7 @@ const styles = {
         borderRadius: "6px",
         padding: "6px 10px",
         fontSize: "14px",
+        width: "300px"
 
     },
     inputs: {
@@ -67,6 +67,18 @@ const styles = {
         fontFamily: "Poppins",
         fontWeight: "bold",
         fontSize: "16px",
+        lineHeight: "100%",
+        letterSpacing: "0%",
+        // textDecoration: "underline",
+        textDecorationStyle: "solid",
+        textDecorationOffset: "0%",
+        textDecorationThickness: "0%",
+        color: "#6b133f",
+    },
+      sectionHeaderDemand: {
+        fontFamily: "Poppins",
+        fontWeight: "bold",
+        fontSize: "22px",
         lineHeight: "100%",
         letterSpacing: "0%",
         // textDecoration: "underline",
@@ -187,25 +199,23 @@ const PropertyForm = () => {
     return (
         <div style={{ position: "relative" }}>
             <button style={styles.downloadBtn}>⬇ Download</button>
-
-
             <div style={styles.cardD}>
+                <div style={styles.sectionHeaderDemand}>Demand</div>
+
                 <div style={styles.row}>
                     {/* <InputField label="Property id" value={calculation?.serviceNumber || "N/A"} />
-                <InputField label="Old Property id" value="567889" /> */}
+                           <InputField label="Old Property id" value="567889" /> */}
                     <InputField label="Rate zone" value={applicationData?.units[0].rateZone || "N/A"} />
                 </div>
-            </div>
-            <div style={styles.cardD}>
                 {ownersDetail.map((owner, index) => (
                     <React.Fragment key={owner.uuid || index}>
                         <div style={styles.sectionHeader}>Owner {index + 1}</div>
-                        <div style={styles.rowOwnerName}>
-                            <InputFieldNew label="Name" value={`${owner?.salutation || ""} ${owner?.name || "N/A"}`} />
-                            <div style={{ marginBottom: "20px" }}></div>
-                            <InputFieldNew label="Father name" value={owner?.fatherOrHusbandName} />
-                            <div style={{ marginBottom: "20px" }}></div>
-                            <InputFieldNew label="Address" value={owner?.permanentAddress || "N/A"} />
+                        <div style={styles.row}>
+                            <InputField label="Name" value={`${owner?.salutation || ""} ${owner?.name || "N/A"}`} />
+
+                            <InputField label="Father name" value={owner?.fatherOrHusbandName} />
+
+                            <InputField label="Address" value={owner?.permanentAddress || "N/A"} />
                         </div>
                         <div style={styles.row}>
                             <InputField label="Zone" value={address?.zone || "N/A"} />

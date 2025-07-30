@@ -38,7 +38,7 @@
 //   ];
 
 //   const { isLoading: isUserLoading, data: userData, revalidate } = Digit.Hooks.useCustomAPIHook(...requestCriteria);
-  
+
 //   const { isLoading: isFSMLoading, isError, error, data: application, error: errorApplication } = Digit.Hooks.fsm.useApplicationDetail(
 //     t,
 //     tenantId,
@@ -284,6 +284,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
   let { consumerCode } = useParams();
   const { workflow: wrkflow, tenantId: _tenantId, authorization, ConsumerName } = Digit.Hooks.useQueryParams();
   const [bill, setBill] = useState(state?.bill);
+  const [propertyDetails, setPropertyDetails] = useState(null);
   const tenantId = state?.tenantId || _tenantId || Digit.UserService.getUser().info?.tenantId;
   const propertyId = state?.propertyId;
 
@@ -292,10 +293,10 @@ const BillDetails = ({ paymentRules, businessService }) => {
   const { data, isLoading } = state?.bill
     ? { isLoading: false }
     : Digit.Hooks.useFetchPayment({
-        tenantId,
-        businessService,
-        consumerCode: wrkflow === "WNS" ? stringReplaceAll(consumerCode, "+", "/") : consumerCode,
-      });
+      tenantId,
+      businessService,
+      consumerCode: wrkflow === "WNS" ? stringReplaceAll(consumerCode, "+", "/") : consumerCode,
+    });
 
   const {
     isLoading: isFSMLoading,
@@ -330,7 +331,28 @@ const BillDetails = ({ paymentRules, businessService }) => {
         ?.reduce((acc, cur) => acc + cur.amount, 0) || 0
     );
   };
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const response = await Digit.PTService.search({
+          tenantId,
+          filters: {
+            propertyIds: consumerCode,
+            status: "ACTIVE",
+          },
+        });
+        const property = response?.Properties?.[0];
+        setPropertyDetails(property || null);
+      } catch (err) {
+      } finally {
+        // setLoading(false);
+      }
+    };
 
+    if (consumerCode) {
+      fetchProperty();
+    }
+  }, [tenantId, consumerCode]);
   const onSubmit = () => {
     const paymentAmount = getTotal();
     history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}`, {
@@ -343,6 +365,27 @@ const BillDetails = ({ paymentRules, businessService }) => {
 
   if (isLoading || isFSMLoading || !bill) return <Loader />;
 
+
+
+  const consumerCodes = propertyDetails?.propertyId;
+
+  const billList = {
+    additionalDetails: {
+      plotArea: propertyDetails?.landArea || "",
+      rateZone: propertyDetails?.units?.[0]?.rateZone || "",
+      guardianName: propertyDetails?.owners?.[0]?.fatherOrHusbandName || "",
+      aadhaarNumber: propertyDetails?.owners?.[0]?.aadhaarNumber || "",
+    },
+    payerName: propertyDetails?.owners?.[0]?.name || "",
+    payerAddress: `${propertyDetails?.address?.doorNo || ""}, ${propertyDetails?.address?.street || ""}, ${propertyDetails?.address?.locality?.name || ""}`,
+  };
+  const billDetailList = {
+    address: {
+      ward: propertyDetails?.address?.ward || "",
+      colony: propertyDetails?.address?.locality?.name || "",
+      zone: propertyDetails?.address?.zone || "",
+    },
+  };
   return (
     <div style={styles.container}>
       {/* Applicant Details */}
@@ -350,15 +393,15 @@ const BillDetails = ({ paymentRules, businessService }) => {
       <div style={styles.formGroup}>
         <div style={styles.labelInput}>
           <label style={styles.label}>Property ID *</label>
-          <input style={styles.input} value={consumerCode || ""} readOnly />
+          <input style={styles.input} value={consumerCodes || ""} readOnly />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Plot Area (Sq feet) *</label>
-          <input style={styles.input} value={bill?.additionalDetails?.plotArea || ""} readOnly />
+          <input style={styles.input} value={billList?.additionalDetails?.plotArea || ""} readOnly />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Rate Zone *</label>
-          <input style={styles.input} value={bill?.additionalDetails?.rateZone || ""} readOnly />
+          <input style={styles.input} value={billList?.additionalDetails?.rateZone || ""} readOnly />
         </div>
       </div>
 
@@ -367,15 +410,15 @@ const BillDetails = ({ paymentRules, businessService }) => {
       <div style={styles.formGroup}>
         <div style={styles.labelInput}>
           <label style={styles.label}>Owner Name *</label>
-          <input style={styles.input} value={bill?.payerName || ""} readOnly />
+          <input style={styles.input} value={billList?.payerName || ""} readOnly />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Father/Husband Name</label>
-          <input style={styles.input} value={bill?.additionalDetails?.guardianName || ""} readOnly />
+          <input style={styles.input} value={billList?.additionalDetails?.guardianName || ""} readOnly />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Aadhaar ID</label>
-          <input style={styles.input} value={bill?.additionalDetails?.aadhaarNumber || ""} readOnly />
+          <input style={styles.input} value={billList?.additionalDetails?.aadhaarNumber || ""} readOnly />
         </div>
       </div>
 
@@ -386,21 +429,21 @@ const BillDetails = ({ paymentRules, businessService }) => {
           <label style={styles.label}>Address *</label>
           <input
             style={styles.input}
-            value={bill?.payerAddress}
+            value={billList?.payerAddress}
             readOnly
           />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Ward *</label>
-          <input style={styles.input} value={billDetails?.address?.ward || ""} readOnly />
+          <input style={styles.input} value={billDetailList?.address?.ward || ""} readOnly />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Colony *</label>
-          <input style={styles.input} value={billDetails?.address?.colony || ""} readOnly />
+          <input style={styles.input} value={billDetailList?.address?.colony || ""} readOnly />
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Zone *</label>
-          <input style={styles.input} value={billDetails?.address?.zone || ""} readOnly />
+          <input style={styles.input} value={billDetailList?.address?.zone || ""} readOnly />
         </div>
       </div>
 

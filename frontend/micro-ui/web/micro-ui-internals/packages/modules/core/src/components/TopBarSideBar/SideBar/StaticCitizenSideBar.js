@@ -246,7 +246,7 @@ const StaticCitizenSideBar = ({ linkData, islinkDataLoading }) => {
       <div>
         <div style={{ width: "100%", borderBottom: "1px solid #6F3AFA", }}>
           <img
-            src={""}
+            src={stateInfo?.logoUrl}
             alt="Logo"
             style={{ width: "73px", height: "82px", display: "block", margin: "auto", padding: "10px 0" }}
           />

@@ -4,7 +4,7 @@ export default {
     boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
     padding: "16px",
     // border: "1px solid #000000",
-    marginBottom:"22px",
+    marginBottom: "22px",
     borderRadius: "12px",
   },
   div: {
@@ -60,13 +60,13 @@ export default {
   },
   table: {
     borderCollapse: "collapse",
-    width: "80%",
+    // width: "80%",
     // margin: "auto"
   },
   tableHeader: {
     textAlign: "left",
     padding: "8px",
-    border: "1px solid #ccc",
+    border: "1px solid black",
     background: "#6B133F4D",
     color: "#282828",
     width: "240px",
@@ -78,7 +78,7 @@ export default {
   },
   tableCell: {
     padding: "8px",
-    border: "1px solid #ccc",
+    border: "1px solid black",
     width: "200px"
   },
   select: {
@@ -155,10 +155,11 @@ export default {
     height: "35px",
     borderWidth: "1px",
     borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347"
-
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
   },
   inputFullWidth: {
     flexGrow: 1
@@ -192,22 +193,22 @@ export default {
     backgroundColor: "#f9f9f9"
   },
   assessmentStyle: {
-    background: '#6b133f',
+    // background: '#6b133f',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
-    fontSize: '16px',
+    fontSize: '18px',
     lineHeight: '100%',
     letterSpacing: '0px',
     textDecorationStyle: 'solid',
     textDecorationColor: '#6b133f',
     textDecorationThickness: '1px',
-    color: 'white',
+    color: '#6B133F',
     marginBottom: '20px',
-    padding: '14px',
+    // padding: '14px',
     // width: '52%',
     // borderBottomRightRadius: '20px',
     // borderTopRightRadius: '20px',
-    textAlign: "center",
+    textAlign: "left",
 
   },
   styleMtop: {
@@ -223,7 +224,7 @@ export default {
     textDecorationColor: '#6b133f',
     textDecorationThickness: '1px',
     textDecorationOffset: '2px',
-    color: '#6b133f',
+    color: '#35333C',
     marginBottom: '20px',
     display: "flex",
     alignItems: "center",
@@ -243,27 +244,32 @@ export default {
     border: 'none',
     display: 'flex',
     alignItems: 'center',
-    marginTop:"10px",
-    marginBottom:"10px"
+    marginTop: "10px",
+    marginBottom: "10px"
   },
   textBox: {
     // width: "244.23472595214844px",
     height: "35px",
     borderWidth: "1px",
     borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347"
-
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347"
+    background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
   },
   widthInput: {
     width: "100%",
     height: "35px",
     borderWidth: "1px",
     borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347",
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347",
+       background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
     // padding: "6px"
   },
   widthInputSha: {
@@ -281,11 +287,14 @@ export default {
     height: "35px",
     borderWidth: "1px",
     borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347"
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347"
+        background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
   },
-   widthInput300Ass: {
+  widthInput300Ass: {
     // width: "32%",
     height: "35px",
     borderWidth: "1px",
@@ -299,17 +308,20 @@ export default {
     height: "72px",
     borderWidth: "1px",
     borderRadius: "6px",
-    border: "1px solid #D9D9D9",
+    // border: "1px solid #D9D9D9",
     padding: "10px",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347"
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347"
+       background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
   },
   fileLabel: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     // backgroundColor: "#EDF0FC",,
-    height:"40px",
+    height: "40px",
     borderRadius: "10px",
     boxShadow: "0px 4px 4px 0px #00000040",
     background: "#A3BBF347",

@@ -552,7 +552,7 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
         </p>
       )}
 
-      <div style={{ textAlign: "right", marginTop: "0.5rem", width: "80%" }}>
+      <div style={{ textAlign: "right", marginTop: "0.5rem"}}>
         <a href="#" style={styles.addMoreLink} onClick={(e) => { e.preventDefault(); addUnit(); }}>
           {t("Add more")}
         </a>
