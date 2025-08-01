@@ -64,7 +64,11 @@ const DeathCard = () => {
     links: isCitizen ? citizenLinks : filteredEmployeeLinks,
   };
 
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return (
+    <div className="death-card-module">
+      <EmployeeModuleCard {...propsForModuleCard} />
+    </div>
+  );
 };
 
 export default DeathCard;
