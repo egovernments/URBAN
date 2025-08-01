@@ -1242,13 +1242,15 @@ const EditForm = ({ applicationData }) => {
       isCorrespondenceAddress: correspondenceAddress?.sameAsProperty,
       oldPropertyId: assessmentDetails?.oldPropertyId,
       propertyType: applicationData.propertyType,
+      noOfFloors: propertyDetails.find(u => u.floorNo) ? parseInt(propertyDetails.find(u => u.floorNo).floorNo) : 1,
+      usageCategory: propertyDetails.find(u => u.usageType) ? propertyDetails.find(u => u.usageType).usageType : "RESIDENTIAL",
       creationReason: state?.workflow?.businessService === "PT.UPDATE" || (applicationData?.documents == null) ? "UPDATE" : applicationData?.creationReason,
-      usageCategory: data?.usageCategoryMinor?.subuagecode ? data?.usageCategoryMinor?.subuagecode : data?.usageCategoryMajor?.code,
+      // usageCategory: data?.usageCategoryMinor?.subuagecode ? data?.usageCategoryMinor?.subuagecode : data?.usageCategoryMajor?.code,
       usageCategoryMajor: data?.usageCategoryMajor?.code.split(".")[0],
       usageCategoryMinor: data?.usageCategoryMajor?.code.split(".")[1] || null,
-      noOfFloors: Number(data?.noOfFloors),
-      landArea: Number(data?.landarea),
-      superBuiltUpArea: Number(data?.landarea),
+      // noOfFloors: Number(data?.noOfFloors),
+      // landArea: Number(assessmentDetails?.landarea),
+      superBuiltUpArea: Number(assessmentDetails?.landarea),
       source: "MUNICIPAL_RECORDS", // required
       channel: "CFC_COUNTER", // required
       additionalDetails: {
@@ -1315,87 +1317,6 @@ const EditForm = ({ applicationData }) => {
   const configs = commonFields ? commonFields : newConfig;
 
   // Styles
-  const styles = {
-    sectionSty: {
-      boxShadow: "0px 4px 4px 0px #0000000A",
-      backgroundColor: "#FFFFFF",
-      borderRadius: "10px",
-      padding: "10px",
-      marginBottom: "15px"
-    },
-    sectionStyle: {
-      backgroundColor: "#6B133F",
-      padding: "10px",
-      color: "#fff",
-      fontWeight: "bold",
-      fontSize: "16px",
-      marginBottom: "20px",
-      textAlign: "center"
-    },
-    gridStyle: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(266px, 1fr))",
-      gap: "20px",
-      marginBottom: "20px",
-    },
-    labelStyle: {
-      fontFamily: "Noto Sans",
-      fontWeight: 400,
-      fontStyle: "normal", // "Regular" is not valid; use "normal"
-      fontSize: "16px",
-      lineHeight: "100%",  // Or use a unitless number like 1 for better scaling
-      letterSpacing: "0px",
-    },
-    inputStyle: {
-      width: "100%",
-      padding: "10px",
-      border: "1px solid #ccc",
-      borderRadius: "4px",
-      fontSize: "14px",
-    },
-    checkboxStyle: {
-      marginRight: "8px",
-      verticalAlign: "middle",
-    },
-
-    cellHeaderStyle: {
-      padding: "10px 0px",
-      textAlign: "center",
-      border: "1px solid #6B133F66",
-      fontWeight: "bold",
-      fontSize: "14px",
-      width: "220px"
-    },
-
-    tableCell: {
-      // padding: "10px",
-      border: "1px solid #6B133F66",
-    },
-    select: {
-      width: "100%",
-      padding: "8px",
-      // border: "1px solid #ddd",
-      borderRadius: "4px",
-    },
-    actionButton: {
-      padding: "6px 12px",
-      margin: "0 4px",
-      backgroundColor: "#6B133F",
-      color: "white",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-    },
-    submitButton: {
-      padding: "10px 30px",
-      backgroundColor: "#6B133F",
-      color: "#fff",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      fontWeight: "bold",
-    }
-  };
 
   return (
     <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
@@ -1746,5 +1667,86 @@ const EditForm = ({ applicationData }) => {
     </div>
   );
 };
+  const styles = {
+    sectionSty: {
+      boxShadow: "0px 4px 4px 0px #0000000A",
+      backgroundColor: "#FFFFFF",
+      borderRadius: "10px",
+      padding: "10px",
+      marginBottom: "15px"
+    },
+    sectionStyle: {
+      backgroundColor: "#6B133F",
+      padding: "10px",
+      color: "#fff",
+      fontWeight: "bold",
+      fontSize: "16px",
+      marginBottom: "20px",
+      textAlign: "center"
+    },
+    gridStyle: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(266px, 1fr))",
+      gap: "20px",
+      marginBottom: "20px",
+    },
+    labelStyle: {
+      fontFamily: "Noto Sans",
+      fontWeight: 400,
+      fontStyle: "normal", // "Regular" is not valid; use "normal"
+      fontSize: "16px",
+      lineHeight: "100%",  // Or use a unitless number like 1 for better scaling
+      letterSpacing: "0px",
+    },
+    inputStyle: {
+      width: "100%",
+      padding: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "4px",
+      fontSize: "14px",
+    },
+    checkboxStyle: {
+      marginRight: "8px",
+      verticalAlign: "middle",
+    },
+
+    cellHeaderStyle: {
+      padding: "10px 0px",
+      textAlign: "center",
+      border: "1px solid #6B133F66",
+      fontWeight: "bold",
+      fontSize: "14px",
+      width: "220px"
+    },
+
+    tableCell: {
+      // padding: "10px",
+      border: "1px solid #6B133F66",
+    },
+    select: {
+      width: "100%",
+      padding: "8px",
+      // border: "1px solid #ddd",
+      borderRadius: "4px",
+    },
+    actionButton: {
+      padding: "6px 12px",
+      margin: "0 4px",
+      backgroundColor: "#6B133F",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+    },
+    submitButton: {
+      padding: "10px 30px",
+      backgroundColor: "#6B133F",
+      color: "#fff",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      fontWeight: "bold",
+    }
+  };
 
 export default EditForm;
