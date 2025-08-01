@@ -873,7 +873,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { newConfig } from "../../../config/Create/config";
 
 const EditForm = ({ applicationData }) => {
-  console.log("applicationData", applicationData)
+
   const { t } = useTranslation();
   const history = useHistory();
   const { state } = useLocation();
@@ -994,7 +994,7 @@ const EditForm = ({ applicationData }) => {
         setPropertyDetails([
           {
             usageType: unit.usageCategory || "",
-            usageFactor: "", // Not in the data, adjust as needed
+            usageFactor: unit.occupancyType, // Not in the data, adjust as needed
             floorNumber: unit.floorNo?.toString() || "",
             constructionType: unit.constructionDetail?.constructionType || "",
             area: unit.constructionDetail?.builtUpArea?.toString() || "",
@@ -1030,7 +1030,7 @@ const EditForm = ({ applicationData }) => {
           setZones(zoneOptions);
         }
       } catch (error) {
-        console.error("Error fetching boundary data:", error);
+
       }
     })();
   }, []);
@@ -1177,7 +1177,7 @@ const EditForm = ({ applicationData }) => {
       },
     })),
   };
-  console.log("defaultValues", defaultValues)
+
   sessionStorage.setItem("PropertyInitials", JSON.stringify(defaultValues?.originalData));
 
   const handleUnitChange = (index, field, value) => {
@@ -1221,7 +1221,9 @@ const EditForm = ({ applicationData }) => {
 
 
   const onSubmit = (data) => {
-    console.log("data,", data)
+    const selectedColony = colonies.find(
+      (colony) => colony.code === propertyAddress.colony
+    );
     const formData = {
       ...applicationData,
       address: {
@@ -1232,8 +1234,8 @@ const EditForm = ({ applicationData }) => {
         //       ward: propertyAddress.ward,
         //       locality: propertyAddress.colony,
         locality: {
-          code: propertyAddress.colony || "SUN02",
-          name: propertyAddress.colony || "map with zone",
+          code: selectedColony?.code || "SUN02",
+          name: selectedColony?.name || "Unknown",
         },
         zone: propertyAddress.zone || "SUN02",
         ward: propertyAddress.ward || "1",
@@ -1255,6 +1257,21 @@ const EditForm = ({ applicationData }) => {
         mobileTower: otherDetails?.mobileTower || false,
         bondRoad: otherDetails?.bondRoad || false,
         advertisement: otherDetails?.advertisement || false,
+        unit: propertyDetails.map(unit => (
+          {
+            usageCategory: unit.usageType || "RESIDENTIAL",
+            usesCategoryMajor: unit.usageType || "RESIDENTIAL",
+            occupancyType: unit.usageFactor || "SELFOCCUPIED",
+            constructionDetail: {
+              builtUpArea: unit.area || "3000",
+              constructionType: unit.constructionType || null,
+            },
+            floorNo: parseInt(unit.floorNo) || 0,
+            rateZone: assessmentDetails?.rateZone || "",
+            roadFactor: assessmentDetails?.roadFactor || "",
+            fromYear: unit.fromYear,
+            toYear: unit.toYear,
+          })),
       },
       documents: applicationData?.documents ? applicationData?.documents.map((old) => {
         let dt = old.documentType.split(".");
@@ -1282,21 +1299,7 @@ const EditForm = ({ applicationData }) => {
           fromYear: unit.fromYear,
           toYear: unit.toYear,
         })),
-      unit: propertyDetails.map(unit => (
-        {
-          usageCategory: unit.usageType || "RESIDENTIAL",
-          usesCategoryMajor: unit.usageType || "RESIDENTIAL",
-          occupancyType: unit.usageFactor || "SELFOCCUPIED",
-          constructionDetail: {
-            builtUpArea: unit.area || "3000",
-            constructionType: unit.constructionType || null,
-          },
-          floorNo: parseInt(unit.floorNo) || 0,
-          rateZone: assessmentDetails?.rateZone || "",
-          roadFactor: assessmentDetails?.roadFactor || "",
-          fromYear: unit.fromYear,
-          toYear: unit.toYear,
-        })),
+
       landArea: assessmentDetails.plotArea,
       workflow: state?.workflow,
       applicationStatus: "UPDATE",
@@ -1358,8 +1361,8 @@ const EditForm = ({ applicationData }) => {
     },
 
     cellHeaderStyle: {
-       padding: "10px 0px",
-      textAlign:"center",
+      padding: "10px 0px",
+      textAlign: "center",
       border: "1px solid #6B133F66",
       fontWeight: "bold",
       fontSize: "14px",
@@ -1403,7 +1406,7 @@ const EditForm = ({ applicationData }) => {
         <div style={styles.sectionStyle}>{t("Property Address")}</div>
         <div style={styles.gridStyle}>
           <div>
-            <label style={styles.labelStyle}>{t("Zone")} <span style={{color:"red"}}>*</span></label>
+            <label style={styles.labelStyle}>{t("Zone")} <span style={{ color: "red" }}>*</span></label>
             <select
               style={styles.inputStyle}
               value={propertyAddress.zone}
@@ -1416,7 +1419,7 @@ const EditForm = ({ applicationData }) => {
             </select>
           </div>
           <div>
-            <label style={styles.labelStyle}>{t("Ward")}<span style={{color:"red"}}>*</span></label>
+            <label style={styles.labelStyle}>{t("Ward")}<span style={{ color: "red" }}>*</span></label>
             <select
               style={styles.inputStyle}
               value={propertyAddress.ward}
@@ -1430,19 +1433,26 @@ const EditForm = ({ applicationData }) => {
             </select>
           </div>
           <div>
-            <label style={styles.labelStyle}>{t("Colony")}<span style={{color:"red"}}>*</span></label>
+            <label style={styles.labelStyle}>
+              {t("Colony")}<span style={{ color: "red" }}>*</span>
+            </label>
             <select
               style={styles.inputStyle}
               value={propertyAddress?.colony}
-              onChange={(e) => setPropertyAddress({ ...propertyAddress, colony: e.target.value })}
+              onChange={(e) =>
+                setPropertyAddress({ ...propertyAddress, colony: e.target.value })
+              }
               disabled={!propertyAddress.ward}
             >
               <option value="">{t("Select")}</option>
               {colonies.map((colony) => (
-                <option key={colony.code} value={colony.code}>{colony.name}</option>
+                <option key={colony.code} value={colony.code}>
+                  {colony.name}
+                </option>
               ))}
             </select>
           </div>
+
         </div>
       </div>
 
@@ -1480,7 +1490,7 @@ const EditForm = ({ applicationData }) => {
         <div style={styles.sectionStyle}>{t("Assessment Details")}</div>
         <div style={styles.gridStyle}>
           <div>
-            <label style={styles.labelStyle}>{t("Rate Zone")}<span style={{color:"red"}}>*</span></label>
+            <label style={styles.labelStyle}>{t("Rate Zone")}<span style={{ color: "red" }}>*</span></label>
             <input
               style={styles.inputStyle}
               placeholder={t("Auto fetched")}
@@ -1489,7 +1499,7 @@ const EditForm = ({ applicationData }) => {
             />
           </div>
           <div>
-            <label style={styles.labelStyle}>{t("Road Factor")}<span style={{color:"red"}}>*</span></label>
+            <label style={styles.labelStyle}>{t("Road Factor")}<span style={{ color: "red" }}>*</span></label>
             <select
               style={styles.inputStyle}
               value={assessmentDetails.roadFactor}
@@ -1511,7 +1521,7 @@ const EditForm = ({ applicationData }) => {
             />
           </div>
           <div>
-            <label style={styles.labelStyle}>{t("Plot Area (Sq feet)")}<span style={{color:"red"}}>*</span></label>
+            <label style={styles.labelStyle}>{t("Plot Area (Sq feet)")}<span style={{ color: "red" }}>*</span></label>
             <input
               style={styles.inputStyle}
               type="number"
