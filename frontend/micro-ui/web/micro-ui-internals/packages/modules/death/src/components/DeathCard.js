@@ -65,7 +65,9 @@ const DeathCard = () => {
   };
 
   return (
-    <div className="death-card-module">
+    <div className="death-card-module" style={{
+      marginBottom:"1.5rem",
+    }}>
       <EmployeeModuleCard {...propsForModuleCard} />
     </div>
   );
