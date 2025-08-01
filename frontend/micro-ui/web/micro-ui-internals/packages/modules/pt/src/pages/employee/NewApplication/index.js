@@ -32,16 +32,15 @@ const NewApplication = () => {
     workflow,
     processInstance,
   } = location.state || {};
-  console.log("▶️ General Details:", generalDetails);
-  console.log("📍 Address Details:", addressDetailsSet);
-  console.log("👤 Owner Details:", ownerDetails);
-  console.log("🏢 Unit Details:", unitDetails);
-  console.log("📄 Property Documents:", propertyDocuments);
-  console.log("➕ Additional Details:", additionalDetails);
-  console.log("🔄 Workflow:", workflow);
-  console.log("🧾 Process Instance:", processInstance);
-
+  console.log("fsdfsdfsdfs", addressDetailsSet,
+    ownerDetails,
+    unitDetails,
+    propertyDocuments,
+    additionalDetails,
+    workflow,
+    processInstance,)
   const { t } = useTranslation();
+ 
   const [proOwnerDetail, setProOwnerDetail] = useState(null);
   const [showPreviewButton, setShowPreviewButton] = useState(false);
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
@@ -55,7 +54,6 @@ const NewApplication = () => {
     photoId: null,
     ownershipDoc: null,
     sellersRegistry: null,
-    lastTaxReceipt: null,
   });
 
   const [owners, setOwners] = useState([
@@ -121,25 +119,19 @@ const NewApplication = () => {
   const token = localStorage.getItem("token");
   const stateId = Digit.ULBService.getStateId();
   const { data: AssessmentYearsList, isLoadings } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "AssessmentYear");
-  console.log("assss", AssessmentYearsList);
+
   const assessmentYears = (AssessmentYearsList?.PropertyTax?.AssessmentYear || []).map((item) => ({
     code: item.code,
     name: item.name, // Show year like "2024-25"
   }));
 
-  // const assessmentYears = [
-  //   { code: "2024-25", name: "2024-25" },
-  //   { code: "2023-24", name: "2023-24" },
-  //   { code: "2022-23", name: "2022-23" }
-  // ];
-
   let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
-  console.log("userInfo1", userInfo1?.authToken);
+
   const tenantId = userInfo1?.tenantId;
   const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId, true);
   const mutationUpdate = Digit.Hooks.pt.useUpdateContent(tenantId, true);
   let tenantIdss = Digit.ULBService.getCurrentTenantId();
-  console.log(tenantIdss, "tenantIdss")
+
   const {
     isLoading: ptCalculationEstimateLoading,
     data: ptCalculationEstimateData,
@@ -148,11 +140,6 @@ const NewApplication = () => {
   } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
 
   const handleEstimate = () => {
-    // const errors = {};
-    // if (!selectedAssessmentYear) {
-    //   errors.selectedAssessmentYear = "Assessment year is required.";
-    // }
-    // setFormErrors(errors);
     const toYear =
       Array.isArray(unit) && unit.length > 0 ? unit[0].toYear : null;
 
@@ -193,7 +180,7 @@ const NewApplication = () => {
           pathname: "/digit-ui/employee/pt/PreviewDemand",
           state: { data, proOwnerDetail, documents, propertyDocuments, checkboxes, rateZones, owners, unit, assessmentDetails, assessmentDetails, propertyDetails, addressDetails, ownershipType, correspondenceAddress }// send full object
         });
-        console.log("Estimate success:", data);
+
       },
       onError: (error) => {
         alert("Estimate error:", error);
@@ -204,8 +191,8 @@ const NewApplication = () => {
 
     const payload = {
       Property: {
-        // updateIMC: true,
-        id: addressDetailsSet?.id,
+        updateIMC: true,
+        id: generalDetails?.id,
         propertyId: generalDetails?.propertyId || "PG-PT-2025-07-15-000565",
         accountId: generalDetails?.accountId || "PG-PT-2025-07-15-000565",
         acknowldgementNumber: generalDetails?.acknowldgementNumber || "PG-PT-2025-07-15-000565",
@@ -248,15 +235,21 @@ const NewApplication = () => {
           samagraId: owner.samagraID || "Samagra ID",
           documents: [
             {
-              fileStoreId:
-                documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
-              documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
+              documentType: "Photo ID",
+              fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
+              documentUid: documents.photoId?.documentUid || "default-uid-photoid"
             },
             {
-              fileStoreId:
-                documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
-              documentType: "OWNER.IDENTITYPROOF.AADHAAR",
+              documentType: "Sellers Registry Copy ",
+              fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
+              documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
             },
+            {
+              documentType: "Ownership Document",
+              fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
+              documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
+            },
+
           ],
         })),
 
@@ -264,25 +257,21 @@ const NewApplication = () => {
 
         documents: [
           {
-            documentType: "OWNER.IDENTITYPROOF.VOTERID",
+            documentType: "Photo ID",
             fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
             documentUid: documents.photoId?.documentUid || "default-uid-photoid"
           },
           {
-            documentType: "OWNER.REGISTRATIONPROOF.SALEDEED",
+            documentType: "Sellers Registry Copy ",
             fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
             documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
           },
           {
-            documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
+            documentType: "Ownership Document",
             fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
             documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
           },
-          {
-            documentType: "OWNER.USAGEPROOF.ELECTRICITYBILL",
-            fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
-            documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
-          },
+
         ],
 
         units: unit.map(unit => (
@@ -383,21 +372,24 @@ const NewApplication = () => {
       onSuccess: (data) => {
         const property = data?.Properties?.[0];
         if (property) {
+    
           setProOwnerDetail(property);
           setAcknowledgmentNumber(property.acknowldgementNumber);
           setPropertyId(property.propertyId);
           setStatus(property.status);
           // setShowSuccessModal(true);
           setShowPreviewButton(true);
+
         }
       },
       onError: (err) => {
-        console.error(err);
+
         alert(t("Submission failed"));
       },
     });
   };
   const handleSubmit = async () => {
+
     const errors = {};
 
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
@@ -533,20 +525,16 @@ const NewApplication = () => {
               documentUid: documents.photoId?.documentUid || "default-uid-photoid"
             },
             {
-              documentType: "Ownership Document",
+              documentType: "Sellers Registry Copy ",
               fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
               documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
             },
             {
-              documentType: "Sellers Registry Copy",
+              documentType: "Ownership Document",
               fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
               documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
             },
-            // {
-            //   documentType: "Last Tax Paid Receipt By Seller",
-            //   fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
-            //   documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
-            // },
+
           ],
         })),
 
@@ -559,20 +547,16 @@ const NewApplication = () => {
             documentUid: documents.photoId?.documentUid || "default-uid-photoid"
           },
           {
-            documentType: "Ownership Document",
+            documentType: "Sellers Registry Copy ",
             fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
             documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
           },
           {
-            documentType: "Sellers Registry Copy",
+            documentType: "Ownership Document",
             fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
             documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
           },
-          // {
-          //   documentType: "Last Tax Paid Receipt By Seller",
-          //   fileStoreId: documents.lastTaxReceipt?.fileStoreId || "default-filestore-lastreceipt",
-          //   documentUid: documents.lastTaxReceipt?.documentUid || "default-uid-lastreceipt"
-          // },
+
         ],
 
         units: unit.map(unit => (
@@ -662,10 +646,12 @@ const NewApplication = () => {
         plainAccessRequest: {}
       }
     };
+
     mutation.mutate(payload, {
       onSuccess: (data) => {
         const property = data?.Properties?.[0];
         if (property) {
+       
           setProOwnerDetail(property);
           setAcknowledgmentNumber(property.acknowldgementNumber);
           setPropertyId(property.propertyId);
@@ -675,7 +661,7 @@ const NewApplication = () => {
         }
       },
       onError: (err) => {
-        console.error(err);
+
         alert(t("Submission failed"));
       },
     });
@@ -774,7 +760,7 @@ const NewApplication = () => {
 
 
   const handleFileChange = async (key, file) => {
-    console.log("File changed for key:", key, "File:", file);
+
     try {
       setDocuments((prev) => ({
         ...prev,
@@ -804,14 +790,14 @@ const NewApplication = () => {
         setError(t("CS_FILE_UPLOAD_ERROR"));
       }
     } catch (err) {
-      console.error("Upload error:", err);
+
       setError(t("CS_FILE_UPLOAD_ERROR"));
     }
   };
 
 
   const handleOwnershipTypeChange = (val) => {
-    console.log("Ownership type changed:", val);
+
     setOwnershipType(val.code);
 
     // ❗ Only reset if required. Don't reset if owners already exist.
@@ -874,7 +860,6 @@ const NewApplication = () => {
     setAssessmentDetails((prev) => ({ ...prev, roadFactor: selected }));
   };
   const updateRateZone = (value) => {
-    console.log("fdsfdsfsdfdsfsdfsdf", value)
     setRateZones(value);
   }
   useEffect(() => {
@@ -899,6 +884,17 @@ const NewApplication = () => {
   if (isLoading) {
     return <Loader />;
   }
+
+  // if (isLoadings) {
+  //   return <Loader />;
+  // }
+
+  // if (createLoader) {
+  //   return <Loader />;
+  // }
+  // if (ptCalculationEstimateLoading) {
+  //   return <Loader />;
+  // }
 
 
 

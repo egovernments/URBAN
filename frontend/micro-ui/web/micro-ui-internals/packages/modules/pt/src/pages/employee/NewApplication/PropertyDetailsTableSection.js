@@ -355,26 +355,26 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
   //   }
   // }, [isLoadingF, FloorAll]);
   useEffect(() => {
-  if (isLoadingF) return;
+    if (isLoadingF) return;
 
-  const floors = FloorAll?.PropertyTax?.Floor || [];
+    const floors = FloorAll?.PropertyTax?.Floor || [];
 
-  const mappedFloors = floors
-    .filter(floor => floor?.code && floor?.active)
-    .map(floor => ({
-      i18nKey: floor.name,
-      code: floor.code,
-    }))
-    .sort((a, b) => {
-      const getSortValue = (val) => {
-        const num = parseInt(val, 10);
-        return isNaN(num) ? Number.MAX_SAFE_INTEGER : num;
-      };
-      return getSortValue(b.code) - getSortValue(a.code);
-    });
+    const mappedFloors = floors
+      .filter(floor => floor?.code && floor?.active)
+      .map(floor => ({
+        i18nKey: floor.name,
+        code: floor.code,
+      }))
+      .sort((a, b) => {
+        const getSortValue = (val) => {
+          const num = parseInt(val, 10);
+          return isNaN(num) ? Number.MAX_SAFE_INTEGER : num;
+        };
+        return getSortValue(b.code) - getSortValue(a.code);
+      });
 
-  setFloorList(mappedFloors);
-}, [isLoadingF, FloorAll]);
+    setFloorList(mappedFloors);
+  }, [isLoadingF, FloorAll]);
 
 
   useEffect(() => {
@@ -395,156 +395,157 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
       <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
         <label style={styles.poppinsLabel}>Property Type</label>
       </div>
-      <table style={styles.table}>
-        <thead>
-          <tr>
-            <th style={styles.tableHeader}>{t("Usage Type")}</th>
-            <th style={styles.tableHeader}>{t("Usage Factor")}</th>
-            <th style={styles.tableHeader}>{t("Floor No")}</th>
-            <th style={styles.tableHeader}>{t("Type of Construction")}</th>
-            <th style={styles.tableHeader}>{t("Area (Sq feet)")}</th>
-            <th style={styles.tableHeader}>{t("From Year")}</th>
-            <th style={styles.tableHeader}>{t("To Year")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {unit.map((unit, index) => (
-            <tr key={index}>
-              <td style={styles.tableCell}>
-                <select
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  value={unit.usageType}
-                  onChange={(e) => handleUnitChange(index, "usageType", e.target.value)}
-                >
-                  <option value="" disabled>{t("Select")}</option>
-                  {usageTypes.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {t(item.i18nKey)}
-                    </option>
-                  ))}
-                </select>
-              </td>
-
-              <td style={styles.tableCell}>
-                <select
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  value={unit.usageFactor}
-                  onChange={(e) => handleUnitChange(index, "usageFactor", e.target.value)}
-                >
-                  <option value="" disabled>{t("Select")}</option>
-                  {occupancyTypes.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {t(item.i18nKey)}
-                    </option>
-                  ))}
-                </select>
-              </td>
-
-              <td style={styles.tableCell}>
-                <select
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  value={unit.floorNo}
-                  onChange={(e) => handleUnitChange(index, "floorNo", e.target.value)}
-                >
-                  <option value="" disabled>{t("Select")}</option>
-                  {floorList.map((floor) => (
-                    <option key={floor.code} value={floor.code}>
-                      {t(floor.i18nKey)}
-                    </option>
-                  ))}
-                </select>
-              </td>
-
-              <td style={styles.tableCell}>
-                <select
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  value={unit.constructionType}
-                  onChange={(e) => handleUnitChange(index, "constructionType", e.target.value)}
-                >
-                  <option value="" disabled>{t("Select")}</option>
-                  {constructionTypes.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {t(item.i18nKey)}
-                    </option>
-                  ))}
-                </select>
-              </td>
-
-              <td style={styles.tableCell}>
-                <input
-                  type="number"
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  placeholder={t("Enter")}
-                  value={unit.area}
-                  onChange={(e) => handleUnitChange(index, "area", e.target.value)}
-                />
-              </td>
-
-              <td style={styles.tableCell}>
-                <select
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  value={unit.fromYear || ""}
-                  onChange={(e) => {
-                    const selectedFrom = e.target.value;
-                    handleUnitChange(index, "fromYear", selectedFrom);
-                    if (unit.toYear && parseInt(unit.toYear.split("-")[0]) < parseInt(selectedFrom.split("-")[0])) {
-                      handleUnitChange(index, "toYear", "");
-                    }
-                  }}
-                >
-                  <option value="" disabled>{t("From Year")}</option>
-                  {years.map((yearObj) => (
-                    <option key={yearObj.value} value={yearObj.value}>
-                      {yearObj.label}
-                    </option>
-                  ))}
-                </select>
-              </td>
-
-              <td style={styles.tableCell}>
-                <select
-                  style={{
-                    ...styles.select, appearance: "auto",
-                    WebkitAppearance: "auto",
-                    MozAppearance: "auto",
-                  }}
-                  value={unit.toYear || ""}
-                  onChange={(e) => handleUnitChange(index, "toYear", e.target.value)}
-                  disabled={!unit.fromYear}
-                >
-                  <option value="" disabled>{t("To Year")}</option>
-                  <option value={currentFYString}>{currentFYString}</option>
-                </select>
-              </td>
+      <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th style={styles.tableHeader}>{t("Usage Type")}</th>
+              <th style={styles.tableHeader}>{t("Usage Factor")}</th>
+              <th style={styles.tableHeader}>{t("Floor No")}</th>
+              <th style={styles.tableHeader}>{t("Type of Construction")}</th>
+              <th style={styles.tableHeader}>{t("Area (Sq feet)")}</th>
+              <th style={styles.tableHeader}>{t("From Year")}</th>
+              <th style={styles.tableHeader}>{t("To Year")}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {unit.map((unit, index) => (
+              <tr key={index}>
+                <td style={styles.tableCell}>
+                  <select
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    value={unit.usageType}
+                    onChange={(e) => handleUnitChange(index, "usageType", e.target.value)}
+                  >
+                    <option value="" disabled>{t("Select")}</option>
+                    {usageTypes.map((item) => (
+                      <option key={item.code} value={item.code}>
+                        {t(item.i18nKey)}
+                      </option>
+                    ))}
+                  </select>
+                </td>
 
+                <td style={styles.tableCell}>
+                  <select
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    value={unit.usageFactor}
+                    onChange={(e) => handleUnitChange(index, "usageFactor", e.target.value)}
+                  >
+                    <option value="" disabled>{t("Select")}</option>
+                    {occupancyTypes.map((item) => (
+                      <option key={item.code} value={item.code}>
+                        {t(item.i18nKey)}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+
+                <td style={styles.tableCell}>
+                  <select
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    value={unit.floorNo}
+                    onChange={(e) => handleUnitChange(index, "floorNo", e.target.value)}
+                  >
+                    <option value="" disabled>{t("Select")}</option>
+                    {floorList.map((floor) => (
+                      <option key={floor.code} value={floor.code}>
+                        {t(floor.i18nKey)}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+
+                <td style={styles.tableCell}>
+                  <select
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    value={unit.constructionType}
+                    onChange={(e) => handleUnitChange(index, "constructionType", e.target.value)}
+                  >
+                    <option value="" disabled>{t("Select")}</option>
+                    {constructionTypes.map((item) => (
+                      <option key={item.code} value={item.code}>
+                        {t(item.i18nKey)}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+
+                <td style={styles.tableCell}>
+                  <input
+                    type="number"
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    placeholder={t("Enter")}
+                    value={unit.area}
+                    onChange={(e) => handleUnitChange(index, "area", e.target.value)}
+                  />
+                </td>
+
+                <td style={styles.tableCell}>
+                  <select
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    value={unit.fromYear || ""}
+                    onChange={(e) => {
+                      const selectedFrom = e.target.value;
+                      handleUnitChange(index, "fromYear", selectedFrom);
+                      if (unit.toYear && parseInt(unit.toYear.split("-")[0]) < parseInt(selectedFrom.split("-")[0])) {
+                        handleUnitChange(index, "toYear", "");
+                      }
+                    }}
+                  >
+                    <option value="" disabled>{t("From Year")}</option>
+                    {years.map((yearObj) => (
+                      <option key={yearObj.value} value={yearObj.value}>
+                        {yearObj.label}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+
+                <td style={styles.tableCell}>
+                  <select
+                    style={{
+                      ...styles.select, appearance: "auto",
+                      WebkitAppearance: "auto",
+                      MozAppearance: "auto",
+                    }}
+                    value={unit.toYear || ""}
+                    onChange={(e) => handleUnitChange(index, "toYear", e.target.value)}
+                    disabled={!unit.fromYear}
+                  >
+                    <option value="" disabled>{t("To Year")}</option>
+                    <option value={currentFYString}>{currentFYString}</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {formErrors.totalUnitArea && (
         <p style={{ color: "red", fontSize: "14px", padding: "4px 8px", textAlign: "right" }}>
           {formErrors.totalUnitArea}

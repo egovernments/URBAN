@@ -203,6 +203,7 @@ const PropertyForm = () => {
             pathname: "/digit-ui/employee/pt/new-application",
             state: {
                 generalDetails: {
+                    id: proOwnerDetail.id,
                     propertyId: proOwnerDetail.propertyId,
                     oldPropertyId: proOwnerDetail.oldPropertyId,
                     creationReason: proOwnerDetail.creationReason,
@@ -320,7 +321,7 @@ const PropertyForm = () => {
                     toYear: unit.toYear
                 })),
                 landArea: assessmentDetails?.plotArea,
-                propertyType: propertyDetails?.propertyType?.code,
+                propertyType: proOwnerDetail?.propertyType,
                 noOfFloors: parseInt(unit.floorNo) || 1,
                 superBuiltUpArea: null,
                 // usageCategory: unit.usageType || "RESIDENTIAL",
@@ -330,7 +331,7 @@ const PropertyForm = () => {
                     heightAbove36Feet: false,
                     propertyType: {
                         i18nKey: "COMMON_PROPTYPE_BUILTUP_INDEPENDENTPROPERTY",
-                        code: propertyDetails?.propertyType?.code
+                        code: proOwnerDetail?.propertyType
                     },
                     mobileTower: checkboxes?.mobileTower,
                     bondRoad: checkboxes?.broadRoad,

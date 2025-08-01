@@ -873,7 +873,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { newConfig } from "../../../config/Create/config";
 
 const EditForm = ({ applicationData }) => {
-
+  console.log("applicationData", applicationData)
   const { t } = useTranslation();
   const history = useHistory();
   const { state } = useLocation();
@@ -990,19 +990,18 @@ const EditForm = ({ applicationData }) => {
 
       // Property Details
       if (applicationData.units && applicationData.units.length > 0) {
-        const unit = applicationData.units[0];
-        setPropertyDetails([
-          {
-            usageType: unit.usageCategory || "",
-            usageFactor: unit.occupancyType, // Not in the data, adjust as needed
-            floorNumber: unit.floorNo?.toString() || "",
-            constructionType: unit.constructionDetail?.constructionType || "",
-            area: unit.constructionDetail?.builtUpArea?.toString() || "",
-            fromYear: unit.fromYear || "",
-            toYear: unit.toYear || "",
-          },
-        ]);
+        const formattedUnits = applicationData.units.map((unit) => ({
+          usageType: unit.usageCategory || "",
+          usageFactor: unit.occupancyType || "", // Adjust if needed
+          floorNumber: unit.floorNo?.toString() || "",
+          constructionType: unit.constructionDetail?.constructionType || "",
+          area: unit.constructionDetail?.builtUpArea?.toString() || "",
+          fromYear: unit.fromYear || "",
+          toYear: unit.toYear || "",
+        }));
+        setPropertyDetails(formattedUnits);
       }
+
 
       // Other Details
       setOtherDetails({
@@ -1243,7 +1242,7 @@ const EditForm = ({ applicationData }) => {
       ownerType: otherDetails.exemption,
       isCorrespondenceAddress: correspondenceAddress?.sameAsProperty,
       oldPropertyId: assessmentDetails?.oldPropertyId,
-      propertyType: data?.PropertyType?.code,
+      propertyType: applicationData.propertyType,
       creationReason: state?.workflow?.businessService === "PT.UPDATE" || (applicationData?.documents == null) ? "UPDATE" : applicationData?.creationReason,
       usageCategory: data?.usageCategoryMinor?.subuagecode ? data?.usageCategoryMinor?.subuagecode : data?.usageCategoryMajor?.code,
       usageCategoryMajor: data?.usageCategoryMajor?.code.split(".")[0],
@@ -1272,6 +1271,7 @@ const EditForm = ({ applicationData }) => {
             fromYear: unit.fromYear,
             toYear: unit.toYear,
           })),
+
       },
       documents: applicationData?.documents ? applicationData?.documents.map((old) => {
         let dt = old.documentType.split(".");
@@ -1299,7 +1299,6 @@ const EditForm = ({ applicationData }) => {
           fromYear: unit.fromYear,
           toYear: unit.toYear,
         })),
-
       landArea: assessmentDetails.plotArea,
       workflow: state?.workflow,
       applicationStatus: "UPDATE",
