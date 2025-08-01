@@ -873,7 +873,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { newConfig } from "../../../config/Create/config";
 
 const EditForm = ({ applicationData }) => {
-  console.log("applicationData", applicationData)
   const { t } = useTranslation();
   const history = useHistory();
   const { state } = useLocation();

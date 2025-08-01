@@ -32,13 +32,7 @@ const NewApplication = () => {
     workflow,
     processInstance,
   } = location.state || {};
-  console.log("fsdfsdfsdfs", addressDetailsSet,
-    ownerDetails,
-    unitDetails,
-    propertyDocuments,
-    additionalDetails,
-    workflow,
-    processInstance,)
+
   const { t } = useTranslation();
  
   const [proOwnerDetail, setProOwnerDetail] = useState(null);

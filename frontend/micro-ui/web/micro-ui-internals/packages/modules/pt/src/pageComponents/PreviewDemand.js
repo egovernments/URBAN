@@ -195,7 +195,6 @@ const PropertyForm = () => {
 
     const propertyFYDetails = calculation?.propertyFYDetails || [];
     const taxSummaries = calculation?.propertyFYTaxSummaries || [];
-    console.log("propertyDetail", proOwnerDetail)
     const ownersDetail = proOwnerDetail?.owners || [];
     const address = proOwnerDetail?.address || {};
     const handleGobackEdit = () => {
@@ -408,7 +407,6 @@ const PropertyForm = () => {
                 }
             },
             onError: (err) => {
-                console.error(err);
                 alert(t("Submission failed"));
             },
         });
