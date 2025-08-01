@@ -66,8 +66,7 @@ const BirthCard = () => {
 
   return (
     <div className="birth-card-module" style={{
-      marginLeft: isCitizen ? "30px" : "0px",
-      marginTop: isCitizen ? "30px" : "0px"
+      marginBottom:"1.5rem",
     }}>
       <EmployeeModuleCard {...propsForModuleCard} />
     </div>
