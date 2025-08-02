@@ -396,6 +396,7 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
       <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
         <label style={styles.poppinsLabel}>Property Type</label>
       </div>
+        <div style={{ overflowX: "auto", maxWidth: "100%" }}>
       <table style={styles.table}>
         <thead>
           <tr>
@@ -545,7 +546,7 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
           ))}
         </tbody>
       </table>
-
+</div>
       {formErrors.totalUnitArea && (
         <p style={{ color: "red", fontSize: "14px", padding: "4px 8px", textAlign: "right" }}>
           {formErrors.totalUnitArea}

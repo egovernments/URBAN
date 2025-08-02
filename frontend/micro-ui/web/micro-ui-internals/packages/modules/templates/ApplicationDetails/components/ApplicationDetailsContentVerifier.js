@@ -439,7 +439,7 @@ import {
   StatusTable,
 } from "@egovernments/digit-ui-react-components";
 import { values } from "lodash";
-import React, { Fragment,useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import BPADocuments from "./BPADocuments";
@@ -625,40 +625,40 @@ function ApplicationDetailsContentVerifier({
   const tenantId = userInfo1?.tenantId;
 
   const fetchBill = async () => {
-      if (!application?.propertyId) return;
-  
-      try {
-        const billResponse = await Digit.PTService.fetchPaymentDetails({
-          tenantId,
-          consumerCodes: application?.propertyId,
-        });
-  
-        const BillList = billResponse?.Bill || [];
-        if (!BillList.length) {
-          // alert("❌ This bill has already been paid or is not valid.");
-          setBillFetch(null);
-          return;
-        }
-  
-        setBillFetch(BillList[0]); // set fresh bill
-      } catch (err) {
-        // console.error("Error fetching bill:", err);
+    if (!application?.propertyId) return;
+
+    try {
+      const billResponse = await Digit.PTService.fetchPaymentDetails({
+        tenantId,
+        consumerCodes: application?.propertyId,
+      });
+
+      const BillList = billResponse?.Bill || [];
+      if (!BillList.length) {
+        // alert("❌ This bill has already been paid or is not valid.");
+        setBillFetch(null);
+        return;
       }
-    };
-   useEffect(() => {
-  const propertyIdValid = applicationData?.propertyId;
-  const tenantIdValid = tenantId && tenantId !== "undefined";
 
-  if (propertyIdValid && tenantIdValid) {
-    console.log("✅ Fetching bill with:", {
-      propertyId: applicationData.propertyId,
-      tenantId,
-    });
-    fetchBill();
-  }
-}, [applicationData?.propertyId, tenantId]);
+      setBillFetch(BillList[0]); // set fresh bill
+    } catch (err) {
+      // console.error("Error fetching bill:", err);
+    }
+  };
+  useEffect(() => {
+    const propertyIdValid = applicationData?.propertyId;
+    const tenantIdValid = tenantId && tenantId !== "undefined";
 
-  
+    if (propertyIdValid && tenantIdValid) {
+      console.log("✅ Fetching bill with:", {
+        propertyId: applicationData.propertyId,
+        tenantId,
+      });
+      fetchBill();
+    }
+  }, [applicationData?.propertyId, tenantId]);
+
+
   return (
     <div >
       {/* For UM-4418 changes */}
@@ -675,239 +675,240 @@ function ApplicationDetailsContentVerifier({
           </div>
         </div> */}
         <div style={styles.card}>
-        <AttachmentsSection
-          t={t}
-          documents={documents}
-        />
-</div>
+          <AttachmentsSection
+            t={t}
+            documents={documents}
+          />
+        </div>
         <div style={styles.card}>
-        <div style={styles.sectionTitle}>Ownership Details</div>
-        <div style={styles.grid}>
-          <div>
-            <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
-            <input style={styles.input} value={application?.ownershipCategory} readOnly />
-          </div>
-        </div>
-
-
-        {(application?.owners || []).map((owner, index) => (
-          <React.Fragment key={index}>
-            {(application?.owners?.length > 1) && (
-
-              <label style={styles.label}>Owner {index + 1}</label>
-
-            )}
-            <div style={styles.grid}>
-              <div>
-                <label style={styles.label}>Owner Name<span style={{ color: "red" }}>*</span></label>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <select
-                    value={owner?.salutation}
-                    disabled
-                    style={styles.widthInput}
-                  >
-                    <option>{owner?.salutation}</option>
-                  </select>
-                  <input
-                   style={styles.input}
-                    value={owner?.name || ""}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div>
-                <label style={styles.label}>Owner Name (हिंदी)<span style={{ color: "red" }}>*</span></label>
-
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <select
-                    value={owner?.salutation}
-                    disabled
-                    style={styles.widthInput}
-                  >
-                    <option>{owner?.salutationHindi}</option>
-
-                  </select>
-                  <input
-                     style={styles.input}
-                    value={owner?.hindiName || ""}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div>
-                <label style={styles.label}>Father/Husband Name</label>
-                <input style={styles.input} value={owner.fatherOrHusbandName} readOnly />
-              </div>
-
-
-              <div>
-                <label style={styles.label}>Relationship</label>
-                <input style={styles.input} value={owner.relationship} readOnly />
-              </div>
-              <div>
-                <label style={styles.label}>Email ID</label>
-                <input style={styles.input} value={owner.emailId} readOnly />
-              </div>
-              <div>
-                <label style={styles.label}>Mobile No.<span style={{ color: "red" }}>*</span></label>
-                <input style={styles.input} value={owner.mobileNumber} readOnly />
-              </div>
-              <div>
-                <label style={styles.label}>Alternative Mobile No</label>
-                <input style={styles.input} value={owner.altContactNumber || ""} readOnly />
-              </div>
-              <div>
-                <label style={styles.label}>Aadhar No.<span style={{ color: "red" }}>*</span></label>
-                <input style={styles.input} value={owner.aadhaarNumber || ""} readOnly />
-              </div>
-              <div>
-                <label style={styles.label}>Samagra ID <span style={{ color: "red" }}>*</span></label>
-                <input style={styles.input} value={owner.samagraId} readOnly />
-              </div>
+          <div style={styles.sectionTitle}>Ownership Details</div>
+          <div style={styles.grid}>
+            <div>
+              <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
+              <input style={styles.input} value={application?.ownershipCategory} readOnly />
             </div>
-          </React.Fragment>
-        ))}
-</div>
- <div style={styles.card}>
-
-        <div style={styles.sectionTitle}>Property Address</div>
-        <div style={styles.grid}>
-          <div><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
-          <div><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
-          <div><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.pincode || ""} readOnly /></div>
-          <div><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.locality?.name} readOnly /></div>
-          <div><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.ward} readOnly /></div>
-          <div><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
-        </div>
-        </div>
-         <div style={styles.card}>
-        <div >
-          <div>
-            <div style={styles.sectionTitle}>Correspondence Address</div>
-            <textarea style={styles.widthInputs} rows={3} value={owner?.permanentAddress} readOnly />
-
-          </div>
-          <div style={styles.checkboxLabel}>
-            <input type="checkbox" checked readOnly />
-            <span style={{ marginLeft: "8px" }}>Same As Property Address</span>
-          </div>
-        </div>
-
-</div>
- <div style={styles.card}>
-        <div style={styles.sectionTitle}>Assessment Details</div>
-        <div style={styles.grid}>
-          <div><label style={styles.label}>Rate Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.rateZone} readOnly /></div>
-          <div><label style={styles.label}>Road Factor <span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.roadFactor} readOnly /></div>
-          {/* <div><label style={styles.label}>Old Property ID</label><input style={styles.input} value={application?.oldPropertyId || ""} readOnly /></div> */}
-          <div><label style={styles.label}>Plot Area (sq.ft)</label><input style={styles.input} value={application?.landArea} readOnly /></div>
-        </div>
-</div>
- <div style={styles.card}>
-        <div style={styles.sectionTitle}>Property Details</div>
-        <div >
-          <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
-            <label style={{ ...styles.label, marginRight: "16px", minWidth: "120px" }}>Property Type</label>
-            {/* <input style={styles.input} value={application?.propertyType || "Prefilled"} readOnly /> */}
           </div>
 
-          <table style={{ width: "80%", borderCollapse: "collapse", marginTop: "8px", border: "1px solid #ccc" }}>
-            <thead style={{ background: "#f0f0f0", height: "40px" }}>
-              <tr>
-                <th style={{ ...styles.labelTable }}>Usage Type</th>
-                <th style={{ ...styles.labelTable }}>Usage Factor</th>
-                <th style={{ ...styles.labelTable }}>Floor Number</th>
-                <th style={{ ...styles.labelTable }}>Type of Construction</th>
-                <th style={{ ...styles.labelTable }}>Area (Sq feet)</th>
-                <th style={{ ...styles.labelTable }}>From Year</th>
-                <th style={{ ...styles.labelTable }}>To Year</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(application?.units || []).map((unit, index) => (
-                <tr key={index}>
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+
+          {(application?.owners || []).map((owner, index) => (
+            <React.Fragment key={index}>
+              {(application?.owners?.length > 1) && (
+
+                <label style={styles.label}>Owner {index + 1}</label>
+
+              )}
+              <div style={styles.grid}>
+                <div>
+                  <label style={styles.label}>Owner Name<span style={{ color: "red" }}>*</span></label>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <select
-                      value={unit?.usageCategory || ""}
+                      value={owner?.salutation}
                       disabled
-                      style={{border: "none", background: "none", width: "100%" }}
+                      style={styles.widthInput}
                     >
-                      <option value={unit?.usageCategory || ""}>{unit?.usageCategory || ""}</option>
-
+                      <option>{owner?.salutation}</option>
                     </select>
-                  </td>
-
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
-                    <select
-                      value={unit?.occupancyType || ""}
-                      disabled
-                      style={{border: "none", background: "none", width: "100%" }}
-                    >
-                      <option value={unit?.occupancyType || ""}>{unit?.occupancyType || ""}</option>
-
-                    </select>
-                  </td>
-
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
-                    <select
-                      value={unit?.floorNo?.toString() || ""}
-                      disabled
-                      style={{border: "none", background: "none", width: "100%" }}
-                    >
-
-                      <option value={unit?.floorNo?.toString() || ""}>{unit?.floorNo?.toString() || ""}</option>
-
-                    </select>
-                  </td>
-
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
-                    <select
-                      value={unit?.constructionDetail?.constructionType || ""}
-                      disabled
-                      style={{border: "none", background: "none", width: "100%" }}
-                    >
-                      <option value={unit?.constructionDetail?.constructionType || ""}>{unit?.constructionDetail?.constructionType || ""}</option>
-
-                      {/* Add more options if needed */}
-                    </select>
-                  </td>
-
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
                     <input
-                      style={{border: "none", background: "none" }}
-                      value={unit?.constructionDetail?.builtUpArea || ""}
+                      style={styles.input}
+                      value={owner?.name || ""}
                       readOnly
                     />
-                  </td>
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                  </div>
+                </div>
+                <div>
+                  <label style={styles.label}>Owner Name (हिंदी)<span style={{ color: "red" }}>*</span></label>
+
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <select
+                      value={owner?.salutation}
                       disabled
-                      style={{border: "none", background: "none", width: "100%" }}
-                      value={unit.fromYear || ""}
-
+                      style={styles.widthInput}
                     >
-                      <option value={unit?.fromYear}>{unit?.fromYear}</option>
+                      <option>{owner?.salutationHindi}</option>
+
                     </select>
-                  </td>
+                    <input
+                      style={styles.input}
+                      value={owner?.hindiName || ""}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label style={styles.label}>Father/Husband Name</label>
+                  <input style={styles.input} value={owner.fatherOrHusbandName} readOnly />
+                </div>
 
-                  <td style={{ padding: "8px", border: "1px solid #ccc" }}>
-                    <select
-                      disabled
-                      style={{border: "none", background: "none", width: "100%" }}
-                      value={unit.toYear || ""}
 
-                    >
-                      <option value={unit?.toYear}>{unit?.toYear}</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
-
-            </tbody>
-
-          </table>
+                <div>
+                  <label style={styles.label}>Relationship</label>
+                  <input style={styles.input} value={owner.relationship} readOnly />
+                </div>
+                <div>
+                  <label style={styles.label}>Email ID</label>
+                  <input style={styles.input} value={owner.emailId} readOnly />
+                </div>
+                <div>
+                  <label style={styles.label}>Mobile No.<span style={{ color: "red" }}>*</span></label>
+                  <input style={styles.input} value={owner.mobileNumber} readOnly />
+                </div>
+                <div>
+                  <label style={styles.label}>Alternative Mobile No</label>
+                  <input style={styles.input} value={owner.altContactNumber || ""} readOnly />
+                </div>
+                <div>
+                  <label style={styles.label}>Aadhar No.<span style={{ color: "red" }}>*</span></label>
+                  <input style={styles.input} value={owner.aadhaarNumber || ""} readOnly />
+                </div>
+                <div>
+                  <label style={styles.label}>Samagra ID <span style={{ color: "red" }}>*</span></label>
+                  <input style={styles.input} value={owner.samagraId} readOnly />
+                </div>
+              </div>
+            </React.Fragment>
+          ))}
         </div>
-</div>
+        <div style={styles.card}>
+
+          <div style={styles.sectionTitle}>Property Address</div>
+          <div style={styles.grid}>
+            <div><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
+            <div><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
+            <div><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.pincode || ""} readOnly /></div>
+            <div><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.locality?.name} readOnly /></div>
+            <div><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.ward} readOnly /></div>
+            <div><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
+          </div>
+        </div>
+        <div style={styles.card}>
+          <div >
+            <div>
+              <div style={styles.sectionTitle}>Correspondence Address</div>
+              <textarea style={styles.widthInputs} rows={3} value={owner?.permanentAddress} readOnly />
+
+            </div>
+            <div style={styles.checkboxLabel}>
+              <input type="checkbox" checked readOnly />
+              <span style={{ marginLeft: "8px" }}>Same As Property Address</span>
+            </div>
+          </div>
+
+        </div>
+        <div style={styles.card}>
+          <div style={styles.sectionTitle}>Assessment Details</div>
+          <div style={styles.grid}>
+            <div><label style={styles.label}>Rate Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.rateZone} readOnly /></div>
+            <div><label style={styles.label}>Road Factor <span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.roadFactor} readOnly /></div>
+            {/* <div><label style={styles.label}>Old Property ID</label><input style={styles.input} value={application?.oldPropertyId || ""} readOnly /></div> */}
+            <div><label style={styles.label}>Plot Area (sq.ft)</label><input style={styles.input} value={application?.landArea} readOnly /></div>
+          </div>
+        </div>
+        <div style={styles.card}>
+          <div style={styles.sectionTitle}>Property Details</div>
+          <div >
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+              <label style={{ ...styles.label, marginRight: "16px", minWidth: "120px" }}>Property Type</label>
+              {/* <input style={styles.input} value={application?.propertyType || "Prefilled"} readOnly /> */}
+            </div>
+            <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+              <table style={{ borderCollapse: "collapse", marginTop: "8px", border: "1px solid #ccc" }}>
+                <thead style={{ background: "#f0f0f0", height: "40px" }}>
+                  <tr>
+                    <th style={{ ...styles.labelTable }}>Usage Type</th>
+                    <th style={{ ...styles.labelTable }}>Usage Factor</th>
+                    <th style={{ ...styles.labelTable }}>Floor Number</th>
+                    <th style={{ ...styles.labelTable }}>Type of Construction</th>
+                    <th style={{ ...styles.labelTable }}>Area (Sq feet)</th>
+                    <th style={{ ...styles.labelTable }}>From Year</th>
+                    <th style={{ ...styles.labelTable }}>To Year</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(application?.units || []).map((unit, index) => (
+                    <tr key={index}>
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.usageCategory || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+                          <option value={unit?.usageCategory || ""}>{unit?.usageCategory || ""}</option>
+
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.occupancyType || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+                          <option value={unit?.occupancyType || ""}>{unit?.occupancyType || ""}</option>
+
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.floorNo?.toString() || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+
+                          <option value={unit?.floorNo?.toString() || ""}>{unit?.floorNo?.toString() || ""}</option>
+
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.constructionDetail?.constructionType || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+                          <option value={unit?.constructionDetail?.constructionType || ""}>{unit?.constructionDetail?.constructionType || ""}</option>
+
+                          {/* Add more options if needed */}
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <input
+                          style={{ border: "none", background: "none" }}
+                          value={unit?.constructionDetail?.builtUpArea || ""}
+                          readOnly
+                        />
+                      </td>
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                          value={unit.fromYear || ""}
+
+                        >
+                          <option value={unit?.fromYear}>{unit?.fromYear}</option>
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                          value={unit.toYear || ""}
+
+                        >
+                          <option value={unit?.toYear}>{unit?.toYear}</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
 
         <div style={styles.card}>
           {/* Section Header */}
@@ -951,76 +952,76 @@ function ApplicationDetailsContentVerifier({
         </div>
 
       </div>
-       <div style={styles.card}>
-      {showTimeLine && workflowDetails?.data?.timeline?.length > 0 && (
-        <React.Fragment>
-          {/* <BreakLine /> */}
-          {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
-          {!workflowDetails?.isLoading && !isDataLoading && (
-            <Fragment>
-              <CardSectionHeader style={{ ...styles.sectionTitle, marginBottom: "16px", marginTop: "32px" }}>
-                {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
-              </CardSectionHeader>
-              {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
-                <CheckPoint
-                  isCompleted={true}
-                  label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
-                  customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
-                />
-              ) : (
-                <ConnectingCheckPoints>
-                  {workflowDetails?.data?.timeline &&
-                    workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
-                      let timelineStatusPostfix = "";
-                      if (window.location.href.includes("/obps/")) {
-                        if (workflowDetails?.data?.timeline[index - 1]?.state?.includes("BACK_FROM") || workflowDetails?.data?.timeline[index - 1]?.state?.includes("SEND_TO_CITIZEN"))
-                          timelineStatusPostfix = `_NOT_DONE`
-                        else if (checkpoint?.performedAction === "SEND_TO_ARCHITECT")
-                          timelineStatusPostfix = `_BY_ARCHITECT_DONE`
-                        else
-                          timelineStatusPostfix = index == 0 ? "" : `_DONE`;
-                      }
+      <div style={styles.card}>
+        {showTimeLine && workflowDetails?.data?.timeline?.length > 0 && (
+          <React.Fragment>
+            {/* <BreakLine /> */}
+            {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
+            {!workflowDetails?.isLoading && !isDataLoading && (
+              <Fragment>
+                <CardSectionHeader style={{ ...styles.sectionTitle, marginBottom: "16px", marginTop: "32px" }}>
+                  {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
+                </CardSectionHeader>
+                {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
+                  <CheckPoint
+                    isCompleted={true}
+                    label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
+                    customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
+                  />
+                ) : (
+                  <ConnectingCheckPoints>
+                    {workflowDetails?.data?.timeline &&
+                      workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
+                        let timelineStatusPostfix = "";
+                        if (window.location.href.includes("/obps/")) {
+                          if (workflowDetails?.data?.timeline[index - 1]?.state?.includes("BACK_FROM") || workflowDetails?.data?.timeline[index - 1]?.state?.includes("SEND_TO_CITIZEN"))
+                            timelineStatusPostfix = `_NOT_DONE`
+                          else if (checkpoint?.performedAction === "SEND_TO_ARCHITECT")
+                            timelineStatusPostfix = `_BY_ARCHITECT_DONE`
+                          else
+                            timelineStatusPostfix = index == 0 ? "" : `_DONE`;
+                        }
 
-                      return (
-                        <React.Fragment key={index}>
-                          <CheckPoint
-                            keyValue={index}
-                            isCompleted={index === 0}
-                            info={checkpoint.comment}
-                            label={t(
-                              `${timelineStatusPrefix}${checkpoint?.performedAction === "REOPEN" ? checkpoint?.performedAction : checkpoint?.[statusAttribute]
-                              }${timelineStatusPostfix}`
-                            )}
-                            customChild={getTimelineCaptions(checkpoint, index)}
-                          />
-                        </React.Fragment>
-                      );
-                    })}
-                </ConnectingCheckPoints>
-              )}
-            </Fragment>
-          )}
-        </React.Fragment>
-      )}
-    </div>
+                        return (
+                          <React.Fragment key={index}>
+                            <CheckPoint
+                              keyValue={index}
+                              isCompleted={index === 0}
+                              info={checkpoint.comment}
+                              label={t(
+                                `${timelineStatusPrefix}${checkpoint?.performedAction === "REOPEN" ? checkpoint?.performedAction : checkpoint?.[statusAttribute]
+                                }${timelineStatusPostfix}`
+                              )}
+                              customChild={getTimelineCaptions(checkpoint, index)}
+                            />
+                          </React.Fragment>
+                        );
+                      })}
+                  </ConnectingCheckPoints>
+                )}
+              </Fragment>
+            )}
+          </React.Fragment>
+        )}
+      </div>
     </div>
   );
 }
 
 const styles = {
-    card: {
+  card: {
     backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
     boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
     padding: "16px",
     // border: "1px solid #000000",
-    marginBottom:"22px",
+    marginBottom: "22px",
     borderRadius: "12px",
   },
   container: {
     padding: "24px",
     fontFamily: "Poppins, sans-serif",
   },
-    widthInput: {
+  widthInput: {
     width: "20%",
     height: "40px",
     borderWidth: "1px",
@@ -1030,7 +1031,7 @@ const styles = {
     background: "#A3BBF347",
     // padding: "6px"
   },
- widthInputs: {
+  widthInputs: {
     width: "32%",
     height: "72px",
     borderWidth: "1px",
@@ -1054,7 +1055,7 @@ const styles = {
     letterSpacing: "0%"
   },
   sectionTitle: {
-   background: '#6b133f',
+    background: '#6b133f',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
     fontSize: '16px',
@@ -1082,7 +1083,7 @@ const styles = {
     width: "200px"
   },
   input: {
-   width: "100%",
+    width: "100%",
     height: "40px",
     borderWidth: "1px",
     borderRadius: "6px",
