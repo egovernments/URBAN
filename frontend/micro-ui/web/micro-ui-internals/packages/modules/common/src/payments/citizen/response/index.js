@@ -5,6 +5,7 @@ import { useQueryClient } from "react-query";
 import { Link, useParams } from "react-router-dom";
 
 export const SuccessfulPayment = (props)=>{
+  
   if(localStorage.getItem("BillPaymentEnabled")!=="true"){
     window.history.forward();
    return null;
@@ -14,6 +15,7 @@ export const SuccessfulPayment = (props)=>{
 
 
  const WrapPaymentComponent = (props) => {
+  
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { eg_pg_txnid: egId, workflow: workflw, propertyId } = Digit.Hooks.useQueryParams();

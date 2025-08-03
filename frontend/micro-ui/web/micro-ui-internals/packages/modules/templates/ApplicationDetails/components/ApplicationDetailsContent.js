@@ -701,7 +701,7 @@ const ApplicationDetailsContent = ({
   oldValue,
   isInfoLabel = false
 }) => {
-
+  const [manualAmount, setManualAmount] = useState("");
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
   const [selectedModes, setSelectedModes] = useState([]);
   const [estimateData, setEstimateData] = useState("");
@@ -858,7 +858,20 @@ const ApplicationDetailsContent = ({
 
     assessmentMutate(payload, {
       onSuccess: (data, variables) => {
-        fetchBill()
+        const assessments = data?.Assessments || [];
+        if (assessments.length > 0) {
+          const latestAssessment = assessments[0];
+          const status = latestAssessment?.status || "UNKNOWN";
+
+          // Only fetch bill if assessment is ACTIVE or APPROVED
+          if (status === "ACTIVE" || status === "APPROVED") {
+            fetchBill(); // Call fetchBill only if valid
+          } else {
+            console.warn("Assessment status is not valid for billing:", status);
+          }
+        } else {
+          console.warn("No assessments returned in response");
+        }
       },
       onError: (error, variables) => {
         // 
@@ -908,13 +921,17 @@ const ApplicationDetailsContent = ({
               billId: bill.id,
               businessService: bill.businessService,
               totalDue: bill.totalAmount,
-              totalAmountPaid: bill.totalAmount,
+              totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
+                ? parseFloat(manualAmount)
+                : bill.totalAmount,
               remarks: remarks,
             },
           ],
           tenantId,
           totalDue: bill.totalAmount,
-          totalAmountPaid: bill.totalAmount,
+          totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
+            ? parseFloat(manualAmount)
+            : bill.totalAmount,
           paymentMode: selectedPaymentMode,
           payerName: bill?.payerName || "Default User",
           paidBy: "OWNER",
@@ -1353,13 +1370,14 @@ const ApplicationDetailsContent = ({
         </div>
 
         {/* Conditional Payment Fields */}
-        {paymentType === "full" && (
+        {estimateData?.Calculation?.[0] && paymentType === "full" && (
           <div style={styles.row}>
             <div style={styles.column}>
               <div style={styles.label}>Amount</div>
               <input
                 placeholder="XX.XX"
-                value={lastNetTax || billFetch?.totalAmount}
+                value={estimateData?.Calculation[0]?.currentYearTax || ""}
+                readOnly
                 style={styles.input}
               />
             </div>
@@ -1367,7 +1385,7 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Arrear</div>
               <input
-                value={netTaxMinusLast}
+                value={estimateData?.Calculation[0]?.arrear || ""}
                 readOnly
                 style={styles.input}
               />
@@ -1376,7 +1394,7 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Payments Receivable</div>
               <input
-                value={totalNetTax || ""}
+                value={estimateData?.Calculation[0]?.taxAmount || ""}
                 readOnly
                 style={styles.input}
               />
@@ -1390,24 +1408,28 @@ const ApplicationDetailsContent = ({
                 style={styles.input}
               />
             </div>
-
           </div>
         )}
+
         {paymentType === "partial" && (
           <div style={styles.row}>
             <div style={styles.column}>
               <div style={styles.label}>Amount</div>
               <input
                 placeholder="XX.XX"
+                value={manualAmount}
                 style={styles.input}
+                onChange={(e) => setManualAmount(e.target.value)}
               />
+
             </div>
 
             <div style={styles.column}>
               <div style={styles.label}>Arrear</div>
               <input
-                value="View Only"
+
                 readOnly
+                value={estimateData?.Calculation[0]?.arrear || ""}
                 style={styles.input}
               />
             </div>
@@ -1415,7 +1437,15 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Payments Receivable</div>
               <input
-                value="View Only"
+                value={(() => {
+                  const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
+                  if (manualAmount) {
+                    return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
+                  } else {
+                    const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
+                    return (currentYearTax + arrear).toFixed(2);
+                  }
+                })()}
                 readOnly
                 style={styles.input}
               />
@@ -1429,7 +1459,7 @@ const ApplicationDetailsContent = ({
         </div>
         <div style={styles.checkboxGroup}>
 
-          {["CASH", "EASEBUZZ"].map((method) => (
+          {["CASH", "POS"].map((method) => (
             <label key={method}>
               <input
                 type="radio"
