@@ -395,7 +395,7 @@ const SelectTradeUnits = ({ t, config, onSelect, userType, formData }) => {
             );
           })}
           <div style={{ justifyContent: "center", display: "flex", paddingBottom: "15px", color: "#FF8C00" }}>
-            <button type="button" style={{ paddingTop: "10px" }} onClick={() => handleAdd()}>
+            <button type="button" className="add-more-btn" style={{ paddingTop: "10px" }} onClick={() => handleAdd()}>
               {`${t("TL_ADD_MORE_TRADE_UNITS")}`}
             </button>
           </div>
