@@ -146,7 +146,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
       setBill(requiredBill);
     }
   }, [isLoading, data, bill, consumerCode, wrkflow]);
-
+  
   const onSubmit = async () => {
     let paymentAmount =
       paymentType === t("CS_PAYMENT_FULL_AMOUNT")
@@ -235,6 +235,17 @@ const BillDetails = ({ paymentRules, businessService }) => {
       } catch (error) {
         console.log("Error while creating receipt for BPA", error);
         
+      }
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`);
+    }
+    else if (businessService === "TL" || (businessService && businessService.includes("TL"))) {
+     
+      try {
+        const response = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+        sessionStorage.setItem("PaymentResponse", JSON.stringify(response));
+      } catch (error) {
+        console.log("Error while creating receipt for TL", error);
+
       }
       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`);
     } else {
