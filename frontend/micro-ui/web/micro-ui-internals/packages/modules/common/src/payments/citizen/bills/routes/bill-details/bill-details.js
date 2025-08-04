@@ -146,10 +146,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
       setBill(requiredBill);
     }
   }, [isLoading, data, bill, consumerCode, wrkflow]);
-
-  console.log("businessService", businessService);
-  console.log("workflow", wrkflow);
-
+  
   const onSubmit = async () => {
     let paymentAmount =
       paymentType === t("CS_PAYMENT_FULL_AMOUNT")
