@@ -74,7 +74,14 @@ const displayResult = (ques,ans,type,resCount=0,t) => {
                             <CardSectionHeader>{ques.questionStatement}</CardSectionHeader>
                             <header style={{"fontWeight":"bold"}}>{`${resCount} ${t("SURVEY_RESPONSES")}`}</header>
                             <div className='responses-container'>
-                            {ans?.map(el=> <div className='response-result responses-container-line'>{el}<BreakLine style={{"marginTop":"10px"}} /></div>)}
+                            {ans?.map(el=> <div className='response-result responses-container-line' style={{
+                                "wordWrap": "break-word",
+                                "wordBreak": "break-word", 
+                                "overflowWrap": "break-word",
+                                "whiteSpace": "pre-wrap",
+                                "maxWidth": "100%",
+                                "display": "block"
+                            }}>{el}<BreakLine style={{"marginTop":"10px"}} /></div>)}
                             </div>
                             
                         </div>
@@ -134,7 +141,14 @@ const displayResult = (ques,ans,type,resCount=0,t) => {
                             <CardSectionHeader>{ques.questionStatement}</CardSectionHeader>
                             <header style={{"fontWeight":"bold"}}>{`${resCount} ${t("SURVEY_RESPONSES")}`}</header>
                             <div className='responses-container'>
-                            {ans?.map(el=> <div className='response-result responses-container-line'>{el}<BreakLine style={{"marginTop":"10px"}} /></div>)}
+                            {ans?.map(el=> <div className='response-result responses-container-line' style={{
+                                "wordWrap": "break-word",
+                                "wordBreak": "break-word", 
+                                "overflowWrap": "break-word",
+                                "whiteSpace": "pre-wrap",
+                                "maxWidth": "100%",
+                                "display": "block"
+                            }}>{el}<BreakLine style={{"marginTop":"10px"}} /></div>)}
                             </div>
                         </div>
                         )
