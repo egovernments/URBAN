@@ -701,6 +701,7 @@ const ApplicationDetailsContent = ({
   oldValue,
   isInfoLabel = false
 }) => {
+    const [printing, setPrinting] = useState(false);
   const [manualAmount, setManualAmount] = useState("");
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
   const [selectedModes, setSelectedModes] = useState([]);
@@ -997,26 +998,7 @@ const ApplicationDetailsContent = ({
     }
   };
 
-  // useEffect(() => {
-  //   const propertyIdValid = applicationData?.propertyId;
-  //   const tenantIdValid = tenantId && tenantId !== "undefined";
 
-  //   let intervalId;
-
-  //   if (propertyIdValid && tenantIdValid) {
-  //     // Start interval loop
-  //     intervalId = setInterval(() => {
-  //       fetchBill();
-  //     }, 1000); // every 1 second
-  //   }
-
-  //   // Cleanup function to stop interval on unmount or dependency change
-  //   return () => {
-  //     if (intervalId) clearInterval(intervalId);
-  //   };
-  // }, [applicationData?.propertyId, tenantId]);
-
-  // ======================================Payment===================================================================
 
   const { state = {} } = useLocation();
   const userInfo = Digit.UserService.getUser();
@@ -1126,13 +1108,23 @@ const ApplicationDetailsContent = ({
     (acc, curr) => acc + (curr.netTax || 0),
     0
   );
-  const taxSummaries = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries || [];
+  const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
+    select: (data) =>
+      data["common-masters"]?.uiCommonPay?.filter(({ code }) => businessService?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
+  });
+    const printReciept = async () => {
+    const tenantId = Digit.ULBService.getCurrentTenantId();
+    const state = Digit.ULBService.getStateId();
+    const payments = await Digit.PaymentService.getReciept(tenantId, businessService, { receiptNumbers: receiptNumber });
+    let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
 
-  const totalNetTaxPay = taxSummaries.reduce((acc, curr) => acc + (curr.netTax || 0), 0);
+    if (!payments.Payments[0]?.fileStoreId) {
+      response = await Digit.PaymentService.generatePdf(state, { Payments: payments.Payments }, generatePdfKey);
+    }
+    const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
+    window.open(fileStore[response.filestoreIds[0]], "_blank");
+  };
 
-  const lastNetTax = taxSummaries.length > 0 ? (taxSummaries[taxSummaries.length - 1].netTax || 0) : 0;
-
-  const netTaxMinusLast = totalNetTaxPay - lastNetTax;
 
   if (assessmentLoading) {
     return <Loader />;
@@ -1639,7 +1631,9 @@ const ApplicationDetailsContent = ({
                 <br />
                 ₹{totalNetTax}
               </div>
-
+              <button style={styles.homeButton} onClick={printReciept}>
+                Download Receipt
+              </button>
               <button style={styles.homeButton} onClick={() => {
                 // 🏠 Navigate home or reset form here
                 window.location.href = "/digit-ui/employee"; // or use React Router

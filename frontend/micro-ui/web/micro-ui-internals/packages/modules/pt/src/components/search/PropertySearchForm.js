@@ -201,6 +201,13 @@ const SearchPTID = ({ tenantId, t, PTSearchFields = {}, searchBy = "propertyId",
     verticalAlign: 'middle',
     color: "#6b133f"
   };
+  const getFinancialYear = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // Months are 0-based
+
+  return month >= 4 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
+};
   return (
     <SearchForm onSubmit={onSubmit} handleSubmit={handleSubmit} style={containerStyle} className="pt-property-search">
       <div style={{ width: "24%" }}>
@@ -208,7 +215,7 @@ const SearchPTID = ({ tenantId, t, PTSearchFields = {}, searchBy = "propertyId",
 
         <div>
           <label style={labelStyle}>Assessment Year</label>
-          <TextInput name="assessmentYear" inputRef={register} style={inputStyle} />
+          <TextInput name="assessmentYear"  defaultValue={getFinancialYear()} inputRef={register} style={inputStyle} />
         </div>
 
         <h4 style={dtat}>Search Criteria</h4>
