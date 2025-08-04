@@ -70,60 +70,78 @@ const Home = () => {
     return false;
   };
 
+  const user = Digit.UserService.getUser();
+  const userRoles = user?.info?.roles?.map((r) => r.code) || [];
+  const isOnlyCitizen = userRoles.length === 1 && userRoles.includes("CITIZEN");
+  const isOnlyFireNocCitizen =
+  userRoles.length === 2 &&
+  userRoles.includes("CITIZEN") &&
+  userRoles.includes("FN_CITIZEN");
+
+
   let options = [];
-  citizenServicesObj?.props?.forEach((element) => {
-    let serviceIcon = null;
-    if (options.length >= 4) return;
-    switch (element?.label) {
-      case 'ACTION_TEST_MCOLLECT':
-        if (Digit.Utils.mCollectCitizenAccess() || userNullCheck()) {
-          serviceIcon = <ComplaintIcon />;
-        } else return;
-        break;
-      case 'MODULE_PT':
-        if (Digit.Utils.ptCitizenAccess() || userNullCheck()) {
-          serviceIcon = <PTIcon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      case 'MODULE_TL':
-        if (Digit.Utils.tlCitizenAccess() || userNullCheck()) {
-          serviceIcon = <CaseIcon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      case 'ACTION_TEST_BPA_STAKEHOLDER_HOME':
-        if (Digit.Utils.BPACitizenAccess() || userNullCheck()) {
-          serviceIcon = <OBPSIcon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      case 'ACTION_TEST_WATER_AND_SEWERAGE':
-        if (Digit.Utils.wsCitizenAccess() || userNullCheck()) {
-          serviceIcon = <WSICon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      case 'ACTION_TEST_FIRE_NOC':
-        if (Digit.Utils.NOCCitizenAccess() || userNullCheck()) {
-          serviceIcon = <FirenocIcon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      case 'ACTION_TEST_BIRTH_CERTIFICATE':
-        if (Digit.Utils.bdCitizenAccess() || userNullCheck()) {
-          serviceIcon = <BirthIcon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      case 'ACTION_TEST_DEATH_CERTIFICATE':
-        if (Digit.Utils.bdCitizenAccess() || userNullCheck()) {
-          serviceIcon = <DeathIcon className="fill-path-primary-main" />;
-        } else return;
-        break;
-      default:
-        return;
-    }
-    options.push({
-      name: t(element?.label),
-      Icon: serviceIcon,
-      onClick: () => history.push(element?.navigationUrl),
-    });
-  })
+
+
+citizenServicesObj?.props?.forEach((element) => {
+  let serviceIcon = null;
+  if (!isOnlyCitizen && isOnlyFireNocCitizen && element?.label !== "ACTION_TEST_FIRE_NOC") {
+    return; // skip everything except FireNOC
+  }
+
+  if (options.length >= 4) return;
+
+  switch (element?.label) {
+    case "ACTION_TEST_FIRE_NOC":
+      if (Digit.Utils.NOCCitizenAccess() || userNullCheck()) {
+        serviceIcon = <FirenocIcon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    case "ACTION_TEST_MCOLLECT":
+      if (Digit.Utils.mCollectCitizenAccess() || userNullCheck()) {
+        serviceIcon = <ComplaintIcon />;
+      } else return;
+      break;
+    case "MODULE_PT":
+      if (Digit.Utils.ptCitizenAccess() || userNullCheck()) {
+        serviceIcon = <PTIcon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    case "MODULE_TL":
+      if (Digit.Utils.tlCitizenAccess() || userNullCheck()) {
+        serviceIcon = <CaseIcon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    case "ACTION_TEST_BPA_STAKEHOLDER_HOME":
+      if (Digit.Utils.BPACitizenAccess() || userNullCheck()) {
+        serviceIcon = <OBPSIcon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    case "ACTION_TEST_WATER_AND_SEWERAGE":
+      if (Digit.Utils.wsCitizenAccess() || userNullCheck()) {
+        serviceIcon = <WSICon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    case "ACTION_TEST_BIRTH_CERTIFICATE":
+      if (Digit.Utils.bdCitizenAccess() || userNullCheck()) {
+        serviceIcon = <BirthIcon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    case "ACTION_TEST_DEATH_CERTIFICATE":
+      if (Digit.Utils.bdCitizenAccess() || userNullCheck()) {
+        serviceIcon = <DeathIcon className="fill-path-primary-main" />;
+      } else return;
+      break;
+    default:
+      return;
+  }
+
+  options.push({
+    name: t(element?.label),
+    Icon: serviceIcon,
+    onClick: () => history.push(element?.navigationUrl),
+  });
+});
+
 
   const allCitizenServicesProps = {
     header: t(citizenServicesObj?.headerLabel),

@@ -77,52 +77,57 @@ const Home = ({
   };
   
   let roleBasedLinkData = {};
-  Object.entries(linkData || {}).forEach(([key , val]) => {
+  const user = Digit.UserService.getUser();
+  const roles = user?.info?.roles?.map((role) => role.code) || [];
+
+  const isOnlyFireNocCitizen =
+    roles.length === 2 &&
+    roles.includes("CITIZEN") &&
+    roles.includes("FN_CITIZEN");
+
+  Object.entries(linkData || {}).forEach(([key, val]) => {
     switch (key) {
-      case "MCollect":
-        if (Digit.Utils.mCollectCitizenAccess() || userNullCheck()) {
+      case "FireNoc":
+        if (isOnlyFireNocCitizen || userNullCheck()) {
           roleBasedLinkData[key] = val;
-        } 
+        }
         break;
-        case "TL":
-          if (Digit.Utils.tlCitizenAccess() || userNullCheck()) {
-            roleBasedLinkData[key] = val;
+      case "MCollect":
+        if (!isOnlyFireNocCitizen && (Digit.Utils.mCollectCitizenAccess() || userNullCheck())) {
+          roleBasedLinkData[key] = val;
+        }
+        break;
+      case "TL":
+        if (!isOnlyFireNocCitizen && (Digit.Utils.tlCitizenAccess() || userNullCheck())) {
+          roleBasedLinkData[key] = val;
         }
         break;
       case "PT":
-        if (Digit.Utils.ptCitizenAccess() || userNullCheck()) {
+        if (!isOnlyFireNocCitizen && (Digit.Utils.ptCitizenAccess() || userNullCheck())) {
           roleBasedLinkData[key] = val;
         }
         break;
       case "OBPS":
-        if (Digit.Utils.BPACitizenAccess() || userNullCheck()) {
+        if (!isOnlyFireNocCitizen && (Digit.Utils.BPACitizenAccess() || userNullCheck())) {
           roleBasedLinkData[key] = val;
         }
         break;
       case "WS":
-        if (Digit.Utils.wsCitizenAccess() || userNullCheck()) {
-          roleBasedLinkData[key] = val;
-        }
-        break;
-      case "FireNoc":
-        if (Digit.Utils.NOCCitizenAccess() || userNullCheck()) {
+        if (!isOnlyFireNocCitizen && (Digit.Utils.wsCitizenAccess() || userNullCheck())) {
           roleBasedLinkData[key] = val;
         }
         break;
       case "Birth":
-        if (Digit.Utils.bdCitizenAccess() || userNullCheck()) {
-          roleBasedLinkData[key] = val;
-        }
-        break;
       case "Death":
-        if (Digit.Utils.bdCitizenAccess() || userNullCheck()) {
+        if (!isOnlyFireNocCitizen && (Digit.Utils.bdCitizenAccess() || userNullCheck())) {
           roleBasedLinkData[key] = val;
         }
         break;
       default:
         return;
     }
-  })
+  });
+
 
   const classname = Digit.Hooks.fsm.useRouteSubscription(pathname);
   const { t } = useTranslation();
