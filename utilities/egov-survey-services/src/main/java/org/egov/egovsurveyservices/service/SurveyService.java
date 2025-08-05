@@ -228,11 +228,12 @@ public class SurveyService {
             }
 
         }
-       if(!ObjectUtils.isEmpty(surveyEntity.getStartDate()) && !ObjectUtils.isEmpty(surveyEntity.getEndDate())){
-           if(surveyEntity.getStartDate() < System.currentTimeMillis() && surveyEntity.getEndDate() > System.currentTimeMillis())
-               surveyEntity.setStatus(ACTIVE);
+        // Commented because manually user can inactive survey even if the current date between the start and end (CCSD-576)
+       // if(!ObjectUtils.isEmpty(surveyEntity.getStartDate()) && !ObjectUtils.isEmpty(surveyEntity.getEndDate())){
+       //     if(surveyEntity.getStartDate() < System.currentTimeMillis() && surveyEntity.getEndDate() > System.currentTimeMillis())
+       //         surveyEntity.setStatus(ACTIVE);
 
-       }
+       // }
 
         surveyRequest.setSurveyEntity(surveyEntity);
 
