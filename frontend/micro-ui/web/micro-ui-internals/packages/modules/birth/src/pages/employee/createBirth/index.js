@@ -17,6 +17,7 @@ export const CreateBirth = () => {
   const prevCheckboxRef = useRef(false);
   const { t } = useTranslation();
 
+  const [isSubmitDisabledByDateError, setIsSubmitDisabledByDateError] = useState(false);
   // Fetch current tenant ID for hospital list
   const hospitalTenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -198,6 +199,13 @@ export const CreateBirth = () => {
 
   // Handle form submission and API call
   const onSubmit = async (formData) => {
+    if (!checkDateOrderValidity(formData)) {
+      setShowToast({ key: "error", label: t("BND_INVALID_REGISTRATION_DATE") });
+      setIsSubmitDisabledByDateError(true);
+      return;
+    }
+    setIsSubmitDisabledByDateError(false);
+
     const payload = {
       RequestInfo: {
         apiId: "Mihy",
@@ -239,6 +247,18 @@ export const CreateBirth = () => {
     );
   };
 
+  const checkDateOrderValidity = (formData) => {
+    const dobStr = formData.date_of_birth;
+    const doRegStr = formData.date_of_registration;
+    if (dobStr && doRegStr) {
+      const deathDate = new Date(dobStr);
+      const regDate = new Date(doRegStr);
+      if (isNaN(deathDate.getTime()) || isNaN(regDate.getTime())) return true; 
+      return regDate >= deathDate;
+    }
+    return true; 
+  };
+
   // Reset form config to initial config on mount
   // useEffect(() => {
   //   setFormConfig(BirthConfig);
@@ -258,9 +278,15 @@ export const CreateBirth = () => {
         label={t("CORE_COMMON_SUBMIT")}
         onSubmit={onSubmit}
         showSecondaryLabel={true}
+        isDisabled={isSubmitDisabledByDateError}
         // Handle form value changes for checkboxes and update config accordingly
         onFormValueChange={(setValue, formData) => {
           setValueRef.current = setValue;
+
+          if (isSubmitDisabledByDateError && checkDateOrderValidity(formData)) {
+              setIsSubmitDisabledByDateError(false);
+          }
+
           const isLegacy = !!formData["checkbox_legacy"];
           const isSameAddressChecked = !!formData["same_as_permanent_address"];
 
@@ -314,6 +340,7 @@ export const CreateBirth = () => {
               setValueRef.current(name, "");
             });
           }
+          setIsSubmitDisabledByDateError(false);
         }}
       />
 

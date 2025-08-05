@@ -24,7 +24,7 @@ const DownloadButton = ({ tenantId, idForFilenameAndMutation, directFileStoreId,
 
    useEffect(() => {
       if (isDownloaded) {
-        window.location.reload(); // Refresh the page when download is complete
+        window.location.reload(); 
       }
     }, [isDownloaded]);
 
