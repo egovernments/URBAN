@@ -15,7 +15,7 @@ const MyApplications = () => {
   const authToken = window?.Digit?.UserService?.getUser()?.access_token;
 
 
-  const { data, isLoading, error, revalidate } = Digit.Hooks.useCustomAPIHook({
+  const { data, isLoading, error, revalidate } = Digit.Hooks.useCustomAPIHookV2({
   url: "/birth-death-services/death/_searchapplications",
   method: "POST",
   params: {
@@ -26,6 +26,8 @@ const MyApplications = () => {
   },
   changeQueryName: `deathApplicationsSearch-${tenantId}`,
 });
+
+console.log("data", data);
 
 useEffect(() => {
     const applications = data?.applications;

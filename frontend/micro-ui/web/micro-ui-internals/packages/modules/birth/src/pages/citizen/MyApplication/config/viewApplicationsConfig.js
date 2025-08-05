@@ -51,12 +51,18 @@ const getValue = (value, t) => {
 };
 
 // Returns translated application type or fallback
-const getTranslatedApplicationType = (applicationType, t) => {
-    if (!applicationType) return getValue(null, t);
-    const upperType = applicationType.toUpperCase();
-    const translationKey = `BND_APP_TYPE_${upperType}`;
-    const translatedValue = t(translationKey);
-    return translatedValue !== translationKey ? translatedValue : getValue(applicationType, t);
+const getTranslatedApplicationType = (applicationType, t) =>  {
+  if (!applicationType) {
+    return getValue(null, t);
+  }
+  switch (applicationType.toUpperCase()) {
+    case "CERT_DOWNLOAD":
+      return t("BND_CERT_DOWNLOAD");
+    default:
+      const genericTypeKey = `BND_APP_TYPE_${applicationType.toUpperCase()}`;
+      const translatedGenericType = t(genericTypeKey);
+      return translatedGenericType !== genericTypeKey ? translatedGenericType : getValue(applicationType, t);
+  }
 };
 
 // Returns translated application status or fallback
@@ -119,7 +125,7 @@ export const viewBirthApplicationConfig = (applicationsArray, t, props = {}) => 
             },
             {
                 key: t("BND_COMMON_NAME"),
-                value: getValue(appData.childName, t),
+                value: getValue(appData.name, t),
             },
             {
                 key: t("BND_COMMON_MOTHERSNAME"),

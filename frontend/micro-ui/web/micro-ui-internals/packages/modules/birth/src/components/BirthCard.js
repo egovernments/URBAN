@@ -29,7 +29,7 @@ const BirthCard = () => {
     },
     {
       label: t("ACTION_TEST_BIRTH_SEARCH_CERTIFICATE"),
-      link: `/${window.contextPath}/employee/birth/birth-common/getCertificate`,
+      link: `/${window.contextPath}/employee/birth/birth-common/getCertificates`,
       role: "BND_CEMP", 
     },
 
@@ -54,7 +54,7 @@ const BirthCard = () => {
     },
     {
       label: t("BND_MY_REQUESTS"),
-      link: `/${window.contextPath}/citizen/birth/birth-common/getCertificate`,
+      link: `/${window.contextPath}/citizen/birth/birth-common/getCertificates`,
     },
   ];
 

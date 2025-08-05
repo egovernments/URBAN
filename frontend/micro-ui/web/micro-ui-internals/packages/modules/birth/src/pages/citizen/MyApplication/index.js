@@ -14,7 +14,7 @@ const MyApplications = () => {
     const authToken = window?.Digit?.UserService?.getUser()?.access_token;
 
     // Fetch birth applications
-    const { data, isLoading, error, revalidate } = Digit.Hooks.useCustomAPIHook({
+    const { data, isLoading, error, revalidate } = Digit.Hooks.useCustomAPIHookV2({
         url: "/birth-death-services/birth/_searchapplications",
         method: "POST",
         params: { tenantId },
@@ -55,10 +55,12 @@ const MyApplications = () => {
     if (error) return <div>Error fetching applications. Please try again.</div>;
 
     return (
-        <div className="myapplication" style={{ padding: "16px" }}>
-            <Header>{t("BND_CITIZEN_MY_APPLICATIONS")}</Header>
-            <div>
-                {ViewComposer && config ? <ViewComposer data={config} /> : <div>Loading View...</div>}
+        <React.Fragment>
+           <div className="myapplication" style={{ padding: "16px", width: "100vw" }}>
+                <Header>{t("BND_CITIZEN_MY_APPLICATIONS")}</Header>
+                <div>
+                    {ViewComposer && config ? <ViewComposer data={config} /> : <div>Loading View...</div>}
+                </div>
             </div>
             {showToast && (
                 <Toast
@@ -67,7 +69,7 @@ const MyApplications = () => {
                     onClose={() => setShowToast(null)}
                 />
             )}
-            </div>
+        </React.Fragment>
 
     );
 };

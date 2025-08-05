@@ -17,7 +17,7 @@ const CitizenApp = ({ path, url, userType }) => {
           </AppContainer>
         </Route>
 
-        <PrivateRoute path={`${path}/birth-common/getCertificate`} component={MyApplications} />
+        <PrivateRoute path={`${path}/birth-common/getCertificates`} component={MyApplications} />
 
         <PrivateRoute path={`${path}/birth-citizen/myApplications`} component={SearchBirth} />
       </Switch>
