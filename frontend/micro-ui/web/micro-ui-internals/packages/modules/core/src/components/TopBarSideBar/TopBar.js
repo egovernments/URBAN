@@ -157,8 +157,7 @@
 
 // export default TopBar;
 
-
-import { Dropdown, TopBar as TopBarComponent } from "@egovernments/digit-ui-react-components";
+import { Dropdown, Hamburger, TopBar as TopBarComponent } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import ChangeCity from "../ChangeCity";
@@ -315,7 +314,7 @@ const TopBar = ({
       top: "0",
     }}>
       {/* Left Side */}
-
+      {mobileView ? <Hamburger handleClick={toggleSidebar} color="#9E9E9E" /> : null}
       {/* <div> <img
         src="https://tse4.mm.bing.net/th/id/OIP.LcAu4hLmyz-LQqUVPtVC9AHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
         alt="Logo"
