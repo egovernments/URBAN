@@ -269,7 +269,7 @@ public class DeathRepository {
 				EgDeathDtl dec = encryptionDecryptionUtil.decryptObject(deathDtl, "BndDetail", EgDeathDtl.class, requestInfo);
 				deathDtl.setAadharno(dec.getAadharno());
 				deathDtl.setIcdcode(dec.getIcdcode());
-				commonUtils.maskAndShowLast4Chars(deathDtl);
+//				commonUtils.maskAndShowLast4Chars(deathDtl);
 			});
 		}
         return deathDtls;

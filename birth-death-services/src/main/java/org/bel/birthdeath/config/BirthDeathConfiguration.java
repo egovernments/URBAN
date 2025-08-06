@@ -123,4 +123,5 @@ public class BirthDeathConfiguration {
     @Value("${egov.pdf.deathcert.createEndPoint}")
     private String	egovPdfDeathEndPoint;
 
+
 }

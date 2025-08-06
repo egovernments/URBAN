@@ -2,12 +2,16 @@ package org.bel.birthdeath.death.model;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.bel.birthdeath.common.contract.ParentInfo;
+import org.bel.birthdeath.common.contract.ParentInfoProvider;
+import org.bel.birthdeath.common.model.user.User;
 
 @Getter
 @Setter
@@ -15,7 +19,8 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EgDeathDtl{
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EgDeathDtl implements ParentInfoProvider {
 
 	private String id;
 
@@ -68,6 +73,8 @@ public class EgDeathDtl{
 	private String hospitalid;
 	
 	private EgDeathFatherInfo deathFatherInfo;
+ 
+	private User user;
 	
 	private EgDeathMotherInfo deathMotherInfo;
 	
@@ -98,4 +105,14 @@ public class EgDeathDtl{
 	private String fullName;
 
 	private Boolean isLegacyRecord = false;
+
+	@Override
+	public String getTenantid() {
+		return this.tenantid;
+	}
+
+	@Override
+	public ParentInfo getFatherInfo() {
+		return this.deathFatherInfo;
+	}
 }

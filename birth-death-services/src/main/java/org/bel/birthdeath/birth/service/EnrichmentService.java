@@ -1,5 +1,6 @@
 package org.bel.birthdeath.birth.service;
 
+import static org.bel.birthdeath.common.util.UserUtil.convertToCustomUser;
 import static org.bel.birthdeath.utils.BirthDeathConstants.*;
 
 import java.math.BigDecimal;
@@ -12,12 +13,14 @@ import java.util.stream.Collectors;
 
 import org.bel.birthdeath.birth.certmodel.BirthCertRequest;
 import org.bel.birthdeath.birth.certmodel.BirthCertificate;
+import org.bel.birthdeath.birth.model.EgBirthDtl;
 import org.bel.birthdeath.common.Idgen.IdResponse;
 import org.bel.birthdeath.common.model.Amount;
 import org.bel.birthdeath.common.model.AuditDetails;
 import org.bel.birthdeath.common.repository.IdGenRepository;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
+import org.bel.birthdeath.death.model.EgDeathDtl;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.mdms.model.MasterDetail;
@@ -104,7 +107,7 @@ public class EnrichmentService {
 				.moduleName(BILLING_SERVICE).build();
 	}
 
-	public void setDemandParams(BirthCertRequest birthCertRequest) {
+	public void setDemandParams(BirthCertRequest birthCertRequest ,List<EgBirthDtl> birtDtls) {
 		BirthCertificate birthCert = birthCertRequest.getBirthCertificate();
 		birthCert.setBusinessService(BIRTH_CERT);
 		ArrayList<Amount> amounts = new ArrayList<>();
@@ -113,7 +116,11 @@ public class EnrichmentService {
 		amount.setAmount(new BigDecimal(50));
 		amounts.add(amount);
 		birthCert.setAmount(amounts);
-		birthCert.setCitizen(birthCertRequest.getRequestInfo().getUserInfo());
+		if (birthCertRequest.getRequestInfo().getUserInfo().getType().equalsIgnoreCase("CITIZEN"))
+			birthCert.setCitizen(convertToCustomUser(birthCertRequest.getRequestInfo().getUserInfo()));
+		else
+			birthCert.setCitizen(birtDtls.get(0).getUser());
+
 		birthCert.setTaxPeriodFrom(System.currentTimeMillis());
 		birthCert.setTaxPeriodTo(System.currentTimeMillis()+86400000);
 	}
