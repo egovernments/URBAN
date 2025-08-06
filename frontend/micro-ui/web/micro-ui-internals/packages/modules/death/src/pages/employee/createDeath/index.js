@@ -238,56 +238,75 @@ export const CreateDeath = () => {
   };
 
   const onFormValueChange = (setValue, formData, formState) => {
-    setValueRef.current = setValue; // Store setValue for reset
+  setValueRef.current = setValue; // Store setValue for later use (e.g., in reset)
 
-    // Date order validation on change
-    if (isSubmitDisabledByDateError && checkDateOrderValidity(formData)) {
-      setIsSubmitDisabledByDateError(false);
-    }
+  // Date order validation on change
+  if (isSubmitDisabledByDateError && checkDateOrderValidity(formData)) {
+    setIsSubmitDisabledByDateError(false);
+  }
 
-    // --- Handle "Same Address" checkbox ---
-    const currentIsSameAddressChecked = !!formData?.sameAddressCheckbox;
-    if (prevCheckboxRef.current !== currentIsSameAddressChecked) {
-      prevCheckboxRef.current = currentIsSameAddressChecked;
-      setSameAddressChecked(currentIsSameAddressChecked); // Update state if needed elsewhere
-      // setPermanent(currentIsSameAddressChecked); // Update 'permanent' state if it's used
+  const currentIsSameAddressChecked = !!formData?.sameAddressCheckbox;
+  const currentIsLegacy = !!formData?.checkboxlabel;
 
-      // Update formConfig based on the checkbox, using the current formConfig as base
-      setFormConfig(prevCurrentConfig =>
-        updateConfigBasedOnSameAddressCheckbox(currentIsSameAddressChecked, prevCurrentConfig)
-      );
-    }
+  // Only rebuild the form config if one of the controlling checkboxes has changed.
+  if (prevCheckboxRef.current !== currentIsSameAddressChecked || prevLegacyCheckboxRef.current !== currentIsLegacy) {
+    // Update refs to prevent re-running this logic unnecessarily
+    prevCheckboxRef.current = currentIsSameAddressChecked;
+    prevLegacyCheckboxRef.current = currentIsLegacy;
+    setSameAddressChecked(currentIsSameAddressChecked);
 
-    // --- Handle "Legacy Record" checkbox ---
-    const currentIsLegacy = !!formData?.checkboxlabel;
-    if (prevLegacyCheckboxRef.current !== currentIsLegacy) {
-      prevLegacyCheckboxRef.current = currentIsLegacy;
+    // --- REBUILD CONFIG FROM A CLEAN SOURCE ---
+    // 1. Start with a fresh, deep copy of the original config.
+    let newConfig = JSON.parse(JSON.stringify(createDeathConfig));
 
-      // Update formConfig for RegistrationNumber field, using current formConfig as base
-      setFormConfig(prevCurrentConfig =>
-        prevCurrentConfig.map(section => ({
+    // 2. Apply the "Same Address" logic.
+    newConfig = updateConfigBasedOnSameAddressCheckbox(currentIsSameAddressChecked, newConfig);
+
+    // 3. Apply the "Legacy Record" logic.
+    newConfig = newConfig.map((section) => ({
+      ...section,
+      body: section.body.map((field) => {
+        if (field.populators?.name === "RegistrationNumber") {
+          return {
+            ...field,
+            disable: !currentIsLegacy,
+            isMandatory: currentIsLegacy,
+            validation: { ...(field.validation || {}), required: currentIsLegacy },
+            populators: {
+              ...field.populators,
+              error: currentIsLegacy ? field.populators?.error || "Registration Number is Required!" : undefined,
+            },
+          };
+        }
+        return field;
+      }),
+    }));
+
+    // 4. Re-apply the dynamically fetched hospital data to our newly built config.
+    if (hospitalListData?.hospitalListOptions) {
+      newConfig = newConfig.map(section => ({
           ...section,
           body: section.body.map(field => {
-            if (field.populators?.name === "RegistrationNumber") {
-              return {
-                ...field,
-                disable: !currentIsLegacy,
-                isMandatory: currentIsLegacy,
-                validation: { ...(field.validation || {}), required: currentIsLegacy },
-                populators: {
-                  ...field.populators,
-                  error: currentIsLegacy ? (field.populators?.error || "Registration Number is Required!") : undefined,
-                },
-              };
-            }
-            return field;
-          })
-        }))
-      );
+              if (field.populators?.name === "HospitalName") {
+                  return {
+                      ...field,
+                      populators: {
+                          ...field.populators,
+                          options: hospitalListData.hospitalListOptions,
+                      },
+                  };
+              }
+              return field;
+          }),
+      }));
     }
-  };
 
-  const onSecondayActionClick = () => { // Reset handler
+    // 5. Finally, update the state with the correctly constructed config.
+    setFormConfig(newConfig);
+  }
+};
+
+  const onSecondaryActionClick = () => { // Reset handler
     // Reset form values using setValueRef
     if (setValueRef.current) {
       const allFieldNames = createDeathConfig.flatMap(section =>
@@ -377,15 +396,14 @@ export const CreateDeath = () => {
             key: field.populators?.name || `${conf.head || 'section'}-${field.key || field.label || field.type}`, // More robust key generation
           })),
         }))}
-        isDisabled={isSubmitDisabledByDateError} // FormComposerV2 also has its own isDisabled logic for mandatory fields
-        label={t("CORE_COMMON_SUBMIT")} // Consider t("SUBMIT")
+        isDisabled={isSubmitDisabledByDateError} 
+        label={t("CORE_COMMON_SUBMIT")} 
         onSubmit={onSubmit}
         showSecondaryLabel={true}
         onFormValueChange={onFormValueChange}
-        secondaryLabel={t("BND_COMMON_NEW")} // Consider t("Reset")
+        secondaryLabel={t("BND_COMMON_NEW")} 
         actionClassName={"actionBarClass microplan-actionbar"}
-        onSecondayActionClick={onSecondayActionClick}
-       
+        onSecondaryActionClick={onSecondaryActionClick}
       />
       {showToast && (
         <Toast

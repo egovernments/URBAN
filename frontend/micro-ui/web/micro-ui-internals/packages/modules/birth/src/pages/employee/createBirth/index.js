@@ -259,6 +259,79 @@ export const CreateBirth = () => {
     return true; 
   };
 
+  const onFormValueChange = (setValue, formData) => {
+    setValueRef.current = setValue;
+
+    if (isSubmitDisabledByDateError && checkDateOrderValidity(formData)) {
+      setIsSubmitDisabledByDateError(false);
+    }
+
+    const isLegacy = !!formData["checkbox_legacy"];
+    const isSameAddressChecked = !!formData["same_as_permanent_address"];
+
+    // Only rebuild if a controlling checkbox has changed
+    if (prevLegacyCheckboxRef.current !== isLegacy || prevCheckboxRef.current !== isSameAddressChecked) {
+      // Update refs to prevent unnecessary reruns
+      prevLegacyCheckboxRef.current = isLegacy;
+      prevCheckboxRef.current = isSameAddressChecked;
+      setSameAddressChecked(isSameAddressChecked);
+      setPermanent(isSameAddressChecked); // If you use this state elsewhere
+
+      // --- REBUILD CONFIG FROM A CLEAN SOURCE ---
+      // 1. Start with a fresh, deep copy of the original config
+      let newConfig = JSON.parse(JSON.stringify(BirthConfig));
+
+      // 2. Apply "Same Address" logic to the fresh config
+      newConfig = updateConfigBasedOnCheckbox(isSameAddressChecked, newConfig);
+
+      // 3. Apply "Legacy Record" logic to the result
+      newConfig = newConfig.map((section) => ({
+        ...section,
+        body: section.body.map((field) => {
+          if (field.populators?.name === "registration_number") {
+            return {
+              ...field,
+              disable: !isLegacy,
+              isMandatory: isLegacy,
+              populators: {
+                ...field.populators,
+                error: isLegacy ? "Registration Number is Required!" : undefined,
+              },
+            };
+          }
+          return field;
+        }),
+      }));
+
+      // 4. Re-apply the dynamically fetched hospital data
+      if (hospitalListData?.hospitalListOptions) {
+        newConfig = newConfig.map((section) => ({
+          ...section,
+          body: section.body.map((field) => {
+            if (field.populators?.name === "hospital_name") {
+              return {
+                ...field,
+                populators: {
+                  ...field.populators,
+                  options: hospitalListData.hospitalListOptions,
+                },
+              };
+            }
+            return field;
+          }),
+        }));
+      }
+      
+      // 5. Update the state with the correctly constructed config
+      setFormConfig(newConfig);
+
+      // Clear registration_number field if legacy is unchecked
+      if (!isLegacy && setValueRef.current) {
+        setValueRef.current("registration_number", "");
+      }
+    }
+  };
+
   // Reset form config to initial config on mount
   // useEffect(() => {
   //   setFormConfig(BirthConfig);
@@ -279,69 +352,68 @@ export const CreateBirth = () => {
         onSubmit={onSubmit}
         showSecondaryLabel={true}
         isDisabled={isSubmitDisabledByDateError}
-        // Handle form value changes for checkboxes and update config accordingly
-        onFormValueChange={(setValue, formData) => {
-          setValueRef.current = setValue;
-
-          if (isSubmitDisabledByDateError && checkDateOrderValidity(formData)) {
-              setIsSubmitDisabledByDateError(false);
-          }
-
-          const isLegacy = !!formData["checkbox_legacy"];
-          const isSameAddressChecked = !!formData["same_as_permanent_address"];
-
-          // --- Handle "Same Address" checkbox ---
-          if (prevCheckboxRef.current !== isSameAddressChecked) {
-            prevCheckboxRef.current = isSameAddressChecked;
-            setSameAddressChecked(isSameAddressChecked);
-            setPermanent(isSameAddressChecked);
-
-            // Use functional update to preserve the hospital list
-            setFormConfig(prevConfig =>
-              updateConfigBasedOnCheckbox(isSameAddressChecked, prevConfig)
+         onFormValueChange={onFormValueChange}
+        secondaryLabel={t("BND_COMMON_NEW")}
+        actionClassName={"actionBarClass microplan-actionbar"}
+        onSecondaryActionClick={() => {
+          // Reset all form field values
+          if (setValueRef.current) {
+            const allFieldNames = BirthConfig.flatMap(section =>
+              section.body.map(field => field.populators?.name).filter(Boolean)
             );
+            allFieldNames.forEach(name => {
+              setValueRef.current(name, "");
+            });
+            // Explicitly set checkboxes to false
+            setValueRef.current("checkbox_legacy", false);
+            setValueRef.current("same_as_permanent_address", false);
           }
 
-          // --- Handle "Legacy Record" checkbox ---
-          if (prevLegacyCheckboxRef.current !== isLegacy) {
-            prevLegacyCheckboxRef.current = isLegacy;
-            const updatedForm = formConfig.map((section) => ({
+          // Reset internal states
+          prevCheckboxRef.current = false;
+          prevLegacyCheckboxRef.current = false;
+          setIsSubmitDisabledByDateError(false);
+
+          // --- REBUILD CONFIG FROM SCRATCH TO RESET THE UI ---
+          let newConfig = JSON.parse(JSON.stringify(BirthConfig));
+
+          // 1. Apply default state (false) for "Same Address"
+          newConfig = updateConfigBasedOnCheckbox(false, newConfig);
+
+          // 2. Apply default state (false) for "Legacy Record"
+          newConfig = newConfig.map(section => ({
+            ...section,
+            body: section.body.map(field => {
+              if (field.populators?.name === "registration_number") {
+                return { ...field, disable: true, isMandatory: false, populators: { ...field.populators, error: undefined } };
+              }
+              return field;
+            })
+          }));
+
+          // 3. Re-apply hospital data
+          if (hospitalListData?.hospitalListOptions) {
+            newConfig = newConfig.map((section) => ({
               ...section,
               body: section.body.map((field) => {
-                if (field.populators?.name === "registration_number") {
+                if (field.populators?.name === "hospital_name") {
                   return {
                     ...field,
-                    disable: !isLegacy,
-                    isMandatory: isLegacy,
                     populators: {
                       ...field.populators,
-                      error: isLegacy ? "Registration Number is Required!" : undefined,
+                      options: hospitalListData.hospitalListOptions,
                     },
                   };
                 }
                 return field;
               }),
             }));
-            setFormConfig(updatedForm);
-            // Clear registration_number field if legacy is unchecked
-            if (!isLegacy && setValueRef.current) {
-              setValueRef.current("registration_number", "");
-            }
+          }
 
-          }
+          // 4. Set the final, reset config
+          setFormConfig(newConfig);
         }}
-        secondaryLabel={t("BND_COMMON_NEW")}
-         actionClassName={"actionBarClass microplan-actionbar"}
-        // Reset all form fields on secondary action
-        onSecondayActionClick={() => {
-          if (setValueRef.current) {
-            const allNames = formConfig.flatMap((section) => section.body.map((field) => field.populators?.name).filter(Boolean));
-            allNames.forEach((name) => {
-              setValueRef.current(name, "");
-            });
-          }
-          setIsSubmitDisabledByDateError(false);
-        }}
+
       />
 
       {showToast && (
