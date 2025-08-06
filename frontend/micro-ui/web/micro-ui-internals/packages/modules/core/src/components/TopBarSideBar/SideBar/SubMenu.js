@@ -244,7 +244,7 @@ const SubMenu = ({ item }) => {
       <div className="submenu-container">
         <div className={`sidebar-link  ${pathname === item?.navigationURL ? "active" : ""}`} >
           <div className="actions" style={{display:"flex",gap:"20px"}}>
-            {leftIcon}
+            {/* {leftIcon} */}
             {item.navigationURL?.indexOf("/digit-ui") === -1 ? (
               <a
                 data-tip="React-tooltip"
@@ -289,7 +289,7 @@ const SubMenu = ({ item }) => {
         <div className="submenu-container">
           <div onClick={item.links && showSubnav} className={`sidebar-link`}>
             <div className="actions" style={{display:"flex",gap:"20px"}}>
-              {leftIcon}
+              {/* {leftIcon} */}
               <div data-tip="React-tooltip" data-for={`jk-side-${getModuleName}`}>
                 <span> {trimModuleName} </span>
 
@@ -302,7 +302,7 @@ const SubMenu = ({ item }) => {
                 <span className="tooltiptext">{t(`ACTION_TEST_${getModuleName}`)}</span>
               </div>{" "} */}
             </div>
-            <div> {item.links && subnav ? <ArrowVectorDown /> : item.links ? <ArrowForward /> : null} </div>
+            {/* <div> {item.links && subnav ? <ArrowVectorDown /> : item.links ? <ArrowForward /> : null} </div> */}
           </div>
         </div>
 
