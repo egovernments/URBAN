@@ -323,7 +323,7 @@ const SelectAccessoriesDetails = ({ t, config, onSelect, userType, formData }) =
           })}
           {/* <hr color="#d6d5d4" className="break-line"></hr> */}
           <div style={{ justifyContent: "center", display: "flex", paddingBottom: "15px", color: "#FF8C00" }}>
-            <button type="button" className="add-more-btn" style={{ paddingTop: "10px" }} onClick={() => handleAdd()}>
+            <button type="button" className="add-more-btn-access" style={{ paddingTop: "10px" }} onClick={() => handleAdd()}>
               {`${t("TL_ADD_MORE_TRADE_ACC")}`}
             </button>
           </div>
