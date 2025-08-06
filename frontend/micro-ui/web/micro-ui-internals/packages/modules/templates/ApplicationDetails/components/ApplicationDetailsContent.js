@@ -1015,6 +1015,7 @@ const ApplicationDetailsContent = ({
   const stateTenant = Digit.ULBService.getStateId();
   // const { control, handleSubmit } = useForm();
   const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
+  
   const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment(
     { tenantId: tenantIdEs, consumerCode: wrkflow === "WNS" ? connectionNo : consumerCode, businessService },
     {}
