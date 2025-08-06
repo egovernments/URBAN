@@ -7,7 +7,8 @@
   "workspaces": [
     "micro-ui-internals/packages/libraries",
     "micro-ui-internals/packages/css",
-    "micro-ui-internals/packages/react-components"
+    "micro-ui-internals/packages/react-components",
+    "micro-ui-internals/packages/modules/finance"
   ],
   "engines": {
     "node": ">=14"
@@ -31,6 +32,7 @@
     "@egovernments/digit-ui-module-core":"1.7.40",
     "@egovernments/digit-ui-module-dss":"1.7.40",
     "@egovernments/digit-ui-react-components":"1.7.40",
+    "@egovernments/digit-ui-module-finance": "0.0.1-sandbox",
     "babel-loader": "8.1.0",
     "clean-webpack-plugin": "4.0.0",
     "react": "17.0.2",
