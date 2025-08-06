@@ -355,7 +355,7 @@ export const CreateBirth = () => {
          onFormValueChange={onFormValueChange}
         secondaryLabel={t("BND_COMMON_NEW")}
         actionClassName={"actionBarClass microplan-actionbar"}
-        onSecondaryActionClick={() => {
+        onSecondayActionClick={() => {
           // Reset all form field values
           if (setValueRef.current) {
             const allFieldNames = BirthConfig.flatMap(section =>

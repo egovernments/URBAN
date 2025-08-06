@@ -306,7 +306,7 @@ export const CreateDeath = () => {
   }
 };
 
-  const onSecondaryActionClick = () => { // Reset handler
+  const onSecondayActionClick = () => { // Reset handler
     // Reset form values using setValueRef
     if (setValueRef.current) {
       const allFieldNames = createDeathConfig.flatMap(section =>
@@ -403,7 +403,7 @@ export const CreateDeath = () => {
         onFormValueChange={onFormValueChange}
         secondaryLabel={t("BND_COMMON_NEW")} 
         actionClassName={"actionBarClass microplan-actionbar"}
-        onSecondaryActionClick={onSecondaryActionClick}
+        onSecondayActionClick={onSecondayActionClick}
       />
       {showToast && (
         <Toast
