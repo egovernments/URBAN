@@ -42,10 +42,11 @@ const TopBar = ({
             alt="mSeva"
           />
           </a>
+
           {/* <h3>{cityOfCitizenShownBesideLogo}</h3> */}
           <div>
             <div>मध्य प्रदेश सरकार</div>
-            <div>Government of Madhya  Pradesh</div>
+            <div>Government of Madhya Pradesh</div>
           </div>
         </div>
 
