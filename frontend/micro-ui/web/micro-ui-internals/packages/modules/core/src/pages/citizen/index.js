@@ -150,13 +150,18 @@ const Home = ({
   const ModuleLevelLinkHomePages = modules?.map(({ code, bannerImage }, index) => {
     let Links = Digit.ComponentRegistryService.getComponent(`${code}Links`) || (() => <React.Fragment />);
     let mdmsDataObj = isLinkDataFetched ? processLinkData(linkData, code, t) : undefined;
+    
+if (mdmsDataObj?.links) {
+  mdmsDataObj.links = mdmsDataObj.links
+    .filter((link) => link.i18nKey !== "DeathCitizen" && link.i18nKey !== "BirthCitizen")
+    .sort((a, b) => a.orderNumber - b.orderNumber);
+}
 
-    //if (mdmsDataObj?.header === "ACTION_TEST_WS") {
-    mdmsDataObj?.links &&
-      mdmsDataObj?.links.sort((a, b) => {
-        return a.orderNumber - b.orderNumber;
-      });
-    // }
+
+
+
+console.log("*** Log ===>1 ", mdmsDataObj?.header);
+console.log("*** Log ===>2 ", mdmsDataObj?.links);
     return (
       <React.Fragment>
         <Route key={index} path={`${path}/${code.toLowerCase()}-home`}>
