@@ -1,5 +1,5 @@
-import { LocalizationService } from "../../elements/Localization/service";
 import { MdmsService } from "../../elements/MDMS";
+import { LocalizationService } from "../../elements/Localization/service";
 import { Storage } from "../../atoms/Utils/Storage";
 import { ApiCacheService } from "../../atoms/ApiCacheService";
 
@@ -35,6 +35,52 @@ const renderTenantLogos = (stateInfo, tenants) => {
   });
 };
 
+// Add cache validation utility
+const validateAndCleanCache = () => {
+  try {
+    // Check for corrupted localization cache
+    const locale = Digit.SessionStorage.get("locale") || "en_IN";
+    const cachedList = localStorage.getItem(`Digit.Locale.${locale}.List`);
+    
+    if (cachedList) {
+      try {
+        const parsed = JSON.parse(cachedList);
+        // If the cached data is corrupted or expired, clear it
+        if (!parsed || !parsed.value || !Array.isArray(parsed.value)) {
+          console.warn("Detected corrupted localization cache, clearing...");
+          LocalizationService.clearAllCache();
+        }
+      } catch (error) {
+        console.warn("Failed to parse cached localization data, clearing cache...");
+        LocalizationService.clearAllCache();
+      }
+    }
+    
+    // Check for other corrupted cache entries
+    const allKeys = Object.keys(localStorage);
+    const digitKeys = allKeys.filter(key => key.startsWith('Digit.'));
+    
+    digitKeys.forEach(key => {
+      try {
+        const value = localStorage.getItem(key);
+        if (value) {
+          const parsed = JSON.parse(value);
+          // Check if the structure is valid
+          if (!parsed || typeof parsed !== 'object' || !parsed.hasOwnProperty('expiry') || !parsed.hasOwnProperty('value')) {
+            console.warn(`Removing corrupted cache entry: ${key}`);
+            localStorage.removeItem(key);
+          }
+        }
+      } catch (error) {
+        console.warn(`Removing unparseable cache entry: ${key}`);
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (error) {
+    console.warn("Error during cache validation:", error);
+  }
+};
+
 export const StoreService = {
   getInitData: () => {
     return Storage.get("initData");
@@ -55,6 +101,9 @@ export const StoreService = {
     return await Promise.all(allBoundries);
   },
   digitInitData: async (stateCode, enabledModules) => {
+    // Validate and clean cache before initialization
+    validateAndCleanCache();
+    
     const { MdmsRes } = await MdmsService.init(stateCode);
     const stateInfo = MdmsRes["common-masters"]?.StateInfo?.[0] || {};
     const uiHomePage = MdmsRes["common-masters"]?.uiHomePage?.[0] || {};
@@ -91,17 +140,34 @@ export const StoreService = {
       ...tenant,
     }));
     // .filter((item) => !!moduleTenants.find((mt) => mt.code === item.code))
-    // .map((tenant) => ({ i18nKey: `TENANT_TENANTS_${tenant.code.replace(".", "_").toUpperCase()}`, ...tenant }));
+    // .map((tenant) => ({ i18nKey: `TENANT_TENANTS_${tenant.code.replace(".", "_").toUpperCase()}` }, ...tenant }));
     const modules = [
       'rainmaker-common',
       ...(enabledModules.includes('Birth') || enabledModules.includes('Death') ? ['rainmaker-bnd'] : []),
       `rainmaker-${stateCode.toLowerCase()}`
     ];
-    await LocalizationService.getLocale({
-      modules: modules,
-      locale: initData.selectedLanguage,
-      tenantId: stateCode,
-    });
+    
+    try {
+      await LocalizationService.getLocale({
+        modules: modules,
+        locale: initData.selectedLanguage,
+        tenantId: stateCode,
+      });
+    } catch (error) {
+      console.error("Error loading localization data:", error);
+      // If localization fails, try to clear cache and retry once
+      try {
+        LocalizationService.clearAllCache();
+        await LocalizationService.getLocale({
+          modules: modules,
+          locale: initData.selectedLanguage,
+          tenantId: stateCode,
+        });
+      } catch (retryError) {
+        console.error("Failed to load localization data even after cache clear:", retryError);
+      }
+    }
+    
     Storage.set("initData", initData);
     initData.revenue_localities = revenue_localities;
     initData.localities = localities;
@@ -116,12 +182,30 @@ export const StoreService = {
       moduleCode?.forEach((code) => {
         moduleCodes.push(`rainmaker-${code.toLowerCase()}`);
       });
-    const LocalePromise = LocalizationService.getLocale({
-      modules: typeof moduleCode == "string" ? [`rainmaker-${moduleCode.toLowerCase()}`] : moduleCodes,
-      locale: language,
-      tenantId: stateCode,
-    });
-    await LocalePromise;
+    
+    try {
+      const LocalePromise = LocalizationService.getLocale({
+        modules: typeof moduleCode == "string" ? [`rainmaker-${moduleCode.toLowerCase()}`] : moduleCodes,
+        locale: language,
+        tenantId: stateCode,
+      });
+      await LocalePromise;
+    } catch (error) {
+      console.error("Error loading default localization data:", error);
+      // Try to clear cache and retry
+      try {
+        LocalizationService.clearAllCache();
+        const LocalePromise = LocalizationService.getLocale({
+          modules: typeof moduleCode == "string" ? [`rainmaker-${moduleCode.toLowerCase()}`] : moduleCodes,
+          locale: language,
+          tenantId: stateCode,
+        });
+        await LocalePromise;
+      } catch (retryError) {
+        console.error("Failed to load default localization data even after cache clear:", retryError);
+      }
+    }
+    
     return {};
   },
 };
