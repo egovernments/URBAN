@@ -269,18 +269,26 @@ const EmployeeHome = ({ modules }) => {
             }}
           >
             {[
-              { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
-              { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
-              { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" }
+              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
+              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
+              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
+              { url: "http://57.159.24.106/", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marrige Certificate", count: 30, className: "sendback", color: "#2196f3" }
             ].map((card, index) => (
               <div key={index} className="" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", alignItems: "center", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
                 <div className={`card-icon ${card.className}`} style={{ maxWidth: "70px", width: "70px" }}>
                   <img src={card.icon} alt={card.label} style={{ maxWidth: "100%" }} />
                 </div>
-                <div className="card-content" style={{ marginLeft: "20px" }}>
-                  <h2 style={{ fontSize: "25px", fontWeight: "800", marginBottom: "6px" }}>{card.count}</h2>
-                  <p style={{ margin: 0, fontSize: "14px", fontWeight: "500", color: card.color }}>{card.label}</p>
-                </div>
+                <a
+                  href={card.url}
+                  // style={{ ...commonStyles.labelText }}
+                  data-tip="React-tooltip"
+                  // data-for={`tooltip-${getModuleName}`}
+                >
+                  <div className="card-content" style={{ marginLeft: "20px" }}>
+                    <h2 style={{ fontSize: "25px", fontWeight: "800", marginBottom: "6px" }}>{card.count}</h2>
+                    <p style={{ margin: 0, fontSize: "14px", fontWeight: "500", color: card.color }}>{card.label}</p>
+                  </div>
+                </a>
               </div>
             ))}
           </div>
@@ -319,7 +327,7 @@ const EmployeeHome = ({ modules }) => {
                 boxShadow: "0 0 8px rgba(0,0,0,0.05)"
               }}
             >
-              <h3 style={{ fontWeight: "700",color: "#464255", fontSize: "20px", marginBottom: "10px" }}>
+              <h3 style={{ fontWeight: "700", color: "#464255", fontSize: "20px", marginBottom: "10px" }}>
                 Application Details
               </h3>
               <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
@@ -359,7 +367,7 @@ const EmployeeHome = ({ modules }) => {
                 boxShadow: "0 0 8px rgba(0,0,0,0.05)"
               }}
             >
-              <h3 style={{ fontWeight: "700",color: "#464255", fontSize: "20px", marginBottom: "10px" }}>Collection</h3>
+              <h3 style={{ fontWeight: "700", color: "#464255", fontSize: "20px", marginBottom: "10px" }}>Collection</h3>
               <div
                 style={{
                   display: "flex",
@@ -390,7 +398,7 @@ const EmployeeHome = ({ modules }) => {
           {/* Favorite Cards */}
           <div className="favorite-card">
             <div className="card-header-view" style={{ marginBottom: "15px" }}>
-              <h2 style={{ color:"#464255",fontWeight: "700", fontSize: "20px", display: "flex", alignItems: "center", marginLeft:0,marginTop: 15 }}>
+              <h2 style={{ color: "#464255", fontWeight: "700", fontSize: "20px", display: "flex", alignItems: "center", marginLeft: 0, marginTop: 15 }}>
                 {/* <i className="fa-regular fa-star" style={{ marginRight: "10px" }}></i> */}
                 Favorites
               </h2>
