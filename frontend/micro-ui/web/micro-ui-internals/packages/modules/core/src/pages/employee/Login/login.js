@@ -323,7 +323,6 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
                 buttonStyle={{
                   width: "100%",
                   backgroundColor: "#6B133F",
-                  padding: "12px",
                   fontSize: "16px",
                   fontWeight: "600",
                   borderRadius: "4px",

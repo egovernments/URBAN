@@ -13,7 +13,7 @@ import {
   WSICon,
   Card
 } from "@egovernments/digit-ui-react-components";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BarChart,
@@ -167,7 +167,16 @@ const CitizenHome = ({ modules, getCitizenMenu, fetchedCitizen, isLoading }) => 
 
 
 const EmployeeHome = ({ modules }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   console.log("module", modules)
   if (window.Digit.SessionStorage.get("PT_CREATE_EMP_TRADE_NEW_FORM")) window.Digit.SessionStorage.set("PT_CREATE_EMP_TRADE_NEW_FORM", {});
@@ -231,8 +240,8 @@ const EmployeeHome = ({ modules }) => {
           </div>
         </div> */}
 
-        <div className="content-area" style={{ padding: "20px" }}>
-          <div className="content-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <div className="content-area" style={{ padding: isMobile ? "10px" : "20px" }}>
+          <div className="content-header" style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", marginBottom: "20px", gap: isMobile ? "10px" : "0" }}>
             <h2>Home</h2>
             <div
               className="filter"
@@ -244,7 +253,8 @@ const EmployeeHome = ({ modules }) => {
                 justifyContent: "space-between",
                 padding: "10px 20px",
                 boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-                width: "270px"
+                width: isMobile ? "100%" : "270px",
+                maxWidth: "270px"
               }}
             >
               <div className="filter-container" style={{ display: "flex", alignItems: "center", gap: "15px" }}>
@@ -263,7 +273,7 @@ const EmployeeHome = ({ modules }) => {
             className="status-cards home-stats-card"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: "20px",
               marginBottom: "20px"
             }}
@@ -316,7 +326,7 @@ const EmployeeHome = ({ modules }) => {
               <canvas id="collectionChart"></canvas>
             </div>
           </div> */}
-          <div style={{ display: "flex", gap: "20px", fontFamily: "Barlow" }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "20px", fontFamily: "Barlow" }}>
             {/* Application Details Card */}
             <div
               style={{
@@ -408,7 +418,7 @@ const EmployeeHome = ({ modules }) => {
               className="action-cards"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
                 gap: "20px",
                 marginBottom: "20px",
               }}
