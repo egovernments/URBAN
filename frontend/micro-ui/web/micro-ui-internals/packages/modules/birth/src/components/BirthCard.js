@@ -17,7 +17,6 @@ const BirthCard = () => {
     }
 
 
-
   const { t } = useTranslation();
 
 
@@ -59,6 +58,7 @@ const BirthCard = () => {
   ];
 
   const propsForModuleCard = {
+    Icon:"BirthIcon",
     moduleName: isCitizen ? t("ACTION_TEST_BIRTH_CERTIFICATE") : t("ACTION_TEST_BIRTH_NEW_REGISTRATION"),
     kpis: [],
     links: isCitizen ? citizenLinks : filteredEmployeeLinks,
@@ -66,8 +66,8 @@ const BirthCard = () => {
 
   return (
     <div className="birth-card-module" style={{
-      marginLeft: isCitizen ? "30px" : "0px",
-      marginTop: isCitizen ? "30px" : "0px"
+      marginLeft: isCitizen ? "50px" : "-40px",
+      marginTop: isCitizen ? "50px" : "-40px"
     }}>
       <EmployeeModuleCard {...propsForModuleCard} />
     </div>

@@ -59,12 +59,18 @@ const DeathCard = () => {
   ];
 
   const propsForModuleCard = {
+    Icon: "DeathIcon",
     moduleName: isCitizen ? t("ACTION_TEST_DEATH_CERTIFICATE") : t("ACTION_TEST_DEATH_NEW_REGISTRATION"),
     kpis: [],
     links: isCitizen ? citizenLinks : filteredEmployeeLinks,
   };
 
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return  <div className="death-card-module" style={{
+        marginLeft: isCitizen ? "30px" : "0px",
+        marginTop: isCitizen ? "30px" : "-40px"
+      }}>
+        <EmployeeModuleCard {...propsForModuleCard} />
+      </div>
 };
 
 export default DeathCard;
