@@ -219,7 +219,7 @@ const EmployeeSideBar = () => {
     });
   };
   const collapseNav = () => {
-    sidebarRef.current.style.width = "260px";
+    // sidebarRef.current.style.width = "240px";
     sidebarRef.current.style.overflow = "hidden";
 
     sidebarRef.current.querySelectorAll(".dropdown-link").forEach((element) => {

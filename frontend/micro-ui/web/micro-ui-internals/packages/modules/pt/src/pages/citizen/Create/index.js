@@ -1087,6 +1087,7 @@ const CreateProperty = () => {
 
     <React.Fragment>
       <div style={styles.assessmentStyles}>New Property Application</div>
+            <div style={styles.assessmentStyles}>Hola amigo</div>
       {!showSuccessModal && (
         <div >
 
@@ -1102,7 +1103,6 @@ const CreateProperty = () => {
 
           <div style={styles.card}>
             <div style={styles.assessmentStyle}>{t("Ownership Details")}</div>
-
             <OwnershipDetailsSection
               t={t}
               ownershipType={ownershipType}
@@ -1226,6 +1226,3 @@ const CreateProperty = () => {
 };
 
 export default CreateProperty;
-
-
-

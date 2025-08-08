@@ -178,10 +178,21 @@
 // export default AttachmentsSection;
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const AttachmentsSection = ({ t = (label) => label, handleFileChange, formErrors = {} }) => {
   const [selectedFiles, setSelectedFiles] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const onFileChange = (key, file) => {
     handleFileChange(key, file);
@@ -239,7 +250,10 @@ const AttachmentsSection = ({ t = (label) => label, handleFileChange, formErrors
       <p style={styles.subHeader}>
         (*Accepted File Type: JPG/PNG/PDF **Maximum File Size: 2MB)
       </p>
-      <div style={styles.gridContainer}>
+      <div style={{
+        ...styles.gridContainer,
+        gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)"
+      }}>
         {renderFileInput("photoId", "Photo ID", true)}
         {renderFileInput("ownershipDoc", "Ownership Document", true)}
         {renderFileInput("sellersRegistry", "Sellers Registry Copy")}
@@ -272,7 +286,6 @@ const styles = {
   },
   gridContainer: {
     display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
     gap: "20px",
   },
   fileBox: {
