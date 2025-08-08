@@ -15,7 +15,8 @@ const SubmitBar = forwardRef((props, ref) => {
               color: "white",
               border: "none",
               borderRadius: "5px",
-              cursor: "pointer"
+              cursor: "pointer",
+              margin:"auto"
             }}
       onClick={props.onSubmit}
       {... props.form ? {form: props.form} : {}}

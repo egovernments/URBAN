@@ -260,7 +260,7 @@ const styles = {
     padding: "10px",
     textAlign: "center",
     fontWeight: 600,
-    marginTop: "16px",
+    // marginTop: "16px",
     fontFamily: "Inter",
     fontSize: "16px",
 
@@ -697,7 +697,7 @@ const Home = ({
         islinkDataLoading={islinkDataLoading}
       />
 
-      <div className={`main center-container citizen-home-container mb-25`}>
+      <div className={`main center-container citizen-home-container`}>
         {hideSidebar ? null : (
           <div className="SideBarStatic" style={{ height: "100%"}}>
             <StaticCitizenSideBar linkData={linkData} islinkDataLoading={islinkDataLoading} />
