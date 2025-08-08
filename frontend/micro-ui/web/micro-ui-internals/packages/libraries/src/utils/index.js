@@ -141,7 +141,7 @@ const fsmAccess = () => {
     "FSM_DSO",
     "FSM_DRIVER",
     "FSM_EMP_FSTPO",
-    "FSM_COLLECTOR",
+    "FSM_COLLECTOR"
   ];
 
   const FSM_ACCESS = userRoles?.filter((role) => fsmRoles?.includes(role));

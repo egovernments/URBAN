@@ -36,7 +36,7 @@ export const AppModules = ({ stateCode, userType, modules, appTenants }) => {
   });
 
   return (
-    <div className="ground-container">
+    <div className="ground-container" style={{margin:"0px",padding:"0px"}}>
       <Switch>
         {appRoutes}
         <Route path={`${path}/login`}>

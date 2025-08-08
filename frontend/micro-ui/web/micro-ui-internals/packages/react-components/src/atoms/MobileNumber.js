@@ -15,11 +15,11 @@ const MobileNumber = (props) => {
   return (
     <React.Fragment>
       <div className="field-container">
-        {!props.hideSpan ? (
+        {/* {!props.hideSpan ? (
           <span style={{ maxWidth: "50px", marginTop: "unset", ...props.labelStyle }} className="citizen-card-input citizen-card-input--front">
             +91
           </span>
-        ) : null}
+        ) : null} */}
         <div className={`text-input ${user_type === "employee"? "" : "text-mobile-input-width"} ${props.className}`}>
           <input
             type={"text"}

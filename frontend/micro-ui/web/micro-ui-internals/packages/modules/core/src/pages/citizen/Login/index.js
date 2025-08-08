@@ -233,7 +233,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
     <div className="citizen-form-wrapper">
       <Switch>
         <AppContainer>
-          <BackButton />
+          {/* <BackButton /> */}
           <Route path={`${path}`} exact>
             <SelectMobileNumber
               onSelect={selectMobileNumber}

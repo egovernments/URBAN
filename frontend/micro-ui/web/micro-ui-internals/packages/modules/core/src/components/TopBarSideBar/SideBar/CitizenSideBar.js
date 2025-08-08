@@ -66,9 +66,9 @@ const Profile = ({ info, stateName, t }) => {
         </div>
       )}
       <div className="profile-divider"></div>
-      {window.location.href.includes("/employee") &&
-        !window.location.href.includes("/employee/user/login") &&
-        !window.location.href.includes("employee/user/language-selection") && <ChangeCity t={t} mobileView={true} />}
+      {window.location.href.includes("/digit-ui/employee") &&
+        !window.location.href.includes("/digit-ui/employee/user/login") &&
+        !window.location.href.includes("/digit-ui/employee/user/language-selection") && <ChangeCity t={t} mobileView={true} />}
     </div>
   );
 };

@@ -98,12 +98,13 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
   const columns = useMemo(
     () => [
       {
-        Header: t("PT_COMMON_TABLE_COL_PT_ID"),
+        Header: t("Property ID"),
         disableSortBy: true,
         Cell: ({ row }) => {
+          console.log("row", row);
           return (
             <div>
-              <span className="link">
+              <span className="link" style={{color: "#141B29"}}>
                 <Link to={`/digit-ui/employee/pt/ptsearch/property-details/${row.original["propertyId"]}`}>{row.original["propertyId"]}</Link>
               </span>
             </div>
@@ -189,8 +190,8 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
           getCellProps={(cellInfo) => {
             return {
               style: {
-                padding: "20px 18px",
-                fontSize: "16px",
+                padding: "10px",
+                fontSize: "14px",
               },
             };
           }}

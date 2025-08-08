@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
-import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails";
+import ApplicationDetailsTemplate from "../../../../templates/ApplicationDetails/cashDeskIndex";
 import OwnerHistory from "./PropertyMutation/ownerHistory";
 
 const Close = () => (
@@ -221,6 +221,7 @@ const PropertyDetails = () => {
               {
                 action: !fetchBillData?.Bill[0]?.totalAmount ? "MUTATE_PROPERTY" : "PT_TOTALDUES_PAY",
                 forcedName: "PT_OWNERSHIP_TRANSFER",
+                Bill: fetchBillData?.Bill[0],
                 AmountDueForPay: fetchBillData?.Bill[0]?.totalAmount,
                 isWarningPopUp: !fetchBillData?.Bill[0]?.totalAmount ? false : true,
                 redirectionUrl: {

@@ -16,6 +16,7 @@ const ApplicationTable = ({
   sortParams,
   totalRecords,
 }) => {
+  console.log("ApplicationTable data", data);
   return (
     <Table
       t={t}

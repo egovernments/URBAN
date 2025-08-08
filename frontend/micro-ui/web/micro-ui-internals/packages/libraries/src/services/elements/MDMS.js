@@ -144,8 +144,8 @@ const getBillsGenieKey = (tenantId, moduleCode) => ({
       },
       {
         moduleName: "common-masters",
-        masterDetails: [{ name: "uiCommonPay" }],
-      },
+        masterDetails: [{ name: "uiCommonPay" }]
+      }
     ],
   },
 });
@@ -404,6 +404,31 @@ const getSubPropertyOwnerShipCategoryCriteria = (tenantId, moduleCode, type) => 
     ],
   },
 });
+
+const getPropertyAssessmentYearCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "AssessmentYear" }],
+      },
+    ],
+  },
+});
+const getPropertyRoadFactorCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "RoadFactor" }],
+      },
+    ],
+  },
+});
 const getPropertyOwnerShipCategoryCriteria = (tenantId, moduleCode, type) => ({
   type,
   details: {
@@ -469,7 +494,7 @@ const getUsageCategoryList = (tenantId, moduleCode, type) => ({
     moduleDetails: [
       {
         moduleName: moduleCode,
-        masterDetails: [{ name: "UsageCategory" }],
+        masterDetails: [{ name: "UsageCategoryMajor" }],
       },
     ],
   },
@@ -483,6 +508,32 @@ const getPTPropertyTypeList = (tenantId, moduleCode, type) => ({
       {
         moduleName: moduleCode,
         masterDetails: [{ name: "PropertyType" }],
+      },
+    ],
+  },
+});
+
+const getPTConstructionTypeList = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "ConstructionType" }],
+      },
+    ],
+  },
+});
+
+const getPTOccupancyTypeList = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "OccupancyType" }],
       },
     ],
   },
@@ -637,6 +688,22 @@ const getGenderTypeList = (tenantId, moduleCode, type) => ({
     ],
   },
 });
+const getSalutationsTypeList = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [
+          {
+            name: "Salutations",
+          },
+        ],
+      },
+    ],
+  },
+});
 
 const getMeterStatusTypeList = (tenantId) => ({
   moduleDetails: [
@@ -645,11 +712,12 @@ const getMeterStatusTypeList = (tenantId) => ({
       masterDetails: [
         {
           name: "MeterStatus",
-          filter: `$.*.name`,
+          filter: `$.*.name`
         },
       ],
     },
   ],
+
 });
 
 const getBillingPeriodValidation = (tenantId) => ({
@@ -659,7 +727,7 @@ const getBillingPeriodValidation = (tenantId) => ({
       masterDetails: [
         {
           name: "billingPeriod",
-          filter: "*",
+          filter: "*"
         },
       ],
     },
@@ -1022,35 +1090,36 @@ const GetVehicleType = (MdmsRes) =>
     });
 
 const GetVehicleMakeModel = (MdmsRes) =>
-  MdmsRes["Vehicle"].VehicleMakeModel.filter((vehicle) => vehicle.active).map((vehicleDetails) => {
-    return {
-      ...vehicleDetails,
-      i18nKey: `COMMON_MASTER_VEHICLE_${vehicleDetails.code}`,
-    };
-  });
+  MdmsRes["Vehicle"].VehicleMakeModel.filter((vehicle) => vehicle.active)
+    .map((vehicleDetails) => {
+      return {
+        ...vehicleDetails,
+        i18nKey: `COMMON_MASTER_VEHICLE_${vehicleDetails.code}`,
+      };
+    });
 
 const GetSlumLocalityMapping = (MdmsRes, tenantId) =>
   MdmsRes["FSM"].Slum.filter((type) => type.active).reduce((prev, curr) => {
     return prev[curr.locality]
       ? {
-          ...prev,
-          [curr.locality]: [
-            ...prev[curr.locality],
-            {
-              ...curr,
-              i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${curr.locality}_${curr.code}`,
-            },
-          ],
-        }
+        ...prev,
+        [curr.locality]: [
+          ...prev[curr.locality],
+          {
+            ...curr,
+            i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${curr.locality}_${curr.code}`,
+          },
+        ],
+      }
       : {
-          ...prev,
-          [curr.locality]: [
-            {
-              ...curr,
-              i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${curr.locality}_${curr.code}`,
-            },
-          ],
-        };
+        ...prev,
+        [curr.locality]: [
+          {
+            ...curr,
+            i18nKey: `${tenantId.toUpperCase().replace(".", "_")}_${curr.locality}_${curr.code}`,
+          },
+        ],
+      };
   }, {});
 
 const GetPropertyOwnerShipCategory = (MdmsRes) =>
@@ -1130,6 +1199,22 @@ const getPTPropertyType = (MdmsRes) =>
     };
   });
 
+const getPTConstructionType = (MdmsRes) =>
+  MdmsRes["PropertyTax"].UsageCategory.filter((ConstructionType) => ConstructionType.active).map((PTConstructionTypelist) => {
+    return {
+      ...PTConstructionTypelist,
+      i18nKey: `COMMON_PROPTYPE_${stringReplaceAll(PTConstructionTypelist.code, ".", "_")}`,
+    };
+  });
+
+const getPTOccupancyType = (MdmsRes) =>
+  MdmsRes["PropertyTax"].UsageCategory.filter((OccupancyType) => OccupancyType.active).map((PTOccupancyTypelist) => {
+    return {
+      ...PTOccupancyTypelist,
+      i18nKey: `COMMON_PROPTYPE_${stringReplaceAll(PTOccupancyTypelist.code, ".", "_")}`,
+    };
+  });
+
 const getTLStructureType = (MdmsRes) =>
   MdmsRes["common-masters"].StructureType.filter((StructureType) => StructureType.active).map((TLStructureTypeList) => {
     return {
@@ -1196,6 +1281,15 @@ const getGenderType = (MdmsRes) => {
     return {
       ...genderDetails,
       i18nKey: `PT_COMMON_GENDER_${genderDetails.code}`,
+    };
+  });
+  //return MdmsRes;
+};
+const getSalutationsType = (MdmsRes) => {
+  return MdmsRes["common-masters"].Salutations.filter((Salutations) => Salutations.active).map((SalutationsDetails) => {
+    return {
+      ...SalutationsDetails,
+      i18nKey: `PT_COMMON_SALUTATIONS_${SalutationsDetails.code}`,
     };
   });
   //return MdmsRes;
@@ -1343,10 +1437,15 @@ const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
       return getTLDocumentRequiredScreen(MdmsRes);
     case "MapConfig":
       return getMapConfig(MdmsRes);
-    case "UsageCategory":
+    case "UsageCategoryMajor":
       return getUsageCategory(MdmsRes);
     case "PTPropertyType":
       return getPTPropertyType(MdmsRes);
+    case "ConstructionType":
+      return getPTConstructionType(MdmsRes)
+    case "OccupancyType":
+      return getPTOccupancyType(MdmsRes)
+
     case "StructureType":
       return getTLStructureType(MdmsRes);
     case "AccessoryCategory":
@@ -1379,6 +1478,8 @@ const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
       return GetFSTPPlantInfo(MdmsRes);
     case "GenderType":
       return getGenderType(MdmsRes);
+    case "Salutations":
+      return getSalutationsType(MdmsRes)
     case "TLGendertype":
       return TLGenderType(MdmsRes);
     case "PTGenderType":
@@ -1571,6 +1672,12 @@ export const MdmsService = {
   getPropertySubOwnerShipCategory: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getSubPropertyOwnerShipCategoryCriteria(tenantId, moduleCode, type), moduleCode);
   },
+  getPropertyAssessmentYear: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPropertyAssessmentYearCriteria(tenantId, moduleCode, type), moduleCode);
+  },
+  getPropertyRoadFactor:(tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPropertyRoadFactorCriteria(tenantId, moduleCode, type), moduleCode);
+  },
   getDocumentRequiredScreen: (tenantId, moduleCode) => {
     return MdmsService.getDataByCriteria(tenantId, getDocumentRequiredScreenCategory(tenantId, moduleCode), moduleCode);
   },
@@ -1588,6 +1695,12 @@ export const MdmsService = {
   },
   getPTPropertyType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getPTPropertyTypeList(tenantId, moduleCode), moduleCode);
+  },
+  getPTConstructionType: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPTConstructionTypeList(tenantId, moduleCode), moduleCode);
+  },
+  getPTOccupancyType: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPTOccupancyTypeList(tenantId, moduleCode), moduleCode);
   },
   getTLStructureType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getTLStructureTypeList(tenantId, moduleCode), moduleCode);
@@ -1655,6 +1768,9 @@ export const MdmsService = {
 
   getGenderType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getGenderTypeList(tenantId, moduleCode, type), moduleCode);
+  },
+   getSalutationsType: (tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getSalutationsTypeList(tenantId, moduleCode, type), moduleCode);
   },
 
   TLGenderType: (tenantId, moduleCode, type) => {
@@ -1725,5 +1841,5 @@ export const MdmsService = {
   },
   getStaticDataJSON: (tenantId) => {
     return MdmsService.call(tenantId, getStaticData());
-  },
+  }
 };
