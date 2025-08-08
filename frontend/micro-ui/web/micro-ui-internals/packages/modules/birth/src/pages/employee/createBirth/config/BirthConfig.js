@@ -216,7 +216,7 @@ export const BirthConfig = [
         inline: true,
         label: "BND_AADHAR_NO",
         type: "text",
-        placeholder: "Aadhar Number",
+       placeholder: "National Identity Proof Number",
         populators: {
           name: "father_aadhar_number",
           error: "Invalid Aadhar Number (12 digits)",
@@ -374,7 +374,7 @@ export const BirthConfig = [
         inline: true,
         label: "BND_AADHAR_NO",
         type: "text",
-        placeholder: "Aadhar Number",
+       placeholder: "National Identity Proof Number",
         populators: {
           name: "mother_aadhar_number",
           error: "Invalid Aadhar Number (12 digits)",
@@ -542,10 +542,10 @@ export const BirthConfig = [
       },
       {
         inline: true,
-        label: "BND_TEHSIL_LABEL",
+        label: "BND_SUB_DISTRICT_LABEL",
         type: "text",
         isMandatory: false,
-        placeholder: "Tehsil",
+        placeholder: "Sub-District",
         populators: {
           name: "birth_tehsil",
           error: "Tehsil must be 2-100 characters",
@@ -709,10 +709,10 @@ export const BirthConfig = [
       },
       {
         inline: true,
-        label: "BND_TEHSIL_LABEL",
+        label: "BND_SUB_DISTRICT_LABEL",
         type: "text",
         isMandatory: true,
-        placeholder: "Tehsil",
+        placeholder: "Sub-District",
         populators: {
           name: "permanent_tehsil",
           error: "Tehsil must be 2-100 characters",

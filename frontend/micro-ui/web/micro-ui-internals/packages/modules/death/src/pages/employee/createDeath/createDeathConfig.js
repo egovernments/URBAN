@@ -201,7 +201,7 @@ const createDeathConfig = [
         label: "BND_AADHAR_NO",
         type: "number",
         isMandatory: false,
-        placeholder: "Aadhar Number",
+        placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber",
           error: "Aadhar Number is Required!",
@@ -332,7 +332,7 @@ const createDeathConfig = [
         label: "BND_AADHAR_NO",
         type: "number",
         isMandatory: false,
-        placeholder: "Aadhar Number",
+        placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber2",
           error: "Aadhar Number is Required!",
@@ -426,7 +426,7 @@ const createDeathConfig = [
         label: "BND_AADHAR_NO",
         type: "number",
         isMandatory: false,
-        placeholder: "Aadhar Number",
+        placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber3",
           error: "Aadhar Number is Required!",
@@ -519,7 +519,7 @@ const createDeathConfig = [
         label: "BND_AADHAR_NO",
         type: "number",
         isMandatory: false,
-        placeholder: "Aadhar Number",
+        placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber4",
           error: "Aadhar Number is Required!",
@@ -612,10 +612,10 @@ const createDeathConfig = [
       },
       {
         inline: true,
-        label: "BND_TEHSIL_LABEL",
+        label: "BND_SUB_DISTRICT_LABEL",
         type: "text",
         isMandatory: false,
-        placeholder: "Tehsil",
+        placeholder: "Sub-District",
         populators: {
           name: "tehsil",
           validation: { minLength: 2 },
@@ -752,10 +752,10 @@ const createDeathConfig = [
   },
   {
     inline: true,
-    label: "BND_TEHSIL_LABEL",
+    label: "BND_SUB_DISTRICT_LABEL",
     type: "text",
     isMandatory: true,
-    placeholder: "Tehsil",
+    placeholder: "Sub-District",
     populators: {
       name: "permanentTehsil",
       validation: { minLength: 2 },
