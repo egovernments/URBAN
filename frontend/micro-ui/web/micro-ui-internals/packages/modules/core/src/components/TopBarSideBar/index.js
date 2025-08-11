@@ -113,7 +113,7 @@ const TopBarSideBar = ({
           /* Main layout container */
           .topbar-sidebar-layout {
             width: 100%;
-            min-height: 100vh;
+            // min-height: 100vh;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -131,12 +131,12 @@ const TopBarSideBar = ({
           }
 
           /* Content wrapper */
-          .content-wrapper {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-            padding-top: ${isMobile ? '50px' : '60px'};
-          }
+          // .content-wrapper {
+          //   display: flex;
+          //   width: 100%;
+          //   min-height: 100vh;
+          //   padding-top: ${isMobile ? '50px' : '60px'};
+          // }
 
           /* Desktop sidebar */
           .sidebar-desktop {
