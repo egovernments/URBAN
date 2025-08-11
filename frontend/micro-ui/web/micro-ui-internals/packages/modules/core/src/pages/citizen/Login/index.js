@@ -230,7 +230,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
   };
 
   return (
-    <div className="citizen-form-wrapper">
+    <div className="citizen-form-wrapper" style={{margin:"0px",padding:"0px",width:"100%"}}>
       <Switch>
         <AppContainer>
           {/* <BackButton /> */}

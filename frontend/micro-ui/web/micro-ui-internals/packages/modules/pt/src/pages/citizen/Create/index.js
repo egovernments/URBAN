@@ -1087,7 +1087,6 @@ const CreateProperty = () => {
 
     <React.Fragment>
       <div style={styles.assessmentStyles}>New Property Application</div>
-            <div style={styles.assessmentStyles}>Hola amigo</div>
       {!showSuccessModal && (
         <div >
 
