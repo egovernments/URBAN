@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { EmployeeModuleCard, PropertyHouse } from "@egovernments/digit-ui-react-components";
+import { EmployeeModuleCard, FirenocIcon, PropertyHouse } from "@egovernments/digit-ui-react-components";
 import { CaseIcon } from "@egovernments/digit-ui-react-components";
 
 const FirenocCard = () => {
@@ -32,10 +32,14 @@ const FirenocCard = () => {
   const propsForModuleCard = {
     moduleName: t("COMMON_FIRENOC"),
     links: links,
-    icon: <CaseIcon/>
+    Icon: <FirenocIcon />
 }
 
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return (
+    // <div className="fnoc-card-module" style={{margin:"-70px"}}>
+      <EmployeeModuleCard {...propsForModuleCard} />
+    // </div>
+  ) 
 };
 
 export default FirenocCard;
