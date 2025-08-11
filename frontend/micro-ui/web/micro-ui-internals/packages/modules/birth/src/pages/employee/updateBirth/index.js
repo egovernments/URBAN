@@ -428,7 +428,7 @@ const UpdateBirth = () => {
             setShowToast({ key: "success", label: t("BND_BIRTH_CERTIFICATE_UPDATED_SUCCESSFULLY") });
            setTimeout(() => {
              
-              history.replace(`/${window.contextPath}/employee/birth/birth-common/getCertificate`);
+              history.replace(`/${window.contextPath}/employee/birth/birth-common/getCertificates`);
           
               window.location.reload();
             }, 1000); 
