@@ -75,6 +75,7 @@ public class EgfInstrumentApplication {
     }
 
     @Bean
+    @Primary
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
