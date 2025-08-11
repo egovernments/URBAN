@@ -701,7 +701,7 @@ const ApplicationDetailsContent = ({
   oldValue,
   isInfoLabel = false
 }) => {
-    const [printing, setPrinting] = useState(false);
+  const [printing, setPrinting] = useState(false);
   const [manualAmount, setManualAmount] = useState("");
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
   const [selectedModes, setSelectedModes] = useState([]);
@@ -1013,7 +1013,7 @@ const ApplicationDetailsContent = ({
   const tenantIdEs = state?.tenantId || __tenantId || Digit.ULBService.getCurrentTenantId();
   const propertyId = state?.propertyId;
   const stateTenant = Digit.ULBService.getStateId();
-  
+
   const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
 
   const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment(
@@ -1113,14 +1113,19 @@ const ApplicationDetailsContent = ({
     select: (data) =>
       data["common-masters"]?.uiCommonPay?.filter(({ code }) => businessService?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
   });
-    const printReciept = async () => {
+  const printReciept = async () => {
     const tenantId = Digit.ULBService.getCurrentTenantId();
     const state = Digit.ULBService.getStateId();
     const payments = await Digit.PaymentService.getReciept(tenantId, businessService, { receiptNumbers: receiptNumber });
     let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
 
     if (!payments.Payments[0]?.fileStoreId) {
-      response = await Digit.PaymentService.generatePdf(state, { Payments: payments.Payments }, generatePdfKey);
+      response = await Digit.PaymentService.generatePdf(state,
+        {
+          Payments: payments.Payments,
+          Calculation: estimateData?.Calculation?.[0]
+        }
+        , generatePdfKey);
     }
     const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
     window.open(fileStore[response.filestoreIds[0]], "_blank");
