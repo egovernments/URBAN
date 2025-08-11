@@ -692,7 +692,7 @@ const Home = ({
         mobileView={mobileView}
         handleUserDropdownSelection={handleUserDropdownSelection}
         logoUrl={logoUrl}
-        showSidebar={true}
+        showSidebar={false}
         linkData={linkData}
         islinkDataLoading={islinkDataLoading}
       />
