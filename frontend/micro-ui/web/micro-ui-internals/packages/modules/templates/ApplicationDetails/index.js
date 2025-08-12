@@ -24,7 +24,7 @@ const ApplicationDetails = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [isEnableLoader, setIsEnableLoader] = useState(false);
   const [isWarningPop, setWarningPopUp] = useState(false);
-
+  const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantId);
   const {
     applicationDetails,
     showToast,
@@ -99,7 +99,47 @@ const ApplicationDetails = (props) => {
   const closeWarningPopup = () => {
     setWarningPopUp(false);
   };
+    const units = applicationDetails?.applicationData?.units;
 
+
+  const yearRange = Array.isArray(units) && units.length > 0
+    ? units[0].toYear
+    : "N/A";
+  const handleAssessment = () => {
+    const payload = {
+      Assessment: {
+        financialYear: yearRange,
+        propertyId: applicationData?.propertyId,
+        tenantId: "pg.citya",
+        source: "MUNICIPAL_RECORDS",
+        channel: "CFC_COUNTER",
+        assessmentDate: Date.now(),
+      }
+    };
+
+    assessmentMutate(payload, {
+      onSuccess: (data, variables) => {
+        const assessments = data?.Assessments || [];
+        if (assessments.length > 0) {
+          const latestAssessment = assessments[0];
+          const status = latestAssessment?.status || "UNKNOWN";
+
+          // Only fetch bill if assessment is ACTIVE or APPROVED
+          if (status === "ACTIVE" || status === "APPROVED") {
+            fetchBill(); // Call fetchBill only if valid
+          } else {
+            console.warn("Assessment status is not valid for billing:", status);
+          }
+        } else {
+          console.warn("No assessments returned in response");
+        }
+      },
+      onError: (error, variables) => {
+        // 
+      }
+
+    });
+  }
   const submitAction = async (data, nocData = false, isOBPS = {}) => {
     setIsEnableLoader(true);
     if (typeof data?.customFunctionToExecute === "function") {
@@ -136,6 +176,7 @@ const ApplicationDetails = (props) => {
           setTimeout(closeToast, 5000);
         },
         onSuccess: (data, variables) => {
+          handleAssessment();
           sessionStorage.removeItem("WS_SESSION_APPLICATION_DETAILS");
           setIsEnableLoader(false);
           if (isOBPS?.bpa) {
@@ -160,6 +201,8 @@ const ApplicationDetails = (props) => {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_RE_SUBMIT_UPDATE_SUCCESS") })
             } else if (variables?.AmendmentUpdate?.workflow?.action.includes("APPROVE")) {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_APPROVE_UPDATE_SUCCESS") })
+             
+              
             }
             else if (variables?.AmendmentUpdate?.workflow?.action.includes("REJECT")) {
               setShowToast({ key: "success", label: t("ES_MODIFYWSCONNECTION_REJECT_UPDATE_SUCCESS") })
