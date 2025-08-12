@@ -75,15 +75,9 @@ public class BirthDtlAllQueryBuilder {
     
     private static String APPLSQUERY ="select breq.birthCertificateNo, breq.createdtime, breq.status, bdtl.registrationno, bdtl.tenantid, "
     		+ "concat(COALESCE(bdtl.firstname,'') , ' ', COALESCE(bdtl.middlename,'') ,' ', COALESCE(bdtl.lastname,'')) as name, "
-    		+ "CASE WHEN breq.lastmodifiedtime/1000 < (extract(epoch from NOW())-?*24*60*60) THEN 'EXPIRED' ELSE breq.filestoreid END as filestoreid, "
-    		+ "concat(COALESCE(bmot.firstname,'') , ' ', COALESCE(bmot.middlename,'') ,' ', COALESCE(bmot.lastname,'')) as mothername, "
-    		+ "concat(COALESCE(bfat.firstname,'') , ' ', COALESCE(bfat.middlename,'') ,' ', COALESCE(bfat.lastname,'')) as fathername, "
-    		+ "bdtl.dateofbirth as dateofbirth "
-    		+ "from {schema}.eg_birth_cert_request breq "
-    		+ "left join {schema}.eg_birth_dtls bdtl on bdtl.id=breq.birthDtlId "
-    		+ "left join {schema}.eg_birth_mother_info bmot on bmot.birthdtlid = bdtl.id "
-    		+ "left join {schema}.eg_birth_father_info bfat on bfat.birthdtlid = bdtl.id "
-    		+ "where breq.createdby=? order by breq.createdtime DESC ";
+    		+ "CASE WHEN breq.lastmodifiedtime/1000 < (extract(epoch from NOW())-?*24*60*60) THEN 'EXPIRED' ELSE breq.filestoreid END as filestoreid "
+    		+ "from {schema}.eg_birth_cert_request breq left join {schema}.eg_birth_dtls bdtl on bdtl.id=breq.birthDtlId where  "
+    		+ "breq.createdby=? order by breq.createdtime DESC ";
     
     private static final String PAGINATIONWRAPPER = "SELECT * FROM " +
             "(SELECT *, DENSE_RANK() OVER (ORDER BY dateofbirth DESC , birthdtlid) offset_ FROM " +

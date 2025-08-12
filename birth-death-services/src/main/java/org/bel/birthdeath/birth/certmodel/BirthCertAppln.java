@@ -31,11 +31,4 @@ public class BirthCertAppln {
 	private String tenantId;
 
 	private String fileStoreId;
-	
-
-	private String motherName;
-	
-	private String fatherName;
-	
-	private String dateOfBirth;
 }
