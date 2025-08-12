@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bel.birthdeath.common.model.user.User;
 
 /**
  * A Object which holds the basic info about the revenue assessment for which the org.bel.birthdeath.common.calculation.demand.models is generated like module name, consumercode, owner, etc.

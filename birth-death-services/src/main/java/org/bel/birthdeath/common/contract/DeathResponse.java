@@ -16,22 +16,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DeathResponse   {
-	
-	@JsonProperty("RequestInfo")
-	private RequestInfo requestInfo;
-        @JsonProperty("ResponseInfo")
-        private ResponseInfo responseInfo = null;
+public class DeathResponse {
 
-        @JsonProperty("deathCerts")
-        @Valid
-        private List<EgDeathDtl> deathCerts = null;
-        
+    @JsonProperty("RequestInfo")
+    private RequestInfo requestInfo;
+
+    @JsonProperty("ResponseInfo")
+    private ResponseInfo responseInfo = null;
+
+    @JsonProperty("deathCerts")
+    @Valid
+    private List<EgDeathDtl> deathCerts = null;
+
 }
-

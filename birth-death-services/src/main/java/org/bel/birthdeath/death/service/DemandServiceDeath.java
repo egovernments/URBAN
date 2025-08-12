@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.bel.birthdeath.common.calculation.demand.models.Demand;
 import org.bel.birthdeath.common.calculation.demand.models.DemandDetail;
+import org.bel.birthdeath.common.model.user.User;
 import org.bel.birthdeath.common.repository.DemandRepository;
 import org.bel.birthdeath.death.calculation.Calculation;
 import org.bel.birthdeath.death.certmodel.DeathCertificate;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.User;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

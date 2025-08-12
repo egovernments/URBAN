@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.bel.birthdeath.common.contract.ParentInfo;
 
 @Getter
 @Setter
@@ -13,38 +14,33 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EgBirthFatherInfo {
+public class EgBirthFatherInfo implements ParentInfo {
 
 	private String id;
-
 	private String aadharno;
-
 	private String createdby;
-
 	private Long createdtime;
-
 	private String education;
-
 	private String emailid;
-
 	private String firstname;
-
 	private String lastname;
-
 	private String middlename;
-
 	private String mobileno;
-
 	private String nationality;
-
 	private String proffession;
-
 	private String religion;
-
 	private String lastmodifiedby;
-
 	private Long lastmodifiedtime;
-	
 	private String fullName;
 
+	// Step 3: Implement interface methods explicitly
+	@Override
+	public String getFirstname() {
+		return this.firstname;
+	}
+
+	@Override
+	public String getMobileno() {
+		return this.mobileno;
+	}
 }

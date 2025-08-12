@@ -2,12 +2,16 @@ package org.bel.birthdeath.birth.model;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.bel.birthdeath.common.contract.ParentInfo;
+import org.bel.birthdeath.common.contract.UserOwnerSearchCriteria;
+import org.bel.birthdeath.common.model.user.User;
 
 @Getter
 @Setter
@@ -15,7 +19,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EgBirthDtl{
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EgBirthDtl implements UserOwnerSearchCriteria {
 
 	private String id;
 
@@ -70,7 +75,9 @@ public class EgBirthDtl{
 	private String hospitalid;
 	
 	private EgBirthFatherInfo birthFatherInfo;
-	
+
+	private User user;
+
 	private EgBirthMotherInfo birthMotherInfo;
 	
 	private EgBirthPermaddr birthPermaddr;
@@ -84,4 +91,14 @@ public class EgBirthDtl{
 	private String fullName;
 
 	private Boolean isLegacyRecord = false;
+
+	@Override
+	public String getTenantid() {
+		return this.tenantid;
+	}
+
+	@Override
+	public ParentInfo getFatherInfo() {
+		return this.birthFatherInfo;
+	}
 }

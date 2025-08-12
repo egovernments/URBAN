@@ -13,9 +13,12 @@ import org.bel.birthdeath.common.calculation.collections.models.PaymentSearchCri
 import org.bel.birthdeath.common.consumer.ReceiptConsumer;
 import org.bel.birthdeath.common.contract.DeathPdfApplicationRequest;
 import org.bel.birthdeath.common.contract.EgovPdfResp;
+import org.bel.birthdeath.common.contract.EncryptionDecryptionUtil;
 import org.bel.birthdeath.common.contract.RequestInfoWrapper;
 import org.bel.birthdeath.common.model.AuditDetails;
+import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
+import org.bel.birthdeath.common.services.UserService;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
 import org.bel.birthdeath.death.certmodel.DeathCertAppln;
 import org.bel.birthdeath.death.certmodel.DeathCertRequest;
@@ -47,6 +50,9 @@ public class DeathService {
 	@Autowired
 	@Qualifier("objectMapperBnd")
 	ObjectMapper objectMapper;
+
+	@Autowired
+	private EncryptionDecryptionUtil encryptionDecryptionUtil;
 	
 	@Autowired
 	DeathValidator validator;
@@ -65,6 +71,9 @@ public class DeathService {
 	
 	@Autowired
 	ReceiptConsumer consumer;
+
+	@Autowired
+	UserService userService;
 	
 	public List<EgDeathDtl> search(SearchCriteria criteria,RequestInfo requestInfo) {
 		List<EgDeathDtl> deathDtls = new ArrayList<>() ;
@@ -77,6 +86,16 @@ public class DeathService {
 			if(validator.validateFieldsCitizen(criteria)) {
 				deathDtls = repository.getDeathDtls(criteria);
 			}
+		}
+		// ✅ Decrypt full list
+		if (!deathDtls.isEmpty()) {
+			deathDtls = encryptionDecryptionUtil.decryptObject(deathDtls, "BndDetail", EgDeathDtl.class, requestInfo);
+		}
+
+		// Set owner/user info if records are found
+		if (!deathDtls.isEmpty()) {
+			UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
+			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 		}
 		return deathDtls;
 	}
@@ -93,6 +112,8 @@ public class DeathService {
 		deathCertificate.setTenantId(criteria.getTenantId());
 		DeathCertRequest deathCertRequest = DeathCertRequest.builder().deathCertificate(deathCertificate).requestInfo(requestInfo).build();
 		List<EgDeathDtl> deathDtls = repository.getDeathDtlsAll(criteria,requestInfo);
+			UserDetailResponse userDetailResponse = userService.getOwner(deathDtls.get(0), requestInfo);
+			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 			deathCertificate.setGender(deathDtls.get(0).getGenderStr());
 			deathCertificate.setAge(deathDtls.get(0).getAge());
 			deathCertificate.setWard(deathDtls.get(0).getDeathPermaddr().getTehsil());
@@ -110,7 +131,7 @@ public class DeathService {
 		enrichmentServiceDeath.enrichCreateRequest(deathCertRequest);
 		enrichmentServiceDeath.setIdgenIds(deathCertRequest);
 		if(deathDtls.get(0).getCounter()>0){
-			enrichmentServiceDeath.setDemandParams(deathCertRequest);
+			enrichmentServiceDeath.setDemandParams(deathCertRequest,deathDtls);
 			enrichmentServiceDeath.setGLCode(deathCertRequest);
 			calculationServiceDeath.addCalculation(deathCertRequest);
 			deathCertificate.setApplicationStatus(StatusEnum.ACTIVE);
