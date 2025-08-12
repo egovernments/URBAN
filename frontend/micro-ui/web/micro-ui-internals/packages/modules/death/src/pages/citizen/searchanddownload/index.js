@@ -13,26 +13,38 @@ const SearchAndDownload = () => {
   const baseSearchConfigTemplate = useMemo(() => getBaseSearchConfig(t), [t]);
 
   // 1. Fetch All Selectable Cities for the external dropdown
-  const rootTenantForCityList = Digit.ULBService.getStateId() || "pg";
-  const { data: cityOptionsFromHook, isLoading: isLoadingCities } = Digit.Hooks.useCustomMDMS(
-    rootTenantForCityList, "tenant", [{ name: "tenants" }],
-    {
-      enabled: true,
-      select: (data) => { /* ... city mapping ... */ 
-        const tenants = data?.tenant?.tenants || [];
-        const cities = tenants
-          .filter(tenant => tenant.type === "CITY")
-          .map(tenant => ({
-            code: tenant.code,
-            name: tenant.name === "Demo"
-              ? "Demo"
-              : t(tenant.i18nKey || `TENANT_TENANTS_${tenant.code.replace('.', '_').toUpperCase()}`),
-            i18nKey: tenant.i18nKey || `TENANT_TENANTS_${tenant.code.replace('.', '_').toUpperCase()}`
-          }));
-        return cities;
-      },
-    }
-  );
+  const rootTenantForCityList = Digit.ULBService.getCitizenCurrentTenant() || Digit.ULBService.getStateId();
+     const { data: cityOptionsFromHook, isLoading: isLoadingCities } = Digit.Hooks.useCustomMDMS(
+  rootTenantForCityList, 
+  "tenant", 
+  [{ name: "tenants" }],
+  {
+    enabled: true,
+    select: (data) => {
+      const allTenants = data?.tenant?.tenants || [];
+      let filteredTenants;
+
+      // Check if the rootTenantForCityList is a specific city tenant (contains a '.')
+      if (rootTenantForCityList.includes('.')) {
+        // If it is, filter to find that single tenant
+        filteredTenants = allTenants.filter(tenant => tenant.code === rootTenantForCityList);
+      } else {
+        // Otherwise, it's a state-level tenant, so get all tenants of type "CITY"
+        filteredTenants = allTenants.filter(tenant => tenant.type === "CITY");
+      }
+      
+      // The mapping logic remains the same, but now it acts on the correctly filtered list
+      const cities = filteredTenants.map(tenant => ({
+        code: tenant.code,
+        name: tenant.name === "Demo"
+          ? "Demo"
+          : t(tenant.i18nKey || `TENANT_TENANTS_${tenant.code.replace('.', '_').toUpperCase()}`),
+        i18nKey: tenant.i18nKey || `TENANT_TENANTS_${tenant.code.replace('.', '_').toUpperCase()}`
+      }));
+      return cities;
+    },
+  }
+);
 
   // 2. Hospital List MDMS
   const hospitalTenantIdForISC = internalCityToSet?.code;
