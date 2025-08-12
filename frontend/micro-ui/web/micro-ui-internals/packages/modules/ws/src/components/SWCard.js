@@ -93,7 +93,9 @@ const SWCard = () => {
       },
     ],
   };
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return (
+      <EmployeeModuleCard {...propsForModuleCard} />
+  );
 };
 
 export default SWCard;

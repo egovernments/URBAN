@@ -65,12 +65,12 @@ const BirthCard = () => {
   };
 
   return (
-    <div className="birth-card-module" style={{
-      marginLeft: isCitizen ? "50px" : "-40px",
-      marginTop: isCitizen ? "50px" : "-40px"
-    }}>
+    // <div className="birth-card-module" style={{
+    //   marginLeft: isCitizen ? "50px" : "-40px",
+    //   marginTop: isCitizen ? "50px" : "-40px"
+    // }}>
       <EmployeeModuleCard {...propsForModuleCard} />
-    </div>
+    // </div>
   );
 };
 

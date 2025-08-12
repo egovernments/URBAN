@@ -97,7 +97,9 @@ const WSCard = () => {
       }
     ],
   };
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return(
+       <EmployeeModuleCard {...propsForModuleCard} />
+  ) 
 };
 
 export default WSCard;

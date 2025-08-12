@@ -90,7 +90,9 @@ const BillAmendmentCard = () => {
     ],
   }), [isBillAMDInboxLoading, billData, totalCount]);
 
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return (
+      <EmployeeModuleCard {...propsForModuleCard} />
+  );
 };
 
 export default BillAmendmentCard;
