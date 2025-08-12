@@ -144,7 +144,7 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }
                   }
                 }
               >
-                {t(document?.title)}
+                {t(document?.title||"Documents")}
               </CardSubHeader>
             ) : null}
             <div

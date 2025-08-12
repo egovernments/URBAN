@@ -1239,7 +1239,7 @@ const ApplicationDetailsContent = ({
         ))}
       </div>
       {/* Property Area Details */}
-      <div style={styles.section}>
+      {/* <div style={styles.section}>
         <div style={styles.assessmentStyle}>Property Area Details</div>
         <div style={{ overflowX: 'auto', width: '100%' }}>
           <table style={styles.table}>
@@ -1254,7 +1254,7 @@ const ApplicationDetailsContent = ({
                   "Rate",
                   "ALV",
                   "Discount (%)",
-                  // "TPV"
+                
                 ].map((head, i) => (
                   <th key={i} style={styles.th}>
                     {head}
@@ -1272,17 +1272,16 @@ const ApplicationDetailsContent = ({
                   <td style={styles.td}>{detail.area || "N/A"}</td>
                   <td style={styles.td}>{detail.factor || "N/A"}</td>
                   <td style={styles.td}>{detail.alv || 0}</td>
-                  <td style={styles.td}>{detail.constructionType === "OPENLAND" ? "0" : "10"}</td> {/* Assuming Discount not provided */}
-                  {/* <td style={styles.td}>{detail.tpv || 0}</td> */}
+                  <td style={styles.td}>{detail.constructionType === "OPENLAND" ? "0" : "10"}</td> 
+                 
                 </tr>
               ))}
             </tbody>
 
           </table>
         </div>
-      </div>
-
-      {/* Tax Summary */}
+      </div> */}
+{/* 
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Tax Summary</div>
         <div style={{ overflowX: 'auto', width: '100%' }}>
@@ -1334,7 +1333,7 @@ const ApplicationDetailsContent = ({
 
           </table>
         </div>
-      </div>
+      </div> */}
 
 
       {/* Payment Section */}

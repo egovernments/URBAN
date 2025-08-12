@@ -311,7 +311,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
   if (loading) return <Loader></Loader>;
 
   return (
-    <div className="user-profile">
+    <div className="user-profile" style={{marginLeft:"auto"}}>
       <section style={{ margin: userType === "citizen" ? "8px" : "24px" }}>
         {userType === "citizen" ? (
           <BackButton></BackButton>
@@ -423,7 +423,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                 </div>
               </LabelFieldPair>
 
-              <LabelFieldPair>
+              {/* <LabelFieldPair>
                 <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("CORE_COMMON_PROFILE_GENDER")}`}</CardLabel>
                 <Dropdown
                   style={{ width: "100%" }}
@@ -437,7 +437,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                   t={t}
                   name="gender"
                 />
-              </LabelFieldPair>
+              </LabelFieldPair> */}
 
               <LabelFieldPair>
                 <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("CORE_COMMON_PROFILE_EMAIL")}`}</CardLabel>
@@ -461,7 +461,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                 onClick={updateProfile}
                 style={{
                   marginTop: "24px",
-                  backgroundColor: "#F47738",
+                  backgroundColor: "rgb(107, 19, 63)",
                   width: "100%",
                   height: "40px",
                   color: "white",
@@ -500,7 +500,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                 </div>
               </LabelFieldPair>
 
-              <LabelFieldPair style={{ display: "flex" }}>
+              {/* <LabelFieldPair style={{ display: "flex" }}>
                 <CardLabel className="profile-label-margin" style={editScreen ? { color: "#B1B4B6", width: "300px" } : { width: "300px" }}>{`${t(
                   "CORE_COMMON_PROFILE_GENDER"
                 )}`}</CardLabel>
@@ -515,7 +515,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                   t={t}
                   name="gender"
                 />
-              </LabelFieldPair>
+              </LabelFieldPair> */}
 
               <LabelFieldPair style={{ display: "flex" }}>
                 <CardLabel className="profile-label-margin" style={editScreen ? { color: "#B1B4B6", width: "300px" } : { width: "300px" }}>{`${t(
@@ -657,7 +657,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
             onClick={updateProfile}
             style={{
               marginTop: "24px",
-              backgroundColor: "#F47738",
+              backgroundColor: "rgb(107, 19, 63)",
               width: windowWidth < 768 ? "100%" : "248px",
               height: "40px",
               float: "right",
