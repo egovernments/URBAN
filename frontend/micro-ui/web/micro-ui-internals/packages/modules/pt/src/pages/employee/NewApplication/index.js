@@ -221,7 +221,7 @@ const NewApplication = () => {
           altContactNumber: owner.altNumber || "",
           isCorrespondenceAddress: correspondenceAddress,
           mobileNumber: owner.mobile || "9999999999",
-          emailId: owner.email || "",
+          emailId: owner.email || "abc@gmail.com",
           ownerType: propertyDetails.exemption.code,
           permanentAddress:
             addressDetails.address || "23, main, PG_CITYA_REVENUE_SUN20, City A, ",
@@ -506,7 +506,7 @@ const NewApplication = () => {
           altContactNumber: owner.altNumber || "",
           isCorrespondenceAddress: correspondenceAddress,
           mobileNumber: owner.mobile || "9999999999",
-          emailId: owner.email || "",
+          emailId: owner.email || "abc@gmail.com",
           ownerType: propertyDetails.exemption.code,
           permanentAddress:
             addressDetails.address || "23, main, PG_CITYA_REVENUE_SUN20, City A, ",
@@ -685,7 +685,7 @@ const NewApplication = () => {
       hindiName: owner.hindiName || "",
       fatherHusbandName: owner.fatherOrHusbandName || "",
       relationship: owner.relationship || "",
-      email: owner.emailId || "",
+      email: owner.emailId || "abc@gmail.com",
       altNumber: owner.altContactNumber || "",
       mobile: owner.mobileNumber || "",
       samagraID: owner.samagraId || "",

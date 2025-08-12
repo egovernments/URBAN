@@ -18,8 +18,11 @@ const setEmployeeDetail = (userObject, token) => {
 };
 
 const Login = ({ config: propsConfig, t, isDisabled }) => {
+  console.log("Login component rendered with config:", propsConfig);
   const { data: cities, isLoading } = Digit.Hooks.useTenants();
+  console.log("Cities data:", cities);
   const { data: storeData, isLoading: isStoreLoading } = Digit.Hooks.useStore.getInitData();
+
   const { stateInfo } = storeData || {};
   const [user, setUser] = useState(null);
   const [showToast, setShowToast] = useState(null);
@@ -63,7 +66,7 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
     const requestData = {
       ...data,
       userType: "EMPLOYEE",
-      tenantId: "pg.citya"
+      tenantId: cities[0]?.code 
     };
     delete requestData.city;
     

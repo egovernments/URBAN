@@ -122,7 +122,7 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }
         documents?.map((document, index) => (
           <React.Fragment key={index}>
             {document?.title ? (
-              <CardSubHeader
+              <div
                 style={
                   {
                     background: '#6b133f',
@@ -131,21 +131,15 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }
                     fontSize: '16px',
                     lineHeight: '100%',
                     letterSpacing: '0px',
-                    textDecorationStyle: 'solid',
-                    textDecorationColor: '#6b133f',
-                    textDecorationThickness: '1px',
                     color: 'white',
                     marginBottom: '20px',
                     padding: '14px',
-                    // width: '52%',
-                    // borderBottomRightRadius: '20px',
-                    // borderTopRightRadius: '20px',
                     textAlign: "center",
                   }
                 }
               >
                 {t(document?.title)}
-              </CardSubHeader>
+              </div>
             ) : null}
             <div
               style={{

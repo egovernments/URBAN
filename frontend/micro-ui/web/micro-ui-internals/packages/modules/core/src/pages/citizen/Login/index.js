@@ -31,10 +31,61 @@ const getFromLocation = (state, searchParams) => {
 };
 
 const Login = ({ stateCode, isUserRegistered = true }) => {
+  
   const { t } = useTranslation();
-  const location = useLocation();
-  const { path, url } = useRouteMatch();
   const history = useHistory();
+  const location = useLocation();
+  const { data: cities, isLoading } = Digit.Hooks.useTenants();
+
+  // const [selectedCity, setSelectedCity] = useState(() => ({ code: Digit.ULBService.getCitizenCurrentTenant(true) }));
+  const [selectedCity, setSelectedCity] = useState(null);
+ 
+  const [showError, setShowError] = useState(false);
+  useEffect(() => {
+    if (cities && cities.length > 0) {
+      const defaultCityCode = cities[0]?.code || Digit.ULBService.getCitizenCurrentTenant(true);
+      setSelectedCity({ code: defaultCityCode });
+    }
+  }, [cities]);
+  const texts = useMemo(
+    () => ({
+      header: t("CS_COMMON_CHOOSE_LOCATION"),
+      submitBarLabel: t("CORE_COMMON_CONTINUE"),
+    }),
+    [t]
+  );
+
+  function selectCity(city) {
+    setSelectedCity(city);
+    setShowError(false);
+  }
+
+  const RadioButtonProps = useMemo(() => {
+    //adding this condition for not showing state option in case of central instance
+    let updatedCities = cities;
+    if (window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE"))
+      updatedCities = cities?.filter((ob) => ob?.code !== Digit.ULBService.getStateId())
+    return {
+      options: updatedCities,
+      optionsKey: "i18nKey",
+      additionalWrapperClass: "reverse-radio-selection-wrapper",
+      onSelect: selectCity,
+      selectedOption: selectedCity,
+    };
+  }, [cities, t, selectedCity]);
+
+  function onSubmit() {
+    if (selectedCity) {
+      Digit.SessionStorage.set("CITIZEN.COMMON.HOME.CITY", selectedCity);
+      const redirectBackTo = location.state?.redirectBackTo;
+      if (redirectBackTo) {
+        history.replace(redirectBackTo);
+      } else history.push("/digit-ui/citizen");
+    } else {
+      setShowError(true);
+    }
+  }
+  const { path, url } = useRouteMatch();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isOtpValid, setIsOtpValid] = useState(true);
@@ -72,9 +123,10 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
     setCitizenDetail(user?.info, user?.access_token, stateCode);
     const redirectPath = location.state?.from || DEFAULT_REDIRECT_URL;
     if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
-      history.replace("/digit-ui/citizen/select-location", {
-        redirectBackTo: redirectPath,
-      });
+      // history.replace("/digit-ui/citizen/select-location", {
+      //   redirectBackTo: redirectPath,
+      // });
+      onSubmit()
     } else {
       history.replace(redirectPath);
     }
@@ -230,7 +282,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
   };
 
   return (
-    <div className="citizen-form-wrapper">
+    <div className="citizen-form-wrapper" style={{ margin: "0px", padding: "0px", width: "100%" }}>
       <Switch>
         <AppContainer>
           {/* <BackButton /> */}
