@@ -1,10 +1,9 @@
 package org.bel.birthdeath.birth.service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bel.birthdeath.birth.certmodel.BirthCertAppln;
@@ -12,6 +11,8 @@ import org.bel.birthdeath.birth.certmodel.BirthCertRequest;
 import org.bel.birthdeath.birth.certmodel.BirthCertificate;
 import org.bel.birthdeath.birth.certmodel.BirthCertificate.StatusEnum;
 import org.bel.birthdeath.birth.model.EgBirthDtl;
+import org.bel.birthdeath.birth.model.EgBirthFatherInfo;
+import org.bel.birthdeath.birth.model.EgBirthMotherInfo;
 import org.bel.birthdeath.birth.model.SearchCriteria;
 import org.bel.birthdeath.birth.repository.BirthRepository;
 import org.bel.birthdeath.birth.validator.BirthValidator;
@@ -20,12 +21,15 @@ import org.bel.birthdeath.common.calculation.collections.models.PaymentDetail;
 import org.bel.birthdeath.common.calculation.collections.models.PaymentResponse;
 import org.bel.birthdeath.common.calculation.collections.models.PaymentSearchCriteria;
 import org.bel.birthdeath.common.consumer.ReceiptConsumer;
-import org.bel.birthdeath.common.contract.BirthPdfApplicationRequest;
-import org.bel.birthdeath.common.contract.EgovPdfResp;
-import org.bel.birthdeath.common.contract.RequestInfoWrapper;
+import org.bel.birthdeath.common.contract.*;
 import org.bel.birthdeath.common.model.AuditDetails;
+import org.bel.birthdeath.common.model.user.User;
+import org.bel.birthdeath.common.model.user.UserDetailResponse;
 import org.bel.birthdeath.common.repository.ServiceRequestRepository;
+import org.bel.birthdeath.common.services.UserService;
 import org.bel.birthdeath.config.BirthDeathConfiguration;
+import org.bel.birthdeath.death.model.EgDeathDtl;
+import org.bel.birthdeath.utils.BirthDeathConstants;
 import org.bel.birthdeath.utils.CommonUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.tracer.model.CustomException;
@@ -51,6 +55,9 @@ public class BirthService {
 	
 	@Autowired
 	BirthValidator validator;
+
+	@Autowired
+	private EncryptionDecryptionUtil encryptionDecryptionUtil;
 	
 	@Autowired
 	EnrichmentService enrichmentService;
@@ -66,6 +73,9 @@ public class BirthService {
 	
 	@Autowired
 	ReceiptConsumer consumer;
+
+	@Autowired
+	UserService userService;
 	
 	public List<EgBirthDtl> search(SearchCriteria criteria, RequestInfo requestInfo) {
 		List<EgBirthDtl> birthDtls = new ArrayList<>() ;
@@ -77,6 +87,44 @@ public class BirthService {
 		else {
 			if(validator.validateFieldsCitizen(criteria)) {
 				birthDtls = repository.getBirthDtls(criteria);
+			}
+		}
+
+		// ✅ Decrypt full list
+		if (!birthDtls.isEmpty()) {
+			// Decrypt top-level fields like aadharno, icdcode
+			birthDtls = encryptionDecryptionUtil.decryptObject(birthDtls, "BndDetail", EgBirthDtl.class, requestInfo);
+
+			// Explicitly decrypt nested parent info
+			for (EgBirthDtl btl : birthDtls) {
+				if (btl.getBirthFatherInfo() != null) {
+					btl.setBirthFatherInfo(encryptionDecryptionUtil.decryptObject(btl.getBirthFatherInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgBirthFatherInfo.class, requestInfo));
+				}
+
+				if (btl.getBirthMotherInfo() != null) {
+					btl.setBirthMotherInfo(encryptionDecryptionUtil.decryptObject(btl.getBirthMotherInfo(),
+							BirthDeathConstants.BND_DESCRYPT_KEY, EgBirthMotherInfo.class, requestInfo));
+				}
+			}
+		}
+
+
+		if (!birthDtls.isEmpty()) {
+			UserDetailResponse userDetailResponse = userService.getOwners(birthDtls, requestInfo);
+
+			if (userDetailResponse != null && userDetailResponse.getUser() != null) {
+				Map<String, User> mobileToUserMap = userDetailResponse.getUser().stream()
+						.filter(user -> user.getMobileNumber() != null)
+						.collect(Collectors.toMap(User::getMobileNumber, Function.identity(), (u1, u2) -> u1)); // avoid duplicates
+
+				for (EgBirthDtl btl : birthDtls) {
+					ParentInfo fatherInfo = btl.getFatherInfo();
+					if (fatherInfo != null && fatherInfo.getMobileno() != null) {
+						User user = mobileToUserMap.get(fatherInfo.getMobileno());
+						if (user != null) btl.setUser(user);
+					}
+				}
 			}
 		}
 		return birthDtls;
@@ -94,6 +142,8 @@ public class BirthService {
 		birthCertificate.setTenantId(criteria.getTenantId());
 		BirthCertRequest birthCertRequest = BirthCertRequest.builder().birthCertificate(birthCertificate).requestInfo(requestInfo).build();
 		List<EgBirthDtl> birtDtls = repository.getBirthDtlsAll(criteria,requestInfo);
+			UserDetailResponse userDetailResponse = userService.getOwners(birtDtls, requestInfo);
+			birtDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 			birthCertificate.setBirthPlace(birtDtls.get(0).getPlaceofbirth());
 			birthCertificate.setGender(birtDtls.get(0).getGenderStr());
 			birthCertificate.setWard(birtDtls.get(0).getBirthPermaddr().getTehsil());
@@ -110,7 +160,7 @@ public class BirthService {
 		enrichmentService.enrichCreateRequest(birthCertRequest);
 		enrichmentService.setIdgenIds(birthCertRequest);
 		if(birtDtls.get(0).getCounter()>0){
-			enrichmentService.setDemandParams(birthCertRequest);
+			enrichmentService.setDemandParams(birthCertRequest,birtDtls);
 			enrichmentService.setGLCode(birthCertRequest);
 			calculationService.addCalculation(birthCertRequest);
 			birthCertificate.setApplicationStatus(StatusEnum.ACTIVE);

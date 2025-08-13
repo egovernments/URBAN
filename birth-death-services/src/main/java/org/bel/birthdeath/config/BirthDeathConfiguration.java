@@ -1,5 +1,7 @@
 package org.bel.birthdeath.config;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -91,8 +93,8 @@ public class BirthDeathConfiguration {
     @Value("${egov.url.shortner.endpoint}")
     private String urlShortnerEndpoint;
     
-    @Value("${egov.ui.app.host}")
-	private String uiAppHost;
+	@Value("#{${egov.ui.app.host}}")
+	private Map<String, String> uiAppHostMap;
 
     @Value("${egov.bnd.default.limit}")
     private Integer defaultBndLimit;
@@ -120,5 +122,6 @@ public class BirthDeathConfiguration {
 
     @Value("${egov.pdf.deathcert.createEndPoint}")
     private String	egovPdfDeathEndPoint;
+
 
 }

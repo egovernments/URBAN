@@ -205,7 +205,8 @@ public class BirthRepository {
 		try {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");	
 		pdfApplicationRequest.getBirthCertificate().forEach(cert-> {
-			String uiHost = config.getUiAppHost();
+			String stateLevelTenantId = centralInstanceUtil.getStateLevelTenant(cert.getTenantid());
+			String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
 			String birthCertPath = config.getBirthCertLink();
 			birthCertPath = birthCertPath.replace("$id",cert.getId());
 			birthCertPath = birthCertPath.replace("$tenantId",cert.getTenantid());
@@ -260,7 +261,7 @@ public class BirthRepository {
 			birthDtls.forEach(birthDtl -> {
 				birthDtl.setBirthFatherInfo(encryptionDecryptionUtil.decryptObject(birthDtl.getBirthFatherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgBirthFatherInfo.class, requestInfo));
 				birthDtl.setBirthMotherInfo(encryptionDecryptionUtil.decryptObject(birthDtl.getBirthMotherInfo(), BirthDeathConstants.BND_DESCRYPT_KEY, EgBirthMotherInfo.class, requestInfo));
-				commonUtils.maskAndShowLast4Chars(birthDtl);
+//				commonUtils.maskAndShowLast4Chars(birthDtl);
 			});
 		}
         return birthDtls;

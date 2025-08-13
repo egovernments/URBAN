@@ -10,11 +10,11 @@ import org.bel.birthdeath.common.calculation.demand.models.Demand;
 import org.bel.birthdeath.common.calculation.demand.models.DemandDetail;
 import org.bel.birthdeath.common.repository.DemandRepository;
 import org.egov.common.contract.request.RequestInfo;
-import org.egov.common.contract.request.User;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.bel.birthdeath.common.model.user.User;
 
 
 

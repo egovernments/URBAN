@@ -35,7 +35,7 @@ public class BirthDtlsAllRowMapper implements ResultSetExtractor<List<EgBirthDtl
 							.aadharno(rs.getString("bmotaadharno")).build();
 					motherInfo.setFullName(utils.addfullName(motherInfo.getFirstname(),motherInfo.getMiddlename(),motherInfo.getLastname()));
 					
-					EgBirthFatherInfo fatherInfo = EgBirthFatherInfo.builder().firstname(rs.getString("bfatfn")).middlename(rs.getString("bfatmn")).lastname(rs.getString("bfatln"))
+					EgBirthFatherInfo fatherInfo = EgBirthFatherInfo.builder().firstname(rs.getString("bfatfn")).middlename(rs.getString("bfatmn")).lastname(rs.getString("bfatln")).mobileno(rs.getString("bfatfmobileno"))
 							.aadharno(rs.getString("bfataadharno")).build();
 					fatherInfo.setFullName(utils.addfullName(fatherInfo.getFirstname(),fatherInfo.getMiddlename(),fatherInfo.getLastname()));
 					

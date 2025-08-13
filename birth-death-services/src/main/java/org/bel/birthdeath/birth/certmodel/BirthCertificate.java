@@ -6,8 +6,7 @@ import java.util.List;
 import org.bel.birthdeath.birth.calculation.Calculation;
 import org.bel.birthdeath.common.model.Amount;
 import org.bel.birthdeath.common.model.AuditDetails;
-import org.egov.common.contract.request.User;
-
+import org.bel.birthdeath.common.model.user.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
