@@ -698,7 +698,7 @@ function ApplicationDetailsContentVerifier({
 
               )}
               <div style={styles.grid}>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Owner Name<span style={{ color: "red" }}>*</span></label>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <select
@@ -715,7 +715,7 @@ function ApplicationDetailsContentVerifier({
                     />
                   </div>
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Owner Name (हिंदी)<span style={{ color: "red" }}>*</span></label>
 
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -734,33 +734,33 @@ function ApplicationDetailsContentVerifier({
                     />
                   </div>
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Father/Husband Name</label>
                   <input style={styles.input} value={owner.fatherOrHusbandName} readOnly />
                 </div>
 
 
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Relationship</label>
                   <input style={styles.input} value={owner.relationship} readOnly />
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Email ID</label>
                   <input style={styles.input} value={owner.emailId} readOnly />
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Mobile No.<span style={{ color: "red" }}>*</span></label>
                   <input style={styles.input} value={owner.mobileNumber} readOnly />
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Alternative Mobile No</label>
                   <input style={styles.input} value={owner.altContactNumber || ""} readOnly />
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Aadhar No.<span style={{ color: "red" }}>*</span></label>
                   <input style={styles.input} value={owner.aadhaarNumber || ""} readOnly />
                 </div>
-                <div>
+                <div style={styles.flex30}>
                   <label style={styles.label}>Samagra ID <span style={{ color: "red" }}>*</span></label>
                   <input style={styles.input} value={owner.samagraId} readOnly />
                 </div>
@@ -772,17 +772,17 @@ function ApplicationDetailsContentVerifier({
 
           <div style={styles.sectionTitle}>Property Address</div>
           <div style={styles.grid}>
-            <div><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
-            <div><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
-            <div><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.pincode || ""} readOnly /></div>
-            <div><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.locality?.name} readOnly /></div>
-            <div><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.ward} readOnly /></div>
-            <div><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.pincode || ""} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.locality?.name} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.ward} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
           </div>
         </div>
         <div style={styles.card}>
           <div >
-            <div>
+            <div style={styles.flex30} >
               <div style={styles.sectionTitle}>Correspondence Address</div>
               <textarea style={styles.widthInputs} rows={3} value={owner?.permanentAddress} readOnly />
 
@@ -797,10 +797,10 @@ function ApplicationDetailsContentVerifier({
         <div style={styles.card}>
           <div style={styles.sectionTitle}>Assessment Details</div>
           <div style={styles.grid}>
-            <div><label style={styles.label}>Rate Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.rateZone} readOnly /></div>
-            <div><label style={styles.label}>Road Factor <span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.roadFactor} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Rate Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.rateZone} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Road Factor <span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.roadFactor} readOnly /></div>
             {/* <div><label style={styles.label}>Old Property ID</label><input style={styles.input} value={application?.oldPropertyId || ""} readOnly /></div> */}
-            <div><label style={styles.label}>Plot Area (sq.ft)</label><input style={styles.input} value={application?.landArea} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Plot Area (sq.ft)</label><input style={styles.input} value={application?.landArea} readOnly /></div>
           </div>
         </div>
         <div style={styles.card}>
@@ -917,12 +917,14 @@ function ApplicationDetailsContentVerifier({
           </div>
           <div style={styles.grid}>
             <div>
+            <div style={styles.flex30} >
               {/* Exemption Dropdown */}
               <label style={styles.label}>Exemption Applicable.</label>
 
               <select style={styles.input} value={owner?.ownerType} disabled>
                 <option>{owner?.ownerType}</option>
               </select>
+            </div>
             </div>
           </div>
           {/* Checkboxes */}
@@ -1009,6 +1011,9 @@ function ApplicationDetailsContentVerifier({
 }
 
 const styles = {
+  width2:{
+    maxWidth:"160px"
+  },
   card: {
     backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
     boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
@@ -1016,6 +1021,15 @@ const styles = {
     // border: "1px solid #000000",
     marginBottom: "22px",
     borderRadius: "12px",
+  },
+   flex30: {
+    flex: "1 1 30%",
+    display: "flex",
+     flexDirection: "column",
+    
+    position: "relative",
+    minHeight: "90px",
+
   },
   container: {
     padding: "24px",
@@ -1092,10 +1106,22 @@ const styles = {
     background: "#A3BBF347",
     padding: "10px",
   },
+  flex30: {
+    flex: "1 1 30%",
+    display: "flex",
+     flexDirection: "column",
+    
+    position: "relative",
+    minHeight: "90px",
+
+  },
   grid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gap: "16px",
+    // display: "grid",
+    // gridTemplateColumns: "1fr 1fr 1fr",
+    // gap: "16px",
+    display:"flex",
+    flexWrap:"wrap",
+    gap:"1rem",
   },
   row: {
     display: "flex",
