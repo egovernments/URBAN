@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.egov.common.util.ElasticSearchUtils;
 import org.egov.egf.instrument.web.contract.InstrumentAccountCodeSearchContract;
 import org.egov.egf.instrument.web.contract.InstrumentSearchContract;
@@ -91,6 +93,22 @@ public class ElasticSearchQueryFactory {
                 orderByList.add(s.trim() + " asc");
 
         return orderByList;
+    }
+
+    public BoolQuery searchSurrenderReasonBool(SurrenderReasonSearchContract criteria) {
+        List<Query> mustQueries = new ArrayList<>();
+
+        if (criteria.getId() != null) {
+            mustQueries.add(Query.of(q -> q.term(t -> t.field("id").value(criteria.getId()))));
+        }
+        if (criteria.getName() != null) {
+            mustQueries.add(Query.of(q -> q.match(m -> m.field("name").query(criteria.getName()))));
+        }
+        if (criteria.getTenantId() != null) {
+            mustQueries.add(Query.of(q -> q.term(t -> t.field("tenantId").value(criteria.getTenantId()))));
+        }
+
+        return BoolQuery.of(b -> b.must(mustQueries));
     }
 
 }
