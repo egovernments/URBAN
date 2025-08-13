@@ -129,11 +129,11 @@ export const viewBirthApplicationConfig = (applicationsArray, t, props = {}) => 
             },
             {
                 key: t("BND_COMMON_MOTHERSNAME"),
-                value: getValue(appData.mother?.name, t),
+                value: getValue(appData.motherName, t),
             },
             {
                 key: t("BND_COMMON_FATHERSNAME"),
-                value: getValue(appData.father?.name, t),
+                value: getValue(appData.fatherName, t),
             },
             {
                 key: t("BND_APPL_TYPE", "Application Type"),
