@@ -167,8 +167,11 @@ const CitizenHome = ({ modules, getCitizenMenu, fetchedCitizen, isLoading }) => 
 
 
 const EmployeeHome = ({ modules }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const user = Digit.UserService.getUser();
+  const accessToken = user?.access_token;
+  const refreshToken = user?.refresh_token;
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -282,7 +285,9 @@ const EmployeeHome = ({ modules }) => {
               { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
               { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
               { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
-              { url: "http://57.159.24.106/", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marrige Certificate", count: 30, className: "sendback", color: "#2196f3" }
+              { url: `http://57.159.24.106/dashboard?accessToken=${accessToken}&refreshToken=${refreshToken}&module=marriage`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marriage Certificate", count: 30, className: "sendback", color: "#2196f3" },
+              { url: `http://57.159.24.106/dashboard?accessToken=${accessToken}&refreshToken=${refreshToken}&module=rental`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Rental", count: 30, className: "sendback", color: "#4caf50" }
+
             ].map((card, index) => (
               <div key={index} className="" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", alignItems: "center", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>
                 <div className={`card-icon ${card.className}`} style={{ maxWidth: "70px", width: "70px" }}>
@@ -292,7 +297,7 @@ const EmployeeHome = ({ modules }) => {
                   href={card.url}
                   // style={{ ...commonStyles.labelText }}
                   data-tip="React-tooltip"
-                  // data-for={`tooltip-${getModuleName}`}
+                // data-for={`tooltip-${getModuleName}`}
                 >
                   <div className="card-content" style={{ marginLeft: "20px" }}>
                     <h2 style={{ fontSize: "25px", fontWeight: "800", marginBottom: "6px" }}>{card.count}</h2>

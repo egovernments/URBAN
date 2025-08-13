@@ -5,6 +5,8 @@ const OwnershipDetailsSection = ({
   t,
   ownershipType,
   handleOwnershipTypeChange,
+  handleRestryIdChange,
+  registryId,
   owners,
   setOwners,
   addNewOwner,
@@ -19,12 +21,12 @@ const OwnershipDetailsSection = ({
     code: item.code,
     name: t(item.name), // Use i18nKey for translation
   }));
-  console.log("Menu", Menu)
+
   const dropdownOptions = (Array.isArray(OwnerShipCategoryOb) ? OwnerShipCategoryOb : []).map(item => ({
     code: item.code,
     name: t(item.name)
   }));
-  console.log("OwnerShipCategoryOb", OwnerShipCategoryOb)
+
   // const updateOwner = (index, field, value) => {
   //   const updated = [...owners];
   //   updated[index][field] = value;
@@ -195,7 +197,7 @@ const OwnershipDetailsSection = ({
               value={owner.samagraID}
               onChange={(e) => updateOwner(index, "samagraID", e.target.value)}
               style={styles.widthInput}
-             disabled={owner.noSamagra === true}
+              disabled={owner.noSamagra === true}
             />
             <div style={{ marginTop: "4px" }}>
               <label style={{ fontSize: "14px" }}>
@@ -220,27 +222,47 @@ const OwnershipDetailsSection = ({
 
   return (
     <div>
-      <div style={styles.flex45}>
-        <div style={styles.poppinsLabel}>
-          {t("Provide Ownership Details")} <span className="mandatory" style={styles.mandatory}>*</span>
-        </div>
-        <Dropdown
-          style={styles.widthInput300}
-          t={t}
-          option={dropdownOptions}
-          // selected={"ownershipType"}
-           selected={dropdownOptions.find(opt => opt.code === ownershipType)}
-          select={handleOwnershipTypeChange}
-          optionKey="name"
-          placeholder={t("Select")}
-        />
-        {formErrors?.ownershipType && (
-          <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
-            {formErrors.ownershipType}
-          </p>
-        )}
-      </div>
+      <div className="form-section" style={styles.formSection}>
 
+        {/* Name with Title */}
+
+        <div style={styles.flex30}>
+          <div style={styles.poppinsLabel}>
+            {t("Provide Ownership Details")} <span className="mandatory" style={styles.mandatory}>*</span>
+          </div>
+          <Dropdown
+            style={styles.widthInput}
+            t={t}
+            option={dropdownOptions}
+            // selected={"ownershipType"}
+            selected={dropdownOptions.find(opt => opt.code === ownershipType)}
+            select={handleOwnershipTypeChange}
+            optionKey="name"
+            placeholder={t("Select")}
+          />
+          {formErrors?.ownershipType && (
+            <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
+              {formErrors.ownershipType}
+            </p>
+          )}
+        </div>
+        <div style={styles.flex30}>
+          <div style={styles.poppinsLabel}>
+            {t("POA Registration Number")}
+          </div>
+          <TextInput
+            value={registryId}
+            onChange={handleRestryIdChange}
+            style={styles.widthInput}
+
+          />
+
+          {formErrors?.registryId && (
+            <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>{formErrors.registryId}</p>
+          )}
+        </div>
+         <div style={styles.flex30}></div>
+      </div>
       {owners.map((_, index) => renderOwnerForm(index))}
 
       {ownershipType === "INDIVIDUAL.MULTIPLEOWNERS" && (
