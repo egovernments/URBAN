@@ -9,7 +9,7 @@ const PropertyTable = ({ data, template, actionButtonLabel, onSubmit }) => {
     width: "100%",
     fontFamily: "Noto Sans, sans-serif",
     margin: "20px auto",
-    backgroundColor:"white"
+    backgroundColor: "white"
   };
 
   const tableStyle = {
@@ -25,7 +25,7 @@ const PropertyTable = ({ data, template, actionButtonLabel, onSubmit }) => {
     fontSize: "14px",
     padding: "12px",
     borderBottom: "1px solid #ddd",
-    width:"200px"
+    width: "200px"
   };
 
   const cellStyle = {
@@ -72,7 +72,18 @@ const PropertyTable = ({ data, template, actionButtonLabel, onSubmit }) => {
               <td style={cellStyle}>₹{item.total_due?.toLocaleString()}</td>
               <td style={cellStyle}>{item.bil_due__date}</td>
               <td style={cellStyle}>
-                <button style={actionButtonStyle} onClick={() => onSubmit?.(item)}>
+                {/* <button style={actionButtonStyle} onClick={() => onSubmit?.(item)}>
+                  {actionButtonLabel}
+                </button> */}
+                <button
+                  style={{
+                    ...actionButtonStyle,
+                    opacity: item.total_due === 0 ? 0.5 : 1,
+                    cursor: item.total_due === 0 ? 'not-allowed' : 'pointer'
+                  }}
+                  onClick={() => onSubmit?.(item)}
+                  disabled={item.total_due === 0}
+                >
                   {actionButtonLabel}
                 </button>
               </td>
