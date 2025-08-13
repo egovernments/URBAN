@@ -128,7 +128,8 @@ const EmployeeApp = ({
                   className="employee-app-wrapper" 
                   style={{ 
                     margin: "0",
-                    padding: mobileView ? "10px" : "20px"
+                    padding: mobileView ? "10px" : "10px",
+                    marginTop: "20px",
                   }}
                 >
                   <ErrorBoundary initData={initData}>

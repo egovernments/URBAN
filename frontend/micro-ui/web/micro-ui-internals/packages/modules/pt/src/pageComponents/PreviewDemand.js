@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from "react";
 import {
     Loader, Card,
@@ -10,32 +7,53 @@ import {
     CheckBox,
 } from "@egovernments/digit-ui-react-components";
 import { useLocation, useHistory } from "react-router-dom";
+
 const styles = {
     container: {
         padding: "20px",
         fontFamily: "Arial, sans-serif",
         fontSize: "14px",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        width: "100%",
+        boxSizing: "border-box",
+        '@media (max-width: 768px)': {
+            padding: "10px"
+        },
+        '@media (max-width: 630px)': {
+            padding: "8px"
+        }
     },
     row: {
         display: "flex",
         flexWrap: "wrap",
         marginBottom: "16px",
-        justifyContent: "space-between",
-        width: "100%"
-    },
-    rowOwnerName: {
-        // display: "flex",
-        flexWrap: "wrap",
-        gap: "20px",
-        marginBottom: "16px",
-        // justifyContent: "space-between",
-        width: "100%"
+        gap: "16px",
+        width: "100%",
+        boxSizing: "border-box",
+        '@media (max-width: 768px)': {
+            flexDirection: "column",
+            gap: "12px"
+        },
+        '@media (max-width: 630px)': {
+            gap: "8px",
+            marginBottom: "12px"
+        }
     },
     field: {
-        display: "block",
-        // flexDirection: "column",
-        alignItems: "center",
-
+        display: "flex",
+        flexDirection: "column",
+        flex: "1",
+        minWidth: "280px",
+        width: "100%",
+        boxSizing: "border-box",
+        '@media (max-width: 768px)': {
+            minWidth: "100%"
+        },
+        '@media (max-width: 630px)': {
+            minWidth: "auto",
+            width: "100%"
+        }
     },
     input: {
         height: "35px",
@@ -43,106 +61,155 @@ const styles = {
         borderRadius: "6px",
         padding: "6px 10px",
         fontSize: "14px",
-        width: "300px"
-
-    },
-    inputs: {
-        height: "35px",
-        border: "1px solid #D9D9D9",
-        borderRadius: "6px",
-        padding: "6px 10px",
-        fontSize: "14px",
-        width: "300px",
+        width: "100%",
+        boxSizing: "border-box",
+        maxWidth: "100%",
+        '@media (max-width: 630px)': {
+            padding: "8px",
+            fontSize: "13px",
+            height: "40px"
+        }
     },
     label: {
         fontFamily: "Poppins",
         fontWeight: 400,
         fontSize: "14px",
         lineHeight: "22px",
-        letterSpacing: "0%",
         color: "#282828",
-        width: "100px"
+        marginBottom: "4px",
+        wordWrap: "break-word",
+        '@media (max-width: 768px)': {
+            fontSize: "13px"
+        },
+        '@media (max-width: 630px)': {
+            fontSize: "12px",
+            lineHeight: "18px"
+        }
     },
     sectionHeader: {
         fontFamily: "Poppins",
         fontWeight: "bold",
         fontSize: "16px",
         lineHeight: "100%",
-        letterSpacing: "0%",
-        // textDecoration: "underline",
-        textDecorationStyle: "solid",
-        textDecorationOffset: "0%",
-        textDecorationThickness: "0%",
         color: "#6b133f",
+        marginBottom: "16px",
+        marginTop: "20px",
+        '@media (max-width: 768px)': {
+            fontSize: "15px",
+            marginTop: "16px",
+            marginBottom: "12px"
+        }
     },
-      sectionHeaderDemand: {
+    sectionHeaderDemand: {
         fontFamily: "Poppins",
         fontWeight: "bold",
         fontSize: "22px",
         lineHeight: "100%",
-        letterSpacing: "0%",
-        // textDecoration: "underline",
-        textDecorationStyle: "solid",
-        textDecorationOffset: "0%",
-        textDecorationThickness: "0%",
         color: "#6b133f",
+        marginBottom: "20px",
+        '@media (max-width: 768px)': {
+            fontSize: "18px",
+            marginBottom: "16px"
+        }
+    },
+    tableContainer: {
+        width: "100%",
+        overflowX: "auto",
+        marginBottom: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        '@media (max-width: 768px)': {
+            fontSize: "11px"
+        }
     },
     table: {
         width: "100%",
         borderCollapse: "collapse",
-        marginTop: "10px",
-        marginBottom: "20px",
+        minWidth: "800px",
+        '@media (max-width: 768px)': {
+            minWidth: "600px"
+        }
     },
     th: {
         border: "1px solid #ccc",
-        padding: "8px",
+        padding: "8px 4px",
         backgroundColor: "#6b133f",
         textAlign: "center",
         fontFamily: "Inter",
         fontWeight: 400,
         fontSize: "12px",
         lineHeight: "130%",
-        letterSpacing: "0%",
         color: "white",
+        whiteSpace: "nowrap",
+        '@media (max-width: 768px)': {
+            padding: "6px 3px",
+            fontSize: "10px"
+        }
     },
     td: {
         border: "1px solid #ccc",
-        padding: "8px",
+        padding: "8px 4px",
         textAlign: "center",
         fontFamily: "Inter",
         fontWeight: 400,
         fontSize: "12px",
         lineHeight: "130%",
-        letterSpacing: "0%",
         color: "#000000",
+        whiteSpace: "nowrap",
+        '@media (max-width: 768px)': {
+            padding: "6px 3px",
+            fontSize: "10px"
+        }
     },
     downloadBtn: {
-        float: "right",
-        marginBottom: "10px",
         padding: "6px 12px",
         background: "white",
         border: "1px solid #6b133f",
         borderRadius: "12px",
         cursor: "pointer",
-        // width: "202px",
         fontFamily: "Poppins",
         fontWeight: 400,
         fontSize: "12px",
-        lineHeight: "100%",
-        letterSpacing: "3%",
-        textAlign: "center",
         color: "#6b133f",
-        position: "absolute",
-        right: "0px",
-        top: "-42px",
+        boxSizing: "border-box",
+        '@media (max-width: 768px)': {
+            width: "100%",
+            fontSize: "11px"
+        },
+        '@media (max-width: 630px)': {
+            padding: "8px 12px",
+            fontSize: "10px"
+        }
     },
     cardD: {
         backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
         boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
         padding: "16px",
-        // border: "1px solid #000000",
         marginBottom: "22px",
         borderRadius: "12px",
+        width: "100%",
+        boxSizing: "border-box",
+        overflow: "hidden",
+        '@media (max-width: 768px)': {
+            padding: "12px",
+            marginBottom: "16px"
+        },
+        '@media (max-width: 630px)': {
+            padding: "8px",
+            marginBottom: "12px",
+            borderRadius: "8px"
+        }
+    },
+    buttonContainer: {
+        display: "flex",
+        gap: "12px",
+        marginLeft: "auto",
+        marginTop: "20px",
+        '@media (max-width: 768px)': {
+            flexDirection: "column",
+            marginLeft: "0",
+            gap: "8px"
+        }
     },
     confirmBtn: {
         padding: "10px 30px",
@@ -151,36 +218,84 @@ const styles = {
         border: "none",
         borderRadius: "6px",
         cursor: "pointer",
-        // float: "right",
-        marginTop: "20px",
         fontFamily: "Poppins",
         fontWeight: 500,
         fontSize: "14px",
-        lineHeight: "100%",
-        letterSpacing: "3%",
-        color: "#FFFFFF",
-        display: "flex",
-        marginLeft: "auto"
+        whiteSpace: "nowrap",
+        '@media (max-width: 768px)': {
+            padding: "12px 20px",
+            fontSize: "13px",
+            width: "100%"
+        }
     },
     bottomText: {
         color: "red",
         fontSize: "12px",
         marginTop: "8px",
+        '@media (max-width: 768px)': {
+            fontSize: "11px"
+        }
     },
+    modalOverlay: {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 9999,
+        padding: "20px",
+        boxSizing: "border-box"
+    },
+    modalContent: {
+        background: "#fff",
+        borderRadius: "8px",
+        padding: "40px",
+        textAlign: "center",
+        width: "500px",
+        maxWidth: "100%",
+        '@media (max-width: 768px)': {
+            padding: "24px",
+            width: "100%",
+            maxWidth: "350px"
+        }
+    },
+    modalButtonContainer: {
+        display: "flex",
+        justifyContent: "center",
+        gap: "20px",
+        '@media (max-width: 768px)': {
+            flexDirection: "column",
+            gap: "12px"
+        }
+    },
+    modalButton: {
+        backgroundColor: "#6b133f",
+        color: "#fff",
+        padding: "8px 20px",
+        borderRadius: "6px",
+        border: "none",
+        cursor: "pointer",
+        fontSize: "14px",
+        '@media (max-width: 768px)': {
+            padding: "12px 20px",
+            fontSize: "13px",
+            width: "100%"
+        }
+    }
 };
 
+// Responsive InputField component
 const InputField = ({ label, value }) => (
     <div style={styles.field}>
         <div style={styles.label}>{label}</div>
         <input style={styles.input} value={value} readOnly />
     </div>
 );
-const InputFieldNew = ({ label, value }) => (
-    <div style={styles.field}>
-        <div style={styles.label}>{label}</div>
-        <input style={styles.inputs} value={value} readOnly />
-    </div>
-);
+
 const PropertyForm = () => {
     const history = useHistory();
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
@@ -190,13 +305,14 @@ const PropertyForm = () => {
     const tenantId = userInfo1?.tenantId;
     const mutationUpdate = Digit.Hooks.pt.usePropertyAPI(tenantId, false);
     const location = useLocation();
-    const { data, proOwnerDetail, documents, checkboxes, rateZones, owners, unit, assessmentDetails, propertyDetails, addressDetails, ownershipType, correspondenceAddress } = location.state || {}; // receive full object
+    const { data, proOwnerDetail, documents, checkboxes, rateZones, owners, unit, assessmentDetails, propertyDetails, addressDetails, ownershipType, correspondenceAddress } = location.state || {};
     const calculation = data?.Calculation?.[0];
 
     const propertyFYDetails = calculation?.propertyFYDetails || [];
     const taxSummaries = calculation?.propertyFYTaxSummaries || [];
     const ownersDetail = proOwnerDetail?.owners || [];
     const address = proOwnerDetail?.address || {};
+
     const handleGobackEdit = () => {
         history.push({
             pathname: "/digit-ui/employee/pt/new-application",
@@ -227,6 +343,7 @@ const PropertyForm = () => {
             },
         });
     };
+
     const handleSubmitUpdate = async () => {
         const payload = {
             Property: {
@@ -266,19 +383,16 @@ const PropertyForm = () => {
                     mobileNumber: owner.mobile || "9999999999",
                     emailId: owner.email || "",
                     ownerType: propertyDetails.exemption.code,
-                    permanentAddress:
-                        addressDetails.address || "23, main, PG_CITYA_REVENUE_SUN20, City A, ",
+                    permanentAddress: addressDetails.address || "23, main, PG_CITYA_REVENUE_SUN20, City A, ",
                     relationship: owner.relationship || "FATHER",
                     samagraId: owner.samagraID || "Samagra ID",
                     documents: [
                         {
-                            fileStoreId:
-                                documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
+                            fileStoreId: documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
                             documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
                         },
                         {
-                            fileStoreId:
-                                documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
+                            fileStoreId: documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
                             documentType: "OWNER.IDENTITYPROOF.AADHAAR",
                         },
                     ],
@@ -323,7 +437,6 @@ const PropertyForm = () => {
                 propertyType: proOwnerDetail?.propertyType,
                 noOfFloors: parseInt(unit.floorNo) || 1,
                 superBuiltUpArea: null,
-                // usageCategory: unit.usageType || "RESIDENTIAL",
                 usageCategory: unit.find(u => u.usageType) ? unit.find(u => u.usageType).usageType : "RESIDENTIAL",
                 additionalDetails: {
                     inflammable: false,
@@ -396,42 +509,43 @@ const PropertyForm = () => {
             onSuccess: (data) => {
                 const property = data?.Properties?.[0];
                 if (property) {
-                    //   setProOwnerDetail(property);
                     setAcknowledgmentNumber(property.acknowldgementNumber);
-                    //   setPropertyId(property.propertyId);
-                    //   setStatus(property.status);
-                    //   // setShowSuccessModal(true);
-                    //   setShowPreviewButton(true);
                     setShowConfirmPopup(false);
                     setShowSuccessPopup(true);
                 }
             },
             onError: (err) => {
-                alert(t("Submission failed"));
+                alert("Submission failed");
             },
         });
     };
-    return (
-        <div style={{ position: "relative" }}>
-            <button style={styles.downloadBtn}>⬇ Download</button>
 
+    return (
+        <div style={{ 
+            position: "relative", 
+            marginTop: "20px", 
+            width: "100%",
+            maxWidth: "100vw",
+            overflowX: "hidden",
+            boxSizing: "border-box",
+            ...styles.container 
+        }}>
+            <div style={{ marginBottom: "20px", display: "flex", justifyContent: "flex-end" }}>
+                <button style={styles.downloadBtn}>⬇ Download</button>
+            </div>
 
             <div style={styles.cardD}>
                 <div style={styles.sectionHeaderDemand}>Demand</div>
-
                 <div style={styles.row}>
-                    {/* <InputField label="Property id" value={calculation?.serviceNumber || "N/A"} />
-                <InputField label="Old Property id" value="567889" /> */}
                     <InputField label="Rate zone" value={proOwnerDetail?.units[0].rateZone || "N/A"} />
                 </div>
+                
                 {ownersDetail.map((owner, index) => (
                     <React.Fragment key={owner.uuid || index}>
                         <div style={styles.sectionHeader}>Owner {index + 1}</div>
                         <div style={styles.row}>
                             <InputField label="Name" value={`${owner?.salutation || ""} ${owner?.name || "N/A"}`} />
-
                             <InputField label="Father name" value={owner?.fatherOrHusbandName} />
-
                             <InputField label="Address" value={owner?.permanentAddress || "N/A"} />
                         </div>
                         <div style={styles.row}>
@@ -452,14 +566,14 @@ const PropertyForm = () => {
                     </React.Fragment>
                 ))}
             </div>
+
             <div style={styles.cardD}>
-                {/* Table 1 - Property Details */}
                 <div style={styles.sectionHeader}>Tax Details</div>
-                <div style={{ overflowX: 'auto', width: '100%' }}>
+                <div style={styles.tableContainer}>
                     <table style={styles.table}>
                         <thead>
                             <tr>
-                                {["Year", "Usage Type", "User", " Floor Number", "Construction Type", " Area (Sq feet)", "Rate", "ALV"].map((h) => (
+                                {["Year", "Usage Type", "User", "Floor Number", "Construction Type", "Area (Sq feet)", "Rate", "ALV"].map((h) => (
                                     <th key={h} style={styles.th}>{h}</th>
                                 ))}
                             </tr>
@@ -481,10 +595,10 @@ const PropertyForm = () => {
                     </table>
                 </div>
             </div>
+
             <div style={styles.cardD}>
-                {/* Table 2 - Tax Summary */}
                 <div style={styles.sectionHeader}>Property tax summary</div>
-                <div style={{ overflowX: 'auto', width: '100%' }}>
+                <div style={styles.tableContainer}>
                     <table style={styles.table}>
                         <thead>
                             <tr>
@@ -515,97 +629,44 @@ const PropertyForm = () => {
                             <tr>
                                 <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
                                 <td style={styles.td}>
-                                    ₹ {
-                                        taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)
-                                    }
+                                    ₹ {taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div style={styles.bottomText}>
-                    All values mentioned are in “₹” (Indian Rupees).
+                    All values mentioned are in "₹" (Indian Rupees).
                 </div>
-                <div style={{ display: "flex", width: "224px", marginLeft: "auto" }}>
+                <div style={styles.buttonContainer}>
                     <button style={styles.confirmBtn} onClick={() => handleGobackEdit(true)}>Back</button>
                     <button style={styles.confirmBtn} onClick={() => setShowConfirmPopup(true)}>Confirm</button>
                 </div>
             </div>
 
             {showConfirmPopup && (
-                <div style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: 9999
-                }}>
-                    <div style={{
-                        background: "#fff",
-                        borderRadius: "8px",
-                        padding: "40px",
-                        textAlign: "center",
-                        width: "500px",
-                        maxWidth: "90%"
-                    }}>
+                <div style={styles.modalOverlay}>
+                    <div style={styles.modalContent}>
                         <p style={{ fontSize: "16px", color: "#3E3E3E", marginBottom: "30px" }}>
                             Are you sure you want to submit this form?
                         </p>
-                        <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-                            <button
-                                style={{
-                                    backgroundColor: "#6b133f",
-                                    color: "#fff",
-                                    padding: "8px 20px",
-                                    borderRadius: "6px",
-                                    border: "none",
-                                    cursor: "pointer"
-                                }}
-                                onClick={() => setShowConfirmPopup(false)}
-                            >
+                        <div style={styles.modalButtonContainer}>
+                            <button style={styles.modalButton} onClick={() => setShowConfirmPopup(false)}>
                                 Back
                             </button>
-                            <button
-                                style={{
-                                    backgroundColor: "#6b133f",
-                                    color: "#fff",
-                                    padding: "8px 20px",
-                                    borderRadius: "6px",
-                                    border: "none",
-                                    cursor: "pointer"
-                                }}
-                                onClick={() => {
-                                    handleSubmitUpdate();
-
-                                    // Add actual form submission logic here if needed
-                                }}
-                            >
+                            <button style={styles.modalButton} onClick={() => handleSubmitUpdate()}>
                                 Confirm
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+
             {showSuccessPopup && (
-                <div style={{
-                    position: "fixed",
-                    top: 0, left: 0, width: "100vw", height: "100vh",
-                    backgroundColor: "rgba(0,0,0,0.4)",
-                    display: "flex", justifyContent: "center", alignItems: "center",
-                    zIndex: 10000
-                }}>
+                <div style={styles.modalOverlay}>
                     <div style={{
-                        background: "#fff",
-                        border: "1px solid #000",
-                        padding: "40px 20px",
-                        borderRadius: "8px",
-                        textAlign: "center",
-                        width: "350px",
+                        ...styles.modalContent,
+                        width: "350px"
                     }}>
                         <div style={{
                             width: "60px",
@@ -628,18 +689,9 @@ const PropertyForm = () => {
                             {acknowledgmentNumber || "N/A"}
                         </p>
                         <button
-                            style={{
-                                backgroundColor: "#6b133f",
-                                color: "#fff",
-                                padding: "10px 30px",
-                                borderRadius: "6px",
-                                border: "none",
-                                cursor: "pointer",
-                                fontSize: "14px"
-                            }}
+                            style={styles.modalButton}
                             onClick={() => {
-                                // 🏠 Navigate home or reset form here
-                                window.location.href = "/digit-ui/employee"; // or use React Router
+                                window.location.href = "/digit-ui/employee";
                             }}
                         >
                             Home
@@ -648,7 +700,6 @@ const PropertyForm = () => {
                 </div>
             )}
         </div>
-
     );
 };
 
