@@ -182,6 +182,7 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
       ) : isMobile ? (
         <DetailsCard data={getData(tableData)} t={t} />
       ) : (
+        <div style={{ overflowX: 'auto', width: '100%' }}>
         <Table
           t={t}
           data={tableData}
@@ -198,6 +199,7 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
           manualPagination={false}
           disableSort={true}
         />
+        </div>
       )}
 
       {showModal ? (

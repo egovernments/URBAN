@@ -34,7 +34,7 @@ const NewApplication = () => {
   } = location.state || {};
 
   const { t } = useTranslation();
- 
+
   const [proOwnerDetail, setProOwnerDetail] = useState(null);
   const [showPreviewButton, setShowPreviewButton] = useState(false);
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
@@ -67,6 +67,7 @@ const NewApplication = () => {
     }
   ]);
   const [ownershipType, setOwnershipType] = useState(null);
+  const [registryId, setRegistryId] = useState("");
   const [addressDetails, setAddressDetails] = useState({
     doorNo: "",
     address: "",
@@ -366,7 +367,7 @@ const NewApplication = () => {
       onSuccess: (data) => {
         const property = data?.Properties?.[0];
         if (property) {
-    
+
           setProOwnerDetail(property);
           setAcknowledgmentNumber(property.acknowldgementNumber);
           setPropertyId(property.propertyId);
@@ -405,7 +406,9 @@ const NewApplication = () => {
     if (!ownershipType) {
       errors.ownershipType = "Ownership type is required.";
     }
-
+    if (registryId && !/^[a-zA-Z0-9]{16}$/.test(registryId)) {
+      errors.registryId = "Registry ID must be exactly 16 alphanumeric characters.";
+    }
     // ---- 4. Owner (first only) ----
     const owner = owners[0];
     if (!owner.name || owner.name.trim() === "") {
@@ -477,6 +480,7 @@ const NewApplication = () => {
       Property: {
         updateIMC: true,
         tenantId: userInfo1?.tenantId,
+        registryId: registryId,
         // oldPropertyId: assessmentDetails.oldPropertyId || null,
         address: {
           city: "CityA",
@@ -645,7 +649,7 @@ const NewApplication = () => {
       onSuccess: (data) => {
         const property = data?.Properties?.[0];
         if (property) {
-       
+
           setProOwnerDetail(property);
           setAcknowledgmentNumber(property.acknowldgementNumber);
           setPropertyId(property.propertyId);
@@ -804,6 +808,9 @@ const NewApplication = () => {
       }
     }
   };
+  const handleRestryIdChange = (e) => {
+    setRegistryId(e.target.value);
+  }
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAddressDetails((prev) => ({ ...prev, [name]: value }));
@@ -916,6 +923,8 @@ const NewApplication = () => {
               t={t}
               ownershipType={ownershipType}
               handleOwnershipTypeChange={handleOwnershipTypeChange}
+              handleRestryIdChange={handleRestryIdChange}
+              registryId={registryId}
               owners={owners}
               setOwners={setOwners}
               addNewOwner={addNewOwner}
