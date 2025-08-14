@@ -99,7 +99,7 @@ import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 const PTinboxTable = () => {
     const [offset, setOffset] = useState(0);
-      const { t } = useTranslation();
+    const { t } = useTranslation();
     const limit = 10;
 
     const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -135,7 +135,7 @@ const PTinboxTable = () => {
 
     return (
         <React.Fragment>
-            <div style={{ border: "1px solid #ccc", borderRadius: "10px", overflow: "hidden", marginTop: "20px", background: "white" ,margin:"20px"}}>
+            <div style={{ border: "1px solid #ccc", borderRadius: "10px", overflow: "hidden", marginTop: "20px", background: "white" }}>
                 <table style={{ borderCollapse: "collapse", width: "100%" }}>
                     <thead>
                         <tr style={{ backgroundColor: "#6b133f" }}>
@@ -174,7 +174,9 @@ const PTinboxTable = () => {
                                         </td>
                                         <td style={cellStyle}>{ownerNames}</td>
                                         <td style={cellStyle}>{t(applicationType)}</td>
-                                        <td style={cellStyle}>{status}</td>
+                                        <td style={cellStyle}>  <span className={`status-badge status-${(status || '').toLowerCase().replace(/\s+/g, '')}`}>
+                                            {t(status && `WF_PT_${status}`) || status || "NA"}
+                                        </span></td>
                                     </tr>
                                 );
                             })
@@ -193,7 +195,7 @@ const PTinboxTable = () => {
                     alignItems: "center",
                     gap: "20px",
                     marginTop: "20px",
-                    marginBottom:"10px",
+                    marginBottom: "10px",
                     fontFamily: "sans-serif"
                 }}>
                     <button

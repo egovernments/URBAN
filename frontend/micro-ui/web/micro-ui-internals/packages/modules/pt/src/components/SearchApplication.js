@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
+import PTinboxTable from "./inboxTable";
 
 const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit, data, count, setShowToast }) => {
     const [formData, setFormData] = useState({
@@ -97,13 +98,12 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
                 .main-container {
                     max-width: 1400px;
                     margin: 0 auto;
-                    padding: 20px;
                 }
                 
-                .content-wrapper {
+                .page-content-wrapper {
                     background: white;
                     border-radius: 8px;
-                    padding: 30px;
+                    padding: 20px;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 }
                 
@@ -151,7 +151,7 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
                         grid-template-columns: 1fr;
                     }
                     
-                    .content-wrapper {
+                    .page-content-wrapper {
                         padding: 20px;
                     }
                 }
@@ -451,7 +451,7 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
             `}</style>
 
             <div className="main-container">
-                <div className="content-wrapper">
+                <div className="page-content-wrapper">
                     <div className="search-header">
                         <h2>Search Criteria</h2>
                     </div>
@@ -559,7 +559,7 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
                     </div>
 
                     {/* Results Section - Shows existing data or search results */}
-                    {showTable && (
+                    {showTable ?  (
                         <div className="results-section">
                             <h3 className="results-header">
                                 Search Results
@@ -591,8 +591,8 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
                                                     <tr key={index}>
                                                         <td>
                                                             <span className="link">
-                                                                <Link to={`/digit-ui/employee/pt/applicationsearch/application-details/${item.propertyId}`}>
-                                                                    {item.acknowldgementNumber || item.applicationNo}
+                                                                <Link to={`/digit-ui/employee/pt/applicationsearch/application-details/${result.propertyId}`}>
+                                                                    {result.acknowldgementNumber || result.applicationNo}
                                                                 </Link>
                                                                 {/* {item.acknowldgementNumber || item.applicationNo} */}
                                                             </span>
@@ -657,7 +657,7 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
                                 </table>
                             </div>
                         </div>
-                    )}
+                    ): (<PTinboxTable />)}
                 </div>
             </div>
         </div >
