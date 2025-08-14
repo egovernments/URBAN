@@ -35,7 +35,12 @@ const FirenocCard = () => {
     Icon: <FirenocIcon/>
 }
 
-  return <EmployeeModuleCard {...propsForModuleCard} />;
+  return ( <div className="fire-noc-card-module" style={{
+     margin:"-70px"
+    }}>
+    <EmployeeModuleCard {...propsForModuleCard} />;
+  </div>
+  );
 };
 
 export default FirenocCard;
