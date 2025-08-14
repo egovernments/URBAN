@@ -19,20 +19,96 @@
   <meta name="theme-color" content="#00bcd1" />
   <title>Digit</title>
   <!-- <script src="https://s3.ap-south-1.amazonaws.com/egov-dev-assets/globalConfigs.js"></script> -->
+   
   <!-- Matomo -->
-    <script>
-      var _paq = window._paq = window._paq || [];
-      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      (function () {
-        var u = "https://digit-analytics.matomo.cloud/";
-        _paq.push(['setTrackerUrl', u + 'matomo.php']);
-        _paq.push(['setSiteId', '1']);
-        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-        g.async = true; g.src = 'https://cdn.matomo.cloud/digit-analytics.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g, s);
-      })();
-    </script>
+  <script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+      var u = "https://digit-analytics.matomo.cloud/";
+      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setSiteId', '1']);
+      var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+      g.async = true; g.src = 'https://cdn.matomo.cloud/digit-analytics.matomo.cloud/matomo.js';
+      s.parentNode.insertBefore(g, s);
+    })();
+    // (function () {
+    //   let lastUrl = location.href;
+    //   new MutationObserver(() => {
+    //     const url = location.href;
+    //     if (url !== lastUrl) {
+    //       lastUrl = url;
+    //       _paq.push(['setCustomUrl', url]);
+    //       _paq.push(['trackPageView']);
+    //     }
+    //   }).observe(document, { subtree: true, childList: true });
+    // })();
+
+    (function () {
+      let lastUrl = location.href;
+
+      function trackUrlChange() {
+        const url = location.href;
+        if (url !== lastUrl) {
+          lastUrl = url;
+          _paq.push(['setCustomUrl', url]);
+          _paq.push(['trackPageView']);
+        }
+      }
+
+      // Wrap pushState
+      history.pushState = (function (original) {
+        return function pushState() {
+          const result = original.apply(this, arguments);
+          trackUrlChange();
+          return result;
+        };
+      })(history.pushState);
+
+      // Wrap replaceState
+      history.replaceState = (function (original) {
+        return function replaceState() {
+          const result = original.apply(this, arguments);
+          trackUrlChange();
+          return result;
+        };
+      })(history.replaceState);
+
+      // Listen for back/forward
+      window.addEventListener('popstate', trackUrlChange);
+    })();
+
+    // Track clicks on buttons & links
+    (function () {
+      document.addEventListener("click", function (e) {
+        const selector = `
+          button,
+          input[type="button"],
+          input[type="submit"],
+          input[type="actionButton"],
+          [role="button"],
+          a[href]:not([href^="mailto:"]):not([href^="tel:"]):not([href^="#"]):not([href^="javascript:"])
+        `;
+        const target = e.target.closest(selector);
+        if (target) {
+          const elementType = target.tagName.toLowerCase();
+          const text = target.innerText.trim() || target.value || 'Unnamed';
+          const id = target.id || 'no-id';
+          const classes = target.className || 'no-class';
+          const href = target.getAttribute('href') || '';
+
+          _paq.push([
+            'trackEvent',
+            'UI Interaction',            // Category
+            `${elementType} click`,      // Action
+            `Text: ${text}, ID: ${id}, Class: ${classes}, Href: ${href}`
+          ]);
+        }
+      });
+    })();
+  </script>
   <!-- End Matomo Code -->
 </head>
 <style>
