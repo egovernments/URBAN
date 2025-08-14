@@ -406,8 +406,8 @@ const NewApplication = () => {
     if (!ownershipType) {
       errors.ownershipType = "Ownership type is required.";
     }
-    if (registryId && !/^[a-zA-Z0-9]{16}$/.test(registryId)) {
-      errors.registryId = "Registry ID must be exactly 16 alphanumeric characters.";
+    if (registryId && !/^[a-zA-Z0-9]{19}$/.test(registryId)) {
+      errors.registryId = "Registry ID must be exactly 19 alphanumeric characters.";
     }
     // ---- 4. Owner (first only) ----
     const owner = owners[0];
