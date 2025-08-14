@@ -156,7 +156,8 @@ const TopBarSideBar = ({
             flex: 1;
             width: 100%;
             margin-left: ${getSidebarWidth()}px;
-            padding: ${isMobile ? '10px' : '20px'};
+            /* padding: ${isMobile ? '10px' : '20px'};*/
+            padding: ${isMobile ? '0px' : '0px'};
             box-sizing: border-box;
             overflow-x: hidden;
             min-height: calc(100vh - ${isMobile ? '50px' : '60px'});
