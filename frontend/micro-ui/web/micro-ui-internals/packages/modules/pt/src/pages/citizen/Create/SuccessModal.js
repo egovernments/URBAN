@@ -8,7 +8,7 @@ const SuccessModal = ({ t, applicationNumber, propertyId, status, onClose, style
       <div style={styles.successIcon}>
         <span style={{ color: "white", fontSize: "1.5rem" }}>✔</span>
       </div>
-      <h2 style={{ marginTop: "1rem" }}>{t("Application Submitted Successfullyii")}</h2>
+      <h2 style={{ marginTop: "1rem" }}>{t("Application Submitted Successfully")}</h2>
       <p style={{ color: "gray" }}>
         {t("Application Number")}
         <br />
