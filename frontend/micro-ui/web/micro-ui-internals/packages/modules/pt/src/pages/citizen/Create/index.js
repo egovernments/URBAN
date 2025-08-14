@@ -126,12 +126,6 @@ const CreateProperty = () => {
     name: item.name, // Show year like "2024-25"
   }));
 
-  // const assessmentYears = [
-  //   { code: "2024-25", name: "2024-25" },
-  //   { code: "2023-24", name: "2023-24" },
-  //   { code: "2022-23", name: "2022-23" }
-  // ];
-
   let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
   console.log("userInfo1", userInfo1?.authToken);
   const tenantId = userInfo1?.tenantId;
@@ -472,9 +466,11 @@ const CreateProperty = () => {
     if (!assessmentDetails.rateZone) {
       errors.rateZone = "Rate zone is required.";
     }
-    if (!assessmentDetails.roadFactor) {
-      errors.roadFactor = "Road factor is required.";
-    }
+
+    // made diabled for now========================IMPORTANT
+    // if (!assessmentDetails.roadFactor) { 
+    //   errors.roadFactor = "Road factor is required.";
+    // }
     if (!checkboxes.selfDeclaration) {
       errors.selfDeclaration = "Please accept the declaration to proceed.";
     }
@@ -744,7 +740,6 @@ const CreateProperty = () => {
     }
   }, [unitDetails]);
 
-
   useEffect(() => {
     if (!unitDetails || unitDetails.length === 0) return;
 
@@ -770,7 +765,6 @@ const CreateProperty = () => {
 
     setUnit(formattedUnits);
   }, [unitDetails]);
-
 
   const handleFileChange = async (key, file) => {
     console.log("File changed for key:", key, "File:", file);
@@ -807,7 +801,6 @@ const CreateProperty = () => {
       setError(t("CS_FILE_UPLOAD_ERROR"));
     }
   };
-
 
   const handleOwnershipTypeChange = (val) => {
     console.log("Ownership type changed:", val);
@@ -899,8 +892,6 @@ const CreateProperty = () => {
     return <Loader />;
   }
 
-
-
   return (
 
     <React.Fragment>
@@ -957,8 +948,8 @@ const CreateProperty = () => {
             />
           </div>
 
-          <div style={styles.card}>
-            <div style={styles.assessmentStyle}>{t("Assessment Details")}</div>
+          <div style={{ ...styles.card, pointerEvents: "none", opacity: 0.5 }}>
+          <div style={styles.assessmentStyle}>{t("Assessment Details")}</div>
             <AssessmentDetailsSection
               t={t}
               assessmentDetails={assessmentDetails}
@@ -969,8 +960,8 @@ const CreateProperty = () => {
             />
           </div>
 
-          <div style={styles.card}>
-            <div style={styles.assessmentStyle}>{t("Property Details")}</div>
+          <div style={{ ...styles.card, pointerEvents: "none", opacity: 0.5 }}>
+          <div style={styles.assessmentStyle}>{t("Property Details")}</div>
             <PropertyDetailsTableSection
               t={t}
               unit={unit}

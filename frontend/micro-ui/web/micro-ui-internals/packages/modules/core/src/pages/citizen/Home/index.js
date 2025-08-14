@@ -254,8 +254,7 @@ const Home = () => {
                 {
                   label: "Pay",
                   image: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417.svg",
-                  // url: "/digit-ui/citizen/pt/property/citizen-search",
-                  url: "/digit-ui/citizen/pt/property/new-application",
+                  url: "/digit-ui/citizen/pt/property/citizen-search",
                 },
                 {
                   label: "My Application",
