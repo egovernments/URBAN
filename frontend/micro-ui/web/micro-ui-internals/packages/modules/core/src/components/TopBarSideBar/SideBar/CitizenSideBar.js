@@ -117,13 +117,13 @@ export const CitizenSideBar = ({ isOpen, isMobile = false, toggleSidebar, onLogo
   if (islinkDataLoading || isLoading || !isFetched) {
     return <Loader />;
   }
-  const filteredTenantContact = storeData?.tenants.filter((e) => e.code === tenantId)[0]?.contactNumber || storeData?.tenants[0]?.contactNumber;
+  const filteredTenantContact = storeData?.tenants?.filter((e) => e.code === tenantId)[0]?.contactNumber || storeData?.tenants[0]?.contactNumber;
 
   let menuItems = [...SideBarMenu(t, closeSidebar, redirectToLoginPage, isEmployee, storeData, tenantId)];
   let profileItem;
   if (isFetched && user && user.access_token) {
     profileItem = <Profile info={user?.info} stateName={stateInfo?.name} t={t} />;
-    menuItems = menuItems.filter((item) => item?.id !== "login-btn" && item?.id !== "help-line");
+    menuItems = menuItems?.filter((item) => item?.id !== "login-btn" && item?.id !== "help-line");
     menuItems = [
       ...menuItems,
       {
@@ -176,8 +176,8 @@ export const CitizenSideBar = ({ isOpen, isMobile = false, toggleSidebar, onLogo
       });
   } else {
     data?.actions
-      .filter((e) => e.url === "url" && e.displayName !== "Home")
-      .forEach((item) => {
+      ?.filter((e) => e.url === "url" && e.displayName !== "Home")
+      ?.forEach((item) => {
         if (search == "" && item.path !== "") {
           let index = item.path.split(".")[0];
           if (index === "TradeLicense") index = "Trade License";
@@ -239,7 +239,7 @@ export const CitizenSideBar = ({ isOpen, isMobile = false, toggleSidebar, onLogo
   /*  URL with openlink wont have sidebar and actions    */
   if (history.location.pathname.includes("/openlink")) {
     profileItem = <span></span>;
-    menuItems = menuItems.filter((ele) => ele.element === "LANGUAGE");
+    menuItems = menuItems?.filter((ele) => ele.element === "LANGUAGE");
   }
   return isMobile ? (
     <NavBar
