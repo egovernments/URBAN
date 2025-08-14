@@ -135,7 +135,7 @@ const PTinboxTable = () => {
 
     return (
         <React.Fragment>
-            <div style={{ border: "1px solid #ccc", borderRadius: "10px", overflow: "hidden", marginTop: "20px", background: "white" ,margin:"20px"}}>
+            <div style={{ border: "1px solid #ccc", borderRadius: "10px", overflow: "hidden", marginTop: "20px", background: "white"}}>
                 <table style={{ borderCollapse: "collapse", width: "100%" }}>
                     <thead>
                         <tr style={{ backgroundColor: "#6b133f" }}>
