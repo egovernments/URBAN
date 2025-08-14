@@ -85,7 +85,7 @@ const OtherDetailsSection = ({
         </div> */}
 
       {/* Exemption */}
-      <div>
+      <div style={{pointerEvents : "none", opacity: 0.5 }}>
         <div style={styles.flex45}>
 
           <div style={styles.poppinsLabel}>{t("Exemption Applicable")}</div>
@@ -103,7 +103,8 @@ const OtherDetailsSection = ({
       {/* </div> */}
 
       {/* Additional Checkboxes */}
-      <div style={styles.checkboxContainer}>
+    
+      <div style={{...styles.checkboxContainer, pointerEvents: "none", opacity: 0.5 }}>
         <label style={styles.poppinsLabels}>
           {t("Mobile Tower")}{" "}
           <input
