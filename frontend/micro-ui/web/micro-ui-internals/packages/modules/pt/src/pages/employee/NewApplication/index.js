@@ -188,6 +188,7 @@ const NewApplication = () => {
       Property: {
         updateIMC: true,
         id: generalDetails?.id,
+        registryId: generalDetails?.registryId || "PG-PT-2025-07-15-000565",
         propertyId: generalDetails?.propertyId || "PG-PT-2025-07-15-000565",
         accountId: generalDetails?.accountId || "PG-PT-2025-07-15-000565",
         acknowldgementNumber: generalDetails?.acknowldgementNumber || "PG-PT-2025-07-15-000565",
@@ -677,7 +678,9 @@ const NewApplication = () => {
   useEffect(() => {
     if (!generalDetails) return;
     setOwnershipType(generalDetails.ownershipCategory || null);
+    setRegistryId(generalDetails.registryId || null);
   }, [generalDetails]);
+
   useEffect(() => {
     if (!ownerDetails || ownerDetails.length === 0) return;
 

@@ -319,6 +319,7 @@ const PropertyForm = () => {
             state: {
                 generalDetails: {
                     id: proOwnerDetail.id,
+                    registryId: proOwnerDetail.registryId,
                     propertyId: proOwnerDetail.propertyId,
                     oldPropertyId: proOwnerDetail.oldPropertyId,
                     creationReason: proOwnerDetail.creationReason,
@@ -349,6 +350,7 @@ const PropertyForm = () => {
             Property: {
                 updateIMC: true,
                 id: proOwnerDetail.address?.id,
+                registryId: proOwnerDetail.registryId,
                 propertyId: proOwnerDetail?.propertyId,
                 accountId: proOwnerDetail?.accountId,
                 acknowldgementNumber: proOwnerDetail?.acknowldgementNumber,
@@ -521,14 +523,14 @@ const PropertyForm = () => {
     };
 
     return (
-        <div style={{ 
-            position: "relative", 
-            marginTop: "20px", 
+        <div style={{
+            position: "relative",
+            marginTop: "20px",
             width: "100%",
             maxWidth: "100vw",
             overflowX: "hidden",
             boxSizing: "border-box",
-            ...styles.container 
+            ...styles.container
         }}>
             <div style={{ marginBottom: "20px", display: "flex", justifyContent: "flex-end" }}>
                 <button style={styles.downloadBtn}>⬇ Download</button>
@@ -539,7 +541,7 @@ const PropertyForm = () => {
                 <div style={styles.row}>
                     <InputField label="Rate zone" value={proOwnerDetail?.units[0].rateZone || "N/A"} />
                 </div>
-                
+
                 {ownersDetail.map((owner, index) => (
                     <React.Fragment key={owner.uuid || index}>
                         <div style={styles.sectionHeader}>Owner {index + 1}</div>

@@ -683,9 +683,13 @@ function ApplicationDetailsContentVerifier({
         <div style={styles.card}>
           <div style={styles.sectionTitle}>Ownership Details</div>
           <div style={styles.grid}>
-            <div>
+             <div style={styles.flex30}>
               <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
               <input style={styles.input} value={application?.ownershipCategory} readOnly />
+            </div>
+              <div style={styles.flex30}>
+              <label style={styles.label}>POA Registration Number</label>
+              <input style={styles.input} value={application?.registryId} readOnly />
             </div>
           </div>
 
