@@ -1004,7 +1004,7 @@ const ApplicationDetailsContent = ({
   const userInfo = Digit.UserService.getUser();
   const [showToast, setShowToast] = useState(null);
   const { tenantId: __tenantId, authorization, workflow: wrkflow, consumerCode: connectionNo } = Digit.Hooks.useQueryParams();
-  console.log("wrkflow", wrkflow);
+  
   const paymentAmount = state?.paymentAmount;
   // const history = useHistory();
   const { pathname, search } = useLocation();
