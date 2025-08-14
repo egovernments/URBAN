@@ -41,8 +41,8 @@ const LocalizationStore = {
         LocalizationStore.setCacheData(LOCALE_MODULE(locale, module), moduleMessages);
       }
     });
-    LocalizationStore.setCacheData(LOCALE_LIST(locale), Namespaces);
-    LocalizationStore.setAllList(getUnique([...AllNamespaces, ...Namespaces]));
+    // LocalizationStore.setCacheData(LOCALE_LIST(locale), Namespaces);
+    // LocalizationStore.setAllList(getUnique([...AllNamespaces, ...Namespaces]));
   },
   get: (locale, modules) => {
     const storedModules = LocalizationStore.getList(locale);
