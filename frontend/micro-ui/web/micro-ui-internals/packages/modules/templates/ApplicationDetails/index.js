@@ -15,6 +15,7 @@ import ApplicationDetailsWarningPopup from "./components/ApplicationDetailsWarni
 
 const ApplicationDetails = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  console.log("tenantId", tenantId);
   const state = Digit.ULBService.getStateId();
   const { t } = useTranslation();
   const history = useHistory();
@@ -110,7 +111,7 @@ const ApplicationDetails = (props) => {
       Assessment: {
         financialYear: yearRange,
         propertyId: applicationData?.propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CFC_COUNTER",
         assessmentDate: Date.now(),

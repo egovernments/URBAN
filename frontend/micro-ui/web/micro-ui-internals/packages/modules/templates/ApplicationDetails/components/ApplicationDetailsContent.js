@@ -737,6 +737,7 @@ const ApplicationDetailsContent = ({
   oldValue,
   isInfoLabel = false
 }) => {
+  
     const [printing, setPrinting] = useState(false);
   const [manualAmount, setManualAmount] = useState("");
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
@@ -823,7 +824,7 @@ const ApplicationDetailsContent = ({
       Assessment: {
         financialYear: yearRange,
         propertyId: applicationData?.propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CITIZEN",
         assessmentDate: Date.now(),
@@ -866,7 +867,7 @@ const ApplicationDetailsContent = ({
       Assessment: {
         financialYear: yearRange,
         propertyId: applicationData?.propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CFC_COUNTER",
         assessmentDate: Date.now(),

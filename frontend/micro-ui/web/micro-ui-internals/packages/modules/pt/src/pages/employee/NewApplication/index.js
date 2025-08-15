@@ -142,7 +142,7 @@ const NewApplication = () => {
       Assessment: {
         financialYear: toYear,
         propertyId: propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CITIZEN",
         assessmentDate: Date.now(),

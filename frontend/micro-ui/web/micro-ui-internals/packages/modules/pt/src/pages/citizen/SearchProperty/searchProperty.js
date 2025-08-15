@@ -10,11 +10,11 @@ const SearchProperty = ({ onSelect }) => {
   const [formValue, setFormValue] = useState({});
   const [showToast, setShowToast] = useState(null);
   const [errorShown, setErrorShown] = useState(false);
-
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const isMobile = window.Digit.Utils.browser.isMobile();
 
   const { data: propertyData, isLoading: propertyDataLoading, error } = Digit.Hooks.pt.usePropertySearchWithDue({
-    tenantId: "pg.citya",
+    tenantId: tenantId,
     filters: {
       ...(formValue.propertyIds ? { propertyIds: formValue.propertyIds } : {}),
       ...(formValue.mobileNumber ? { mobileNumber: formValue.mobileNumber } : {}),
@@ -63,7 +63,7 @@ const SearchProperty = ({ onSelect }) => {
     history.push(
       `/digit-ui/citizen/pt/property/search-results?${Object.keys(filters)
         .map((key) => `${key}=${filters[key]}`)
-        .join("&")}&city=pg.citya`
+        .join("&")}&city=${tenantId}`
     );
   };
 
