@@ -25,6 +25,9 @@ import { max } from "lodash";
 const Home = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const user = Digit.UserService.getUser();
+  const accessToken = user?.access_token;
+  const refreshToken = user?.refresh_token;
   const tenantId = Digit.ULBService.getCitizenCurrentTenant(true);
   const { data: { stateInfo, uiHomePage } = {}, isLoading } = Digit.Hooks.useStore.getInitData();
   // let isMobile = window.Digit.Utils.browser.isMobile();
@@ -36,12 +39,12 @@ const Home = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
+
   const isMobile = window.innerWidth <= 600; // breakpoint
 
   const isTablet = windowWidth > 768 && windowWidth <= 998;
   const isDesktop = windowWidth > 998;
-  
+
 
   const conditionsToDisableNotificationCountTrigger = () => {
     if (Digit.UserService?.getUser()?.info?.type === "EMPLOYEE") return false;
@@ -63,7 +66,7 @@ const Home = () => {
       : history.push(`/digit-ui/citizen/select-location`);
   }
 
- 
+
 
   return isLoading ? (
     <Loader />
@@ -126,97 +129,98 @@ const Home = () => {
             </div>
           </div>
 
-  {/* Status Cards */}
-            <div
-              className="status-cards home-stats-card"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "20px",
-                marginBottom: "20px"
-              }}
-            >
-              {[
-                { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
-                { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
-                { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
-                { icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" }
-              ].map((card, index) => (
-                <div
-                style={{
-                  display: "flex",
-                  flexDirection: isMobile ? "column" : "row",
-                  flexWrap: "nowrap",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "20px",
-                  borderRadius: "12px",
-                  backgroundColor: "#fff",
-                  boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-                  width: "100%",
-                  position: "relative",
-                  rowGap: isMobile ? "10px" : "20px",
-                  height: isMobile ? "auto" : "150px",
-                }}
-              >
-                {/* Title */}
-                <div
-                  className="card-title"
-                >
-                  {card.label}
-                </div>
-          
-                {/* Left - Due */}
+          {/* Status Cards */}
+          <div
+            className="status-cards home-stats-card"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "20px",
+              marginBottom: "20px"
+            }}
+          >
+            {[
+              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
+              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
+              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
+              { url: `${stateInfo.BAPURL}dashboard?type=1&accessToken=${accessToken}&refreshToken=${refreshToken}&module=marriage`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marriage Certificate", count: 30, className: "sendback", color: "#2196f3" },
+            ].map((card, index) => (
+              <a href={card.url} key={index} style={{ textDecoration: "none" }}>
                 <div
                   style={{
                     display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    flexWrap: "nowrap",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    flex: "1 1 40%",
-                    justifyContent: "center",
-                    gap: "8px",
-                    minWidth: "120px",
+                    padding: "20px",
+                    borderRadius: "12px",
+                    backgroundColor: "#fff",
+                    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
+                    width: "100%",
+                    position: "relative",
+                    rowGap: isMobile ? "10px" : "20px",
+                    height: isMobile ? "auto" : "150px",
                   }}
                 >
-                  <img src={card.icon} alt="Due" style={{ width: "32px", height: "32px" }} />
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontWeight: "bold", fontSize: "18px" }}>{card.count}</div>
-                    <div style={{ color: "orange", fontWeight: "500" }}>Due</div>
+                  {/* Title */}
+                  <div
+                    className="card-title"
+                  >
+                    {card.label}
                   </div>
-                </div>
-          
-                {/* Divider */}
-                {!isMobile && (
+
+                  {/* Left - Due */}
                   <div
                     style={{
-                      width: "1px",
-                      height: "40px",
-                      backgroundColor: "#77216F",
-                      margin: "0 10px",
+                      display: "flex",
+                      alignItems: "center",
+                      flex: "1 1 40%",
+                      justifyContent: "center",
+                      gap: "8px",
+                      minWidth: "120px",
                     }}
-                  ></div>
-                )}
-          
-                {/* Right - Paid */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flex: "1 1 40%",
-                    justifyContent: "center",
-                    gap: "8px",
-                    minWidth: "120px",
-                  }}
-                >
-                  <img src={card.icon} alt="Paid" style={{ width: "32px", height: "32px" }} />
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontWeight: "bold", fontSize: "18px" }}>{card.count}</div>
-                    <div style={{ color: "green", fontWeight: "500" }}>Paid</div>
+                  >
+                    <img src={card.icon} alt="Due" style={{ width: "32px", height: "32px" }} />
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontWeight: "bold", fontSize: "18px" }}>{card.count}</div>
+                      <div style={{ color: "orange", fontWeight: "500" }}>Due</div>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  {!isMobile && (
+                    <div
+                      style={{
+                        width: "1px",
+                        height: "40px",
+                        backgroundColor: "#77216F",
+                        margin: "0 10px",
+                      }}
+                    ></div>
+                  )}
+
+                  {/* Right - Paid */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      flex: "1 1 40%",
+                      justifyContent: "center",
+                      gap: "8px",
+                      minWidth: "120px",
+                    }}
+                  >
+                    <img src={card.icon} alt="Paid" style={{ width: "32px", height: "32px" }} />
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontWeight: "bold", fontSize: "18px" }}>{card.count}</div>
+                      <div style={{ color: "green", fontWeight: "500" }}>Paid</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              ))}
-            </div>
+              </a>
+            ))}
+          </div>
 
 
           {/* Favorite Cards */}
