@@ -11,7 +11,7 @@ RUN apk python3
 ARG WORK_DIR
 WORKDIR /app
 
-ENV NODE_OPTIONS "--max-old-space-size=8500"
+ENV NODE_OPTIONS="--max-old-space-size=8500"
 ENV YARN_DEBUG=true
 ENV GENERATE_SOURCEMAP "false"
 
