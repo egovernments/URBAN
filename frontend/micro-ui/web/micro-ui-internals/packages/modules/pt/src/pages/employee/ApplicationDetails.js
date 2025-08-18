@@ -76,6 +76,13 @@ const ApplicationDetails = () => {
       if (applicationDetails?.applicationData?.status !== "ACTIVE" && applicationDetails?.applicationData?.creationReason === "MUTATION") {
         setEnableAudit(true);
       }
+
+      // Also ensure any EDIT/UPDATE actions are filtered from workflow next actions 
+      if (workflowDetails?.data?.nextActions) {
+        workflowDetails.data.nextActions = workflowDetails.data.nextActions.filter(
+          action => action.action !== "EDIT" && action.action !== "UPDATE"
+        );
+      }
     }
   }, [applicationDetails]);
 
@@ -89,6 +96,13 @@ const ApplicationDetails = () => {
   useEffect(() => {
     if (workflowDetails?.data?.applicationBusinessService && !(workflowDetails?.data?.applicationBusinessService === "PT.CREATE" && businessService === "PT.UPDATE")) {
       setBusinessService(workflowDetails?.data?.applicationBusinessService);
+    }
+
+    // Filter out EDIT actions from workflow next actions
+    if (workflowDetails?.data?.actionState?.nextActions) {
+      workflowDetails.data.actionState.nextActions = workflowDetails.data.actionState.nextActions.filter(
+        action => action.action !== "EDIT" && action.action !== "UPDATE"
+      );
     }
   }, [workflowDetails.data]);
 
@@ -114,21 +128,7 @@ const ApplicationDetails = () => {
     };
   }
 
-  if (
-    PT_CEMP &&
-    workflowDetails?.data?.actionState?.isStateUpdatable &&
-    !workflowDetails?.data?.actionState?.nextActions?.find((e) => e.action === "UPDATE")
-  ) {
-    if (!workflowDetails?.data?.actionState?.nextActions) workflowDetails.data.actionState.nextActions = [];
-    workflowDetails?.data?.actionState?.nextActions.push({
-      action: "UPDATE",
-      redirectionUrl: {
-        pathname: `/digit-ui/employee/pt/modify-application/${propertyId}`,
-        state: { workflow: { action: "REOPEN", moduleName: "PT", businessService } },
-      },
-      tenantId: Digit.ULBService.getStateId(),
-    });
-  }
+  // Removed auto-adding of EDIT/UPDATE action since we only want workflow-based actions
 
   if (!(appDetailsToShow?.applicationDetails?.[0]?.values?.[0].title === "PT_PROPERTY_APPLICATION_NO")) {
     appDetailsToShow?.applicationDetails?.unshift({
