@@ -14,6 +14,10 @@ on:
           - sandbox-ui
           - sanitation-ui
 
+env:
+  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
 jobs:
   resolve-config:
     name: Resolve ${{ github.event.inputs.pipeline_name }} config
@@ -146,11 +150,10 @@ jobs:
             ${{ runner.os }}-${{ matrix.arch }}-buildx-${{ github.event.inputs.pipeline_name }}-
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ secrets.GHCR_PASSWORD_SECRET }}
-          password: ${{ secrets.GHCR_USERNAME_SECRET }} 
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Build image for ${{ matrix.arch }}
         run: |
@@ -193,11 +196,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ secrets.GHCR_PASSWORD_SECRET }}
-          password: ${{ secrets.GHCR_USERNAME_SECRET }} 
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Create and push manifest
         run: |
