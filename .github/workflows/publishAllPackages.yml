@@ -2,7 +2,7 @@ name: Node.js Publish UI Packages
 
 on:
   push:
-    branches: ["sandbox"]
+    branches: ["sandbox","sandbox-multiarch-matomo"]
 
     paths:
       - "frontend/micro-ui/web/micro-ui-internals/**"
