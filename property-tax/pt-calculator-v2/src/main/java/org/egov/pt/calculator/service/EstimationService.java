@@ -548,40 +548,66 @@ public class EstimationService {
 		log.debug(" the slabs count : " + billingSlabs.size());
 		final String all = configs.getSlabValueAll();
 
-		Double plotSize = null != detail.getLandArea() ? detail.getLandArea() : detail.getBuildUpArea();
+		// Handle null values for plot size
+		final Double plotSize = null != detail.getLandArea() ? detail.getLandArea() : 
+						  (null != detail.getBuildUpArea() ? detail.getBuildUpArea() : 0.0);
 
-		final String dtlPtType = detail.getPropertyType();
-		final String dtlPtSubType = detail.getPropertySubType();
-		final String dtlOwnerShipCat = detail.getOwnershipCategory();
-		final String dtlSubOwnerShipCat = detail.getSubOwnershipCategory();
-		final String dtlAreaType = property.getAddress().getLocality().getArea();
-		final Boolean dtlIsMultiFloored = detail.getNoOfFloors() > 1;
+		// Handle null values for property details with safe defaults
+		final String dtlPtType = detail.getPropertyType() != null ? detail.getPropertyType() : "";
+		final String dtlPtSubType = detail.getPropertySubType() != null ? detail.getPropertySubType() : "";
+		final String dtlOwnerShipCat = detail.getOwnershipCategory() != null ? detail.getOwnershipCategory() : "";
+		final String dtlSubOwnerShipCat = detail.getSubOwnershipCategory() != null ? detail.getSubOwnershipCategory() : "";
+		
+		// Handle null address/locality/area
+		final String dtlAreaType;
+		if (property.getAddress() != null && 
+			property.getAddress().getLocality() != null && 
+			property.getAddress().getLocality().getArea() != null) {
+			dtlAreaType = property.getAddress().getLocality().getArea();
+		} else {
+			dtlAreaType = "";
+		}
+		
+		// Handle null floors count
+		final Boolean dtlIsMultiFloored = detail.getNoOfFloors() != null && detail.getNoOfFloors() > 1;
 
 		return billingSlabs.stream().filter(slab -> {
 
-			Boolean slabMultiFloored = slab.getIsPropertyMultiFloored();
-			String  slabAreaType = slab.getAreaType();
-			String  slabPropertyType = slab.getPropertyType();
-			String  slabPropertySubType = slab.getPropertySubType();
-			String  slabOwnerShipCat = slab.getOwnerShipCategory();
-			String  slabSubOwnerShipCat = slab.getSubOwnerShipCategory();
-			Double  slabAreaFrom = slab.getFromPlotSize();
-			Double  slabAreaTo = slab.getToPlotSize();
+			// Get slab values with null checks
+			Boolean slabMultiFloored = slab.getIsPropertyMultiFloored() != null ? slab.getIsPropertyMultiFloored() : false;
+			String  slabAreaType = slab.getAreaType() != null ? slab.getAreaType() : "";
+			String  slabPropertyType = slab.getPropertyType() != null ? slab.getPropertyType() : "";
+			String  slabPropertySubType = slab.getPropertySubType() != null ? slab.getPropertySubType() : "";
+			String  slabOwnerShipCat = slab.getOwnerShipCategory() != null ? slab.getOwnerShipCategory() : "";
+			String  slabSubOwnerShipCat = slab.getSubOwnerShipCategory() != null ? slab.getSubOwnerShipCategory() : "";
+			Double  slabAreaFrom = slab.getFromPlotSize() != null ? slab.getFromPlotSize() : 0.0;
+			Double  slabAreaTo = slab.getToPlotSize() != null ? slab.getToPlotSize() : Double.MAX_VALUE;
 
+			// Safe comparisons with null checks
 			boolean isPropertyMultiFloored = slabMultiFloored.equals(dtlIsMultiFloored);
 
-			boolean isAreaMatching = slabAreaType.equalsIgnoreCase(dtlAreaType) || all.equalsIgnoreCase(slab.getAreaType());
+			// If dtlAreaType is empty, consider it as matching with "ALL" slabs
+      boolean isAreaMatching = dtlAreaType.isEmpty() ||
+          slabAreaType.equalsIgnoreCase(dtlAreaType) ||
+          all.equalsIgnoreCase(slabAreaType);
 
-			boolean isPtTypeMatching = slabPropertyType.equalsIgnoreCase(dtlPtType);
+      // If dtlPtType is empty, skip this slab
+			boolean isPtTypeMatching = !dtlPtType.isEmpty() && slabPropertyType.equalsIgnoreCase(dtlPtType);
 
-			boolean isPtSubTypeMatching = slabPropertySubType.equalsIgnoreCase(dtlPtSubType)
-					|| all.equalsIgnoreCase(slabPropertySubType);
+			// If dtlPtSubType is empty, match with "ALL" slabs
+			boolean isPtSubTypeMatching = dtlPtSubType.isEmpty() || 
+										  slabPropertySubType.equalsIgnoreCase(dtlPtSubType) || 
+										  all.equalsIgnoreCase(slabPropertySubType);
 
-			boolean isOwnerShipMatching = slabOwnerShipCat.equalsIgnoreCase(dtlOwnerShipCat)
-					|| all.equalsIgnoreCase(slabOwnerShipCat);
+			// If dtlOwnerShipCat is empty, match with "ALL" slabs
+			boolean isOwnerShipMatching = dtlOwnerShipCat.isEmpty() || 
+										   slabOwnerShipCat.equalsIgnoreCase(dtlOwnerShipCat) || 
+										   all.equalsIgnoreCase(slabOwnerShipCat);
 
-			boolean isSubOwnerShipMatching = slabSubOwnerShipCat.equalsIgnoreCase(dtlSubOwnerShipCat)
-					|| all.equalsIgnoreCase(slabSubOwnerShipCat);
+			// If dtlSubOwnerShipCat is empty, match with "ALL" slabs
+			boolean isSubOwnerShipMatching = dtlSubOwnerShipCat.isEmpty() || 
+											  slabSubOwnerShipCat.equalsIgnoreCase(dtlSubOwnerShipCat) || 
+											  all.equalsIgnoreCase(slabSubOwnerShipCat);
 
 			boolean isPlotMatching = false;
 
