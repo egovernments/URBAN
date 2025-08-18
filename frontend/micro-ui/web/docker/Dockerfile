@@ -5,6 +5,8 @@ FROM node:14-alpine3.16 AS build
 
 RUN apk update && apk upgrade
 RUN apk add --no-cache git>2.30.0
+RUN apk python3
+
 
 ARG WORK_DIR
 WORKDIR /app
