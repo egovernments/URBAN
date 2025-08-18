@@ -14,10 +14,6 @@ on:
           - sandbox-ui
           - sanitation-ui
 
-env:
-  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
 jobs:
   resolve-config:
     name: Resolve ${{ github.event.inputs.pipeline_name }} config
