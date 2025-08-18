@@ -94,7 +94,9 @@ export const setOwnerDetailsLW = (data) => {
   if (data.ownershipCategory.includes("INSTITUTIONALPRIVATE") || data.ownershipCategory.includes("INSTITUTIONALGOVERNMENT")) {
     institution.designation = owners?.[0]?.designation;
     institution.name = owners?.[0]?.institutionName;
-    institution.type = owners?.[0]?.institutionType?.code?.split(".")?.[1];
+    institution.type = owners?.[0]?.institutionType?.code?.includes(".") 
+      ? owners?.[0]?.institutionType?.code?.split(".")?.[1] 
+      : owners?.[0]?.institutionType?.code;
     institution.landlineNumber = owners?.[0]?.altContactNumber;
     institution.tenantId = locationDet?.cityCode?.code;
     
