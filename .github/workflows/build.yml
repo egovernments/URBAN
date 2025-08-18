@@ -12,6 +12,7 @@ on:
           - digit-ui
           - core-ui
           - sandbox-ui
+          - sanitation-ui
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
