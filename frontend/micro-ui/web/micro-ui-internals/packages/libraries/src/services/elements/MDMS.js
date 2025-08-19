@@ -391,7 +391,18 @@ const getPropertyOwnerTypeCriteria = (tenantId, moduleCode, type) => ({
     ],
   },
 });
-
+const getPropertyEssentialTaxCriteria = (tenantId, moduleCode, type) => ({
+  type,
+  details: {
+    tenantId: tenantId,
+    moduleDetails: [
+      {
+        moduleName: moduleCode,
+        masterDetails: [{ name: "EssentialTax" }],
+      },
+    ],
+  },
+});
 const getSubPropertyOwnerShipCategoryCriteria = (tenantId, moduleCode, type) => ({
   type,
   details: {
@@ -1146,6 +1157,13 @@ const GetPropertyOwnerType = (MdmsRes) =>
     };
   });
 
+const GetPropertyEssentialTax = (MdmsRes) =>
+  MdmsRes["PropertyTax"].EssentialTax.filter((owner) => owner.active).map((ownerDetails) => {
+    return {
+      ...ownerDetails,
+      i18nKey: `PROPERTYTAX_ESSENTIAL_${ownerDetails.code}`,
+    };
+  });
 const getSubPropertyOwnerShipCategory = (MdmsRes) => {
   MdmsRes["PropertyTax"].SubOwnerShipCategory.filter((category) => category.active).map((subOwnerShipDetails) => {
     return {
@@ -1429,6 +1447,8 @@ const transformResponse = (type, MdmsRes, moduleCode, tenantId) => {
       return GetTradeOwnerShipCategory(MdmsRes);
     case "OwnerType":
       return GetPropertyOwnerType(MdmsRes);
+    case "EssentialTax":
+      return GetPropertyEssentialTax(MdmsRes);
     case "SubOwnerShipCategory":
       return getSubPropertyOwnerShipCategory(MdmsRes);
     case "Documents":
@@ -1668,6 +1688,9 @@ export const MdmsService = {
 
   getPropertyOwnerType: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getPropertyOwnerTypeCriteria(tenantId, moduleCode, type), moduleCode);
+  },
+  getPropertyEssentialTax:(tenantId, moduleCode, type) => {
+    return MdmsService.getDataByCriteria(tenantId, getPropertyEssentialTaxCriteria(tenantId, moduleCode, type), moduleCode);
   },
   getPropertySubOwnerShipCategory: (tenantId, moduleCode, type) => {
     return MdmsService.getDataByCriteria(tenantId, getSubPropertyOwnerShipCategoryCriteria(tenantId, moduleCode, type), moduleCode);

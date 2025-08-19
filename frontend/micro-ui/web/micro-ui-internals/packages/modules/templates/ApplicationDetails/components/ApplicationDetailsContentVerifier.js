@@ -677,11 +677,11 @@ function ApplicationDetailsContentVerifier({
 
           {/* <div style={styles.sectionTitle}>Ownership Details</div> */}
           <div style={styles.grid}>
-             <div style={styles.flex30}>
+            <div style={styles.flex30}>
               <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
               <input style={styles.input} value={application?.ownershipCategory} readOnly />
             </div>
-              <div style={styles.flex30}>
+            <div style={styles.flex30}>
               <label style={styles.label}>POA Registration Number</label>
               <input style={styles.input} value={application?.registryId} readOnly />
             </div>
@@ -695,7 +695,7 @@ function ApplicationDetailsContentVerifier({
                 <label style={styles.label}>Owner {index + 1}</label>
 
               )}
-              <div style={{...styles.grid,marginTop:"20px"}}>
+              <div style={{ ...styles.grid, marginTop: "20px" }}>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Owner Name<span style={{ color: "red" }}>*</span></label>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -934,7 +934,7 @@ function ApplicationDetailsContentVerifier({
             {/* <div style={styles.sectionTitle}>Other Details</div> */}
           </div>
           <div style={styles.grid}>
-            <div>
+
             <div style={styles.flex30} >
               {/* Exemption Dropdown */}
               <label style={styles.label}>Exemption Applicable.</label>
@@ -942,7 +942,12 @@ function ApplicationDetailsContentVerifier({
               <select style={styles.input} value={owner?.ownerType} disabled>
                 <option>{owner?.ownerType}</option>
               </select>
+
+
             </div>
+            <div style={styles.flex30}>
+              <label style={styles.label}>Essential Tax</label>
+              <input style={styles.input} value={application?.essentialTax} readOnly />
             </div>
           </div>
           {/* Checkboxes */}
@@ -996,65 +1001,65 @@ function ApplicationDetailsContentVerifier({
                 {/* <CardSectionHeader style={{ ...styles.sectionTitle, marginBottom: "16px", marginTop: "32px" }}>
                   {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
                 </CardSectionHeader> */}
-                {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
-                  <CheckPoint
-                    isCompleted={true}
-                    label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
-                    customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
-                  />
-                ) : (
-                  <ConnectingCheckPoints>
-                    {workflowDetails?.data?.timeline &&
-                      workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
-                        let timelineStatusPostfix = "";
-                        if (window.location.href.includes("/obps/")) {
-                          if (workflowDetails?.data?.timeline[index - 1]?.state?.includes("BACK_FROM") || workflowDetails?.data?.timeline[index - 1]?.state?.includes("SEND_TO_CITIZEN"))
-                            timelineStatusPostfix = `_NOT_DONE`
-                          else if (checkpoint?.performedAction === "SEND_TO_ARCHITECT")
-                            timelineStatusPostfix = `_BY_ARCHITECT_DONE`
-                          else
-                            timelineStatusPostfix = index == 0 ? "" : `_DONE`;
-                        }
+                  {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
+                    <CheckPoint
+                      isCompleted={true}
+                      label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
+                      customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
+                    />
+                  ) : (
+                    <ConnectingCheckPoints>
+                      {workflowDetails?.data?.timeline &&
+                        workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
+                          let timelineStatusPostfix = "";
+                          if (window.location.href.includes("/obps/")) {
+                            if (workflowDetails?.data?.timeline[index - 1]?.state?.includes("BACK_FROM") || workflowDetails?.data?.timeline[index - 1]?.state?.includes("SEND_TO_CITIZEN"))
+                              timelineStatusPostfix = `_NOT_DONE`
+                            else if (checkpoint?.performedAction === "SEND_TO_ARCHITECT")
+                              timelineStatusPostfix = `_BY_ARCHITECT_DONE`
+                            else
+                              timelineStatusPostfix = index == 0 ? "" : `_DONE`;
+                          }
 
-                        return (
-                          <React.Fragment key={index}>
-                            <CheckPoint
-                              keyValue={index}
-                              isCompleted={index === 0}
-                              info={checkpoint.comment}
-                              label={t(
-                                `${timelineStatusPrefix}${checkpoint?.performedAction === "REOPEN" ? checkpoint?.performedAction : checkpoint?.[statusAttribute]
-                                }${timelineStatusPostfix}`
-                              )}
-                              customChild={getTimelineCaptions(checkpoint, index)}
-                            />
-                          </React.Fragment>
-                        );
-                      })}
-                  </ConnectingCheckPoints>
-                )}
-              </Fragment>
-            )}
-          </React.Fragment>
-        )}
-      </div>
-      }
+                          return (
+                            <React.Fragment key={index}>
+                              <CheckPoint
+                                keyValue={index}
+                                isCompleted={index === 0}
+                                info={checkpoint.comment}
+                                label={t(
+                                  `${timelineStatusPrefix}${checkpoint?.performedAction === "REOPEN" ? checkpoint?.performedAction : checkpoint?.[statusAttribute]
+                                  }${timelineStatusPostfix}`
+                                )}
+                                customChild={getTimelineCaptions(checkpoint, index)}
+                              />
+                            </React.Fragment>
+                          );
+                        })}
+                    </ConnectingCheckPoints>
+                  )}
+                </Fragment>
+              )}
+            </React.Fragment>
+          )}
+        </div>
+    }
 
-    ];
-  
-   
-  
-    const onToggle = (idx) => {
-      setOpenIndex((prev) => (prev === idx ? null : idx));
-    };
-  
-    const onKeyDown = (e, idx) => {
-      // support Enter/Space to toggle
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onToggle(idx);
-      }
-    };
+  ];
+
+
+
+  const onToggle = (idx) => {
+    setOpenIndex((prev) => (prev === idx ? null : idx));
+  };
+
+  const onKeyDown = (e, idx) => {
+    // support Enter/Space to toggle
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onToggle(idx);
+    }
+  };
 
 
   return (
@@ -1072,52 +1077,52 @@ function ApplicationDetailsContentVerifier({
             <input style={styles.input} value="2025-26" readOnly />
           </div>
         </div> */}
-      
 
-{/* <Accordion/> */}
- <div style={styles.wrapper}>
-      {items.map((item, idx) => {
-        const expanded = openIndex === idx;
-        return (
-          <div style={styles.item} key={idx}>
-            <div
-              role="button"
-              tabIndex={0}
-              aria-expanded={expanded}
-              aria-controls={`panel-${idx}`}
-              onClick={() => onToggle(idx)}
-              onKeyDown={(e) => onKeyDown(e, idx)}
-              style={styles.header(expanded)}
-            >
-              <span>{item.title}</span>
-              {/* simple chevron without any icon library */}
-              <span style={styles.chevron(expanded)}>▾</span>
-            </div>
 
-            {/* animated content area (max-height anim) */}
-            <div
-              id={`panel-${idx}`}
-              style={{
-                ...styles.panelOuter,
-                maxHeight: expanded ? 500 : 0 ,
-                overflowY:"scroll"
-                // adjust if your content is taller
-              }}
-            >
-              <div style={styles.panelInner}>{item.content}</div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+        {/* <Accordion/> */}
+        <div style={styles.wrapper}>
+          {items.map((item, idx) => {
+            const expanded = openIndex === idx;
+            return (
+              <div style={styles.item} key={idx}>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={expanded}
+                  aria-controls={`panel-${idx}`}
+                  onClick={() => onToggle(idx)}
+                  onKeyDown={(e) => onKeyDown(e, idx)}
+                  style={styles.header(expanded)}
+                >
+                  <span>{item.title}</span>
+                  {/* simple chevron without any icon library */}
+                  <span style={styles.chevron(expanded)}>▾</span>
+                </div>
 
-      {/* <div style={styles.card}>
+                {/* animated content area (max-height anim) */}
+                <div
+                  id={`panel-${idx}`}
+                  style={{
+                    ...styles.panelOuter,
+                    maxHeight: expanded ? 500 : 0,
+                    overflowY: "scroll"
+                    // adjust if your content is taller
+                  }}
+                >
+                  <div style={styles.panelInner}>{item.content}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* <div style={styles.card}>
           <AttachmentsSection
             t={t}
             documents={documents}
           />
         </div> */}
-      
+
         {/* <div style={styles.card}>
 
 
@@ -1456,55 +1461,55 @@ function ApplicationDetailsContentVerifier({
 }
 
 const styles = {
- wrapper: {
-        maxWidth: "100%",
-        margin: "20px auto",
-        fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
-      },
-      item: {
-        background: "#fff",
-        border: "1px solid #e5e7eb",
-        borderRadius: 12,
-        marginBottom: 12,
-        overflow: "hidden",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.06)"
-      },
-      header: (expanded) => ({
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
-        padding: "14px 16px",
-        cursor: "pointer",
-        border: "none",
-        background: "transparent",
-        textAlign: "left",
-        fontSize: 16,
-        fontWeight: 600,
-        lineHeight: 1.3,
-        outline: "none",
-        transition: "background 120ms ease",
-        ...(expanded ? { background: "#f9fafb" } : {})
-      }),
-      chevron: (expanded) => ({
-        display: "inline-block",
-        transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-        transition: "transform 150ms ease",
-        marginLeft: 12
-      }),
-      panelOuter: {
-        transition: "max-height 220ms ease",
-        overflow: "hidden"
-      },
-      panelInner: {
-        padding: "0 16px 16px",
-        color: "#374151",
-        fontSize: 15,
-        lineHeight: 1.6
-      },
+  wrapper: {
+    maxWidth: "100%",
+    margin: "20px auto",
+    fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+  },
+  item: {
+    background: "#fff",
+    border: "1px solid #e5e7eb",
+    borderRadius: 12,
+    marginBottom: 12,
+    overflow: "hidden",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.06)"
+  },
+  header: (expanded) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    padding: "14px 16px",
+    cursor: "pointer",
+    border: "none",
+    background: "transparent",
+    textAlign: "left",
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.3,
+    outline: "none",
+    transition: "background 120ms ease",
+    ...(expanded ? { background: "#f9fafb" } : {})
+  }),
+  chevron: (expanded) => ({
+    display: "inline-block",
+    transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+    transition: "transform 150ms ease",
+    marginLeft: 12
+  }),
+  panelOuter: {
+    transition: "max-height 220ms ease",
+    overflow: "hidden"
+  },
+  panelInner: {
+    padding: "0 16px 16px",
+    color: "#374151",
+    fontSize: 15,
+    lineHeight: 1.6
+  },
 
-  width2:{
-    maxWidth:"160px"
+  width2: {
+    maxWidth: "160px"
   },
   card: {
     backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
@@ -1514,11 +1519,11 @@ const styles = {
     marginBottom: "22px",
     borderRadius: "12px",
   },
-   flex30: {
+  flex30: {
     flex: "1 1 30%",
     display: "flex",
-     flexDirection: "column",
-    
+    flexDirection: "column",
+
     position: "relative",
     minHeight: "90px",
 
@@ -1539,7 +1544,7 @@ const styles = {
   },
   widthInputs: {
     width: "32%",
-    minWidth:"300px",
+    minWidth: "300px",
     height: "72px",
     borderWidth: "1px",
     border: "1px solid #D9D9D9",
@@ -1602,8 +1607,8 @@ const styles = {
   flex30: {
     flex: "1 1 30%",
     display: "flex",
-     flexDirection: "column",
-    
+    flexDirection: "column",
+
     position: "relative",
     minHeight: "90px",
 
@@ -1612,9 +1617,9 @@ const styles = {
     // display: "grid",
     // gridTemplateColumns: "1fr 1fr 1fr",
     // gap: "16px",
-    display:"flex",
-    flexWrap:"wrap",
-    gap:"1rem",
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
   },
   row: {
     display: "flex",

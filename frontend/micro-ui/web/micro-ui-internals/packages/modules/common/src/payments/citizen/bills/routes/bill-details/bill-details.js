@@ -355,7 +355,8 @@ const BillDetails = ({ paymentRules, businessService }) => {
   }, [tenantId, consumerCode]);
   const onSubmit = () => {
     const paymentAmount = getTotal();
-    history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}`, {
+    // history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}`, {
+        history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
       paymentAmount,
       tenantId: billDetails.tenantId,
       name: bill?.payerName,
@@ -364,7 +365,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
   };
 
   if (isLoading || isFSMLoading || !bill) return <Loader />;
-
+// digit-ui/citizen/payment/collect/PT/PG-PT-2025-08-19-001148
 
 
   const consumerCodes = propertyDetails?.propertyId;
@@ -386,6 +387,14 @@ const BillDetails = ({ paymentRules, businessService }) => {
       zone: propertyDetails?.address?.zone || "",
     },
   };
+
+  const maskAadhaar = (aadhaar) => {
+  const clean = aadhaar.replace(/\D/g, '');          
+  const last4 = clean.slice(-4);                      
+  return 'xxxxxxxx' + last4;                        
+};
+
+
   return (
     <div style={styles.container}>
       {/* Applicant Details */}
@@ -418,7 +427,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
         </div>
         <div style={styles.labelInput}>
           <label style={styles.label}>Aadhaar ID</label>
-          <input style={styles.input} value={billList?.additionalDetails?.aadhaarNumber || ""} readOnly />
+          <input style={styles.input} value={maskAadhaar(billList?.additionalDetails?.aadhaarNumber) || ""} readOnly />
         </div>
       </div>
 
@@ -459,11 +468,11 @@ const BillDetails = ({ paymentRules, businessService }) => {
           <span>₹ {getAdvanceAmount() || 0}</span>
         </div>
         <div style={styles.taxRow}>
-          <span style={styles.taxLabel}>Current Year Tax</span>
+          <span style={styles.taxLabel}>Net Tax</span>
           <span>₹ {billDetails?.amount || 0}</span>
         </div>
         <div style={styles.taxRow}>
-          <span style={styles.taxLabel}>Rebate Given</span>
+          <span style={styles.taxLabel}>Rebate </span>
           <span>₹ {getRebate()}</span>
         </div>
         <div style={{ ...styles.taxRow, ...styles.totalRow }}>

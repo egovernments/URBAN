@@ -55,6 +55,9 @@ export default {
   flex30: {
     flex: "1 1 30%"
   },
+  flex302: {
+    flex: "1 1 0%"
+  },
   flex45: {
     flex: "1 1 45%"
   },

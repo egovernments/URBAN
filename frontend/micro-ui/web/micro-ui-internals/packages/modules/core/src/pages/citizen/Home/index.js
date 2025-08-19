@@ -87,7 +87,7 @@ const Home = () => {
               flexWrap: isMobile ? "wrap" : "nowrap",
             }}
           >
-            <h2
+            {/* <h2
               style={{
                 fontWeight: "700",
                 fontSize: isDesktop ? 24 : isTablet ? 20 : 18,
@@ -126,10 +126,10 @@ const Home = () => {
                 </div>
               </div>
               <i className="fas fa-chevron-down"></i>
-            </div>
+            </div> */}
           </div>
 
-          {/* Status Cards */}
+          {/* Status Cards
           <div
             className="status-cards home-stats-card"
             style={{
@@ -163,14 +163,14 @@ const Home = () => {
                     height: isMobile ? "auto" : "150px",
                   }}
                 >
-                  {/* Title */}
+                  Title
                   <div
                     className="card-title"
                   >
                     {card.label}
                   </div>
 
-                  {/* Left - Due */}
+                  Left - Due
                   <div
                     style={{
                       display: "flex",
@@ -188,7 +188,7 @@ const Home = () => {
                     </div>
                   </div>
 
-                  {/* Divider */}
+                  Divider
                   {!isMobile && (
                     <div
                       style={{
@@ -200,7 +200,7 @@ const Home = () => {
                     ></div>
                   )}
 
-                  {/* Right - Paid */}
+                  Right - Paid
                   <div
                     style={{
                       display: "flex",
@@ -220,7 +220,7 @@ const Home = () => {
                 </div>
               </a>
             ))}
-          </div>
+          </div> */}
 
 
           {/* Favorite Cards */}

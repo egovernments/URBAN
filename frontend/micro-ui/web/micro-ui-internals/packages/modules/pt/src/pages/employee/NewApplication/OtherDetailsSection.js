@@ -8,15 +8,20 @@ const OtherDetailsSection = ({
   checkboxes,
   handleCheckboxChange,
   styles,
-  formErrors
+  formErrors,
+  setSelectedRateZone
 }) => {
 
   const stateId = Digit.ULBService.getStateId();
   const { data: Menu = {}, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "AssessmentYear") || {};
   const { data: OwnerType = {}, isLoadingO } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "OwnerType") || {};
-  console.log("OwnerTypeMenu", OwnerType)
+  const { data: EssentialTax = {}, isLoadingOe } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "EssentialTax") || {};
+  console.log("EssentialTaxMenu", EssentialTax);
   const [propertyTypeOptions, setPropertyTypeOptions] = useState([]);
   const [ownerTypeOptions, setOwnerTypeOptions] = useState([]);
+  const [essentialTaxOptions, setEssentialTaxOptions] = useState([]);
+
+
   useEffect(() => {
     if (Menu?.PropertyTax?.PropertyType?.length) {
       const options = Menu.PropertyTax.PropertyType.map((item) => ({
@@ -36,19 +41,28 @@ const OtherDetailsSection = ({
   //   }
   // }, [isLoadingO, OwnerType]);
   useEffect(() => {
-  if (OwnerType?.length) {
-    const filteredItems = OwnerType.filter((item) => item.fromFY === "2025-26");
+    if (OwnerType?.length) {
+      const filteredItems = OwnerType.filter((item) => item.fromFY === "2025-26");
 
-    if (filteredItems.length) {
-      const options = filteredItems.map((item) => ({
-        code: item.code,
-        name: t(item.name),
-      }));
-      setOwnerTypeOptions(options);
+      if (filteredItems.length) {
+        const options = filteredItems.map((item) => ({
+          code: item.code,
+          name: t(item.name),
+        }));
+        setOwnerTypeOptions(options);
+      }
     }
-  }
-}, [isLoadingO, OwnerType]);
-
+  }, [isLoadingO, OwnerType]);
+  useEffect(() => {
+    if (EssentialTax?.length) {
+      const options = EssentialTax.map((item) => ({
+        code: item.code,
+        name: item.name, // show name directly (ATM, Bank, etc.)
+        applicableRateZone: item.applicableRateZone,
+      }));
+      setEssentialTaxOptions(options);
+    }
+  }, [isLoadingOe, EssentialTax]);
   if (isLoading) return <Loader />;
   return (
 
@@ -85,12 +99,13 @@ const OtherDetailsSection = ({
         </div> */}
 
       {/* Exemption */}
-      <div>
-        <div style={styles.flex45}>
+      <div className="form-section" style={{ ...styles.formSection, alignItems: "center" }}>
+        {/* Door/House Number */}
+        <div style={styles.flex302}>
 
           <div style={styles.poppinsLabel}>{t("Exemption Applicable")}</div>
           <Dropdown
-            style={styles.widthInput300}
+            style={styles.widthInput}
             t={t}
             option={ownerTypeOptions}
             selected={propertyDetails.ownerType}
@@ -99,39 +114,64 @@ const OtherDetailsSection = ({
             placeholder={t("Select")}
           />
         </div>
+        <div style={styles.flex302}>
+
+          <div style={styles.poppinsLabel}>{t("Essential Tax")}</div>
+          <Dropdown
+            style={styles.widthInput}
+            t={t}
+            option={essentialTaxOptions}
+            selected={propertyDetails.essentialTax}
+            select={(option) => {
+              handlePropertyDetailsChange("essentialTax", option);
+              setSelectedRateZone(option.applicableRateZone); // 🔥 set new state
+            }}
+            optionKey="name"
+            placeholder={t("Select")}
+          />
+        </div>
+        <div >
+          <div style={styles.checkboxContainer}>
+            <div>
+              <label style={styles.poppinsLabels}>
+                {t("Mobile Tower")}{" "}
+                <input
+                  type="checkbox"
+                  checked={checkboxes.mobileTower}
+                  onChange={() => handleCheckboxChange("mobileTower")}
+                />
+              </label>
+            </div>
+            <div>
+              <label style={styles.poppinsLabels}>
+                {t("Bond Road")}{" "}
+                <input
+                  type="checkbox"
+                  checked={checkboxes.broadRoad}
+                  onChange={() => handleCheckboxChange("broadRoad")}
+                />
+              </label>
+            </div>
+            <div>
+              <label style={styles.poppinsLabels}>
+                {t("Advertisement")}{" "}
+                <input
+                  type="checkbox"
+                  checked={checkboxes.advertisement}
+                  onChange={() => handleCheckboxChange("advertisement")}
+                />
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
       {/* </div> */}
 
       {/* Additional Checkboxes */}
-      <div style={styles.checkboxContainer}>
-        <label style={styles.poppinsLabels}>
-          {t("Mobile Tower")}{" "}
-          <input
-            type="checkbox"
-            checked={checkboxes.mobileTower}
-            onChange={() => handleCheckboxChange("mobileTower")}
-          />
-        </label>
-        <label style={styles.poppinsLabels}>
-          {t("Bond Road")}{" "}
-          <input
-            type="checkbox"
-            checked={checkboxes.broadRoad}
-            onChange={() => handleCheckboxChange("broadRoad")}
-          />
-        </label>
-        <label style={styles.poppinsLabels}>
-          {t("Advertisement")}{" "}
-          <input
-            type="checkbox"
-            checked={checkboxes.advertisement}
-            onChange={() => handleCheckboxChange("advertisement")}
-          />
-        </label>
-      </div>
+
 
       {/* Self Declaration */}
-      <div style={styles.poppinsLabel}>{t("Self Declaration")}</div>
+      {/* <div style={styles.poppinsLabel}>{t("Self Declaration")}</div>
       <label style={styles.poppinsTextStyle}>
         <input
           style={{ marginRight: "10px" }}
@@ -147,7 +187,7 @@ const OtherDetailsSection = ({
         <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
           {formErrors.selfDeclaration}
         </p>
-      )}
+      )} */}
     </div>
   );
 };
