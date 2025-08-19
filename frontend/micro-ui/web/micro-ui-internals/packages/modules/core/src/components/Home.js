@@ -172,6 +172,40 @@ const EmployeeHome = ({ modules }) => {
   const user = Digit.UserService.getUser();
   const accessToken = user?.access_token;
   const refreshToken = user?.refresh_token;
+  const roles = user?.info?.roles?.map(role => role.code) || [];
+
+  // Define all favorites
+  const allFavorites = [
+    {
+      label: "Property Register",
+      image: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315418.svg",
+      url: "/digit-ui/employee/pt/new-application",
+    },
+    {
+      label: "Property Cash Desk",
+      image: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417.svg",
+      url: "/digit-ui/employee/pt/search",
+    },
+    {
+      label: "Track Application",
+      image: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417%20(1).svg",
+      url: "/digit-ui/employee/pt/application-search",
+    },
+    {
+      label: "Daily Collection Report",
+      image: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315419.svg",
+      url: "/digit-ui/employee/pt/inbox",
+    }
+  ];
+
+  // Filter favorites based on role
+  const filteredFavorites = allFavorites.filter(fav => {
+    if (fav.label === "Property Cash Desk" && (roles.includes("PT_APPROVER") || roles.includes("PT_FIELD_INSPECTOR"))) {
+      return false; // Hide this card
+    }
+    return true;
+  });
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -428,32 +462,7 @@ const EmployeeHome = ({ modules }) => {
                 marginBottom: "20px",
               }}
             >
-              {[
-                {
-                  label: "Property Register",
-                  image:
-                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315418.svg",
-                  url: "/digit-ui/employee/pt/new-application",
-                },
-                {
-                  label: "Property Cash Desk",
-                  image:
-                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417.svg",
-                  url: "/digit-ui/employee/pt/search",
-                },
-                {
-                  label: "Track Application",
-                  image:
-                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315417%20(1).svg",
-                  url: "/digit-ui/employee/pt/application-search",
-                },
-                {
-                  label: "Daily Collection Report",
-                  image:
-                    "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Frame%201321315419.svg",
-                  url: "/digit-ui/employee/pt/inbox",
-                },
-              ].map((action, index) => (
+              {filteredFavorites.map((action, index) => (
                 <div
                   key={index}
                   className="action-card"
