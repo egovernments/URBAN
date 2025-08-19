@@ -62,17 +62,6 @@ const appReducer = (state = initialState, action) => {
         locale: action.locale,
         localizationLabels: action.localizationLabels,
       };
-    case actionTypes.UPDATE_LOCALIZATION:
-      return {
-        ...state,
-        localizationLabels: {
-          ...state.localizationLabels,
-          ...action.localizationLabels.reduce((acc, item) => {
-            acc[item.code] = item.message;
-            return acc;
-          }, {})
-        }
-      };
     case actionTypes.CHANGE_BOTTOM_NAVIGATION_INDEX:
       return {
         ...state,
