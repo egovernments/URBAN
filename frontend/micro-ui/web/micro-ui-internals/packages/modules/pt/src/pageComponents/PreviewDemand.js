@@ -604,7 +604,7 @@ const PropertyForm = () => {
                     <table style={styles.table}>
                         <thead>
                             <tr>
-                                {["Year", "ALV", "TPV", "PTAX", "Sam Tax", "Urban Tax", "Edu Tax", "Jal Abhi", "Jal Nikas", "Sewa Kar", "Total Tax", "Reb", "Penality", "Net Tax"].map((h) => (
+                                {["Year", "TPV", "Property Tax", "Consolidated Tax", "Education Cess", "Water Cess", "Drainage Cess", "Urban Development Cess", "Service Charge", "Total Tax", "Rebate", "Penalty", "Net Tax"].map((h) => (
                                     <th key={h} style={styles.th}>{h}</th>
                                 ))}
                             </tr>
@@ -613,23 +613,22 @@ const PropertyForm = () => {
                             {taxSummaries.map((item) => (
                                 <tr key={item.year}>
                                     <td style={styles.td}>{item.year}</td>
-                                    <td style={styles.td}>{item.alv}</td>
                                     <td style={styles.td}>{item.tpv}</td>
                                     <td style={styles.td}>₹ {item.propertyTax}</td>
                                     <td style={styles.td}>₹ {item.samekit}</td>
-                                    <td style={styles.td}>₹ {item.urbanTax}</td>
                                     <td style={styles.td}>₹ {item.educationCess}</td>
                                     <td style={styles.td}>₹ {item.jalKar}</td>
                                     <td style={styles.td}>₹ {item.jalNikas}</td>
+                                    <td style={styles.td}>₹ {item.urbanTax}</td>
                                     <td style={styles.td}>₹ {item.sevaKar}</td>
                                     <td style={styles.td}>₹ {item.totalTax}</td>
                                     <td style={styles.td}>₹ {Math.abs(item.rebate)}</td>
                                     <td style={styles.td}>₹ {item.penalty}</td>
-                                    <td style={styles.td}>₹ {item.netTax}</td>
+                                    <td style={styles.td}>{item.netTax}</td>
                                 </tr>
                             ))}
                             <tr>
-                                <td colSpan={13} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
+                                <td colSpan={12} style={{ ...styles.td, fontWeight: "bold", textAlign: "right" }}>TOTAL</td>
                                 <td style={styles.td}>
                                     ₹ {taxSummaries.reduce((sum, item) => sum + (item.netTax || 0), 0).toFixed(2)}
                                 </td>

@@ -669,7 +669,7 @@ function ApplicationDetailsContentVerifier({
      
       
        {
-        title: <div ><h3 style={{color:"6b133f"}}>Ownership Details</h3></div>,
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Ownership Details</h3></div>,
         content:
             <div >
 
@@ -769,7 +769,7 @@ function ApplicationDetailsContentVerifier({
         
       },
       {
-        title: <div ><h3 style={{color:"6b133f"}}>Property Address</h3></div>,
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Property Address</h3></div>,
         content:
            <div >
 
@@ -785,7 +785,7 @@ function ApplicationDetailsContentVerifier({
         </div>
       },
        {
-        title: <div ><h3 style={{color:"6b133f"}}>Correspondence Address</h3></div>,
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Correspondence Address</h3></div>,
         content:
             <div >
           <div >
@@ -803,7 +803,7 @@ function ApplicationDetailsContentVerifier({
         </div>
       },
        {
-        title: <div ><h3 style={{color:"6b133f"}}>Assessment Details</h3></div>,
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Assessment Details</h3></div>,
         content:
            <div >
           {/* <div style={styles.sectionTitle}>Assessment Details</div> */}
@@ -816,7 +816,7 @@ function ApplicationDetailsContentVerifier({
         </div>
       },
        {
-        title: <div ><h3 style={{color:"6b133f"}}>Property Details</h3></div>,
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Property Details</h3></div>,
         content:
            <div >
           {/* <div style={styles.sectionTitle}>Property Details</div> */}
@@ -926,7 +926,7 @@ function ApplicationDetailsContentVerifier({
         </div>
       },
        {
-        title: <div ><h3 style={{color:"6b133f"}}>Other Details</h3></div>,
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Other Details</h3></div>,
         content:
             <div >
           {/* Section Header */}
@@ -972,7 +972,7 @@ function ApplicationDetailsContentVerifier({
         </div>
       },
       {
-        title:   <div ><h3 style={{color:"6b133f"}}>Attachments</h3></div>,
+        title:   <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Attachments</h3></div>,
         content:
           //  <div style={styles.card}>
           <AttachmentsSection
@@ -982,7 +982,7 @@ function ApplicationDetailsContentVerifier({
         // </div>
       },
        {
-        title: <div ><CardSectionHeader style={{ color:"6b133f" }}>
+        title: <div ><CardSectionHeader style={{ color:"#6B133F" }}>
                   {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
                 </CardSectionHeader></div>,
         content:
@@ -1531,10 +1531,10 @@ const styles = {
     width: "20%",
     height: "40px",
     borderWidth: "1px",
-    borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347",
+    borderRadius: "4px",
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    background: "#7575754D",
     // padding: "6px"
   },
   widthInputs: {
@@ -1542,11 +1542,10 @@ const styles = {
     minWidth:"300px",
     height: "72px",
     borderWidth: "1px",
-    borderRadius: "6px",
     border: "1px solid #D9D9D9",
     padding: "10px",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347"
+    borderRadius: "4px",
+    background: "#7575754D",
   },
   labelTable: {
     textAlign: "left",
@@ -1562,14 +1561,14 @@ const styles = {
     letterSpacing: "0%"
   },
   sectionTitle: {
-    background: '#6b133f',
+    background: '#6B133F',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
     fontSize: '16px',
     lineHeight: '100%',
     letterSpacing: '0px',
     textDecorationStyle: 'solid',
-    textDecorationColor: '#6b133f',
+    textDecorationColor: '#6B133F',
     textDecorationThickness: '1px',
     color: 'white',
     marginBottom: '20px',
@@ -1593,11 +1592,12 @@ const styles = {
     width: "100%",
     height: "40px",
     borderWidth: "1px",
-    borderRadius: "6px",
+    borderRadius: "4px",
     // border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    background: "#7575754D",
     padding: "10px",
+    marginLeft: "1px",
   },
   flex30: {
     flex: "1 1 30%",
