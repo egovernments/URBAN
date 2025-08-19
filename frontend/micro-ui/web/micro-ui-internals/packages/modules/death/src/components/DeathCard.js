@@ -65,12 +65,13 @@ const DeathCard = () => {
     links: isCitizen ? citizenLinks : filteredEmployeeLinks,
   };
 
-  return  <div className="death-card-module" style={{
-        marginLeft: isCitizen ? "30px" : "0px",
-        marginTop: isCitizen ? "30px" : "-40px"
-      }}>
-        <EmployeeModuleCard {...propsForModuleCard} />
-      </div>
+  return <EmployeeModuleCard {...propsForModuleCard} />
+  //  <div className="death-card-module" style={{
+  //       marginLeft: isCitizen ? "30px" : "0px",
+  //       marginTop: isCitizen ? "30px" : "-40px"
+  //     }}>
+        
+      // </div>
 };
 
 export default DeathCard;
