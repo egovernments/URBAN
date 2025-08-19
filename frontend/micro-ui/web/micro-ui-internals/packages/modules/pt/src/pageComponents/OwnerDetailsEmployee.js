@@ -456,7 +456,7 @@ const OwnerForm = (_props) => {
                       disable={isEditScreen}
                       option={[
                         { i18nKey: "PT_FORM3_FATHER", code: "FATHER" },
-                        { i18nKey: "PT_FORM3_HUSBAND", code: "HUSBAND" },
+                        { i18nKey: "PT_RELATION_HUSBAND", code: "SPOUSE" },
                       ]}
                       optionKey="i18nKey"
                       t={t}
