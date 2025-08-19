@@ -60,7 +60,7 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
       setSelectedProperty(val);
     } else {
       revalidate();
-      history.push(`/digit-ui/employee/payment/collect/PT/${val?.["propertyId"]}`)
+      history.push(`/digit-ui/employee/pt/ptsearch/property-details/${val?.["propertyId"]}`)
     }
 
   }

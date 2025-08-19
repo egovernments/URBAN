@@ -69,6 +69,7 @@ const NewApplication = () => {
   ]);
   const [ownershipType, setOwnershipType] = useState(null);
   const [registryId, setRegistryId] = useState("");
+  const [selectedRateZone, setSelectedRateZone] = useState("");
   const [addressDetails, setAddressDetails] = useState({
     doorNo: "",
     address: "",
@@ -99,6 +100,7 @@ const NewApplication = () => {
     propertyType: "",
     roomsArea: "",
     exemption: "",
+    essentialTax: ""
   });
   const [checkboxes, setCheckboxes] = useState({
     mobileTower: false,
@@ -196,6 +198,7 @@ const NewApplication = () => {
         status: generalDetails?.status,
         tenantId: userInfo1?.tenantId,
         oldPropertyId: assessmentDetails.oldPropertyId || null,
+        essentialTax: propertyDetails.essentialTax?.code,
         address: {
           city: "CityA",
           locality: {
@@ -281,7 +284,7 @@ const NewApplication = () => {
               constructionType: unit.constructionType || null,
             },
             floorNo: parseInt(unit.floorNo) || 0,
-            rateZone: rateZones?.[0]?.code || "",
+            rateZone: selectedRateZone ? selectedRateZone : rateZones?.[0]?.code || "",
             roadFactor: assessmentDetails.roadFactor?.code || unitDetails?.[0]?.roadFactor,
             fromYear: unit.fromYear,
             toYear: unit.toYear,
@@ -324,7 +327,7 @@ const NewApplication = () => {
                 constructionType: unit.constructionType || null,
               },
               floorNo: parseInt(unit.floorNo) || 0,
-              rateZone: rateZones?.[0]?.code || "",
+              rateZone: selectedRateZone ? selectedRateZone : rateZones?.[0]?.code || "",
               roadFactor: assessmentDetails.roadFactor?.code || "",
               fromYear: unit.fromYear,
               toYear: unit.toYear,
@@ -484,6 +487,7 @@ const NewApplication = () => {
         tenantId: userInfo1?.tenantId,
         registryId: registryId,
         // oldPropertyId: assessmentDetails.oldPropertyId || null,
+        essentialTax: propertyDetails.essentialTax?.code,
         address: {
           city: "CityA",
           locality: {
@@ -871,10 +875,18 @@ const NewApplication = () => {
     if (rateZones.length > 0) {
       setAssessmentDetails(prev => ({
         ...prev,
-        rateZone: rateZones[0].name,
+        rateZone: selectedRateZone || rateZones[0].name,
       }));
     }
   }, [rateZones]);
+  useEffect(() => {
+    if (selectedRateZone) {
+      setAssessmentDetails(prev => ({
+        ...prev,
+        rateZone: selectedRateZone,
+      }));
+    }
+  }, [selectedRateZone]);
   const addNewOwner = () => {
     setOwners([...owners, {}]); // Add a new empty owner object
     setIsJointStarted(true);
@@ -983,6 +995,7 @@ const NewApplication = () => {
               handleCheckboxChange={handleCheckboxChange}
               styles={styles}
               formErrors={formErrors}
+              setSelectedRateZone={setSelectedRateZone}
             />
           </div>
           <div style={styles.card}>
