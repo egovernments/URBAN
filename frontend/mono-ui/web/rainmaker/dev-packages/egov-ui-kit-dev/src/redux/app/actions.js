@@ -55,6 +55,22 @@ export const toggleSnackbarAndSetText = (open, message = {}, variant) => {
 export const fetchLocalizationLabel = (locale = 'en_IN', module, tenantId, isFromModule) => {
   return async (dispatch) => {
     let storedModuleList = [];
+    const CACHE_KEY = `localization_${locale}_${module || ''}`;
+    const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
+
+    // Try to get cached localizations first
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (cachedData) {
+      try {
+        const { data, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < CACHE_EXPIRY) {
+          dispatch(setLocalizationLabels(locale, data));
+          return;
+        }
+      } catch (e) {
+        console.warn("Failed to parse cached localization data", e);
+      }
+    }
 
     try {
       if (getStoredModulesList() !== null) {
@@ -66,8 +82,11 @@ export const fetchLocalizationLabel = (locale = 'en_IN', module, tenantId, isFro
 
     const moduleName = getModule();
     let localeModule;
-
-    if (moduleName === 'rainmaker-common') {
+    
+    // Handle firenoc module specially
+    if (moduleName === 'firenoc') {
+      localeModule = 'rainmaker-common,rainmaker-noc,rainmaker-pgr,rainmaker-bnd,rainmaker-common-noc';
+    } else if (moduleName === 'rainmaker-common') {
       localeModule = 'rainmaker-common';
     } else if (storedModuleList.includes('rainmaker-common')) {
       localeModule = moduleName;
@@ -147,16 +166,45 @@ export const fetchLocalizationLabel = (locale = 'en_IN', module, tenantId, isFro
 
       resultArray = [...prevLocalisationLabels, ...resultArray];
 
-      // Fallback: if nothing fetched, retain previous
-      if (!resultArray.length && getLocalizationLabels()) {
-        try {
-          resultArray = JSON.parse(getLocalizationLabels());
-        } catch (e) {
-          console.warn("Fallback failed to parse existing localization", e);
-        }
-      }
+      // Deduplicate localizations based on code
+      resultArray = resultArray.filter((item, index, self) =>
+        index === self.findIndex((t) => t.code === item.code)
+      );
 
-      dispatch(setLocalizationLabels(locale, resultArray));
+      // Cache the results with timestamp
+      const cacheData = {
+        data: resultArray,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+
+      // For firenoc, load only essential localizations first
+      if (moduleName === 'firenoc') {
+        const essentialKeys = resultArray.filter(item => 
+          item.code.startsWith('NOC_') || 
+          item.code.startsWith('FIRENOC_') ||
+          item.code.startsWith('CORE_COMMON_') ||
+          item.code.startsWith('ACTION_TEST_')
+        );
+        dispatch(setLocalizationLabels(locale, essentialKeys));
+        
+        // Load remaining localizations after a delay
+        setTimeout(() => {
+          const remainingKeys = resultArray.filter(item => 
+            !item.code.startsWith('NOC_') && 
+            !item.code.startsWith('FIRENOC_') &&
+            !item.code.startsWith('CORE_COMMON_') &&
+            !item.code.startsWith('ACTION_TEST_')
+          );
+          dispatch({
+            type: actionTypes.UPDATE_LOCALIZATION,
+            locale,
+            localizationLabels: remainingKeys
+          });
+        }, 2000);
+      } else {
+        dispatch(setLocalizationLabels(locale, resultArray));
+      }
     } catch (error) {
       console.error("Localization fetch failed:", error);
     }
