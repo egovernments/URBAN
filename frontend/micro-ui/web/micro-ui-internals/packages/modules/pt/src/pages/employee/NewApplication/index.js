@@ -19,6 +19,7 @@ import AttachmentsSection from "./Attachments";
 import OtherDetailsSection from "./OtherDetailsSection";
 import SuccessModal from "./SuccessModal";
 import CorrespondenceAddressSection from "./CorrespondenceAddressSection";
+import SelfDeclaration from "./SelfDeclaration";
 
 const NewApplication = () => {
   const location = useLocation();
@@ -911,15 +912,6 @@ const NewApplication = () => {
 
           {/* Attachments Section */}
           <div style={styles.card}>
-            <AttachmentsSection
-              t={t}
-              handleFileChange={handleFileChange}
-              styles={styles}
-              formErrors={formErrors}
-            />
-          </div>
-
-          <div style={styles.card}>
             <div style={styles.assessmentStyle}>{t("Ownership Details")}</div>
 
             <OwnershipDetailsSection
@@ -936,7 +928,6 @@ const NewApplication = () => {
               formErrors={formErrors}
             />
           </div>
-
           <div style={styles.card}>
             <div style={styles.assessmentStyle}>{t("Property Address")}</div>
             <AddressSection
@@ -960,7 +951,6 @@ const NewApplication = () => {
               formErrors={formErrors}
             />
           </div>
-
           <div style={styles.card}>
             <div style={styles.assessmentStyle}>{t("Assessment Details")}</div>
             <AssessmentDetailsSection
@@ -994,7 +984,22 @@ const NewApplication = () => {
               styles={styles}
               formErrors={formErrors}
             />
-
+          </div>
+          <div style={styles.card}>
+            <AttachmentsSection
+              t={t}
+              handleFileChange={handleFileChange}
+              styles={styles}
+              formErrors={formErrors}
+            />
+          </div>
+          <div style={styles.card}>
+            <SelfDeclaration
+              t={t}
+              checkboxes={checkboxes}
+              handleCheckboxChange={handleCheckboxChange}
+              styles={styles}
+              formErrors={formErrors} />
             {showAssessmentPop && (
               <div style={styles.modalOverlay}>
                 <div style={styles.modalContent}>
@@ -1031,6 +1036,7 @@ const NewApplication = () => {
               )}
             </div>
           </div>
+
         </div>
       )}
 

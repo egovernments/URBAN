@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown, TextInput, Loader } from "@egovernments/digit-ui-react-components";
 
-const OtherDetailsSection = ({
+const SelfDeclaration = ({
   t,
-  propertyDetails,
-  handlePropertyDetailsChange,
   checkboxes,
   handleCheckboxChange,
   styles,
@@ -53,85 +51,8 @@ const OtherDetailsSection = ({
   return (
 
     <div>
-
-      {/* Other Details Heading */}
-      <div style={styles.assessmentStyle}>{t("Other Details")}</div>
-
-      {/* Property Info */}
-      {/* <div style={styles.formSection}> */}
-      {/* Property Type */}
-      {/* <div style={styles.flex30}>
-          <div style={styles.poppinsLabel}>{t("Property Type")}</div>
-          <Dropdown
-            style={styles.widthInput}
-            t={t}
-            option={propertyTypeOptions}
-            selected={propertyDetails.propertyType}
-            select={(option) => handlePropertyDetailsChange("propertyType", option)}
-            optionKey="name"
-            placeholder={t("Select")}
-          />
-        </div> */}
-
-      {/* Rooms/Area */}
-      {/* <div style={styles.flex30}>
-          <div style={styles.poppinsLabel}>{t("Rooms/Area")}</div>
-          <TextInput
-            style={styles.widthInput}
-            placeholder={t("Enter")}
-            value={propertyDetails.roomsArea}
-            onChange={(e) => handlePropertyDetailsChange("roomsArea", e.target.value)}
-          />
-        </div> */}
-
-      {/* Exemption */}
-      <div>
-        <div style={styles.flex45}>
-
-          <div style={styles.poppinsLabel}>{t("Exemption Applicable")}</div>
-          <Dropdown
-            style={styles.widthInput300}
-            t={t}
-            option={ownerTypeOptions}
-            selected={propertyDetails.ownerType}
-            select={(option) => handlePropertyDetailsChange("exemption", option)}
-            optionKey="name"
-            placeholder={t("Select")}
-          />
-        </div>
-      </div>
-      {/* </div> */}
-
-      {/* Additional Checkboxes */}
-      <div style={styles.checkboxContainer}>
-        <label style={styles.poppinsLabels}>
-          {t("Mobile Tower")}{" "}
-          <input
-            type="checkbox"
-            checked={checkboxes.mobileTower}
-            onChange={() => handleCheckboxChange("mobileTower")}
-          />
-        </label>
-        <label style={styles.poppinsLabels}>
-          {t("Bond Road")}{" "}
-          <input
-            type="checkbox"
-            checked={checkboxes.broadRoad}
-            onChange={() => handleCheckboxChange("broadRoad")}
-          />
-        </label>
-        <label style={styles.poppinsLabels}>
-          {t("Advertisement")}{" "}
-          <input
-            type="checkbox"
-            checked={checkboxes.advertisement}
-            onChange={() => handleCheckboxChange("advertisement")}
-          />
-        </label>
-      </div>
-
       {/* Self Declaration */}
-      {/* <div style={styles.poppinsLabel}>{t("Self Declaration")}</div>
+      <div style={styles.poppinsLabel}>{t("Self Declaration")}</div>
       <label style={styles.poppinsTextStyle}>
         <input
           style={{ marginRight: "10px" }}
@@ -147,9 +68,9 @@ const OtherDetailsSection = ({
         <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
           {formErrors.selfDeclaration}
         </p>
-      )} */}
+      )}
     </div>
   );
 };
 
-export default OtherDetailsSection;
+export default SelfDeclaration;
