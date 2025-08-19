@@ -127,7 +127,7 @@ const CreateProperty = () => {
   }));
 
   let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
-  console.log("userInfo1", userInfo1?.authToken);
+  console.log("userInfo1", userInfo1);
   const tenantId = userInfo1?.tenantId;
   const mutation = Digit.Hooks.pt.usePropertyAPI(tenantId, true);
   const mutationUpdate = Digit.Hooks.pt.useUpdateContent(tenantId, true);
@@ -153,7 +153,7 @@ const CreateProperty = () => {
       Assessment: {
         financialYear: toYear,
         propertyId: propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CITIZEN",
         assessmentDate: Date.now(),
@@ -486,7 +486,7 @@ const CreateProperty = () => {
     const payload = {
       Property: {
         updateIMC: false,
-        tenantId: "pg.citya",
+        tenantId: userInfo1?.tenantId,
         address: {
           city: "CityA",
           locality: {

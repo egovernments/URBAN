@@ -440,6 +440,7 @@ import {
 } from "@egovernments/digit-ui-react-components";
 import { values } from "lodash";
 import React, { Fragment, useEffect } from "react";
+import Accordion from "../../Accrodion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import BPADocuments from "./BPADocuments";
@@ -464,6 +465,7 @@ import ViewBreakup from "./ViewBreakup";
 import OwnershipDetailsSection from "./Verifier/OwnershipDetailsSection";
 import AttachmentsSection from "./Verifier/Attachments";
 import AddressSection from "./Verifier/AddressSection";
+import { useState } from "react";
 function ApplicationDetailsContentVerifier({
   applicationDetails,
   workflowDetails,
@@ -659,33 +661,29 @@ function ApplicationDetailsContentVerifier({
   }, [applicationData?.propertyId, tenantId]);
 
 
-  return (
-    <div >
-      {/* For UM-4418 changes */}
 
-      <div>
-        {/* <div>
-          <label style={styles.sectionTitle}>Select Property ULB/ Year of Assessment</label>
-        </div>
-        <div style={styles.grid}>
-          <div>
-            <label style={styles.label}>Select Assessment year<span style={{ color: "red" }}>*</span></label>
 
-            <input style={styles.input} value="2025-26" readOnly />
-          </div>
-        </div> */}
-        <div style={styles.card}>
-          <AttachmentsSection
-            t={t}
-            documents={documents}
-          />
-        </div>
-        <div style={styles.card}>
-          <div style={styles.sectionTitle}>Ownership Details</div>
+    const [openIndex, setOpenIndex] = useState(null);
+  
+    const items = [
+     
+      
+       {
+        title: <div ><h3 style={{color:"6b133f"}}>Ownership Details</h3></div>,
+        content:
+            <div >
+
+
+
+          {/* <div style={styles.sectionTitle}>Ownership Details</div> */}
           <div style={styles.grid}>
-            <div>
+             <div style={styles.flex30}>
               <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
               <input style={styles.input} value={application?.ownershipCategory} readOnly />
+            </div>
+              <div style={styles.flex30}>
+              <label style={styles.label}>POA Registration Number</label>
+              <input style={styles.input} value={application?.registryId} readOnly />
             </div>
           </div>
 
@@ -697,7 +695,7 @@ function ApplicationDetailsContentVerifier({
                 <label style={styles.label}>Owner {index + 1}</label>
 
               )}
-              <div style={styles.grid}>
+              <div style={{...styles.grid,marginTop:"20px"}}>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Owner Name<span style={{ color: "red" }}>*</span></label>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -768,9 +766,14 @@ function ApplicationDetailsContentVerifier({
             </React.Fragment>
           ))}
         </div>
-        <div style={styles.card}>
+        
+      },
+      {
+        title: <div ><h3 style={{color:"6b133f"}}>Property Address</h3></div>,
+        content:
+           <div >
 
-          <div style={styles.sectionTitle}>Property Address</div>
+          {/* <div style={styles.sectionTitle}>Property Address</div> */}
           <div style={styles.grid}>
             <div style={styles.flex30}><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
             <div style={styles.flex30}><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
@@ -780,10 +783,14 @@ function ApplicationDetailsContentVerifier({
             <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
           </div>
         </div>
-        <div style={styles.card}>
+      },
+       {
+        title: <div ><h3 style={{color:"6b133f"}}>Correspondence Address</h3></div>,
+        content:
+            <div >
           <div >
             <div style={styles.flex30} >
-              <div style={styles.sectionTitle}>Correspondence Address</div>
+              {/* <div style={styles.sectionTitle}>Correspondence Address</div> */}
               <textarea style={styles.widthInputs} rows={3} value={owner?.permanentAddress} readOnly />
 
             </div>
@@ -794,8 +801,12 @@ function ApplicationDetailsContentVerifier({
           </div>
 
         </div>
-        <div style={styles.card}>
-          <div style={styles.sectionTitle}>Assessment Details</div>
+      },
+       {
+        title: <div ><h3 style={{color:"6b133f"}}>Assessment Details</h3></div>,
+        content:
+           <div >
+          {/* <div style={styles.sectionTitle}>Assessment Details</div> */}
           <div style={styles.grid}>
             <div style={styles.flex30}><label style={styles.label}>Rate Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.rateZone} readOnly /></div>
             <div style={styles.flex30}><label style={styles.label}>Road Factor <span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.roadFactor} readOnly /></div>
@@ -803,8 +814,12 @@ function ApplicationDetailsContentVerifier({
             <div style={styles.flex30}><label style={styles.label}>Plot Area (sq.ft)</label><input style={styles.input} value={application?.landArea} readOnly /></div>
           </div>
         </div>
-        <div style={styles.card}>
-          <div style={styles.sectionTitle}>Property Details</div>
+      },
+       {
+        title: <div ><h3 style={{color:"6b133f"}}>Property Details</h3></div>,
+        content:
+           <div >
+          {/* <div style={styles.sectionTitle}>Property Details</div> */}
           <div >
             <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
               <label style={{ ...styles.label, marginRight: "16px", minWidth: "120px" }}>Property Type</label>
@@ -909,11 +924,14 @@ function ApplicationDetailsContentVerifier({
             </div>
           </div>
         </div>
-
-        <div style={styles.card}>
+      },
+       {
+        title: <div ><h3 style={{color:"6b133f"}}>Other Details</h3></div>,
+        content:
+            <div >
           {/* Section Header */}
           <div>
-            <div style={styles.sectionTitle}>Other Details</div>
+            {/* <div style={styles.sectionTitle}>Other Details</div> */}
           </div>
           <div style={styles.grid}>
             <div>
@@ -952,12 +970,439 @@ function ApplicationDetailsContentVerifier({
             </p>
           </div>
         </div>
-
-      </div>
-      <div style={styles.card}>
+      },
+      {
+        title:   <div ><h3 style={{color:"6b133f"}}>Attachments</h3></div>,
+        content:
+          //  <div style={styles.card}>
+          <AttachmentsSection
+            t={t}
+            documents={documents}
+          />
+        // </div>
+      },
+       {
+        title: <div ><CardSectionHeader style={{ color:"6b133f" }}>
+                  {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
+                </CardSectionHeader></div>,
+        content:
+           <div style={styles.card}>
         {showTimeLine && workflowDetails?.data?.timeline?.length > 0 && (
           <React.Fragment>
             {/* <BreakLine /> */}
+            {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
+            {!workflowDetails?.isLoading && !isDataLoading && (
+              <Fragment>
+                {/* <CardSectionHeader style={{ ...styles.sectionTitle, marginBottom: "16px", marginTop: "32px" }}>
+                  {t("ES_APPLICATION_DETAILS_APPLICATION_TIMELINE")}
+                </CardSectionHeader> */}
+                {workflowDetails?.data?.timeline && workflowDetails?.data?.timeline?.length === 1 ? (
+                  <CheckPoint
+                    isCompleted={true}
+                    label={t(`${timelineStatusPrefix}${workflowDetails?.data?.timeline[0]?.state}`)}
+                    customChild={getTimelineCaptions(workflowDetails?.data?.timeline[0])}
+                  />
+                ) : (
+                  <ConnectingCheckPoints>
+                    {workflowDetails?.data?.timeline &&
+                      workflowDetails?.data?.timeline.map((checkpoint, index, arr) => {
+                        let timelineStatusPostfix = "";
+                        if (window.location.href.includes("/obps/")) {
+                          if (workflowDetails?.data?.timeline[index - 1]?.state?.includes("BACK_FROM") || workflowDetails?.data?.timeline[index - 1]?.state?.includes("SEND_TO_CITIZEN"))
+                            timelineStatusPostfix = `_NOT_DONE`
+                          else if (checkpoint?.performedAction === "SEND_TO_ARCHITECT")
+                            timelineStatusPostfix = `_BY_ARCHITECT_DONE`
+                          else
+                            timelineStatusPostfix = index == 0 ? "" : `_DONE`;
+                        }
+
+                        return (
+                          <React.Fragment key={index}>
+                            <CheckPoint
+                              keyValue={index}
+                              isCompleted={index === 0}
+                              info={checkpoint.comment}
+                              label={t(
+                                `${timelineStatusPrefix}${checkpoint?.performedAction === "REOPEN" ? checkpoint?.performedAction : checkpoint?.[statusAttribute]
+                                }${timelineStatusPostfix}`
+                              )}
+                              customChild={getTimelineCaptions(checkpoint, index)}
+                            />
+                          </React.Fragment>
+                        );
+                      })}
+                  </ConnectingCheckPoints>
+                )}
+              </Fragment>
+            )}
+          </React.Fragment>
+        )}
+      </div>
+      }
+
+    ];
+  
+   
+  
+    const onToggle = (idx) => {
+      setOpenIndex((prev) => (prev === idx ? null : idx));
+    };
+  
+    const onKeyDown = (e, idx) => {
+      // support Enter/Space to toggle
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onToggle(idx);
+      }
+    };
+
+
+  return (
+    <div >
+      {/* For UM-4418 changes */}
+
+      <div>
+        {/* <div>
+          <label style={styles.sectionTitle}>Select Property ULB/ Year of Assessment</label>
+        </div>
+        <div style={styles.grid}>
+          <div>
+            <label style={styles.label}>Select Assessment year<span style={{ color: "red" }}>*</span></label>
+
+            <input style={styles.input} value="2025-26" readOnly />
+          </div>
+        </div> */}
+      
+
+{/* <Accordion/> */}
+ <div style={styles.wrapper}>
+      {items.map((item, idx) => {
+        const expanded = openIndex === idx;
+        return (
+          <div style={styles.item} key={idx}>
+            <div
+              role="button"
+              tabIndex={0}
+              aria-expanded={expanded}
+              aria-controls={`panel-${idx}`}
+              onClick={() => onToggle(idx)}
+              onKeyDown={(e) => onKeyDown(e, idx)}
+              style={styles.header(expanded)}
+            >
+              <span>{item.title}</span>
+              {/* simple chevron without any icon library */}
+              <span style={styles.chevron(expanded)}>▾</span>
+            </div>
+
+            {/* animated content area (max-height anim) */}
+            <div
+              id={`panel-${idx}`}
+              style={{
+                ...styles.panelOuter,
+                maxHeight: expanded ? 500 : 0 ,
+                overflowY:"scroll"
+                // adjust if your content is taller
+              }}
+            >
+              <div style={styles.panelInner}>{item.content}</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+      {/* <div style={styles.card}>
+          <AttachmentsSection
+            t={t}
+            documents={documents}
+          />
+        </div> */}
+      
+        {/* <div style={styles.card}>
+
+
+
+          <div style={styles.sectionTitle}>Ownership Details</div>
+          <div style={styles.grid}>
+            <div>
+              <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
+              <input style={styles.input} value={application?.ownershipCategory} readOnly />
+            </div>
+          </div>
+
+
+          {(application?.owners || []).map((owner, index) => (
+            <React.Fragment key={index}>
+              {(application?.owners?.length > 1) && (
+
+                <label style={styles.label}>Owner {index + 1}</label>
+
+              )}
+              <div style={styles.grid}>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Owner Name<span style={{ color: "red" }}>*</span></label>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <select
+                      value={owner?.salutation}
+                      disabled
+                      style={styles.widthInput}
+                    >
+                      <option>{owner?.salutation}</option>
+                    </select>
+                    <input
+                      style={styles.input}
+                      value={owner?.name || ""}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Owner Name (हिंदी)<span style={{ color: "red" }}>*</span></label>
+
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <select
+                      value={owner?.salutation}
+                      disabled
+                      style={styles.widthInput}
+                    >
+                      <option>{owner?.salutationHindi}</option>
+
+                    </select>
+                    <input
+                      style={styles.input}
+                      value={owner?.hindiName || ""}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Father/Husband Name</label>
+                  <input style={styles.input} value={owner.fatherOrHusbandName} readOnly />
+                </div>
+
+
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Relationship</label>
+                  <input style={styles.input} value={owner.relationship} readOnly />
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Email ID</label>
+                  <input style={styles.input} value={owner.emailId} readOnly />
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Mobile No.<span style={{ color: "red" }}>*</span></label>
+                  <input style={styles.input} value={owner.mobileNumber} readOnly />
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Alternative Mobile No</label>
+                  <input style={styles.input} value={owner.altContactNumber || ""} readOnly />
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Aadhar No.<span style={{ color: "red" }}>*</span></label>
+                  <input style={styles.input} value={owner.aadhaarNumber || ""} readOnly />
+                </div>
+                <div style={styles.flex30}>
+                  <label style={styles.label}>Samagra ID <span style={{ color: "red" }}>*</span></label>
+                  <input style={styles.input} value={owner.samagraId} readOnly />
+                </div>
+              </div>
+            </React.Fragment>
+          ))}
+        </div> */}
+
+        {/* <div style={styles.card}>
+
+          <div style={styles.sectionTitle}>Property Address</div>
+          <div style={styles.grid}>
+            <div style={styles.flex30}><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.pincode || ""} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.locality?.name} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.ward} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
+          </div>
+        </div> */}
+
+        {/* <div style={styles.card}>
+          <div >
+            <div style={styles.flex30} >
+              <div style={styles.sectionTitle}>Correspondence Address</div>
+              <textarea style={styles.widthInputs} rows={3} value={owner?.permanentAddress} readOnly />
+
+            </div>
+            <div style={styles.checkboxLabel}>
+              <input type="checkbox" checked readOnly />
+              <span style={{ marginLeft: "8px" }}>Same As Property Address</span>
+            </div>
+          </div>
+
+        </div> */}
+
+        {/* <div style={styles.card}>
+          <div style={styles.sectionTitle}>Assessment Details</div>
+          <div style={styles.grid}>
+            <div style={styles.flex30}><label style={styles.label}>Rate Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.rateZone} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Road Factor <span style={{ color: "red" }}>*</span></label><input style={styles.input} value={additionalDetailsT?.unit?.[0]?.roadFactor} readOnly /></div>
+            
+            <div style={styles.flex30}><label style={styles.label}>Plot Area (sq.ft)</label><input style={styles.input} value={application?.landArea} readOnly /></div>
+          </div>
+        </div> */}
+
+        {/* <div style={styles.card}>
+          <div style={styles.sectionTitle}>Property Details</div>
+          <div >
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+              <label style={{ ...styles.label, marginRight: "16px", minWidth: "120px" }}>Property Type</label>
+             
+            </div>
+            <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+              <table style={{ borderCollapse: "collapse", marginTop: "8px", border: "1px solid #ccc" }}>
+                <thead style={{ background: "#f0f0f0", height: "40px" }}>
+                  <tr>
+                    <th style={{ ...styles.labelTable }}>Usage Type</th>
+                    <th style={{ ...styles.labelTable }}>Usage Factor</th>
+                    <th style={{ ...styles.labelTable }}>Floor Number</th>
+                    <th style={{ ...styles.labelTable }}>Type of Construction</th>
+                    <th style={{ ...styles.labelTable }}>Area (Sq feet)</th>
+                    <th style={{ ...styles.labelTable }}>From Year</th>
+                    <th style={{ ...styles.labelTable }}>To Year</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(application?.units || []).map((unit, index) => (
+                    <tr key={index}>
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.usageCategory || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+                          <option value={unit?.usageCategory || ""}>{unit?.usageCategory || ""}</option>
+
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.occupancyType || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+                          <option value={unit?.occupancyType || ""}>{unit?.occupancyType || ""}</option>
+
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.floorNo?.toString() || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+
+                          <option value={unit?.floorNo?.toString() || ""}>{unit?.floorNo?.toString() || ""}</option>
+
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          value={unit?.constructionDetail?.constructionType || ""}
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                        >
+                          <option value={unit?.constructionDetail?.constructionType || ""}>{unit?.constructionDetail?.constructionType || ""}</option>
+
+                     
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <input
+                          style={{ border: "none", background: "none" }}
+                          value={unit?.constructionDetail?.builtUpArea || ""}
+                          readOnly
+                        />
+                      </td>
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                          value={unit.fromYear || ""}
+
+                        >
+                          <option value={unit?.fromYear}>{unit?.fromYear}</option>
+                        </select>
+                      </td>
+
+                      <td style={{ padding: "8px", border: "1px solid #ccc" }}>
+                        <select
+                          disabled
+                          style={{ border: "none", background: "none", width: "100%" }}
+                          value={unit.toYear || ""}
+
+                        >
+                          <option value={unit?.toYear}>{unit?.toYear}</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div> */}
+
+        {/* <div style={styles.card}>
+        
+          <div>
+            <div style={styles.sectionTitle}>Other Details</div>
+          </div>
+          <div style={styles.grid}>
+            <div>
+            <div style={styles.flex30} >
+             
+              <label style={styles.label}>Exemption Applicable.</label>
+
+              <select style={styles.input} value={owner?.ownerType} disabled>
+                <option>{owner?.ownerType}</option>
+              </select>
+            </div>
+            </div>
+          </div>
+        
+          <div style={{ display: "flex", gap: "20px", marginTop: "12px", marginBottom: "24px" }}>
+            <label style={styles.checkboxLabel}>
+              <input type="checkbox" checked={additionalDetailsT?.mobileTower} readOnly />
+              <span style={{ marginLeft: "8px" }}>Mobile Tower</span>
+            </label>
+            <label style={styles.checkboxLabel}>
+              <input type="checkbox" checked={additionalDetailsT?.bondRoad} readOnly />
+              <span style={{ marginLeft: "8px" }}>Bond Road</span>
+            </label>
+            <label style={styles.checkboxLabel}>
+              <input type="checkbox" checked={additionalDetailsT?.advertisement} readOnly />
+              <span style={{ marginLeft: "8px" }}>Advertisement</span>
+            </label>
+          </div>
+
+       
+          <div style={{ ...styles.label, marginBottom: "8px" }}>Self Declaration</div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+            <input type="checkbox" checked readOnly style={{ marginTop: "4px" }} />
+            <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#333", margin: 0 }}>
+              मैं यह सत्यापित करता / करती हूं कि उपरोक्त विवरणी मे दी गयी जानकारी सत्य है। मैने / हमने जिस भवन/ भूमि के संबंध मे विवरणी प्रस्तुत की है उसका मैं स्वामी/अधिभोगी हूं इसमे कोई भी तथ्य छू पाये अथवा गलत नहीं है। नोट - मध्यप्रदेश नगर पालिका (वार्षिक भाड़ा मूल्य का अवधारणा) नियम 1997 के नियम 10 (1) अंतर्गत प्रत्येक भवन स्वामी को स्व निर्धारण विवरणी (Self Assessment Form) के साथ संलग्नक (Attachment) scan कर सब्मिट करें । स्व निर्धारण विवरणी मौके पर सत्यापन के अध्याधीन रहेगी, जाँच मे अंतर पाये जाने पर या अन्य कारण से आवश्यक पाये जाने पर वार्षिक भाड़ा मूल्य का पुर्निर्धारण किया जाएगा व 0 प्रतिशत से अधिक अंतर पाये जाने पर सम्पतिकर के पुर्निर्धारण के अंतर की राशि की पाँच गुना शास्ति ,अधिरोपित की जा सकेगी।
+            </p>
+          </div>
+        </div> */}
+
+      </div>
+      {/* <div style={styles.card}>
+        {showTimeLine && workflowDetails?.data?.timeline?.length > 0 && (
+          <React.Fragment>
+         
             {(workflowDetails?.isLoading || isDataLoading) && <Loader />}
             {!workflowDetails?.isLoading && !isDataLoading && (
               <Fragment>
@@ -1005,12 +1450,59 @@ function ApplicationDetailsContentVerifier({
             )}
           </React.Fragment>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
 
 const styles = {
+ wrapper: {
+        maxWidth: "100%",
+        margin: "20px auto",
+        fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+      },
+      item: {
+        background: "#fff",
+        border: "1px solid #e5e7eb",
+        borderRadius: 12,
+        marginBottom: 12,
+        overflow: "hidden",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.06)"
+      },
+      header: (expanded) => ({
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+        padding: "14px 16px",
+        cursor: "pointer",
+        border: "none",
+        background: "transparent",
+        textAlign: "left",
+        fontSize: 16,
+        fontWeight: 600,
+        lineHeight: 1.3,
+        outline: "none",
+        transition: "background 120ms ease",
+        ...(expanded ? { background: "#f9fafb" } : {})
+      }),
+      chevron: (expanded) => ({
+        display: "inline-block",
+        transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+        transition: "transform 150ms ease",
+        marginLeft: 12
+      }),
+      panelOuter: {
+        transition: "max-height 220ms ease",
+        overflow: "hidden"
+      },
+      panelInner: {
+        padding: "0 16px 16px",
+        color: "#374151",
+        fontSize: 15,
+        lineHeight: 1.6
+      },
+
   width2:{
     maxWidth:"160px"
   },
@@ -1047,6 +1539,7 @@ const styles = {
   },
   widthInputs: {
     width: "32%",
+    minWidth:"300px",
     height: "72px",
     borderWidth: "1px",
     borderRadius: "6px",

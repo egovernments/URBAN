@@ -535,6 +535,7 @@ const styles = {
   },
   remarkBox: {
     width: "32%",
+    minWidth:"300px",
     height: "72px",
     borderWidth: "1px",
     borderRadius: "6px",
@@ -571,6 +572,17 @@ const styles = {
   },
 
   input: {
+    // width: "100%",
+    height: "35px",
+    borderWidth: "1px",
+    borderRadius: "6px",
+    border: "1px solid #D9D9D9",
+    boxShadow: "0px 4px 4px 0px #00000040",
+    background: "#A3BBF347",
+    padding: "10px"
+
+  },
+ input2: {
     width: "100%",
     height: "35px",
     borderWidth: "1px",
@@ -581,7 +593,6 @@ const styles = {
     padding: "10px"
 
   },
-
   modalOverlay: {
     position: "fixed",
     top: 0,
@@ -683,6 +694,31 @@ const styles = {
     textAlign: "center",
 
   },
+  grid:{
+      display:"flex",
+    flexWrap:"wrap",
+    gap:"1rem",
+  },
+  flex30:{
+     flex: "1 1 30%",
+    display: "flex",
+     flexDirection: "column",
+    
+    position: "relative",
+    minHeight: "90px",
+  },
+   textBox: {
+    // width: "244.23472595214844px",
+    height: "35px",
+    borderWidth: "1px",
+    borderRadius: "6px",
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347"
+    background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
+  }
 };
 
 
@@ -701,6 +737,7 @@ const ApplicationDetailsContent = ({
   oldValue,
   isInfoLabel = false
 }) => {
+  
     const [printing, setPrinting] = useState(false);
   const [manualAmount, setManualAmount] = useState("");
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
@@ -787,7 +824,7 @@ const ApplicationDetailsContent = ({
       Assessment: {
         financialYear: yearRange,
         propertyId: applicationData?.propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CITIZEN",
         assessmentDate: Date.now(),
@@ -830,7 +867,7 @@ const ApplicationDetailsContent = ({
       Assessment: {
         financialYear: yearRange,
         propertyId: applicationData?.propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CFC_COUNTER",
         assessmentDate: Date.now(),
@@ -1139,10 +1176,26 @@ const ApplicationDetailsContent = ({
       {/* Consumer Details */}
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Consumer Details</div>
-        <div style={styles.row}>
 
 
-          <div style={styles.column}>
+{/* <div style={styles.grid}>
+            <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><   input style={styles.textBox}  /></div>
+            <div style={styles.flex30}><label style={styles.label}>House No<span style={{ color: "red" }}>*</span></label><input style={styles.textBox} /></div>
+            <div style={styles.flex30}><label style={styles.label}>City<span style={{ color: "red" }}>*</span></label><input style={styles.textBox} /></div>
+            <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+            <div style={styles.flex30}><label style={styles.label}>Locality<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+            <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+            <div style={styles.flex30}><label style={styles.label}>Postal Code<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+            <div style={styles.flex30}><label style={styles.label}>Property ID<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+            <div style={styles.flex30}><label style={styles.label}>Property Type<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+          </div> */}
+          
+
+
+        <div style={styles.grid}>
+
+
+          <div style={styles.flex30}>
             <div style={styles.label}>Owner Name(English)</div>
             <input
               type="text"
@@ -1155,7 +1208,7 @@ const ApplicationDetailsContent = ({
 
 
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Property ID</div>
             <input
               type="text"
@@ -1166,7 +1219,7 @@ const ApplicationDetailsContent = ({
           </div>
 
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Mobile No.</div>
             <input
               type="text"
@@ -1175,7 +1228,7 @@ const ApplicationDetailsContent = ({
               style={styles.input}
             />
           </div>
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Exemption</div>
             <input
               type="text"
@@ -1185,7 +1238,7 @@ const ApplicationDetailsContent = ({
             />
           </div>
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Ward</div>
             <input
               type="text"
@@ -1195,12 +1248,12 @@ const ApplicationDetailsContent = ({
             />
           </div>
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Zone</div>
             <input type="text" readOnly value={applicationData?.address?.zone || "N/A"} style={styles.input} />
           </div>
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Colony</div>
             <input
               type="text"
@@ -1210,13 +1263,13 @@ const ApplicationDetailsContent = ({
             />
           </div>
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Road Factor</div>
             <input type="text" readOnly value={applicationData?.units?.[0]?.roadFactor} style={styles.input} />
           </div>
 
 
-          <div style={styles.column}>
+          <div style={styles.flex30}>
             <div style={styles.label}>Address</div>
             <input
               type="text"
@@ -1230,13 +1283,16 @@ const ApplicationDetailsContent = ({
       </div>
 
       <div style={styles.section}>
+      
         {applicationDetails?.applicationDetails?.map((detail, index) => (
           <>
+   
 
             {detail?.additionalDetails?.documents && <PropertyDocuments documents={detail?.additionalDetails?.documents} />}
 
           </>
         ))}
+       
       </div>
       {/* Property Area Details */}
       {/* <div style={styles.section}>
@@ -1366,14 +1422,14 @@ const ApplicationDetailsContent = ({
 
         {/* Conditional Payment Fields */}
         {estimateData?.Calculation?.[0] && paymentType === "full" && (
-          <div style={styles.row}>
+          <div style={styles.grid}>
             <div style={styles.column}>
               <div style={styles.label}>Amount</div>
               <input
                 placeholder="XX.XX"
                 value={estimateData?.Calculation[0]?.currentYearTax || ""}
                 readOnly
-                style={styles.input}
+                style={styles.input2}
               />
             </div>
 
@@ -1382,7 +1438,7 @@ const ApplicationDetailsContent = ({
               <input
                 value={estimateData?.Calculation[0]?.arrear || ""}
                 readOnly
-                style={styles.input}
+                style={styles.input2}
               />
             </div>
 
@@ -1391,7 +1447,7 @@ const ApplicationDetailsContent = ({
               <input
                 value={estimateData?.Calculation[0]?.taxAmount || ""}
                 readOnly
-                style={styles.input}
+                style={styles.input2}
               />
             </div>
 
@@ -1400,7 +1456,7 @@ const ApplicationDetailsContent = ({
               <input
                 value="0"
                 readOnly
-                style={styles.input}
+                style={styles.input2}
               />
             </div>
           </div>

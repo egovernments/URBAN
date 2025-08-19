@@ -66,7 +66,7 @@ const toYear = getCurrentFinancialYear();
       Assessment: {
         financialYear: toYear,
         propertyId: applicationData?.propertyId,
-        tenantId: "pg.citya",
+        tenantId: tenantId,
         source: "MUNICIPAL_RECORDS",
         channel: "CITIZEN",
         assessmentDate: Date.now(),
