@@ -12,7 +12,6 @@ const SelfDeclaration = ({
   const stateId = Digit.ULBService.getStateId();
   const { data: Menu = {}, isLoading } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "AssessmentYear") || {};
   const { data: OwnerType = {}, isLoadingO } = Digit.Hooks.pt.usePropertyMDMS(stateId, "PropertyTax", "OwnerType") || {};
-  console.log("OwnerTypeMenu", OwnerType)
   const [propertyTypeOptions, setPropertyTypeOptions] = useState([]);
   const [ownerTypeOptions, setOwnerTypeOptions] = useState([]);
   useEffect(() => {
