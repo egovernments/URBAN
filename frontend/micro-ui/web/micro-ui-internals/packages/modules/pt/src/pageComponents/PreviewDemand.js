@@ -351,6 +351,7 @@ const PropertyForm = () => {
                 updateIMC: true,
                 id: proOwnerDetail.address?.id,
                 registryId: proOwnerDetail.registryId,
+                essentialTax: propertyDetails.essentialTax?.code,
                 propertyId: proOwnerDetail?.propertyId,
                 accountId: proOwnerDetail?.accountId,
                 acknowldgementNumber: proOwnerDetail?.acknowldgementNumber,
