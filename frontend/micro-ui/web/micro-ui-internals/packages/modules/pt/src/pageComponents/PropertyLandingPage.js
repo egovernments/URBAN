@@ -332,9 +332,21 @@
 
 // export default PropertyLandingPage;
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const DashboardLayout = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1024 && window.innerWidth > 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsTablet(window.innerWidth <= 1024 && window.innerWidth > 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const styles = {
     container: {
       display: "flex",
@@ -460,13 +472,15 @@ const DashboardLayout = () => {
       color: "#801d46",
     },
     contentArea: {
-      padding: "20px",
+      padding: isMobile ? "10px" : "20px",
     },
     contentHeader: {
       display: "flex",
+      flexDirection: isMobile ? "column" : "row",
       justifyContent: "space-between",
-      alignItems: "center",
+      alignItems: isMobile ? "flex-start" : "center",
       marginBottom: "20px",
+      gap: isMobile ? "15px" : "0",
     },
     filter: {
       backgroundColor: "white",
@@ -476,24 +490,28 @@ const DashboardLayout = () => {
       justifyContent: "space-between",
       padding: "10px 20px",
       boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-      width: "270px",
+      width: isMobile ? "100%" : "270px",
+      maxWidth: "270px",
     },
     statusCards: {
       display: "grid",
-      gridTemplateColumns: "repeat(4, 1fr)",
+      gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
       gap: "20px",
       marginBottom: "20px",
     },
     card: {
       backgroundColor: "white",
       borderRadius: "8px",
-      padding: "20px",
+      padding: isMobile ? "15px" : "20px",
       display: "flex",
+      flexDirection: isMobile ? "column" : "row",
       alignItems: "center",
+      textAlign: isMobile ? "center" : "left",
       boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
     },
     cardContent: {
-      marginLeft: "20px",
+      marginLeft: isMobile ? "0" : "20px",
+      marginTop: isMobile ? "10px" : "0",
     },
     cardContentTitle: {
       fontSize: "25px",
@@ -506,20 +524,21 @@ const DashboardLayout = () => {
     sendback: { color: "#2196f3" },
     actionCards: {
       display: "grid",
-      gridTemplateColumns: "repeat(5, 1fr)",
+      gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : isTablet ? "repeat(3, 1fr)" : "repeat(5, 1fr)",
       gap: "20px",
       marginBottom: "20px",
     },
     actionCard: {
       backgroundColor: "white",
       borderRadius: "8px",
-      padding: "20px",
+      padding: isMobile ? "15px" : "20px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       textAlign: "center",
       boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
       transition: "transform 0.2s",
+      minHeight: isMobile ? "120px" : "auto",
     },
     actionIcon: {
       width: "50px",
