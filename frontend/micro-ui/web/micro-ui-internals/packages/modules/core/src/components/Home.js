@@ -320,7 +320,7 @@ const EmployeeHome = ({ modules }) => {
               { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
               { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
               { url: `${stateInfo?.BAPURL}dashboard?type=1&accessToken=${accessToken}&refreshToken=${refreshToken}&module=marriage`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marriage Certificate", count: 30, className: "sendback", color: "#2196f3" },
-              { url: `${stateInfo?.BAPURL}dashboard?type=1&accessToken=${accessToken}&refreshToken=${refreshToken}&module=rental`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Rental", count: 30, className: "sendback", color: "#4caf50" }
+              { url: `${stateInfo?.BAPURL}dashboard?type=4&accessToken=${accessToken}&refreshToken=${refreshToken}&module=rental`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Rental", count: 30, className: "sendback", color: "#4caf50" }
 
             ].map((card, index) => (
               <div key={index} className="" style={{ backgroundColor: "white", borderRadius: "8px", padding: "20px", display: "flex", alignItems: "center", boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)" }}>

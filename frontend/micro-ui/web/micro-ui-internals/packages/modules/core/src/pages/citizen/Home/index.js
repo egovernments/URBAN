@@ -129,7 +129,20 @@ const Home = () => {
             </div> */}
           </div>
 
-          {/* Status Cards
+      <div className="card-header-view" style={{ marginBottom: 15 }}>
+              <h2
+                style={{
+                  fontWeight: "700",
+                  fontSize: isDesktop ? 24 : isTablet ? 20 : 18,
+                  display: "flex",
+                  alignItems: "center",
+                  margin: 0,
+                }}
+              >
+                <i className="fa-regular fa-star" style={{ marginRight: 10 }}></i>
+                Status Card
+              </h2>
+            </div>
           <div
             className="status-cards home-stats-card"
             style={{
@@ -140,9 +153,7 @@ const Home = () => {
             }}
           >
             {[
-              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
-              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
-              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
+              
               { url: `${stateInfo.BAPURL}dashboard?type=1&accessToken=${accessToken}&refreshToken=${refreshToken}&module=marriage`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marriage Certificate", count: 30, className: "sendback", color: "#2196f3" },
             ].map((card, index) => (
               <a href={card.url} key={index} style={{ textDecoration: "none" }}>
@@ -163,64 +174,24 @@ const Home = () => {
                     height: isMobile ? "auto" : "150px",
                   }}
                 >
-                  Title
+                 
                   <div
                     className="card-title"
                   >
                     {card.label}
                   </div>
 
-                  Left - Due
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      flex: "1 1 40%",
-                      justifyContent: "center",
-                      gap: "8px",
-                      minWidth: "120px",
-                    }}
-                  >
-                    <img src={card.icon} alt="Due" style={{ width: "32px", height: "32px" }} />
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontWeight: "bold", fontSize: "18px" }}>{card.count}</div>
-                      <div style={{ color: "orange", fontWeight: "500" }}>Due</div>
-                    </div>
+                 
+                    <img src={card.icon} alt="Due" style={{ width: "70px", height: "70px" }} />
+                    
                   </div>
 
-                  Divider
-                  {!isMobile && (
-                    <div
-                      style={{
-                        width: "1px",
-                        height: "40px",
-                        backgroundColor: "#77216F",
-                        margin: "0 10px",
-                      }}
-                    ></div>
-                  )}
-
-                  Right - Paid
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      flex: "1 1 40%",
-                      justifyContent: "center",
-                      gap: "8px",
-                      minWidth: "120px",
-                    }}
-                  >
-                    <img src={card.icon} alt="Paid" style={{ width: "32px", height: "32px" }} />
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontWeight: "bold", fontSize: "18px" }}>{card.count}</div>
-                      <div style={{ color: "green", fontWeight: "500" }}>Paid</div>
-                    </div>
-                  </div>
-                </div>
+                 
+                 
+            
               </a>
             ))}
-          </div> */}
+          </div>
 
 
           {/* Favorite Cards */}
