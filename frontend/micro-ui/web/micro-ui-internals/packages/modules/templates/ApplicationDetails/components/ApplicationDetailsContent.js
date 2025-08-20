@@ -1036,7 +1036,7 @@ const ApplicationDetailsContent = ({
 
             {/* Current Year */}
             <div style={styles.column}>
-              <div style={styles.label}>Current Year</div>
+              <div style={styles.label}>Current Year Net Tax</div>
               <input
                 value={estimateData?.Calculation?.[0]?.currentYearTax || ""}
                 readOnly
@@ -1118,16 +1118,7 @@ const ApplicationDetailsContent = ({
 
         {paymentType === "partial" && (
           <div style={styles.row}>
-            <div style={styles.column}>
-              <div style={styles.label}>Amount</div>
-              <input
-                placeholder="XX.XX"
-                value={manualAmount}
-                style={styles.input}
-                onChange={(e) => setManualAmount(e.target.value)}
-              />
-
-            </div>
+           
 
             <div style={styles.column}>
               <div style={styles.label}>Arrear</div>
@@ -1140,7 +1131,17 @@ const ApplicationDetailsContent = ({
             </div>
 
             <div style={styles.column}>
-              <div style={styles.label}>Payments Receivable</div>
+              <div style={styles.label}>Current Year Net Tex</div>
+              <input
+
+                readOnly
+                value={"" || ""}
+                style={styles.input}
+              />
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Previous Balance</div>
               <input
                 value={(() => {
                   const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
@@ -1155,14 +1156,22 @@ const ApplicationDetailsContent = ({
                 style={styles.input}
               />
             </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Partial Amount Payable</div>
+              <input
+                placeholder="XX.XX"
+                value={manualAmount}
+                style={styles.input}
+                onChange={(e) => setManualAmount(e.target.value)}
+              />
+
+            </div>
             <div style={styles.column}></div>
           </div>
         )}
 
       </div>
-
-
-
 
       {/* Payment  */}
       <div style={styles.section}>
@@ -1448,7 +1457,8 @@ const ApplicationDetailsContent = ({
         </div>
 
         <div style={{ marginTop: "30px" }}>
-          {selectedModes.includes("CASH") && (
+          {/* {selectedModes.includes("CASH") && ( */}
+          {(selectedModes.length > 0) && (
             <button
               style={{
                 ...styles.paymentButton,
@@ -1471,6 +1481,9 @@ const ApplicationDetailsContent = ({
         </div>
 
       </div>
+
+
+
 
 
     </div>
@@ -2904,352 +2917,352 @@ export default ApplicationDetailsContent;
 //       </div> */}
 
 
-//       {/* Payment Section */}
-//       <div style={styles.section}>
+      // {/* Payment Section */}
+      // <div style={styles.section}>
 
 
-//         <div style={styles.assessmentStyle}>Payment Amount</div>
+      //   <div style={styles.assessmentStyle}>Payment Amount</div>
 
-//         {/* Payment Type Toggle */}
-//         <div style={{ marginTop: "16px", display: "flex", gap: "20px", alignItems: "center" }}>
-//           <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-//             <input
-//               type="radio"
-//               name="paymentType"
-//               checked={paymentType === "full"}
-//               onChange={() => setPaymentType("full")}
-//             />
-//             <span style={styles.label}>Full Payment</span>
-//           </label>
-//           <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-//             <input
-//               type="radio"
-//               name="paymentType"
-//               checked={paymentType === "partial"}
-//               onChange={() => setPaymentType("partial")}
-//             />
-//             <span style={styles.label}>Partial Payment</span>
-//           </label>
-//         </div>
+      //   {/* Payment Type Toggle */}
+      //   <div style={{ marginTop: "16px", display: "flex", gap: "20px", alignItems: "center" }}>
+      //     <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+      //       <input
+      //         type="radio"
+      //         name="paymentType"
+      //         checked={paymentType === "full"}
+      //         onChange={() => setPaymentType("full")}
+      //       />
+      //       <span style={styles.label}>Full Payment</span>
+      //     </label>
+      //     <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+      //       <input
+      //         type="radio"
+      //         name="paymentType"
+      //         checked={paymentType === "partial"}
+      //         onChange={() => setPaymentType("partial")}
+      //       />
+      //       <span style={styles.label}>Partial Payment</span>
+      //     </label>
+      //   </div>
 
-//         {/* Conditional Payment Fields */}
-//         {estimateData?.Calculation?.[0] && paymentType === "full" && (
-//           <div style={styles.grid}>
-//             <div style={styles.column}>
-//               <div style={styles.label}>Amount</div>
-//               <input
-//                 placeholder="XX.XX"
-//                 value={estimateData?.Calculation[0]?.currentYearTax || ""}
-//                 readOnly
-//                 style={styles.input2}
-//               />
-//             </div>
+      //   {/* Conditional Payment Fields */}
+      //   {estimateData?.Calculation?.[0] && paymentType === "full" && (
+      //     <div style={styles.grid}>
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Amount</div>
+      //         <input
+      //           placeholder="XX.XX"
+      //           value={estimateData?.Calculation[0]?.currentYearTax || ""}
+      //           readOnly
+      //           style={styles.input2}
+      //         />
+      //       </div>
 
-//             <div style={styles.column}>
-//               <div style={styles.label}>Arrear</div>
-//               <input
-//                 value={estimateData?.Calculation[0]?.arrear || ""}
-//                 readOnly
-//                 style={styles.input2}
-//               />
-//             </div>
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Arrear</div>
+      //         <input
+      //           value={estimateData?.Calculation[0]?.arrear || ""}
+      //           readOnly
+      //           style={styles.input2}
+      //         />
+      //       </div>
 
-//             <div style={styles.column}>
-//               <div style={styles.label}>Payments Receivable</div>
-//               <input
-//                 value={estimateData?.Calculation[0]?.taxAmount || ""}
-//                 readOnly
-//                 style={styles.input2}
-//               />
-//             </div>
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Payments Receivable</div>
+      //         <input
+      //           value={estimateData?.Calculation[0]?.taxAmount || ""}
+      //           readOnly
+      //           style={styles.input2}
+      //         />
+      //       </div>
 
-//             <div style={styles.column}>
-//               <div style={styles.label}>Advance Payment</div>
-//               <input
-//                 value="0"
-//                 readOnly
-//                 style={styles.input2}
-//               />
-//             </div>
-//           </div>
-//         )}
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Advance Payment</div>
+      //         <input
+      //           value="0"
+      //           readOnly
+      //           style={styles.input2}
+      //         />
+      //       </div>
+      //     </div>
+      //   )}
 
-//         {paymentType === "partial" && (
-//           <div style={styles.row}>
-//             <div style={styles.column}>
-//               <div style={styles.label}>Amount</div>
-//               <input
-//                 placeholder="XX.XX"
-//                 value={manualAmount}
-//                 style={styles.input}
-//                 onChange={(e) => setManualAmount(e.target.value)}
-//               />
+      //   {paymentType === "partial" && (
+      //     <div style={styles.row}>
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Amount</div>
+      //         <input
+      //           placeholder="XX.XX"
+      //           value={manualAmount}
+      //           style={styles.input}
+      //           onChange={(e) => setManualAmount(e.target.value)}
+      //         />
 
-//             </div>
+      //       </div>
 
-//             <div style={styles.column}>
-//               <div style={styles.label}>Arrear</div>
-//               <input
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Arrear</div>
+      //         <input
 
-//                 readOnly
-//                 value={estimateData?.Calculation[0]?.arrear || ""}
-//                 style={styles.input}
-//               />
-//             </div>
+      //           readOnly
+      //           value={estimateData?.Calculation[0]?.arrear || ""}
+      //           style={styles.input}
+      //         />
+      //       </div>
 
-//             <div style={styles.column}>
-//               <div style={styles.label}>Payments Receivable</div>
-//               <input
-//                 value={(() => {
-//                   const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
-//                   if (manualAmount) {
-//                     return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
-//                   } else {
-//                     const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
-//                     return (currentYearTax + arrear).toFixed(2);
-//                   }
-//                 })()}
-//                 readOnly
-//                 style={styles.input}
-//               />
-//             </div>
-//             <div style={styles.column}></div>
-//           </div>
-//         )}
+      //       <div style={styles.column}>
+      //         <div style={styles.label}>Payments Receivable</div>
+      //         <input
+      //           value={(() => {
+      //             const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
+      //             if (manualAmount) {
+      //               return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
+      //             } else {
+      //               const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
+      //               return (currentYearTax + arrear).toFixed(2);
+      //             }
+      //           })()}
+      //           readOnly
+      //           style={styles.input}
+      //         />
+      //       </div>
+      //       <div style={styles.column}></div>
+      //     </div>
+      //   )}
 
-//         <div style={styles.label}>
-//           Payment Method <span style={{ color: "red" }}>*</span>
-//         </div>
-//         <div style={styles.checkboxGroup}>
+      //   <div style={styles.label}>
+      //     Payment Method <span style={{ color: "red" }}>*</span>
+      //   </div>
+      //   <div style={styles.checkboxGroup}>
 
-//           {["CASH"].map((method) => (
-//             <label key={method}>
-//               <input
-//                 type="radio"
-//                 checked={selectedModes.includes(method)}
-//                 onChange={() => toggleMode(method)}
-//               />{" "}
-//               {method}
-//             </label>
-//           ))}
-//         </div>
-//         {selectedModes.includes("Cheque") && (
-//           <div style={styles.inputGroup}>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 Cheque Issue Date <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="date"
-//                 style={styles.input}
-//                 value={chequeDetails.issueDate}
-//                 onChange={(e) =>
-//                   setChequeDetails({ ...chequeDetails, issueDate: e.target.value })
-//                 }
-//               />
-//             </div>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 Cheque Number <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="Enter Cheque Number"
-//                 style={styles.input}
-//                 value={chequeDetails.chequeNumber}
-//                 onChange={(e) =>
-//                   setChequeDetails({ ...chequeDetails, chequeNumber: e.target.value })
-//                 }
-//               />
-//             </div>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 Account Holder Name <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="Cheque Drawer"
-//                 style={styles.input}
-//                 value={chequeDetails.accountHolder}
-//                 onChange={(e) =>
-//                   setChequeDetails({ ...chequeDetails, accountHolder: e.target.value })
-//                 }
-//               />
-//             </div>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 Bank Name <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="Cheque Bank Name"
-//                 style={styles.input}
-//                 value={chequeDetails.bankName}
-//                 onChange={(e) =>
-//                   setChequeDetails({ ...chequeDetails, bankName: e.target.value })
-//                 }
-//               />
-//             </div>
+      //     {["CASH"].map((method) => (
+      //       <label key={method}>
+      //         <input
+      //           type="radio"
+      //           checked={selectedModes.includes(method)}
+      //           onChange={() => toggleMode(method)}
+      //         />{" "}
+      //         {method}
+      //       </label>
+      //     ))}
+      //   </div>
+      //   {selectedModes.includes("Cheque") && (
+      //     <div style={styles.inputGroup}>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           Cheque Issue Date <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="date"
+      //           style={styles.input}
+      //           value={chequeDetails.issueDate}
+      //           onChange={(e) =>
+      //             setChequeDetails({ ...chequeDetails, issueDate: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           Cheque Number <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="Enter Cheque Number"
+      //           style={styles.input}
+      //           value={chequeDetails.chequeNumber}
+      //           onChange={(e) =>
+      //             setChequeDetails({ ...chequeDetails, chequeNumber: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           Account Holder Name <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="Cheque Drawer"
+      //           style={styles.input}
+      //           value={chequeDetails.accountHolder}
+      //           onChange={(e) =>
+      //             setChequeDetails({ ...chequeDetails, accountHolder: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           Bank Name <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="Cheque Bank Name"
+      //           style={styles.input}
+      //           value={chequeDetails.bankName}
+      //           onChange={(e) =>
+      //             setChequeDetails({ ...chequeDetails, bankName: e.target.value })
+      //           }
+      //         />
+      //       </div>
 
-//           </div>
-//         )}
-//         {selectedModes.includes("POS") && (
-//           <div style={styles.inputGroup}>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 POS reference number <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="POS reference number"
-//                 style={styles.input}
-//                 value={posDetails.referenceNumber}
-//                 onChange={(e) =>
-//                   setPosDetails({ ...posDetails, referenceNumber: e.target.value })
-//                 }
-//               />
-//             </div>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 EDC Bank Name <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="Enter EDC Bank Name"
-//                 style={styles.input}
-//                 value={posDetails.edcBankName}
-//                 onChange={(e) =>
-//                   setPosDetails({ ...posDetails, edcBankName: e.target.value })
-//                 }
-//               />
-//             </div>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 Bank Card Name <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="Name on card"
-//                 style={styles.input}
-//                 value={posDetails.cardName}
-//                 onChange={(e) =>
-//                   setPosDetails({ ...posDetails, cardName: e.target.value })
-//                 }
-//               />
-//             </div>
-//             <div style={styles.inputField}>
-//               <label style={styles.label}>
-//                 Card Last 4 Digit <span style={styles.required}>*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 placeholder="Card last four digit"
-//                 style={styles.input}
-//                 maxLength={4}
-//                 value={posDetails.cardLast4Digit}
-//                 onChange={(e) =>
-//                   setPosDetails({ ...posDetails, cardLast4Digit: e.target.value })
-//                 }
-//               />
-//             </div>
-//           </div>
-//         )}
-//         {showUPIModal && (
-//           <div style={styles.modalOverlay}>
-//             <div style={styles.modalContent}>
-//               <div style={styles.modalHeader}>Confirm Mobile Number</div>
-//               <div style={styles.inputField}>
-//                 <label style={styles.label}>
-//                   Mobile Number <span style={styles.required}>*</span>
-//                 </label>
-//                 <input
-//                   type="text"
-//                   placeholder="+91-xxxxxxxx"
-//                   style={styles.input}
-//                   value={upiMobile}
-//                   onChange={(e) => setUPIMobile(e.target.value)}
-//                 />
-//               </div>
-//               <div style={styles.buttonRow}>
-//                 <button style={styles.cancelButton} onClick={closeUPIModal}>
-//                   Cancel
-//                 </button>
-//                 <button
-//                   style={styles.submitButton}
-//                   onClick={() => {
-//                     // You can add validation or API logic here
-//                     closeUPIModal();
-//                   }}
-//                 >
-//                   Send Request
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         )}
-//         {showConfirmation && (
-//           <div style={styles.modalOverlay}>
-//             <div style={styles.modalContent}>
-//               <div style={styles.checkIcon}>✓</div>
-//               <div style={styles.header}>Payment Collected</div>
-//               <div style={styles.receiptText}>
-//                 Receipt Number
-//                 <br />
-//                 {receiptNumber}
-//               </div>
-//               <div style={styles.receiptText}>
-//                 Total Amount Received
-//                 <br />
-//                 ₹{totalNetTax}
-//               </div>
-//               <button style={styles.homeButton} onClick={printReciept}>
-//                 Download Receipt
-//               </button>
-//               <button style={styles.homeButton} onClick={() => {
-//                 // 🏠 Navigate home or reset form here
-//                 window.location.href = "/digit-ui/employee"; // or use React Router
-//               }}>
-//                 Home
-//               </button>
-//             </div>
-//           </div>)}
-//         <div style={{ marginTop: "20px" }}>
-//           <div style={styles.label}>
-//             Remarks <span style={{ color: "red" }}>*</span>
-//           </div>
-//           <textarea
-//             rows="3"
-//             style={styles.remarkBox}
-//             value={remarks}
-//             onChange={(e) => setRemarks(e.target.value)}
-//           />
-//           {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
-//         </div>
+      //     </div>
+      //   )}
+      //   {selectedModes.includes("POS") && (
+      //     <div style={styles.inputGroup}>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           POS reference number <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="POS reference number"
+      //           style={styles.input}
+      //           value={posDetails.referenceNumber}
+      //           onChange={(e) =>
+      //             setPosDetails({ ...posDetails, referenceNumber: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           EDC Bank Name <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="Enter EDC Bank Name"
+      //           style={styles.input}
+      //           value={posDetails.edcBankName}
+      //           onChange={(e) =>
+      //             setPosDetails({ ...posDetails, edcBankName: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           Bank Card Name <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="Name on card"
+      //           style={styles.input}
+      //           value={posDetails.cardName}
+      //           onChange={(e) =>
+      //             setPosDetails({ ...posDetails, cardName: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //       <div style={styles.inputField}>
+      //         <label style={styles.label}>
+      //           Card Last 4 Digit <span style={styles.required}>*</span>
+      //         </label>
+      //         <input
+      //           type="text"
+      //           placeholder="Card last four digit"
+      //           style={styles.input}
+      //           maxLength={4}
+      //           value={posDetails.cardLast4Digit}
+      //           onChange={(e) =>
+      //             setPosDetails({ ...posDetails, cardLast4Digit: e.target.value })
+      //           }
+      //         />
+      //       </div>
+      //     </div>
+      //   )}
+      //   {showUPIModal && (
+      //     <div style={styles.modalOverlay}>
+      //       <div style={styles.modalContent}>
+      //         <div style={styles.modalHeader}>Confirm Mobile Number</div>
+      //         <div style={styles.inputField}>
+      //           <label style={styles.label}>
+      //             Mobile Number <span style={styles.required}>*</span>
+      //           </label>
+      //           <input
+      //             type="text"
+      //             placeholder="+91-xxxxxxxx"
+      //             style={styles.input}
+      //             value={upiMobile}
+      //             onChange={(e) => setUPIMobile(e.target.value)}
+      //           />
+      //         </div>
+      //         <div style={styles.buttonRow}>
+      //           <button style={styles.cancelButton} onClick={closeUPIModal}>
+      //             Cancel
+      //           </button>
+      //           <button
+      //             style={styles.submitButton}
+      //             onClick={() => {
+      //               // You can add validation or API logic here
+      //               closeUPIModal();
+      //             }}
+      //           >
+      //             Send Request
+      //           </button>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   )}
+      //   {showConfirmation && (
+      //     <div style={styles.modalOverlay}>
+      //       <div style={styles.modalContent}>
+      //         <div style={styles.checkIcon}>✓</div>
+      //         <div style={styles.header}>Payment Collected</div>
+      //         <div style={styles.receiptText}>
+      //           Receipt Number
+      //           <br />
+      //           {receiptNumber}
+      //         </div>
+      //         <div style={styles.receiptText}>
+      //           Total Amount Received
+      //           <br />
+      //           ₹{totalNetTax}
+      //         </div>
+      //         <button style={styles.homeButton} onClick={printReciept}>
+      //           Download Receipt
+      //         </button>
+      //         <button style={styles.homeButton} onClick={() => {
+      //           // 🏠 Navigate home or reset form here
+      //           window.location.href = "/digit-ui/employee"; // or use React Router
+      //         }}>
+      //           Home
+      //         </button>
+      //       </div>
+      //     </div>)}
+      //   <div style={{ marginTop: "20px" }}>
+      //     <div style={styles.label}>
+      //       Remarks <span style={{ color: "red" }}>*</span>
+      //     </div>
+      //     <textarea
+      //       rows="3"
+      //       style={styles.remarkBox}
+      //       value={remarks}
+      //       onChange={(e) => setRemarks(e.target.value)}
+      //     />
+      //     {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
+      //   </div>
 
-//         <div style={{ marginTop: "30px" }}>
-//           {selectedModes.includes("CASH") && (
-//             <button
-//               style={{
-//                 ...styles.paymentButton,
-//                 backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
-//                 cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
-//               }}
-//               onClick={() => handlePayment()}
-//               disabled={billFetch?.totalAmount === 0}
-//             >
-//               Collect Payment
-//             </button>
-//           )}
-//           {selectedModes.includes("EASEBUZZ") && (
-//             <button style={{
-//               ...styles.paymentButton
-//             }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
-//               Pay Now
-//             </button>
-//           )}
-//         </div>
+      //   <div style={{ marginTop: "30px" }}>
+      //     {selectedModes.includes("CASH") && (
+      //       <button
+      //         style={{
+      //           ...styles.paymentButton,
+      //           backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
+      //           cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
+      //         }}
+      //         onClick={() => handlePayment()}
+      //         disabled={billFetch?.totalAmount === 0}
+      //       >
+      //         Collect Payment
+      //       </button>
+      //     )}
+      //     {selectedModes.includes("EASEBUZZ") && (
+      //       <button style={{
+      //         ...styles.paymentButton
+      //       }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
+      //         Pay Now
+      //       </button>
+      //     )}
+      //   </div>
 
-//       </div>
+      //  </div>
 //     </div>
 //   );
 // };
