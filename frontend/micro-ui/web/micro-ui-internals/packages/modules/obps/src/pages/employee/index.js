@@ -67,22 +67,24 @@ const EmployeeApp = ({ path }) => {
   const isFromNoc = window.location.href.includes("digit-ui/employee/obps/bpa/");
   const isRes = window.location.href.includes("obps/response") || window.location.href.includes("obps/stakeholder-response");
   return (
-    <Fragment>
-      {!isFromNoc && !isRes ? <div style={isLocation ? {marginLeft: "10px"} : {}}><OBPSBreadCrumbs location={location} /></div> : null}
-      {isFromNoc ? <BackButton style={{ border: "none", margin: "0", padding: "0" }}>{t("CS_COMMON_BACK")}</BackButton>: null}
-      <Switch>
-        <PrivateRoute path={`${path}/stakeholder-inbox/stakeholder/:id`} component={ApplicationDetail} />
-        <PrivateRoute path={`${path}/search/application/stakeholder/:id`} component={ApplicationDetail} />
-        <PrivateRoute path={`${path}/search/application/bpa/:id`} component={BpaApplicationDetail} />
-        <PrivateRoute path={`${path}/search/application`} component={(props) => <Search {...props} parentRoute={path} />} />
-        <PrivateRoute path={`${path}/inbox/bpa/:id`} component={BpaApplicationDetail} />
-        <PrivateRoute path={`${path}/inbox`} component={(props) => <Inbox {...props} parentRoute={path} />} />
-        <PrivateRoute path={`${path}/stakeholder-inbox`} component={(props) => <StakeholderInbox {...props} parentRoute={path} />} />
-        <PrivateRoute path={`${path}/bpa/:id`} component={BpaApplicationDetail} />
-        <PrivateRoute path={`${path}/response`} component={OBPSResponse} />
-        <PrivateRoute path={`${path}/stakeholder-response`} component={StakeholderResponse} />
-      </Switch>
-    </Fragment>
+    <div className="obps" style={{marginLeft: "-10px"}}>
+      <Fragment>
+        {!isFromNoc && !isRes ? <div style={isLocation ? {marginLeft: "10px"} : {}}><OBPSBreadCrumbs location={location} /></div> : null}
+        {isFromNoc ? <BackButton style={{ border: "none", margin: "0", padding: "0" }}>{t("CS_COMMON_BACK")}</BackButton>: null}
+        <Switch>
+          <PrivateRoute path={`${path}/stakeholder-inbox/stakeholder/:id`} component={ApplicationDetail} />
+          <PrivateRoute path={`${path}/search/application/stakeholder/:id`} component={ApplicationDetail} />
+          <PrivateRoute path={`${path}/search/application/bpa/:id`} component={BpaApplicationDetail} />
+          <PrivateRoute path={`${path}/search/application`} component={(props) => <Search {...props} parentRoute={path} />} />
+          <PrivateRoute path={`${path}/inbox/bpa/:id`} component={BpaApplicationDetail} />
+          <PrivateRoute path={`${path}/inbox`} component={(props) => <Inbox {...props} parentRoute={path} />} />
+          <PrivateRoute path={`${path}/stakeholder-inbox`} component={(props) => <StakeholderInbox {...props} parentRoute={path} />} />
+          <PrivateRoute path={`${path}/bpa/:id`} component={BpaApplicationDetail} />
+          <PrivateRoute path={`${path}/response`} component={OBPSResponse} />
+          <PrivateRoute path={`${path}/stakeholder-response`} component={StakeholderResponse} />
+        </Switch>
+      </Fragment>
+    </div>
   )
 }
 
