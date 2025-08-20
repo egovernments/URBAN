@@ -216,10 +216,6 @@ const BillDetails = ({ paymentRules, businessService }) => {
         // history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`)
       });
     } else if (wrkflow === "WNS") {
-      console.log("REACHED **");
-      console.log(`*** LOG ***`,bill);
-      console.log(`*** LOG ***`,billDetails);
-      console.log(`*** LOG ***`,bill);
       
       history.push(
         `/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=WNS&ConsumerName=${ConsumerName}`,
