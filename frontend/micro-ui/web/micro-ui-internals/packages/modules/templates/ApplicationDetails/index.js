@@ -21,6 +21,7 @@ const ApplicationDetails = (props) => {
   const history = useHistory();
   let { id: applicationNumber } = useParams();
   const [displayMenu, setDisplayMenu] = useState(false);
+  const [propertyResponse, setPropertyResponse] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isEnableLoader, setIsEnableLoader] = useState(false);
@@ -100,7 +101,7 @@ const ApplicationDetails = (props) => {
   const closeWarningPopup = () => {
     setWarningPopUp(false);
   };
-    const units = applicationDetails?.applicationData?.units;
+  const units = applicationDetails?.applicationData?.units;
 
 
   const yearRange = Array.isArray(units) && units.length > 0
@@ -177,7 +178,7 @@ const ApplicationDetails = (props) => {
           setTimeout(closeToast, 5000);
         },
         onSuccess: (data, variables) => {
-          handleAssessment();
+         setPropertyResponse(data)
           sessionStorage.removeItem("WS_SESSION_APPLICATION_DETAILS");
           setIsEnableLoader(false);
           if (isOBPS?.bpa) {
@@ -202,8 +203,8 @@ const ApplicationDetails = (props) => {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_RE_SUBMIT_UPDATE_SUCCESS") })
             } else if (variables?.AmendmentUpdate?.workflow?.action.includes("APPROVE")) {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_APPROVE_UPDATE_SUCCESS") })
-             
-              
+
+
             }
             else if (variables?.AmendmentUpdate?.workflow?.action.includes("REJECT")) {
               setShowToast({ key: "success", label: t("ES_MODIFYWSCONNECTION_REJECT_UPDATE_SUCCESS") })
@@ -223,7 +224,14 @@ const ApplicationDetails = (props) => {
 
     closeModal();
   };
-
+useEffect(() => {
+  console.log("propertyResponse", propertyResponse);
+  if (propertyResponse?.Properties?.[0]?.status === "ACTIVE") {
+    console.log("propertyResponse", propertyResponse);
+    handleAssessment();
+  }
+ 
+}, [propertyResponse]);
   if (isLoading || isEnableLoader) {
     return <Loader />;
   }
