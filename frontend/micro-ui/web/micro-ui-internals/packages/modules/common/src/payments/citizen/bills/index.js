@@ -1,5 +1,5 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useHistory, useRouteMatch, useLocation } from "react-router-dom";
 import Routes from "./routes";
 // import { myBillMap } from "./myBillsKeysMap";
@@ -18,14 +18,14 @@ export const MyBills = ({ stateCode }) => {
   const { url } = useRouteMatch();
   const location = useLocation();
 
-  const { tenantId } = location?.state || Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
+  const { tenantId } = Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
 
   if (!tenantId && !location?.state?.fromSearchResults) {
     history.replace(`/digit-ui/citizen/login`, { from: url });
   }
 
   const { isLoading, data } = Digit.Hooks.useFetchCitizenBillsForBuissnessService(
-    { tenantId,businessService },
+    { businessService },
     { refetchOnMount: true, enabled: !location?.state?.fromSearchResults }
   );
   const { isLoading: mdmsLoading, data: mdmsBillingData } = Digit.Hooks.useGetPaymentRulesForBusinessServices(tenantId);
