@@ -310,8 +310,10 @@ const PropertyForm = () => {
 
     const propertyFYDetails = calculation?.propertyFYDetails || [];
     const taxSummaries = calculation?.propertyFYTaxSummaries || [];
+    console.log("calculation", calculation);
     const ownersDetail = proOwnerDetail?.owners || [];
     const address = proOwnerDetail?.address || {};
+    console.log("proOwnerDetail", proOwnerDetail);
 
     const handleGobackEdit = () => {
         history.push({
@@ -563,7 +565,7 @@ const PropertyForm = () => {
                         </div>
                         <div style={styles.row}>
                             <InputField label="Email" value={owner?.emailId || "N/A"} />
-                            <InputField label="Exemption" value={"0"} />
+                            <InputField label="Exemption" value={owner?.ownerType || "N/A"} />
                             <InputField label="Date" value={owner?.createdDate ? new Date(owner.createdDate).toLocaleDateString("en-GB") : "N/A"} />
                         </div>
                     </React.Fragment>
@@ -576,7 +578,7 @@ const PropertyForm = () => {
                     <table style={styles.table}>
                         <thead>
                             <tr>
-                                {["Year", "Usage Type", "User", "Floor Number", "Construction Type", "Area (Sq feet)", "Rate", "ALV"].map((h) => (
+                                {["Year", "Usage Type", "User", "Floor Number", "Construction Type", "Area (Sq feet)", "Rate", "ALV", "Maintenance Discount", "TPV"].map((h) => (
                                     <th key={h} style={styles.th}>{h}</th>
                                 ))}
                             </tr>
@@ -592,6 +594,8 @@ const PropertyForm = () => {
                                     <td style={styles.td}>{item.area}</td>
                                     <td style={styles.td}>{item.factor}</td>
                                     <td style={styles.td}>{item.alv}</td>
+                                    <td style={styles.td}>{item?.discount}</td>
+                                    <td style={styles.td}>{item?.tpv}</td>
                                 </tr>
                             ))}
                         </tbody>
