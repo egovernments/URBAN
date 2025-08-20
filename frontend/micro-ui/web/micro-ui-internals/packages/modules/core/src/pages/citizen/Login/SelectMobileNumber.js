@@ -11,6 +11,20 @@ import {
 
 // Add CSS for mobile responsiveness
 const mobileStyles = `
+ .citizen-form-step .card{
+ background-color:#f8f9fa;
+  box-shadow:none;
+  width: auto;
+ }
+  .citizen-form-step .card .employee-card-input{
+
+height:48px;
+border-radius:0px 8px 8px 0px;
+ }
+ .citizen-form-step .card .citizen-card-input{
+ height:48px
+ border-radius:8px 0px 0px 8px;
+ }
   .login-container {
     background: linear-gradient(135deg, rgb(74, 111, 165) 0%, rgb(22, 96, 136) 50%, rgb(74, 111, 165) 100%);
     background-size: cover;
@@ -293,10 +307,15 @@ const SelectMobileNumber = ({ t, onSelect, showRegisterLink, mobileNumber, onMob
         </div>
 
         <div className="right-section">
-          <h3 className="welcome-text">Welcome to</h3>
-          <h2 className="portal-title">e-Indore Municipal Corporation (e-IMC)</h2>
-          <p className="portal-subtitle">IMC Citizen</p>
-          <FormStep
+          <h3 className="welcome-text" ><b style={{fontSize:"20px"}}>Welcome to</b>  </h3>
+          <h2 className="portal-title "> <b style={{fontSize:"20px"}}>e-Indore Municipal Corporation (e-IMC)</b>  </h2>
+
+          
+          <div style={{display:"flex",justifyContent:"center",marginTop:"10px"}}><div style={{width:"161px",height:"5px",display:"flex",backgroundColor:"#6B133F",alignItems:"center"}}> </div></div>
+       
+          <p className="portal-title"  style={{marginTop:"10px"}}><b style={{fontSize:"20px"}}>  IMC Citizen</b></p>
+          <div className="citizen-form-step">
+ <FormStep 
             isDisabled={checkDisbaled()}
             onSelect={onSelect}
             config={config}
@@ -304,8 +323,13 @@ const SelectMobileNumber = ({ t, onSelect, showRegisterLink, mobileNumber, onMob
             componentInFront="+91"
             onChange={onMobileChange}
             value={mobileNumber}
+         
           >
           </FormStep>
+
+          </div>
+         
+      
         </div>
       </div>
     </div>

@@ -431,6 +431,7 @@ import {
   BreakLine,
   Card,
   CardSectionHeader,
+  TextInput,
   CardSubHeader,
   CheckPoint,
   ConnectingCheckPoints,
@@ -679,11 +680,15 @@ function ApplicationDetailsContentVerifier({
           <div style={styles.grid}>
             <div style={styles.flex30}>
               <label style={styles.label}>Ownership Type<span style={{ color: "red" }}>*</span></label>
-              <input style={styles.input} value={application?.ownershipCategory} readOnly />
+              <TextInput style={styles.widthInput} value={application?.ownershipCategory} readOnly />
             </div>
             <div style={styles.flex30}>
               <label style={styles.label}>POA Registration Number</label>
-              <input style={styles.input} value={application?.registryId} readOnly />
+              <TextInput style={styles.widthInput} value={application?.registryId} readOnly />
+            </div>
+            <div style={styles.flex30}>
+              {/* <label style={styles.label}>POA Registration Number</label> */}
+              {/* <TextInput style={styles.widthInput} value={application?.registryId} readOnly /> */}
             </div>
           </div>
 
@@ -702,7 +707,7 @@ function ApplicationDetailsContentVerifier({
                     <select
                       value={owner?.salutation}
                       disabled
-                      style={styles.widthInput}
+                      style={styles.dropdown30}
                     >
                       <option>{owner?.salutation}</option>
                     </select>
@@ -720,7 +725,7 @@ function ApplicationDetailsContentVerifier({
                     <select
                       value={owner?.salutation}
                       disabled
-                      style={styles.widthInput}
+                      style={styles.dropdown30}
                     >
                       <option>{owner?.salutationHindi}</option>
 
@@ -734,33 +739,33 @@ function ApplicationDetailsContentVerifier({
                 </div>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Father/Husband Name</label>
-                  <input style={styles.input} value={owner.fatherOrHusbandName} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.fatherOrHusbandName} readOnly />
                 </div>
 
 
                 <div style={styles.flex30}>
                   <label style={styles.label}>Relationship</label>
-                  <input style={styles.input} value={owner.relationship} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.relationship} readOnly />
                 </div>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Email ID</label>
-                  <input style={styles.input} value={owner.emailId} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.emailId} readOnly />
                 </div>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Mobile No.<span style={{ color: "red" }}>*</span></label>
-                  <input style={styles.input} value={owner.mobileNumber} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.mobileNumber} readOnly />
                 </div>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Alternative Mobile No</label>
-                  <input style={styles.input} value={owner.altContactNumber || ""} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.altContactNumber || ""} readOnly />
                 </div>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Aadhar No.<span style={{ color: "red" }}>*</span></label>
-                  <input style={styles.input} value={owner.aadhaarNumber || ""} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.aadhaarNumber || ""} readOnly />
                 </div>
                 <div style={styles.flex30}>
                   <label style={styles.label}>Samagra ID <span style={{ color: "red" }}>*</span></label>
-                  <input style={styles.input} value={owner.samagraId} readOnly />
+                  <TextInput style={styles.widthInput} value={owner.samagraId} readOnly />
                 </div>
               </div>
             </React.Fragment>
@@ -775,12 +780,12 @@ function ApplicationDetailsContentVerifier({
 
           {/* <div style={styles.sectionTitle}>Property Address</div> */}
           <div style={styles.grid}>
-            <div style={styles.flex30}><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.doorNo} readOnly /></div>
-            <div style={styles.flex30}><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.street} readOnly /></div>
-            <div style={styles.flex30}><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.pincode || ""} readOnly /></div>
-            <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.locality?.name} readOnly /></div>
-            <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.ward} readOnly /></div>
-            <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.input} value={address?.zone} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Door/House No.<span style={{ color: "red" }}>*</span></label><TextInput style={styles.input} value={address?.doorNo} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Address<span style={{ color: "red" }}>*</span></label><TextInput style={styles.input} value={address?.street} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Pincode<span style={{ color: "red" }}>*</span></label><TextInput style={styles.input} value={address?.pincode || ""} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><TextInput style={styles.input} value={address?.locality?.name} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><TextInput style={styles.input} value={address?.ward} readOnly /></div>
+            <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><TextInput style={styles.input} value={address?.zone} readOnly /></div>
           </div>
         </div>
       },
@@ -949,6 +954,10 @@ function ApplicationDetailsContentVerifier({
               <label style={styles.label}>Essential Tax</label>
               <input style={styles.input} value={application?.essentialTax} readOnly />
             </div>
+            <div style={styles.flex30}>
+              {/* <label style={styles.label}>Essential Tax</label> */}
+              {/* <input style={styles.input} value={application?.essentialTax} readOnly /> */}
+            </div>
           </div>
           {/* Checkboxes */}
           <div style={{ display: "flex", gap: "20px", marginTop: "12px", marginBottom: "24px" }}>
@@ -967,15 +976,16 @@ function ApplicationDetailsContentVerifier({
           </div>
 
           {/* Self Declaration Section */}
-          <div style={{ ...styles.label, marginBottom: "8px" }}>Self Declaration</div>
+          {/* <div style={{ ...styles.label, marginBottom: "8px" }}>Self Declaration</div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
             <input type="checkbox" checked readOnly style={{ marginTop: "4px" }} />
             <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#333", margin: 0 }}>
               मैं यह सत्यापित करता / करती हूं कि उपरोक्त विवरणी मे दी गयी जानकारी सत्य है। मैने / हमने जिस भवन/ भूमि के संबंध मे विवरणी प्रस्तुत की है उसका मैं स्वामी/अधिभोगी हूं इसमे कोई भी तथ्य छू पाये अथवा गलत नहीं है। नोट - मध्यप्रदेश नगर पालिका (वार्षिक भाड़ा मूल्य का अवधारणा) नियम 1997 के नियम 10 (1) अंतर्गत प्रत्येक भवन स्वामी को स्व निर्धारण विवरणी (Self Assessment Form) के साथ संलग्नक (Attachment) scan कर सब्मिट करें । स्व निर्धारण विवरणी मौके पर सत्यापन के अध्याधीन रहेगी, जाँच मे अंतर पाये जाने पर या अन्य कारण से आवश्यक पाये जाने पर वार्षिक भाड़ा मूल्य का पुर्निर्धारण किया जाएगा व 0 प्रतिशत से अधिक अंतर पाये जाने पर सम्पतिकर के पुर्निर्धारण के अंतर की राशि की पाँच गुना शास्ति ,अधिरोपित की जा सकेगी।
             </p>
-          </div>
+          </div> */}
         </div>
       },
+      
       {
         title:   <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Attachments</h3></div>,
         content:
@@ -985,6 +995,22 @@ function ApplicationDetailsContentVerifier({
             documents={documents}
           />
         // </div>
+      },
+      {
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Self Declaration</h3></div>,
+        content:
+            <div >
+          
+
+          {/* Self Declaration Section */}
+          <div style={{ ...styles.label, marginBottom: "8px" }}>Self Declaration</div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+            <input type="checkbox" checked readOnly style={{ marginTop: "4px" }} />
+            <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#333", margin: 0 }}>
+              मैं यह सत्यापित करता / करती हूं कि उपरोक्त विवरणी मे दी गयी जानकारी सत्य है। मैने / हमने जिस भवन/ भूमि के संबंध मे विवरणी प्रस्तुत की है उसका मैं स्वामी/अधिभोगी हूं इसमे कोई भी तथ्य छू पाये अथवा गलत नहीं है। नोट - मध्यप्रदेश नगर पालिका (वार्षिक भाड़ा मूल्य का अवधारणा) नियम 1997 के नियम 10 (1) अंतर्गत प्रत्येक भवन स्वामी को स्व निर्धारण विवरणी (Self Assessment Form) के साथ संलग्नक (Attachment) scan कर सब्मिट करें । स्व निर्धारण विवरणी मौके पर सत्यापन के अध्याधीन रहेगी, जाँच मे अंतर पाये जाने पर या अन्य कारण से आवश्यक पाये जाने पर वार्षिक भाड़ा मूल्य का पुर्निर्धारण किया जाएगा व 0 प्रतिशत से अधिक अंतर पाये जाने पर सम्पतिकर के पुर्निर्धारण के अंतर की राशि की पाँच गुना शास्ति ,अधिरोपित की जा सकेगी।
+            </p>
+          </div>
+        </div>
       },
        {
         title: <div ><CardSectionHeader style={{ color:"#6B133F" }}>
@@ -1461,6 +1487,38 @@ function ApplicationDetailsContentVerifier({
 }
 
 const styles = {
+    poppinsLabels: {
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 400,
+    fontSize: '16px',
+    lineHeight: '22px',
+    letterSpacing: '0',
+    color: '#282828',
+    // width: "200px"
+  },
+    textBox: {
+    // width: "244.23472595214844px",
+    height: "35px",
+    borderWidth: "0px",
+    borderRadius: "6px",
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347"
+    background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
+  },
+    dropdown30: {
+    width: "30%",
+    height: "35px",
+    borderWidth: "0px",
+    borderRadius: "6px",
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
+  },
   wrapper: {
     maxWidth: "100%",
     margin: "20px auto",
@@ -1532,21 +1590,34 @@ const styles = {
     padding: "24px",
     fontFamily: "Poppins, sans-serif",
   },
-  widthInput: {
-    width: "20%",
-    height: "40px",
-    borderWidth: "1px",
-    borderRadius: "4px",
+  // widthInput: {
+  //   width: "20%",
+  //   height: "40px",
+  //   borderWidth: "1px",
+  //   borderRadius: "4px",
+  //   // border: "1px solid #D9D9D9",
+  //   // boxShadow: "0px 4px 4px 0px #00000040",
+  //   background: "#7575754D",
+  //   // padding: "6px"
+  // },
+    widthInput: {
+    width: "100%",
+    height: "35px",
+    borderWidth: "0px",
+    borderRadius: "6px",
     // border: "1px solid #D9D9D9",
     // boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#7575754D",
+    // background: "#A3BBF347",
+       background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
     // padding: "6px"
   },
   widthInputs: {
     width: "32%",
     minWidth: "300px",
     height: "72px",
-    borderWidth: "1px",
+    borderWidth: "0px",
     border: "1px solid #D9D9D9",
     padding: "10px",
     borderRadius: "4px",
@@ -1594,15 +1665,28 @@ const styles = {
     width: "200px"
   },
   input: {
-    width: "100%",
-    height: "40px",
-    borderWidth: "1px",
-    borderRadius: "4px",
+    // width: "100%",
+    // height: "40px",
+    // borderWidth: "1px",
+    // borderRadius: "4px",
+    // // border: "1px solid #D9D9D9",
+    // // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#7575754D",
+    // padding: "10px",
+    // marginLeft: "1px",
+    
+
+      width: "100%",
+    height: "35px",
+    borderWidth: "0px",
+    borderRadius: "6px",
     // border: "1px solid #D9D9D9",
     // boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#7575754D",
-    padding: "10px",
-    marginLeft: "1px",
+    // background: "#A3BBF347",
+       background: "#D2D2D280",
+    // border: "0.5px solid #D2D2D280",
+    color: "black",
+    padding: "6px"
   },
   flex30: {
     flex: "1 1 30%",
