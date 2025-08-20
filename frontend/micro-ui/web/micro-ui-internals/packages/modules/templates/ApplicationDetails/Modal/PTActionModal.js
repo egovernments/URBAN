@@ -24,7 +24,7 @@ const Close = () => (
 
 const CloseBtn = (props) => {
   return (
-    <div className="icon-bg-secondary" style={{display:"none"}} onClick={props.onClick}>
+    <div className="icon-bg-secondary" style={{ display: "none" }} onClick={props.onClick}>
       <Close />
     </div>
   );
@@ -100,6 +100,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
   }, [file]);
 
   function submit(data) {
+    if (!data?.comments || data?.comments.trim() === "") {
+      setError(t("ES_PT_REMARK_REQUIRED"));  // show error message
+      return; // stop submit
+    }
     if (!action?.showFinancialYearsModal) {
       let workflow = { action: action?.action, comment: data?.comments, businessService, moduleName: moduleCode };
       workflow["assignes"] = action?.isTerminateState || !selectedApprover ? [] : [selectedApprover];
@@ -170,10 +174,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
       actionCancelLabel={t(config.label.cancel)}
       actionCancelOnSubmit={closeModal}
       actionSaveLabel={t(config.label.submit)}
-      actionSaveOnSubmit={() => {}}
+      actionSaveOnSubmit={() => { }}
       isDisabled={!action.showFinancialYearsModal ? PTALoading || (action?.docUploadRequired && !uploadedFile) : !selectedFinancialYear}
       formId="modal-action"
-      
+
     >
       {financialYearsLoading ? (
         <Loader />
@@ -186,9 +190,10 @@ const ActionModal = ({ t, action, tenantId, state, id, closeModal, submitAction,
           onSubmit={submit}
           defaultValues={defaultValues}
           formId="modal-action"
-          // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
+        // isDisabled={!action.showFinancialYearsModal ? PTALoading || (!action?.isTerminateState && !selectedApprover?.uuid) : !selectedFinancialYear}
         />
       )}
+      {error && <div className="error-message" style={{color:"red",paddingLeft:"38px"}}>{t("Remark is required")}</div>}
     </Modal>
   ) : (
     <Loader />

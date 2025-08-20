@@ -578,7 +578,7 @@ const PropertyForm = () => {
                     <table style={styles.table}>
                         <thead>
                             <tr>
-                                {["Year", "Usage Type", "User", "Floor Number", "Construction Type", "Area (Sq feet)", "Rate", "ALV", "Maintenance Discount", "TPV"].map((h) => (
+                                {["Year", "Usage Type", "User", "Floor Number", "Construction Type", "Area (Sq feet)", "Rate", "ALV", "Maintenance Discount%", "TPV"].map((h) => (
                                     <th key={h} style={styles.th}>{h}</th>
                                 ))}
                             </tr>
@@ -654,7 +654,7 @@ const PropertyForm = () => {
                 <div style={styles.modalOverlay}>
                     <div style={styles.modalContent}>
                         <p style={{ fontSize: "16px", color: "#3E3E3E", marginBottom: "30px" }}>
-                            Are you sure you want to submit this form?
+                            Are you sure you want to submit this form? Once submitted, you will not be able to make any changes.
                         </p>
                         <div style={styles.modalButtonContainer}>
                             <button style={styles.modalButton} onClick={() => setShowConfirmPopup(false)}>

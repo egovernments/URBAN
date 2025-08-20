@@ -200,7 +200,7 @@ const EmployeeHome = ({ modules }) => {
 
   // Filter favorites based on role
   const filteredFavorites = allFavorites.filter(fav => {
-    if (fav.label === "Property Cash Desk" && (roles.includes("PT_APPROVER") || roles.includes("PT_FIELD_INSPECTOR"))) {
+    if (fav.label === "Property Register" && (roles.includes("PT_APPROVER") || roles.includes("PT_CEMP"))) {
       return false; // Hide this card
     }
     return true;
@@ -316,9 +316,7 @@ const EmployeeHome = ({ modules }) => {
             }}
           >
             {[
-              { url: "/digit-ui/employee/pt/PropertyLandingPage", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property", count: 100, className: "approved", color: "#4caf50" },
-              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order.svg", label: "Water", count: 50, className: "pending", color: "#ff9800" },
-              { url: "", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Send Back", count: 30, className: "sendback", color: "#2196f3" },
+              { url: "/digit-ui/employee/pt/PropertyLandingPage", icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Property Tax", count: 100, className: "approved", color: "#4caf50" },
               { url: `${stateInfo?.BAPURL}dashboard?type=1&accessToken=${accessToken}&refreshToken=${refreshToken}&module=marriage`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Icon_Order%20(1).svg", label: "Marriage Certificate", count: 30, className: "sendback", color: "#2196f3" },
               { url: `${stateInfo?.BAPURL}dashboard?type=4&accessToken=${accessToken}&refreshToken=${refreshToken}&module=rental`, icon: "https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/Group%20188.svg", label: "Rental", count: 30, className: "sendback", color: "#4caf50" }
 
@@ -367,7 +365,7 @@ const EmployeeHome = ({ modules }) => {
           </div> */}
           <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "20px", fontFamily: "Barlow" }}>
             {/* Application Details Card */}
-            {/* <div
+            <div
               style={{
                 flex: 1,
                 background: "white",
@@ -404,10 +402,10 @@ const EmployeeHome = ({ modules }) => {
                   <Bar dataKey="Rejected" fill="#EF4C60" />
                 </BarChart>
               </ResponsiveContainer>
-            </div> */}
+            </div>
 
             {/* Collection Card */}
-            {/* <div
+            <div
               style={{
                 flex: 1,
                 background: "white",
@@ -442,7 +440,7 @@ const EmployeeHome = ({ modules }) => {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-            </div> */}
+            </div>
           </div>
           {/* Favorite Cards */}
           <div className="favorite-card">
