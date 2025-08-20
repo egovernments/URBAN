@@ -66,7 +66,7 @@ const useBPAInboxV1 = ({ tenantId, filters, config = {} }) => {
           locality: `${application.businessObject?.tenantId
             ?.toUpperCase()
             ?.split(".")
-            ?.join("_")}_REVENUE_${application.businessObject?.landInfo?.address?.locality?.code?.toUpperCase()}`,
+            ?.join("_")}_REVENUE_${application.businessObject?.locality || application.businessObject?.landInfo?.address?.locality?.code?.toUpperCase()}`,
           status: application?.ProcessInstance?.state?.state,
           state: application?.ProcessInstance?.state?.state,
           owner: application?.ProcessInstance?.assignes?.[0]?.name || "NA",
