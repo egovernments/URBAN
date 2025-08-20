@@ -22,7 +22,7 @@ height:48px;
 border-radius:0px 8px 8px 0px;
  }
  .citizen-form-step .card .citizen-card-input{
- height:48px
+ height:48px;
  border-radius:8px 0px 0px 8px;
  }
   .login-container {
