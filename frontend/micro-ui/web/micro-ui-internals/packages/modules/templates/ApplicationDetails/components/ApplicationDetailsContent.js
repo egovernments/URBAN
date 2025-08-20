@@ -1,3 +1,1515 @@
+import {
+  Card,
+  Dropdown,
+  Loader,
+  SubmitBar
+} from "@egovernments/digit-ui-react-components";
+import { values } from "lodash";
+import React, { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import PropertyDocuments from "./PropertyDocuments";
+import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
+import TLCaption from "./TLCaption";
+import { CollectPayment } from "@egovernments/digit-ui-module-common/src/payments/employee/payment-collect";
+import { useQueryClient } from "react-query";
+
+
+const styles = {
+  container: { fontFamily: "Arial", padding: "20px", fontSize: "14px" },
+  section: {
+    marginBottom: "20px", marginTop: "20px", backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
+    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
+    padding: "16px",
+    borderRadius: "12px",
+  },
+  row: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "10px",
+    marginBottom: "10px"
+  },
+  column: { flex: "1 1 200px", marginRight: "10px", marginBottom: "10px" },
+
+  columnBreak: {
+    flexBasis: "100%", // forces new row
+    height: 0,
+  },
+  label: {
+    marginBottom: "4px", fontFamily: "Poppins",
+    fontWeight: 400,
+    fontSize: "14px",
+    lineHeight: "22px",
+    letterSpacing: "0%",
+    color: "#282828"
+  },
+  // input: {
+  //   width: "100%",
+  //   padding: "6px",
+  //   border: "1px solid #ccc",
+  //   borderRadius: "4px",
+  //   fontSize: "12px",
+  //   backgroundColor: "#f4f4f4",
+  // },
+  button: {
+    padding: "8px 16px",
+    marginRight: "10px",
+    border: "none",
+    borderRadius: "4px",
+    backgroundColor: "#e0d4fa",
+    color: "#333",
+    cursor: "pointer",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    marginBottom: "20px",
+  },
+  th: {
+    backgroundColor: "#6b133f",
+    padding: "8px",
+    border: "1px solid #ccc",
+    textAlign: "left",
+    fontFamily: "Poppins",
+    fontWeight: 400,
+    fontSize: "14px",
+    lineHeight: "175%",
+    letterSpacing: "-1%",
+    verticalAlign: "middle",
+    color: "white"
+  },
+  td: {
+    padding: "8px",
+    border: "1px solid #ccc",
+    backgroundColor: "#f9f9f9",
+    fontFamily: "Poppins",
+    fontWeight: 400,
+    fontSize: "13px",
+    lineHeight: "100%",
+    letterSpacing: "1%",
+    verticalAlign: "middle",
+    color: "#323C47"
+  },
+  checkboxGroup: {
+    display: "flex", gap: "15px", marginLeft: "10px", fontFamily: "Poppins, sans-serif",
+    fontWeight: 500,
+    fontSize: "16px",
+    lineHeight: "100%",
+    letterSpacing: "0%", color: "#6D6969"
+  },
+  remarkBox: {
+    width: "32%",
+    minWidth: "300px",
+    height: "72px",
+    borderRadius: "4px",
+    borderWidth: "1px",
+    border: "1px solid #D9D9D9",
+    padding: "10px",
+    boxShadow: "0px 4px 4px 0px #00000040",
+    marginLeft: "10px"
+  },
+  paymentButton: {
+    padding: "10px 20px",
+    backgroundColor: "#6b133f",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    // float: "right",
+    display: "flex",
+    marginLeft: "auto",
+  },
+  inputGroup: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+    marginTop: "10px",
+    marginLeft: "10px",
+  },
+  inputField: {
+    flex: "1 1 200px",
+    display: "flex",
+    flexDirection: "column",
+  },
+
+  required: {
+    color: "red",
+  },
+
+  input: {
+    width: "100%",
+    height: "40px",
+    borderRadius: "4px",
+    boxShadow: "0px 4px 4px 0px #00000040",
+    padding: "6px",
+    fontSize: "12px",
+  },
+
+  input2: {
+    width: "100%",
+    height: "40px",
+    borderRadius: "4px",
+    boxShadow: "0px 4px 4px 0px #00000040",
+    padding: "6px",
+    fontSize: "12px",
+
+  },
+
+  totalAmount: {
+    width: "100%",
+    height: "40px",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderColor: "rgba(185, 185, 185, 0.6)",
+    boxShadow: "0px 4px 4px 0px #00000040",
+    padding: "6px",
+    fontSize: "12px",
+
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: "2rem",
+    borderRadius: "8px",
+    minWidth: "400px",
+  },
+  modalHeader: {
+    color: "blue",
+    fontWeight: "bold",
+    fontSize: "18px",
+    marginBottom: "1rem",
+    textDecoration: "underline",
+  },
+  buttonRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "1rem",
+  },
+  cancelButton: {
+    border: "1px solid red",
+    color: "red",
+    padding: "8px 16px",
+    borderRadius: "4px",
+    backgroundColor: "white",
+    cursor: "pointer",
+  },
+  submitButton: {
+    backgroundColor: "indigo",
+    color: "white",
+    padding: "8px 16px",
+    borderRadius: "4px",
+    border: "none",
+    cursor: "pointer",
+  },
+  checkIcon: {
+    width: "60px",
+    height: "60px",
+    borderRadius: "50%",
+    backgroundColor: "black",
+    border: "3px solid green",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto 1rem",
+    fontSize: "28px",
+    color: "white",
+  },
+  header: {
+    fontWeight: "bold",
+    fontSize: "18px",
+    marginBottom: "8px",
+    textAlign: "center"
+  },
+  receiptText: {
+    color: "gray",
+    fontSize: "14px",
+    textAlign: "center"
+  },
+  homeButton: {
+    marginTop: "20px",
+    padding: "8px 20px",
+    backgroundColor: "#6b133f",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "flex"
+  },
+  assessmentStyle: {
+    // background: '#6b133f',
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 'bold',
+    fontSize: '26px',
+    lineHeight: '100%',
+    letterSpacing: '0px',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#6b133f',
+    textDecorationThickness: '1px',
+    color: '#6b133f',
+    marginBottom: '20px',
+    padding: '14px',
+    textAlign: "left",
+
+  },
+  grid: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+  },
+  flex30: {
+    flex: "1 1 30%",
+    display: "flex",
+    flexDirection: "column",
+
+    position: "relative",
+    minHeight: "90px",
+  },
+  textBox: {
+    // width: "244.23472595214844px",
+    height: "35px",
+    borderWidth: "1px",
+    borderRadius: "6px",
+    // border: "1px solid #D9D9D9",
+    // boxShadow: "0px 4px 4px 0px #00000040",
+    // background: "#A3BBF347"
+    background: "#D2D2D280",
+    border: "0.5px solid #D2D2D280",
+    color: "black"
+  }
+};
+
+
+
+
+const ApplicationDetailsContent = ({
+  applicationDetails,
+  workflowDetails,
+  isDataLoading,
+  applicationData,
+  businessService,
+  timelineStatusPrefix,
+  showTimeLine = true,
+  statusAttribute = "status",
+  paymentsList,
+  oldValue,
+  isInfoLabel = false
+}) => {
+
+  const [printing, setPrinting] = useState(false);
+  const [manualAmount, setManualAmount] = useState("");
+  const [showAssessmentPop, setShowAssesmentPop] = useState(false);
+  const [selectedModes, setSelectedModes] = useState([]);
+  const [estimateData, setEstimateData] = useState("");
+  const [remarks, setRemarks] = useState("");
+
+  const [chequeDetails, setChequeDetails] = useState({
+    issueDate: "",
+    chequeNumber: "",
+    accountHolder: "",
+    bankName: "",
+  });
+  const [posDetails, setPosDetails] = useState({
+    referenceNumber: "",
+    edcBankName: "",
+    cardName: "",
+    cardLast4Digit: "",
+  });
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showUPIModal, setShowUPIModal] = useState(false);
+  const [upiMobile, setUPIMobile] = useState("");
+  const [paymentType, setPaymentType] = useState("full");
+  const [billFetch, setBillFetch] = useState(null);
+  const [billFopayment, setBillFopayment] = useState(null);
+
+  const [formErrors, setFormErrors] = useState("");
+  const [selectedMode, setSelectedMode] = useState("");
+  const [receiptNumber, setReceiptNumber] = useState("");
+  const stateId = Digit.ULBService.getStateId();
+  const tenantIdUniq = Digit.ULBService.getCurrentTenantId();
+  const billData = workflowDetails?.data?.actionState?.nextActions?.[1].Bill;
+  const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantIdUniq);
+  const toggleMode = (mode) => {
+    // Always set only the current mode
+    setSelectedModes([mode]);
+    setSelectedMode(mode);
+    // Show UPI modal only when UPI is newly selected
+    if (mode === "UPI") {
+      setShowUPIModal(true);
+    } else {
+      setShowUPIModal(false);
+    }
+  };
+
+  const closeUPIModal = () => {
+    setShowUPIModal(false);
+  };
+
+  const backToNew = () => {
+    // setShowPreviewButton(false);
+    setShowAssesmentPop(false);
+  }
+  const estimatePop = () => {
+    setShowAssesmentPop(true);
+  };
+
+  const units = applicationDetails?.applicationData?.units;
+
+  const formatYearRange = (fromYear, toYear) => {
+    if (fromYear === toYear) return fromYear;
+
+    const start = fromYear?.split("-")[0];         // "2023"
+    const end = toYear?.split("-")[1];             // "25"
+    return `${start}-${end}`;                      // "2023-25"
+  };
+
+  const yearRange = Array.isArray(units) && units.length > 0
+    ? units[0].toYear
+    : "N/A";
+
+  const { t } = useTranslation();
+  let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
+
+  const tenantId = userInfo1?.tenantId;
+  const {
+    isLoading: ptCalculationEstimateLoading,
+    data: ptCalculationEstimateData,
+    mutate: ptCalculationEstimateMutate,
+    error,
+  } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
+  const handleEstimate = () => {
+    const payload = {
+      Assessment: {
+        financialYear: yearRange,
+        propertyId: applicationData?.propertyId,
+        tenantId: tenantId,
+        source: "MUNICIPAL_RECORDS",
+        channel: "CITIZEN",
+        assessmentDate: Date.now(),
+      },
+      RequestInfo: {
+        apiId: "Rainmaker",
+        authToken: userInfo1?.authToken || "default-token",
+        userInfo: {
+          id: userInfo1?.id || 1,
+          uuid: userInfo1?.uuid || "default-uuid",
+          userName: userInfo1?.userName || "defaultuser",
+          name: userInfo1?.name || "Default User",
+          mobileNumber: userInfo1?.mobileNumber || "9999999999",
+          emailId: userInfo1?.emailId || "default@example.com",
+          locale: userInfo1?.locale || "en_IN",
+          type: userInfo1?.type || "CITIZEN",
+          roles: userInfo1?.roles || [],
+          active: userInfo1?.active !== false,
+          tenantId: userInfo1?.tenantId || "pg.citya",
+          permanentCity: userInfo1?.permanentCity || "pg.citya"
+        },
+        msgId: "1749797151521|en_IN",
+        plainAccessRequest: {}
+      }
+    };
+
+    ptCalculationEstimateMutate(payload, {
+      onSuccess: (data) => {
+
+        setEstimateData(data);
+        // fetchBill()
+      },
+      onError: (error) => {
+        alert("Estimate error:", error);
+      },
+    });
+  };
+  const handleAssessment = () => {
+    const payload = {
+      Assessment: {
+        financialYear: yearRange,
+        propertyId: applicationData?.propertyId,
+        tenantId: tenantId,
+        source: "MUNICIPAL_RECORDS",
+        channel: "CFC_COUNTER",
+        assessmentDate: Date.now(),
+      },
+      RequestInfo: {
+        apiId: "Rainmaker",
+        authToken: userInfo1?.authToken || "default-token",
+        userInfo: {
+          id: userInfo1?.id || 1,
+          uuid: userInfo1?.uuid || "default-uuid",
+          userName: userInfo1?.userName || "defaultuser",
+          name: userInfo1?.name || "Default User",
+          mobileNumber: userInfo1?.mobileNumber || "9999999999",
+          emailId: userInfo1?.emailId || "default@example.com",
+          locale: userInfo1?.locale || "en_IN",
+          type: userInfo1?.type || "CITIZEN",
+          roles: userInfo1?.roles || [],
+          active: userInfo1?.active !== false,
+          tenantId: userInfo1?.tenantId || "pg.citya",
+          permanentCity: userInfo1?.permanentCity || "pg.citya"
+        },
+        msgId: "1749797151521|en_IN",
+        plainAccessRequest: {}
+      }
+    };
+
+    assessmentMutate(payload, {
+      onSuccess: (data, variables) => {
+        const assessments = data?.Assessments || [];
+        if (assessments.length > 0) {
+          const latestAssessment = assessments[0];
+          const status = latestAssessment?.status || "UNKNOWN";
+
+          // Only fetch bill if assessment is ACTIVE or APPROVED
+          if (status === "ACTIVE" || status === "APPROVED") {
+            fetchBill(); // Call fetchBill only if valid
+          } else {
+            console.warn("Assessment status is not valid for billing:", status);
+          }
+        } else {
+          console.warn("No assessments returned in response");
+        }
+      },
+      onError: (error, variables) => {
+        // 
+      }
+
+    });
+  }
+
+  useEffect(() => {
+    if (yearRange && applicationData?.propertyId) {
+      handleEstimate();
+      handleAssessment();
+    }
+  }, [yearRange, applicationData?.propertyId]);
+
+  const handlePayment = async () => {
+    const tenantId = billData?.tenantId || "pg.citya";
+    const consumerCode = applicationData?.propertyId;
+    const selectedPaymentMode = selectedMode; // Make sure this is coming from your UI
+    if (!remarks.trim()) {
+      setFormErrors("Remarks are required.");
+      return;
+    }
+    try {
+      // ✅ Fetch fresh bill before processing
+      const billResponse = await Digit.PTService.fetchPaymentDetails({
+        tenantId,
+        consumerCodes: consumerCode,
+      });
+
+      const BillList = billResponse?.Bill || [];
+
+      // ❌ Abort if bill is already paid or not found
+      if (!BillList.length) {
+        alert("❌ This bill has already been paid or is not valid.");
+        return;
+      }
+
+      const bill = BillList[0]; // fresh bill
+
+      // ✅ Construct receipt request
+      const receiptRequest = {
+        Payment: {
+          mobileNumber: bill?.mobileNumber,
+          paymentDetails: [
+            {
+              billId: bill.id,
+              businessService: bill.businessService,
+              totalDue: bill.totalAmount,
+              totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
+                ? parseFloat(manualAmount)
+                : bill.totalAmount,
+              remarks: remarks,
+            },
+          ],
+          tenantId,
+          totalDue: bill.totalAmount,
+          totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
+            ? parseFloat(manualAmount)
+            : bill.totalAmount,
+          paymentMode: selectedPaymentMode,
+          payerName: bill?.payerName || "Default User",
+          paidBy: "OWNER",
+        },
+        RequestInfo: {
+          apiId: "Rainmaker",
+          authToken: userInfo1?.authToken || "default-token",
+          userInfo: {
+            id: userInfo1?.id || 1,
+            uuid: userInfo1?.uuid || "default-uuid",
+            userName: userInfo1?.userName || "defaultuser",
+            name: userInfo1?.name || "Default User",
+            mobileNumber: userInfo1?.mobileNumber || "9999999999",
+            emailId: userInfo1?.emailId || "default@example.com",
+            locale: userInfo1?.locale || "en_IN",
+            type: userInfo1?.type || "CITIZEN",
+            roles: userInfo1?.roles || [],
+            active: userInfo1?.active !== false,
+            tenantId: userInfo1?.tenantId || tenantId,
+            permanentCity: userInfo1?.permanentCity || tenantId
+          },
+          msgId: "1749797151521|en_IN",
+          plainAccessRequest: {}
+        }
+      };
+
+      // ✅ Make the API call
+      const response = await Digit.PaymentService.createReciept(tenantId, receiptRequest);
+
+      // ✅ Invalidate cache & show confirmation
+      // queryClient.invalidateQueries();
+      const receiptNumber = response?.Payments?.[0]?.paymentDetails?.[0]?.receiptNumber;
+      setReceiptNumber(receiptNumber);
+      setShowConfirmation(true);
+      fetchBill(); // Refresh bill data after payment
+      setFormErrors("");
+    } catch (error) {
+      const errorMsg = error?.response?.data?.Errors?.map((e) => e?.code)?.join(", ");
+      // console.error("❌ Error creating receipt:", errorMsg || error);
+      // alert(`Failed to create receipt: ${errorMsg || "Unknown error"}`);
+      setFormErrors("");
+    }
+  };
+  const fetchBill = async () => {
+    if (!applicationData?.propertyId) return;
+
+    try {
+      const billResponse = await Digit.PTService.fetchPaymentDetails({
+        tenantId,
+        consumerCodes: applicationData?.propertyId,
+      });
+
+      const BillList = billResponse?.Bill || [];
+      if (!BillList.length) {
+        // alert("❌ This bill has already been paid or is not valid.");
+        setBillFetch(null);
+        return;
+      }
+      setBillFopayment(billResponse); // set fresh bill
+      setBillFetch(BillList[0]); // set fresh bill
+    } catch (err) {
+      // console.error("Error fetching bill:", err);
+    }
+  };
+
+
+
+  const { state = {} } = useLocation();
+  const userInfo = Digit.UserService.getUser();
+  const [showToast, setShowToast] = useState(null);
+  const { tenantId: __tenantId, authorization, workflow: wrkflow, consumerCode: connectionNo } = Digit.Hooks.useQueryParams();
+
+  const paymentAmount = state?.paymentAmount;
+  // const history = useHistory();
+  const { pathname, search } = useLocation();
+  // const menu = ["AXIS"];
+  let { consumerCode } = useParams();
+  const tenantIdEs = state?.tenantId || __tenantId || Digit.ULBService.getCurrentTenantId();
+  const propertyId = state?.propertyId;
+  const stateTenant = Digit.ULBService.getStateId();
+  // const { control, handleSubmit } = useForm();
+  const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
+  const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment(
+    { tenantId: tenantIdEs, consumerCode: wrkflow === "WNS" ? connectionNo : consumerCode, businessService },
+    {}
+  );
+  if (window.location.href.includes("ISWSCON") || wrkflow === "WNS") consumerCode = decodeURIComponent(consumerCode);
+  if (wrkflow === "WNS") consumerCode = stringReplaceAll(consumerCode, "+", "/")
+  useEffect(() => {
+    if (billFopayment?.Bill && billFopayment.Bill.length == 0) {
+      setShowToast({ key: true, label: "CS_BILL_NOT_FOUND" });
+    }
+  }, [billFopayment]);
+  useEffect(() => {
+    localStorage.setItem("BillPaymentEnabled", "true");
+  }, []);
+  const { name, mobileNumber } = state;
+
+  const billDetails = billFopayment?.Bill ? billFopayment?.Bill[0] : {};
+  const handlePaymentMethod = async () => {
+    if (!remarks.trim()) {
+      setFormErrors("Remarks are required.");
+      return;
+    }
+    const consumerCode = applicationData?.propertyId;
+    const filterData = {
+      Transaction: {
+        tenantId: billDetails?.tenantId,
+        txnAmount: paymentAmount || billDetails.totalAmount,
+        module: businessService,
+        billId: billDetails.id,
+        consumerCode: consumerCode,
+        productInfo: "Common Payment",
+        gateway: selectedMode,
+        taxAndPayments: [
+          {
+            billId: billDetails.id,
+            amountPaid: billDetails.totalAmount,
+          },
+        ],
+        user: {
+          name: billDetails?.payerName,
+          mobileNumber: billDetails?.mobileNumber,
+          tenantId: billDetails?.tenantId,
+        },
+        // success
+        callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
+          ? `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`
+          : `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`,
+        additionalDetails: {
+          isWhatsapp: false,
+        },
+      },
+      RequestInfo: {
+        apiId: "Rainmaker",
+        authToken: userInfo1?.authToken || "default-token",
+        userInfo: {
+          id: userInfo1?.id || 1,
+          uuid: userInfo1?.uuid || "default-uuid",
+          userName: userInfo1?.userName || "defaultuser",
+          name: userInfo1?.name || "Default User",
+          mobileNumber: userInfo1?.mobileNumber || "9999999999",
+          emailId: userInfo1?.emailId || "default@example.com",
+          locale: userInfo1?.locale || "en_IN",
+          type: userInfo1?.type || "CITIZEN",
+          roles: userInfo1?.roles || [],
+          active: userInfo1?.active !== false,
+          tenantId: userInfo1?.tenantId || tenantId,
+          permanentCity: userInfo1?.permanentCity || tenantId
+        },
+        msgId: "1749797151521|en_IN",
+        plainAccessRequest: {}
+      }
+    };
+
+    try {
+      const data = await Digit.PaymentService.createCitizenReciept(billDetails?.tenantId, filterData);
+      const redirectUrl = data?.Transaction?.redirectUrl;
+      window.location = redirectUrl;
+      setFormErrors("");
+    } catch (error) {
+      let messageToShow = "CS_PAYMENT_UNKNOWN_ERROR_ON_SERVER";
+      if (error.response?.data?.Errors?.[0]) {
+        setFormErrors("");
+        const { code, message } = error.response?.data?.Errors?.[0];
+        messageToShow = code;
+      }
+      setFormErrors("");
+      setShowToast({ key: true, label: t(messageToShow) });
+    }
+  };
+  const totalNetTax = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.reduce(
+    (acc, curr) => acc + (curr.netTax || 0),
+    0
+  );
+  const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
+    select: (data) =>
+      data["common-masters"]?.uiCommonPay?.filter(({ code }) => businessService?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
+  });
+  const printReciept = async () => {
+    const tenantId = Digit.ULBService.getCurrentTenantId();
+    const state = Digit.ULBService.getStateId();
+    const payments = await Digit.PaymentService.getReciept(tenantId, businessService, { receiptNumbers: receiptNumber });
+    let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
+
+    if (!payments.Payments[0]?.fileStoreId) {
+      const paymentsWithCalculation = payments.Payments.map(payment => ({
+        ...payment,
+        Calculation: estimateData?.Calculation?.[0] || {},
+      }));
+      response = await Digit.PaymentService.generatePdf(state, { Payments: paymentsWithCalculation }, generatePdfKey);
+    }
+    const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
+    window.open(fileStore[response.filestoreIds[0]], "_blank");
+  };
+
+
+  if (assessmentLoading) {
+    return <Loader />;
+  }
+  return (
+
+    <div>
+      {/* Consumer Details */}
+      <div style={styles.section}>
+        <div style={styles.assessmentStyle}>Consumer Details</div>
+
+        <div style={styles.grid}>
+          <div style={styles.flex30}>
+            <div style={styles.label}>Owner Name(English)</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.owners?.[0]?.name || "N/A"}
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.flex30}>
+            <div style={styles.label}>Property ID</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.propertyId || "N/A"}
+              style={styles.input}
+            />
+          </div>
+
+
+          <div style={styles.flex30}>
+            <div style={styles.label}>Mobile No.</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.owners?.[0]?.mobileNumber || "N/A"}
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.flex30}>
+            <div style={styles.label}>Exemption</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.owners?.[0]?.ownerType === "BPL" ? "BPL" : "N/A"}
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.flex30}>
+            <div style={styles.label}>Ward</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.address?.ward || "N/A"}
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.flex30}>
+            <div style={styles.label}>Zone</div>
+            <input type="text" readOnly value={applicationData?.address?.zone || "N/A"} style={styles.input} />
+          </div>
+
+          <div style={styles.flex30}>
+            <div style={styles.label}>Colony</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.address?.locality?.name || "N/A"}
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.flex30}>
+            <div style={styles.label}>Road Factor</div>
+            <input type="text" readOnly value={applicationData?.units?.[0]?.roadFactor} style={styles.input} />
+          </div>
+
+
+          <div style={styles.flex30}>
+            <div style={styles.label}>Address</div>
+            <input
+              type="text"
+              readOnly
+              value={applicationData?.address?.doorNo + ", " + applicationData?.address?.street || "N/A"}
+              style={styles.input}
+            />
+          </div>
+
+        </div>
+      </div>
+
+      <div style={styles.section}>
+
+        {applicationDetails?.applicationDetails?.map((detail, index) => (
+          <>
+
+
+            {detail?.additionalDetails?.documents && <PropertyDocuments documents={detail?.additionalDetails?.documents} />}
+
+          </>
+        ))}
+
+      </div>
+      {/* Property Area Details */}
+      {/* <div style={styles.section}>
+        <div style={styles.assessmentStyle}>Property Area Details</div>
+        <div style={{ overflowX: 'auto', width: '100%' }}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                {[
+                  "Usage Type",
+                  "Usage Factor",
+                  "Floor",
+                  "Construction Type",
+                  "Area (Sq feet)",
+                  "Rate",
+                  "ALV",
+                  "Discount (%)",
+                
+                ].map((head, i) => (
+                  <th key={i} style={styles.th}>
+                    {head}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {estimateData?.Calculation?.[0]?.propertyFYDetails?.map((detail, index) => (
+                <tr key={index}>
+                  <td style={styles.td}>{detail.usageType || "N/A"}</td>
+                  <td style={styles.td}>{detail.usageFactor || "1.0"}</td>
+                  <td style={styles.td}>{detail.floorNo || "N/A"}</td>
+                  <td style={styles.td}>{detail.constructionType || "RCC"}</td>
+                  <td style={styles.td}>{detail.area || "N/A"}</td>
+                  <td style={styles.td}>{detail.factor || "N/A"}</td>
+                  <td style={styles.td}>{detail.alv || 0}</td>
+                  <td style={styles.td}>{detail.constructionType === "OPENLAND" ? "0" : "10"}</td> 
+                 
+                </tr>
+              ))}
+            </tbody>
+
+          </table>
+        </div>
+      </div> */}
+      {/* 
+      <div style={styles.section}>
+        <div style={styles.assessmentStyle}>Tax Summary</div>
+        <div style={{ overflowX: 'auto', width: '100%' }}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                {[
+                  "Year",
+                  "ALV",
+                  "TPV",
+                  "Sampatti Kar",
+                  "Samekit Kar",
+                  "Shiksha Upkar",
+                  "Jal Abhikar",
+                  "Jal Nikas Kar",
+                  "Nagariya Vikas Upkar",
+                  "Seva Shulk",
+                  "Current Amount",
+                  "Rebate",
+                  "Penalty",
+                  "Net Tax"
+                ].map((head, i) => (
+                  <th key={i} style={styles.th}>
+                    {head}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.map((summary, index) => (
+                <tr key={index}>
+                  <td style={styles.td}>{summary.year}</td>
+                  <td style={styles.td}>{summary.alv}</td>
+                  <td style={styles.td}>{summary.tpv}</td>
+                  <td style={styles.td}>{summary.propertyTax}</td>
+                  <td style={styles.td}>{summary.samekit}</td>
+                  <td style={styles.td}>{summary.educationCess}</td>
+                  <td style={styles.td}>{summary.jalKar}</td>
+                  <td style={styles.td}>{summary.jalNikas}</td>
+                  <td style={styles.td}>{summary.urbanTax}</td>
+                  <td style={styles.td}>{summary.sevaKar}</td>
+                  <td style={styles.td}>{summary.totalTax}</td>
+                  <td style={styles.td}>{summary.rebate}</td>
+                  <td style={styles.td}>{summary.penalty}</td>
+                  <td style={styles.td}>{summary.netTax}</td>
+                </tr>
+              ))}
+            </tbody>
+
+          </table>
+        </div>
+      </div> */}
+
+
+      {/* Payment Detail */}
+      <div style={styles.section}>
+        <div style={styles.assessmentStyle}>Payment Details</div>
+        {/* Payment Type Toggle */}
+        <div style={{ marginTop: "16px", display: "flex", gap: "20px", alignItems: "center" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <input
+              type="radio"
+              name="paymentType"
+              checked={paymentType === "full"}
+              onChange={() => setPaymentType("full")}
+            />
+            <span style={styles.label}>Full Payment</span>
+          </label>
+          <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <input
+              type="radio"
+              name="paymentType"
+              checked={paymentType === "partial"}
+              onChange={() => setPaymentType("partial")}
+            />
+            <span style={styles.label}>Partial Payment</span>
+          </label>
+        </div>
+
+        {/* Conditional Payment Fields //OLD CODE */}
+        {/* {estimateData?.Calculation?.[0] && paymentType === "full" && (
+          <div style={styles.grid}>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Arrear</div>
+              <input
+                value={estimateData?.Calculation[0]?.arrear || ""}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Current Year</div>
+              <input
+                value={estimateData?.Calculation[0]?.currentYearTax || ""}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Previous Balance</div>
+              <input
+                value={estimateData?.Calculation[0]?.previousBalance || "0"}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Total Payment Amount</div>
+              <input
+                value={(() => {
+                  const arrear = parseFloat(estimateData?.Calculation[0]?.arrear || 0);
+                  const currentYear = parseFloat(estimateData?.Calculation[0]?.currentYearTax || 0);
+                  const previousBalance = parseFloat(estimateData?.Calculation[0]?.previousBalance || 0);
+                  return (arrear + currentYear + previousBalance).toFixed(2);
+                })()}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Advance</div>
+              <input
+                value="0"
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+          </div>
+        )} */}
+
+        {paymentType === "full" && (
+          <div style={styles.grid}>
+
+            {/* Arrear */}
+            <div style={styles.column}>
+              <div style={styles.label}>Arrear</div>
+              <input
+                value={estimateData?.Calculation?.[0]?.arrear || ""}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            {/* Current Year */}
+            <div style={styles.column}>
+              <div style={styles.label}>Current Year</div>
+              <input
+                value={estimateData?.Calculation?.[0]?.currentYearTax || ""}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            {/* Previous Balance */}
+            <div style={styles.column}>
+              <div style={styles.label}>Previous Balance</div>
+              <input
+                value={estimateData?.Calculation?.[0]?.previousBalance || "0"}
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            {/* Total Payment Amount */}
+            <div style={styles.column}>
+              <div style={styles.label}>Total Payment Amount</div>
+              <input
+                value={(() => {
+                  const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
+                  const currentYear = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
+                  const previousBalance = parseFloat(estimateData?.Calculation?.[0]?.previousBalance || 0);
+                  return (arrear + currentYear + previousBalance).toFixed(2);
+                })()}
+                style={styles.totalAmount}
+
+              />
+            </div>
+
+
+            <div style={styles.columnBreak}></div>
+
+            {/* Advance */}
+            <div style={styles.column}>
+              <div style={styles.label}>Advance</div>
+              <input
+                value="0"
+                readOnly
+                style={styles.input2}
+              />
+            </div>
+
+            {/* blank */}
+            <div style={styles.column}>
+              <div style={styles.label}></div>
+              {/* <p
+                
+                style={styles.input2}
+              /> */}
+            </div>
+
+            {/* Blank */}
+            <div style={styles.column}>
+              <div style={styles.label}></div>
+              {/* <input
+                value="0"
+                readOnly
+                style={styles.input2}
+              /> */}
+            </div>
+
+            {/* Blank */}
+            <div style={styles.column}>
+              <div style={styles.label}></div>
+              {/* <input
+                value="0"
+                readOnly
+                style={styles.input2}
+              /> */}
+            </div>
+
+
+
+          </div>
+        )}
+
+        {paymentType === "partial" && (
+          <div style={styles.row}>
+            <div style={styles.column}>
+              <div style={styles.label}>Amount</div>
+              <input
+                placeholder="XX.XX"
+                value={manualAmount}
+                style={styles.input}
+                onChange={(e) => setManualAmount(e.target.value)}
+              />
+
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Arrear</div>
+              <input
+
+                readOnly
+                value={estimateData?.Calculation[0]?.arrear || ""}
+                style={styles.input}
+              />
+            </div>
+
+            <div style={styles.column}>
+              <div style={styles.label}>Payments Receivable</div>
+              <input
+                value={(() => {
+                  const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
+                  if (manualAmount) {
+                    return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
+                  } else {
+                    const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
+                    return (currentYearTax + arrear).toFixed(2);
+                  }
+                })()}
+                readOnly
+                style={styles.input}
+              />
+            </div>
+            <div style={styles.column}></div>
+          </div>
+        )}
+
+      </div>
+
+
+
+
+      {/* Payment  */}
+      <div style={styles.section}>
+        <div style={styles.assessmentStyle}>Payment </div>
+        
+        <div style={styles.label}>
+        </div>
+
+        <div style={styles.checkboxGroup}>
+          {["CASH", "Card", "Cheque", "UPI", "NEFT", "RTGS"].map((method) => (
+            <label key={method}>
+              <input
+                type="radio"
+                checked={selectedModes.includes(method)}
+                onChange={() => toggleMode(method)}
+              />{" "}
+              {method}
+            </label>
+          ))}
+        </div>
+        {selectedModes.includes("Card") && (
+          <div style={styles.inputGroup}>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Reference Number <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Reference Number"
+                style={styles.input}
+               
+              />
+            </div>
+
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Bank Name <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Bank Name"
+                style={styles.input}
+              
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Card Holder Name <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Card Holder Name"
+                style={styles.input}
+              
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Card Last 4 digit  <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Card Last 4 digit"
+                style={styles.input}
+               
+              />
+            </div>
+
+          </div>
+          
+        )}
+        {selectedModes.includes("Cheque") && (
+          <div style={styles.inputGroup}>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Cheque Date <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="date"
+                style={styles.input}
+                value={chequeDetails.issueDate}
+                onChange={(e) =>
+                  setChequeDetails({ ...chequeDetails, issueDate: e.target.value })
+                }
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Cheque Number <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Cheque Number"
+                style={styles.input}
+                value={chequeDetails.chequeNumber}
+                onChange={(e) =>
+                  setChequeDetails({ ...chequeDetails, chequeNumber: e.target.value })
+                }
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Cheque Drawer Name <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Cheque Drawer"
+                style={styles.input}
+                value={chequeDetails.accountHolder}
+                onChange={(e) =>
+                  setChequeDetails({ ...chequeDetails, accountHolder: e.target.value })
+                }
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+               Cheque Bank Name <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Cheque Bank Name"
+                style={styles.input}
+                value={chequeDetails.bankName}
+                onChange={(e) =>
+                  setChequeDetails({ ...chequeDetails, bankName: e.target.value })
+                }
+              />
+            </div>
+
+          </div>
+        )}
+        {selectedModes.includes("POS") && (
+          <div style={styles.inputGroup}>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                POS reference number <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="POS reference number"
+                style={styles.input}
+                value={posDetails.referenceNumber}
+                onChange={(e) =>
+                  setPosDetails({ ...posDetails, referenceNumber: e.target.value })
+                }
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                EDC Bank Name <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter EDC Bank Name"
+                style={styles.input}
+                value={posDetails.edcBankName}
+                onChange={(e) =>
+                  setPosDetails({ ...posDetails, edcBankName: e.target.value })
+                }
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Bank Card Name <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Name on card"
+                style={styles.input}
+                value={posDetails.cardName}
+                onChange={(e) =>
+                  setPosDetails({ ...posDetails, cardName: e.target.value })
+                }
+              />
+            </div>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Card Last 4 Digit <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Card last four digit"
+                style={styles.input}
+                maxLength={4}
+                value={posDetails.cardLast4Digit}
+                onChange={(e) =>
+                  setPosDetails({ ...posDetails, cardLast4Digit: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        )}
+         {selectedModes.includes("UPI") && (
+          <div style={styles.inputGroup}>
+            <div style={styles.inputField}>
+              <label style={styles.label}>
+                Reference number <span style={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Reference number"
+                style={{  width: "25%",
+                  height: "40px",
+                  borderRadius: "4px",
+                  boxShadow: "0px 4px 4px 0px #00000040",
+                  padding: "6px",
+                  fontSize: "12px"}}
+              />
+            </div>
+      
+          </div>
+        )}
+        {/* {showUPIModal && (
+          <div style={styles.modalOverlay}>
+            <div style={styles.modalContent}>
+              <div style={styles.modalHeader}>Confirm Mobile Number</div>
+              <div style={styles.inputField}>
+                <label style={styles.label}>
+                  Mobile Number <span style={styles.required}>*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="+91-xxxxxxxx"
+                  style={styles.input}
+                  value={upiMobile}
+                  onChange={(e) => setUPIMobile(e.target.value)}
+                />
+              </div>
+              <div style={styles.buttonRow}>
+                <button style={styles.cancelButton} onClick={closeUPIModal}>
+                  Cancel
+                </button>
+                <button
+                  style={styles.submitButton}
+                  onClick={() => {
+                    // You can add validation or API logic here
+                    closeUPIModal();
+                  }}
+                >
+                  Send Request
+                </button>
+              </div>
+            </div>
+          </div>
+        )} */}
+        {showConfirmation && (
+          <div style={styles.modalOverlay}>
+            <div style={styles.modalContent}>
+              <div style={styles.checkIcon}>✓</div>
+              <div style={styles.header}>Payment Collected</div>
+              <div style={styles.receiptText}>
+                Receipt Number
+                <br />
+                {receiptNumber}
+              </div>
+              <div style={styles.receiptText}>
+                Total Amount Received
+                <br />
+                ₹{totalNetTax}
+              </div>
+              <button style={styles.homeButton} onClick={printReciept}>
+                Download Receipt
+              </button>
+              <button style={styles.homeButton} onClick={() => {
+                // 🏠 Navigate home or reset form here
+                window.location.href = "/digit-ui/employee"; // or use React Router
+              }}>
+                Home
+              </button>
+            </div>
+          </div>)}
+        <div style={{ marginTop: "20px" }}>
+          <div style={{...styles.label, marginLeft: "10px"}}>
+            Remarks <span style={{ color: "red" }}>*</span>
+          </div>
+          <textarea
+            rows="3"
+            style={styles.remarkBox}
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
+          />
+          {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
+        </div>
+
+        <div style={{ marginTop: "30px" }}>
+          {selectedModes.includes("CASH") && (
+            <button
+              style={{
+                ...styles.paymentButton,
+                backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
+                cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
+              }}
+              onClick={() => handlePayment()}
+              disabled={billFetch?.totalAmount === 0}
+            >
+              Collect Payment
+            </button>
+          )}
+          {selectedModes.includes("EASEBUZZ") && (
+            <button style={{
+              ...styles.paymentButton
+            }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
+              Pay Now
+            </button>
+          )}
+        </div>
+
+      </div>
+
+
+    </div>
+  );
+};
+
+export default ApplicationDetailsContent;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import {
 //   BreakLine,
 //   Card,
@@ -426,1320 +1938,1320 @@
 
 // export default ApplicationDetailsContent;
 
-import {
-  Card,
-  Dropdown,
-  Loader,
-  SubmitBar
-} from "@egovernments/digit-ui-react-components";
-import { values } from "lodash";
-import React, { Fragment, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import PropertyDocuments from "./PropertyDocuments";
-import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
-import TLCaption from "./TLCaption";
-import { CollectPayment } from "@egovernments/digit-ui-module-common/src/payments/employee/payment-collect";
-import { useQueryClient } from "react-query";
+// import {
+//   Card,
+//   Dropdown,
+//   Loader,
+//   SubmitBar
+// } from "@egovernments/digit-ui-react-components";
+// import { values } from "lodash";
+// import React, { Fragment, useEffect, useState } from "react";
+// import { useTranslation } from "react-i18next";
+// import PropertyDocuments from "./PropertyDocuments";
+// import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
+// import TLCaption from "./TLCaption";
+// import { CollectPayment } from "@egovernments/digit-ui-module-common/src/payments/employee/payment-collect";
+// import { useQueryClient } from "react-query";
 
 
-const styles = {
-  container: { fontFamily: "Arial", padding: "20px", fontSize: "14px" },
-  section: {
-    marginBottom: "20px", marginTop: "20px", backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
-    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
-    padding: "16px",
-    borderRadius: "12px",
-  },
-  assessmentStyle: {
-    fontFamily: "Poppins",
-    fontWeight: 500,
-    fontSize: "16px",
-    lineHeight: "100%",
-    letterSpacing: "0%",
-    verticalAlign: "bottom",
-    textDecoration: "underline",
-    textDecorationStyle: "solid",
-    textDecorationOffset: "0%",
-    textDecorationThickness: "0%",
-    color: "#6b133f",
-    marginBottom: "16px"
-  },
-  row: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: "10px",
-    marginBottom: "10px"
-  },
-  column: { flex: "1 1 200px", marginRight: "10px", marginBottom: "10px" },
-  label: {
-    marginBottom: "4px", fontFamily: "Poppins",
-    fontWeight: 400,
-    fontSize: "14px",
-    lineHeight: "22px",
-    letterSpacing: "0%",
-    color: "#282828"
-  },
-  input: {
-    width: "100%",
-    padding: "6px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    fontSize: "12px",
-    backgroundColor: "#f4f4f4",
-  },
-  button: {
-    padding: "8px 16px",
-    marginRight: "10px",
-    border: "none",
-    borderRadius: "4px",
-    backgroundColor: "#e0d4fa",
-    color: "#333",
-    cursor: "pointer",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    marginBottom: "20px",
-  },
-  th: {
-    backgroundColor: "#6b133f",
-    padding: "8px",
-    border: "1px solid #ccc",
-    textAlign: "left",
-    fontFamily: "Poppins",
-    fontWeight: 400,
-    fontSize: "14px",
-    lineHeight: "175%",
-    letterSpacing: "-1%",
-    verticalAlign: "middle",
-    color: "white"
-  },
-  td: {
-    padding: "8px",
-    border: "1px solid #ccc",
-    backgroundColor: "#f9f9f9",
-    fontFamily: "Poppins",
-    fontWeight: 400,
-    fontSize: "13px",
-    lineHeight: "100%",
-    letterSpacing: "1%",
-    verticalAlign: "middle",
-    color: "#323C47"
-  },
-  checkboxGroup: {
-    display: "flex", gap: "15px", marginTop: "10px", fontFamily: "Poppins, sans-serif",
-    fontWeight: 500,
-    fontSize: "16px",
-    lineHeight: "100%",
-    letterSpacing: "0%", color: "#6D6969"
-  },
-  remarkBox: {
-    width: "32%",
-    minWidth:"300px",
-    height: "72px",
-    borderWidth: "1px",
-    borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    padding: "10px",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347"
-  },
-  paymentButton: {
-    padding: "10px 20px",
-    backgroundColor: "#6b133f",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    // float: "right",
-    display: "flex",
-    marginLeft: "auto",
-  },
-  inputGroup: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "1rem",
-    marginTop: "10px",
-  },
-  inputField: {
-    flex: "1 1 200px",
-    display: "flex",
-    flexDirection: "column",
-  },
+// const styles = {
+//   container: { fontFamily: "Arial", padding: "20px", fontSize: "14px" },
+//   section: {
+//     marginBottom: "20px", marginTop: "20px", backgroundColor: "rgba(255, 255, 255, var(--bg-opacity))",
+//     boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.16)",
+//     padding: "16px",
+//     borderRadius: "12px",
+//   },
+//   assessmentStyle: {
+//     fontFamily: "Poppins",
+//     fontWeight: 500,
+//     fontSize: "16px",
+//     lineHeight: "100%",
+//     letterSpacing: "0%",
+//     verticalAlign: "bottom",
+//     textDecoration: "underline",
+//     textDecorationStyle: "solid",
+//     textDecorationOffset: "0%",
+//     textDecorationThickness: "0%",
+//     color: "#6b133f",
+//     marginBottom: "16px"
+//   },
+//   row: {
+//     display: "grid",
+//     gridTemplateColumns: "repeat(4, 1fr)",
+//     gap: "10px",
+//     marginBottom: "10px"
+//   },
+//   column: { flex: "1 1 200px", marginRight: "10px", marginBottom: "10px" },
+//   label: {
+//     marginBottom: "4px", fontFamily: "Poppins",
+//     fontWeight: 400,
+//     fontSize: "14px",
+//     lineHeight: "22px",
+//     letterSpacing: "0%",
+//     color: "#282828"
+//   },
+//   input: {
+//     width: "100%",
+//     padding: "6px",
+//     border: "1px solid #ccc",
+//     borderRadius: "4px",
+//     fontSize: "12px",
+//     backgroundColor: "#f4f4f4",
+//   },
+//   button: {
+//     padding: "8px 16px",
+//     marginRight: "10px",
+//     border: "none",
+//     borderRadius: "4px",
+//     backgroundColor: "#e0d4fa",
+//     color: "#333",
+//     cursor: "pointer",
+//   },
+//   table: {
+//     width: "100%",
+//     borderCollapse: "collapse",
+//     marginBottom: "20px",
+//   },
+//   th: {
+//     backgroundColor: "#6b133f",
+//     padding: "8px",
+//     border: "1px solid #ccc",
+//     textAlign: "left",
+//     fontFamily: "Poppins",
+//     fontWeight: 400,
+//     fontSize: "14px",
+//     lineHeight: "175%",
+//     letterSpacing: "-1%",
+//     verticalAlign: "middle",
+//     color: "white"
+//   },
+//   td: {
+//     padding: "8px",
+//     border: "1px solid #ccc",
+//     backgroundColor: "#f9f9f9",
+//     fontFamily: "Poppins",
+//     fontWeight: 400,
+//     fontSize: "13px",
+//     lineHeight: "100%",
+//     letterSpacing: "1%",
+//     verticalAlign: "middle",
+//     color: "#323C47"
+//   },
+//   checkboxGroup: {
+//     display: "flex", gap: "15px", marginTop: "10px", fontFamily: "Poppins, sans-serif",
+//     fontWeight: 500,
+//     fontSize: "16px",
+//     lineHeight: "100%",
+//     letterSpacing: "0%", color: "#6D6969"
+//   },
+//   remarkBox: {
+//     width: "32%",
+//     minWidth:"300px",
+//     height: "72px",
+//     borderWidth: "1px",
+//     borderRadius: "6px",
+//     border: "1px solid #D9D9D9",
+//     padding: "10px",
+//     boxShadow: "0px 4px 4px 0px #00000040",
+//     background: "#A3BBF347"
+//   },
+//   paymentButton: {
+//     padding: "10px 20px",
+//     backgroundColor: "#6b133f",
+//     color: "white",
+//     border: "none",
+//     borderRadius: "4px",
+//     cursor: "pointer",
+//     // float: "right",
+//     display: "flex",
+//     marginLeft: "auto",
+//   },
+//   inputGroup: {
+//     display: "flex",
+//     flexWrap: "wrap",
+//     gap: "1rem",
+//     marginTop: "10px",
+//   },
+//   inputField: {
+//     flex: "1 1 200px",
+//     display: "flex",
+//     flexDirection: "column",
+//   },
 
-  required: {
-    color: "red",
-  },
+//   required: {
+//     color: "red",
+//   },
 
-  input: {
-    // width: "100%",
-    height: "35px",
-    borderWidth: "1px",
-    borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347",
-    padding: "10px"
+//   input: {
+//     // width: "100%",
+//     height: "35px",
+//     borderWidth: "1px",
+//     borderRadius: "6px",
+//     border: "1px solid #D9D9D9",
+//     boxShadow: "0px 4px 4px 0px #00000040",
+//     background: "#A3BBF347",
+//     padding: "10px"
 
-  },
- input2: {
-    width: "100%",
-    height: "35px",
-    borderWidth: "1px",
-    borderRadius: "6px",
-    border: "1px solid #D9D9D9",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    background: "#A3BBF347",
-    padding: "10px"
+//   },
+//  input2: {
+//     width: "100%",
+//     height: "35px",
+//     borderWidth: "1px",
+//     borderRadius: "6px",
+//     border: "1px solid #D9D9D9",
+//     boxShadow: "0px 4px 4px 0px #00000040",
+//     background: "#A3BBF347",
+//     padding: "10px"
 
-  },
-  modalOverlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: "2rem",
-    borderRadius: "8px",
-    minWidth: "400px",
-  },
-  modalHeader: {
-    color: "blue",
-    fontWeight: "bold",
-    fontSize: "18px",
-    marginBottom: "1rem",
-    textDecoration: "underline",
-  },
-  buttonRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "1rem",
-  },
-  cancelButton: {
-    border: "1px solid red",
-    color: "red",
-    padding: "8px 16px",
-    borderRadius: "4px",
-    backgroundColor: "white",
-    cursor: "pointer",
-  },
-  submitButton: {
-    backgroundColor: "indigo",
-    color: "white",
-    padding: "8px 16px",
-    borderRadius: "4px",
-    border: "none",
-    cursor: "pointer",
-  },
-  checkIcon: {
-    width: "60px",
-    height: "60px",
-    borderRadius: "50%",
-    backgroundColor: "black",
-    border: "3px solid green",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "0 auto 1rem",
-    fontSize: "28px",
-    color: "white",
-  },
-  header: {
-    fontWeight: "bold",
-    fontSize: "18px",
-    marginBottom: "8px",
-    textAlign: "center"
-  },
-  receiptText: {
-    color: "gray",
-    fontSize: "14px",
-    textAlign: "center"
-  },
-  homeButton: {
-    marginTop: "20px",
-    padding: "8px 20px",
-    backgroundColor: "#6b133f",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    marginLeft: "auto",
-    marginRight: "auto",
-    display: "flex"
-  },
-  assessmentStyle: {
-    background: '#6b133f',
-    fontFamily: 'Poppins, sans-serif',
-    fontWeight: 'bold',
-    fontSize: '16px',
-    lineHeight: '100%',
-    letterSpacing: '0px',
-    textDecorationStyle: 'solid',
-    textDecorationColor: '#6b133f',
-    textDecorationThickness: '1px',
-    color: 'white',
-    marginBottom: '20px',
-    padding: '14px',
-    // width: '52%',
-    // borderBottomRightRadius: '20px',
-    // borderTopRightRadius: '20px',
-    textAlign: "center",
+//   },
+//   modalOverlay: {
+//     position: "fixed",
+//     top: 0,
+//     left: 0,
+//     width: "100vw",
+//     height: "100vh",
+//     backgroundColor: "rgba(0, 0, 0, 0.5)",
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     zIndex: 1000,
+//   },
+//   modalContent: {
+//     backgroundColor: "white",
+//     padding: "2rem",
+//     borderRadius: "8px",
+//     minWidth: "400px",
+//   },
+//   modalHeader: {
+//     color: "blue",
+//     fontWeight: "bold",
+//     fontSize: "18px",
+//     marginBottom: "1rem",
+//     textDecoration: "underline",
+//   },
+//   buttonRow: {
+//     display: "flex",
+//     justifyContent: "space-between",
+//     marginTop: "1rem",
+//   },
+//   cancelButton: {
+//     border: "1px solid red",
+//     color: "red",
+//     padding: "8px 16px",
+//     borderRadius: "4px",
+//     backgroundColor: "white",
+//     cursor: "pointer",
+//   },
+//   submitButton: {
+//     backgroundColor: "indigo",
+//     color: "white",
+//     padding: "8px 16px",
+//     borderRadius: "4px",
+//     border: "none",
+//     cursor: "pointer",
+//   },
+//   checkIcon: {
+//     width: "60px",
+//     height: "60px",
+//     borderRadius: "50%",
+//     backgroundColor: "black",
+//     border: "3px solid green",
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     margin: "0 auto 1rem",
+//     fontSize: "28px",
+//     color: "white",
+//   },
+//   header: {
+//     fontWeight: "bold",
+//     fontSize: "18px",
+//     marginBottom: "8px",
+//     textAlign: "center"
+//   },
+//   receiptText: {
+//     color: "gray",
+//     fontSize: "14px",
+//     textAlign: "center"
+//   },
+//   homeButton: {
+//     marginTop: "20px",
+//     padding: "8px 20px",
+//     backgroundColor: "#6b133f",
+//     color: "white",
+//     border: "none",
+//     borderRadius: "6px",
+//     cursor: "pointer",
+//     marginLeft: "auto",
+//     marginRight: "auto",
+//     display: "flex"
+//   },
+//   assessmentStyle: {
+//     background: '#6b133f',
+//     fontFamily: 'Poppins, sans-serif',
+//     fontWeight: 'bold',
+//     fontSize: '16px',
+//     lineHeight: '100%',
+//     letterSpacing: '0px',
+//     textDecorationStyle: 'solid',
+//     textDecorationColor: '#6b133f',
+//     textDecorationThickness: '1px',
+//     color: 'white',
+//     marginBottom: '20px',
+//     padding: '14px',
+//     // width: '52%',
+//     // borderBottomRightRadius: '20px',
+//     // borderTopRightRadius: '20px',
+//     textAlign: "center",
 
-  },
-  grid:{
-      display:"flex",
-    flexWrap:"wrap",
-    gap:"1rem",
-  },
-  flex30:{
-     flex: "1 1 30%",
-    display: "flex",
-     flexDirection: "column",
+//   },
+//   grid:{
+//       display:"flex",
+//     flexWrap:"wrap",
+//     gap:"1rem",
+//   },
+//   flex30:{
+//      flex: "1 1 30%",
+//     display: "flex",
+//      flexDirection: "column",
     
-    position: "relative",
-    minHeight: "90px",
-  },
-   textBox: {
-    // width: "244.23472595214844px",
-    height: "35px",
-    borderWidth: "1px",
-    borderRadius: "6px",
-    // border: "1px solid #D9D9D9",
-    // boxShadow: "0px 4px 4px 0px #00000040",
-    // background: "#A3BBF347"
-    background: "#D2D2D280",
-    border: "0.5px solid #D2D2D280",
-    color: "black"
-  }
-};
+//     position: "relative",
+//     minHeight: "90px",
+//   },
+//    textBox: {
+//     // width: "244.23472595214844px",
+//     height: "35px",
+//     borderWidth: "1px",
+//     borderRadius: "6px",
+//     // border: "1px solid #D9D9D9",
+//     // boxShadow: "0px 4px 4px 0px #00000040",
+//     // background: "#A3BBF347"
+//     background: "#D2D2D280",
+//     border: "0.5px solid #D2D2D280",
+//     color: "black"
+//   }
+// };
 
 
 
 
-const ApplicationDetailsContent = ({
-  applicationDetails,
-  workflowDetails,
-  isDataLoading,
-  applicationData,
-  businessService,
-  timelineStatusPrefix,
-  showTimeLine = true,
-  statusAttribute = "status",
-  paymentsList,
-  oldValue,
-  isInfoLabel = false
-}) => {
+// const ApplicationDetailsContent = ({
+//   applicationDetails,
+//   workflowDetails,
+//   isDataLoading,
+//   applicationData,
+//   businessService,
+//   timelineStatusPrefix,
+//   showTimeLine = true,
+//   statusAttribute = "status",
+//   paymentsList,
+//   oldValue,
+//   isInfoLabel = false
+// }) => {
   
-    const [printing, setPrinting] = useState(false);
-  const [manualAmount, setManualAmount] = useState("");
-  const [showAssessmentPop, setShowAssesmentPop] = useState(false);
-  const [selectedModes, setSelectedModes] = useState([]);
-  const [estimateData, setEstimateData] = useState("");
-  const [remarks, setRemarks] = useState("");
+//     const [printing, setPrinting] = useState(false);
+//   const [manualAmount, setManualAmount] = useState("");
+//   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
+//   const [selectedModes, setSelectedModes] = useState([]);
+//   const [estimateData, setEstimateData] = useState("");
+//   const [remarks, setRemarks] = useState("");
 
-  const [chequeDetails, setChequeDetails] = useState({
-    issueDate: "",
-    chequeNumber: "",
-    accountHolder: "",
-    bankName: "",
-  });
-  const [posDetails, setPosDetails] = useState({
-    referenceNumber: "",
-    edcBankName: "",
-    cardName: "",
-    cardLast4Digit: "",
-  });
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showUPIModal, setShowUPIModal] = useState(false);
-  const [upiMobile, setUPIMobile] = useState("");
-  const [paymentType, setPaymentType] = useState("full");
-  const [billFetch, setBillFetch] = useState(null);
-  const [billFopayment, setBillFopayment] = useState(null);
+//   const [chequeDetails, setChequeDetails] = useState({
+//     issueDate: "",
+//     chequeNumber: "",
+//     accountHolder: "",
+//     bankName: "",
+//   });
+//   const [posDetails, setPosDetails] = useState({
+//     referenceNumber: "",
+//     edcBankName: "",
+//     cardName: "",
+//     cardLast4Digit: "",
+//   });
+//   const [showConfirmation, setShowConfirmation] = useState(false);
+//   const [showUPIModal, setShowUPIModal] = useState(false);
+//   const [upiMobile, setUPIMobile] = useState("");
+//   const [paymentType, setPaymentType] = useState("full");
+//   const [billFetch, setBillFetch] = useState(null);
+//   const [billFopayment, setBillFopayment] = useState(null);
 
-  const [formErrors, setFormErrors] = useState("");
-  const [selectedMode, setSelectedMode] = useState("");
-  const [receiptNumber, setReceiptNumber] = useState("");
-  const stateId = Digit.ULBService.getStateId();
-  const tenantIdUniq = Digit.ULBService.getCurrentTenantId();
-  const billData = workflowDetails?.data?.actionState?.nextActions?.[1].Bill;
-  const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantIdUniq);
-  const toggleMode = (mode) => {
-    // Always set only the current mode
-    setSelectedModes([mode]);
-    setSelectedMode(mode);
-    // Show UPI modal only when UPI is newly selected
-    if (mode === "UPI") {
-      setShowUPIModal(true);
-    } else {
-      setShowUPIModal(false);
-    }
-  };
+//   const [formErrors, setFormErrors] = useState("");
+//   const [selectedMode, setSelectedMode] = useState("");
+//   const [receiptNumber, setReceiptNumber] = useState("");
+//   const stateId = Digit.ULBService.getStateId();
+//   const tenantIdUniq = Digit.ULBService.getCurrentTenantId();
+//   const billData = workflowDetails?.data?.actionState?.nextActions?.[1].Bill;
+//   const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantIdUniq);
+//   const toggleMode = (mode) => {
+//     // Always set only the current mode
+//     setSelectedModes([mode]);
+//     setSelectedMode(mode);
+//     // Show UPI modal only when UPI is newly selected
+//     if (mode === "UPI") {
+//       setShowUPIModal(true);
+//     } else {
+//       setShowUPIModal(false);
+//     }
+//   };
 
-  const closeUPIModal = () => {
-    setShowUPIModal(false);
-  };
+//   const closeUPIModal = () => {
+//     setShowUPIModal(false);
+//   };
 
-  const backToNew = () => {
-    // setShowPreviewButton(false);
-    setShowAssesmentPop(false);
-  }
-  const estimatePop = () => {
-    setShowAssesmentPop(true);
-  };
+//   const backToNew = () => {
+//     // setShowPreviewButton(false);
+//     setShowAssesmentPop(false);
+//   }
+//   const estimatePop = () => {
+//     setShowAssesmentPop(true);
+//   };
 
-  const units = applicationDetails?.applicationData?.units;
+//   const units = applicationDetails?.applicationData?.units;
 
-  const formatYearRange = (fromYear, toYear) => {
-    if (fromYear === toYear) return fromYear;
+//   const formatYearRange = (fromYear, toYear) => {
+//     if (fromYear === toYear) return fromYear;
 
-    const start = fromYear?.split("-")[0];         // "2023"
-    const end = toYear?.split("-")[1];             // "25"
-    return `${start}-${end}`;                      // "2023-25"
-  };
+//     const start = fromYear?.split("-")[0];         // "2023"
+//     const end = toYear?.split("-")[1];             // "25"
+//     return `${start}-${end}`;                      // "2023-25"
+//   };
 
-  const yearRange = Array.isArray(units) && units.length > 0
-    ? units[0].toYear
-    : "N/A";
+//   const yearRange = Array.isArray(units) && units.length > 0
+//     ? units[0].toYear
+//     : "N/A";
 
-  const { t } = useTranslation();
-  let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
+//   const { t } = useTranslation();
+//   let userInfo1 = JSON.parse(localStorage.getItem("user-info"));
 
-  const tenantId = userInfo1?.tenantId;
-  const {
-    isLoading: ptCalculationEstimateLoading,
-    data: ptCalculationEstimateData,
-    mutate: ptCalculationEstimateMutate,
-    error,
-  } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
-  const handleEstimate = () => {
-    const payload = {
-      Assessment: {
-        financialYear: yearRange,
-        propertyId: applicationData?.propertyId,
-        tenantId: tenantId,
-        source: "MUNICIPAL_RECORDS",
-        channel: "CITIZEN",
-        assessmentDate: Date.now(),
-      },
-      RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: userInfo1?.authToken || "default-token",
-        userInfo: {
-          id: userInfo1?.id || 1,
-          uuid: userInfo1?.uuid || "default-uuid",
-          userName: userInfo1?.userName || "defaultuser",
-          name: userInfo1?.name || "Default User",
-          mobileNumber: userInfo1?.mobileNumber || "9999999999",
-          emailId: userInfo1?.emailId || "default@example.com",
-          locale: userInfo1?.locale || "en_IN",
-          type: userInfo1?.type || "CITIZEN",
-          roles: userInfo1?.roles || [],
-          active: userInfo1?.active !== false,
-          tenantId: userInfo1?.tenantId || "pg.citya",
-          permanentCity: userInfo1?.permanentCity || "pg.citya"
-        },
-        msgId: "1749797151521|en_IN",
-        plainAccessRequest: {}
-      }
-    };
+//   const tenantId = userInfo1?.tenantId;
+//   const {
+//     isLoading: ptCalculationEstimateLoading,
+//     data: ptCalculationEstimateData,
+//     mutate: ptCalculationEstimateMutate,
+//     error,
+//   } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
+//   const handleEstimate = () => {
+//     const payload = {
+//       Assessment: {
+//         financialYear: yearRange,
+//         propertyId: applicationData?.propertyId,
+//         tenantId: tenantId,
+//         source: "MUNICIPAL_RECORDS",
+//         channel: "CITIZEN",
+//         assessmentDate: Date.now(),
+//       },
+//       RequestInfo: {
+//         apiId: "Rainmaker",
+//         authToken: userInfo1?.authToken || "default-token",
+//         userInfo: {
+//           id: userInfo1?.id || 1,
+//           uuid: userInfo1?.uuid || "default-uuid",
+//           userName: userInfo1?.userName || "defaultuser",
+//           name: userInfo1?.name || "Default User",
+//           mobileNumber: userInfo1?.mobileNumber || "9999999999",
+//           emailId: userInfo1?.emailId || "default@example.com",
+//           locale: userInfo1?.locale || "en_IN",
+//           type: userInfo1?.type || "CITIZEN",
+//           roles: userInfo1?.roles || [],
+//           active: userInfo1?.active !== false,
+//           tenantId: userInfo1?.tenantId || "pg.citya",
+//           permanentCity: userInfo1?.permanentCity || "pg.citya"
+//         },
+//         msgId: "1749797151521|en_IN",
+//         plainAccessRequest: {}
+//       }
+//     };
 
-    ptCalculationEstimateMutate(payload, {
-      onSuccess: (data) => {
+//     ptCalculationEstimateMutate(payload, {
+//       onSuccess: (data) => {
 
-        setEstimateData(data);
-        // fetchBill()
-      },
-      onError: (error) => {
-        alert("Estimate error:", error);
-      },
-    });
-  };
-  const handleAssessment = () => {
-    const payload = {
-      Assessment: {
-        financialYear: yearRange,
-        propertyId: applicationData?.propertyId,
-        tenantId: tenantId,
-        source: "MUNICIPAL_RECORDS",
-        channel: "CFC_COUNTER",
-        assessmentDate: Date.now(),
-      },
-      RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: userInfo1?.authToken || "default-token",
-        userInfo: {
-          id: userInfo1?.id || 1,
-          uuid: userInfo1?.uuid || "default-uuid",
-          userName: userInfo1?.userName || "defaultuser",
-          name: userInfo1?.name || "Default User",
-          mobileNumber: userInfo1?.mobileNumber || "9999999999",
-          emailId: userInfo1?.emailId || "default@example.com",
-          locale: userInfo1?.locale || "en_IN",
-          type: userInfo1?.type || "CITIZEN",
-          roles: userInfo1?.roles || [],
-          active: userInfo1?.active !== false,
-          tenantId: userInfo1?.tenantId || "pg.citya",
-          permanentCity: userInfo1?.permanentCity || "pg.citya"
-        },
-        msgId: "1749797151521|en_IN",
-        plainAccessRequest: {}
-      }
-    };
+//         setEstimateData(data);
+//         // fetchBill()
+//       },
+//       onError: (error) => {
+//         alert("Estimate error:", error);
+//       },
+//     });
+//   };
+//   const handleAssessment = () => {
+//     const payload = {
+//       Assessment: {
+//         financialYear: yearRange,
+//         propertyId: applicationData?.propertyId,
+//         tenantId: tenantId,
+//         source: "MUNICIPAL_RECORDS",
+//         channel: "CFC_COUNTER",
+//         assessmentDate: Date.now(),
+//       },
+//       RequestInfo: {
+//         apiId: "Rainmaker",
+//         authToken: userInfo1?.authToken || "default-token",
+//         userInfo: {
+//           id: userInfo1?.id || 1,
+//           uuid: userInfo1?.uuid || "default-uuid",
+//           userName: userInfo1?.userName || "defaultuser",
+//           name: userInfo1?.name || "Default User",
+//           mobileNumber: userInfo1?.mobileNumber || "9999999999",
+//           emailId: userInfo1?.emailId || "default@example.com",
+//           locale: userInfo1?.locale || "en_IN",
+//           type: userInfo1?.type || "CITIZEN",
+//           roles: userInfo1?.roles || [],
+//           active: userInfo1?.active !== false,
+//           tenantId: userInfo1?.tenantId || "pg.citya",
+//           permanentCity: userInfo1?.permanentCity || "pg.citya"
+//         },
+//         msgId: "1749797151521|en_IN",
+//         plainAccessRequest: {}
+//       }
+//     };
 
-    assessmentMutate(payload, {
-      onSuccess: (data, variables) => {
-        const assessments = data?.Assessments || [];
-        if (assessments.length > 0) {
-          const latestAssessment = assessments[0];
-          const status = latestAssessment?.status || "UNKNOWN";
+//     assessmentMutate(payload, {
+//       onSuccess: (data, variables) => {
+//         const assessments = data?.Assessments || [];
+//         if (assessments.length > 0) {
+//           const latestAssessment = assessments[0];
+//           const status = latestAssessment?.status || "UNKNOWN";
 
-          // Only fetch bill if assessment is ACTIVE or APPROVED
-          if (status === "ACTIVE" || status === "APPROVED") {
-            fetchBill(); // Call fetchBill only if valid
-          } else {
-            console.warn("Assessment status is not valid for billing:", status);
-          }
-        } else {
-          console.warn("No assessments returned in response");
-        }
-      },
-      onError: (error, variables) => {
-        // 
-      }
+//           // Only fetch bill if assessment is ACTIVE or APPROVED
+//           if (status === "ACTIVE" || status === "APPROVED") {
+//             fetchBill(); // Call fetchBill only if valid
+//           } else {
+//             console.warn("Assessment status is not valid for billing:", status);
+//           }
+//         } else {
+//           console.warn("No assessments returned in response");
+//         }
+//       },
+//       onError: (error, variables) => {
+//         // 
+//       }
 
-    });
-  }
+//     });
+//   }
 
-  useEffect(() => {
-    if (yearRange && applicationData?.propertyId) {
-      handleEstimate();
-      handleAssessment();
-    }
-  }, [yearRange, applicationData?.propertyId]);
+//   useEffect(() => {
+//     if (yearRange && applicationData?.propertyId) {
+//       handleEstimate();
+//       handleAssessment();
+//     }
+//   }, [yearRange, applicationData?.propertyId]);
 
-  const handlePayment = async () => {
-    const tenantId = billData?.tenantId || "pg.citya";
-    const consumerCode = applicationData?.propertyId;
-    const selectedPaymentMode = selectedMode; // Make sure this is coming from your UI
-    if (!remarks.trim()) {
-      setFormErrors("Remarks are required.");
-      return;
-    }
-    try {
-      // ✅ Fetch fresh bill before processing
-      const billResponse = await Digit.PTService.fetchPaymentDetails({
-        tenantId,
-        consumerCodes: consumerCode,
-      });
+//   const handlePayment = async () => {
+//     const tenantId = billData?.tenantId || "pg.citya";
+//     const consumerCode = applicationData?.propertyId;
+//     const selectedPaymentMode = selectedMode; // Make sure this is coming from your UI
+//     if (!remarks.trim()) {
+//       setFormErrors("Remarks are required.");
+//       return;
+//     }
+//     try {
+//       // ✅ Fetch fresh bill before processing
+//       const billResponse = await Digit.PTService.fetchPaymentDetails({
+//         tenantId,
+//         consumerCodes: consumerCode,
+//       });
 
-      const BillList = billResponse?.Bill || [];
+//       const BillList = billResponse?.Bill || [];
 
-      // ❌ Abort if bill is already paid or not found
-      if (!BillList.length) {
-        alert("❌ This bill has already been paid or is not valid.");
-        return;
-      }
+//       // ❌ Abort if bill is already paid or not found
+//       if (!BillList.length) {
+//         alert("❌ This bill has already been paid or is not valid.");
+//         return;
+//       }
 
-      const bill = BillList[0]; // fresh bill
+//       const bill = BillList[0]; // fresh bill
 
-      // ✅ Construct receipt request
-      const receiptRequest = {
-        Payment: {
-          mobileNumber: bill?.mobileNumber,
-          paymentDetails: [
-            {
-              billId: bill.id,
-              businessService: bill.businessService,
-              totalDue: bill.totalAmount,
-              totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
-                ? parseFloat(manualAmount)
-                : bill.totalAmount,
-              remarks: remarks,
-            },
-          ],
-          tenantId,
-          totalDue: bill.totalAmount,
-          totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
-            ? parseFloat(manualAmount)
-            : bill.totalAmount,
-          paymentMode: selectedPaymentMode,
-          payerName: bill?.payerName || "Default User",
-          paidBy: "OWNER",
-        },
-        RequestInfo: {
-          apiId: "Rainmaker",
-          authToken: userInfo1?.authToken || "default-token",
-          userInfo: {
-            id: userInfo1?.id || 1,
-            uuid: userInfo1?.uuid || "default-uuid",
-            userName: userInfo1?.userName || "defaultuser",
-            name: userInfo1?.name || "Default User",
-            mobileNumber: userInfo1?.mobileNumber || "9999999999",
-            emailId: userInfo1?.emailId || "default@example.com",
-            locale: userInfo1?.locale || "en_IN",
-            type: userInfo1?.type || "CITIZEN",
-            roles: userInfo1?.roles || [],
-            active: userInfo1?.active !== false,
-            tenantId: userInfo1?.tenantId || tenantId,
-            permanentCity: userInfo1?.permanentCity || tenantId
-          },
-          msgId: "1749797151521|en_IN",
-          plainAccessRequest: {}
-        }
-      };
+//       // ✅ Construct receipt request
+//       const receiptRequest = {
+//         Payment: {
+//           mobileNumber: bill?.mobileNumber,
+//           paymentDetails: [
+//             {
+//               billId: bill.id,
+//               businessService: bill.businessService,
+//               totalDue: bill.totalAmount,
+//               totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
+//                 ? parseFloat(manualAmount)
+//                 : bill.totalAmount,
+//               remarks: remarks,
+//             },
+//           ],
+//           tenantId,
+//           totalDue: bill.totalAmount,
+//           totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
+//             ? parseFloat(manualAmount)
+//             : bill.totalAmount,
+//           paymentMode: selectedPaymentMode,
+//           payerName: bill?.payerName || "Default User",
+//           paidBy: "OWNER",
+//         },
+//         RequestInfo: {
+//           apiId: "Rainmaker",
+//           authToken: userInfo1?.authToken || "default-token",
+//           userInfo: {
+//             id: userInfo1?.id || 1,
+//             uuid: userInfo1?.uuid || "default-uuid",
+//             userName: userInfo1?.userName || "defaultuser",
+//             name: userInfo1?.name || "Default User",
+//             mobileNumber: userInfo1?.mobileNumber || "9999999999",
+//             emailId: userInfo1?.emailId || "default@example.com",
+//             locale: userInfo1?.locale || "en_IN",
+//             type: userInfo1?.type || "CITIZEN",
+//             roles: userInfo1?.roles || [],
+//             active: userInfo1?.active !== false,
+//             tenantId: userInfo1?.tenantId || tenantId,
+//             permanentCity: userInfo1?.permanentCity || tenantId
+//           },
+//           msgId: "1749797151521|en_IN",
+//           plainAccessRequest: {}
+//         }
+//       };
 
-      // ✅ Make the API call
-      const response = await Digit.PaymentService.createReciept(tenantId, receiptRequest);
+//       // ✅ Make the API call
+//       const response = await Digit.PaymentService.createReciept(tenantId, receiptRequest);
 
-      // ✅ Invalidate cache & show confirmation
-      // queryClient.invalidateQueries();
-      const receiptNumber = response?.Payments?.[0]?.paymentDetails?.[0]?.receiptNumber;
-      setReceiptNumber(receiptNumber);
-      setShowConfirmation(true);
-      fetchBill(); // Refresh bill data after payment
-      setFormErrors("");
-    } catch (error) {
-      const errorMsg = error?.response?.data?.Errors?.map((e) => e?.code)?.join(", ");
-      // console.error("❌ Error creating receipt:", errorMsg || error);
-      // alert(`Failed to create receipt: ${errorMsg || "Unknown error"}`);
-      setFormErrors("");
-    }
-  };
-  const fetchBill = async () => {
-    if (!applicationData?.propertyId) return;
+//       // ✅ Invalidate cache & show confirmation
+//       // queryClient.invalidateQueries();
+//       const receiptNumber = response?.Payments?.[0]?.paymentDetails?.[0]?.receiptNumber;
+//       setReceiptNumber(receiptNumber);
+//       setShowConfirmation(true);
+//       fetchBill(); // Refresh bill data after payment
+//       setFormErrors("");
+//     } catch (error) {
+//       const errorMsg = error?.response?.data?.Errors?.map((e) => e?.code)?.join(", ");
+//       // console.error("❌ Error creating receipt:", errorMsg || error);
+//       // alert(`Failed to create receipt: ${errorMsg || "Unknown error"}`);
+//       setFormErrors("");
+//     }
+//   };
+//   const fetchBill = async () => {
+//     if (!applicationData?.propertyId) return;
 
-    try {
-      const billResponse = await Digit.PTService.fetchPaymentDetails({
-        tenantId,
-        consumerCodes: applicationData?.propertyId,
-      });
+//     try {
+//       const billResponse = await Digit.PTService.fetchPaymentDetails({
+//         tenantId,
+//         consumerCodes: applicationData?.propertyId,
+//       });
 
-      const BillList = billResponse?.Bill || [];
-      if (!BillList.length) {
-        // alert("❌ This bill has already been paid or is not valid.");
-        setBillFetch(null);
-        return;
-      }
-      setBillFopayment(billResponse); // set fresh bill
-      setBillFetch(BillList[0]); // set fresh bill
-    } catch (err) {
-      // console.error("Error fetching bill:", err);
-    }
-  };
+//       const BillList = billResponse?.Bill || [];
+//       if (!BillList.length) {
+//         // alert("❌ This bill has already been paid or is not valid.");
+//         setBillFetch(null);
+//         return;
+//       }
+//       setBillFopayment(billResponse); // set fresh bill
+//       setBillFetch(BillList[0]); // set fresh bill
+//     } catch (err) {
+//       // console.error("Error fetching bill:", err);
+//     }
+//   };
 
 
 
-  const { state = {} } = useLocation();
-  const userInfo = Digit.UserService.getUser();
-  const [showToast, setShowToast] = useState(null);
-  const { tenantId: __tenantId, authorization, workflow: wrkflow, consumerCode: connectionNo } = Digit.Hooks.useQueryParams();
+//   const { state = {} } = useLocation();
+//   const userInfo = Digit.UserService.getUser();
+//   const [showToast, setShowToast] = useState(null);
+//   const { tenantId: __tenantId, authorization, workflow: wrkflow, consumerCode: connectionNo } = Digit.Hooks.useQueryParams();
   
-  const paymentAmount = state?.paymentAmount;
-  // const history = useHistory();
-  const { pathname, search } = useLocation();
-  // const menu = ["AXIS"];
-  let { consumerCode } = useParams();
-  const tenantIdEs = state?.tenantId || __tenantId || Digit.ULBService.getCurrentTenantId();
-  const propertyId = state?.propertyId;
-  const stateTenant = Digit.ULBService.getStateId();
-  // const { control, handleSubmit } = useForm();
-  const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
-  const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment(
-    { tenantId: tenantIdEs, consumerCode: wrkflow === "WNS" ? connectionNo : consumerCode, businessService },
-    {}
-  );
-  if (window.location.href.includes("ISWSCON") || wrkflow === "WNS") consumerCode = decodeURIComponent(consumerCode);
-  if (wrkflow === "WNS") consumerCode = stringReplaceAll(consumerCode, "+", "/")
-  useEffect(() => {
-    if (billFopayment?.Bill && billFopayment.Bill.length == 0) {
-      setShowToast({ key: true, label: "CS_BILL_NOT_FOUND" });
-    }
-  }, [billFopayment]);
-  useEffect(() => {
-    localStorage.setItem("BillPaymentEnabled", "true");
-  }, []);
-  const { name, mobileNumber } = state;
+//   const paymentAmount = state?.paymentAmount;
+//   // const history = useHistory();
+//   const { pathname, search } = useLocation();
+//   // const menu = ["AXIS"];
+//   let { consumerCode } = useParams();
+//   const tenantIdEs = state?.tenantId || __tenantId || Digit.ULBService.getCurrentTenantId();
+//   const propertyId = state?.propertyId;
+//   const stateTenant = Digit.ULBService.getStateId();
+//   // const { control, handleSubmit } = useForm();
+//   const { data: menu, isLoading } = Digit.Hooks.useCommonMDMS(stateTenant, "DIGIT-UI", "PaymentGateway");
+//   const { data: paymentdetails, isLoading: paymentLoading } = Digit.Hooks.useFetchPayment(
+//     { tenantId: tenantIdEs, consumerCode: wrkflow === "WNS" ? connectionNo : consumerCode, businessService },
+//     {}
+//   );
+//   if (window.location.href.includes("ISWSCON") || wrkflow === "WNS") consumerCode = decodeURIComponent(consumerCode);
+//   if (wrkflow === "WNS") consumerCode = stringReplaceAll(consumerCode, "+", "/")
+//   useEffect(() => {
+//     if (billFopayment?.Bill && billFopayment.Bill.length == 0) {
+//       setShowToast({ key: true, label: "CS_BILL_NOT_FOUND" });
+//     }
+//   }, [billFopayment]);
+//   useEffect(() => {
+//     localStorage.setItem("BillPaymentEnabled", "true");
+//   }, []);
+//   const { name, mobileNumber } = state;
 
-  const billDetails = billFopayment?.Bill ? billFopayment?.Bill[0] : {};
-  const handlePaymentMethod = async () => {
-    if (!remarks.trim()) {
-      setFormErrors("Remarks are required.");
-      return;
-    }
-    const consumerCode = applicationData?.propertyId;
-    const filterData = {
-      Transaction: {
-        tenantId: billDetails?.tenantId,
-        txnAmount: paymentAmount || billDetails.totalAmount,
-        module: businessService,
-        billId: billDetails.id,
-        consumerCode: consumerCode,
-        productInfo: "Common Payment",
-        gateway: selectedMode,
-        taxAndPayments: [
-          {
-            billId: billDetails.id,
-            amountPaid: billDetails.totalAmount,
-          },
-        ],
-        user: {
-          name: billDetails?.payerName,
-          mobileNumber: billDetails?.mobileNumber,
-          tenantId: billDetails?.tenantId,
-        },
-        // success
-        callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
-          ? `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`
-          : `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`,
-        additionalDetails: {
-          isWhatsapp: false,
-        },
-      },
-      RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: userInfo1?.authToken || "default-token",
-        userInfo: {
-          id: userInfo1?.id || 1,
-          uuid: userInfo1?.uuid || "default-uuid",
-          userName: userInfo1?.userName || "defaultuser",
-          name: userInfo1?.name || "Default User",
-          mobileNumber: userInfo1?.mobileNumber || "9999999999",
-          emailId: userInfo1?.emailId || "default@example.com",
-          locale: userInfo1?.locale || "en_IN",
-          type: userInfo1?.type || "CITIZEN",
-          roles: userInfo1?.roles || [],
-          active: userInfo1?.active !== false,
-          tenantId: userInfo1?.tenantId || tenantId,
-          permanentCity: userInfo1?.permanentCity || tenantId
-        },
-        msgId: "1749797151521|en_IN",
-        plainAccessRequest: {}
-      }
-    };
+//   const billDetails = billFopayment?.Bill ? billFopayment?.Bill[0] : {};
+//   const handlePaymentMethod = async () => {
+//     if (!remarks.trim()) {
+//       setFormErrors("Remarks are required.");
+//       return;
+//     }
+//     const consumerCode = applicationData?.propertyId;
+//     const filterData = {
+//       Transaction: {
+//         tenantId: billDetails?.tenantId,
+//         txnAmount: paymentAmount || billDetails.totalAmount,
+//         module: businessService,
+//         billId: billDetails.id,
+//         consumerCode: consumerCode,
+//         productInfo: "Common Payment",
+//         gateway: selectedMode,
+//         taxAndPayments: [
+//           {
+//             billId: billDetails.id,
+//             amountPaid: billDetails.totalAmount,
+//           },
+//         ],
+//         user: {
+//           name: billDetails?.payerName,
+//           mobileNumber: billDetails?.mobileNumber,
+//           tenantId: billDetails?.tenantId,
+//         },
+//         // success
+//         callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
+//           ? `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`
+//           : `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`,
+//         additionalDetails: {
+//           isWhatsapp: false,
+//         },
+//       },
+//       RequestInfo: {
+//         apiId: "Rainmaker",
+//         authToken: userInfo1?.authToken || "default-token",
+//         userInfo: {
+//           id: userInfo1?.id || 1,
+//           uuid: userInfo1?.uuid || "default-uuid",
+//           userName: userInfo1?.userName || "defaultuser",
+//           name: userInfo1?.name || "Default User",
+//           mobileNumber: userInfo1?.mobileNumber || "9999999999",
+//           emailId: userInfo1?.emailId || "default@example.com",
+//           locale: userInfo1?.locale || "en_IN",
+//           type: userInfo1?.type || "CITIZEN",
+//           roles: userInfo1?.roles || [],
+//           active: userInfo1?.active !== false,
+//           tenantId: userInfo1?.tenantId || tenantId,
+//           permanentCity: userInfo1?.permanentCity || tenantId
+//         },
+//         msgId: "1749797151521|en_IN",
+//         plainAccessRequest: {}
+//       }
+//     };
 
-    try {
-      const data = await Digit.PaymentService.createCitizenReciept(billDetails?.tenantId, filterData);
-      const redirectUrl = data?.Transaction?.redirectUrl;
-      window.location = redirectUrl;
-      setFormErrors("");
-    } catch (error) {
-      let messageToShow = "CS_PAYMENT_UNKNOWN_ERROR_ON_SERVER";
-      if (error.response?.data?.Errors?.[0]) {
-        setFormErrors("");
-        const { code, message } = error.response?.data?.Errors?.[0];
-        messageToShow = code;
-      }
-      setFormErrors("");
-      setShowToast({ key: true, label: t(messageToShow) });
-    }
-  };
-  const totalNetTax = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.reduce(
-    (acc, curr) => acc + (curr.netTax || 0),
-    0
-  );
-  const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
-    select: (data) =>
-      data["common-masters"]?.uiCommonPay?.filter(({ code }) => businessService?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
-  });
-    const printReciept = async () => {
-    const tenantId = Digit.ULBService.getCurrentTenantId();
-    const state = Digit.ULBService.getStateId();
-    const payments = await Digit.PaymentService.getReciept(tenantId, businessService, { receiptNumbers: receiptNumber });
-    let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
+//     try {
+//       const data = await Digit.PaymentService.createCitizenReciept(billDetails?.tenantId, filterData);
+//       const redirectUrl = data?.Transaction?.redirectUrl;
+//       window.location = redirectUrl;
+//       setFormErrors("");
+//     } catch (error) {
+//       let messageToShow = "CS_PAYMENT_UNKNOWN_ERROR_ON_SERVER";
+//       if (error.response?.data?.Errors?.[0]) {
+//         setFormErrors("");
+//         const { code, message } = error.response?.data?.Errors?.[0];
+//         messageToShow = code;
+//       }
+//       setFormErrors("");
+//       setShowToast({ key: true, label: t(messageToShow) });
+//     }
+//   };
+//   const totalNetTax = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.reduce(
+//     (acc, curr) => acc + (curr.netTax || 0),
+//     0
+//   );
+//   const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
+//     select: (data) =>
+//       data["common-masters"]?.uiCommonPay?.filter(({ code }) => businessService?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
+//   });
+//     const printReciept = async () => {
+//     const tenantId = Digit.ULBService.getCurrentTenantId();
+//     const state = Digit.ULBService.getStateId();
+//     const payments = await Digit.PaymentService.getReciept(tenantId, businessService, { receiptNumbers: receiptNumber });
+//     let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
 
-    if (!payments.Payments[0]?.fileStoreId) {
-        const paymentsWithCalculation = payments.Payments.map(payment => ({
-      ...payment,
-      Calculation: estimateData?.Calculation?.[0] || {},
-    }));
-      response = await Digit.PaymentService.generatePdf(state, { Payments: paymentsWithCalculation }, generatePdfKey);
-    }
-    const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
-    window.open(fileStore[response.filestoreIds[0]], "_blank");
-  };
-
-
-  if (assessmentLoading) {
-    return <Loader />;
-  }
-  return (
-
-    <div>
-      {/* Consumer Details */}
-      <div style={styles.section}>
-        <div style={styles.assessmentStyle}>Consumer Details</div>
+//     if (!payments.Payments[0]?.fileStoreId) {
+//         const paymentsWithCalculation = payments.Payments.map(payment => ({
+//       ...payment,
+//       Calculation: estimateData?.Calculation?.[0] || {},
+//     }));
+//       response = await Digit.PaymentService.generatePdf(state, { Payments: paymentsWithCalculation }, generatePdfKey);
+//     }
+//     const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
+//     window.open(fileStore[response.filestoreIds[0]], "_blank");
+//   };
 
 
-{/* <div style={styles.grid}>
-            <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><   input style={styles.textBox}  /></div>
-            <div style={styles.flex30}><label style={styles.label}>House No<span style={{ color: "red" }}>*</span></label><input style={styles.textBox} /></div>
-            <div style={styles.flex30}><label style={styles.label}>City<span style={{ color: "red" }}>*</span></label><input style={styles.textBox} /></div>
-            <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
-            <div style={styles.flex30}><label style={styles.label}>Locality<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
-            <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
-            <div style={styles.flex30}><label style={styles.label}>Postal Code<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
-            <div style={styles.flex30}><label style={styles.label}>Property ID<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
-            <div style={styles.flex30}><label style={styles.label}>Property Type<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
-          </div> */}
+//   if (assessmentLoading) {
+//     return <Loader />;
+//   }
+//   return (
+
+//     <div>
+//       {/* Consumer Details */}
+//       <div style={styles.section}>
+//         <div style={styles.assessmentStyle}>Consumer Details</div>
+
+
+// {/* <div style={styles.grid}>
+//             <div style={styles.flex30}><label style={styles.label}>Colony<span style={{ color: "red" }}>*</span></label><   input style={styles.textBox}  /></div>
+//             <div style={styles.flex30}><label style={styles.label}>House No<span style={{ color: "red" }}>*</span></label><input style={styles.textBox} /></div>
+//             <div style={styles.flex30}><label style={styles.label}>City<span style={{ color: "red" }}>*</span></label><input style={styles.textBox} /></div>
+//             <div style={styles.flex30}><label style={styles.label}>Zone<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+//             <div style={styles.flex30}><label style={styles.label}>Locality<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+//             <div style={styles.flex30}><label style={styles.label}>Ward<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+//             <div style={styles.flex30}><label style={styles.label}>Postal Code<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+//             <div style={styles.flex30}><label style={styles.label}>Property ID<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+//             <div style={styles.flex30}><label style={styles.label}>Property Type<span style={{ color: "red" }}>*</span></label><input style={styles.textBox}  /></div>
+//           </div> */}
           
 
 
-        <div style={styles.grid}>
+//         <div style={styles.grid}>
 
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Owner Name(English)</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.owners?.[0]?.name || "N/A"}
-              style={styles.input}
-            />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Owner Name(English)</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.owners?.[0]?.name || "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
 
 
 
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Property ID</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.propertyId || "N/A"}
-              style={styles.input}
-            />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Property ID</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.propertyId || "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
 
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Mobile No.</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.owners?.[0]?.mobileNumber || "N/A"}
-              style={styles.input}
-            />
-          </div>
-          <div style={styles.flex30}>
-            <div style={styles.label}>Exemption</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.owners?.[0]?.ownerType === "BPL" ? "BPL" : "N/A"}
-              style={styles.input}
-            />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Mobile No.</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.owners?.[0]?.mobileNumber || "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Exemption</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.owners?.[0]?.ownerType === "BPL" ? "BPL" : "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Ward</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.address?.ward || "N/A"}
-              style={styles.input}
-            />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Ward</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.address?.ward || "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Zone</div>
-            <input type="text" readOnly value={applicationData?.address?.zone || "N/A"} style={styles.input} />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Zone</div>
+//             <input type="text" readOnly value={applicationData?.address?.zone || "N/A"} style={styles.input} />
+//           </div>
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Colony</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.address?.locality?.name || "N/A"}
-              style={styles.input}
-            />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Colony</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.address?.locality?.name || "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Road Factor</div>
-            <input type="text" readOnly value={applicationData?.units?.[0]?.roadFactor} style={styles.input} />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Road Factor</div>
+//             <input type="text" readOnly value={applicationData?.units?.[0]?.roadFactor} style={styles.input} />
+//           </div>
 
 
-          <div style={styles.flex30}>
-            <div style={styles.label}>Address</div>
-            <input
-              type="text"
-              readOnly
-              value={applicationData?.address?.doorNo + ", " + applicationData?.address?.street || "N/A"}
-              style={styles.input}
-            />
-          </div>
+//           <div style={styles.flex30}>
+//             <div style={styles.label}>Address</div>
+//             <input
+//               type="text"
+//               readOnly
+//               value={applicationData?.address?.doorNo + ", " + applicationData?.address?.street || "N/A"}
+//               style={styles.input}
+//             />
+//           </div>
 
-        </div>
-      </div>
+//         </div>
+//       </div>
 
-      <div style={styles.section}>
+//       <div style={styles.section}>
       
-        {applicationDetails?.applicationDetails?.map((detail, index) => (
-          <>
+//         {applicationDetails?.applicationDetails?.map((detail, index) => (
+//           <>
    
 
-            {detail?.additionalDetails?.documents && <PropertyDocuments documents={detail?.additionalDetails?.documents} />}
+//             {detail?.additionalDetails?.documents && <PropertyDocuments documents={detail?.additionalDetails?.documents} />}
 
-          </>
-        ))}
+//           </>
+//         ))}
        
-      </div>
-      {/* Property Area Details */}
-      {/* <div style={styles.section}>
-        <div style={styles.assessmentStyle}>Property Area Details</div>
-        <div style={{ overflowX: 'auto', width: '100%' }}>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                {[
-                  "Usage Type",
-                  "Usage Factor",
-                  "Floor",
-                  "Construction Type",
-                  "Area (Sq feet)",
-                  "Rate",
-                  "ALV",
-                  "Discount (%)",
+//       </div>
+//       {/* Property Area Details */}
+//       {/* <div style={styles.section}>
+//         <div style={styles.assessmentStyle}>Property Area Details</div>
+//         <div style={{ overflowX: 'auto', width: '100%' }}>
+//           <table style={styles.table}>
+//             <thead>
+//               <tr>
+//                 {[
+//                   "Usage Type",
+//                   "Usage Factor",
+//                   "Floor",
+//                   "Construction Type",
+//                   "Area (Sq feet)",
+//                   "Rate",
+//                   "ALV",
+//                   "Discount (%)",
                 
-                ].map((head, i) => (
-                  <th key={i} style={styles.th}>
-                    {head}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {estimateData?.Calculation?.[0]?.propertyFYDetails?.map((detail, index) => (
-                <tr key={index}>
-                  <td style={styles.td}>{detail.usageType || "N/A"}</td>
-                  <td style={styles.td}>{detail.usageFactor || "1.0"}</td>
-                  <td style={styles.td}>{detail.floorNo || "N/A"}</td>
-                  <td style={styles.td}>{detail.constructionType || "RCC"}</td>
-                  <td style={styles.td}>{detail.area || "N/A"}</td>
-                  <td style={styles.td}>{detail.factor || "N/A"}</td>
-                  <td style={styles.td}>{detail.alv || 0}</td>
-                  <td style={styles.td}>{detail.constructionType === "OPENLAND" ? "0" : "10"}</td> 
+//                 ].map((head, i) => (
+//                   <th key={i} style={styles.th}>
+//                     {head}
+//                   </th>
+//                 ))}
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {estimateData?.Calculation?.[0]?.propertyFYDetails?.map((detail, index) => (
+//                 <tr key={index}>
+//                   <td style={styles.td}>{detail.usageType || "N/A"}</td>
+//                   <td style={styles.td}>{detail.usageFactor || "1.0"}</td>
+//                   <td style={styles.td}>{detail.floorNo || "N/A"}</td>
+//                   <td style={styles.td}>{detail.constructionType || "RCC"}</td>
+//                   <td style={styles.td}>{detail.area || "N/A"}</td>
+//                   <td style={styles.td}>{detail.factor || "N/A"}</td>
+//                   <td style={styles.td}>{detail.alv || 0}</td>
+//                   <td style={styles.td}>{detail.constructionType === "OPENLAND" ? "0" : "10"}</td> 
                  
-                </tr>
-              ))}
-            </tbody>
+//                 </tr>
+//               ))}
+//             </tbody>
 
-          </table>
-        </div>
-      </div> */}
-{/* 
-      <div style={styles.section}>
-        <div style={styles.assessmentStyle}>Tax Summary</div>
-        <div style={{ overflowX: 'auto', width: '100%' }}>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                {[
-                  "Year",
-                  "ALV",
-                  "TPV",
-                  "Sampatti Kar",
-                  "Samekit Kar",
-                  "Shiksha Upkar",
-                  "Jal Abhikar",
-                  "Jal Nikas Kar",
-                  "Nagariya Vikas Upkar",
-                  "Seva Shulk",
-                  "Current Amount",
-                  "Rebate",
-                  "Penalty",
-                  "Net Tax"
-                ].map((head, i) => (
-                  <th key={i} style={styles.th}>
-                    {head}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.map((summary, index) => (
-                <tr key={index}>
-                  <td style={styles.td}>{summary.year}</td>
-                  <td style={styles.td}>{summary.alv}</td>
-                  <td style={styles.td}>{summary.tpv}</td>
-                  <td style={styles.td}>{summary.propertyTax}</td>
-                  <td style={styles.td}>{summary.samekit}</td>
-                  <td style={styles.td}>{summary.educationCess}</td>
-                  <td style={styles.td}>{summary.jalKar}</td>
-                  <td style={styles.td}>{summary.jalNikas}</td>
-                  <td style={styles.td}>{summary.urbanTax}</td>
-                  <td style={styles.td}>{summary.sevaKar}</td>
-                  <td style={styles.td}>{summary.totalTax}</td>
-                  <td style={styles.td}>{summary.rebate}</td>
-                  <td style={styles.td}>{summary.penalty}</td>
-                  <td style={styles.td}>{summary.netTax}</td>
-                </tr>
-              ))}
-            </tbody>
+//           </table>
+//         </div>
+//       </div> */}
+// {/* 
+//       <div style={styles.section}>
+//         <div style={styles.assessmentStyle}>Tax Summary</div>
+//         <div style={{ overflowX: 'auto', width: '100%' }}>
+//           <table style={styles.table}>
+//             <thead>
+//               <tr>
+//                 {[
+//                   "Year",
+//                   "ALV",
+//                   "TPV",
+//                   "Sampatti Kar",
+//                   "Samekit Kar",
+//                   "Shiksha Upkar",
+//                   "Jal Abhikar",
+//                   "Jal Nikas Kar",
+//                   "Nagariya Vikas Upkar",
+//                   "Seva Shulk",
+//                   "Current Amount",
+//                   "Rebate",
+//                   "Penalty",
+//                   "Net Tax"
+//                 ].map((head, i) => (
+//                   <th key={i} style={styles.th}>
+//                     {head}
+//                   </th>
+//                 ))}
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.map((summary, index) => (
+//                 <tr key={index}>
+//                   <td style={styles.td}>{summary.year}</td>
+//                   <td style={styles.td}>{summary.alv}</td>
+//                   <td style={styles.td}>{summary.tpv}</td>
+//                   <td style={styles.td}>{summary.propertyTax}</td>
+//                   <td style={styles.td}>{summary.samekit}</td>
+//                   <td style={styles.td}>{summary.educationCess}</td>
+//                   <td style={styles.td}>{summary.jalKar}</td>
+//                   <td style={styles.td}>{summary.jalNikas}</td>
+//                   <td style={styles.td}>{summary.urbanTax}</td>
+//                   <td style={styles.td}>{summary.sevaKar}</td>
+//                   <td style={styles.td}>{summary.totalTax}</td>
+//                   <td style={styles.td}>{summary.rebate}</td>
+//                   <td style={styles.td}>{summary.penalty}</td>
+//                   <td style={styles.td}>{summary.netTax}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
 
-          </table>
-        </div>
-      </div> */}
-
-
-      {/* Payment Section */}
-      <div style={styles.section}>
+//           </table>
+//         </div>
+//       </div> */}
 
 
-        <div style={styles.assessmentStyle}>Payment Amount</div>
+//       {/* Payment Section */}
+//       <div style={styles.section}>
 
-        {/* Payment Type Toggle */}
-        <div style={{ marginTop: "16px", display: "flex", gap: "20px", alignItems: "center" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <input
-              type="radio"
-              name="paymentType"
-              checked={paymentType === "full"}
-              onChange={() => setPaymentType("full")}
-            />
-            <span style={styles.label}>Full Payment</span>
-          </label>
-          <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <input
-              type="radio"
-              name="paymentType"
-              checked={paymentType === "partial"}
-              onChange={() => setPaymentType("partial")}
-            />
-            <span style={styles.label}>Partial Payment</span>
-          </label>
-        </div>
 
-        {/* Conditional Payment Fields */}
-        {estimateData?.Calculation?.[0] && paymentType === "full" && (
-          <div style={styles.grid}>
-            <div style={styles.column}>
-              <div style={styles.label}>Amount</div>
-              <input
-                placeholder="XX.XX"
-                value={estimateData?.Calculation[0]?.currentYearTax || ""}
-                readOnly
-                style={styles.input2}
-              />
-            </div>
+//         <div style={styles.assessmentStyle}>Payment Amount</div>
 
-            <div style={styles.column}>
-              <div style={styles.label}>Arrear</div>
-              <input
-                value={estimateData?.Calculation[0]?.arrear || ""}
-                readOnly
-                style={styles.input2}
-              />
-            </div>
+//         {/* Payment Type Toggle */}
+//         <div style={{ marginTop: "16px", display: "flex", gap: "20px", alignItems: "center" }}>
+//           <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+//             <input
+//               type="radio"
+//               name="paymentType"
+//               checked={paymentType === "full"}
+//               onChange={() => setPaymentType("full")}
+//             />
+//             <span style={styles.label}>Full Payment</span>
+//           </label>
+//           <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+//             <input
+//               type="radio"
+//               name="paymentType"
+//               checked={paymentType === "partial"}
+//               onChange={() => setPaymentType("partial")}
+//             />
+//             <span style={styles.label}>Partial Payment</span>
+//           </label>
+//         </div>
 
-            <div style={styles.column}>
-              <div style={styles.label}>Payments Receivable</div>
-              <input
-                value={estimateData?.Calculation[0]?.taxAmount || ""}
-                readOnly
-                style={styles.input2}
-              />
-            </div>
+//         {/* Conditional Payment Fields */}
+//         {estimateData?.Calculation?.[0] && paymentType === "full" && (
+//           <div style={styles.grid}>
+//             <div style={styles.column}>
+//               <div style={styles.label}>Amount</div>
+//               <input
+//                 placeholder="XX.XX"
+//                 value={estimateData?.Calculation[0]?.currentYearTax || ""}
+//                 readOnly
+//                 style={styles.input2}
+//               />
+//             </div>
 
-            <div style={styles.column}>
-              <div style={styles.label}>Advance Payment</div>
-              <input
-                value="0"
-                readOnly
-                style={styles.input2}
-              />
-            </div>
-          </div>
-        )}
+//             <div style={styles.column}>
+//               <div style={styles.label}>Arrear</div>
+//               <input
+//                 value={estimateData?.Calculation[0]?.arrear || ""}
+//                 readOnly
+//                 style={styles.input2}
+//               />
+//             </div>
 
-        {paymentType === "partial" && (
-          <div style={styles.row}>
-            <div style={styles.column}>
-              <div style={styles.label}>Amount</div>
-              <input
-                placeholder="XX.XX"
-                value={manualAmount}
-                style={styles.input}
-                onChange={(e) => setManualAmount(e.target.value)}
-              />
+//             <div style={styles.column}>
+//               <div style={styles.label}>Payments Receivable</div>
+//               <input
+//                 value={estimateData?.Calculation[0]?.taxAmount || ""}
+//                 readOnly
+//                 style={styles.input2}
+//               />
+//             </div>
 
-            </div>
+//             <div style={styles.column}>
+//               <div style={styles.label}>Advance Payment</div>
+//               <input
+//                 value="0"
+//                 readOnly
+//                 style={styles.input2}
+//               />
+//             </div>
+//           </div>
+//         )}
 
-            <div style={styles.column}>
-              <div style={styles.label}>Arrear</div>
-              <input
+//         {paymentType === "partial" && (
+//           <div style={styles.row}>
+//             <div style={styles.column}>
+//               <div style={styles.label}>Amount</div>
+//               <input
+//                 placeholder="XX.XX"
+//                 value={manualAmount}
+//                 style={styles.input}
+//                 onChange={(e) => setManualAmount(e.target.value)}
+//               />
 
-                readOnly
-                value={estimateData?.Calculation[0]?.arrear || ""}
-                style={styles.input}
-              />
-            </div>
+//             </div>
 
-            <div style={styles.column}>
-              <div style={styles.label}>Payments Receivable</div>
-              <input
-                value={(() => {
-                  const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
-                  if (manualAmount) {
-                    return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
-                  } else {
-                    const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
-                    return (currentYearTax + arrear).toFixed(2);
-                  }
-                })()}
-                readOnly
-                style={styles.input}
-              />
-            </div>
-            <div style={styles.column}></div>
-          </div>
-        )}
+//             <div style={styles.column}>
+//               <div style={styles.label}>Arrear</div>
+//               <input
 
-        <div style={styles.label}>
-          Payment Method <span style={{ color: "red" }}>*</span>
-        </div>
-        <div style={styles.checkboxGroup}>
+//                 readOnly
+//                 value={estimateData?.Calculation[0]?.arrear || ""}
+//                 style={styles.input}
+//               />
+//             </div>
 
-          {["CASH"].map((method) => (
-            <label key={method}>
-              <input
-                type="radio"
-                checked={selectedModes.includes(method)}
-                onChange={() => toggleMode(method)}
-              />{" "}
-              {method}
-            </label>
-          ))}
-        </div>
-        {selectedModes.includes("Cheque") && (
-          <div style={styles.inputGroup}>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                Cheque Issue Date <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="date"
-                style={styles.input}
-                value={chequeDetails.issueDate}
-                onChange={(e) =>
-                  setChequeDetails({ ...chequeDetails, issueDate: e.target.value })
-                }
-              />
-            </div>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                Cheque Number <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Cheque Number"
-                style={styles.input}
-                value={chequeDetails.chequeNumber}
-                onChange={(e) =>
-                  setChequeDetails({ ...chequeDetails, chequeNumber: e.target.value })
-                }
-              />
-            </div>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                Account Holder Name <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Cheque Drawer"
-                style={styles.input}
-                value={chequeDetails.accountHolder}
-                onChange={(e) =>
-                  setChequeDetails({ ...chequeDetails, accountHolder: e.target.value })
-                }
-              />
-            </div>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                Bank Name <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Cheque Bank Name"
-                style={styles.input}
-                value={chequeDetails.bankName}
-                onChange={(e) =>
-                  setChequeDetails({ ...chequeDetails, bankName: e.target.value })
-                }
-              />
-            </div>
+//             <div style={styles.column}>
+//               <div style={styles.label}>Payments Receivable</div>
+//               <input
+//                 value={(() => {
+//                   const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
+//                   if (manualAmount) {
+//                     return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
+//                   } else {
+//                     const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
+//                     return (currentYearTax + arrear).toFixed(2);
+//                   }
+//                 })()}
+//                 readOnly
+//                 style={styles.input}
+//               />
+//             </div>
+//             <div style={styles.column}></div>
+//           </div>
+//         )}
 
-          </div>
-        )}
-        {selectedModes.includes("POS") && (
-          <div style={styles.inputGroup}>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                POS reference number <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="POS reference number"
-                style={styles.input}
-                value={posDetails.referenceNumber}
-                onChange={(e) =>
-                  setPosDetails({ ...posDetails, referenceNumber: e.target.value })
-                }
-              />
-            </div>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                EDC Bank Name <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Enter EDC Bank Name"
-                style={styles.input}
-                value={posDetails.edcBankName}
-                onChange={(e) =>
-                  setPosDetails({ ...posDetails, edcBankName: e.target.value })
-                }
-              />
-            </div>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                Bank Card Name <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Name on card"
-                style={styles.input}
-                value={posDetails.cardName}
-                onChange={(e) =>
-                  setPosDetails({ ...posDetails, cardName: e.target.value })
-                }
-              />
-            </div>
-            <div style={styles.inputField}>
-              <label style={styles.label}>
-                Card Last 4 Digit <span style={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Card last four digit"
-                style={styles.input}
-                maxLength={4}
-                value={posDetails.cardLast4Digit}
-                onChange={(e) =>
-                  setPosDetails({ ...posDetails, cardLast4Digit: e.target.value })
-                }
-              />
-            </div>
-          </div>
-        )}
-        {showUPIModal && (
-          <div style={styles.modalOverlay}>
-            <div style={styles.modalContent}>
-              <div style={styles.modalHeader}>Confirm Mobile Number</div>
-              <div style={styles.inputField}>
-                <label style={styles.label}>
-                  Mobile Number <span style={styles.required}>*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="+91-xxxxxxxx"
-                  style={styles.input}
-                  value={upiMobile}
-                  onChange={(e) => setUPIMobile(e.target.value)}
-                />
-              </div>
-              <div style={styles.buttonRow}>
-                <button style={styles.cancelButton} onClick={closeUPIModal}>
-                  Cancel
-                </button>
-                <button
-                  style={styles.submitButton}
-                  onClick={() => {
-                    // You can add validation or API logic here
-                    closeUPIModal();
-                  }}
-                >
-                  Send Request
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        {showConfirmation && (
-          <div style={styles.modalOverlay}>
-            <div style={styles.modalContent}>
-              <div style={styles.checkIcon}>✓</div>
-              <div style={styles.header}>Payment Collected</div>
-              <div style={styles.receiptText}>
-                Receipt Number
-                <br />
-                {receiptNumber}
-              </div>
-              <div style={styles.receiptText}>
-                Total Amount Received
-                <br />
-                ₹{totalNetTax}
-              </div>
-              <button style={styles.homeButton} onClick={printReciept}>
-                Download Receipt
-              </button>
-              <button style={styles.homeButton} onClick={() => {
-                // 🏠 Navigate home or reset form here
-                window.location.href = "/digit-ui/employee"; // or use React Router
-              }}>
-                Home
-              </button>
-            </div>
-          </div>)}
-        <div style={{ marginTop: "20px" }}>
-          <div style={styles.label}>
-            Remarks <span style={{ color: "red" }}>*</span>
-          </div>
-          <textarea
-            rows="3"
-            style={styles.remarkBox}
-            value={remarks}
-            onChange={(e) => setRemarks(e.target.value)}
-          />
-          {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
-        </div>
+//         <div style={styles.label}>
+//           Payment Method <span style={{ color: "red" }}>*</span>
+//         </div>
+//         <div style={styles.checkboxGroup}>
 
-        <div style={{ marginTop: "30px" }}>
-          {selectedModes.includes("CASH") && (
-            <button
-              style={{
-                ...styles.paymentButton,
-                backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
-                cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
-              }}
-              onClick={() => handlePayment()}
-              disabled={billFetch?.totalAmount === 0}
-            >
-              Collect Payment
-            </button>
-          )}
-          {selectedModes.includes("EASEBUZZ") && (
-            <button style={{
-              ...styles.paymentButton
-            }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
-              Pay Now
-            </button>
-          )}
-        </div>
+//           {["CASH"].map((method) => (
+//             <label key={method}>
+//               <input
+//                 type="radio"
+//                 checked={selectedModes.includes(method)}
+//                 onChange={() => toggleMode(method)}
+//               />{" "}
+//               {method}
+//             </label>
+//           ))}
+//         </div>
+//         {selectedModes.includes("Cheque") && (
+//           <div style={styles.inputGroup}>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 Cheque Issue Date <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="date"
+//                 style={styles.input}
+//                 value={chequeDetails.issueDate}
+//                 onChange={(e) =>
+//                   setChequeDetails({ ...chequeDetails, issueDate: e.target.value })
+//                 }
+//               />
+//             </div>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 Cheque Number <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="Enter Cheque Number"
+//                 style={styles.input}
+//                 value={chequeDetails.chequeNumber}
+//                 onChange={(e) =>
+//                   setChequeDetails({ ...chequeDetails, chequeNumber: e.target.value })
+//                 }
+//               />
+//             </div>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 Account Holder Name <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="Cheque Drawer"
+//                 style={styles.input}
+//                 value={chequeDetails.accountHolder}
+//                 onChange={(e) =>
+//                   setChequeDetails({ ...chequeDetails, accountHolder: e.target.value })
+//                 }
+//               />
+//             </div>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 Bank Name <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="Cheque Bank Name"
+//                 style={styles.input}
+//                 value={chequeDetails.bankName}
+//                 onChange={(e) =>
+//                   setChequeDetails({ ...chequeDetails, bankName: e.target.value })
+//                 }
+//               />
+//             </div>
 
-      </div>
-    </div>
-  );
-};
+//           </div>
+//         )}
+//         {selectedModes.includes("POS") && (
+//           <div style={styles.inputGroup}>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 POS reference number <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="POS reference number"
+//                 style={styles.input}
+//                 value={posDetails.referenceNumber}
+//                 onChange={(e) =>
+//                   setPosDetails({ ...posDetails, referenceNumber: e.target.value })
+//                 }
+//               />
+//             </div>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 EDC Bank Name <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="Enter EDC Bank Name"
+//                 style={styles.input}
+//                 value={posDetails.edcBankName}
+//                 onChange={(e) =>
+//                   setPosDetails({ ...posDetails, edcBankName: e.target.value })
+//                 }
+//               />
+//             </div>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 Bank Card Name <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="Name on card"
+//                 style={styles.input}
+//                 value={posDetails.cardName}
+//                 onChange={(e) =>
+//                   setPosDetails({ ...posDetails, cardName: e.target.value })
+//                 }
+//               />
+//             </div>
+//             <div style={styles.inputField}>
+//               <label style={styles.label}>
+//                 Card Last 4 Digit <span style={styles.required}>*</span>
+//               </label>
+//               <input
+//                 type="text"
+//                 placeholder="Card last four digit"
+//                 style={styles.input}
+//                 maxLength={4}
+//                 value={posDetails.cardLast4Digit}
+//                 onChange={(e) =>
+//                   setPosDetails({ ...posDetails, cardLast4Digit: e.target.value })
+//                 }
+//               />
+//             </div>
+//           </div>
+//         )}
+//         {showUPIModal && (
+//           <div style={styles.modalOverlay}>
+//             <div style={styles.modalContent}>
+//               <div style={styles.modalHeader}>Confirm Mobile Number</div>
+//               <div style={styles.inputField}>
+//                 <label style={styles.label}>
+//                   Mobile Number <span style={styles.required}>*</span>
+//                 </label>
+//                 <input
+//                   type="text"
+//                   placeholder="+91-xxxxxxxx"
+//                   style={styles.input}
+//                   value={upiMobile}
+//                   onChange={(e) => setUPIMobile(e.target.value)}
+//                 />
+//               </div>
+//               <div style={styles.buttonRow}>
+//                 <button style={styles.cancelButton} onClick={closeUPIModal}>
+//                   Cancel
+//                 </button>
+//                 <button
+//                   style={styles.submitButton}
+//                   onClick={() => {
+//                     // You can add validation or API logic here
+//                     closeUPIModal();
+//                   }}
+//                 >
+//                   Send Request
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+//         {showConfirmation && (
+//           <div style={styles.modalOverlay}>
+//             <div style={styles.modalContent}>
+//               <div style={styles.checkIcon}>✓</div>
+//               <div style={styles.header}>Payment Collected</div>
+//               <div style={styles.receiptText}>
+//                 Receipt Number
+//                 <br />
+//                 {receiptNumber}
+//               </div>
+//               <div style={styles.receiptText}>
+//                 Total Amount Received
+//                 <br />
+//                 ₹{totalNetTax}
+//               </div>
+//               <button style={styles.homeButton} onClick={printReciept}>
+//                 Download Receipt
+//               </button>
+//               <button style={styles.homeButton} onClick={() => {
+//                 // 🏠 Navigate home or reset form here
+//                 window.location.href = "/digit-ui/employee"; // or use React Router
+//               }}>
+//                 Home
+//               </button>
+//             </div>
+//           </div>)}
+//         <div style={{ marginTop: "20px" }}>
+//           <div style={styles.label}>
+//             Remarks <span style={{ color: "red" }}>*</span>
+//           </div>
+//           <textarea
+//             rows="3"
+//             style={styles.remarkBox}
+//             value={remarks}
+//             onChange={(e) => setRemarks(e.target.value)}
+//           />
+//           {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
+//         </div>
 
-export default ApplicationDetailsContent;
+//         <div style={{ marginTop: "30px" }}>
+//           {selectedModes.includes("CASH") && (
+//             <button
+//               style={{
+//                 ...styles.paymentButton,
+//                 backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
+//                 cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
+//               }}
+//               onClick={() => handlePayment()}
+//               disabled={billFetch?.totalAmount === 0}
+//             >
+//               Collect Payment
+//             </button>
+//           )}
+//           {selectedModes.includes("EASEBUZZ") && (
+//             <button style={{
+//               ...styles.paymentButton
+//             }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
+//               Pay Now
+//             </button>
+//           )}
+//         </div>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ApplicationDetailsContent;

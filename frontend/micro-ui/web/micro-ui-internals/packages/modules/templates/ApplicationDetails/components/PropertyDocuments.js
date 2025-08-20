@@ -1,3 +1,203 @@
+
+
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { CardSubHeader, PDFSvg } from "@egovernments/digit-ui-react-components";
+
+function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }) {
+  const { t } = useTranslation();
+  const [filesArray, setFilesArray] = useState(() => []);
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const [pdfFiles, setPdfFiles] = useState({});
+
+  useEffect(() => {
+    let acc = [];
+    documents?.forEach((element) => {
+      acc = [...acc, ...(element.values ? element.values : [])];
+    });
+    setFilesArray(acc?.map((value) => value?.fileStoreId));
+  }, [documents]);
+
+  useEffect(() => {
+    if (filesArray?.length && documents?.[0]?.BS === "BillAmend") {
+      Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getCurrentTenantId()).then((res) => {
+        setPdfFiles(res?.data);
+      });
+    } else if (filesArray?.length) {
+      Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getStateId()).then((res) => {
+        setPdfFiles(res?.data);
+      });
+    }
+  }, [filesArray]);
+
+  const checkLocation = window.location.href.includes("employee/tl") || window.location.href.includes("/obps") || window.location.href.includes("employee/ws");
+  const isStakeholderApplication = window.location.href.includes("stakeholder");
+
+  return (
+    <div style={{ marginTop: "19px" }}>
+      {!isStakeholderApplication &&
+        documents?.map((document, index) => (
+          <React.Fragment key={index}>
+            {document?.title ? (
+              <div
+                style={{
+                  display: "flex",             
+                  alignItems: "center",         
+                  gap: "16px",                  
+                  flexWrap: "wrap",             
+                  marginBottom: "20px",
+                }}
+              >
+                {/* Heading */}
+                <div
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: "bold",
+                    fontSize: "26px",
+                    lineHeight: "100%",
+                    letterSpacing: "0px",
+                    textDecorationStyle: "solid",
+                    textDecorationColor: "#6b133f",
+                    textDecorationThickness: "1px",
+                    color: "#6b133f",
+                    padding: "14px",
+                    textAlign: "left",
+                  }}
+                >
+                  {/* {t(document?.title)} */}
+                  Download
+                </div>
+
+                {/* PDF Links */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                  }}
+                >
+                  {document?.values && document?.values.length > 0 ? (
+                    document?.values?.map((value, index) => (
+                      <a
+                        key={index}
+                        target="_"
+                        href={pdfFiles[value.fileStoreId]?.split(",")[0]}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "6px 12px",
+                          border: "1px solid #6b133f",
+                          borderRadius: "20px",
+                          color: "#6b133f",
+                          textDecoration: "none",
+                          fontWeight: 400,
+                          fontSize: "12px",
+                          transition: "0.3s",
+                          fontFamily: "Poppins",
+                        }}
+                      >
+                        <PDFSvg style={{ width: "16px", height: "16px", fill: "#4729A3" }} />
+                        {t(value?.title)}
+                      </a>
+                    ))
+                  ) : !window.location.href.includes("citizen") ? (
+                    <div>
+                      <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+          </React.Fragment>
+        ))}
+
+
+      {isStakeholderApplication &&
+        documents?.map((document, index) => (
+          <React.Fragment key={index}>
+            {document?.title ? (
+              <CardSubHeader style={{ marginTop: "32px", marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>
+                {t(document?.title)}
+              </CardSubHeader>
+            ) : null}
+            <div>
+              {document?.values && document?.values.length > 0 ? (
+                document?.values?.map((value, index) => (
+                  <a
+                    target="_"
+                    href={pdfFiles[value.fileStoreId]?.split(",")[0]}
+                    style={{
+                      minWidth: svgStyles?.minWidth ? svgStyles?.minWidth : "160px",
+                      marginRight: "20px",
+                    }}
+                    key={index}
+                  >
+                    <div
+                      style={{
+                        maxWidth: "940px",
+                        padding: "8px",
+                        borderRadius: "4px",
+                        border: "1px solid #D6D5D4",
+                        background: "#FAFAFA",
+                      }}
+                    >
+                      <p style={{ marginTop: "8px", fontWeight: "bold", marginBottom: "10px" }}>{t(value?.title)}</p>
+                      {value?.docInfo ? (
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: "#505A5F",
+                            fontWeight: 400,
+                            lineHeight: "15px",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          {`${t(value?.docInfo)}`}
+                        </div>
+                      ) : null}
+                      <PDFSvg />
+                      <p
+                        style={{
+                          marginTop: "8px",
+                          fontSize: "16px",
+                          lineHeight: "19px",
+                          color: "#505A5F",
+                          fontWeight: "400",
+                        }}
+                      >
+                        {`${t(value?.title)}`}
+                      </p>
+                    </div>
+                  </a>
+                ))
+              ) : !window.location.href.includes("citizen") ? (
+                <div>
+                  <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
+                </div>
+              ) : null}
+            </div>
+          </React.Fragment>
+        ))}
+    </div>
+  );
+}
+
+export default PropertyDocuments;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import React, { useState, useEffect } from "react";
 // import { useTranslation } from "react-i18next";
 // import { CardSubHeader, PDFSvg } from "@egovernments/digit-ui-react-components";
@@ -83,176 +283,176 @@
 // export default PropertyDocuments;
 
 
-import React, { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { CardSubHeader, PDFSvg } from "@egovernments/digit-ui-react-components";
+// import React, { useState, useEffect } from "react";
+// import { useTranslation } from "react-i18next";
+// import { CardSubHeader, PDFSvg } from "@egovernments/digit-ui-react-components";
 
-function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }) {
-  const { t } = useTranslation();
-  const [filesArray, setFilesArray] = useState(() => []);
-  const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [pdfFiles, setPdfFiles] = useState({});
+// function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }) {
+//   const { t } = useTranslation();
+//   const [filesArray, setFilesArray] = useState(() => []);
+//   const tenantId = Digit.ULBService.getCurrentTenantId();
+//   const [pdfFiles, setPdfFiles] = useState({});
 
-  useEffect(() => {
-    let acc = [];
-    documents?.forEach((element) => {
-      acc = [...acc, ...(element.values ? element.values : [])];
-    });
-    setFilesArray(acc?.map((value) => value?.fileStoreId));
-  }, [documents]);
+//   useEffect(() => {
+//     let acc = [];
+//     documents?.forEach((element) => {
+//       acc = [...acc, ...(element.values ? element.values : [])];
+//     });
+//     setFilesArray(acc?.map((value) => value?.fileStoreId));
+//   }, [documents]);
 
-  useEffect(() => {
-    if (filesArray?.length && documents?.[0]?.BS === "BillAmend") {
-      Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getCurrentTenantId()).then((res) => {
-        setPdfFiles(res?.data);
-      });
-    } else if (filesArray?.length) {
-      Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getStateId()).then((res) => {
-        setPdfFiles(res?.data);
-      });
-    }
-  }, [filesArray]);
+//   useEffect(() => {
+//     if (filesArray?.length && documents?.[0]?.BS === "BillAmend") {
+//       Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getCurrentTenantId()).then((res) => {
+//         setPdfFiles(res?.data);
+//       });
+//     } else if (filesArray?.length) {
+//       Digit.UploadServices.Filefetch(filesArray, Digit.ULBService.getStateId()).then((res) => {
+//         setPdfFiles(res?.data);
+//       });
+//     }
+//   }, [filesArray]);
 
-  const checkLocation = window.location.href.includes("employee/tl") || window.location.href.includes("/obps") || window.location.href.includes("employee/ws");
-  const isStakeholderApplication = window.location.href.includes("stakeholder");
+//   const checkLocation = window.location.href.includes("employee/tl") || window.location.href.includes("/obps") || window.location.href.includes("employee/ws");
+//   const isStakeholderApplication = window.location.href.includes("stakeholder");
 
-  return (
-    <div style={{ marginTop: "19px" }}>
-      {!isStakeholderApplication &&
-        documents?.map((document, index) => (
-          <React.Fragment key={index}>
-            {document?.title ? (
-              <div
-                style={
-                  {
-                    background: '#6b133f',
-                    fontFamily: 'Poppins, sans-serif',
-                    fontWeight: 'bold',
-                    fontSize: '16px',
-                    lineHeight: '100%',
-                    letterSpacing: '0px',
-                    color: 'white',
-                    marginBottom: '20px',
-                    padding: '14px',
-                    textAlign: "center",
-                  }
-                }
-              >
-                {t(document?.title)}
-              </div>
-            ) : null}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "10px",
-                justifyContent: "flex-start",
-                marginTop: "12px",
-              }}
-            >
-              {document?.values && document?.values.length > 0 ? (
-                document?.values?.map((value, index) => (
-                  <a
-                    key={index}
-                    target="_"
-                    href={pdfFiles[value.fileStoreId]?.split(",")[0]}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      padding: "6px 12px",
-                      border: "1px solid #6b133f",
-                      borderRadius: "20px",
-                      color: "#6b133f",
-                      textDecoration: "none",
-                      fontWeight: 400,
-                      fontSize: "12px",
-                      transition: "0.3s",
-                      fontFamily: "Poppins"
+//   return (
+//     <div style={{ marginTop: "19px" }}>
+//       {!isStakeholderApplication &&
+//         documents?.map((document, index) => (
+//           <React.Fragment key={index}>
+//             {document?.title ? (
+//               <div
+//                 style={
+//                   {
+//                     background: '#6b133f',
+//                     fontFamily: 'Poppins, sans-serif',
+//                     fontWeight: 'bold',
+//                     fontSize: '16px',
+//                     lineHeight: '100%',
+//                     letterSpacing: '0px',
+//                     color: 'white',
+//                     marginBottom: '20px',
+//                     padding: '14px',
+//                     textAlign: "center",
+//                   }
+//                 }
+//               >
+//                 {t(document?.title)}
+//               </div>
+//             ) : null}
+//             <div
+//               style={{
+//                 display: "flex",
+//                 flexWrap: "wrap",
+//                 gap: "10px",
+//                 justifyContent: "flex-start",
+//                 marginTop: "12px",
+//               }}
+//             >
+//               {document?.values && document?.values.length > 0 ? (
+//                 document?.values?.map((value, index) => (
+//                   <a
+//                     key={index}
+//                     target="_"
+//                     href={pdfFiles[value.fileStoreId]?.split(",")[0]}
+//                     style={{
+//                       display: "flex",
+//                       alignItems: "center",
+//                       gap: "6px",
+//                       padding: "6px 12px",
+//                       border: "1px solid #6b133f",
+//                       borderRadius: "20px",
+//                       color: "#6b133f",
+//                       textDecoration: "none",
+//                       fontWeight: 400,
+//                       fontSize: "12px",
+//                       transition: "0.3s",
+//                       fontFamily: "Poppins"
 
-                    }}
-                  >
-                    <PDFSvg style={{ width: "16px", height: "16px", fill: "#4729A3" }} />
-                    {t(value?.title)}
-                  </a>
-                ))
-              ) : !window.location.href.includes("citizen") ? (
-                <div>
-                  <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
-                </div>
-              ) : null}
-            </div>
-          </React.Fragment>
-        ))}
+//                     }}
+//                   >
+//                     <PDFSvg style={{ width: "16px", height: "16px", fill: "#4729A3" }} />
+//                     {t(value?.title)}
+//                   </a>
+//                 ))
+//               ) : !window.location.href.includes("citizen") ? (
+//                 <div>
+//                   <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
+//                 </div>
+//               ) : null}
+//             </div>
+//           </React.Fragment>
+//         ))}
 
-      {isStakeholderApplication &&
-        documents?.map((document, index) => (
-          <React.Fragment key={index}>
-            {document?.title ? (
-              <CardSubHeader style={{ marginTop: "32px", marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>
-                {t(document?.title)}
-              </CardSubHeader>
-            ) : null}
-            <div>
-              {document?.values && document?.values.length > 0 ? (
-                document?.values?.map((value, index) => (
-                  <a
-                    target="_"
-                    href={pdfFiles[value.fileStoreId]?.split(",")[0]}
-                    style={{
-                      minWidth: svgStyles?.minWidth ? svgStyles?.minWidth : "160px",
-                      marginRight: "20px",
-                    }}
-                    key={index}
-                  >
-                    <div
-                      style={{
-                        maxWidth: "940px",
-                        padding: "8px",
-                        borderRadius: "4px",
-                        border: "1px solid #D6D5D4",
-                        background: "#FAFAFA",
-                      }}
-                    >
-                      <p style={{ marginTop: "8px", fontWeight: "bold", marginBottom: "10px" }}>{t(value?.title)}</p>
-                      {value?.docInfo ? (
-                        <div
-                          style={{
-                            fontSize: "12px",
-                            color: "#505A5F",
-                            fontWeight: 400,
-                            lineHeight: "15px",
-                            marginBottom: "10px",
-                          }}
-                        >
-                          {`${t(value?.docInfo)}`}
-                        </div>
-                      ) : null}
-                      <PDFSvg />
-                      <p
-                        style={{
-                          marginTop: "8px",
-                          fontSize: "16px",
-                          lineHeight: "19px",
-                          color: "#505A5F",
-                          fontWeight: "400",
-                        }}
-                      >
-                        {`${t(value?.title)}`}
-                      </p>
-                    </div>
-                  </a>
-                ))
-              ) : !window.location.href.includes("citizen") ? (
-                <div>
-                  <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
-                </div>
-              ) : null}
-            </div>
-          </React.Fragment>
-        ))}
-    </div>
-  );
-}
+//       {isStakeholderApplication &&
+//         documents?.map((document, index) => (
+//           <React.Fragment key={index}>
+//             {document?.title ? (
+//               <CardSubHeader style={{ marginTop: "32px", marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>
+//                 {t(document?.title)}
+//               </CardSubHeader>
+//             ) : null}
+//             <div>
+//               {document?.values && document?.values.length > 0 ? (
+//                 document?.values?.map((value, index) => (
+//                   <a
+//                     target="_"
+//                     href={pdfFiles[value.fileStoreId]?.split(",")[0]}
+//                     style={{
+//                       minWidth: svgStyles?.minWidth ? svgStyles?.minWidth : "160px",
+//                       marginRight: "20px",
+//                     }}
+//                     key={index}
+//                   >
+//                     <div
+//                       style={{
+//                         maxWidth: "940px",
+//                         padding: "8px",
+//                         borderRadius: "4px",
+//                         border: "1px solid #D6D5D4",
+//                         background: "#FAFAFA",
+//                       }}
+//                     >
+//                       <p style={{ marginTop: "8px", fontWeight: "bold", marginBottom: "10px" }}>{t(value?.title)}</p>
+//                       {value?.docInfo ? (
+//                         <div
+//                           style={{
+//                             fontSize: "12px",
+//                             color: "#505A5F",
+//                             fontWeight: 400,
+//                             lineHeight: "15px",
+//                             marginBottom: "10px",
+//                           }}
+//                         >
+//                           {`${t(value?.docInfo)}`}
+//                         </div>
+//                       ) : null}
+//                       <PDFSvg />
+//                       <p
+//                         style={{
+//                           marginTop: "8px",
+//                           fontSize: "16px",
+//                           lineHeight: "19px",
+//                           color: "#505A5F",
+//                           fontWeight: "400",
+//                         }}
+//                       >
+//                         {`${t(value?.title)}`}
+//                       </p>
+//                     </div>
+//                   </a>
+//                 ))
+//               ) : !window.location.href.includes("citizen") ? (
+//                 <div>
+//                   <p>{t("BPA_NO_DOCUMENTS_UPLOADED_LABEL")}</p>
+//                 </div>
+//               ) : null}
+//             </div>
+//           </React.Fragment>
+//         ))}
+//     </div>
+//   );
+// }
 
-export default PropertyDocuments;
+// export default PropertyDocuments;
