@@ -280,7 +280,7 @@ const EmployeeHome = ({ modules }) => {
         <div className="content-area" style={{ padding: isMobile ? "10px" : "0px", marginTop: isMobile ? "0px" : "40px" }}>
           <div className="content-header" style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", marginBottom: "20px", gap: isMobile ? "10px" : "0" }}>
             <h2>Home</h2>
-            <div
+            {/* <div
               className="filter"
               style={{
                 backgroundColor: "white",
@@ -302,7 +302,7 @@ const EmployeeHome = ({ modules }) => {
                 </div>
               </div>
               <i className="fas fa-chevron-down"></i>
-            </div>
+            </div> */}
           </div>
 
           {/* Status Cards */}
@@ -367,7 +367,7 @@ const EmployeeHome = ({ modules }) => {
           </div> */}
           <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "20px", fontFamily: "Barlow" }}>
             {/* Application Details Card */}
-            <div
+            {/* <div
               style={{
                 flex: 1,
                 background: "white",
@@ -404,10 +404,10 @@ const EmployeeHome = ({ modules }) => {
                   <Bar dataKey="Rejected" fill="#EF4C60" />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
+            </div> */}
 
             {/* Collection Card */}
-            <div
+            {/* <div
               style={{
                 flex: 1,
                 background: "white",
@@ -442,7 +442,7 @@ const EmployeeHome = ({ modules }) => {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-            </div>
+            </div> */}
           </div>
           {/* Favorite Cards */}
           <div className="favorite-card">
