@@ -858,6 +858,9 @@ const NewApplication = () => {
       { usageType: "", usageFactor: "", floorNo: "", constructionType: "", area: "" },
     ]);
   };
+  const removeUnit = (index) => {
+    setUnit(unit.filter((_, i) => i !== index));
+  };
   const handlePropertyDetailsChange = (field, value) => {
     setPropertyDetails((prev) => ({
       ...prev,
@@ -982,9 +985,11 @@ const NewApplication = () => {
               unit={unit}
               handleUnitChange={handleUnitChange}
               addUnit={addUnit}
+              removeUnit={removeUnit}
               styles={styles}
               formErrors={formErrors}
             />
+
           </div>
           <div style={styles.card}>
             <OtherDetailsSection

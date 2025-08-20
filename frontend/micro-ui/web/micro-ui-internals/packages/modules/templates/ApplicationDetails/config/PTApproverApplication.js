@@ -40,6 +40,7 @@ export const configPTApproverApplication = ({
           {
             label: t("Remark"),
             type: "textarea",
+            isMandatory: true,
             populators: {
               name: "comments",
             },

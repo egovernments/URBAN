@@ -1,14 +1,14 @@
 export const loginSteps = [
   {
     texts: {
-      header: "CS_LOGIN_PROVIDE_MOBILE_NUMBER",
-      cardText: "CS_LOGIN_TEXT",
+      // header: "CS_LOGIN_PROVIDE_MOBILE_NUMBER",
+      // cardText: "CS_LOGIN_TEXT",
       nextText: "CS_COMMONS_NEXT",
-      submitBarLabel: "CS_COMMONS_NEXT",
+      submitBarLabel: "Get OTP",
     },
     inputs: [
       {
-        label: "CORE_COMMON_MOBILE_NUMBER",
+        // label: "CORE_COMMON_MOBILE_NUMBER",
         type: "text",
         name: "mobileNumber",
         error: "ERR_HRMS_INVALID_MOB_NO",
@@ -30,7 +30,7 @@ export const loginSteps = [
   },
   {
     texts: {
-      header: "CS_LOGIN_PROVIDE_NAME",
+      // header: "CS_LOGIN_PROVIDE_NAME",
       cardText: "CS_LOGIN_NAME_TEXT",
       nextText: "CS_COMMONS_NEXT",
       submitBarLabel: "CS_COMMONS_NEXT",

@@ -288,7 +288,7 @@
 
 import React, { useEffect, useState } from "react";
 
-const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, styles, formErrors }) => {
+const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, removeUnit, styles, formErrors }) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
 
@@ -406,6 +406,7 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
               <th style={styles.tableHeader}>{t("Area (Sq feet)")}</th>
               <th style={styles.tableHeader}>{t("From Year")}</th>
               <th style={styles.tableHeader}>{t("To Year")}</th>
+              <th style={styles.tableHeader}>{t("Action")}</th>
             </tr>
           </thead>
           <tbody>
@@ -540,6 +541,15 @@ const PropertyDetailsTableSection = ({ t, unit, handleUnitChange, addUnit, style
                     <option value="" disabled>{t("To Year")}</option>
                     <option value={currentFYString}>{currentFYString}</option>
                   </select>
+                </td>
+                <td style={styles.tableCell}>
+                  <button
+                    type="button"
+                    style={styles.addMoreLink}
+                    onClick={() => removeUnit(index)}
+                  >
+                    {t("Remove")}
+                  </button>
                 </td>
               </tr>
             ))}
