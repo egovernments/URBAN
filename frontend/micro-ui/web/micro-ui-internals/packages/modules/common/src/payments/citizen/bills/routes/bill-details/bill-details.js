@@ -13,7 +13,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
   const userInfo = Digit.UserService.getUser();
   // let { consumerCode } = useParams();
   const { consumerCode: encodedConsumerCode } = useParams();
-  const consumerCode = decodeURIComponent(encodedConsumerCode);
+  let consumerCode = decodeURIComponent(encodedConsumerCode);
   const { workflow: wrkflow, tenantId: _tenantId, authorization, ConsumerName } = Digit.Hooks.useQueryParams();
   const [bill, setBill] = useState(state?.bill);
   const tenantId = Digit.UserService.getUser().info?.tenantId || state?.tenantId || _tenantId;
@@ -148,6 +148,11 @@ const BillDetails = ({ paymentRules, businessService }) => {
   }, [isLoading, data, bill, consumerCode, wrkflow]);
   
   const onSubmit = async () => {
+    if (!bill) {
+      console.error("Bill is undefined, cannot proceed with payment");
+      return;
+    }
+
     let paymentAmount =
       paymentType === t("CS_PAYMENT_FULL_AMOUNT")
         ? getTotal()
@@ -211,12 +216,18 @@ const BillDetails = ({ paymentRules, businessService }) => {
         // history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`)
       });
     } else if (wrkflow === "WNS") {
+      console.log("REACHED **");
+      console.log(`*** LOG ***`,bill);
+      console.log(`*** LOG ***`,billDetails);
+      console.log(`*** LOG ***`,bill);
+      
       history.push(
         `/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}?workflow=WNS&ConsumerName=${ConsumerName}`,
         {
           paymentAmount,
           tenantId: billDetails.tenantId,
           name: bill.payerName,
+          bill: bill,
           mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
         }
       );

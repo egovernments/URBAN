@@ -17,6 +17,7 @@ import { useParams, useHistory, useLocation } from "react-router-dom";
 import { stringReplaceAll } from "../bills/routes/bill-details/utils";
 
 const SelectPaymentType = (props) => {
+
   const optionFirst = {
     code: "PAY_BY_OWNER",
     i18nKey: "PT_PAY_BY_OWNER",
@@ -36,26 +37,37 @@ const SelectPaymentType = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
   const { state, ...location } = useLocation();
+
+  console.log(`*** LOG ***`,state);
+  console.log(`*** LOG ***`,state.bill);
+
   const { consumerCode, businessService, paymentAmt } = useParams();
   const { workflow: wrkflow, tenantId: _tenantId, ConsumerName } = Digit.Hooks.useQueryParams();
   const [bill, setBill] = useState(state?.bill);
   const tenantId = state?.tenantId || _tenantId || Digit.UserService.getUser().info?.tenantId;
   const isLoggedIn = Digit.UserService.getUser();
 
+
+
   const { data, isLoading } = state?.bill ? { isLoading: false } : Digit.Hooks.useFetchPayment({ tenantId, businessService, consumerCode });
 
   let Useruuid = data?.Bill?.[0]?.userId || "";
+  const isUserSearchEnabled = !!Useruuid && Useruuid.trim() !== "";
+  
   let requestCriteria = [
     "/user/_search",
     {},
     { data: { uuid: [Useruuid] } },
     { recordId: Useruuid, plainRequestFields: ["mobileNumber"] },
     {
-      enabled: Useruuid ? true : false,
+      enabled: isUserSearchEnabled,
       cacheTime: 100,
     },
   ];
-  const { isLoading: isUserLoading, data: userData, revalidate } = Digit.Hooks.useCustomAPIHook(...requestCriteria);
+  
+  const { isLoading: isUserLoading, data: userData, revalidate } = isUserSearchEnabled 
+    ? Digit.Hooks.useCustomAPIHook(...requestCriteria)
+    : { isLoading: false, data: null, revalidate: () => {} };
 
   const billDetails = bill?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod)?.[0] || [];
   const Arrears =
@@ -136,7 +148,7 @@ const SelectPaymentType = (props) => {
       let requiredBill = data?.Bill?.filter((e) => e.consumerCode == consumerCode)[0];
       setBill(requiredBill);
     }
-  }, [isLoading]);
+  }, [isLoading, data, bill, consumerCode]);
 
   const onChangePayersMobileNumber = (e) => {
     setmobileNumberError(null);
@@ -158,6 +170,11 @@ const SelectPaymentType = (props) => {
   };
 
   const onSubmit = async () => {
+    if (!bill) {
+      console.error("Bill is undefined, cannot proceed with payment");
+      return;
+    }
+
     let recieptRequest = {
       Payment: {
         mobileNumber: bill.mobileNumber,

@@ -58,7 +58,8 @@ export const useFetchPayment = ({ tenantId, consumerCode, businessService }, con
     if (businessService?.includes("PT") || businessService?.includes("SW") || businessService?.includes("WS") || businessService?.includes("1001.PEF") || businessService?.includes("DEATH_CERT") ||   businessService?.includes("BIRTH_CERT.BIRTH_CERT")) {
       const fetchedBill = await Digit.PaymentService.fetchBill(tenantId, { consumerCode, businessService });
       const billdetail = fetchedBill?.Bill?.[0]?.billDetails?.sort((a, b) => b.fromPeriod - a.fromPeriod)?.[0] || {};
-      fetchedBill.Bill[0].billDetails = fetchedBill?.Bill[0]?.billDetails?.map((ele) => ({
+      if (fetchedBill?.Bill?.[0] && fetchedBill?.Bill[0]?.billDetails) {
+        fetchedBill.Bill[0].billDetails = fetchedBill?.Bill[0]?.billDetails?.map((ele) => ({
         ...ele,
         currentBillNo: fetchedBill?.Bill?.[0]?.billNumber,
         currentExpiryDate: billdetail?.expiryDate,
@@ -75,6 +76,7 @@ export const useFetchPayment = ({ tenantId, consumerCode, businessService }, con
           billdet.expiryDate = searchBill?.Bill?.[0]?.billDetails?.[0]?.expiryDate;
           billdet.billNumber = searchBill?.Bill?.[0]?.billNumber;
         });
+      }
       }
       return fetchedBill;
     } else {
