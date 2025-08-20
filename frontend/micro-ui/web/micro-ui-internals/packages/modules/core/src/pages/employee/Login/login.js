@@ -217,8 +217,8 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
                   src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/image%201807.svg"
                   alt="Indore Map"
                   style={{ 
-                    width: "180px", 
-                    height: "auto", 
+                    // width: "180px", 
+                    // height: "auto", 
                     opacity: 0.8, 
                     marginTop: "20px",
                     display: "block",
@@ -271,8 +271,8 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
                   src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/image%201807.svg"
                   alt="Indore Map"
                   style={{ 
-                    width: "100px", 
-                    height: "auto", 
+                    // width: "100px", 
+                    // height: "auto", 
                     opacity: 0.5, 
                     marginTop: "10px"
                   }}
