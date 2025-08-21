@@ -185,13 +185,12 @@ public class EstimationService {
 		List<String> billingSlabIds = new LinkedList<>();
 
 		/*
-		 * by default land should get only one slab from database per tenantId
+		 * For vacant land, use the first matching slab
 		 */
-		if (PT_TYPE_VACANT_LAND.equalsIgnoreCase(detail.getPropertyType()) && filteredBillingSlabs.size() != 1)
-			throw new CustomException(PT_ESTIMATE_BILLINGSLABS_UNMATCH_VACANCT,PT_ESTIMATE_BILLINGSLABS_UNMATCH_VACANT_MSG
-					.replace("{count}",String.valueOf(filteredBillingSlabs.size())));
-
-		else if (PT_TYPE_VACANT_LAND.equalsIgnoreCase(detail.getPropertyType())) {
+		if (PT_TYPE_VACANT_LAND.equalsIgnoreCase(detail.getPropertyType())) {
+			if (filteredBillingSlabs.isEmpty())
+				throw new CustomException(PT_ESTIMATE_BILLINGSLABS_UNMATCH_VACANCT, "No billing slab found for vacant land");
+				
 			taxAmt = taxAmt.add(BigDecimal.valueOf(filteredBillingSlabs.get(0).getUnitRate() * detail.getLandArea()));
 		} else {
 
