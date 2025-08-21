@@ -223,7 +223,18 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
       ) : isMobile ? (
         <DetailsCard data={getData(tableData)} t={t} />
       ) : (
-        <div style={{ overflowX: 'auto', width: '100%' }}>
+        <div style={{ overflowX: 'auto', width: '100%',
+              padding: '20px 20px 0 20px', backgroundColor: '#fff'
+            }}>
+              <div style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 600,
+                fontSize: "20px",
+                color: "#6b133f",
+                margin: "0 0 20px 0",
+              }}>Property List</div> 
+
+         
         <Table
           t={t}
           data={tableData}
@@ -234,6 +245,8 @@ const SearchPTID = ({ tenantId, t, payload, showToast, setShowToast,ptSearchConf
               style: {
                 padding: "10px",
                 fontSize: "14px",
+                backgroundColor: "#f9f9f9", 
+                marginTop: '20px'
               },
             };
           }}
