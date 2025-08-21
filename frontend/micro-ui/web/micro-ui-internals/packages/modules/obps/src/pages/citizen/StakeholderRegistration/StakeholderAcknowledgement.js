@@ -80,7 +80,8 @@ const StakeholderAcknowledgement = ({ data, onSuccess }) => {
           {mutation.isSuccess && !isOpenLinkFlow && (
             <Link
               to={{
-                pathname: `/digit-ui/citizen/payment/my-bills/${mutation.data.Licenses[0].businessService}`,
+                pathname: `/digit-ui/citizen/payment/my-bills/${mutation.data.Licenses[0].businessService}/${mutation.data.Licenses[0].applicationNumber}`,
+                search: `?workflow=bpareg`,
                 state: { 
                   tenantId: mutation.data.Licenses[0].tenantId,
                   applicationNumber: mutation.data.Licenses[0].applicationNumber 

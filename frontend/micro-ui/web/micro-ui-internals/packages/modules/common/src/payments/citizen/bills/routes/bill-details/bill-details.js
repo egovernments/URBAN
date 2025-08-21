@@ -255,6 +255,15 @@ const BillDetails = ({ paymentRules, businessService }) => {
 
       }
       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}`);
+    } else if (businessService === "BPAREG" || wrkflow === "bpareg" || (businessService && businessService.includes("BPAREG"))) {
+      console.log("*** Log ===> ", "reched here");
+      try {
+        const response = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+        sessionStorage.setItem("PaymentResponse", JSON.stringify(response));
+      } catch (error) {
+        console.log("Error while creating receipt for BPAREG", error);
+      }
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=bpareg`);
     } else {
       history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
         paymentAmount,

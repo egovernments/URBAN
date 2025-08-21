@@ -10,7 +10,20 @@ const MyBill = ({ bill, currentPath, businessService, getKeyNotesConfig }) => {
   const history = useHistory();
 
   const onSubmit = () => {
-    history.push(`${currentPath}/${bill.consumerCode}`, { tenantId:bill?.tenantId });
+    const baseUrl = `${currentPath}/${bill.consumerCode}`;
+    const queryParams = new URLSearchParams();
+    
+    if (bill?.tenantId) {
+      queryParams.set('tenantId', bill.tenantId);
+    }
+    
+    // Add workflow parameter for BPAREG
+    if (businessService === 'BPAREG') {
+      queryParams.set('workflow', 'bpareg');
+    }
+    
+    const finalUrl = queryParams.toString() ? `${baseUrl}?${queryParams.toString()}` : baseUrl;
+    history.push(finalUrl, { tenantId: bill?.tenantId });
   };
 
   return (

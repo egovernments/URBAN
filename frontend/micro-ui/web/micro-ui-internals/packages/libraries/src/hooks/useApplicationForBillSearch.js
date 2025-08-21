@@ -20,9 +20,27 @@ const tlApplications = async (tenantId, filters) => {
   return (await TLService.search_bill({ tenantId, filters })).Bills;
 };
 const obpsApplications = async (tenantId, filters) => {
-  console.log("REACHED");
-  
-  return (await TLService.search_bill({ tenantId, filters })).Bills;
+  try {
+    // Use the OBPS service to search for BPAREG applications
+    const consumerCodes = filters?.consumerCodes?.split(',') || [];
+    
+    // Search for BPAREG applications using the proper OBPS service
+    const response = await OBPSService.BPAREGSearch(tenantId, {}, {
+      consumerCodes: filters?.consumerCodes
+    });
+    
+    // Return the applications from the response
+    return response?.Licenses || response?.applications || [];
+  } catch (error) {
+    console.error("Error fetching BPAREG applications:", error);
+    
+    // Fallback: create minimal application objects if the search fails
+    const consumerCodes = filters?.consumerCodes?.split(',') || [];
+    return consumerCodes.map(consumerCode => ({
+      consumerCode: consumerCode,
+      applicationNo: consumerCode,
+    }));
+  }
 };
 
 const refObj = (tenantId, filters) => {
@@ -61,7 +79,7 @@ const refObj = (tenantId, filters) => {
       label: "REFERENCE_NO",
     },
     BPAREG: {
-      searchFn: () => obpsApplications(tenantId, filters),
+      searchFn: () => ptApplications(tenantId, filters),
       key: "consumerCode",
       label: "REFERENCE_NO",
     },
