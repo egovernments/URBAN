@@ -524,17 +524,17 @@ const NewApplication = () => {
           samagraId: owner.samagraID || "Samagra ID",
           documents: [
             {
-              documentType: "Photo ID",
+              documentType: "Proof of Identity",
               fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
               documentUid: documents.photoId?.documentUid || "default-uid-photoid"
             },
             {
-              documentType: "Sellers Registry Copy ",
+              documentType: "Others",
               fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
               documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
             },
             {
-              documentType: "Ownership Document",
+              documentType: "Proof of Ownership",
               fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
               documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
             },
@@ -546,17 +546,17 @@ const NewApplication = () => {
 
         documents: [
           {
-            documentType: "Photo ID",
+            documentType: "Proof of Identity",
             fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
             documentUid: documents.photoId?.documentUid || "default-uid-photoid"
           },
           {
-            documentType: "Sellers Registry Copy ",
+            documentType: "Others",
             fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
             documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
           },
           {
-            documentType: "Ownership Document",
+            documentType: "Proof of Ownership",
             fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
             documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
           },
