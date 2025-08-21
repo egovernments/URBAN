@@ -228,7 +228,7 @@ export const BillDetailsKeyNoteConfig = () => ({
       },
     ],
   },
-  DEATH_CERT: {
+  death: {
     heading: "COMMON_PAY_SCREEN_HEADER",
     details: [
       {
@@ -249,9 +249,9 @@ export const BillDetailsKeyNoteConfig = () => ({
           "billDetails",
           (d) => {
             // Access the expiryDate from the first item in the billDetails array
-            const { expiryDate } = d[0] || {};
-            if (expiryDate) {
-              return new Date(expiryDate).toLocaleDateString();
+           const { currentExpiryDate } = d[0] || {}; // Change this
+            if (currentExpiryDate) { // And this
+              return new Date(currentExpiryDate).toLocaleDateString(); // And this
             } else return "N/A";
           },
         ],
@@ -259,7 +259,7 @@ export const BillDetailsKeyNoteConfig = () => ({
       },
     ],
   },
-  BIRTH_CERT: {
+  birth: {
     heading: "COMMON_PAY_SCREEN_HEADER",
     details: [
       {

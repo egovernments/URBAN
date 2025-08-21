@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { BillDetailsKeyNoteConfig } from "./billDetailsConfig";
 
 export const BillDetailsFormConfig = (props, t) => ({
-  PT: [
-    {
-      head: t("ES_BILL_DETAILS_PT_DETAILS_HEADING"),
-      body: [
+    PT: [
+      {
+        head: t("ES_BILL_DETAILS_PT_DETAILS_HEADING"),
+        body: [
         {
           withoutLabel: true,
           type: "custom",
@@ -147,7 +147,7 @@ export const BillDetailsFormConfig = (props, t) => ({
       ],
     },
   ],
-  DEATH_CERT: [
+  death: [
     {
       head: t("COMMON_PAY_SCREEN_HEADER"),
       body: [
@@ -156,14 +156,14 @@ export const BillDetailsFormConfig = (props, t) => ({
           type: "custom",
           populators: {
             name: "amount",
-            customProps: { businessService: "death", consumerCode: props.consumerCode },
+            customProps: { businessService: props.businessService , consumerCode: props.consumerCode },
             component: (props, customProps) => <BillDetails onChange={props.onChange} amount={props.value} {...customProps} />,
           },
         },
       ],
     },
   ],
-   BIRTH_CERT: [
+   birth: [
     {
       head: t("COMMON_PAY_SCREEN_HEADER"),
       body: [
@@ -172,7 +172,7 @@ export const BillDetailsFormConfig = (props, t) => ({
           type: "custom",
           populators: {
             name: "amount",
-            customProps: { businessService: "birth", consumerCode: props.consumerCode },
+            customProps: { businessService:  props.businessService, consumerCode: props.consumerCode },
             component: (props, customProps) => <BillDetails onChange={props.onChange} amount={props.value} {...customProps} />,
           },
         },
@@ -181,11 +181,15 @@ export const BillDetailsFormConfig = (props, t) => ({
   ],
 });
 
-const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
+const BillDetails = ({ businessService,consumerCode:encodedConsumerCode, _amount, onChange }) => {
   const { t } = useTranslation();
   const { workflow: ModuleWorkflow, IsDisconnectionFlow } = Digit.Hooks.useQueryParams();
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  let consumerCode = decodeURIComponent(encodedConsumerCode);
+
   const { data, isLoading } = Digit.Hooks.useFetchPayment({ tenantId, businessService, consumerCode });
+
+
   const checkFSM = window.location.href.includes("FSM");
 
   const { isLoading: isDataLoading, data: applicationData } = Digit.Hooks.fsm.useSearch(
@@ -275,6 +279,7 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
     }
   }, [data]);
 
+
   useEffect(() => {
     if (paymentType !== t("CS_PAYMENT_FULL_AMOUNT")) onChangeAmount(amount.toString());
     else {
@@ -300,6 +305,7 @@ const BillDetails = ({ businessService, consumerCode, _amount, onChange }) => {
     }
     changeAmount(value);
   };
+  
 
   if (isLoading || mdmsLoading) return <Loader />;
 

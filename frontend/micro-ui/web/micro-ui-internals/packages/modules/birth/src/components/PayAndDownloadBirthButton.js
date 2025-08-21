@@ -33,7 +33,10 @@ export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalNam
         const encodedConsumerCode = encodeURIComponent(fetchedConsumerCode);
         // Defensive: onlsy navigate if businessService and encodedConsumerCode are valid
         if (businessService && encodedConsumerCode) {
-          history.push(`/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=birth`);
+          history.push(
+            `/${window.contextPath}/citizen/payment/my-bills/${businessService}/${encodedConsumerCode}?workflow=birth`,
+            { tenantId: tenantId }
+          );
         } else {
           console.error("Missing businessService or consumerCode. Cannot proceed to payment.");
           setShowToast({ key: "error", label: t("BND_BIRTH_UNEXPECTED_ERROR_OCCURRED") });

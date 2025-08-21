@@ -18,7 +18,17 @@ export const MyBills = ({ stateCode }) => {
   const { url } = useRouteMatch();
   const location = useLocation();
 
-  const { tenantId } = Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
+
+  let tenantId;
+  
+  if(businessService === "BIRTH_CERT.BIRTH_CERT" || businessService === "DEATH_CERT"){
+    const { tenantId :tempTenantId } = location?.state || Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
+    tenantId = tempTenantId;
+  }
+  else{
+    const { tenantId:tempTenantId } = Digit.UserService.getUser()?.info || location?.state || { tenantId: _tenantId } || {};
+    tenantId = tempTenantId;
+  }
 
   if (!tenantId && !location?.state?.fromSearchResults) {
     history.replace(`/digit-ui/citizen/login`, { from: url });
