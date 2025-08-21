@@ -303,7 +303,7 @@ const ApplicationDetailsContent = ({
   oldValue,
   isInfoLabel = false
 }) => {
-
+const [amountPartial, setAmountPartial] = useState("");
   const [printing, setPrinting] = useState(false);
   const [manualAmount, setManualAmount] = useState("");
   const [showAssessmentPop, setShowAssesmentPop] = useState(false);
@@ -490,6 +490,118 @@ const ApplicationDetailsContent = ({
       handleAssessment();
     }
   }, [yearRange, applicationData?.propertyId]);
+// ✅ Prefill manualAmount with 50% when bill is fetched
+useEffect(() => {
+  if (billData?.totalAmount && !manualAmount) {
+    const total = parseFloat(billData.totalAmount) || 0;
+    const halfAmount = total * 0.5;
+    setManualAmount(Math.round(halfAmount)); // ✅ round off to nearest integer
+  }
+}, [billData]);
+
+
+const handlePaymentPartial = async () => {
+  const tenantId = billData?.tenantId || "pg.citya";
+  const consumerCode = applicationData?.propertyId;
+  const selectedPaymentMode = selectedMode;
+
+  if (!remarks.trim()) {
+    setFormErrors("Remarks are required.");
+    return;
+  }
+
+  try {
+    // ✅ Fetch fresh bill before processing
+    const billResponse = await Digit.PTService.fetchPaymentDetails({
+      tenantId,
+      consumerCodes: consumerCode,
+    });
+
+    const BillList = billResponse?.Bill || [];
+
+    // ❌ Abort if bill is already paid or not found
+    if (!BillList.length) {
+      alert("❌ This bill has already been paid or is not valid.");
+      return;
+    }
+
+    const bill = BillList[0];
+    const totalAmount = parseFloat(bill.totalAmount) || 0;
+
+    // ✅ Validate manualAmount
+    let amountToPay = totalAmount;
+    if (manualAmount !== "" && !isNaN(parseFloat(manualAmount))) {
+      const enteredAmount = parseFloat(manualAmount);
+
+      if (enteredAmount < totalAmount * 0.5) {
+        alert("⚠️ Payment amount cannot be less than 50% of total due.");
+        return;
+      }
+      if (enteredAmount > totalAmount) {
+        alert("⚠️ Payment amount cannot exceed 100% of total due.");
+        return;
+      }
+
+      amountToPay = enteredAmount;
+    }
+
+    // ✅ Construct receipt request
+    const receiptRequest = {
+      Payment: {
+        mobileNumber: bill?.mobileNumber,
+        paymentDetails: [
+          {
+            billId: bill.id,
+            businessService: bill.businessService,
+            totalDue: totalAmount,
+            totalAmountPaid: amountToPay,
+            remarks: remarks,
+          },
+        ],
+        tenantId,
+        totalDue: totalAmount,
+        totalAmountPaid: amountToPay,
+        paymentMode: selectedPaymentMode,
+        payerName: bill?.payerName || "Default User",
+        paidBy: "OWNER",
+      },
+      RequestInfo: {
+        apiId: "Rainmaker",
+        authToken: userInfo1?.authToken || "default-token",
+        userInfo: {
+          id: userInfo1?.id || 1,
+          uuid: userInfo1?.uuid || "default-uuid",
+          userName: userInfo1?.userName || "defaultuser",
+          name: userInfo1?.name || "Default User",
+          mobileNumber: userInfo1?.mobileNumber || "9999999999",
+          emailId: userInfo1?.emailId || "default@example.com",
+          locale: userInfo1?.locale || "en_IN",
+          type: userInfo1?.type || "CITIZEN",
+          roles: userInfo1?.roles || [],
+          active: userInfo1?.active !== false,
+          tenantId: userInfo1?.tenantId || tenantId,
+          permanentCity: userInfo1?.permanentCity || tenantId,
+        },
+        msgId: "1749797151521|en_IN",
+        plainAccessRequest: {},
+      },
+    };
+
+    // ✅ Make the API call
+    const response = await Digit.PaymentService.createReciept(tenantId, receiptRequest);
+ const totalAmountPaid = response?.Payments?.[0]?.paymentDetails?.[0]?.totalAmountPaid;
+    setAmountPartial(totalAmountPaid)
+    // ✅ Invalidate cache & show confirmation
+    const receiptNumber = response?.Payments?.[0]?.paymentDetails?.[0]?.receiptNumber;
+    setReceiptNumber(receiptNumber);
+    setShowConfirmation(true);
+    fetchBill();
+    setFormErrors("");
+  } catch (error) {
+    const errorMsg = error?.response?.data?.Errors?.map((e) => e?.code)?.join(", ");
+    setFormErrors(errorMsg || "Unknown error while processing payment");
+  }
+};
 
   const handlePayment = async () => {
     const tenantId = billData?.tenantId || "pg.citya";
@@ -525,17 +637,13 @@ const ApplicationDetailsContent = ({
               billId: bill.id,
               businessService: bill.businessService,
               totalDue: bill.totalAmount,
-              totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
-                ? parseFloat(manualAmount)
-                : bill.totalAmount,
+              totalAmountPaid: bill.totalAmount,
               remarks: remarks,
             },
           ],
           tenantId,
           totalDue: bill.totalAmount,
-          totalAmountPaid: manualAmount !== "" && !isNaN(parseFloat(manualAmount))
-            ? parseFloat(manualAmount)
-            : bill.totalAmount,
+          totalAmountPaid: bill.totalAmount,
           paymentMode: selectedPaymentMode,
           payerName: bill?.payerName || "Default User",
           paidBy: "OWNER",
@@ -632,81 +740,7 @@ const ApplicationDetailsContent = ({
   useEffect(() => {
     localStorage.setItem("BillPaymentEnabled", "true");
   }, []);
-  const { name, mobileNumber } = state;
 
-  const billDetails = billFopayment?.Bill ? billFopayment?.Bill[0] : {};
-  const handlePaymentMethod = async () => {
-    if (!remarks.trim()) {
-      setFormErrors("Remarks are required.");
-      return;
-    }
-    const consumerCode = applicationData?.propertyId;
-    const filterData = {
-      Transaction: {
-        tenantId: billDetails?.tenantId,
-        txnAmount: paymentAmount || billDetails.totalAmount,
-        module: businessService,
-        billId: billDetails.id,
-        consumerCode: consumerCode,
-        productInfo: "Common Payment",
-        gateway: selectedMode,
-        taxAndPayments: [
-          {
-            billId: billDetails.id,
-            amountPaid: billDetails.totalAmount,
-          },
-        ],
-        user: {
-          name: billDetails?.payerName,
-          mobileNumber: billDetails?.mobileNumber,
-          tenantId: billDetails?.tenantId,
-        },
-        // success
-        callbackUrl: window.location.href.includes("mcollect") || wrkflow === "WNS"
-          ? `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`
-          : `${window.location.protocol}//${window.location.host}/digit-ui/employee/${businessService}/ptsearch/property-details/${consumerCode}`,
-        additionalDetails: {
-          isWhatsapp: false,
-        },
-      },
-      RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: userInfo1?.authToken || "default-token",
-        userInfo: {
-          id: userInfo1?.id || 1,
-          uuid: userInfo1?.uuid || "default-uuid",
-          userName: userInfo1?.userName || "defaultuser",
-          name: userInfo1?.name || "Default User",
-          mobileNumber: userInfo1?.mobileNumber || "9999999999",
-          emailId: userInfo1?.emailId || "default@example.com",
-          locale: userInfo1?.locale || "en_IN",
-          type: userInfo1?.type || "CITIZEN",
-          roles: userInfo1?.roles || [],
-          active: userInfo1?.active !== false,
-          tenantId: userInfo1?.tenantId || tenantId,
-          permanentCity: userInfo1?.permanentCity || tenantId
-        },
-        msgId: "1749797151521|en_IN",
-        plainAccessRequest: {}
-      }
-    };
-
-    try {
-      const data = await Digit.PaymentService.createCitizenReciept(billDetails?.tenantId, filterData);
-      const redirectUrl = data?.Transaction?.redirectUrl;
-      window.location = redirectUrl;
-      setFormErrors("");
-    } catch (error) {
-      let messageToShow = "CS_PAYMENT_UNKNOWN_ERROR_ON_SERVER";
-      if (error.response?.data?.Errors?.[0]) {
-        setFormErrors("");
-        const { code, message } = error.response?.data?.Errors?.[0];
-        messageToShow = code;
-      }
-      setFormErrors("");
-      setShowToast({ key: true, label: t(messageToShow) });
-    }
-  };
   const totalNetTax = estimateData?.Calculation?.[0]?.propertyFYTaxSummaries?.reduce(
     (acc, curr) => acc + (curr.netTax || 0),
     0
@@ -1132,9 +1166,8 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Current Year Net Tex</div>
               <input
-
                 readOnly
-                value={"" || ""}
+                value={estimateData?.Calculation?.[0]?.currentYearTax || ""}
                 style={styles.input}
               />
             </div>
@@ -1142,15 +1175,7 @@ const ApplicationDetailsContent = ({
             <div style={styles.column}>
               <div style={styles.label}>Previous Balance</div>
               <input
-                value={(() => {
-                  const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
-                  if (manualAmount) {
-                    return (parseFloat(manualAmount || 0) + arrear).toFixed(2);
-                  } else {
-                    const currentYearTax = parseFloat(estimateData?.Calculation?.[0]?.currentYearTax || 0);
-                    return (currentYearTax + arrear).toFixed(2);
-                  }
-                })()}
+             value={estimateData?.Calculation?.[0]?.previousBalance || "0"}
                 readOnly
                 style={styles.input}
               />
@@ -1429,7 +1454,7 @@ const ApplicationDetailsContent = ({
               <div style={styles.receiptText}>
                 Total Amount Received
                 <br />
-                ₹{totalNetTax}
+                ₹{amountPartial?amountPartial:totalNetTax}
               </div>
               <button style={styles.homeButton} onClick={printReciept}>
                 Download Receipt
@@ -1457,7 +1482,7 @@ const ApplicationDetailsContent = ({
 
         <div style={{ marginTop: "20px" }}>
           {/* {selectedModes.includes("CASH") && ( */}
-          {(selectedModes.length > 0) && (
+          {(selectedModes.length > 0&& paymentType === "full") && (
             <button
               style={{
                 ...styles.paymentButton,
@@ -1470,13 +1495,21 @@ const ApplicationDetailsContent = ({
               Collect Payment
             </button>
           )}
-          {selectedModes.includes("EASEBUZZ") && (
-            <button style={{
-              ...styles.paymentButton
-            }} onClick={() => handlePaymentMethod()} disabled={billFetch?.totalAmount === 0}>
-              Pay Now
+              {((selectedModes.length > 0 && paymentType === "partial")) && (
+            <button
+              style={{
+                ...styles.paymentButton,
+                backgroundColor: billFetch?.totalAmount === 0 ? "#ccc" : styles.paymentButton.backgroundColor,
+                cursor: billFetch?.totalAmount === 0 ? "not-allowed" : "pointer"
+              }}
+              onClick={() => handlePaymentPartial()}
+              disabled={billFetch?.totalAmount === 0}
+            >
+              Collect Payment
             </button>
           )}
+          
+       
         </div>
 
       </div>

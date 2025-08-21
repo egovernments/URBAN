@@ -502,8 +502,8 @@ function ApplicationDetailsContentVerifier({
     if (checkpoint.state === "OPEN" || (checkpoint.status === "INITIATED" && !window.location.href.includes("/obps/"))) {
       const caption = {
         date: checkpoint?.auditDetails?.created,
-        source: ""
-        // source: applicationData?.channel || "",
+        // source: ""
+        source: applicationData?.channel || "",
       };
       return <TLCaption data={caption} />;
     } else if (window.location.href.includes("/obps/") || window.location.href.includes("/noc/") || window.location.href.includes("/ws/")) {
