@@ -178,7 +178,7 @@ const ApplicationDetails = (props) => {
           setTimeout(closeToast, 5000);
         },
         onSuccess: (data, variables) => {
-         setPropertyResponse(data)
+          setPropertyResponse(data?.Properties?.[0]?.status)
           sessionStorage.removeItem("WS_SESSION_APPLICATION_DETAILS");
           setIsEnableLoader(false);
           if (isOBPS?.bpa) {
@@ -204,7 +204,6 @@ const ApplicationDetails = (props) => {
             } else if (variables?.AmendmentUpdate?.workflow?.action.includes("APPROVE")) {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_APPROVE_UPDATE_SUCCESS") })
 
-
             }
             else if (variables?.AmendmentUpdate?.workflow?.action.includes("REJECT")) {
               setShowToast({ key: "success", label: t("ES_MODIFYWSCONNECTION_REJECT_UPDATE_SUCCESS") })
@@ -224,14 +223,13 @@ const ApplicationDetails = (props) => {
 
     closeModal();
   };
-useEffect(() => {
-  console.log("propertyResponse", propertyResponse);
-  if (propertyResponse?.Properties?.[0]?.status === "ACTIVE") {
-    console.log("propertyResponse", propertyResponse);
-    handleAssessment();
-  }
- 
-}, [propertyResponse]);
+
+
+  useEffect(() => {
+    if (!propertyResponse) return; // skip initial undefined/null
+    propertyResponse === "ACTIVE" && handleAssessment();
+  }, [propertyResponse]);
+
   if (isLoading || isEnableLoader) {
     return <Loader />;
   }
