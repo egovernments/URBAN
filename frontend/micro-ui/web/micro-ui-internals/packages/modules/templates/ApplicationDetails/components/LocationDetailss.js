@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import IndexStyle from "./IndexStyle";
 import { Dropdown, TextInput } from "@egovernments/digit-ui-react-components";
@@ -6,15 +5,35 @@ import { Dropdown, TextInput } from "@egovernments/digit-ui-react-components";
 const LocationDetails = ({ t = (label) => label, handleFileChange, formErrors = {} }) => {
     const [selectedFiles, setSelectedFiles] = useState({});
     const [isMobile, setIsMobile] = useState(false);
+    const [coords, setCoords] = useState({ lat: "", lng: "" });
 
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
         };
-
         handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // 🔹 Fetch current location (lat/lng)
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setCoords({
+                        lat: position.coords.latitude.toFixed(6),
+                        lng: position.coords.longitude.toFixed(6),
+                    });
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    setCoords({ lat: "Not available", lng: "Not available" });
+                }
+            );
+        } else {
+            setCoords({ lat: "Not supported", lng: "Not supported" });
+        }
     }, []);
 
     const onFileChange = (key, file) => {
@@ -69,24 +88,30 @@ const LocationDetails = ({ t = (label) => label, handleFileChange, formErrors = 
 
     return (
         <div>
-
-
-
             <div style={style2.grid}>
-                <div style={style2.flex20}><label style={style2.label}>Latitude<span style={{ color: "red" }}>*</span></label><TextInput style={style2.widthInput}  value="45.5" readonly /></div>
-                <div style={style2.flex20}><label style={style2.label}>Longitude<span style={{ color: "red" }}>*</span></label><TextInput style={style2.widthInput}  value="122.7" readonly /></div>
-                <div style={style2.flex50}>   {renderFileInput("ownershipDoc", "Property Photograps", true)} </div>
+                {/* 🔹 Dynamic Latitude & Longitude */}
+                <div style={style2.flex20}>
+                    <label style={style2.label}>
+                        Latitude<span style={{ color: "red" }}>*</span>
+                    </label>
+                    <TextInput style={style2.widthInput} value={coords.lat} readOnly />
+                </div>
+                <div style={style2.flex20}>
+                    <label style={style2.label}>
+                        Longitude<span style={{ color: "red" }}>*</span>
+                    </label>
+                    <TextInput style={style2.widthInput} value={coords.lng} readOnly />
+                </div>
 
-
-
+                <div style={style2.flex50}>
+                    {renderFileInput("ownershipDoc", "Property Photographs", true)}
+                </div>
 
                 <label style={style2.poppinsTextStyle}>
                     <input
                         style={{ marginRight: "10px" }}
                         type="checkbox"
-                    //   checked={checkboxes.selfDeclaration}
-                    //   onChange={() => handleCheckboxChange("selfDeclaration")}
-                    />{"    "}
+                    />{" "}
                     Message To Be Confirmed For Bill Collector
                 </label>
                 {formErrors?.selfDeclaration && (
@@ -94,17 +119,13 @@ const LocationDetails = ({ t = (label) => label, handleFileChange, formErrors = 
                         {formErrors.selfDeclaration}
                     </p>
                 )}
-
-
             </div>
         </div>
-
-
-
     );
 };
 
 export default LocationDetails;
+
 
 // Inline styles
 const style2 = {
