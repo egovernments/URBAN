@@ -393,36 +393,38 @@ const PropertyForm = () => {
                     samagraId: owner.samagraID || "Samagra ID",
                     documents: [
                         {
-                            fileStoreId: documents.ownershipDoc?.fileStoreId || "45a107bf-358e-4527-9118-5beac81abfd6",
-                            documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
+                            documentType: "Proof of Identity",
+                            fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
+                            documentUid: documents.photoId?.documentUid || "default-uid-photoid"
                         },
                         {
-                            fileStoreId: documents.photoId?.fileStoreId || "5d7b1c69-cb1e-4467-a5a2-77de5f124f3f",
-                            documentType: "OWNER.IDENTITYPROOF.AADHAAR",
+                            documentType: "Others",
+                            fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
+                            documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
+                        },
+                        {
+                            documentType: "Proof of Ownership",
+                            fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
+                            documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
                         },
                     ],
                 })),
                 documents: [
                     {
-                        documentType: "OWNER.IDENTITYPROOF.VOTERID",
-                        fileStoreId: documents.photoId?.fileStoreId,
-                        documentUid: documents.photoId?.documentUid
+                        documentType: "Proof of Identity",
+                        fileStoreId: documents.photoId?.fileStoreId || "default-filestore-photoid",
+                        documentUid: documents.photoId?.documentUid || "default-uid-photoid"
                     },
                     {
-                        documentType: "OWNER.REGISTRATIONPROOF.SALEDEED",
-                        fileStoreId: documents.sellersRegistry?.fileStoreId,
-                        documentUid: documents.sellersRegistry?.documentUid
+                        documentType: "Others",
+                        fileStoreId: documents.sellersRegistry?.fileStoreId || "default-filestore-saledeed",
+                        documentUid: documents.sellersRegistry?.documentUid || "default-uid-saledeed"
                     },
                     {
-                        documentType: "OWNER.SPECIALCATEGORYPROOF.BPLDOCUMENT",
-                        fileStoreId: documents.ownershipDoc?.fileStoreId,
-                        documentUid: documents.ownershipDoc?.documentUid
+                        documentType: "Proof of Ownership",
+                        fileStoreId: documents.ownershipDoc?.fileStoreId || "default-filestore-ownership",
+                        documentUid: documents.ownershipDoc?.documentUid || "default-uid-ownership"
                     },
-                    {
-                        documentType: "OWNER.USAGEPROOF.ELECTRICITYBILL",
-                        fileStoreId: documents.lastTaxReceipt?.fileStoreId,
-                        documentUid: documents.lastTaxReceipt?.documentUid
-                    }
                 ],
                 units: unit.map(unit => ({
                     usageCategory: unit.usageType,
