@@ -674,9 +674,22 @@ public class PropertyValidator {
 		}
 		
 		List<String> fieldsUpdated = diffService.getUpdatedFields(property, propertyFromSearch, PTConstants.MUTATION_PROCESS_CONSTANT);
+		
+		// DEBUG: Log all changed fields to understand the issue
+		log.debug("=== MUTATION FIELDS DEBUG ===");
+		log.debug("Fields detected as changed: {}", fieldsUpdated);
+		
 		// only editable field in mutation other than owners, additional details.
 		fieldsUpdated.remove("ownershipCategory");
-    fieldsUpdated.remove("institution");
+		// Remove institution-related fields that are allowed to change during mutation
+		fieldsUpdated.remove("tenantId");
+		fieldsUpdated.remove("name");
+		fieldsUpdated.remove("type");
+		fieldsUpdated.remove("designation");
+		fieldsUpdated.remove("nameOfAuthorizedPerson");
+		
+		// DEBUG: Log fields after removal
+		log.debug("Fields after removal: {}", fieldsUpdated);
 
     if (configs.getIsMutationWorkflowEnabled()) {
 			if (request.getProperty().getWorkflow() == null)
@@ -693,9 +706,9 @@ public class PropertyValidator {
 			fieldsUpdated.remove("creationReason");
 		}
 
-		if (!CollectionUtils.isEmpty(fieldsUpdated))
-			throw new CustomException("EG_PT_MUTATION_ERROR",
-					"The property mutation doesnt allow change of these fields " + fieldsUpdated);
+    if (!CollectionUtils.isEmpty(fieldsUpdated))
+      throw new CustomException("EG_PT_MUTATION_ERROR",
+          "The property mutation doesnt allow change of these fields " + fieldsUpdated);
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> additionalDetails = mapper.convertValue(property.getAdditionalDetails(), Map.class);
