@@ -3,7 +3,9 @@ import { Request, ServiceRequest } from "../../atoms/Utils/Request";
 import { Storage } from "../../atoms/Utils/Storage";
 
 export const UserService = {
+  
   authenticate: (details) => {
+    
     const data = new URLSearchParams();
     Object.entries(details).forEach(([key, value]) => data.append(key, value));
     data.append("scope", "read");
@@ -52,8 +54,9 @@ export const UserService = {
       if (userType === "citizen") {
         window.location.replace("/digit-ui/citizen");
       } else {
-        window.location.replace("/digit-ui/employee/user/language-selection");
+        // window.location.replace("/digit-ui/employee/user/language-selection");
         // window.location.replace("/digit-ui/employee/user/login");
+        window.location.replace("https://citizenservicesdev.eydemoapp.in/landing/index.html");
 
       }
     }
