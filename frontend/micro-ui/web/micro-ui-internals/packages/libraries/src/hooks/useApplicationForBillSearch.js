@@ -1,7 +1,9 @@
+import { TLService } from "../services/elements/TL";
 import { FSMService } from "../services/elements/FSM";
 import { PTService } from "../services/elements/PT";
 import { useQuery } from "react-query";
 import { MCollectService } from "../services/elements/MCollect";
+import { OBPSService } from "../services/elements/OBPS";
 
 const fsmApplications = async (tenantId, filters) => {
   return (await FSMService.search(tenantId, { ...filters, limit: 10000 })).fsm;
@@ -15,6 +17,11 @@ const advtApplications = async (tenantId, filters) => {
   return (await MCollectService.search_bill({ tenantId, filters })).Bills;
 };
 const tlApplications = async (tenantId, filters) => {
+  return (await TLService.search_bill({ tenantId, filters })).Bills;
+};
+const obpsApplications = async (tenantId, filters) => {
+  console.log("REACHED");
+  
   return (await TLService.search_bill({ tenantId, filters })).Bills;
 };
 
@@ -54,7 +61,7 @@ const refObj = (tenantId, filters) => {
       label: "REFERENCE_NO",
     },
     BPAREG: {
-      searchFn: () => tlApplications(tenantId, filters),
+      searchFn: () => obpsApplications(tenantId, filters),
       key: "consumerCode",
       label: "REFERENCE_NO",
     },

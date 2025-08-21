@@ -80,8 +80,11 @@ const StakeholderAcknowledgement = ({ data, onSuccess }) => {
           {mutation.isSuccess && !isOpenLinkFlow && (
             <Link
               to={{
-                pathname: `/digit-ui/citizen/payment/collect/${mutation.data.Licenses[0].businessService}/${mutation.data.Licenses[0].applicationNumber}/${mutation.data.Licenses[0].tenantId}?tenantId=${mutation.data.Licenses[0].tenantId}`,
-                state: { tenantId: mutation.data.Licenses[0].tenantId },
+                pathname: `/digit-ui/citizen/payment/my-bills/${mutation.data.Licenses[0].businessService}`,
+                state: { 
+                  tenantId: mutation.data.Licenses[0].tenantId,
+                  applicationNumber: mutation.data.Licenses[0].applicationNumber 
+                },
               }}
             >
               <SubmitBar label={t("COMMON_MAKE_PAYMENT")} />
