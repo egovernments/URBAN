@@ -676,8 +676,9 @@ public class PropertyValidator {
 		List<String> fieldsUpdated = diffService.getUpdatedFields(property, propertyFromSearch, PTConstants.MUTATION_PROCESS_CONSTANT);
 		// only editable field in mutation other than owners, additional details.
 		fieldsUpdated.remove("ownershipCategory");
-		
-		if (configs.getIsMutationWorkflowEnabled()) {
+    fieldsUpdated.remove("institution");
+
+    if (configs.getIsMutationWorkflowEnabled()) {
 			if (request.getProperty().getWorkflow() == null)
 				throw new CustomException("EG_PT_UPDATE_WF_ERROR", "Workflow information is mandatory for mutation process");
 
