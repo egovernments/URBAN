@@ -100,5 +100,28 @@ export const getKeyNotesConfig = (businessService, t) => {
         ],
         response: [],
       };
+
+    case "bpareg":
+      return {
+        "my-bill": [
+          {
+            keyValue: "CS_COMMON_AMOUNT_DUE",
+            keyPath: ["totalAmount", (d) => d.toFixed(2), (d) => "₹" + d],
+            fallback: "N/A",
+            noteStyle: { fontWeight: "bold", fontSize: "24px", paddingTop: "5px" },
+          },
+          {
+            keyValue: "REFERENCE_NO",
+            keyPath: ["consumerCode"],
+            fallback: "N/A",
+          },
+          {
+            keyValue: "BPA_APPLICATION_NUMBER_LABEL",
+            keyPath: ["applicationNo"],
+            fallback: "N/A",
+          },
+        ],
+        response: [],
+      };
   }
 };

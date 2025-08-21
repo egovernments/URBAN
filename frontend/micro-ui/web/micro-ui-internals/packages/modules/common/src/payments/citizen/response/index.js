@@ -20,9 +20,12 @@ export const SuccessfulPayment = (props)=>{
   const [printing, setPrinting] = useState(false);
   const [allowFetchBill, setallowFetchBill] = useState(false);
   const { businessService: business_service, consumerCode, tenantId } = useParams();
+  const isBpaFlow = (window.location.href.includes("bpa") || window.location.href.includes("BPA")) && !window.location.href.includes("BPAREG");
   const { data: bpaData = {}, isLoading: isBpaSearchLoading, isSuccess: isBpaSuccess, error: bpaerror } = Digit.Hooks.obps.useOBPSSearch(
-    "", {}, tenantId, { applicationNo: consumerCode }, {}, {enabled:(window.location.href.includes("bpa") || window.location.href.includes("BPA"))}
+    "", {}, tenantId, { applicationNo: consumerCode }, {}, {enabled: isBpaFlow}
   );
+
+
   
   const { isLoading, data, isError } = Digit.Hooks.usePaymentUpdate({ egId }, business_service, {
     retry: false,
@@ -30,7 +33,14 @@ export const SuccessfulPayment = (props)=>{
     refetchOnWindowFocus: false,
   });
 
+  console.log("*** Log ===> bpaData ", bpaData);
+  console.log("*** Log ===> data ", data);
+
+
+
   const { label } = Digit.Hooks.useApplicationsForBusinessServiceSearch({ businessService: business_service }, { enabled: false });
+
+
 
   // const { data: demand } = Digit.Hooks.useDemandSearch(
   //   { consumerCode, businessService: business_service },
@@ -59,6 +69,9 @@ export const SuccessfulPayment = (props)=>{
     }
   );
 
+
+  console.log("*** Log ===> reciept_data ", reciept_data);
+
   const { data: generatePdfKey } = Digit.Hooks.useCommonMDMS(tenantId, "common-masters", "ReceiptKey", {
     select: (data) =>
       data["common-masters"]?.uiCommonPay?.filter(({ code }) => business_service?.includes(code))[0]?.receiptKey || "consolidatedreceipt",
@@ -82,9 +95,12 @@ export const SuccessfulPayment = (props)=>{
     }
   }, [data]);
 
-  if ((window.location.href.includes("bpa") || window.location.href.includes("BPA")) && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
+  if (isBpaFlow && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
     return <Loader />;
   }
+
+
+
 
   if (isLoading || recieptDataLoading) {
     return <Loader />;
@@ -301,7 +317,7 @@ export const SuccessfulPayment = (props)=>{
 
   const ommitRupeeSymbol = ["PT"].includes(business_service);
 
-  if ((window.location.href.includes("bpa") || window.location.href.includes("BPA")) && isBpaSearchLoading) return <Loader />
+  if (isBpaFlow && isBpaSearchLoading) return <Loader />
 
   return (
     <Card>
@@ -447,8 +463,9 @@ const PaymentComponent = (props) => {
   const [printing, setPrinting] = useState(false);
   const [allowFetchBill, setallowFetchBill] = useState(false);
   const { businessService: business_service, consumerCode, tenantId } = useParams();
+  const isBpaFlow = (window.location.href.includes("bpa") || window.location.href.includes("BPA")) && !window.location.href.includes("BPAREG");
   const { data: bpaData = {}, isLoading: isBpaSearchLoading, isSuccess: isBpaSuccess, error: bpaerror } = Digit.Hooks.obps.useOBPSSearch(
-    "", {}, tenantId, { applicationNo: consumerCode }, {}, {enabled:(window.location.href.includes("bpa") || window.location.href.includes("BPA"))}
+    "", {}, tenantId, { applicationNo: consumerCode }, {}, {enabled: isBpaFlow}
   );
 
   // Retrieve stored payment data
@@ -502,7 +519,7 @@ const PaymentComponent = (props) => {
   }, [data]);
 
   // Show loader until bpaData is loaded and valid if BPA is in the URL
-  if ((window.location.href.includes("bpa") || window.location.href.includes("BPA")) && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
+  if (isBpaFlow && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
     return <Loader />;
   }
 
@@ -599,7 +616,7 @@ const PaymentComponent = (props) => {
 
   const ommitRupeeSymbol = ["PT"].includes(business_service);
 
-  if ((window.location.href.includes("bpa") || window.location.href.includes("BPA")) && isBpaSearchLoading) return <Loader />
+  if (isBpaFlow && isBpaSearchLoading) return <Loader />
   return (
     <Card>
       <Banner

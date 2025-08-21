@@ -14,6 +14,7 @@ export const BillList = ({ billsList, currentPath, businessService }) => {
 
   const searchResult = Digit.Hooks.useApplicationsForBusinessServiceSearch({ filters: { consumerCodes: consumerCodes.join() }, businessService });
 
+  console.log("*** Log ===> ", searchResult);
   /*
   call the relevant business search and find what key is being used as consumerCode in bills it is as follows :-
 
@@ -55,6 +56,8 @@ export const BillList = ({ billsList, currentPath, businessService }) => {
   if (searchResult.isLoading) {
     return <Loader />;
   }
+
+  console.log("***applicationList Log ===> ", applicationList);
 
   return (
     <React.Fragment>
