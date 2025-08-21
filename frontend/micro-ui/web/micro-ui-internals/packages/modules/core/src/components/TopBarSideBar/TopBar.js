@@ -81,7 +81,7 @@ const TopBar = ({
   const changeFontSize = (size) => {
     setFontSize(size);
     const root = document.documentElement;
-    switch(size) {
+    switch (size) {
       case 'small':
         root.style.fontSize = '14px';
         break;
@@ -105,13 +105,27 @@ const TopBar = ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    width: mobileView?"100%":"80%",
-    marginLeft:"auto",
+    width: mobileView ? "100%" : "80%",
+    marginLeft: "auto",
     height: mobileView ? "50px" : "80px",
     boxSizing: "border-box",
     position: "relative",
   };
-
+  const topBarStyless = {
+    backgroundColor: "#801d46",
+    color: "white",
+    borderBottomLeftRadius: mobileView ? "0" : "25px",
+    borderBottomRightRadius: mobileView ? "0" : "25px",
+    padding: mobileView ? "8px 10px" : "10px 20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: mobileView ? "100%" : "100%",
+    marginLeft: "auto",
+    height: mobileView ? "50px" : "80px",
+    boxSizing: "border-box",
+    position: "relative",
+  };
   const logoContainerStyles = {
     display: "flex",
     alignItems: "center",
@@ -170,18 +184,18 @@ const TopBar = ({
   };
 
   return (
-    <div style={topBarStyles}>
+    <div style={CITIZEN ? topBarStyless : topBarStyles}>
       {/* Left Section */}
       <div style={{ display: "flex", alignItems: "center", gap: mobileView ? "8px" : "12px" }}>
         {/* Hamburger Menu - Mobile Only */}
         {mobileView && (
-          <Hamburger 
-            handleClick={toggleSidebar} 
-            color="#ffffff" 
+          <Hamburger
+            handleClick={toggleSidebar}
+            color="#ffffff"
             style={{ marginRight: "5px" }}
           />
         )}
-        
+
         {/* Logo Section */}
         <div style={logoContainerStyles}>
           {/* <img 
@@ -218,8 +232,8 @@ const TopBar = ({
         {/* Font Size Controls - Desktop Only */}
         {!mobileView && (
           <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-            <button 
-              onClick={() => changeFontSize('small')} 
+            <button
+              onClick={() => changeFontSize('small')}
               style={{
                 ...fontSizeButtonStyles,
                 backgroundColor: fontSize === 'small' ? 'rgba(255,255,255,0.2)' : 'transparent'
@@ -229,8 +243,8 @@ const TopBar = ({
             >
               A-
             </button>
-            <button 
-              onClick={() => changeFontSize('medium')} 
+            <button
+              onClick={() => changeFontSize('medium')}
               style={{
                 ...fontSizeButtonStyles,
                 backgroundColor: fontSize === 'medium' ? 'rgba(255,255,255,0.2)' : 'transparent'
@@ -240,8 +254,8 @@ const TopBar = ({
             >
               A
             </button>
-            <button 
-              onClick={() => changeFontSize('large')} 
+            <button
+              onClick={() => changeFontSize('large')}
               style={{
                 ...fontSizeButtonStyles,
                 backgroundColor: fontSize === 'large' ? 'rgba(255,255,255,0.2)' : 'transparent'
@@ -256,8 +270,8 @@ const TopBar = ({
 
         {/* Language Selector */}
         {showLanguageChange && (
-          <div style={{ 
-            display: "flex", 
+          <div style={{
+            display: "flex",
             alignItems: "center",
             color: "white"
           }}>
@@ -279,32 +293,32 @@ const TopBar = ({
 
         {/* User Profile Dropdown */}
         {loggedIn && (
-          <div style={{height: "40px"}}>
-          <Dropdown
-            option={userOptions}
-            optionKey={"name"}
-            select={handleUserDropdownSelection}
-            showArrow={true}
-            freeze={true}
-            style={{ marginLeft: "8px" }}
-            customSelector={
-              profilePic ? (
-                <img 
-                  src={profilePic} 
-                  alt="user" 
-                  style={{ 
-                    width: mobileView ? 32 : 36, 
-                    height: mobileView ? 32 : 36, 
-                    borderRadius: "50%",
-                    border: "2px solid rgba(255,255,255,0.3)",
-                    cursor: "pointer",
-                  }} 
-                />
-              ) : (
-                <TextToImg name={userDetails?.info?.name || "E"} />
-              )
-            }
-          />
+          <div style={{ height: "40px" }}>
+            <Dropdown
+              option={userOptions}
+              optionKey={"name"}
+              select={handleUserDropdownSelection}
+              showArrow={true}
+              freeze={true}
+              style={{ marginLeft: "8px" }}
+              customSelector={
+                profilePic ? (
+                  <img
+                    src={profilePic}
+                    alt="user"
+                    style={{
+                      width: mobileView ? 32 : 36,
+                      height: mobileView ? 32 : 36,
+                      borderRadius: "50%",
+                      border: "2px solid rgba(255,255,255,0.3)",
+                      cursor: "pointer",
+                    }}
+                  />
+                ) : (
+                  <TextToImg name={userDetails?.info?.name || "E"} />
+                )
+              }
+            />
           </div>
         )}
       </div>
