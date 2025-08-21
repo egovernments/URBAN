@@ -467,6 +467,7 @@ import OwnershipDetailsSection from "./Verifier/OwnershipDetailsSection";
 import AttachmentsSection from "./Verifier/Attachments";
 import AddressSection from "./Verifier/AddressSection";
 import { useState } from "react";
+import LocationDetails from "./LocationDetailss";
 function ApplicationDetailsContentVerifier({
   applicationDetails,
   workflowDetails,
@@ -1011,6 +1012,18 @@ function ApplicationDetailsContentVerifier({
             </p>
           </div>
         </div>
+      },
+      {
+        title: <div ><h3 style={{color:"#6B133F", fontWeight: "700"}}>Location Details</h3></div>,
+        content:
+         
+           <div >
+
+        <LocationDetails/>
+           </div>
+
+         
+       
       },
        {
         title: <div ><CardSectionHeader style={{ color:"#6B133F" }}>

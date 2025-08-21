@@ -85,6 +85,22 @@ const TopBarSideBar = ({
     { name: t("EDIT_PROFILE"), icon: <EditPencilIcon className="icon" />, func: userProfile },
     { name: t("CORE_COMMON_LOGOUT"), icon: <LogoutIcon className="icon" />, func: handleLogout },
   ];
+    const logoContainerStyles = {
+    display: "flex",
+    alignItems: "center",
+    marginTop:"20px",
+    marginBottom:"35px",
+    gap: mobileView ? "8px" : "12px",
+    flex: mobileView ? "0 0 auto" : "0 0 auto",
+  };
+    const logoStyles = {
+    height: mobileView ? "30px" : "60px",
+    width: "60px",
+    marginLeft:"6px",
+    paddingTop:"2px",
+    paddingBottom:"2px"
+    
+  };
 
   return (
     <Fragment>
@@ -142,9 +158,12 @@ const TopBarSideBar = ({
           .sidebar-desktop {
             position: fixed;
             left: 0;
-            top: ${isMobile ? '50px' : '60px'};
+            // top: ${isMobile ? '50px' : '60px'};
+            // top: ${isMobile ? '0px' : '0px'};
             width: ${getSidebarWidth()}px;
-            height: calc(100vh - ${isMobile ? '50px' : '60px'});
+            // height:100%;
+            // height: calc(100vh - ${isMobile ? '50px' : '60px'});
+             height: calc(100vh - ${isMobile ? '50px' : '0px'});
             background: white;
             box-shadow: 2px 0 4px rgba(0,0,0,0.1);
             overflow-y: auto;
@@ -327,6 +346,36 @@ const TopBarSideBar = ({
           {/* Desktop Sidebar */}
           {showSidebar && !isMobile && (
             <div className="sidebar-desktop">
+           
+              <div style={logoContainerStyles}>
+          <img 
+            src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/MP%20Emblem%201%201.svg" 
+            alt="MP Government Logo" 
+            style={logoStyles}
+          />
+          {!mobileView && (
+            <div>
+              <h3 style={{ 
+                fontSize: "16px", 
+                fontWeight: 600, 
+                margin: 0, 
+                // color: "rgb(128,29,70)",
+                color:"black",
+                lineHeight: "1.2"
+              }}>
+                मध्य प्रदेश सरकार
+              </h3>
+              <p style={{ 
+                fontSize: "11px", 
+                margin: 0, 
+                opacity: 0.9,
+                lineHeight: "1.2"
+              }}>
+                Government of Madhya Pradesh
+              </p>
+            </div>
+          )}
+        </div>
               <SideBar
                 t={t}
                 CITIZEN={CITIZEN}

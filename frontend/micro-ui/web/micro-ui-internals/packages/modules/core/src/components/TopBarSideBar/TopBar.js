@@ -105,8 +105,9 @@ const TopBar = ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
-    height: mobileView ? "50px" : "60px",
+    width: mobileView?"100%":"80%",
+    marginLeft:"auto",
+    height: mobileView ? "50px" : "80px",
     boxSizing: "border-box",
     position: "relative",
   };
@@ -183,12 +184,12 @@ const TopBar = ({
         
         {/* Logo Section */}
         <div style={logoContainerStyles}>
-          <img 
+          {/* <img 
             src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/MP%20Emblem%201%201.svg" 
             alt="MP Government Logo" 
             style={logoStyles}
-          />
-          {!mobileView && (
+          /> */}
+          {/* {!mobileView && (
             <div>
               <h3 style={{ 
                 fontSize: "16px", 
@@ -208,7 +209,7 @@ const TopBar = ({
                 Government of Madhya Pradesh
               </p>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 

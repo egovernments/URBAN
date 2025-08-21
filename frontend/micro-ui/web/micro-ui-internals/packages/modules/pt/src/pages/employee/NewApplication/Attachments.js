@@ -254,9 +254,9 @@ const AttachmentsSection = ({ t = (label) => label, handleFileChange, formErrors
         ...styles.gridContainer,
         gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)"
       }}>
-        {renderFileInput("photoId", "Photo ID", true)}
-        {renderFileInput("ownershipDoc", "Ownership Document", true)}
-        {renderFileInput("sellersRegistry", "Sellers Registry Copy")}
+        {renderFileInput("photoId", "Proof of Identity", true)}
+        {renderFileInput("ownershipDoc", "Proof of Ownership", true)}
+        {renderFileInput("sellersRegistry", "Others")}
       </div>
     </div>
   );
