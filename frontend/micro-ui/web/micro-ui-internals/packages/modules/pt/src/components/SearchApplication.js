@@ -565,7 +565,7 @@ const PTSearchApplication = ({ tenantId, isLoading, t = (text) => text, onSubmit
                                 {(searchResults || data) && (searchResults || data).length > 0 &&
                                     ` (${(searchResults || data).length} found)`}
                             </h3>
-                            <div className="table-container">
+                            <div className="table-container" style={{ overflowX: "auto" }}>
                                 <table>
                                     <thead>
                                         <tr>
