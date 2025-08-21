@@ -60,7 +60,7 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow = false }
                     textDecorationColor: "#6b133f",
                     textDecorationThickness: "1px",
                     color: "#6b133f",
-                    padding: "14px",
+                    // padding: "14px",
                     textAlign: "left",
                   }}
                 >

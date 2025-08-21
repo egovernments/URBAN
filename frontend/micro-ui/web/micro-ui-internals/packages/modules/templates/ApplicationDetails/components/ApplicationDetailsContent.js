@@ -31,25 +31,18 @@ const styles = {
   column: { flex: "1 1 200px", marginRight: "10px", marginBottom: "10px" },
 
   columnBreak: {
-    flexBasis: "100%", // forces new row
+    flexBasis: "100%", 
     height: 0,
   },
   label: {
-    marginBottom: "4px", fontFamily: "Poppins",
+    fontFamily: "Poppins, sans-serif",
+    marginBottom: "4px", 
     fontWeight: 400,
     fontSize: "14px",
     lineHeight: "22px",
     letterSpacing: "0%",
     color: "#282828"
   },
-  // input: {
-  //   width: "100%",
-  //   padding: "6px",
-  //   border: "1px solid #ccc",
-  //   borderRadius: "4px",
-  //   fontSize: "12px",
-  //   backgroundColor: "#f4f4f4",
-  // },
   button: {
     padding: "8px 16px",
     marginRight: "10px",
@@ -112,11 +105,12 @@ const styles = {
     backgroundColor: "#6b133f",
     color: "white",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "12px",
     cursor: "pointer",
     // float: "right",
     display: "flex",
     marginLeft: "auto",
+    marginRight: "10px",
   },
   inputGroup: {
     display: "flex",
@@ -137,20 +131,25 @@ const styles = {
 
   input: {
     width: "100%",
-    height: "40px",
-    borderRadius: "4px",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    padding: "6px",
-    fontSize: "12px",
+    height: "44px",
+    padding: "0 12px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontFamily: "'Poppins', sans-serif",
+    transition: "all 0.3s ease",
+    background: "rgb(241, 241, 241)",
   },
+
 
   input2: {
     width: "100%",
-    height: "40px",
-    borderRadius: "4px",
-    boxShadow: "0px 4px 4px 0px #00000040",
-    padding: "6px",
-    fontSize: "12px",
+    height: "44px",
+    padding: "0 12px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontFamily: "'Poppins', sans-serif",
+    transition: "all 0.3s ease",
+    background: "rgb(241, 241, 241)",
 
   },
 
@@ -248,7 +247,6 @@ const styles = {
     display: "flex"
   },
   assessmentStyle: {
-    // background: '#6b133f',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
     fontSize: '26px',
@@ -259,7 +257,6 @@ const styles = {
     textDecorationThickness: '1px',
     color: '#6b133f',
     marginBottom: '20px',
-    padding: '14px',
     textAlign: "left",
 
   },
@@ -827,12 +824,7 @@ const ApplicationDetailsContent = ({
             />
           </div>
 
-        </div>
-      </div>
-
-      <div style={styles.section}>
-
-        {applicationDetails?.applicationDetails?.map((detail, index) => (
+          {applicationDetails?.applicationDetails?.map((detail, index) => (
           <>
 
 
@@ -841,7 +833,14 @@ const ApplicationDetailsContent = ({
           </>
         ))}
 
+        </div>
       </div>
+
+      {/* <div style={styles.section}>
+
+       
+
+      </div> */}
       {/* Property Area Details */}
       {/* <div style={styles.section}>
         <div style={styles.assessmentStyle}>Property Area Details</div>
@@ -944,7 +943,7 @@ const ApplicationDetailsContent = ({
       <div style={styles.section}>
         <div style={styles.assessmentStyle}>Payment Details</div>
         {/* Payment Type Toggle */}
-        <div style={{ marginTop: "16px", display: "flex", gap: "20px", alignItems: "center" }}>
+        <div style={{ marginTop: "20px", display: "flex", gap: "20px", alignItems: "center" }}>
           <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <input
               type="radio"
@@ -1056,7 +1055,7 @@ const ApplicationDetailsContent = ({
 
             {/* Total Payment Amount */}
             <div style={styles.column}>
-              <div style={styles.label}>Total Payment Amount</div>
+              <div style={styles.label}>Total Payable Amount</div>
               <input
                 value={(() => {
                   const arrear = parseFloat(estimateData?.Calculation?.[0]?.arrear || 0);
@@ -1456,7 +1455,7 @@ const ApplicationDetailsContent = ({
           {formErrors && <div style={{ color: "red", marginTop: "4px" }}>{formErrors}</div>}
         </div>
 
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "20px" }}>
           {/* {selectedModes.includes("CASH") && ( */}
           {(selectedModes.length > 0) && (
             <button

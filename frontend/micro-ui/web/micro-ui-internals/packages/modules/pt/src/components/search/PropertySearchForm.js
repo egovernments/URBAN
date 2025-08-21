@@ -96,11 +96,14 @@ const SearchPTID = ({
         .search-container {
           // max-width: 1400px;
           // margin: 0 auto;
+          // background-color: #000;
         }
         
         .page-content-wrapper {
           background: white;
-          border-radius: 8px;
+           border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+          // border-radius: 8px;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           padding: 20px;
         }
@@ -199,8 +202,7 @@ const SearchPTID = ({
           font-size: 14px;
           font-family: 'Poppins', sans-serif;
           transition: all 0.3s ease;
-          background: white;
-        }
+          background:rgb(241, 241, 241);        }
         
         .form-input:focus {
           outline: none;
@@ -213,7 +215,7 @@ const SearchPTID = ({
         }
         
         .form-input:disabled {
-          background: #f5f5f5;
+          background:rgb(212, 212, 212);
           cursor: not-allowed;
         }
         
@@ -283,7 +285,7 @@ const SearchPTID = ({
         }
         
         .btn-clear:hover {
-          background: #fff5f5;
+          background: #6b133f;
           transform: translateY(-1px);
         }
         
@@ -294,7 +296,7 @@ const SearchPTID = ({
           border-radius: 15px;
           border: none;
           color: white;
-          background: #a56c89;
+          background: #6b133f;
           font-size: 15px;
           font-weight: 500;
           font-family: 'Poppins', sans-serif;
@@ -303,7 +305,7 @@ const SearchPTID = ({
         }
         
         .btn-search:hover {
-          background: #551030;
+          background: #6b133f;
           transform: translateY(-1px);
           box-shadow: 0 4px 12px rgba(107, 19, 63, 0.3);
         }
@@ -516,21 +518,7 @@ const SearchPTID = ({
                 {errors?.email && (
                   <span className="error-message">{errors.email.message}</span>
                 )}
-              </div>
-              
-              {/* Address */}
-              {/* <div className="form-field">
-                <label className="form-label">Address</label>
-                <input
-                  className="form-input"
-                  type="text"
-                  placeholder="Enter address"
-                  {...register("address")}
-                  onChange={(e) => {
-                    setValue("address", e.target.value);
-                  }}
-                />
-              </div> */}
+              </div>           
               
               {/* Mobile Number */}
               <div className="form-field">
@@ -562,7 +550,7 @@ const SearchPTID = ({
               
               {/* Owner Name English */}
               <div className="form-field">
-                <label className="form-label">Owner Name English</label>
+                <label className="form-label">Owner Name (English)</label>
                 <input
                   className="form-input"
                   type="text"
@@ -572,21 +560,19 @@ const SearchPTID = ({
                     setValue("ownerEnglish", e.target.value);
                   }}
                 />
-              </div>
-
-            
+              </div>         
             </div>
 
                {/* Buttons */}
-               <div className="button-container">
-              <button 
-                type="button" 
+            <div className="button-container">
+              <button
+                type="button"
                 className="btn-clear"
                 onClick={handleReset}
               >
                 Clear
               </button>
-              <button 
+              <button
                 type="button"
                 className="btn-search"
                 onClick={() => {
