@@ -26,7 +26,7 @@ const ApplicationDetails = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [isEnableLoader, setIsEnableLoader] = useState(false);
   const [isWarningPop, setWarningPopUp] = useState(false);
-  const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantId);
+  // const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantId);
   const {
     applicationDetails,
     showToast,
@@ -107,41 +107,41 @@ const ApplicationDetails = (props) => {
   const yearRange = Array.isArray(units) && units.length > 0
     ? units[0].toYear
     : "N/A";
-  const handleAssessment = () => {
-    const payload = {
-      Assessment: {
-        financialYear: yearRange,
-        propertyId: applicationData?.propertyId,
-        tenantId: tenantId,
-        source: "MUNICIPAL_RECORDS",
-        channel: "CFC_COUNTER",
-        assessmentDate: Date.now(),
-      }
-    };
+  // const handleAssessment = () => {
+  //   const payload = {
+  //     Assessment: {
+  //       financialYear: yearRange,
+  //       propertyId: applicationData?.propertyId,
+  //       tenantId: tenantId,
+  //       source: "MUNICIPAL_RECORDS",
+  //       channel: "CFC_COUNTER",
+  //       assessmentDate: Date.now(),
+  //     }
+  //   };
 
-    assessmentMutate(payload, {
-      onSuccess: (data, variables) => {
-        const assessments = data?.Assessments || [];
-        if (assessments.length > 0) {
-          const latestAssessment = assessments[0];
-          const status = latestAssessment?.status || "UNKNOWN";
+  //   assessmentMutate(payload, {
+  //     onSuccess: (data, variables) => {
+  //       const assessments = data?.Assessments || [];
+  //       if (assessments.length > 0) {
+  //         const latestAssessment = assessments[0];
+  //         const status = latestAssessment?.status || "UNKNOWN";
 
-          // Only fetch bill if assessment is ACTIVE or APPROVED
-          if (status === "ACTIVE" || status === "APPROVED") {
-            fetchBill(); // Call fetchBill only if valid
-          } else {
-            console.warn("Assessment status is not valid for billing:", status);
-          }
-        } else {
-          console.warn("No assessments returned in response");
-        }
-      },
-      onError: (error, variables) => {
-        // 
-      }
+  //         // Only fetch bill if assessment is ACTIVE or APPROVED
+  //         if (status === "ACTIVE" || status === "APPROVED") {
+  //           fetchBill(); // Call fetchBill only if valid
+  //         } else {
+  //           console.warn("Assessment status is not valid for billing:", status);
+  //         }
+  //       } else {
+  //         console.warn("No assessments returned in response");
+  //       }
+  //     },
+  //     onError: (error, variables) => {
+  //       // 
+  //     }
 
-    });
-  }
+  //   });
+  // }
   const submitAction = async (data, nocData = false, isOBPS = {}) => {
     setIsEnableLoader(true);
     if (typeof data?.customFunctionToExecute === "function") {
@@ -178,7 +178,6 @@ const ApplicationDetails = (props) => {
           setTimeout(closeToast, 5000);
         },
         onSuccess: (data, variables) => {
-          setPropertyResponse(data?.Properties?.[0]?.status)
           sessionStorage.removeItem("WS_SESSION_APPLICATION_DETAILS");
           setIsEnableLoader(false);
           if (isOBPS?.bpa) {
@@ -224,11 +223,6 @@ const ApplicationDetails = (props) => {
     closeModal();
   };
 
-
-  useEffect(() => {
-    if (!propertyResponse) return; // skip initial undefined/null
-    propertyResponse === "ACTIVE" && handleAssessment();
-  }, [propertyResponse]);
 
   if (isLoading || isEnableLoader) {
     return <Loader />;
