@@ -1077,7 +1077,7 @@ export const getModuleName = () => {
   } else if (pathName.indexOf("bill-amend") > -1) {
     return "rainmaker-bill-amend,rainmaker-abg,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
   } else if (pathName.indexOf("fire-noc") > -1) {
-    return "rainmaker-noc";
+    return "rainmaker-noc,rainmaker-pgr,rainmaker-common,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
   } else if (pathName.indexOf("dss/home") > -1) {
     return "rainmaker-dss,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
   } else if (pathName.indexOf("language-selection") > -1) {
