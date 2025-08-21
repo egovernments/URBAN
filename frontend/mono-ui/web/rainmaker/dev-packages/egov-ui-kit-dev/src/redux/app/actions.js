@@ -192,7 +192,7 @@ export const fetchLocalizationLabelForOpenScreens= (locale = 'en_IN', module, te
         storedModuleList.push(tenantModule);
         const payload2 = module
           ? await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [
-            { key: "module", value: `rainmaker-${module},rainmaker-bnd,rainmaker-noc,rainmaker-common-noc` },
+            { key: "module", value: `rainmaker-${module}` },
             { key: "locale", value: locale },
             { key: "tenantId", value: tenantId ? tenantId : commonConfig.tenantId },
           ])
