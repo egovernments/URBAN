@@ -194,7 +194,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
               isRequired: true,
               pattern: "^[0-9]{11}$",
               type: "tel",
-              title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"),
+              title: t("PT_TEL_VALIDMSG"),
             })}
           />
           <CardLabel>{t("PT_FORM3_EMAIL_ID")}</CardLabel>
