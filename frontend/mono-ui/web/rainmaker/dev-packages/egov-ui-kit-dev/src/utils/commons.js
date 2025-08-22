@@ -1042,9 +1042,11 @@ export const downloadFromLink = async (link,filename="help.pdf") => {
 
 export const getModuleName = () => {
   const pathName = window.location.pathname;
-  if (pathName.indexOf("inbox") > -1) {
-    return "rainmaker-common,rainmaker-noc,rainmaker-pgr,rainmaker-bnd,rainmaker-common-noc";
-  } else if (pathName.indexOf("dss") > -1) {
+  // remove  false trigger all localization decrease the performace
+  // if (pathName.indexOf("inbox") > -1) {
+  //   return "rainmaker-common,rainmaker-noc,rainmaker-pgr,rainmaker-bnd,rainmaker-common-noc";
+  // } else 
+  if (pathName.indexOf("dss") > -1) {
     return "rainmaker-dss,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
   } else if (pathName.indexOf("receipts") > -1) {
     return "rainmaker-receipts,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
@@ -1102,7 +1104,7 @@ export const getModuleName = () => {
   ) {
     return "rainmaker-bpa,rainmaker-bpareg,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
   } else if (pathName.indexOf("noc") > -1) {
-    return "rainmaker-common-noc,rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
+    return "rainmaker-bnd,rainmaker-noc,rainmaker-common-noc";
   } else if (
     pathName.indexOf("birth") > -1 ||
     pathName.indexOf("death") > -1 ||
