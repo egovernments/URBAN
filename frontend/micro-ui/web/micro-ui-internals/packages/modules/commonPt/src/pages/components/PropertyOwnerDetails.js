@@ -27,6 +27,8 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
   const editScreen = url.includes("/modify-application/");
   const mutationScreen = url.includes("/property-mutation/");
   const isMobile = window.Digit.Utils.browser.isMobile();
+  const userInfo=Digit.UserService.getUser();
+  const isNewApplication = !editScreen && !mutationScreen;
   let index = 0; // mutationScreen ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
   const [ownershipCategory, setOwnerCategory] = React.useState("");
   let validation = {};
@@ -35,7 +37,8 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
       ...(formData.owners && formData.owners[index]),
       name: (formData.owners && formData.owners[index] && formData.owners[index].name) || formData?.owners?.name || "",
       gender: (formData.owners && formData.owners[index] && formData.owners[index].gender) || formData?.owners?.gender,
-      mobileNumber: (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || "",
+      mobileNumber: isNewApplication
+    ? userInfo?.info?.mobileNumber : (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || "",
       fatherOrHusbandName:
         (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || "",
       relationship: (formData.owners && formData.owners[index] && formData.owners[index].relationship) || formData?.owners?.relationship,
@@ -386,7 +389,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty}
+                            disable={isUpdateProperty || isEditProperty || isNewApplication}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
@@ -508,7 +511,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty}
+                            disable={isUpdateProperty || isEditProperty || isNewApplication}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
