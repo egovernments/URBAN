@@ -278,10 +278,10 @@ export const BillDetailsKeyNoteConfig = () => ({
         keyPath: [
           "billDetails",
           (d) => {
-            // Access the expiryDate from the first item in the billDetails array
-            const { expiryDate } = d[0] || {};
-            if (expiryDate) {
-              return new Date(expiryDate).toLocaleDateString();
+            // Access the currentExpiryDate from the first item in the billDetails array
+            const { currentExpiryDate } = d[0] || {};
+            if (currentExpiryDate) {
+              return new Date(currentExpiryDate).toLocaleDateString();
             } else return "N/A";
           },
         ],

@@ -8,15 +8,18 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const mutationScreen = url.includes("/property-mutation/");
-
+  const userInfo = Digit.UserService.getUser();
   let index = mutationScreen ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
   let validation = {};
   const [name, setName] = useState((formData.owners && formData.owners[index] && formData.owners[index].name) || formData?.owners?.name || "");
   const [email, setEmail] = useState((formData.owners && formData.owners[index] && formData.owners[index].email) || formData?.owners?.emailId || "");
   const [gender, setGender] = useState((formData.owners && formData.owners[index] && formData.owners[index].gender) || formData?.owners?.gender);
   const [mobileNumber, setMobileNumber] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || ""
-  );
+  (index == 0 && userInfo?.info?.mobileNumber) || 
+  (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || 
+  formData?.owners?.mobileNumber || 
+  ""
+);
   const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
     (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || ""
   );
@@ -259,7 +262,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
           value={mobileNumber}
           name="mobileNumber"
           onChange={(value) => setMobileNo({ target: { value } })}
-          disable={isUpdateProperty || isEditProperty}
+          disable={(mobileNumber && mobileNumber === userInfo?.info?.mobileNumber) || isUpdateProperty || isEditProperty}
           {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
         />
         <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
