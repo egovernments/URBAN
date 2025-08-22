@@ -394,7 +394,7 @@ const DashboardLayout = () => {
       alignItems: "center",
       justifyContent: "space-between",
       padding: "0 20px",
-      backgroundColor: "#801d46",
+      backgroundColor: "#6B133F",
       color: "white",
       borderBottomLeftRadius: "25px",
       borderBottomRightRadius: "25px",
@@ -468,8 +468,8 @@ const DashboardLayout = () => {
       borderBottom: "3px solid transparent",
     },
     tabActive: {
-      borderBottomColor: "#801d46",
-      color: "#801d46",
+      borderBottomColor: "#6B133F",
+      color: "#6B133F",
     },
     contentArea: {
       padding: isMobile ? "10px" : "20px",
@@ -551,7 +551,7 @@ const DashboardLayout = () => {
       color: "#333",
     },
     footer: {
-      backgroundColor: "#801d46",
+      backgroundColor: "#6B133F",
       color: "white",
       padding: "15px 20px",
       textAlign: "center",
@@ -609,7 +609,7 @@ const DashboardLayout = () => {
               <h2>Property</h2>
               <div style={styles.filter}>
                 <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                  <i className="far fa-calendar" style={{ color: "#801d46", fontSize: "24px" }} />
+                  <i className="far fa-calendar" style={{ color: "#6B133F", fontSize: "24px" }} />
                   <div>
                     <span style={{ fontSize: "14px", color: "#333" }}>Filter Period</span>
                     <p style={{ fontSize: "12px", color: "#666", margin: 0 }}>17 April 2025 - 21 Jul 2025</p>

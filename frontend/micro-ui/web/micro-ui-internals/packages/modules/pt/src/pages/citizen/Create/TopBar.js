@@ -30,7 +30,7 @@ const TopBar = ({
   //   }
   // };
   return (
-    <div className="navbar" style={{ background: "#801d46",padding:"0px" }}>
+    <div className="navbar" style={{ background: "#6B133F",padding:"0px" }}>
       <div className="center-container back-wrapper" style={{display:"flex",alignItems:"center"}}>
         <div className="hambuger-back-wrapper">
           {isMobile && <Hamburger handleClick={toggleSidebar} />}

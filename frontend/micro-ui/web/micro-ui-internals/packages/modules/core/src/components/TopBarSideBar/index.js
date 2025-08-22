@@ -584,9 +584,10 @@ const TopBarSideBar = ({
 
           /* Desktop sidebar */
           .sidebar-desktop {
+          padding-top:24px;
             position: fixed;
             left: 0;
-            top: ${isMobile ? '50px' : '60px'};
+            top: ${isMobile ? '50px' : '100px'};
             width: ${getSidebarWidth()}px;
             height: calc(100vh - ${isMobile ? '50px' : '60px'});
             background: white;
@@ -767,7 +768,7 @@ const TopBarSideBar = ({
           />
         </div>
 
-        <div className="content-wrapper">
+        <div className="content-wrapper" style={{marginTop:"70px"}}>
           {/* Desktop Sidebar */}
           {showSidebar && !isMobile && (
             <div className="sidebar-desktop">

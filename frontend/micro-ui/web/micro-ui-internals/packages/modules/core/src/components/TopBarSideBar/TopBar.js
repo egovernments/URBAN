@@ -350,7 +350,8 @@ const TextToImg = ({ name, toggleMenu }) => (
       alignItems: "center",
       fontWeight: "bold",
       fontSize: "14px",
-      cursor: "pointer"
+      cursor: "pointer",
+      border: "2px solid white"
     }}
   >
     {name?.[0]?.toUpperCase()}
@@ -412,7 +413,7 @@ const TopBar = ({
   const changeFontSize = (size) => {
     setFontSize(size);
     const root = document.documentElement;
-    switch(size) {
+    switch (size) {
       case 'small':
         root.style.fontSize = '14px';
         break;
@@ -428,7 +429,7 @@ const TopBar = ({
   };
 
   const topBarStyles = {
-    backgroundColor: "#801d46",
+    backgroundColor: "#6B133F",
     color: "white",
     borderBottomLeftRadius: mobileView ? "0" : "25px",
     borderBottomRightRadius: mobileView ? "0" : "25px",
@@ -436,21 +437,25 @@ const TopBar = ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
-    height: mobileView ? "50px" : "60px",
+    width: mobileView ? "100%" : "100%",
+    height: mobileView ? "50px" : "80px",
     boxSizing: "border-box",
     position: "relative",
+    marginLeft: "auto"
   };
 
   const logoContainerStyles = {
     display: "flex",
-    alignItems: "center",
+     alignItems: "center",
     gap: mobileView ? "8px" : "12px",
     flex: mobileView ? "0 0 auto" : "0 0 auto",
+    paddingTop: "30px",
+    paddingBottom: "30px",
+    paddingRight: "10px",
   };
 
   const logoStyles = {
-    height: mobileView ? "30px" : "40px",
+    height: mobileView ? "30px" : "56px",
     width: "auto",
   };
 
@@ -500,20 +505,85 @@ const TopBar = ({
   };
 
   return (
-    <div style={topBarStyles}>
-      {/* Left Section */}
-      <div style={{ display: "flex", alignItems: "center", gap: mobileView ? "8px" : "12px" }}>
-        {/* Hamburger Menu - Mobile Only */}
-        {mobileView && (
-          <Hamburger 
-            handleClick={toggleSidebar} 
-            color="#ffffff" 
-            style={{ marginRight: "5px" }}
+    <div>
+      {!loggedIn && (
+        <div
+          style={{
+            backgroundColor: "#6b133f",
+            color: "white",
+            padding: "12px 20px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            flexShrink: 0,
+            height: "65px",
+           
+          }}
+        >
+          <img
+            src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/MP%20Emblem%201%201.svg"
+            alt="MP Logo"
+            style={{ height: "40px", width: "auto" }}
           />
-        )}
-        
-        {/* Logo Section */}
-        <div style={logoContainerStyles}>
+          <div>
+            <div style={{ fontSize: "16px", fontWeight: "bold" }}>मध्य प्रदेश सरकार</div>
+            <div style={{ fontSize: "12px", opacity: 0.9 }}>Government of Madhya Pradesh</div>
+          </div>
+        </div>)}
+      {loggedIn && (
+        <div style={{ width: "100%", height: "115px", background: "white", display: "flex" }}>
+
+          <div style={logoContainerStyles}>
+            {!mobileView && (
+              <img
+                src="https://devtfstatep7f19.blob.core.windows.net/imc-dev-assets/image%2014.svg"
+                alt="MP Government Logo"
+                style={logoStyles}
+              />
+            )}
+            {!mobileView && (
+              <div>
+                <h3 style={{
+                  fontFamily: "Noto Sans",
+                  fontWeight: 700,
+                  fontStyle: "normal",   // "Display Bold" isn't valid CSS, weight handles boldness
+                  fontSize: "18px",
+                  lineHeight: "100%",
+                  letterSpacing: "0px",
+                  color: "#000000"
+                }}>
+                  इंदौर नगर निगम
+                </h3>
+                <p style={{
+                  fontFamily: "Noto Sans",
+                  fontWeight: 600,
+                  fontStyle: "normal",  // "SemiBold" isn't valid, weight handles it
+                  fontSize: "12px",
+                  lineHeight: "31.68px",
+                  letterSpacing: "0px",
+                  verticalAlign: "middle",
+                }}>
+                  Indore Municipal Corporation
+                </p>
+              </div>
+            )}
+          </div>
+          <div style={topBarStyles}>
+            {/* Left Section */}
+
+            <div style={{ display: "flex", alignItems: "center", gap: mobileView ? "8px" : "12px" }}>
+              {/* Hamburger Menu - Mobile Only */}
+              {mobileView && (
+                <Hamburger
+                  handleClick={toggleSidebar}
+                  color="#ffffff"
+                  style={{ marginRight: "5px" }}
+                />
+              )}
+
+              {/* Logo Section */}
+              {/* <div style={logoContainerStyles}>
           <img 
             src="https://tfstate8auyj.blob.core.windows.net/egov-dev-assets/MP%20Emblem%201%201.svg" 
             alt="MP Government Logo" 
@@ -540,104 +610,107 @@ const TopBar = ({
               </p>
             </div>
           )}
+        </div> */}
+            </div>
+
+            {/* Right Section */}
+            <div style={rightSectionStyles}>
+              {/* Font Size Controls - Desktop Only */}
+              {!mobileView && (
+                <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+                  <button
+                    onClick={() => changeFontSize('small')}
+                    style={{
+                      ...fontSizeButtonStyles,
+                      backgroundColor: fontSize === 'small' ? 'rgba(255,255,255,0.2)' : 'transparent'
+                    }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = fontSize === 'small' ? 'rgba(255,255,255,0.2)' : 'transparent'}
+                  >
+                    A-
+                  </button>
+                  <button
+                    onClick={() => changeFontSize('medium')}
+                    style={{
+                      ...fontSizeButtonStyles,
+                      backgroundColor: fontSize === 'medium' ? 'rgba(255,255,255,0.2)' : 'transparent'
+                    }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = fontSize === 'medium' ? 'rgba(255,255,255,0.2)' : 'transparent'}
+                  >
+                    A
+                  </button>
+                  <button
+                    onClick={() => changeFontSize('large')}
+                    style={{
+                      ...fontSizeButtonStyles,
+                      backgroundColor: fontSize === 'large' ? 'rgba(255,255,255,0.2)' : 'transparent'
+                    }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = fontSize === 'large' ? 'rgba(255,255,255,0.2)' : 'transparent'}
+                  >
+                    A+
+                  </button>
+                </div>
+              )}
+
+              {/* Language Selector */}
+              {showLanguageChange && (
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: "white"
+                }}>
+                  <ChangeLanguage dropdown={true} />
+                </div>
+              )}
+
+              {/* Notification Icon */}
+              {loggedIn && !CITIZEN && (
+                <div onClick={handleNotificationClick} style={notificationStyles}>
+                  <span style={{ fontSize: mobileView ? "18px" : "20px" }}>🔔</span>
+                  {notificationCountLoaded && unreadCount > 0 && (
+                    <span style={notificationBadgeStyles}>
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* User Profile Dropdown */}
+              {loggedIn && (
+                <div style={{ height: "40px" }}>
+                  <Dropdown
+                    option={userOptions}
+                    optionKey={"name"}
+                    select={handleUserDropdownSelection}
+                    showArrow={true}
+                    freeze={true}
+                    style={{ marginLeft: "8px" }}
+                    customSelector={
+                      profilePic ? (
+                        <img
+                          src={profilePic}
+                          alt="user"
+                          style={{
+                            width: mobileView ? 32 : 36,
+                            height: mobileView ? 32 : 36,
+                            borderRadius: "50%",
+                            border: "2px solid rgba(255,255,255,0.3)",
+                            cursor: "pointer",
+                          }}
+                        />
+                      ) : (
+                        <TextToImg name={userDetails?.info?.name || "E"} />
+                      )
+                    }
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Right Section */}
-      <div style={rightSectionStyles}>
-        {/* Font Size Controls - Desktop Only */}
-        {!mobileView && (
-          <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-            <button 
-              onClick={() => changeFontSize('small')} 
-              style={{
-                ...fontSizeButtonStyles,
-                backgroundColor: fontSize === 'small' ? 'rgba(255,255,255,0.2)' : 'transparent'
-              }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = fontSize === 'small' ? 'rgba(255,255,255,0.2)' : 'transparent'}
-            >
-              A-
-            </button>
-            <button 
-              onClick={() => changeFontSize('medium')} 
-              style={{
-                ...fontSizeButtonStyles,
-                backgroundColor: fontSize === 'medium' ? 'rgba(255,255,255,0.2)' : 'transparent'
-              }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = fontSize === 'medium' ? 'rgba(255,255,255,0.2)' : 'transparent'}
-            >
-              A
-            </button>
-            <button 
-              onClick={() => changeFontSize('large')} 
-              style={{
-                ...fontSizeButtonStyles,
-                backgroundColor: fontSize === 'large' ? 'rgba(255,255,255,0.2)' : 'transparent'
-              }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = fontSize === 'large' ? 'rgba(255,255,255,0.2)' : 'transparent'}
-            >
-              A+
-            </button>
-          </div>
-        )}
-
-        {/* Language Selector */}
-        {showLanguageChange && (
-          <div style={{ 
-            display: "flex", 
-            alignItems: "center",
-            color: "white"
-          }}>
-            <ChangeLanguage dropdown={true} />
-          </div>
-        )}
-
-        {/* Notification Icon */}
-        {loggedIn && !CITIZEN && (
-          <div onClick={handleNotificationClick} style={notificationStyles}>
-            <span style={{ fontSize: mobileView ? "18px" : "20px" }}>🔔</span>
-            {notificationCountLoaded && unreadCount > 0 && (
-              <span style={notificationBadgeStyles}>
-                {unreadCount > 99 ? "99+" : unreadCount}
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* User Profile Dropdown */}
-        {loggedIn && (
-          <div style={{height: "40px"}}>
-          <Dropdown
-            option={userOptions}
-            optionKey={"name"}
-            select={handleUserDropdownSelection}
-            showArrow={true}
-            freeze={true}
-            style={{ marginLeft: "8px" }}
-            customSelector={
-              profilePic ? (
-                <img 
-                  src={profilePic} 
-                  alt="user" 
-                  style={{ 
-                    width: mobileView ? 32 : 36, 
-                    height: mobileView ? 32 : 36, 
-                    borderRadius: "50%",
-                    border: "2px solid rgba(255,255,255,0.3)",
-                    cursor: "pointer",
-                  }} 
-                />
-              ) : (
-                <TextToImg name={userDetails?.info?.name || "E"} />
-              )
-            }
-          />
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };
