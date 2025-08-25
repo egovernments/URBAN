@@ -213,22 +213,7 @@ const SelectPaymentType = (props) => {
       
       history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=death`);
     } else if (wrkflow === "WNS") {
-      history.push(
-        `/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}?workflow=WNS&consumerCode=${stringReplaceAll(consumerCode, "+", "/")}`,
-        {
-          paymentAmount: paymentAmt,
-          tenantId: billDetails.tenantId,
-          name: paymentType?.code !== optionSecound?.code && ConsumerName !== "undefined" ? ConsumerName : userInfo ? payersActiveName : payersName,
-          mobileNumber:
-            paymentType?.code !== optionSecound?.code
-              ? bill?.mobileNumber?.includes("*")
-                ? userData?.user?.[0]?.mobileNumber
-                : bill?.mobileNumber
-              : userInfo
-              ? payersActiveMobileNumber
-              : payersMobileNumber,
-        }
-      );
+      history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=WNS`);
     } else {
       history.push(`/digit-ui/citizen/payment/collect/${businessService}/${consumerCode}`, {
         paymentAmount: paymentAmt,
