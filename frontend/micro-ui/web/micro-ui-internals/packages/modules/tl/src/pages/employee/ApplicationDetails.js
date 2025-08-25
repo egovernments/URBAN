@@ -119,8 +119,8 @@ const ApplicationDetails = () => {
     }
   }
 
-  if (rolecheck && (applicationDetails?.applicationData?.status === "APPROVED" || applicationDetails?.applicationData?.status === "EXPIRED" || (applicationDetails?.applicationData?.status === "MANUALEXPIRED" /* && renewalPending==="true" */)) /* && duration <= renewalPeriod */) {
-    if(workflowDetails?.data /* && allowedToNextYear */ && applicationDetails?.applicationData?.status !== "CANCELLED") {
+  if (rolecheck && applicationDetails?.applicationData?.status !== "CANCELLED" && (applicationDetails?.applicationData?.status === "APPROVED" || applicationDetails?.applicationData?.status === "EXPIRED" || applicationDetails?.applicationData?.status === "MANUALEXPIRED")) {
+    if(workflowDetails?.data) {
       if(!workflowDetails?.data?.actionState) {
         workflowDetails.data.actionState = {};
         workflowDetails.data.actionState.nextActions = [];
