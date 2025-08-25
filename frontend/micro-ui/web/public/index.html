@@ -29,14 +29,17 @@
     <script>
       var _paq = window._paq = window._paq || [];
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["setExcludedQueryParams", ["account", "accountnum", "address", "address1", "address2", "address3", "addressline1", "addressline2", "adres", "adresse", "age", "alter", "auth", "authpw", "bic", "billingaddress", "billingaddress1", "billingaddress2", "calle", "cardnumber", "cc", "ccc", "cccsc", "cccvc", "cccvv", "ccexpiry", "ccexpmonth", "ccexpyear", "ccname", "ccnumber", "cctype", "cell", "cellphone", "city", "clientid", "clientsecret", "company", "consumerkey", "consumersecret", "contrasenya", "contrase\u00f1a", "creditcard", "creditcardnumber", "cvc", "cvv", "dateofbirth", "debitcard", "direcci\u00f3n", "dob", "domain", "ebost", "email", "emailaddress", "emailadresse", "epos", "epost", "eposta", "exp", "familyname", "firma", "firstname", "formlogin", "fullname", "gender", "geschlecht", "gst", "gstnumber", "handynummer", "has\u0142o", "heslo", "iban", "ibanaccountnum", "ibanaccountnumber", "id", "identifier", "indirizzo", "kartakredytowa", "kennwort", "keyconsumerkey", "keyconsumersecret", "konto", "kontonr", "kontonummer", "kredietkaart", "kreditkarte", "kreditkort", "lastname", "login", "mail", "mobiili", "mobile", "mobilne", "nachname", "name", "nickname", "osoite", "parole", "pass", "passord", "password", "passwort", "pasword", "paswort", "paword", "phone", "pin", "plz", "postalcode", "postcode", "postleitzahl", "privatekey", "publickey", "pw", "pwd", "pword", "pwrd", "rue", "secret", "secretq", "secretquestion", "shippingaddress", "shippingaddress1", "shippingaddress2", "socialsec", "socialsecuritynumber", "socsec", "sokak", "ssn", "steuernummer", "strasse", "street", "surname", "swift", "tax", "taxnumber", "tel", "telefon", "telefonnr", "telefonnummer", "telefono", "telephone", "token", "token_auth", "tokenauth", "t\u00e9l\u00e9phone", "ulica", "user", "username", "vat", "vatnumber", "via", "vorname", "wachtwoord", "wagwoord", "webhooksecret", "website", "zip", "zipcode"]]);
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
       (function () {
-        var u = "https://digit-analytics.matomo.cloud/";
+        var u = "https://unified-demo.digit.org/matomo/";
         _paq.push(['setTrackerUrl', u + 'matomo.php']);
         _paq.push(['setSiteId', '1']);
+        // Adding a second tracker
+        _paq.push(['addTracker', 'https://digit-analytics.matomo.cloud/matomo.php', '2']);
         var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-        g.async = true; g.src = 'https://cdn.matomo.cloud/digit-analytics.matomo.cloud/matomo.js';
+        g.async = true; g.src = u + 'matomo.js';
         s.parentNode.insertBefore(g, s);
       })();
       // (function () {
@@ -50,7 +53,6 @@
       //     }
       //   }).observe(document, { subtree: true, childList: true });
       // })();
-
       (function () {
         let lastUrl = location.href;
 
@@ -89,13 +91,13 @@
       (function () {
         document.addEventListener("click", function (e) {
           const selector = `
-              button,
-              input[type="button"],
-              input[type="submit"],
-              input[type="actionButton"],
-              [role="button"],
-              a[href]:not([href^="mailto:"]):not([href^="tel:"]):not([href^="#"]):not([href^="javascript:"])
-            `;
+                      button,
+                      input[type="button"],
+                      input[type="submit"],
+                      input[type="actionButton"],
+                      [role="button"],
+                      a[href]:not([href^="mailto:"]):not([href^="tel:"]):not([href^="#"]):not([href^="javascript:"])
+                    `;
           const target = e.target.closest(selector);
           if (target) {
             const elementType = target.tagName.toLowerCase();
