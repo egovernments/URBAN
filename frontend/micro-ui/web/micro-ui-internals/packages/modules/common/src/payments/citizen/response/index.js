@@ -15,7 +15,7 @@ export const SuccessfulPayment = (props)=>{
 
 
  const WrapPaymentComponent = (props) => {
-  
+  const [estimateData, setEstimateData] = useState("");
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { eg_pg_txnid: egId, workflow: workflw, propertyId } = Digit.Hooks.useQueryParams();
@@ -25,7 +25,12 @@ export const SuccessfulPayment = (props)=>{
   const { data: bpaData = {}, isLoading: isBpaSearchLoading, isSuccess: isBpaSuccess, error: bpaerror } = Digit.Hooks.obps.useOBPSSearch(
     "", {}, tenantId, { applicationNo: consumerCode }, {}, {enabled:(window.location.href.includes("bpa") || window.location.href.includes("BPA"))}
   );
-  
+    const {
+    isLoading: ptCalculationEstimateLoading,
+    data: ptCalculationEstimateData,
+    mutate: ptCalculationEstimateMutate,
+    error,
+  } = Digit.Hooks.pt.usePtCalculationEstimate(tenantId);
   const { isLoading, data, isError } = Digit.Hooks.usePaymentUpdate({ egId }, business_service, {
     retry: false,
     staleTime: Infinity,
@@ -139,22 +144,104 @@ export const SuccessfulPayment = (props)=>{
       window.open(fileStore[response.filestoreIds[0]], "_blank");
     }
   };
+const getAssessmentYear = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // months are 0-based
 
-  const printReciept = async () => {
-    if (printing) return;
-    setPrinting(true);
+  let startYear, endYear;
+  if (month >= 4) {
+    startYear = year;
+    endYear = year + 1;
+  } else {
+    startYear = year - 1;
+    endYear = year;
+  }
+
+  return `${startYear}-${endYear.toString().slice(-2)}`;
+};
+// const printReciept = async () => {
+//     if (printing) return;
+//     setPrinting(true);
+//     const tenantId = paymentData?.tenantId;
+//     const state = Digit.ULBService.getStateId();
+//     let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
+//     if (!paymentData?.fileStoreId) {
+//       response = await Digit.PaymentService.generatePdf(state, { Payments: [payments.Payments[0]] }, generatePdfKey);
+//     }
+//     const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
+//     if (fileStore && fileStore[response.filestoreIds[0]]) {
+//       window.open(fileStore[response.filestoreIds[0]], "_blank");
+//     }
+//     setPrinting(false);
+//   };
+const printReciept = async () => {
+  console.log("printReciept called");
+  if (printing) return;
+  setPrinting(true);
+
+  try {
     const tenantId = paymentData?.tenantId;
     const state = Digit.ULBService.getStateId();
-    let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
-    if (!paymentData?.fileStoreId) {
-      response = await Digit.PaymentService.generatePdf(state, { Payments: [payments.Payments[0]] }, generatePdfKey);
-    }
-    const fileStore = await Digit.PaymentService.printReciept(state, { fileStoreIds: response.filestoreIds[0] });
-    if (fileStore && fileStore[response.filestoreIds[0]]) {
-      window.open(fileStore[response.filestoreIds[0]], "_blank");
-    }
+
+    // 1. Prepare payload
+    const payload = {
+      Assessment: {
+        financialYear: getAssessmentYear(), // ✅ called correctly
+        propertyId: consumerCode,
+        tenantId: tenantId,
+        source: "MUNICIPAL_RECORDS",
+        channel: "CITIZEN",
+        assessmentDate: Date.now(),
+      },
+    };
+
+    // 2. Run calculation estimate first
+    ptCalculationEstimateMutate(payload, {
+      onSuccess: async (estimateResponse) => {
+        setEstimateData(estimateResponse);
+
+        // 3. Fetch receipt using payment data
+    
+
+        let response = { filestoreIds: [payments.Payments[0]?.fileStoreId] };
+
+        // 4. If receipt not already generated, generate with calculation
+        if (!paymentData?.fileStoreId) {
+          const paymentsWithCalculation = payments.Payments.map((payment) => ({
+            ...payment,
+            Calculation: estimateResponse?.Calculation?.[0] || {},
+          }));
+
+          response = await Digit.PaymentService.generatePdf(
+            state,
+            { Payments: paymentsWithCalculation },
+            generatePdfKey
+          );
+        }
+
+        // 5. Print receipt
+        const fileStore = await Digit.PaymentService.printReciept(state, {
+          fileStoreIds: response.filestoreIds[0],
+        });
+
+        if (fileStore && fileStore[response.filestoreIds[0]]) {
+          window.open(fileStore[response.filestoreIds[0]], "_blank");
+        }
+
+        setPrinting(false);
+      },
+      onError: (error) => {
+        console.error("Estimate error:", error);
+        alert("Estimate error: " + error.message);
+        setPrinting(false);
+      },
+    });
+  } catch (err) {
+    console.error("Print receipt error:", err);
     setPrinting(false);
-  };
+  }
+};
 
   const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
     //example input format : "2018-10-02"

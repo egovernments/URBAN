@@ -394,26 +394,6 @@ const [amountPartial, setAmountPartial] = useState("");
         source: "MUNICIPAL_RECORDS",
         channel: "CITIZEN",
         assessmentDate: Date.now(),
-      },
-      RequestInfo: {
-        apiId: "Rainmaker",
-        authToken: userInfo1?.authToken || "default-token",
-        userInfo: {
-          id: userInfo1?.id || 1,
-          uuid: userInfo1?.uuid || "default-uuid",
-          userName: userInfo1?.userName || "defaultuser",
-          name: userInfo1?.name || "Default User",
-          mobileNumber: userInfo1?.mobileNumber || "9999999999",
-          emailId: userInfo1?.emailId || "default@example.com",
-          locale: userInfo1?.locale || "en_IN",
-          type: userInfo1?.type || "CITIZEN",
-          roles: userInfo1?.roles || [],
-          active: userInfo1?.active !== false,
-          tenantId: userInfo1?.tenantId || "pg.citya",
-          permanentCity: userInfo1?.permanentCity || "pg.citya"
-        },
-        msgId: "1749797151521|en_IN",
-        plainAccessRequest: {}
       }
     };
 
