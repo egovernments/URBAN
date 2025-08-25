@@ -88,7 +88,9 @@ const SelectDocuments = ({ t, config, onSelect, userType, formData, setError: se
           />
         );
       })}
+      <div className="pt-error">
       {error && <Toast label={error} onClose={() => setError(null)} error />}
+      </div>
     </div>
   );
 };
