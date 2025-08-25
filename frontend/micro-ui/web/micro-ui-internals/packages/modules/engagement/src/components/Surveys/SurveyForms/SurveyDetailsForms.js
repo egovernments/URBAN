@@ -124,7 +124,7 @@ const SurveyDetailsForms = ({ t, registerRef, controlSurveyForm, surveyFormState
             },
             pattern:{
               value: /^[A-Za-z_-][A-Za-z0-9_\ -]*$/,
-              message: t("ES_SURVEY_DONT_START_WITH_NUMBER")
+              message: t("ES_SURVEY_DESC_DONT_START_WITH_NUMBER")
             }
           })}
           disable={enableDescriptionOnly ?  !enableDescriptionOnly : disableInputs}
