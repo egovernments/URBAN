@@ -390,7 +390,7 @@ const OwnerForm = (_props) => {
                 defaultValue={owner?.mobileNumber}
                 rules={{
                   required: t("CORE_COMMON_REQUIRED_ERRMSG"),
-                  validate: (v) => (/^[6789]\d{9}$/.test(v) ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG")),
+                  validate: (v) => (/^[6789]\d{9}$/.test(v) ? true : t("PT_APPLICANT_MOBILE_NUMBER_INVALID")),
                 }}
                 render={(props) => (
                   <MobileNumber
