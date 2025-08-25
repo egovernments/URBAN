@@ -26,8 +26,6 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const mutationScreen = url.includes("/property-mutation/");
-  const isNewApplication = !editScreen && !mutationScreen;
-
   const isMobile = window.Digit.Utils.browser.isMobile();
   let index = 0; // mutationScreen ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
   const [ownershipCategory, setOwnerCategory] = React.useState("");
@@ -388,7 +386,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty || isNewApplication}
+                            disable={isUpdateProperty || isEditProperty}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
@@ -510,7 +508,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty || isNewApplication}
+                            disable={isUpdateProperty || isEditProperty}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />

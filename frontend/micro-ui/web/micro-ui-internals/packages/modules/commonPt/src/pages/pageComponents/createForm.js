@@ -5,7 +5,7 @@ import { useHistory, useRouteMatch,useLocation } from "react-router-dom";
 import { newConfig } from "../../config/Create/config";
 import _, { create, unset } from "lodash";
 
-const CreatePropertyForm = ({ config, onSelect,formData,value, userType, redirectUrl }) => {
+const CreatePropertyForm = ({ config, onSelect,value, userType, redirectUrl }) => {
   const [showToast, setShowToast] = useState(null);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const tenants = Digit.Hooks.pt.useTenants();
@@ -13,10 +13,7 @@ const CreatePropertyForm = ({ config, onSelect,formData,value, userType, redirec
   const location = useLocation();
 
   const [canSubmit, setCanSubmit] = useState(false);
-  const defaultValues = {
-  ...value,
-  owners: formData.owners
-};
+  const defaultValues = { ...value};
   const history = useHistory();
   const match = useRouteMatch();
   sessionStorage.setItem("VisitedCommonPTSearch",true);
@@ -41,7 +38,6 @@ const CreatePropertyForm = ({ config, onSelect,formData,value, userType, redirec
   if (isLoading) {
     return <Loader />;
   }
-
 
   const onSubmit = async () => {
     if((formValue?.owners?.ownershipCategory?.includes("MULTIPLEOWNERS") || formValue?.owners?.[0]?.ownershipCategory?.code?.includes("MULTIPLEOWNERS")) && formValue?.owners?.length==1){

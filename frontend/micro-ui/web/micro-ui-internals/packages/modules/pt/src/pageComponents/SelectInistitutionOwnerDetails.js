@@ -8,7 +8,6 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const isMutation = url.includes("property-mutation");
-  const isNewApplication = !editScreen && !isMutation;
   let index = 0;
   let validation = {};
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -173,7 +172,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
             onChange={setMobileNo}
             value={mobileNumber}
             type={"tel"}
-            disable={isUpdateProperty || isEditProperty || isNewApplication}
+            disable={isUpdateProperty || isEditProperty}
             {...(validation = {
               isRequired: true,
               pattern: "[6-9]{1}[0-9]{9}",
