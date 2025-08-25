@@ -1,5 +1,5 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
-import React ,{Fragment}from "react";
+import React ,{Fragment,useEffect}from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom";
@@ -13,6 +13,7 @@ const CreateProperty = ({ parentRoute }) => {
   const history = useHistory();
   const stateId = Digit.ULBService.getStateId();
   let config = [];
+  const userInfo = Digit.UserService.getUser(); 
   const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_PROPERTY", {});
   let { data: commonFields, isLoading } = Digit.Hooks.pt.useMDMS(stateId, "PropertyTax", "CommonFieldsConfig");
   const goNext = (skipStep, index, isAddMultiple, key) => {
@@ -138,6 +139,20 @@ const CreateProperty = ({ parentRoute }) => {
     clearParams();
     queryClient.invalidateQueries("PT_CREATE_PROPERTY");
   };
+
+   useEffect(() => {
+    const isMobileNumberMissing = !(params.owners && params.owners[0] && params.owners[0].mobileNumber);
+    const isInitialPage = window.location.href.includes("/new-application");
+
+    if (isMobileNumberMissing && isInitialPage && userInfo?.info?.mobileNumber) {
+      var key="owners";
+      let owners = params.owners || [];
+      owners[0] = { mobileNumber: userInfo.info.mobileNumber };
+      setParams({ ...params, ...{ [key]: owners } });
+    }
+  }, []); 
+
+  console.log(params,"pt params");
   if (isLoading) {
     return <Loader />;
   }

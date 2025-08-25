@@ -21,6 +21,7 @@ const WSCreate = () => {
   const history = useHistory();
   const location = useLocation();
 
+  const userInfo = Digit.UserService.getUser();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("WS_CREATE", state?.edcrNumber ? { data: { scrutinyNumber: { edcrNumber: state?.edcrNumber } } } : {});
 
@@ -79,6 +80,22 @@ const WSCreate = () => {
     else setParams({ ...params, ...{ [key]: { ...params[key], ...data } } });
     goNext(skipStep);
   };
+
+ 
+
+  useEffect(() => {
+     const isMobileNumberMissing = !(params.owners && params.owners[0] && params.owners[0].mobileNumber);
+     const isInitialPage = window.location.href.includes("create-application/create-property");
+ 
+     if (isMobileNumberMissing && isInitialPage && userInfo?.info?.mobileNumber) {
+       var key="owners";
+       let owners = params.owners || [];
+       owners[0] = { mobileNumber: userInfo.info.mobileNumber };
+       setParams({ ...params, ...{ [key]: owners } });
+     }
+   }, []); 
+
+    console.log("params", params);
   const handleSkip = () => { };
 
   let config = [];

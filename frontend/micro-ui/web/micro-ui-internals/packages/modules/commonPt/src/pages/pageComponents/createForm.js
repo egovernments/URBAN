@@ -5,7 +5,8 @@ import { useHistory, useRouteMatch,useLocation } from "react-router-dom";
 import { newConfig } from "../../config/Create/config";
 import _, { create, unset } from "lodash";
 
-const CreatePropertyForm = ({ config, onSelect,value, userType, redirectUrl }) => {
+const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirectUrl }) => {
+  console.log("formData inside create property form", formData);
   const [showToast, setShowToast] = useState(null);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const tenants = Digit.Hooks.pt.useTenants();
@@ -13,7 +14,9 @@ const CreatePropertyForm = ({ config, onSelect,value, userType, redirectUrl }) =
   const location = useLocation();
 
   const [canSubmit, setCanSubmit] = useState(false);
-  const defaultValues = { ...value};
+  const defaultValues = { ...value,
+    owners: formData.owners
+  };
   const history = useHistory();
   const match = useRouteMatch();
   sessionStorage.setItem("VisitedCommonPTSearch",true);
