@@ -208,7 +208,7 @@ function SelectDocument({
       setError(null);
       if (file) {
         if (file.size >= 5242880) {
-          setError(t("CS_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
+          setError(t("CS_FILE_UPLOAD_ERROR"));
           // if (!formState.errors[config.key]) setFormError(config.key, { type: doc?.code });
         } else {
           try {
