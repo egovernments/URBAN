@@ -60,7 +60,9 @@ const TLSelectDocuments = ({ t, config, onSelect, userType, formData, setError: 
           />
         );
       })}
+      <div className="pt-error">
       {error && <Toast label={error} onClose={() => setError(null)} error />}
+      </div>
     </div>
   );
 };

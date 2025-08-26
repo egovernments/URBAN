@@ -69,7 +69,9 @@ const TLDocumentsEmployee = ({ t, config, onSelect, userType, formData, setError
           />
         );
       })}
+      <div className="pt-error">
       {error && <Toast label={error} onClose={() => setError(null)} error />}
+      </div>
     </div>
   );
 };
@@ -184,7 +186,7 @@ function SelectDocument({
           setError(t("PT_UPLOAD_FORMAT_NOT_SUPPORTED"));
         }
         else if (file.size >= 5242880) {
-          setError(t("CS_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
+          setError(t("CS_FILE_UPLOAD_ERROR"));
           // if (!formState.errors[config.key]) setFormError(config.key, { type: doc?.code });
         } else {
           try {
