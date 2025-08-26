@@ -271,7 +271,7 @@ const App = ({ path }) => {
   return (
     <Switch>
       <React.Fragment>
-        <div className="ground-container ws-container">
+        <div className="ground-container">
           <div style={locationCheck ? { marginLeft: "12px" } : (locationCheckReqDocs?{marginLeft:"25px"}:{ marginLeft: "-4px" })}>
             <BILLSBreadCrumbs location={location} />
           </div>
