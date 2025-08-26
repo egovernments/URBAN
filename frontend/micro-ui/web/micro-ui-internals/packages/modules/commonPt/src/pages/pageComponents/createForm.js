@@ -1,5 +1,5 @@
 import { FormComposer, Loader, Dropdown, Localities, Header, Toast } from "@egovernments/digit-ui-react-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useRouteMatch,useLocation } from "react-router-dom";
 import { newConfig } from "../../config/Create/config";
@@ -7,6 +7,7 @@ import _, { create, unset } from "lodash";
 
 const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirectUrl }) => {
   console.log("formData inside create property form", formData);
+  const userInfo = Digit.UserService.getUser();
   const [showToast, setShowToast] = useState(null);
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const tenants = Digit.Hooks.pt.useTenants();
@@ -14,9 +15,18 @@ const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirec
   const location = useLocation();
 
   const [canSubmit, setCanSubmit] = useState(false);
-  const defaultValues = { ...value,
-    owners: formData.owners
-  };
+  // Build stable default values once user info / incoming formData changes
+  const defaultValues = useMemo(() => {
+    const base = { ...(value || {}) };
+    // Prefer formData.owners if passed, else value.owners, else seed from user mobile
+    const incomingOwners = formData?.owners || value?.owners;
+    if (incomingOwners && incomingOwners.length) {
+      base.owners = incomingOwners.map((o, idx) => ({ ...o, ...(idx === 0 && !o?.mobileNumber && userInfo?.info?.mobileNumber ? { mobileNumber: userInfo.info.mobileNumber } : {}) }));
+    } else if (userInfo?.info?.mobileNumber) {
+      base.owners = [{ mobileNumber: userInfo.info.mobileNumber }];
+    }
+    return base;
+  }, [formData?.owners, value, userInfo?.info?.mobileNumber]);
   const history = useHistory();
   const match = useRouteMatch();
   sessionStorage.setItem("VisitedCommonPTSearch",true);
@@ -25,7 +35,7 @@ const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirec
 
   const allCities = Digit.Hooks.pt.useTenants()?.sort((a, b) => a?.i18nKey?.localeCompare?.(b?.i18nKey));
   
-  const [formValue, setFormValue] = useState("");
+  const [formValue, setFormValue] = useState(defaultValues);
   const [cityCode, setCityCode] = useState("");
   let enableSkip = userType=="employee"?false :config?.isSkipEnabled || sessionStorage.getItem("skipenabled");
   // delete
@@ -85,7 +95,7 @@ const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirec
       setFormValue(data);
     }
 
-    if(data.assemblyDet && data.locationDet && data.owners && !Object.keys(formState?.errors).length){
+  if(data?.assemblyDet && data?.locationDet && data?.owners && !Object.keys(formState?.errors).length){
       setCanSubmit(true);
     }else{
       setCanSubmit(false);
