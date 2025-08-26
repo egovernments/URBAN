@@ -166,31 +166,30 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
   const [error, setError] = useState(null);
 
   function checkMandatoryFieldsForEachOwner(ownersData) {
+    setError(null);
     if (typeOfOwner === "INSTITUTIONAL") {
-      if (ownersData[0]?.name && ownersData[0]?.subOwnerShipCategory && ownersData[0]?.mobilenumber) {
-        setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
-        return false;
-      } else return true;
+  // Name is optional for INSTITUTIONAL: only subtype and mobile required
+  const valid = ownersData?.[0]?.subOwnerShipCategory && ownersData?.[0]?.mobilenumber;
+      if (!valid) setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
+      return !!valid;
     } else if (typeOfOwner === "SINGLEOWNER") {
-      if (ownersData[0]?.name && ownersData[0]?.gender && ownersData[0]?.mobilenumber) {
-        setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
-        return false;
-      } else return true;
+  // Name, gender and mobile mandatory for SINGLEOWNER
+  const valid = ownersData?.[0]?.name && ownersData?.[0]?.gender && ownersData?.[0]?.mobilenumber;
+      if (!valid) setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
+      return !!valid;
     } else if (typeOfOwner === "MULTIOWNER") {
-      return ownersData.reduce((acc, ownerData) => {
-        if (ownerData?.name && ownerData?.gender && ownerData?.mobilenumber) {
-          setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
-          return false;
-        }
-      }, true);
+  // Name, gender and mobile mandatory for each owner in MULTIOWNER
+  const allValid = ownersData?.every((o) => o?.name && o?.gender && o?.mobilenumber);
+      if (!allValid) setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
+      return allValid;
     }
+    return true;
   }
 
   const goNext = () => {
-    if (!checkMandatoryFieldsForEachOwner(formState)) {
-      let owner = formData.owners;
-      let ownerStep;
-      ownerStep = { ...owner, owners: formState };
+    if (checkMandatoryFieldsForEachOwner(formState)) {
+      const owner = formData.owners;
+      const ownerStep = { ...owner, owners: formState };
       onSelect(config.key, ownerStep);
     }
   };
@@ -219,7 +218,7 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     {...{
                       validation: {
                         isRequired: true,
-                        pattern: "^[a-zA-Z]+(( |, )[a-zA-Z]+)*$",
+                        pattern: "^[a-zA-Z]+(( |,? ?)[a-zA-Z]+)*$",
                         type: "text",
                         title: t("TL_NAME_ERROR_MESSAGE"),
                       },
@@ -248,7 +247,7 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     {...{
                       validation: {
                         // isRequired: true,
-                        pattern: "^[a-z0-9]+( [a-z0-9]+)*$",
+                        pattern: "^[a-zA-Z]+(?:[-' ]?[a-zA-Z]+)*$",
                         type: "text",
                         title: t("TL_NAME_ERROR_MESSAGE"),
                       },
@@ -371,7 +370,7 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     : {}
                 }
               >
-                <CardLabel style={{}}>{`${t(
+               <CardLabel style={{}}>{`${t(
                   "TL_NEW_OWNER_DETAILS_NAME_LABEL"
                 )}*`}</CardLabel>
                 {typeOfOwner === "MULTIOWNER" && (
