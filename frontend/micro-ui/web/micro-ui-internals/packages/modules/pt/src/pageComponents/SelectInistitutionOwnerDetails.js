@@ -174,7 +174,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
             onChange={setMobileNo}
             value={mobileNumber}
             type={"tel"}
-            disable={isUpdateProperty || isEditProperty || isNewApplication}
+            disable={isUpdateProperty || isEditProperty}
             {...(validation = {
               isRequired: true,
               pattern: "[6-9]{1}[0-9]{9}",
