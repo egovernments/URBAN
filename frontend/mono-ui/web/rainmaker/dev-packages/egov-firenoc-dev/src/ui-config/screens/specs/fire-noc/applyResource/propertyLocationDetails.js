@@ -177,6 +177,15 @@ const getDetailsFromProperty = async (state, dispatch) => {
             if (payload.Properties[0].address.pincode === null) {
               payload.Properties[0].address.pincode = "";              
             }
+            if (payload.Properties[0].address.doorNo === null) {
+              payload.Properties[0].address.doorNo = "";              
+            }
+            if (payload.Properties[0].address.landmark === null) {
+              payload.Properties[0].address.landmark = "";              
+            }
+            if (payload.Properties[0].address.street === null) {
+              payload.Properties[0].address.street = "";              
+            }
           }
           dispatch(
             handleField(
