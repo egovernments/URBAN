@@ -167,7 +167,12 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
 
   function checkMandatoryFieldsForEachOwner(ownersData) {
     if (typeOfOwner === "INSTITUTIONAL") {
-      if (ownersData[0]?.name && ownersData[0]?.subOwnerShipCategory && ownersData[0]?.mobilenumber) {
+      if (
+        ownersData[0]?.name &&
+        ownersData[0]?.designation &&
+        ownersData[0]?.subOwnerShipCategory &&
+        ownersData[0]?.mobilenumber
+      ) {
         setError("TL_ERROR_FILL_ALL_MANDATORY_DETAILS");
         return false;
       } else return true;
@@ -219,7 +224,7 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     {...{
                       validation: {
                         isRequired: true,
-                        pattern: "^[a-zA-Z]+(( |, )[a-zA-Z]+)*$",
+                        pattern: "^[a-zA-Z]+(( |,? ?)[a-zA-Z]+)*$",
                         type: "text",
                         title: t("TL_NAME_ERROR_MESSAGE"),
                       },
@@ -236,7 +241,7 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     optionKey="i18nKey"
                   />
                   <CardHeader>{t("TL_AUTHORIZED_PERSON_DETAILS")}</CardHeader>
-                  <CardLabel>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}</CardLabel>
+      <CardLabel>{`${t("TL_NEW_OWNER_DETAILS_NAME_LABEL")}`}*</CardLabel>
                   <TextInput
                     t={t}
                     type={"text"}
@@ -247,14 +252,14 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     ValidationRequired={true}
                     {...{
                       validation: {
-                        // isRequired: true,
-                        pattern: "^[a-z0-9]+( [a-z0-9]+)*$",
+        isRequired: true,
+                        pattern: "^[a-zA-Z]+(?:[-' ]?[a-zA-Z]+)*$",
                         type: "text",
                         title: t("TL_NAME_ERROR_MESSAGE"),
                       },
                     }}
                   />
-                  <CardLabel>{`${t("TL_NEW_OWNER_DESIG_LABEL")}`}</CardLabel>
+      <CardLabel>{`${t("TL_NEW_OWNER_DESIG_LABEL")}`}*</CardLabel>
                   <TextInput
                     t={t}
                     type={"text"}
@@ -266,7 +271,7 @@ const TLSelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     //disable={isUpdateProperty || isEditProperty}
                     {...{
                       validation: {
-                        // isRequired: true,
+        isRequired: true,
                         pattern: "^[a-z0-9]+( [a-z0-9]+)*$",
                         type: "text",
                         title: t("TL_NAME_ERROR_MESSAGE"),
