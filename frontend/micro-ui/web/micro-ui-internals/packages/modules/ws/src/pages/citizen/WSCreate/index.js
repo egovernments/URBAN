@@ -99,9 +99,6 @@ const WSCreate = () => {
   };
 
  
-  // Removed effect that injected mobile number post-render; seeding done in initialParams above.
-
-  // console.debug("WS_CREATE params", params);
   const handleSkip = () => { };
 
   let config = [];

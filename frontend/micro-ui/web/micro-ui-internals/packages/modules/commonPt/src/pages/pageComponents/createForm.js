@@ -6,7 +6,6 @@ import { newConfig } from "../../config/Create/config";
 import _, { create, unset } from "lodash";
 
 const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirectUrl }) => {
-  console.log("formData inside create property form", formData);
   const userInfo = Digit.UserService.getUser();
   const [showToast, setShowToast] = useState(null);
   const tenantId = Digit.ULBService.getCurrentTenantId();

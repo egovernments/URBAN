@@ -5,7 +5,6 @@ import { useLocation, useRouteMatch } from "react-router-dom";
 import Timeline from "../components/TLTimeline";
 
 const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerIndex }) => {
-  console.log("formData inside select owner details", formData);
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const mutationScreen = url.includes("/property-mutation/");
@@ -273,7 +272,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
           name="fatherOrHusbandName"
           value={fatherOrHusbandName}
           onChange={setGuardiansName}
-          disable={isUpdateProperty || isEditProperty}
+          disable={isUpdateProperty || isEditProperty || isNewApplication}
           ValidationRequired = {true}
           {...(validation = {
             isRequired: true,

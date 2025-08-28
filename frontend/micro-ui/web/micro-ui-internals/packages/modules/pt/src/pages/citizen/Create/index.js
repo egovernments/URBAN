@@ -157,9 +157,7 @@ const CreateProperty = ({ parentRoute }) => {
     queryClient.invalidateQueries("PT_CREATE_PROPERTY");
   };
 
-  // Removed effect that previously seeded mobile number post render; now seeded in initialPtParams before hook.
 
-  console.debug("PT_CREATE_PROPERTY params", params);
   if (isLoading) {
     return <Loader />;
   }

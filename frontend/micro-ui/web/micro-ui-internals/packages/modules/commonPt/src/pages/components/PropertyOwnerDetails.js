@@ -23,7 +23,6 @@ const getAddress = (address, t) => {
 }
 
 const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formState, ownerIndex, setError, clearErrors }) => {
-  console.log("formData inside property owner details", formData);
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const mutationScreen = url.includes("/property-mutation/");
@@ -388,7 +387,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty}
+                            disable={isUpdateProperty || isEditProperty || isNewApplication}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
@@ -510,7 +509,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty}
+                            disable={isUpdateProperty || isEditProperty || isNewApplication}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
