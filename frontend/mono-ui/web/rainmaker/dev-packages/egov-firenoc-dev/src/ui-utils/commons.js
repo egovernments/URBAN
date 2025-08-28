@@ -152,13 +152,21 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
       "FireNOCs",
       []
     );
-    // Ensure pincode is always a string
-    const addressPath = "fireNOCDetails.propertyDetails.address.pincode";
-    let pincode = get(payload[0], addressPath);
-    if (pincode === null || typeof pincode === "undefined") {
-      set(payload[0], addressPath, "");
-    } else {
-      set(payload[0], addressPath, String(pincode));
+    // Ensure all address fields are strings, not null
+    const addressBasePath = "fireNOCDetails.propertyDetails.address";
+    const address = get(payload[0], addressBasePath);
+    if (address) {
+      const addressFields = ['pincode', 'doorNo', 'landmark', 'street', 'plotNo', 'buildingName', 'district', 'region', 'state', 'country'];
+      addressFields.forEach(field => {
+        const fieldPath = `${addressBasePath}.${field}`;
+        const fieldValue = get(payload[0], fieldPath);
+        if (fieldValue === null || typeof fieldValue === "undefined") {
+          set(payload[0], fieldPath, "");
+        } else if (field === 'pincode') {
+          // Ensure pincode is always a string
+          set(payload[0], fieldPath, String(fieldValue));
+        }
+      });
     }
     let tenantId = get(
       state.screenConfiguration.preparedFinalObject,
