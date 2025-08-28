@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { useRouteMatch, useLocation, useHistory, Switch, Route, Redirect } from "react-router-dom";
@@ -21,8 +21,18 @@ const WSCreate = () => {
   const history = useHistory();
   const location = useLocation();
 
+  const userInfo = Digit.UserService.getUser();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("WS_CREATE", state?.edcrNumber ? { data: { scrutinyNumber: { edcrNumber: state?.edcrNumber } } } : {});
+  // Stable initial params (memoized) – prevents new object & mutation each render
+  const initialParams = useMemo(() => {
+    const base = state?.edcrNumber ? { data: { scrutinyNumber: { edcrNumber: state?.edcrNumber } } } : {};
+    if (userInfo?.info?.mobileNumber) {
+      base.owners = [{ mobileNumber: userInfo.info.mobileNumber }];
+    }
+    return base;
+  }, [state?.edcrNumber, userInfo?.info?.mobileNumber]);
+  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("WS_CREATE", initialParams);
+  const clearedOnSearchRef = useRef(false);
 
   const CheckPage = Digit?.ComponentRegistryService?.getComponent('WSCheckPage') ;
   const Acknowledgement = Digit?.ComponentRegistryService?.getComponent('WSAcknowledgement') ;
@@ -59,11 +69,16 @@ const WSCreate = () => {
     redirectWithHistory(`${getPath(match.path, match.params)}/${nextStep}`);
   }
 
-  if(params && Object.keys(params).length>0 && window.location.href.includes("/citizen/ws/create-application/search-property"))
-    {
+  // Clear params once when landing on search-property with existing data (avoids render loop)
+  useEffect(() => {
+    const onSearchProperty = window.location.href.includes("/citizen/ws/create-application/search-property");
+    if (onSearchProperty && !clearedOnSearchRef.current && params && Object.keys(params).length > 0) {
+      clearedOnSearchRef.current = true;
       clearParams();
       queryClient.invalidateQueries("WS_CREATE");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const onSuccess = () => {
     queryClient.invalidateQueries("WS_CREATE");
@@ -75,10 +90,15 @@ const WSCreate = () => {
 
   const handleSelect = (key, data, skipStep, isFromCreateApi) => {
     if (isFromCreateApi) setParams(data);
-    else if (key === "") setParams({ ...data });
+  // When key is an empty string we previously replaced the whole params object.
+  // This was causing earlier collected fields (like owners.mobileNumber) to be dropped,
+  // leading to them becoming empty after navigation/refresh. Merge instead of replace.
+  else if (key === "") setParams({ ...params, ...data });
     else setParams({ ...params, ...{ [key]: { ...params[key], ...data } } });
     goNext(skipStep);
   };
+
+ 
   const handleSkip = () => { };
 
   let config = [];

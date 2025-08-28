@@ -1,5 +1,5 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
-import React ,{Fragment}from "react";
+import React ,{Fragment,useEffect,useMemo,useRef}from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom";
@@ -13,7 +13,15 @@ const CreateProperty = ({ parentRoute }) => {
   const history = useHistory();
   const stateId = Digit.ULBService.getStateId();
   let config = [];
-  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_PROPERTY", {});
+  const userInfo = Digit.UserService.getUser(); 
+
+  const initialPtParams = useMemo(() => {
+    const base = {};
+    if (userInfo?.info?.mobileNumber) base.owners = [{ mobileNumber: userInfo.info.mobileNumber }];
+    return base;
+  }, [userInfo?.info?.mobileNumber]);
+  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("PT_CREATE_PROPERTY", initialPtParams);
+  const clearedOnInfoRef = useRef(false);
   let { data: commonFields, isLoading } = Digit.Hooks.pt.useMDMS(stateId, "PropertyTax", "CommonFieldsConfig");
   const goNext = (skipStep, index, isAddMultiple, key) => {
     let currentPath = pathname.split("/").pop(),
@@ -104,27 +112,37 @@ const CreateProperty = ({ parentRoute }) => {
     redirectWithHistory(nextPage);
   };
 
-  if(params && Object.keys(params).length>0 && window.location.href.includes("/info") && sessionStorage.getItem("docReqScreenByBack") !== "true")
-    {
+  useEffect(() => {
+    const onInfo = window.location.href.includes("/info");
+    if (onInfo && !clearedOnInfoRef.current && params && Object.keys(params).length > 0 && sessionStorage.getItem("docReqScreenByBack") !== "true") {
+      clearedOnInfoRef.current = true;
       clearParams();
       queryClient.invalidateQueries("PT_CREATE_PROPERTY");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const createProperty = async () => {
     history.push(`${match.path}/acknowledgement`);
   };
 
   function handleSelect(key, data, skipStep, index, isAddMultiple = false) {
+    // Ensure we don't accidentally wipe previously stored params (incl. owners[0].mobileNumber)
     if (key === "owners") {
-      let owners = params.owners || [];
-      owners[index] = data;
-      setParams({ ...params, ...{ [key]: [...owners] } });
+      const owners = Array.isArray(params.owners) ? [...params.owners] : [];
+      const ownerIndex = (typeof index === "number" && index >= 0) ? index : 0;
+      // Merge instead of replace so absent fields (like mobileNumber) are preserved
+      const existing = owners[ownerIndex] || {};
+      owners[ownerIndex] = { ...existing, ...(Array.isArray(data) ? data[0] : data) };
+      setParams({ ...params, owners });
     } else if (key === "units") {
       let units = params.units || [];
       // if(index){units[index] = data;}else{
       units = data;
-
       setParams({ ...params, units });
+    } else if (key === "") {
+      // Empty key means caller wants to merge top-level fragment
+      setParams({ ...params, ...data });
     } else {
       setParams({ ...params, ...{ [key]: { ...params[key], ...data } } });
     }
@@ -138,6 +156,8 @@ const CreateProperty = ({ parentRoute }) => {
     clearParams();
     queryClient.invalidateQueries("PT_CREATE_PROPERTY");
   };
+
+
   if (isLoading) {
     return <Loader />;
   }

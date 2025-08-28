@@ -8,6 +8,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
   const { pathname: url } = useLocation();
   const editScreen = url.includes("/modify-application/");
   const mutationScreen = url.includes("/property-mutation/");
+  const isNewApplication = url.includes("/new-application");
 
   let index = mutationScreen ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
   let validation = {};
@@ -259,7 +260,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
           value={mobileNumber}
           name="mobileNumber"
           onChange={(value) => setMobileNo({ target: { value } })}
-          disable={isUpdateProperty || isEditProperty}
+          disable={isUpdateProperty || isEditProperty || isNewApplication }
           {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
         />
         <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>
