@@ -687,6 +687,7 @@ public class PropertyValidator {
 		fieldsUpdated.remove("type");
 		fieldsUpdated.remove("designation");
 		fieldsUpdated.remove("nameOfAuthorizedPerson");
+    fieldsUpdated.remove("id");
 		
 		// DEBUG: Log fields after removal
 		log.debug("Fields after removal: {}", fieldsUpdated);
