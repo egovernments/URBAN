@@ -174,9 +174,13 @@ const getDetailsFromProperty = async (state, dispatch) => {
           );
         } else {
           if (payload.Properties[0].address) {
-            if (payload.Properties[0].address.pincode === null) {
-              payload.Properties[0].address.pincode = "";              
-            }
+            // Convert all null values to empty strings
+            const addressFields = ['pincode', 'doorNo', 'landmark', 'street', 'plotNo', 'buildingName', 'district', 'region', 'state', 'country'];
+            addressFields.forEach(field => {
+              if (payload.Properties[0].address[field] === null) {
+                payload.Properties[0].address[field] = "";
+              }
+            });
           }
           dispatch(
             handleField(
