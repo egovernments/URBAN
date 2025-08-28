@@ -10,6 +10,7 @@ import {
   SubmitBar,
   Header,
   EditIcon,
+  Loader,
 } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -52,6 +53,8 @@ const CheckPage = ({ onSubmit, value = {} }) => {
     isUpdateProperty,
     searchResult,
     additionalDetails,
+    addressProof,
+    transferReasonProof,
   } = value;
   
   const { property } = searchResult;
@@ -64,15 +67,76 @@ const CheckPage = ({ onSubmit, value = {} }) => {
     UnOccupiedArea
    } = property;
 
+  // Create updated documents array with new mutation documents
+  const getMutationDocuments = () => {
+    let mutationDocs = [];
+    
+    // Add owner documents from new owners
+    const ownersArray = ownershipCategory?.code?.includes("INDIVIDUAL") ? Owners : owners;
+    if (ownersArray && Array.isArray(ownersArray)) {
+      ownersArray.forEach((owner, ownerIndex) => {
+        if (owner && owner.documents) {
+          Object.keys(owner.documents).forEach(key => {
+            const doc = owner.documents[key];
+            if (doc && (doc.documentType || doc.fileStoreId)) {
+              mutationDocs.push({
+                documentType: doc.documentType?.code || doc.documentType || `OWNER_${ownerIndex + 1}_${key}`,
+                fileStoreId: doc.fileStoreId,
+                fileName: doc.fileName || doc.documentType?.code || doc.documentType || `Owner ${ownerIndex + 1} ${key}`
+              });
+            }
+          });
+        }
+      });
+    }
+    
+    // Add address proof document
+    if (addressProof && addressProof.fileStoreId) {
+      mutationDocs.push({
+        documentType: addressProof.documentType?.code || addressProof.documentType || 'ADDRESS_PROOF',
+        fileStoreId: addressProof.fileStoreId,
+        fileName: addressProof.fileName || 'Address Proof'
+      });
+    }
+    
+    // Add transfer reason proof document
+    if (transferReasonProof && transferReasonProof.fileStoreId) {
+      const docType = transferReasonProof.documentType?.code;
+      mutationDocs.push({
+        documentType: docType?.includes('.') ? docType.split(".").pop() : (docType || transferReasonProof.documentType || 'TRANSFER_REASON_PROOF'),
+        fileStoreId: transferReasonProof.fileStoreId,
+        fileName: transferReasonProof.fileName || 'Transfer Reason Proof'
+      });
+    }
+    
+    return mutationDocs;
+  };
+
+  const mutationDocuments = getMutationDocuments();
+
    useEffect(async ()=>{
-      const res = await Digit.PaymentService.searchBill(tenantId, {Service: "PT.MUTATION", consumerCode: property?.acknowldgementNumber});
-      if(! res.Bill.length) {
-        const res1 = await Digit.PTService.ptCalculateMutation({Property: { ...property, additionalDetails: { ...property?.additionalDetails, ...additionalDetails, documentDate: new Date(additionalDetails?.documentDate).getTime() } }}, tenantId);
-        setBillAmount(res1?.[property?.acknowldgementNumber]?.totalAmount || t("CS_NA"))
-        setBillStatus(t(`PT_MUT_BILL_ACTIVE`))
-      } else {
-        setBillAmount(res?.Bill[0]?.totalAmount || t("CS_NA"))
-        setBillStatus(t(`PT_MUT_BILL_${res?.Bill[0]?.status?.toUpperCase()}`))
+      if (!property || !additionalDetails) return;
+      
+      try {
+        if (property?.acknowldgementNumber) {
+          const res = await Digit.PaymentService.searchBill(tenantId, {Service: "PT.MUTATION", consumerCode: property.acknowldgementNumber});
+          if(!res.Bill.length) {
+            const res1 = await Digit.PTService.ptCalculateMutation({Property: { ...property, additionalDetails: { ...property?.additionalDetails, ...additionalDetails, documentDate: new Date(additionalDetails?.documentDate).getTime() } }}, tenantId);
+            setBillAmount(res1?.[property.acknowldgementNumber]?.totalAmount || t("CS_NA"))
+            setBillStatus(t(`PT_MUT_BILL_ACTIVE`))
+          } else {
+            setBillAmount(res?.Bill[0]?.totalAmount || t("CS_NA"))
+            setBillStatus(t(`PT_MUT_BILL_${res?.Bill[0]?.status?.toUpperCase()}`))
+          }
+        } else {
+          // No acknowledgement number, calculate mutation directly
+          const res1 = await Digit.PTService.ptCalculateMutation({Property: { ...property, additionalDetails: { ...property?.additionalDetails, ...additionalDetails, documentDate: new Date(additionalDetails?.documentDate).getTime() } }}, tenantId);
+          setBillAmount(res1?.totalAmount || t("CS_NA"))
+          setBillStatus(t(`PT_MUT_BILL_ACTIVE`))
+        }
+      } catch (error) {
+        setBillAmount(t("CS_NA"))
+        setBillStatus(t("CS_NA"))
       }
   },[])
 
@@ -265,8 +329,26 @@ const CheckPage = ({ onSubmit, value = {} }) => {
         />
       </div>
       <div style={{marginTop:"0 important"}}>
-        {Array.isArray(property?.documents) ? (
-          property?.documents.length > 0 && <PropertyDocument property={property}></PropertyDocument>
+        {mutationDocuments.length > 0 ? (
+          <div style={{ marginTop: "19px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {mutationDocuments.map((document, index) => {
+                let documentLink = `${window.location.origin}/filestore/v1/files/id?fileStoreId=${document?.fileStoreId}&tenantId=${Digit.ULBService.getCurrentTenantId()}`;
+                return (
+                  <a target="_blank" rel="noopener noreferrer" href={documentLink} style={{ minWidth: "160px", marginRight: "16px", marginBottom: "16px" }} key={index}>
+                    <div style={{ width: "85px", height: "100px", background: "#f6f6f6", padding: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="60" height="70" viewBox="0 0 20 20" fill="gray">
+                        <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z" />
+                      </svg>
+                    </div>
+                    <p style={{ marginTop: "8px", fontSize: "12px", textAlign: "center" }}>
+                      {document?.fileName || document?.documentType || 'Document'}
+                    </p>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
         ) : ( 
           <StatusTable>
             <Row className="border-none" text={t("PT_NO_DOCUMENTS_MSG")} />
