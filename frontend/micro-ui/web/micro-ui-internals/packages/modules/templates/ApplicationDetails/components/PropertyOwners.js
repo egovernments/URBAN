@@ -9,7 +9,7 @@ function PropertyOwners({ owners }) {
   const checkOwnerLength = owners?.length || 1;
   let cardStyles = { marginTop: "19px" };
   let statusTableStyles = { position: "relative", padding: "8px" };
-  let rowContainerStyle = { justifyContent: "space-between", fontSize: "16px", lineHeight: "19px", color: "#0B0C0C" };
+  let rowContainerStyle = { justifyContent: "space-between", fontSize: "16px",width:"100vh", lineHeight: "19px", color: "#0B0C0C" };
   if (checkLocation && Number(checkOwnerLength) > 1) {
     cardStyles = {
       marginTop: "19px",

@@ -36,7 +36,7 @@ function TLTradeUnits({ units }) {
                     caption={value.caption}
                     className="border-none"
                     // TODO, Later will move to classes
-                    rowContainerStyle={{justifyContent: "space-between", fontSize: "16px", lineHeight: "19px", color: "#0B0C0C"}}
+                    rowContainerStyle={{justifyContent: "space-between", fontSize: "16px",width:"100vh", lineHeight: "19px", color: "#0B0C0C"}}
                   />
                 );
               })}
