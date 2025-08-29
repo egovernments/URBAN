@@ -232,13 +232,16 @@ const BillDetails = ({ paymentRules, businessService }) => {
           mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
         }
       );
-    } else if (businessService === "PT") {
-      history.push(`/digit-ui/citizen/payment/billDetails/${businessService}/${consumerCode}/${paymentAmount}`, {
-        paymentAmount,
-        tenantId: billDetails.tenantId,
-        name: bill.payerName,
-        mobileNumber: bill.mobileNumber && bill.mobileNumber?.includes("*") ? userData?.user?.[0]?.mobileNumber : bill.mobileNumber,
-      });
+    } else if (businessService === "PT" || wrkflow === "PT") {
+      try {
+        const response = await Digit.PaymentService.createReciept(bill.tenantId, recieptRequest);
+        sessionStorage.setItem("PaymentResponse", JSON.stringify(response));
+        history.push(`/digit-ui/citizen/payment/success/${businessService}/${consumerCode}/${tenantId}?workflow=PT`);
+        return;
+      } catch (error) {
+        console.log("Error while creating receipt for PT", error);
+        return;
+      }
     } else if (businessService === "BPA.NC_APP_FEE" || (businessService && businessService.includes("BPA"))) {
      
       try {

@@ -74,7 +74,7 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
   const history = useHistory();
 
   const proceedToPay = (data) => {
-    history.push(`/digit-ui/citizen/payment/my-bills/PT/${data.property_id}`, { tenantId });
+    history.push(`/digit-ui/citizen/payment/my-bills/PT/${data.property_id}?workflow=PT&tenantId=${tenantId}`);
   };
 
   if (paymentDetails.isLoading || result.isLoading) {
@@ -95,7 +95,7 @@ const PropertySearchResults = ({ template, header, actionButtonLabel, isMutation
       if (Number(data.total_due) > 0) {
         setShowModal(data);
       } else onSelect(config.key, { data, property });
-    } else history.push(`/digit-ui/citizen/payment/my-bills/PT/${data.property_id}`, { tenantId });
+    } else history.push(`/digit-ui/citizen/payment/my-bills/PT/${data.property_id}?workflow=PT&tenantId=${tenantId}`);
   };
 
   const payment = {};
