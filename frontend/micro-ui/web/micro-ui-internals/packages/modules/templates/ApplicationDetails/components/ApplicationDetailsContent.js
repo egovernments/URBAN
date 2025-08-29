@@ -124,9 +124,9 @@ function ApplicationDetailsContent({
 
   const getRowStyles = () => {
     if (window.location.href.includes("employee/obps") || window.location.href.includes("employee/noc")) {
-      return { justifyContent: "space-between", fontSize: "16px", lineHeight: "19px", color: "#0B0C0C" };
+      return { justifyContent: "space-between", fontSize: "16px", width:"100vh", lineHeight: "19px", color: "#0B0C0C" };
     } else if (checkLocation) {
-      return { justifyContent: "space-between", fontSize: "16px", lineHeight: "19px", color: "#0B0C0C" };
+      return { justifyContent: "space-between", fontSize: "16px", width:"100vh",lineHeight: "19px", color: "#0B0C0C" };
     } else {
       return {};
     }
