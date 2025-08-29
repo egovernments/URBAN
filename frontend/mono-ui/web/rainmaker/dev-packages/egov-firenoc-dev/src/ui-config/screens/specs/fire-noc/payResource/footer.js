@@ -56,32 +56,78 @@ export const callPGService = async (state, dispatch) => {
       const userMobileNumber = get(state,"auth.userInfo.mobileNumber")
       const userName = get(state,"auth.userInfo.name")
       const requestBody = {
-        Transaction: {
+        RequestInfo: {
+          apiId: "Rainmaker",
+          authToken: get(state, "auth.accessToken"),
+          userInfo: get(state, "auth.userInfo"),
+          msgId: `${Date.now()}|en_IN`,
+          plainAccessRequest: {}
+        },
+        Payment: {
+          mobileNumber: userMobileNumber,
+          paymentDetails: [
+            {
+              businessService: "FIRENOC",
+              billId: get(billPayload, "Bill[0].id"),
+              totalDue: get(billPayload, "Bill[0].billDetails[0].totalAmount"),
+              totalAmountPaid: get(billPayload, "Bill[0].billDetails[0].totalAmount")
+            }
+          ],
           tenantId,
-          billId : get(billPayload, "Bill[0].id"),
-          txnAmount: get(billPayload, "Bill[0].billDetails[0].totalAmount"),
-          module: "FIRENOC",
-          taxAndPayments,
-          consumerCode: get(billPayload, "Bill[0].billDetails[0].consumerCode"),
-          productInfo: "Fire NOC Payment",
-          gateway: "AXIS",
-          user : {
-            mobileNumber : userMobileNumber,
-            name : userName,
-            tenantId : process.env.REACT_APP_NAME === "Employee" ? getTenantId() : get(state,"auth.userInfo.permanentCity")
-          },
-          callbackUrl
+          totalDue: get(billPayload, "Bill[0].billDetails[0].totalAmount"),
+          totalAmountPaid: get(billPayload, "Bill[0].billDetails[0].totalAmount"),
+          paymentMode: get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].instrument.instrumentType.name", "CASH"),
+          payerName: userName,
+          paidBy: get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0].paidBy", "OWNER"),
+          additionalDetails: get(state, "auth.userInfo.type") === "CITIZEN" ? {
+            isWhatsapp: false,
+            paidBy: "OWNER"
+          } : {}
         }
       };
-      const goToPaymentGateway = await httpRequest(
+      const paymentResponse = await httpRequest(
         "post",
-        "pg-service/transaction/v1/_create",
+        "collection-services/payments/_create",
         "_create",
         [],
         requestBody
       );
-      const redirectionUrl = get(goToPaymentGateway, "Transaction.redirectUrl");
-      window.location = redirectionUrl;
+      
+      // Handle payment success - similar to original PG flow but direct
+      if (get(paymentResponse, "Payments[0]")) {
+        const applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+        const tenantId = getQueryArg(window.location.href, "tenantId");
+        const receiptNumber = get(paymentResponse, "Payments[0].paymentDetails[0].receiptNumber");
+        
+        // Update Fire NOC status to PAY (same as original flow)
+        let response = await getSearchResults([
+          {
+            key: "tenantId",
+            value: tenantId
+          },
+          { key: "applicationNumber", value: applicationNumber }
+        ]);
+        set(response, "FireNOCs[0].fireNOCDetails.action", "PAY");
+        response = await httpRequest(
+          "post",
+          "/firenoc-services/v1/_update",
+          "",
+          [],
+          {
+            FireNOCs: get(response, "FireNOCs", [])
+          }
+        );
+
+        // Redirect to success acknowledgement (same as original flow)
+        const purpose = "pay";
+        const status = "success";
+        const appendUrl = process.env.REACT_APP_SELF_RUNNING === "true" ? "/egov-ui-framework" : "";
+        dispatch(
+          setRoute(
+            `${appendUrl}/fire-noc/acknowledgement?purpose=${purpose}&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}&secondNumber=${receiptNumber}`
+          )
+        );
+      }
     } catch (e) {
       console.log(e);
     }

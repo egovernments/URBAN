@@ -9,47 +9,21 @@ import { getSearchResults } from "../../ui-utils/commons";
 
 class PaymentRedirect extends Component {
   componentDidMount = async () => {
-    let { search } = this.props.location;
-    try {
-      let pgUpdateResponse = await httpRequest(
-        "post",
-        "pg-service/transaction/v1/_update" + search,
-        "_update",
-        [],
-        {}
+    // Since we're now using direct payment API instead of payment gateway,
+    // this redirect page may not be needed. Redirect to home or appropriate page.
+    const { search } = this.props.location;
+    const urlParams = new URLSearchParams(search);
+    const applicationNumber = urlParams.get('applicationNumber');
+    const tenantId = urlParams.get('tenantId');
+    const status = urlParams.get('status') || 'success';
+    
+    if (applicationNumber && tenantId) {
+      this.props.setRoute(
+        `/fire-noc/acknowledgement?purpose=pay&status=${status}&applicationNumber=${applicationNumber}&tenantId=${tenantId}`
       );
-      let consumerCode = get(pgUpdateResponse, "Transaction[0].consumerCode");
-      let tenantId = get(pgUpdateResponse, "Transaction[0].tenantId");
-      if (get(pgUpdateResponse, "Transaction[0].txnStatus") === "FAILURE") {
-        this.props.setRoute(
-          `/fire-noc/acknowledgement?purpose=${"pay"}&status=${"failure"}&applicationNumber=${consumerCode}&tenantId=${tenantId}`
-        );
-      } else {
-        let response = await getSearchResults([
-          {
-            key: "tenantId",
-            value: tenantId
-          },
-          { key: "applicationNumber", value: consumerCode }
-        ]);
-        set(response, "FireNOCs[0].fireNOCDetails.action", "PAY");
-        response = await httpRequest(
-          "post",
-          "/firenoc-services/v1/_update",
-          "",
-          [],
-          {
-            FireNOCs: get(response, "FireNOCs", [])
-          }
-        );
-
-        let transactionId = get(pgUpdateResponse, "Transaction[0].txnId");
-        this.props.setRoute(
-          `/fire-noc/acknowledgement?purpose=${"pay"}&status=${"success"}&applicationNumber=${consumerCode}&tenantId=${tenantId}&secondNumber=${transactionId}`
-        );
-      }
-    } catch (e) {
-      alert(e);
+    } else {
+      // Fallback to fire-noc home page
+      this.props.setRoute('/fire-noc/home');
     }
   };
   render() {
