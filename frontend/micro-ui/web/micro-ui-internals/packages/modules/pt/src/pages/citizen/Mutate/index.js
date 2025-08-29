@@ -127,7 +127,6 @@ const MutationCitizen = (props) => {
   
     if (!ownershipCategory?.code.includes("INDIVIDUAL")) {
       data.Property.institution = {
-        id: originalProperty.institution?.id,
         nameOfAuthorizedPerson: ownersArray[0].name,
         name: ownersArray[0].inistitutionName,
         designation: ownersArray[0].designation,
