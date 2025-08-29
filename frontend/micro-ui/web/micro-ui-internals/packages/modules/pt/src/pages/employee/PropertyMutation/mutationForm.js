@@ -120,6 +120,13 @@ const MutationForm = ({ applicationData, tenantId }) => {
         tenantId: data.originalData.tenantId,
         type: data.owners[0].institution.type.code,
       };
+    } else {
+      // When transferring from institutional to individual ownership, explicitly set institution as null
+      // Only do this if the original property had an institution (mutation from institutional to individual)
+      // Changes added as per @Nithish
+      if (data.originalData.institution) {
+        submitData.Property.institution = null;
+      }
     }
 
     history.replace("/digit-ui/employee/pt/response", { Property: submitData.Property, key: "UPDATE", action: "SUBMIT" });

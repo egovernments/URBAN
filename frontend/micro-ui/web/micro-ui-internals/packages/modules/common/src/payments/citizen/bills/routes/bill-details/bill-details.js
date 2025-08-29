@@ -28,15 +28,20 @@ const BillDetails = ({ paymentRules, businessService }) => {
       });
 
   let Useruuid = data?.Bill?.[0]?.userId || "";
-  const isUserSearchEnabled = wrkflow !== "death" && businessService !== "DEATH_CERT" && !!Useruuid;
+  // Only call user search API for workflows that actually use the unmasked mobile number
+  const workflowsNeedingUserData = ["death", "birth", "WNS"];
+  const businessServicesNeedingUserData = ["PT", "DEATH_CERT", "BIRTH_CERT"];
+  const isUserSearchEnabled = !!Useruuid && (
+    (wrkflow && workflowsNeedingUserData.includes(wrkflow)) || 
+    (businessService && businessServicesNeedingUserData.includes(businessService))
+  );
   let requestCriteria = [
     "/user/_search",
     {},
-    { data: { uuid: [Useruuid] } },
+    { tenantId, uuid: [Useruuid] },
     { recordId: Useruuid, plainRequestFields: ["mobileNumber"] },
     {
       enabled: isUserSearchEnabled,
-      // enabled: Useruuid ? true : false,
       cacheTime: 100,
     },
   ];
@@ -64,7 +69,7 @@ const BillDetails = ({ paymentRules, businessService }) => {
 
   // Removed all usage of 'label' as it is not defined in this component
 
-  const getBillingPeriod = () => {
+  const getBillingPeriod = () => {      
     const { fromPeriod, toPeriod } = billDetails;
     if (fromPeriod && toPeriod) {
       let from, to;
