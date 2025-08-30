@@ -357,6 +357,9 @@ config:
       - work-dir: online-building-plan-approval-system/edcr/service/egov
         dockerfile: online-building-plan-approval-system/edcr/service/Dockerfile
         image-name: egov-edcr
+      - work-dir: "online-building-plan-approval-system/edcr/service/egov/"
+        dockerfile: online-building-plan-approval-system/edcr/service/FlywayDockerfile
+        image-name: "egov-edcr-db"
               
   #Finance
    
