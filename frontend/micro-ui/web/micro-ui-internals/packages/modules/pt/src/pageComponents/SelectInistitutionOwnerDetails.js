@@ -193,7 +193,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
             disable={isUpdateProperty || isEditProperty}
             {...(validation = {
               // isRequired: true,
-              pattern: "^[0-9]{11}$",
+              pattern: "^[6-9][0-9]{10}$",
               type: "tel",
               title: t("PT_TEL_VALIDMSG"),
             })}
