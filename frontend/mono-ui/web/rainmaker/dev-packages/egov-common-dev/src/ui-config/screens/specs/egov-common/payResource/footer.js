@@ -109,48 +109,41 @@ export const callPGService = async (state, dispatch) => {
     dispatch(handleField("pay", buttonJsonpath, "props.disabled", true));
 
     const requestBody = {
-      Transaction: {
-        tenantId,
-        txnAmount: amtToPay,
-        module: businessService,
-        billId: get(billPayload, "Bill[0].id"),
-        consumerCode: consumerCode,
-        productInfo: "Common Payment",
-        gateway: "AXIS",
-        taxAndPayments,
-        user,
-        callbackUrl,
-        additionalDetails: { isWhatsapp: localStorage.getItem('pay-channel') == 'whatsapp' ? true : false,
-        paidBy:payerInfo }
+      Payment: {
+        mobileNumber: user.mobileNumber,
+        paymentDetails: [
+          {
+            businessService: businessService,
+            billId: get(billPayload, "Bill[0].id"),
+            totalDue: taxAmount,
+            totalAmountPaid: amtToPay
+          }
+        ],
+        tenantId: tenantId,
+        totalDue: taxAmount,
+        totalAmountPaid: amtToPay,
+        paymentMode: "CASH",
+        payerName: user.name,
+        paidBy: payerInfo
       }
     };
     const goToPaymentGateway = await httpRequest(
       "post",
-      "pg-service/transaction/v1/_create",
+      "collection-services/payments/_create",
       "_create",
       [],
       requestBody
     );
 
-    if (get(goToPaymentGateway, "Transaction.txnAmount") == 0) {
-      const srcQuery = `?tenantId=${get(
-        goToPaymentGateway,
-        "Transaction.tenantId"
-      )}&billIds=${get(goToPaymentGateway, "Transaction.billId")}`;
-
-      let searchResponse = await httpRequest(
-        "post",
-        getPaymentSearchAPI(businessService) + srcQuery,
-        "_search",
-        [],
-        {}
-      );
-
-      let transactionId = get(
-        searchResponse,
-        "Payments[0].paymentDetails[0].receiptNumber"
-      );
-      const ackUrl = `/egov-common/acknowledgement?status=${"success"}&consumerCode=${consumerCode}&tenantId=${tenantId}&receiptNumber=${transactionId}&businessService=${businessService}`;
+    let receiptNumber = get(
+      goToPaymentGateway,
+      "Payments[0].paymentDetails[0].receiptNumber",
+      null
+    );
+    
+    if (receiptNumber) {
+      // Go directly to payment success page
+      const ackUrl = `/egov-common/acknowledgement?status=${"success"}&consumerCode=${consumerCode}&tenantId=${tenantId}&receiptNumber=${receiptNumber}&businessService=${businessService}`;
       const successUrl = isPublicSearch() ? `/withoutAuth${ackUrl}` : ackUrl;
       dispatch(
         setRoute(
@@ -158,10 +151,8 @@ export const callPGService = async (state, dispatch) => {
         )
       );
     } else {
-      const redirectionUrl =
-        get(goToPaymentGateway, "Transaction.redirectUrl") ||
-        get(goToPaymentGateway, "Transaction.callbackUrl");
-      window.location = redirectionUrl;
+      // Handle case where payment creation failed
+      throw new Error("Payment creation failed - no receipt number received");
     }
   } catch (e) {
     dispatch(handleField("pay", buttonJsonpath, "props.disabled", false));

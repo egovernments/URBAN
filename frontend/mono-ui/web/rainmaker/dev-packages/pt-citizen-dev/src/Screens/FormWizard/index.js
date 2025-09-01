@@ -1102,44 +1102,68 @@ class FormWizard extends Component {
         }
       );
       try {
+        const userInfo = JSON.parse(getUserInfo());
         const requestBody = {
-          Transaction: {
-            tenantId,
-            txnAmount: isFullPayment
+          Payment: {
+            mobileNumber: get(userInfo, "mobileNumber"),
+            paymentDetails: [
+              {
+                businessService: "PT",
+                billId: get(getBill, "Bill[0].id"),
+                totalDue: isFullPayment
+                  ? get(getBill, "Bill[0].billDetails[0].totalAmount")
+                  : totalAmountToBePaid,
+                totalAmountPaid: isFullPayment
+                  ? get(getBill, "Bill[0].billDetails[0].totalAmount")
+                  : totalAmountToBePaid
+              }
+            ],
+            tenantId: tenantId,
+            totalDue: isFullPayment
               ? get(getBill, "Bill[0].billDetails[0].totalAmount")
               : totalAmountToBePaid,
-            module: "PT",
-            taxAndPayments,
-            billId: get(getBill, "Bill[0].id"),
-            consumerCode: get(getBill, "Bill[0].billDetails[0].consumerCode"),
-            productInfo: "Property Tax Payment",
-            gateway: "AXIS",
-            callbackUrl
+            totalAmountPaid: isFullPayment
+              ? get(getBill, "Bill[0].billDetails[0].totalAmount")
+              : totalAmountToBePaid,
+            paymentMode: "CASH",
+            payerName: get(userInfo, "name"),
+            paidBy: "OWNER"
           }
         };
         const goToPaymentGateway = await httpRequest(
-          "pg-service/transaction/v1/_create",
+          "collection-services/payments/_create",
           "_create",
           [],
           requestBody
         );
-        if (get(getBill, "Bill[0].billDetails[0].totalAmount")) {
-          const redirectionUrl = get(
-            goToPaymentGateway,
-            "Transaction.redirectUrl"
-          );
-          localStorageSet("assessmentYear", assessmentYear);
-          window.location = redirectionUrl;
+        
+        let receiptNumber = get(
+          goToPaymentGateway,
+          "Payments[0].paymentDetails[0].receiptNumber",
+          null
+        );
+        
+        if (receiptNumber) {
+          // Go directly to payment success page
+          if (get(getBill, "Bill[0].billDetails[0].totalAmount")) {
+            localStorageSet("assessmentYear", assessmentYear);
+            history.push(
+              "/property-tax/payment-success/" +
+              get(getBill, "Bill[0].billDetails[0].consumerCode", "").split(":")[0] +
+              "/" +
+              tenantId
+            );
+          } else {
+            toggleSpinner();
+            history.push(
+              "/property-tax/payment-success/" +
+              get(getBill, "Bill[0].billDetails[0].consumerCode", "").split(":")[0] +
+              "/" +
+              tenantId
+            );
+          }
         } else {
-          toggleSpinner();
-          let moduleId = get(goToPaymentGateway, "Transaction.consumerCode");
-          let tenantId = get(goToPaymentGateway, "Transaction.tenantId");
-          history.push(
-            "/property-tax/payment-success/" +
-            moduleId.split(":")[0] +
-            "/" +
-            tenantId
-          );
+          throw new Error("Payment creation failed - no receipt number received");
         }
       } catch (e) {
         toggleSpinner();
