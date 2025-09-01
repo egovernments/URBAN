@@ -50,34 +50,46 @@ export const callPGService = async (state, dispatch) => {
       return item;
     });
     try {
+      const userMobileNumber = get(state, "auth.userInfo.mobileNumber");
+      const userName = get(state, "auth.userInfo.name");
       const requestBody = {
-        Transaction: {
-          tenantId,
-          txnAmount: get(
-            billPayload,
-            "billResponse.Bill[0].billDetails[0].totalAmount"
-          ),
-          module: "TL",
-          taxAndPayments,
-          billId: get(billPayload, "billResponse.Bill[0].id"),
-          consumerCode: get(
-            billPayload,
-            "billResponse.Bill[0].billDetails[0].consumerCode"
-          ),
-          productInfo: "Trade License Payment",
-          gateway: "AXIS",
-          callbackUrl
+        Payment: {
+          mobileNumber: userMobileNumber,
+          paymentDetails: [
+            {
+              businessService: "TL",
+              billId: get(billPayload, "billResponse.Bill[0].id"),
+              totalDue: get(billPayload, "billResponse.Bill[0].billDetails[0].totalAmount"),
+              totalAmountPaid: get(billPayload, "billResponse.Bill[0].billDetails[0].totalAmount")
+            }
+          ],
+          tenantId: tenantId,
+          totalDue: get(billPayload, "billResponse.Bill[0].billDetails[0].totalAmount"),
+          totalAmountPaid: get(billPayload, "billResponse.Bill[0].billDetails[0].totalAmount"),
+          paymentMode: "CASH",
+          payerName: userName,
+          paidBy: "OWNER"
         }
       };
       const goToPaymentGateway = await httpRequest(
         "post",
-        "pg-service/transaction/v1/_create",
+        "collection-services/payments/_create",
         "_create",
         [],
         requestBody
       );
-      const redirectionUrl = get(goToPaymentGateway, "Transaction.redirectUrl");
-      window.location = redirectionUrl;
+      let receiptNumber = get(
+        goToPaymentGateway,
+        "Payments[0].paymentDetails[0].receiptNumber",
+        null
+      );
+      
+      if (receiptNumber) {
+        // Go directly to payment success page
+        moveToSuccess(window.location.href, dispatch, receiptNumber);
+      } else {
+        throw new Error("Payment creation failed - no receipt number received");
+      }
     } catch (e) {
       console.log(e);
     }
