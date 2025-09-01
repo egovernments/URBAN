@@ -60,7 +60,7 @@ const OBPSResponse = (props) => {
   }
 
   const getPaymentURL = (isCitizen) => {
-    if (isCitizen == true) return `/digit-ui/citizen/payment/collect/${getBusinessServices(applicationData?.businessService, applicationData?.status)}/${applicationData?.applicationNo}/${applicationData?.tenantId}?tenantId=${applicationData?.tenantId}`;
+    if (isCitizen == true) return `/digit-ui/citizen/payment/my-bills/${getBusinessServices(applicationData?.businessService, applicationData?.status)}/${applicationData?.applicationNo}/${applicationData?.tenantId}?tenantId=${applicationData?.tenantId}`;
   }
 
   const getPaymentURLEmployee = () => {
@@ -101,7 +101,14 @@ const OBPSResponse = (props) => {
               <div>
                 {(applicationData?.status == "PENDING_APPL_FEE" || applicationData?.status == "PENDING_FEE" || applicationData?.status == "PENDING_SANC_FEE_PAYMENT") && billData?.length > 0 && isPayButtonEnable ?
                   <div>
-                    <Link to={{ pathname: getPaymentURL(true) }}>
+                    <Link to={{ 
+                      pathname: getPaymentURL(true),
+                      state: {
+                        bill: billData?.[0],
+                        tenantId: applicationData?.tenantId,
+                        paymentAmount: billData?.[0]?.totalAmount
+                      }
+                    }}>
                       <SubmitBar label={t("WF_BPA_PAY")} style={{ margin: "10px 0px 0px 0px" }} />
                     </Link>
                     <Link to={`/digit-ui/citizen`} >
