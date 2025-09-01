@@ -28,7 +28,6 @@ const EgovAppBar = ({
   className,
   ulbName,
   defaultTitle,
-  ulbLogo,
   title,
   titleAddon,
   isHomeScreen,
@@ -57,9 +56,7 @@ const EgovAppBar = ({
         className={className || "header-with-drawer"}
         title={
           <div className="citizen-header-logo-label">
-            <div className="citizen-header-logo">
-              <img src={ulbLogo ? ulbLogo : pbLogo} onError={(event) => event.target.setAttribute("src", pbLogo)} />
-            </div>
+        
             <Label containerStyle={{ marginLeft: "0px" }} className="screenHeaderLabelStyle appbar-title-label" label={title} />
             {titleAddon && (
               <Label
@@ -106,7 +103,7 @@ const EgovAppBar = ({
         )}
 
         <div className="appbar-right-logo">
-          <img src={logoImage?logoImage:digitLogo} />
+          <img src={logoImage?logoImage:digitLogo}  width={"auto"} height={"30px"}/>
         </div>
         <div className="icon-button">
           {refreshButton && (

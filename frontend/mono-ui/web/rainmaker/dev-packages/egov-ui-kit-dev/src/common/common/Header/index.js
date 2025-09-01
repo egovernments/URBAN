@@ -22,7 +22,7 @@ class Header extends Component {
     sortPopOpen: false,
     right: false,
     left: false,
-    ulbLogo: "",
+    // ulbLogo: "",
   };
 
   componentDidMount = () => {
@@ -37,8 +37,8 @@ class Header extends Component {
     const permanentCity = get(nextProps, "userInfo.permanentCity");
     if (get(userInfo ,"permanentCity") !== get(nextProps, "userInfo.permanentCity")) {
       const tenantId = role.toLowerCase() === "citizen" ? (permanentCity?permanentCity:commonConfig.tenantId) : getTenantId();
-      const ulbLogo = `https://s3.ap-south-1.amazonaws.com/pb-egov-assets/${tenantId}/logo.png`;
-      this.setState({ ulbLogo });
+      // const ulbLogo = `https://s3.ap-south-1.amazonaws.com/pb-egov-assets/${tenantId}/logo.png`;
+      // this.setState({ ulbLogo });
     }
    
   }
@@ -171,8 +171,8 @@ class Header extends Component {
     } = this.props;
     const tenantId = role.toLowerCase() === "citizen" ? userInfo.permanentCity : getTenantId();
     const currentCity = cities.filter((item) => item.code === tenantId);
-    const ulbLogo =
-      currentCity.length > 0 ? get(currentCity[0], "logoId") : "https://s3.ap-south-1.amazonaws.com/pb-egov-assets/pb.amritsar/logo.png";
+    // const ulbLogo =
+    //   currentCity.length > 0 ? get(currentCity[0], "logoId") : "https://s3.ap-south-1.amazonaws.com/pb-egov-assets/pb.amritsar/logo.png";
     return (
       <div style={headerStyle}>
         <AppBar
@@ -182,7 +182,7 @@ class Header extends Component {
           defaultTitle={defaultTitle}
           titleAddon={titleAddon}
           role={role}
-          ulbLogo={isUserSetting === false ? msevaLogo : ulbLogo}
+          // ulbLogo={isUserSetting === false ? msevaLogo : ulbLogo}
           {...appBarProps}
           fetchLocalizationLabel={fetchLocalizationLabel}
           userInfo={userInfo}
