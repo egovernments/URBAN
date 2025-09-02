@@ -119,9 +119,10 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
             disable={isUpdateProperty || isEditProperty}
             {...(validation = {
               isRequired: true,
-              pattern: "^[a-zA-Z_@./()#&+- ]*$",
+              pattern: "^[a-zA-Z_@./()#&+- ]{1,64}$",
               title: t("PT_NAME_ERROR_MESSAGE"),
             })}
+            maxLength={64}
           />
           <CardLabel>{`${t("PT_TYPE_OF_INSTITUTION")}*`}</CardLabel>
           <Dropdown
@@ -145,7 +146,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
             disable={isUpdateProperty || isEditProperty}
             {...(validation = {
               isRequired: true,
-              pattern: "^[a-zA-Z-.`' ]*$",
+              pattern: "^[a-zA-Z_@./()#&+- ]{1,64}$",
               title: t("PT_NAME_ERROR_MESSAGE"),
             })}
           />
