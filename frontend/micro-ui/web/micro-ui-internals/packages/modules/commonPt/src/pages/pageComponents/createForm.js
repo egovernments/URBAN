@@ -20,12 +20,20 @@ const CreatePropertyForm = ({ config, onSelect,value,formData, userType, redirec
     // Prefer formData.owners if passed, else value.owners, else seed from user mobile
     const incomingOwners = formData?.owners || value?.owners;
     if (incomingOwners && incomingOwners.length) {
-      base.owners = incomingOwners.map((o, idx) => ({ ...o, ...(idx === 0 && !o?.mobileNumber && userInfo?.info?.mobileNumber ? { mobileNumber: userInfo.info.mobileNumber } : {}) }));
-    } else if (userInfo?.info?.mobileNumber) {
+      // Only auto-populate mobile number for citizens, not for employees
+      base.owners = incomingOwners.map((o, idx) => ({ 
+        ...o, 
+        ...(idx === 0 && !o?.mobileNumber && userInfo?.info?.mobileNumber && userType !== "employee" ? { mobileNumber: userInfo.info.mobileNumber } : {}) 
+      }));
+    } else if (userInfo?.info?.mobileNumber && userType !== "employee") {
+      // Only auto-populate mobile number for citizens
       base.owners = [{ mobileNumber: userInfo.info.mobileNumber }];
+    } else if (userType === "employee") {
+      // For employees, start with empty owner details
+      base.owners = [{}];
     }
     return base;
-  }, [formData?.owners, value, userInfo?.info?.mobileNumber]);
+  }, [formData?.owners, value, userInfo?.info?.mobileNumber, userType]);
   const history = useHistory();
   const match = useRouteMatch();
   sessionStorage.setItem("VisitedCommonPTSearch",true);

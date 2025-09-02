@@ -367,7 +367,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                   <CardLabelError style={errorStyle}>{touched?.["altContactNumber" + index] ? errors?.["altContactNumber" + index]?.message : ""}</CardLabelError>
 
                   <LabelFieldPair>
-                    <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}*`}</CardLabel>
+                    <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}${userType === "employee" ? "" : "*"}`}</CardLabel>
 
                     <div className="form-field">
                       <Controller
@@ -376,8 +376,13 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                         defaultValue={owner.mobileNumber}
                         control={control}
                         rules={{
-                          required: t("REQUIRED_FIELD"),
-                          validate: (value) => (/[6-9]{1}[0-9]{9}/i.test(value) ? true : t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID")),
+                          required: userType === "employee" ? false : t("REQUIRED_FIELD"),
+                          validate: (value) => {
+                            // For employees, if no value provided, skip validation
+                            if (userType === "employee" && !value) return true;
+                            // Otherwise validate the mobile number format
+                            return (/[6-9]{1}[0-9]{9}/i.test(value) ? true : t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"));
+                          },
                         }}
                         render={({ value, onChange, onBlur }) => (
                           <MobileNumber
@@ -489,7 +494,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                     </div>
                   )}
                   <LabelFieldPair>
-                    <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}*`}</CardLabel>
+                    <CardLabel>{`${t("PT_FORM3_MOBILE_NUMBER")}${userType === "employee" ? "" : "*"}`}</CardLabel>
 
                     <div className="form-field">
                       <Controller
@@ -498,8 +503,13 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                         defaultValue={owner.mobileNumber}
                         control={control}
                         rules={{
-                          required: t("REQUIRED_FIELD"),
-                          validate: (value) => (/[6-9]{1}[0-9]{9}/i.test(value) ? true : t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID")),
+                          required: userType === "employee" ? false : t("REQUIRED_FIELD"),
+                          validate: (value) => {
+                            // For employees, if no value provided, skip validation
+                            if (userType === "employee" && !value) return true;
+                            // Otherwise validate the mobile number format
+                            return (/[6-9]{1}[0-9]{9}/i.test(value) ? true : t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID"));
+                          },
                         }}
                         render={({ value, onChange, onBlur }) => (
                           <MobileNumber

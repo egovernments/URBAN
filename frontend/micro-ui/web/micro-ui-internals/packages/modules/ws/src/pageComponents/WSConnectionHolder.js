@@ -9,7 +9,11 @@ const WSConnectionHolder = ({ t, config, onSelect, userType, formData, ownerInde
   const [guardian, setguardian] = useState(formData?.ConnectionHolderDetails?.guardian || formData?.formData?.ConnectionHolderDetails?.guardian || "");
   const [gender, setGender] = useState(formData?.ConnectionHolderDetails?.gender || formData?.formData?.ConnectionHolderDetails?.gender);
   const [relationship, setrelationship] = useState(formData?.ConnectionHolderDetails?.relationship || formData?.formData?.ConnectionHolderDetails?.relationship);
-  const [mobileNumber, setMobileNumber] = useState(formData?.ConnectionHolderDetails?.mobileNumber || formData?.formData?.ConnectionHolderDetails?.mobileNumber || "");
+  // Don't auto-populate mobile number for employees
+  const userInfo = Digit.UserService.getUser();
+  const defaultMobileNumber = userType === "employee" ? "" : 
+    (formData?.ConnectionHolderDetails?.mobileNumber || formData?.formData?.ConnectionHolderDetails?.mobileNumber || userInfo?.info?.mobileNumber || "");
+  const [mobileNumber, setMobileNumber] = useState(defaultMobileNumber);
   const [address, setaddress] = useState(formData?.ConnectionHolderDetails?.address || formData?.formData?.ConnectionHolderDetails?.address || "");
   const [documentId, setdocumentId] = useState(formData?.ConnectionHolderDetails?.documentId || formData?.formData?.ConnectionHolderDetails?.documentId || "");
   const [isOwnerSame, setisOwnerSame] = useState((formData?.ConnectionHolderDetails?.isOwnerSame == false || formData?.formData?.ConnectionHolderDetails?.isOwnerSame == false) ? false : true);
@@ -151,7 +155,7 @@ const WSConnectionHolder = ({ t, config, onSelect, userType, formData, ownerInde
           onSelect={goNext}
           onSkip={onSkip}
           t={t}
-          isDisabled={!isOwnerSame && (!name || !mobileNumber || !gender || !guardian || !relationship || !(ownerType?.code) || !address)}
+          isDisabled={!isOwnerSame && (!name || (userType !== "employee" && !mobileNumber) || !gender || !guardian || !relationship || !(ownerType?.code) || !address)}
         >
         <div>
         <CheckBox
@@ -194,14 +198,14 @@ const WSConnectionHolder = ({ t, config, onSelect, userType, formData, ownerInde
               labelKey="COMMON_GENDER"
             //disabled={isUpdateProperty || isEditProperty}
             />
-            <CardLabel>{`${t("WS_OWN_MOBILE_NO")}*`}</CardLabel>
+            <CardLabel>{`${t("WS_OWN_MOBILE_NO")}${userType === "employee" ? "" : "*"}`}</CardLabel>
             <MobileNumber
               value={mobileNumber}
               name="mobileNumber"
               onChange={(value) => setMobileNo({ target: { value } })}
               style={{background:"#FAFAFA"}}
               //disable={mobileNumber && !isOpenLinkFlow ? true : false}
-              {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
+              {...{ required: userType === "employee" ? false : true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
             />
             <CardLabel>{`${t("WS_OWN_DETAIL_GUARDIAN_LABEL")}*`}</CardLabel>
             <TextInput
