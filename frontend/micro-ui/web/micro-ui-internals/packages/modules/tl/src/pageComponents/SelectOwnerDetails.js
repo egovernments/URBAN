@@ -214,6 +214,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     name="institutionName"
                     value={field.institutionName}
                     ValidationRequired={true}
+                    maxlength={64}
                     onChange={(e) => handleTextInputField(index, e, "institutionName")}
                     //disable={isUpdateProperty || isEditProperty}
                     {...{
@@ -243,6 +244,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData }) => {
                     isMandatory={false}
                     name="name"
                     value={field.name}
+                    maxlength={64}
                     onChange={(e) => handleTextInputField(index, e, "name")}
                     ValidationRequired={true}
                     {...{

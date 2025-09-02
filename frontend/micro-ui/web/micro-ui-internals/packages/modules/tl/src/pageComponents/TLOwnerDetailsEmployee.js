@@ -205,6 +205,7 @@ const OwnerForm = (_props) => {
                           isMandatory={false}
                           value={props.value}
                           disable={isSameAsPropertyOwner}
+                          maxlength={64}
                           autoFocus={focusIndex.index === owner?.key && focusIndex.type === "instituionName"}
                           errorStyle={localFormState.touched.instituionName && errors?.instituionName?.message ? true : false}
                           onChange={(e)=>{
@@ -265,6 +266,7 @@ const OwnerForm = (_props) => {
                           name="name"
                           value={props.value}
                           disable={isSameAsPropertyOwner}
+                          maxlength={64}
                           errorStyle={localFormState.touched.name && errors?.name?.message ? true : false}
                           autoFocus={focusIndex.index === owner?.key && focusIndex.type === "name"}
                           onChange={(e)=>{

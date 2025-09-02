@@ -457,16 +457,19 @@ const ConnectionDetails = (_props) => {
           <LabelFieldPair>
             <CardLabel style={isMobile && isEmployee ? {fontWeight: "700", width:"100%"} : { marginTop: "-5px", fontWeight: "700"}} className="card-label-smaller">{`${t(
               "CORE_COMMON_MOBILE_NUMBER"
-            )}*`}</CardLabel>
+            )}${userType === "employee" ? "" : "*"}`}</CardLabel>
             <div className="field">
               <Controller
                 control={control}
                 name="mobileNumber"
                 defaultValue={connectionHolderDetail?.mobileNumber}
                 rules={{
-                  validate: (e) =>
-                    (e && getPattern("MobileNoWithPrivacy").test(e)) || !e || e.includes("*") ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG"),
-                  required: t("REQUIRED_FIELD"),
+                  validate: (e) => {
+                    // For employees, if no value provided, skip validation
+                    if (userType === "employee" && !e) return true;
+                    return (e && getPattern("MobileNoWithPrivacy").test(e)) || !e || e.includes("*") ? true : t("ERR_DEFAULT_INPUT_FIELD_MSG");
+                  },
+                  required: userType === "employee" ? false : t("REQUIRED_FIELD"),
                 }}
                 //type="number"
                 isMandatory={true}
