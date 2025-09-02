@@ -126,9 +126,6 @@ const withoutAuthorization = (redirectionUrl) => (Component) => {
                   className="rainmaker-header"
                   title={
                     <div className="citizen-header-logo-label">
-                      <div className={logoClassName}>
-                        <img src={ulbLogo ? ulbLogo : pbLogo} onError={(event) => event.target.setAttribute("src", pbLogo)} />
-                      </div>
                       {!isPublicSearch && (
                         <div className="rainmaker-displayInline">
                           <Label
