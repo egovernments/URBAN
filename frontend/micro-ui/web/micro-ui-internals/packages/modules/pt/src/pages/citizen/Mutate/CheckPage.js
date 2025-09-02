@@ -342,7 +342,7 @@ const CheckPage = ({ onSubmit, value = {} }) => {
                       </svg>
                     </div>
                     <p style={{ marginTop: "8px", fontSize: "12px", textAlign: "center" }}>
-                      {document?.fileName || document?.documentType || 'Document'}
+                      {t(document?.fileName || document?.documentType || 'Document')}
                     </p>
                   </a>
                 );
