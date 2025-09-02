@@ -25,6 +25,16 @@ export const PayAndDownloadButton = ({ tenantId, certificateId, hospitalName }) 
   const handleClick = async () => {
      setIsLoading(true); 
     try {
+      // Store the death certificate ID for use after payment success
+      const deathApplicationData = {
+        id: certificateId,
+        deathCertificateId: certificateId,
+        tenantId: tenantId,
+        hospitalName: hospitalName,
+        timestamp: Date.now()
+      };
+      sessionStorage.setItem("DeathApplicationData", JSON.stringify(deathApplicationData));
+      console.log("Stored death certificate data for payment:", deathApplicationData);
      
       const fetchedConsumerCode = await downloadApi(tenantId, certificateId);
 

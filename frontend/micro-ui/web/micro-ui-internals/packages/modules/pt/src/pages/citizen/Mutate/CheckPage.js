@@ -18,7 +18,7 @@ import { useHistory } from "react-router-dom";
 import {
   checkForNA,
   getFixedFilename, isPropertyIndependent, isPropertyselfoccupied,
-  ispropertyunoccupied, isPropertyVacant,
+  ispropertyunoccupied, isPropertyVacant, stringReplaceAll,
 } from "../../../utils";
 import Timeline from "../../../components/TLTimeline";
 import PropertyDocument from "../../../pageComponents/PropertyDocument";

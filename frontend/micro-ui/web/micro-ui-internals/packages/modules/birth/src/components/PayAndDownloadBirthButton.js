@@ -25,6 +25,17 @@ export const PayAndDownloadBirthButton = ({ tenantId, certificateId, hospitalNam
   const handleClick = async () => {
     setIsLoading(true);
     try {
+      // Store the birth certificate ID for use after payment success
+      const birthApplicationData = {
+        id: certificateId,
+        birthCertificateId: certificateId,
+        tenantId: tenantId,
+        hospitalName: hospitalName,
+        timestamp: Date.now()
+      };
+      sessionStorage.setItem("BirthApplicationData", JSON.stringify(birthApplicationData));
+      console.log("Stored birth certificate data for payment:", birthApplicationData);
+
       const fetchedConsumerCode = await downloadApi(tenantId, certificateId);
 
       if (fetchedConsumerCode) {

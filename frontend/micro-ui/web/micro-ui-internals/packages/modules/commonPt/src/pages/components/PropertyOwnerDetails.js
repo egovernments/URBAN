@@ -36,7 +36,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
       ...(formData.owners && formData.owners[index]),
       name: (formData.owners && formData.owners[index] && formData.owners[index].name) || formData?.owners?.name || "",
       gender: (formData.owners && formData.owners[index] && formData.owners[index].gender) || formData?.owners?.gender,
-      mobileNumber: (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || "",
+      mobileNumber: userType === "employee" ? "" : ((formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || ""),
       fatherOrHusbandName:
         (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || "",
       relationship: (formData.owners && formData.owners[index] && formData.owners[index].relationship) || formData?.owners?.relationship,
@@ -392,7 +392,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty || isNewApplication}
+                            disable={isUpdateProperty || isEditProperty || (isNewApplication && userType !== "employee")}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
@@ -519,7 +519,7 @@ const PropertyOwnerDetails = ({ t, config, onSelect, userType, formData, formSta
                               onChange(value);
                               updateState("mobileNumber", index, value);
                             }}
-                            disable={isUpdateProperty || isEditProperty || isNewApplication}
+                            disable={isUpdateProperty || isEditProperty || (isNewApplication && userType !== "employee")}
                             labelStyle={{ border: "1px solid #000", borderRight: "none" }}
                             onBlur={onBlur}
                           />
