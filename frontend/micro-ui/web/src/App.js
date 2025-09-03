@@ -1,5 +1,4 @@
 import React from "react";
-console.log('🚀 App.js loaded!');
 
 import {
   initPGRComponents,
