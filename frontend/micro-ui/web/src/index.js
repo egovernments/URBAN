@@ -6,8 +6,19 @@ import "./index.css";
 import App from './App';
 import { TLCustomisations } from './Customisations/tl/TLCustomisation';
 import { UICustomizations } from './Customisations/UICustomizations';
+import initializeApiInterceptor from './utils/apiInterceptor';
+import sessionManager from './utils/sessionManager'; // Import session management
 
+console.log('📱 Index.js loaded, initializing libraries...');
 initLibraries();
+initializeApiInterceptor();
+
+// Initialize session manager after a delay to ensure app is loaded
+console.log('⏳ Will initialize session manager in 3 seconds...');
+setTimeout(() => {
+  console.log('🎯 Initializing session manager now...');
+  sessionManager.init();
+}, 3000);
 
 
 window.Digit.Customizations = { PGR: {} ,TL:TLCustomisations, commonUiConfig: UICustomizations};
