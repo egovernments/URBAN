@@ -30,27 +30,27 @@ const styles = theme => ({
 // Default Fire NOC steps when MDMS data is not available
 const defaultFireNocSteps = [
   {
-    headerLabel: "FIRE_NOC_APPLY_STEP",
+    headerLabel: "Apply for Fire NOC",
     description: "Submit your application with required documents and property details",
     step: 1
   },
   {
-    headerLabel: "FIRE_NOC_PAYMENT_STEP", 
+    headerLabel: "Fee Payment", 
     description: "Pay the applicable Fire NOC fees for processing your application",
     step: 2
   },
   {
-    headerLabel: "FIRE_NOC_VERIFICATION_STEP",
+    headerLabel: "Document Verification",
     description: "Fire department verifies your submitted documents and payment",
     step: 3
   },
   {
-    headerLabel: "FIRE_NOC_INSPECTION_STEP",
+    headerLabel: "Site Inspection",
     description: "Fire safety officer conducts on-site inspection of your property",
     step: 4
   },
   {
-    headerLabel: "FIRE_NOC_APPROVAL_STEP",
+    headerLabel: "NOC Approval",
     description: "Receive your Fire NOC certificate after successful verification",
     step: 5
   }
@@ -64,8 +64,8 @@ const defaultFireNocData = {
     en_IN: "https://media.w3.org/2010/05/sintel/trailer.mp4",
     hi_IN: "https://media.w3.org/2010/05/sintel/trailer.mp4"
   })),
-  pdfHeader: "FIRE_NOC_CITIZEN_CHARTER_DOCUMENT",
-  pdfDesc: "FIRE_NOC_CITIZEN_CHARTER_DOC_DESC"
+  // pdfHeader: "FIRE_NOC_CITIZEN_CHARTER_DOCUMENT",
+  // pdfDesc: "FIRE_NOC_CITIZEN_CHARTER_DOC_DESC"
 };
 
 class HowItWorks extends React.Component {
@@ -122,7 +122,7 @@ class HowItWorks extends React.Component {
               ))}
             </Stepper>
             
-            {fireNocData.pdfHeader && (
+            {/* {fireNocData.pdfHeader && (
               <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e0e0e0' }}>
                 <Typography variant="subtitle1" gutterBottom>
                   {fireNocData.pdfHeader.replace(/_/g, ' ')}
@@ -131,7 +131,7 @@ class HowItWorks extends React.Component {
                   {fireNocData.pdfDesc.replace(/_/g, ' ')}
                 </Typography>
               </div>
-            )}
+            )} */}
           </CardContent>
         </Card>
       </div>
