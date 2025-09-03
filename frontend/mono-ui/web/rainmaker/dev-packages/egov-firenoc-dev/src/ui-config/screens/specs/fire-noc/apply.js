@@ -140,7 +140,7 @@ const getMdmsData = async (action, state, dispatch) => {
       moduleDetails: [
         {
           moduleName: "common-masters",
-          masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }]
+          masterDetails: [{ name: "OwnerType" }, { name: "OwnerShipCategory" }, { name: "howItWorks" }]
         },
         {
           moduleName: "firenoc",

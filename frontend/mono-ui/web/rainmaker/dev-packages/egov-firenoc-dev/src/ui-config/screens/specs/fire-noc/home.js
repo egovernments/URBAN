@@ -46,6 +46,10 @@ const tradeLicenseSearchAndResult = {
       {
         moduleName: "FireNoc",
         masterDetails: [{ name: "Documents" }]
+      },
+      {
+        moduleName: "common-masters",
+        masterDetails: [{ name: "howItWorks" }]
       }
     ];
     getRequiredDocData(action, dispatch, moduleDetails);
