@@ -117,7 +117,8 @@ const getCitizenStyles = (value) => {
         width : "20px"
       },
       uploadFile: {
-        minHeight: "50px"
+        minHeight: "50px",
+        borderRadius:"10px"
       }
     };
   }

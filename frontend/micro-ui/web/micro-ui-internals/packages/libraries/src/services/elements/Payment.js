@@ -84,17 +84,26 @@ export const PaymentService = {
       params: { tenantId, ...filters },
     }),
 
+  // createCitizenReciept: (tenantId, details = {}) =>
+  //   Request({
+  //     url: Urls.payment.create_citizen_reciept,
+  //     useCache: false,
+  //     method: "POST",
+  //     auth: false,
+  //     userService: false,
+  //     params: { tenantId },
+  //     data: { ...details },
+  //   }),
   createCitizenReciept: (tenantId, details = {}) =>
     Request({
       url: Urls.payment.create_citizen_reciept,
       useCache: false,
       method: "POST",
-      auth: false,
-      userService: false,
+      auth: true,
+      userService: true,
       params: { tenantId },
       data: { ...details },
     }),
-
   updateCitizenReciept: (transactionId) =>
     Request({
       url: Urls.payment.update_citizen_reciept,

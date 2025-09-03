@@ -12,6 +12,8 @@ import Proof from "./pageComponents/Proof";
 import PropertyBasementDetails from "./pageComponents/PropertyBasementDetails";
 import PropertyFloorDetails from "./pageComponents/PropertyFloorDetails";
 import PropertyTax from "./pageComponents/PropertyTax";
+import PreviewDemand from "./pageComponents/PreviewDemand";
+import PreviewView from "./pageComponents/PreviewView";
 import PropertyType from "./pageComponents/PropertyType";
 import PropertyUsageType from "./pageComponents/PropertyUsageType";
 import ProvideSubUsageType from "./pageComponents/ProvideSubUsageType";
@@ -21,6 +23,7 @@ import PTSelectAddress from "./pageComponents/PTSelectAddress";
 import PTSelectGeolocation from "./pageComponents/PTSelectGeolocation";
 import PTSelectStreet from "./pageComponents/PTSelectStreet";
 import PTSelectPincode from "./pageComponents/PTSelectPincode";
+// import PTSelectAssessmentYear from "./pageComponents/PTSelectAssessmentYear";
 import RentalDetails from "./pageComponents/RentalDetails";
 import SelectInistitutionOwnerDetails from "./pageComponents/SelectInistitutionOwnerDetails";
 import SelectOwnerAddress from "./pageComponents/SelectOwnerAddress";
@@ -91,12 +94,55 @@ import CitizenFeedback from "@egovernments/digit-ui-module-core/src/components/C
 import AcknowledgementCF from "@egovernments/digit-ui-module-core/src/components/AcknowledgementCF";
 // PTAcknowledgementCF from "@egovernments/digit-ui-module-core/src/components/PTAcknowledgementCF";
 //import PTCitizenFeedbackPopUp from "./pageComponents/PTCitizenFeedbackPopUp";
+import PTSelectAssessmentYear from "./pageComponents/PTSelectAssessmentYear";
+import PTAuthorizedPerson from "./pageComponents/PTAuthorizedPerson";
+import PTSelectZone from "./pageComponents/PTSelectZone";
+import PTSelectColony from "./pageComponents/PTSelectColony";
+import PTCorrespondenceAddress from "./pageComponents/PTCorrespondenceAddress";
+import PTPlotArea from "./pageComponents/PTPlotArea";
+import PTOldPropertyId from "./pageComponents/PTOldPropertyId";
+import PTRateZone from "./pageComponents/PTRateZone";
+import PTRoadFactor from "./pageComponents/PTSelectRoadFactor";
+import PTSelectPropertyType from "./pageComponents/PTSelectPropertyType";
+import PTRoomArea from "./pageComponents/PTRoomArea";
+import PTExemption from "./pageComponents/PTExemption";
+import PTSelectOtherCheckBox from "./pageComponents/PTSelectOtherCheckBox";
+import PTDeclare from "./pageComponents/PTDeclare";
+import AssessmentDetailsLayout from "./pageComponents/AssessmentDetailsLayout";
+import OtherDetailLayout from "./pageComponents/OtherDetailStructure";
+import PTSelectWard from "./pageComponents/PTSelectWard";
+import PropertAddressLayout from "./pageComponents/PropertAddressLayout";
+import PropertyTaxForm from "./pageComponents/PropertyTaxForm";
 
+// Create property components
+import AssessmentDetailsSection from "./pageComponents/CreateProperty/AssessmentDetailsSection";
+import AddressSection from "./pageComponents/CreateProperty/AddressSection";
+import AttachmentsSection from "./pageComponents/CreateProperty/AttachmentsSection";
+import CorrespondenceAddressSection from "./pageComponents/CreateProperty/CorrespondenceAddressSection";
+import DeclarationSection from "./pageComponents/CreateProperty/DeclarationSection";
+import OtherDetailsSection from "./pageComponents/CreateProperty/OtherDetailsSection";
+import OwnershipDetailsSection from "./pageComponents/CreateProperty/OwnershipDetailsSection";
+import PropertyDetailsTableSection from "./pageComponents/CreateProperty/PropertyDetailsTableSection";
+import PTSelectAssessmentYears from "./pageComponents/CreateProperty/PTSelectAssessmentYears";
+import PropertyLandingPage from "./pageComponents/PropertyLandingPage";
 const componentsToRegister = {
+  AssessmentDetailsSection,
+  AddressSection,
+  AttachmentsSection,
+  CorrespondenceAddressSection,
+  DeclarationSection,
+  OtherDetailsSection,
+  OwnershipDetailsSection,
+  PropertyDetailsTableSection,
+  PTSelectAssessmentYears,
+  PropertyTaxForm,
   PTLandArea,
   PTCheckPage,
   PTAcknowledgement,
   PropertyTax,
+  PreviewDemand,
+  PropertyLandingPage,
+  PreviewView,
   PTSelectPincode,
   PTSelectAddress,
   PTSelectStreet,
@@ -172,7 +218,25 @@ const componentsToRegister = {
   SelectOtp, // To-do: Temp fix, Need to check why not working if selectOtp module is already imported from core module
   AcknowledgementCF,
   CitizenFeedback,
-  PTSelectLandmark
+  PTSelectLandmark,
+  PTSelectAssessmentYear,
+  PTAuthorizedPerson,
+  PTSelectZone,
+  PTSelectColony,
+  PTCorrespondenceAddress,
+  PTPlotArea,
+  PTOldPropertyId,
+  PTRateZone,
+  PTRoadFactor,
+  PTSelectPropertyType,
+  PTRoomArea,
+  PTExemption,
+  PTSelectOtherCheckBox,
+  PTDeclare,
+  AssessmentDetailsLayout,
+  OtherDetailLayout,
+  PTSelectWard,
+  PropertAddressLayout,
 };
 
 const addComponentsToRegistry = () => {

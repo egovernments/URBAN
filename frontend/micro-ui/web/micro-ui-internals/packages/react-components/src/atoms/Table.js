@@ -95,14 +95,15 @@ const Table = ({
     {tableTopComponent ? tableTopComponent:null}
       <table className={className} {...getTableProps()} style={styles} ref={tableRef}>
          
-        <thead>
+        <thead style={{backgroundColor: "#6b133f", color: "white", fontSize: "16px", fontWeight: "600", textAlign: "left", verticalAlign: "top"}}>  
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-             {showAutoSerialNo&& <th style={{  verticalAlign: "top"}}>
+            <tr {...headerGroup.getHeaderGroupProps()} style={{ borderTopLeftRadius: "16px",
+  borderTopRightRadius: "16px"}}>
+             {showAutoSerialNo&& <th style={{ background:"#6b133f",padding:"10px",fontSize:"14px",color:"white" }}>
               {showAutoSerialNo&& typeof showAutoSerialNo =="string"?t(showAutoSerialNo):t("TB_SNO")}
               </th>}
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} style={{ verticalAlign: "top" }}>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())} style={{ background:"#6b133f",padding:"10px",fontSize:"14px",color:"white" }}>
                   {column.render("Header")}
                   <span>{column.isSorted ? column.isSortedDesc ? <SortDown /> : <SortUp /> : ""}</span>
                 </th>
@@ -122,7 +123,7 @@ const Table = ({
                 {row.cells.map((cell) => {
                   return (
                     <td
-                      // style={{ padding: "20px 18px", fontSize: "16px", borderTop: "1px solid grey", textAlign: "left", verticalAlign: "middle" }}
+                       style={{ padding: "10px", fontSize: "14px" }}
                       {...cell.getCellProps([
                         // {
                         //   className: cell.column.className,
@@ -133,8 +134,8 @@ const Table = ({
                       ])}
                     >
                       {cell.attachment_link ? (
-                        <a style={{ color: "#1D70B8" }} href={cell.attachment_link}>
-                          {cell.render("Cell")}
+                        <a style={{ color: "#141B29" }} href={cell.attachment_link}>
+                          {cell.render("Cell")} 
                         </a>
                       ) : (
                         <React.Fragment> {cell.render("Cell")} </React.Fragment>

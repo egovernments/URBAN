@@ -6,7 +6,6 @@ import EditForm from "./EditForm";
 const EditApplication = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
-
   let { id: applicationNumber } = useParams();
 
   const { isLoading, data: applicationDetails } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, applicationNumber);
