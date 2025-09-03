@@ -141,31 +141,43 @@ class SessionManager {
       this.handleTimeout();
     }, remainingTime);
     
-    // Show warning dialog with dynamic timing
+    // Show warning dialog with dynamic timing - but don't wait for response
     const warningMinutes = Math.ceil(this.warningMs / 60000);
-    const userResponse = confirm(
-      `Your session will expire in ${warningMinutes} minute${warningMinutes > 1 ? 's' : ''} due to inactivity.\n\n` +
-      `Click OK within ${warningMinutes} minute${warningMinutes > 1 ? 's' : ''} to extend your session.\n` +
-      'Click Cancel or wait to be logged out.'
-    );
     
-    if (userResponse && this.finalTimeoutId) {
-      // User clicked OK within time limit
-      clearTimeout(this.finalTimeoutId);
-      
-      // Check if we're still within the grace period
-      if (!this.sessionLocked || this.warningShown) {
-        this.log('✅ Session extended by user');
-        this.sessionLocked = false;
-        this.warningShown = false;
-        this.setupActivityListeners();
-        this.resetTimer();
+    // Use setTimeout to avoid blocking the main thread
+    setTimeout(() => {
+      try {
+        const userResponse = confirm(
+          `Your session will expire in ${warningMinutes} minute${warningMinutes > 1 ? 's' : ''} due to inactivity.\n\n` +
+          `Click OK within ${warningMinutes} minute${warningMinutes > 1 ? 's' : ''} to extend your session.\n` +
+          'Click Cancel or close this dialog to logout immediately.'
+        );
+        
+        if (userResponse && this.finalTimeoutId && this.warningShown) {
+          // User clicked OK and we're still in warning state
+          clearTimeout(this.finalTimeoutId);
+          this.log('✅ Session extended by user');
+          this.sessionLocked = false;
+          this.warningShown = false;
+          this.setupActivityListeners();
+          this.resetTimer();
+        } else {
+          // User clicked Cancel or closed dialog - logout immediately
+          this.log('❌ User rejected extension - logging out immediately');
+          if (this.finalTimeoutId) {
+            clearTimeout(this.finalTimeoutId);
+          }
+          setTimeout(() => this.handleTimeout(), 10); // Small delay before redirect
+        }
+      } catch (error) {
+        // If confirm dialog fails, logout immediately
+        this.log('❌ Dialog error - logging out immediately');
+        if (this.finalTimeoutId) {
+          clearTimeout(this.finalTimeoutId);
+        }
+        setTimeout(() => this.handleTimeout(), 10);
       }
-    } else {
-      // User clicked Cancel or didn't respond
-      this.log('❌ User rejected extension or timeout - logging out');
-      this.handleTimeout();
-    }
+    }, 100); // Small delay to avoid blocking
   }
 
   handleTimeout() {
@@ -205,8 +217,19 @@ class SessionManager {
     // Set timeout flag
     sessionStorage.setItem('session-timeout', 'true');
     
-    // Force redirect
-    window.location.replace(loginPath);
+    // Force redirect - try multiple methods for reliability
+    try {
+      // Method 1: Try window.location.href first
+      window.location.href = loginPath;
+    } catch (error) {
+      try {
+        // Method 2: Try window.location.replace as fallback
+        window.location.replace(loginPath);
+      } catch (error2) {
+        // Method 3: Force page reload to login as last resort
+        window.location.reload();
+      }
+    }
   }
 
   // Manual destroy method
@@ -323,6 +346,16 @@ window.getSessionConfig = () => {
   if (window.digitSessionManager) {
     console.log('Active config:', window.digitSessionManager.getConfig());
     return window.digitSessionManager.getConfig();
+  }
+};
+
+// Test logout navigation (for debugging)
+window.testLogout = () => {
+  console.log('🧪 Testing logout navigation...');
+  if (window.digitSessionManager) {
+    window.digitSessionManager.handleTimeout();
+  } else {
+    console.log('❌ Session manager not found');
   }
 };
 import SelectOtp from "./pages/citizen/Login/SelectOtp";
