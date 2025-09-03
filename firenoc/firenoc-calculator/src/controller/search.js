@@ -37,6 +37,7 @@ export default search;
 export const searchService = async (reqestCriteria, searchResponse, pool) => {
   var querystring = generateQuery(reqestCriteria);
   querystring = replaceSchemaPlaceholder(querystring, reqestCriteria.tenantId);
+  console.log("Query string:", querystring);
   let billingSlabs = [];
   billingSlabs = await pool
     .query(querystring)
@@ -44,7 +45,7 @@ export const searchService = async (reqestCriteria, searchResponse, pool) => {
       return popolateSearchResponse(result);
     })
     .catch(err => console.log(err));
-
+  console.log("Billing Slabs:", billingSlabs);
   return billingSlabs;
 };
 
