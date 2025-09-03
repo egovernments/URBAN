@@ -103,7 +103,7 @@ const EgovAppBar = ({
         )}
 
         <div className="appbar-right-logo">
-          <img src={logoImage?logoImage:digitLogo} />
+          <img src={logoImage?logoImage:digitLogo} width={"auto"} height={"30px"} />
         </div>
         <div className="icon-button">
           {refreshButton && (

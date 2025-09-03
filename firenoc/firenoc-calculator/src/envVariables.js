@@ -78,7 +78,7 @@ const envVariables = {
     process.env.HTTP_CLIENT_DETAILED_LOGGING_ENABLED || false,
 
   // default state // IDEA:
-  EGOV_DEFAULT_STATE_ID: process.env.EGOV_DEFAULT_STATE_ID || "pb",
+  EGOV_DEFAULT_STATE_ID: process.env.EGOV_DEFAULT_STATE_ID || "pg",
   STATE_LEVEL_TENANTID_LENGTH: process.env.STATE_LEVEL_TENANTID_LENGTH || 1,
   IS_ENVIRONMENT_CENTRAL_INSTANCE: process.env.IS_ENVIRONMENT_CENTRAL_INSTANCE || false
 };
