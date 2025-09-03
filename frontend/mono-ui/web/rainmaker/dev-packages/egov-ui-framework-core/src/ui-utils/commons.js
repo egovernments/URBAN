@@ -424,10 +424,12 @@ export const handleFileUpload = (
       if (!fileValid) {
         alert(`Only image or pdf files can be uploaded`);
         uploadDocument = false;
+        ifError && typeof ifError == "function" && ifError();
       }
       if (!isSizeValid) {
         alert(`Maximum file size can be ${Math.round(maxFileSize / 1000)} MB`);
         uploadDocument = false;
+        ifError && typeof ifError == "function" && ifError();
       }
       if (uploadDocument) {
         afterFileSelected &&
