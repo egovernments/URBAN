@@ -307,6 +307,26 @@ public class DeathRepository {
 		}
 		return null;
 	}
+	
+	public DeathCertificate getDeathCertReqByDeathDtlId(String deathDtlId, String tenantId) {
+		try {
+			String query = "SELECT * FROM {schema}.eg_death_cert_request WHERE death_dtl_id=? AND tenantid=?";
+			try {
+				query = centralInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
+			} catch (InvalidTenantIdException e) {
+				throw new CustomException("DEATHCERT_SEARCH_TENANTID_ERROR",
+						"TenantId length is not sufficient to replace query schema in a multi state instance");
+			}
+			List<DeathCertificate> deathCerts = jdbcTemplate.query(query, new Object[]{deathDtlId, tenantId}, deathCertRowMapper);
+			if (null != deathCerts && !deathCerts.isEmpty()) {
+				return deathCerts.get(0);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new CustomException("invalid_data","Invalid Data");
+		}
+		return null;
+	}
 
 	public void updateCounter(String deathDtlId, String tenantId) {
 		try {

@@ -40,6 +40,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class DeathService {
 	
@@ -146,38 +149,100 @@ public class DeathService {
 
 	public DeathCertificate download(SearchCriteria criteria, RequestInfo requestInfo) {
 		try {
+		// Input validation
+		if (criteria == null || criteria.getId() == null || criteria.getTenantId() == null) {
+			throw new CustomException("INVALID_INPUT", "Missing required parameters: id or tenantId");
+		}
+		
+		List<EgDeathDtl> deathDtls = repository.getDeathDtlsAll(criteria,requestInfo);
+		
+		// Validate death details
+		if (deathDtls == null || deathDtls.isEmpty()) {
+			throw new CustomException("RECORD_NOT_FOUND", "No death record found for the given criteria");
+		}
+		if(deathDtls.size() > 1) 
+			throw new CustomException("MULTIPLE_RECORDS_FOUND","Multiple records found for the given criteria");
+			
+		// Validate user details
+		UserDetailResponse userDetailResponse = userService.getOwners(deathDtls, requestInfo);
+		if (userDetailResponse == null || userDetailResponse.getUser() == null || userDetailResponse.getUser().isEmpty()) {
+			throw new CustomException("USER_NOT_FOUND", "User details not found");
+		}
+		deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+		
+		// Check if certificate request already exists (for paid downloads with existing filestoreid)
+		DeathCertificate existingCertificate = null;
+		try {
+			existingCertificate = repository.getDeathCertReqByDeathDtlId(criteria.getId(), criteria.getTenantId());
+		} catch (Exception e) {
+			// Certificate request doesn't exist yet, will create new one
+			log.debug("Certificate request not found for deathDtlId: {}", criteria.getId());
+		}
+		
+		// If existing certificate found, check for filestoreid or PAID_PDF_GENERATED status
+		if (existingCertificate != null) {
+			// Case 1: PDF already generated - return immediately
+			if (existingCertificate.getFilestoreid() != null) {
+				updateCertificateFields(existingCertificate, deathDtls.get(0));
+				return existingCertificate;
+			}
+			
+			// Case 2: Status is PAID but PDF not yet generated (race condition)
+			// This happens when user clicks download immediately after payment
+			if (existingCertificate.getApplicationStatus() == StatusEnum.PAID) {
+				// Retry logic with exponential backoff
+				int maxRetries = 5;
+				long waitTime = 1000; // Start with 1 second
+				
+				for (int i = 0; i < maxRetries; i++) {
+					try {
+						Thread.sleep(waitTime);
+						existingCertificate = repository.getDeathCertReqByDeathDtlId(criteria.getId(), criteria.getTenantId());
+						
+						if (existingCertificate != null && existingCertificate.getFilestoreid() != null) {
+							log.info("PDF generated after {} retries for deathDtlId: {}", i + 1, criteria.getId());
+							updateCertificateFields(existingCertificate, deathDtls.get(0));
+							return existingCertificate;
+						}
+						
+						waitTime = (long)(waitTime * 1.5); // Exponential backoff
+					} catch (InterruptedException ie) {
+						Thread.currentThread().interrupt();
+						throw new CustomException("RETRY_INTERRUPTED", "PDF generation check was interrupted");
+					}
+				}
+				
+				// After retries, if still no PDF, return with message
+				throw new CustomException("PDF_GENERATION_IN_PROGRESS", 
+					"PDF is being generated. Please try downloading again in a few seconds.");
+			}
+		}
+		
+		// Create new certificate request (first time or no filestoreid yet)
 		DeathCertificate deathCertificate = new DeathCertificate();
 		deathCertificate.setSource(criteria.getSource().toString());
 		deathCertificate.setDeathDtlId(criteria.getId());
 		deathCertificate.setTenantId(criteria.getTenantId());
 		DeathCertRequest deathCertRequest = DeathCertRequest.builder().deathCertificate(deathCertificate).requestInfo(requestInfo).build();
-		List<EgDeathDtl> deathDtls = repository.getDeathDtlsAll(criteria,requestInfo);
-			UserDetailResponse userDetailResponse = userService.getOwners(deathDtls, requestInfo);
-			deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
-			deathCertificate.setGender(deathDtls.get(0).getGenderStr());
-			deathCertificate.setAge(deathDtls.get(0).getAge());
-			deathCertificate.setWard(deathDtls.get(0).getDeathPermaddr().getTehsil());
-			deathCertificate.setState(deathDtls.get(0).getDeathPermaddr().getState());
-			deathCertificate.setDistrict(deathDtls.get(0).getDeathPermaddr().getDistrict());
-			deathCertificate.setDateofdeath(deathDtls.get(0).getDateofdeath());
-			deathCertificate.setDateofreport(deathDtls.get(0).getDateofreport());
-			deathCertificate.setPlaceofdeath(deathDtls.get(0).getPlaceofdeath());
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			String date = format.format(deathDtls.get(0).getDateofreport());
-			String datestr= date.split("-")[2];
-			deathCertificate.setYear(datestr);
-		if(deathDtls.size()>1) 
-			throw new CustomException("Invalid_Input","Error in processing data");
+		
+		updateCertificateFields(deathCertificate, deathDtls.get(0));
+		
 		enrichmentServiceDeath.enrichCreateRequest(deathCertRequest);
 		enrichmentServiceDeath.setIdgenIds(deathCertRequest);
+		
+		// Set certificate number for both free and paid downloads
+		deathDtls.get(0).setDeathcertificateno(deathCertRequest.getDeathCertificate().getDeathCertificateNo());
+		
 		if(deathDtls.get(0).getCounter()>0){
+			// Paid download: Create payment demand and set status to ACTIVE
+			// PDF will be generated by ReceiptConsumer after payment is successful
 			enrichmentServiceDeath.setDemandParams(deathCertRequest,deathDtls);
 			enrichmentServiceDeath.setGLCode(deathCertRequest);
 			calculationServiceDeath.addCalculation(deathCertRequest);
 			deathCertificate.setApplicationStatus(StatusEnum.ACTIVE);
 		}
 		else{
-			deathDtls.get(0).setDeathcertificateno(deathCertRequest.getDeathCertificate().getDeathCertificateNo());
+			// Free download: Generate PDF immediately
 			DeathPdfApplicationRequest applicationRequest = DeathPdfApplicationRequest.builder().requestInfo(requestInfo).deathCertificate(deathDtls).build();
 			EgovPdfResp pdfResp = repository.saveDeathCertPdf(applicationRequest);
 			deathCertificate.setEmbeddedUrl(applicationRequest.getDeathCertificate().get(0).getEmbeddedUrl());
@@ -185,7 +250,6 @@ public class DeathService {
 			deathCertificate.setFilestoreid(pdfResp.getFilestoreIds().get(0));
 			repository.updateCounter(deathCertificate.getDeathDtlId(), deathCertificate.getTenantId());
 			deathCertificate.setApplicationStatus(StatusEnum.FREE_DOWNLOAD);
-			
 		}
 		deathCertificate.setCounter(deathDtls.get(0).getCounter());
 		repository.save(deathCertRequest);
@@ -283,5 +347,48 @@ public class DeathService {
                 .append("&").append("consumerCodes=")
                 .append(StringUtils.join(criteria.getConsumerCodes(),","))
                 .append("&").append("status=APPROVED,DEPOSITED,NEW");
+    }
+    
+    /**
+     * Helper method to safely update certificate fields with null checks
+     */
+    private void updateCertificateFields(DeathCertificate certificate, EgDeathDtl deathDtl) {
+        try {
+            certificate.setGender(deathDtl.getGenderStr());
+            certificate.setAge(deathDtl.getAge());
+            
+            // Safe address field updates with null checks
+            if (deathDtl.getDeathPermaddr() != null) {
+                certificate.setWard(deathDtl.getDeathPermaddr().getTehsil());
+                certificate.setState(deathDtl.getDeathPermaddr().getState());
+                certificate.setDistrict(deathDtl.getDeathPermaddr().getDistrict());
+            }
+            
+            certificate.setDateofdeath(deathDtl.getDateofdeath());
+            certificate.setDateofreport(deathDtl.getDateofreport());
+            certificate.setPlaceofdeath(deathDtl.getPlaceofdeath());
+            
+            // Safe date formatting with null checks
+            if (deathDtl.getDateofreport() != null) {
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    String date = format.format(deathDtl.getDateofreport());
+                    if (date != null && date.contains("-")) {
+                        String[] dateParts = date.split("-");
+                        if (dateParts.length >= 3) {
+                            certificate.setYear(dateParts[2]);
+                        }
+                    }
+                } catch (Exception e) {
+                    // If date formatting fails, log but don't break the flow
+                    log.warn("Failed to format date for certificate: " + e.getMessage());
+                }
+            }
+            
+            certificate.setCounter(deathDtl.getCounter() != null ? deathDtl.getCounter() : 0);
+        } catch (Exception e) {
+            log.error("Error updating certificate fields: " + e.getMessage());
+            throw new CustomException("FIELD_UPDATE_ERROR", "Failed to update certificate fields");
+        }
     }
 }

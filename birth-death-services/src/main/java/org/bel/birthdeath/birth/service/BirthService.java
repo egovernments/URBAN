@@ -40,6 +40,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BirthService {
 	
@@ -136,37 +139,100 @@ public class BirthService {
 
 	public BirthCertificate download(SearchCriteria criteria, RequestInfo requestInfo) {
 		try {
+		// Input validation
+		if (criteria == null || criteria.getId() == null || criteria.getTenantId() == null) {
+			throw new CustomException("INVALID_INPUT", "Missing required parameters: id or tenantId");
+		}
+		
+		List<EgBirthDtl> birtDtls = repository.getBirthDtlsAll(criteria,requestInfo);
+		
+		// Validate birth details
+		if (birtDtls == null || birtDtls.isEmpty()) {
+			throw new CustomException("RECORD_NOT_FOUND", "No birth record found for the given criteria");
+		}
+		if(birtDtls.size() > 1) 
+			throw new CustomException("MULTIPLE_RECORDS_FOUND","Multiple records found for the given criteria");
+			
+		// Validate user details
+		UserDetailResponse userDetailResponse = userService.getOwners(birtDtls, requestInfo);
+		if (userDetailResponse == null || userDetailResponse.getUser() == null || userDetailResponse.getUser().isEmpty()) {
+			throw new CustomException("USER_NOT_FOUND", "User details not found");
+		}
+		birtDtls.get(0).setUser(userDetailResponse.getUser().get(0));
+		
+		// Check if certificate request already exists (for paid downloads with existing filestoreid)
+		BirthCertificate existingCertificate = null;
+		try {
+			existingCertificate = repository.getBirthCertReqByBirthDtlId(criteria.getId(), criteria.getTenantId());
+		} catch (Exception e) {
+			// Certificate request doesn't exist yet, will create new one
+			log.debug("Certificate request not found for birthDtlId: {}", criteria.getId());
+		}
+		
+		// If existing certificate found, check for filestoreid or PAID status
+		if (existingCertificate != null) {
+			// Case 1: PDF already generated - return immediately
+			if (existingCertificate.getFilestoreid() != null) {
+				updateCertificateFields(existingCertificate, birtDtls.get(0));
+				return existingCertificate;
+			}
+			
+			// Case 2: Status is PAID but PDF not yet generated (race condition)
+			// This happens when user clicks download immediately after payment
+			if (existingCertificate.getApplicationStatus() == StatusEnum.PAID) {
+				// Retry logic with exponential backoff
+				int maxRetries = 5;
+				long waitTime = 1000; // Start with 1 second
+				
+				for (int i = 0; i < maxRetries; i++) {
+					try {
+						Thread.sleep(waitTime);
+						existingCertificate = repository.getBirthCertReqByBirthDtlId(criteria.getId(), criteria.getTenantId());
+						
+						if (existingCertificate != null && existingCertificate.getFilestoreid() != null) {
+							log.info("PDF generated after {} retries for birthDtlId: {}", i + 1, criteria.getId());
+							updateCertificateFields(existingCertificate, birtDtls.get(0));
+							return existingCertificate;
+						}
+						
+						waitTime = (long)(waitTime * 1.5); // Exponential backoff
+					} catch (InterruptedException ie) {
+						Thread.currentThread().interrupt();
+						throw new CustomException("RETRY_INTERRUPTED", "PDF generation check was interrupted");
+					}
+				}
+				
+				// After retries, if still no PDF, return with message
+				throw new CustomException("PDF_GENERATION_IN_PROGRESS", 
+					"PDF is being generated. Please try downloading again in a few seconds.");
+			}
+		}
+		
+		// Create new certificate request (first time or no filestoreid yet)
 		BirthCertificate birthCertificate = new BirthCertificate();
 		birthCertificate.setSource(criteria.getSource().toString());
 		birthCertificate.setBirthDtlId(criteria.getId());
 		birthCertificate.setTenantId(criteria.getTenantId());
 		BirthCertRequest birthCertRequest = BirthCertRequest.builder().birthCertificate(birthCertificate).requestInfo(requestInfo).build();
-		List<EgBirthDtl> birtDtls = repository.getBirthDtlsAll(criteria,requestInfo);
-			UserDetailResponse userDetailResponse = userService.getOwners(birtDtls, requestInfo);
-			birtDtls.get(0).setUser(userDetailResponse.getUser().get(0));
-			birthCertificate.setBirthPlace(birtDtls.get(0).getPlaceofbirth());
-			birthCertificate.setGender(birtDtls.get(0).getGenderStr());
-			birthCertificate.setWard(birtDtls.get(0).getBirthPermaddr().getTehsil());
-			birthCertificate.setState(birtDtls.get(0).getBirthPermaddr().getState());
-			birthCertificate.setDistrict(birtDtls.get(0).getBirthPermaddr().getDistrict());
-			birthCertificate.setDateofbirth(birtDtls.get(0).getDateofbirth());
-			birthCertificate.setDateofreport(birtDtls.get(0).getDateofreport());
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			String date = format.format(birtDtls.get(0).getDateofreport());
-			String datestr= date.split("-")[2];
-			birthCertificate.setYear(datestr);
-		if(birtDtls.size()>1) 
-			throw new CustomException("Invalid_Input","Error in processing data");
+		
+		updateCertificateFields(birthCertificate, birtDtls.get(0));
+		
 		enrichmentService.enrichCreateRequest(birthCertRequest);
 		enrichmentService.setIdgenIds(birthCertRequest);
+		
+		// Set certificate number for both free and paid downloads
+		birtDtls.get(0).setBirthcertificateno(birthCertRequest.getBirthCertificate().getBirthCertificateNo());
+		
 		if(birtDtls.get(0).getCounter()>0){
+			// Paid download: Create payment demand and set status to ACTIVE
+			// PDF will be generated by ReceiptConsumer after payment is successful
 			enrichmentService.setDemandParams(birthCertRequest,birtDtls);
 			enrichmentService.setGLCode(birthCertRequest);
 			calculationService.addCalculation(birthCertRequest);
 			birthCertificate.setApplicationStatus(StatusEnum.ACTIVE);
 		}
 		else{
-			birtDtls.get(0).setBirthcertificateno(birthCertRequest.getBirthCertificate().getBirthCertificateNo());
+			// Free download: Generate PDF immediately
 			BirthPdfApplicationRequest applicationRequest = BirthPdfApplicationRequest.builder().requestInfo(requestInfo).birthCertificate(birtDtls).build();
 			EgovPdfResp pdfResp = repository.saveBirthCertPdf(applicationRequest);
 			birthCertificate.setEmbeddedUrl(applicationRequest.getBirthCertificate().get(0).getEmbeddedUrl());
@@ -174,7 +240,6 @@ public class BirthService {
 			birthCertificate.setFilestoreid(pdfResp.getFilestoreIds().get(0));
 			repository.updateCounter(birthCertificate.getBirthDtlId(), birthCertificate.getTenantId());
 			birthCertificate.setApplicationStatus(StatusEnum.FREE_DOWNLOAD);
-			
 		}
 		birthCertificate.setCounter(birtDtls.get(0).getCounter());
 		repository.save(birthCertRequest);
@@ -272,5 +337,47 @@ public class BirthService {
                 .append("&").append("consumerCodes=")
                 .append(StringUtils.join(criteria.getConsumerCodes(),","))
                 .append("&").append("status=APPROVED,DEPOSITED,NEW");
+    }
+    
+    /**
+     * Helper method to safely update certificate fields with null checks
+     */
+    private void updateCertificateFields(BirthCertificate certificate, EgBirthDtl birthDtl) {
+        try {
+            certificate.setBirthPlace(birthDtl.getPlaceofbirth());
+            certificate.setGender(birthDtl.getGenderStr());
+            
+            // Safe address field updates with null checks
+            if (birthDtl.getBirthPermaddr() != null) {
+                certificate.setWard(birthDtl.getBirthPermaddr().getTehsil());
+                certificate.setState(birthDtl.getBirthPermaddr().getState());
+                certificate.setDistrict(birthDtl.getBirthPermaddr().getDistrict());
+            }
+            
+            certificate.setDateofbirth(birthDtl.getDateofbirth());
+            certificate.setDateofreport(birthDtl.getDateofreport());
+            
+            // Safe date formatting with null checks
+            if (birthDtl.getDateofreport() != null) {
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    String date = format.format(birthDtl.getDateofreport());
+                    if (date != null && date.contains("-")) {
+                        String[] dateParts = date.split("-");
+                        if (dateParts.length >= 3) {
+                            certificate.setYear(dateParts[2]);
+                        }
+                    }
+                } catch (Exception e) {
+                    // If date formatting fails, log but don't break the flow
+                    log.warn("Failed to format date for certificate: " + e.getMessage());
+                }
+            }
+            
+            certificate.setCounter(birthDtl.getCounter() != null ? birthDtl.getCounter() : 0);
+        } catch (Exception e) {
+            log.error("Error updating certificate fields: " + e.getMessage());
+            throw new CustomException("FIELD_UPDATE_ERROR", "Failed to update certificate fields");
+        }
     }
 }
