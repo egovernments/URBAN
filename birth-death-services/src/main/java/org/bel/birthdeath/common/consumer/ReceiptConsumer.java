@@ -130,6 +130,7 @@ public class ReceiptConsumer {
 			if(deathCertificate.getApplicationStatus().equals(org.bel.birthdeath.death.certmodel.DeathCertificate.StatusEnum.PAID)) {
 				org.bel.birthdeath.death.model.SearchCriteria criteria=new org.bel.birthdeath.death.model.SearchCriteria();
 				criteria.setId(deathCertificate.getDeathDtlId());
+				criteria.setTenantId(deathCertificate.getTenantId());
 				List<EgDeathDtl> deathDtls = repositoryDeath.getDeathDtlsAll(criteria,requestInfo);
 				if(deathDtls.size()>1) 
 					throw new CustomException("Invalid_Input","Error in processing data");
@@ -144,7 +145,9 @@ public class ReceiptConsumer {
 				deathCertificate.setApplicationStatus(org.bel.birthdeath.death.certmodel.DeathCertificate.StatusEnum.PAID_PDF_GENERATED);
 				DeathCertRequest requestNew = DeathCertRequest.builder().requestInfo(requestInfo).deathCertificate(deathCertificate).build();
 				bndProducer.push(requestNew.getDeathCertificate().getTenantId(), config.getUpdateDeathTopic(), requestNew);
+				if(deathCertificate.getTenantId() != null) {
 				repositoryDeath.updateCounter(deathCertificate.getDeathDtlId(), deathCertificate.getTenantId());
+			}
 			}
 			return deathCertificate;
 		}
@@ -179,6 +182,7 @@ public class ReceiptConsumer {
 			if(birthCertificate.getApplicationStatus().equals(StatusEnum.PAID)) {
 				SearchCriteria criteria=new SearchCriteria();
 				criteria.setId(birthCertificate.getBirthDtlId());
+				criteria.setTenantId(birthCertificate.getTenantId());
 				List<EgBirthDtl> birtDtls = repository.getBirthDtlsAll(criteria,requestInfo);
 				if(birtDtls.size()>1) 
 					throw new CustomException("Invalid_Input","Error in processing data");
