@@ -160,65 +160,46 @@ public class BirthService {
 		}
 		birtDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 		
-		// Check if certificate request already exists (for paid downloads with existing filestoreid)
-		BirthCertificate existingCertificate = null;
-		try {
-			existingCertificate = repository.getBirthCertReqByBirthDtlId(criteria.getId(), criteria.getTenantId());
-		} catch (Exception e) {
-			// Certificate request doesn't exist yet, will create new one
-			log.debug("Certificate request not found for birthDtlId: {}", criteria.getId());
-		}
-		
-		// If existing certificate found, check for filestoreid or PAID status
-		if (existingCertificate != null) {
-			// Case 1: PDF already generated - return immediately
-			if (existingCertificate.getFilestoreid() != null) {
-				updateCertificateFields(existingCertificate, birtDtls.get(0));
-				return existingCertificate;
-			}
-			
-			// Case 2: Status is PAID but PDF not yet generated (race condition)
-			// This happens when user clicks download immediately after payment
-			if (existingCertificate.getApplicationStatus() == StatusEnum.PAID) {
-				// Retry logic with exponential backoff
-				int maxRetries = 5;
-				long waitTime = 1000; // Start with 1 second
-				
-				for (int i = 0; i < maxRetries; i++) {
-					try {
-						Thread.sleep(waitTime);
-						existingCertificate = repository.getBirthCertReqByBirthDtlId(criteria.getId(), criteria.getTenantId());
-						
-						if (existingCertificate != null && existingCertificate.getFilestoreid() != null) {
-							log.info("PDF generated after {} retries for birthDtlId: {}", i + 1, criteria.getId());
-							updateCertificateFields(existingCertificate, birtDtls.get(0));
-							return existingCertificate;
-						}
-						
-						waitTime = (long)(waitTime * 1.5); // Exponential backoff
-					} catch (InterruptedException ie) {
-						Thread.currentThread().interrupt();
-						throw new CustomException("RETRY_INTERRUPTED", "PDF generation check was interrupted");
-					}
-				}
-				
-				// After retries, if still no PDF, return with message
-				throw new CustomException("PDF_GENERATION_IN_PROGRESS", 
-					"PDF is being generated. Please try downloading again in a few seconds.");
-			}
-		}
-		
-		// Create new certificate request (first time or no filestoreid yet)
+		// Create new certificate request for each download
 		BirthCertificate birthCertificate = new BirthCertificate();
 		birthCertificate.setSource(criteria.getSource().toString());
 		birthCertificate.setBirthDtlId(criteria.getId());
 		birthCertificate.setTenantId(criteria.getTenantId());
 		BirthCertRequest birthCertRequest = BirthCertRequest.builder().birthCertificate(birthCertificate).requestInfo(requestInfo).build();
 		
-		updateCertificateFields(birthCertificate, birtDtls.get(0));
-		
+		// Generate certificate number to check if payment just completed
 		enrichmentService.enrichCreateRequest(birthCertRequest);
 		enrichmentService.setIdgenIds(birthCertRequest);
+		String certificateNumber = birthCertRequest.getBirthCertificate().getBirthCertificateNo();
+		
+		// Quick check: if user just paid and PDF is being generated, return with message
+		if(birtDtls.get(0).getCounter() > 0) {
+			try {
+				BirthCertificate recentCert = repository.getBirthCertReqByConsumerCode(certificateNumber, requestInfo, criteria.getTenantId());
+				if(recentCert != null) {
+					if(recentCert.getApplicationStatus() == StatusEnum.PAID_PDF_GENERATED && recentCert.getFilestoreid() != null) {
+						// PDF ready - return it
+						updateCertificateFields(recentCert, birtDtls.get(0));
+						return recentCert;
+					} else if(recentCert.getApplicationStatus() == StatusEnum.PAID) {
+						// PDF being generated
+						throw new CustomException("PDF_GENERATION_IN_PROGRESS", 
+							"Your PDF is being generated. Please try downloading again in a few seconds.");
+					} else if(recentCert.getApplicationStatus() == StatusEnum.ACTIVE) {
+						// Payment pending - return existing certificate
+						updateCertificateFields(recentCert, birtDtls.get(0));
+						return recentCert;
+					}
+				}
+			} catch (CustomException ce) {
+				throw ce; // Re-throw our custom exceptions
+			} catch (Exception e) {
+				// Certificate doesn't exist yet, continue with new creation
+				log.debug("No existing certificate found, creating new one");
+			}
+		}
+		
+		updateCertificateFields(birthCertificate, birtDtls.get(0));
 		
 		// Set certificate number for both free and paid downloads
 		birtDtls.get(0).setBirthcertificateno(birthCertRequest.getBirthCertificate().getBirthCertificateNo());

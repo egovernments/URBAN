@@ -170,65 +170,46 @@ public class DeathService {
 		}
 		deathDtls.get(0).setUser(userDetailResponse.getUser().get(0));
 		
-		// Check if certificate request already exists (for paid downloads with existing filestoreid)
-		DeathCertificate existingCertificate = null;
-		try {
-			existingCertificate = repository.getDeathCertReqByDeathDtlId(criteria.getId(), criteria.getTenantId());
-		} catch (Exception e) {
-			// Certificate request doesn't exist yet, will create new one
-			log.debug("Certificate request not found for deathDtlId: {}", criteria.getId());
-		}
-		
-		// If existing certificate found, check for filestoreid or PAID_PDF_GENERATED status
-		if (existingCertificate != null) {
-			// Case 1: PDF already generated - return immediately
-			if (existingCertificate.getFilestoreid() != null) {
-				updateCertificateFields(existingCertificate, deathDtls.get(0));
-				return existingCertificate;
-			}
-			
-			// Case 2: Status is PAID but PDF not yet generated (race condition)
-			// This happens when user clicks download immediately after payment
-			if (existingCertificate.getApplicationStatus() == StatusEnum.PAID) {
-				// Retry logic with exponential backoff
-				int maxRetries = 5;
-				long waitTime = 1000; // Start with 1 second
-				
-				for (int i = 0; i < maxRetries; i++) {
-					try {
-						Thread.sleep(waitTime);
-						existingCertificate = repository.getDeathCertReqByDeathDtlId(criteria.getId(), criteria.getTenantId());
-						
-						if (existingCertificate != null && existingCertificate.getFilestoreid() != null) {
-							log.info("PDF generated after {} retries for deathDtlId: {}", i + 1, criteria.getId());
-							updateCertificateFields(existingCertificate, deathDtls.get(0));
-							return existingCertificate;
-						}
-						
-						waitTime = (long)(waitTime * 1.5); // Exponential backoff
-					} catch (InterruptedException ie) {
-						Thread.currentThread().interrupt();
-						throw new CustomException("RETRY_INTERRUPTED", "PDF generation check was interrupted");
-					}
-				}
-				
-				// After retries, if still no PDF, return with message
-				throw new CustomException("PDF_GENERATION_IN_PROGRESS", 
-					"PDF is being generated. Please try downloading again in a few seconds.");
-			}
-		}
-		
-		// Create new certificate request (first time or no filestoreid yet)
+		// Create new certificate request for each download
 		DeathCertificate deathCertificate = new DeathCertificate();
 		deathCertificate.setSource(criteria.getSource().toString());
 		deathCertificate.setDeathDtlId(criteria.getId());
 		deathCertificate.setTenantId(criteria.getTenantId());
 		DeathCertRequest deathCertRequest = DeathCertRequest.builder().deathCertificate(deathCertificate).requestInfo(requestInfo).build();
 		
-		updateCertificateFields(deathCertificate, deathDtls.get(0));
-		
+		// Generate certificate number to check if payment just completed
 		enrichmentServiceDeath.enrichCreateRequest(deathCertRequest);
 		enrichmentServiceDeath.setIdgenIds(deathCertRequest);
+		String certificateNumber = deathCertRequest.getDeathCertificate().getDeathCertificateNo();
+		
+		// Quick check: if user just paid and PDF is being generated, return with message
+		if(deathDtls.get(0).getCounter() > 0) {
+			try {
+				DeathCertificate recentCert = repository.getDeathCertReqByConsumerCode(certificateNumber, requestInfo, criteria.getTenantId());
+				if(recentCert != null) {
+					if(recentCert.getApplicationStatus() == StatusEnum.PAID_PDF_GENERATED && recentCert.getFilestoreid() != null) {
+						// PDF ready - return it
+						updateCertificateFields(recentCert, deathDtls.get(0));
+						return recentCert;
+					} else if(recentCert.getApplicationStatus() == StatusEnum.PAID) {
+						// PDF being generated
+						throw new CustomException("PDF_GENERATION_IN_PROGRESS", 
+							"Your PDF is being generated. Please try downloading again in a few seconds.");
+					} else if(recentCert.getApplicationStatus() == StatusEnum.ACTIVE) {
+						// Payment pending - return existing certificate
+						updateCertificateFields(recentCert, deathDtls.get(0));
+						return recentCert;
+					}
+				}
+			} catch (CustomException ce) {
+				throw ce; // Re-throw our custom exceptions
+			} catch (Exception e) {
+				// Certificate doesn't exist yet, continue with new creation
+				log.debug("No existing certificate found, creating new one");
+			}
+		}
+		
+		updateCertificateFields(deathCertificate, deathDtls.get(0));
 		
 		// Set certificate number for both free and paid downloads
 		deathDtls.get(0).setDeathcertificateno(deathCertRequest.getDeathCertificate().getDeathCertificateNo());

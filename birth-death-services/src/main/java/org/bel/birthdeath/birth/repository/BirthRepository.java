@@ -299,26 +299,6 @@ public class BirthRepository {
 	}
 	return null;
 	}
-	
-	public BirthCertificate getBirthCertReqByBirthDtlId(String birthDtlId, String tenantId) {
-		try {
-			String query = "SELECT * FROM {schema}.eg_birth_cert_request WHERE birth_dtl_id=? AND tenantid=?";
-			try {
-				query = centralInstanceUtil.replaceSchemaPlaceholder(query, tenantId);
-			} catch (InvalidTenantIdException e) {
-				throw new CustomException("BIRTHCERT_SEARCH_TENANTID_ERROR",
-						"TenantId length is not sufficient to replace query schema in a multi state instance");
-			}
-			List<BirthCertificate> birthCerts = jdbcTemplate.query(query, new Object[]{birthDtlId, tenantId}, birthCertRowMapper);
-			if (null != birthCerts && !birthCerts.isEmpty()) {
-				return birthCerts.get(0);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new CustomException("invalid_data","Invalid Data");
-		}
-		return null;
-	}
 
 	public void updateCounter(String birthDtlId,String tenantId) {
 		try {
