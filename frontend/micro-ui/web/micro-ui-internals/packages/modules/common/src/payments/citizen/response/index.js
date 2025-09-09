@@ -25,6 +25,60 @@ export const SuccessfulPayment = (props)=>{
     "", {}, tenantId, { applicationNo: consumerCode }, {}, {enabled: isBpaFlow}
   );
 
+  // Function to trigger _getfilestoreid API for death certificates after payment success
+  const triggerDeathCertificateFileStoreIdAfterPayment = async (consumerCode, tenantId) => {
+    try {
+      console.log("*** TRIGGERING _getfilestoreid API for Death Certificate from Payment Success ***");
+      console.log("Consumer Code:", consumerCode);
+      console.log("Tenant ID:", tenantId);
+      
+      const user = Digit.UserService.getUser();
+      const userInfo = user?.info || user;
+      const authToken = user?.access_token || user?.authToken || "";
+      
+      const requestPayload = {
+        RequestInfo: {
+          apiId: "Rainmaker",
+          authToken: authToken,
+          userInfo: userInfo,
+          msgId: `${Date.now()}|en_IN`,
+          plainAccessRequest: {}
+        }
+      };
+
+      console.log("Request Payload:", requestPayload);
+      console.log("API URL:", `/birth-death-services/death/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(consumerCode)}`);
+
+      const response = await fetch(`/birth-death-services/death/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(consumerCode)}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestPayload)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("*** _getfilestoreid API Response from Payment Success ***");
+        console.log("Full Response:", data);
+        console.log("*** FILESTORE ID from Payment Success:", data?.filestoreId || "NOT FOUND");
+        
+        // Store the filestore ID for later use
+        if (data?.filestoreId) {
+          sessionStorage.setItem("DeathCertificateFileStoreId", data.filestoreId);
+          console.log("Filestore ID stored in sessionStorage from Payment Success");
+        }
+      } else {
+        const errorText = await response.text();
+        console.error("Failed to trigger _getfilestoreid API from Payment Success:");
+        console.error("Status:", response.status);
+        console.error("Error:", errorText);
+      }
+    } catch (error) {
+      console.error("Error triggering death certificate _getfilestoreid API from Payment Success:", error);
+    }
+  };
 
   
   const { isLoading, data, isError } = Digit.Hooks.usePaymentUpdate({ egId }, business_service, {
@@ -92,6 +146,45 @@ export const SuccessfulPayment = (props)=>{
   useEffect(() => {
     if (data && data.txnStatus && data.txnStatus !== "FAILURE") {
       setallowFetchBill(true);
+      
+      // Check for Pay and Download flow - Death or Birth certificates
+      const isDeathCert = business_service === "DEATH_CERT" || business_service === "DEATH_CERT.DEATH_CERT";
+      const isBirthCert = business_service === "BIRTH_CERT" || business_service === "BIRTH_CERT.BIRTH_CERT";
+      const storedDeathData = JSON.parse(sessionStorage.getItem("DeathApplicationData") || "{}");
+      const storedBirthData = JSON.parse(sessionStorage.getItem("BirthApplicationData") || "{}");
+      const isDeathPayAndDownload = isDeathCert && storedDeathData.id;
+      const isBirthPayAndDownload = isBirthCert && storedBirthData.id;
+      
+      if (isDeathPayAndDownload || isBirthPayAndDownload) {
+        console.log("*** PAY AND DOWNLOAD SUCCESS PAGE DETECTED ***");
+        console.log("Business Service:", business_service);
+        console.log("Death Pay and Download:", isDeathPayAndDownload);
+        console.log("Birth Pay and Download:", isBirthPayAndDownload);
+        console.log("Consumer Code from URL:", consumerCode);
+        console.log("Tenant ID:", tenantId);
+        console.log("Payment Data:", data);
+        
+        // Extract consumer code from payment response if available
+        const paymentConsumerCode = data?.payments?.Payments?.[0]?.paymentDetails?.[0]?.bill?.consumerCode;
+        if (paymentConsumerCode) {
+          console.log("*** Consumer Code from Payment Response:", paymentConsumerCode);
+        }
+        
+        // Trigger download process for death certificates
+        if (isDeathPayAndDownload) {
+          console.log("*** TRIGGERING DEATH CERTIFICATE DOWNLOAD PROCESS ***");
+          console.log("Death Certificate ID:", storedDeathData.id);
+          console.log("Hospital Name:", storedDeathData.hospitalName);
+          triggerDeathCertificateFileStoreIdAfterPayment(paymentConsumerCode || consumerCode, tenantId);
+        }
+        
+        // Trigger download process for birth certificates  
+        if (isBirthPayAndDownload) {
+          console.log("*** TRIGGERING BIRTH CERTIFICATE DOWNLOAD PROCESS ***");
+          console.log("Birth Certificate ID:", storedBirthData.id);
+          // Add birth certificate download trigger here if needed
+        }
+      }
     }
   }, [data]);
 
@@ -174,6 +267,115 @@ export const SuccessfulPayment = (props)=>{
     setPrinting(false);
   };
 
+
+    const downloadCertificateFromPayment = async (certificateType) => {
+    try {
+      // Step 1: Use consumer code for the new _getfilestoreid API from payment flow
+      const downloadConsumerCode = consumerCode;
+      
+      console.log(`Downloading ${certificateType} certificate from payment using consumer code:`, downloadConsumerCode);
+      console.log("Consumer Code (from payment):", consumerCode);
+      console.log("Tenant ID:", tenantId);
+
+      // Step 2: Prepare the API request
+      const user = Digit.UserService.getUser();
+      const userInfo = user?.info || user;
+      const authToken = user?.access_token || user?.authToken || "";
+      
+      const requestPayload = {
+        RequestInfo: {
+          apiId: "Rainmaker",
+          authToken: authToken,
+          userInfo: userInfo,
+          msgId: `${Date.now()}|en_IN`,
+          plainAccessRequest: {}
+        }
+      };
+
+      console.log(`Step 1: Getting filestore ID from ${certificateType} service using _getfilestoreid API...`);
+
+      // Step 3: Call birth/death service to get filestore ID using the new _getfilestoreid API
+      const serviceResponse = await fetch(`/birth-death-services/${certificateType}/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(downloadConsumerCode)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json, text/plain, */*',
+        },
+        body: JSON.stringify(requestPayload)
+      });
+
+      if (!serviceResponse.ok) {
+        const errorText = await serviceResponse.text();
+        console.error(`${certificateType} service error:`, serviceResponse.status, errorText);
+        alert(`Failed to get certificate info. Status: ${serviceResponse.status}`);
+        return;
+      }
+
+      const serviceData = await serviceResponse.json();
+      console.log(`${certificateType} service response:`, serviceData?.filestoreId);
+      console.log(`Full ${certificateType} response:`, serviceData);
+      
+      const filestoreId = serviceData?.filestoreId;
+      console.log("Extracted filestoreId:", filestoreId);
+      console.log("Type of filestoreId:", typeof filestoreId);
+      console.log("Is filestoreId truthy?", !!filestoreId);
+      
+      if (!filestoreId || filestoreId.trim() === "") {
+        console.error("No valid filestoreId in response:", serviceData);
+        alert(`Could not get download reference from ${certificateType} service.`);
+        return;
+      }
+
+      console.log("Step 2: Getting download URL from filestore service...");
+
+      const state = Digit.ULBService.getStateId();
+      console.log(`*** ${certificateType.toUpperCase()} LOG ***`, state);
+
+      // Step 4: Get the actual download URL from filestore service
+      const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${state}&fileStoreIds=${filestoreId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json;charset=utf-8',
+        }
+      });
+
+      if (!filestoreResponse.ok) {
+        const errorText = await filestoreResponse.text();
+        console.error("Filestore service error:", filestoreResponse.status, errorText);
+        alert(`Failed to get download URL. Status: ${filestoreResponse.status}`);
+        return;
+      }
+
+      const filestoreData = await filestoreResponse.json();
+      console.log("Filestore service response:", filestoreData);
+      
+      const fileUrl = filestoreData?.fileStoreIds?.[0]?.url;
+      if (!fileUrl) {
+        console.error("No download URL in filestore response:", filestoreData);
+        alert("Could not get download URL from filestore service.");
+        return;
+      }
+
+      // Step 5: Trigger the download
+      console.log("Step 3: Initiating download...");
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.target = '_blank';
+      link.download = `${certificateType}_certificate_${downloadConsumerCode.replace(/\//g, "_")}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      console.log(`${certificateType} certificate download initiated successfully`);
+      
+    } catch (error) {
+      console.error(`Error downloading ${certificateType} certificate:`, error);
+      alert(`Error downloading ${certificateType} certificate: ${error.message}`);
+    }
+  };
+
   const downloadBirthCertificate = async () => {
     try {
       // Step 1: Get the actual birth certificate ID (from Pay and Download selection)
@@ -241,12 +443,15 @@ export const SuccessfulPayment = (props)=>{
 
       console.log("Step 2: Getting download URL from filestore service...");
       console.log("Filestore ID:", filestoreId);
+      console.log("Filestore API URL:", `/filestore/v1/files/url?tenantId=${tenantId}&fileStoreIds=${filestoreId}`);
 
       // Step 4: Get the actual download URL from filestore service
       const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${tenantId}&fileStoreIds=${filestoreId}`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
+          'Accept': 'application/json, text/plain, */*',
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json;charset=utf-8',
         }
       });
 
@@ -287,25 +492,14 @@ export const SuccessfulPayment = (props)=>{
 
   const downloadDeathCertificate = async () => {
     try {
-      // Step 1: Get the actual death certificate ID (from Pay and Download selection)
-      const storedDeathData = JSON.parse(sessionStorage.getItem("DeathApplicationData") || "{}");
+      // Step 1: Use consumer code for the new _getfilestoreid API
+      const downloadConsumerCode = consumerCode;
       
-      // Priority: Use the stored death certificate ID from the Pay and Download selection
-      let deathCertificateId = storedDeathData.id || storedDeathData.deathCertificateId;
-      
-      console.log("Stored death application data:", storedDeathData);
-      console.log("Death Certificate ID from storage:", deathCertificateId);
-      console.log("Consumer Code (receipt number):", consumerCode);
+      console.log("Downloading death certificate using consumer code:", downloadConsumerCode);
+      console.log("Consumer Code from URL:", consumerCode);
       console.log("Tenant ID:", tenantId);
-      
-      // If no stored ID, show error message (consumer code is not the certificate ID)
-      if (!deathCertificateId) {
-        console.error("Death certificate ID not found in stored data");
-        alert("Death certificate ID not found. This usually means the payment was not initiated from the certificate search page. Please go to My Applications to download your certificate.");
-        return;
-      }
 
-      // Step 2: Prepare the API request to get filestore ID
+      // Step 2: Prepare the API request to get filestore ID using _getfilestoreid API
       const user = Digit.UserService.getUser();
       const userInfo = user?.info || user;
       const authToken = user?.access_token || user?.authToken || "";
@@ -320,11 +514,11 @@ export const SuccessfulPayment = (props)=>{
         }
       };
 
-      console.log("Step 1: Getting filestore ID from death service...");
-      console.log("API URL:", `/birth-death-services/death/_download?tenantId=${tenantId}&id=${deathCertificateId}&source=web`);
+      console.log("Step 1: Getting filestore ID from death service using _getfilestoreid API...");
+      console.log("API URL:", `/birth-death-services/death/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(downloadConsumerCode)}`);
 
-      // Step 3: Call death service to get filestore ID
-      const deathResponse = await fetch(`/birth-death-services/death/_download?tenantId=${tenantId}&id=${deathCertificateId}&source=web`, {
+      // Step 3: Call death service to get filestore ID using the new _getfilestoreid API
+      const deathResponse = await fetch(`/birth-death-services/death/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(downloadConsumerCode)}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -341,23 +535,31 @@ export const SuccessfulPayment = (props)=>{
       }
 
       const deathData = await deathResponse.json();
-      console.log("Death service response:", deathData);
+      console.log("Death service response:", deathData.filestoreId);
+      console.log("Full death response:", deathData);
       
       const filestoreId = deathData?.filestoreId;
-      if (!filestoreId) {
-        console.error("No filestoreId in response:", deathData);
+      console.log("Extracted filestoreId:", filestoreId);
+      console.log("Type of filestoreId:", typeof filestoreId);
+      console.log("Is filestoreId truthy?", !!filestoreId);
+      
+      if (!filestoreId || filestoreId.trim() === "") {
+        console.error("No valid filestoreId in response:", deathData);
         alert("Could not get download reference from death service.");
         return;
       }
 
       console.log("Step 2: Getting download URL from filestore service...");
       console.log("Filestore ID:", filestoreId);
+      console.log("Filestore API URL:", `/filestore/v1/files/url?tenantId=${tenantId}&fileStoreIds=${filestoreId}`);
 
       // Step 4: Get the actual download URL from filestore service
       const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${tenantId}&fileStoreIds=${filestoreId}`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
+          'Accept': 'application/json, text/plain, */*',
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json;charset=utf-8',
         }
       });
 
@@ -383,7 +585,7 @@ export const SuccessfulPayment = (props)=>{
       const link = document.createElement('a');
       link.href = fileUrl;
       link.target = '_blank';
-      link.download = `death_certificate_${deathCertificateId.replace(/\//g, "_")}.pdf`;
+      link.download = `death_certificate_${downloadConsumerCode.replace(/\//g, "_")}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -623,8 +825,8 @@ export const SuccessfulPayment = (props)=>{
           {t("CS_COMMON_DOWNLOAD_RECEIPT")}
         </div>
       ) : null}
-      {business_service == "DEATH_CERT" && JSON.parse(sessionStorage.getItem("DeathApplicationData") || "{}")?.id ? (
-        <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"15px" }} onClick={downloadDeathCertificate}>
+      {business_service == "DEATH_CERT" ? (
+        <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"15px" }} onClick={downloadCertificateFromPayment('death')}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />
@@ -642,7 +844,7 @@ export const SuccessfulPayment = (props)=>{
         </div>
       ) : null}
       {(business_service == "BIRTH_CERT.BIRTH_CERT" || business_service == "BIRTH_CERT") && JSON.parse(sessionStorage.getItem("BirthApplicationData") || "{}")?.id ? (
-        <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"15px" }} onClick={downloadBirthCertificate}>
+        <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"15px" }} onClick={downloadCertificateFromPayment('birth')}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />
@@ -720,6 +922,7 @@ const PaymentComponent = (props) => {
   const { eg_pg_txnid: egId, workflow: workflw, propertyId } = Digit.Hooks.useQueryParams();
   const [printing, setPrinting] = useState(false);
   const [allowFetchBill, setallowFetchBill] = useState(false);
+  const [autoDownloadTriggered, setAutoDownloadTriggered] = useState(false);
   const { businessService: business_service, consumerCode, tenantId } = useParams();
   const isBpaFlow = (window.location.href.includes("bpa") || window.location.href.includes("BPA")) && !window.location.href.includes("BPAREG");
   const { data: bpaData = {}, isLoading: isBpaSearchLoading, isSuccess: isBpaSuccess, error: bpaerror } = Digit.Hooks.obps.useOBPSSearch(
@@ -775,6 +978,98 @@ const PaymentComponent = (props) => {
       setallowFetchBill(true);
     }
   }, [data]);
+
+  // Auto-trigger download for Pay and Download flows
+  useEffect(() => {
+    const autoTriggerDownload = async () => {
+      console.log("=== AUTO-DOWNLOAD USEEFFECT TRIGGERED ===");
+      console.log("autoDownloadTriggered:", autoDownloadTriggered);
+      console.log("data:", !!data);
+      console.log("data.txnStatus:", data?.txnStatus);
+      console.log("reciept_data:", !!reciept_data);
+      console.log("isLoading:", isLoading);
+      console.log("recieptDataLoading:", recieptDataLoading);
+      
+      // Prevent multiple triggers
+      if (autoDownloadTriggered) {
+        console.log("Auto-download already triggered, skipping...");
+        return;
+      }
+      
+      // Only trigger if payment is successful
+      if (!data || !data.txnStatus || data.txnStatus === "FAILURE") {
+        console.log("Payment not successful or data not ready, skipping auto-download");
+        return;
+      }
+
+      // Check if this is a Pay and Download flow
+      const urlParams = new URLSearchParams(window.location.search);
+      const workflow = urlParams.get('workflow');
+      
+      // Check navigation state for Pay and Download flags
+      const navigationState = window.history?.state?.state;
+      const isPayAndDownload = navigationState?.isPayAndDownload;
+      const payAndDownloadSource = navigationState?.payAndDownloadSource;
+      
+      // Check session storage for stored certificate data
+      const deathData = JSON.parse(sessionStorage.getItem("DeathApplicationData") || "{}");
+      const birthData = JSON.parse(sessionStorage.getItem("BirthApplicationData") || "{}");
+      
+      console.log("=== AUTO-DOWNLOAD CHECK ===");
+      console.log("Workflow from URL:", workflow);
+      console.log("Navigation state - isPayAndDownload:", isPayAndDownload);
+      console.log("Navigation state - payAndDownloadSource:", payAndDownloadSource);
+      console.log("Navigation state (full):", navigationState);
+      console.log("Death certificate data:", deathData);
+      console.log("Birth certificate data:", birthData);
+      console.log("Business service:", business_service);
+      console.log("Payment status:", data.txnStatus);
+      console.log("Current URL:", window.location.href);
+      
+      // Auto-trigger download for death certificates
+      if (
+        (workflow === 'death' || business_service === 'DEATH_CERT') &&
+        (isPayAndDownload || payAndDownloadSource === 'death' || deathData.id)
+      ) {
+        console.log("🚀 Auto-triggering death certificate download...");
+        setAutoDownloadTriggered(true);
+        setTimeout(() => {
+          console.log("Executing death certificate download now...");
+          downloadCertificateFromPayment('death');
+        }, 1500); // Slightly longer delay
+      }
+      
+      // Auto-trigger download for birth certificates
+      else if (
+        (workflow === 'birth' || business_service === 'BIRTH_CERT' || business_service === 'BIRTH_CERT.BIRTH_CERT') &&
+        (isPayAndDownload || payAndDownloadSource === 'birth' || birthData.id)
+      ) {
+        console.log("🚀 Auto-triggering birth certificate download...");
+        setAutoDownloadTriggered(true);
+        setTimeout(() => {
+          console.log("Executing birth certificate download now...");
+          downloadCertificateFromPayment('birth');
+        }, 1500); // Slightly longer delay
+      } else {
+        console.log("❌ Auto-download conditions not met");
+        console.log("Death condition:", (workflow === 'death' || business_service === 'DEATH_CERT'), "&&", (isPayAndDownload || payAndDownloadSource === 'death' || deathData.id));
+        console.log("Birth condition:", (workflow === 'birth' || business_service === 'BIRTH_CERT' || business_service === 'BIRTH_CERT.BIRTH_CERT'), "&&", (isPayAndDownload || payAndDownloadSource === 'birth' || birthData.id));
+      }
+    };
+
+    // Only run if data is loaded and receipt data is available
+    if (data && reciept_data && !isLoading && !recieptDataLoading) {
+      console.log("All conditions met, calling autoTriggerDownload...");
+      autoTriggerDownload();
+    } else {
+      console.log("Conditions not met for auto-trigger:", {
+        hasData: !!data,
+        hasReceiptData: !!reciept_data,
+        isLoading,
+        recieptDataLoading
+      });
+    }
+  }, [data, reciept_data, isLoading, recieptDataLoading, business_service, autoDownloadTriggered]);
 
   // Show loader until bpaData is loaded and valid if BPA is in the URL
   if (isBpaFlow && (isBpaSearchLoading || !bpaData || !Array.isArray(bpaData) || bpaData.length === 0)) {
@@ -853,25 +1148,16 @@ const PaymentComponent = (props) => {
     setPrinting(false);
   };
 
-  const downloadBirthCertificateFromPayment = async () => {
+
+
+  const downloadCertificateFromPayment = async (certificateType) => {
     try {
-      // Step 1: Get the actual birth certificate ID (from Pay and Download selection)
-      const storedBirthData = JSON.parse(sessionStorage.getItem("BirthApplicationData") || "{}");
+      // Step 1: Use consumer code for the new _getfilestoreid API from payment flow
+      const downloadConsumerCode = consumerCode;
       
-      // Priority: Use the stored birth certificate ID from the Pay and Download selection
-      let birthCertificateId = storedBirthData.id || storedBirthData.birthCertificateId;
-      
-      console.log("Stored birth application data:", storedBirthData);
-      console.log("Birth Certificate ID from storage:", birthCertificateId);
-      console.log("Consumer Code (receipt number):", consumerCode);
+      console.log(`Downloading ${certificateType} certificate from payment using consumer code:`, downloadConsumerCode);
+      console.log("Consumer Code (from payment):", consumerCode);
       console.log("Tenant ID:", tenantId);
-      
-      // If no stored ID, show error message (consumer code is not the certificate ID)
-      if (!birthCertificateId) {
-        console.error("Birth certificate ID not found in stored data");
-        alert("Birth certificate ID not found. This usually means the payment was not initiated from the certificate search page. Please go to My Applications to download your certificate.");
-        return;
-      }
 
       // Step 2: Prepare the API request
       const user = Digit.UserService.getUser();
@@ -888,10 +1174,10 @@ const PaymentComponent = (props) => {
         }
       };
 
-      console.log("Step 1: Getting filestore ID from birth service...");
+      console.log(`Step 1: Getting filestore ID from ${certificateType} service using _getfilestoreid API...`);
 
-      // Step 3: Call birth service to get filestore ID
-      const birthResponse = await fetch(`/birth-death-services/birth/_download?tenantId=${tenantId}&id=${birthCertificateId}&source=web`, {
+      // Step 3: Call birth/death service to get filestore ID using the new _getfilestoreid API
+      const serviceResponse = await fetch(`/birth-death-services/${certificateType}/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(downloadConsumerCode)}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -900,30 +1186,40 @@ const PaymentComponent = (props) => {
         body: JSON.stringify(requestPayload)
       });
 
-      if (!birthResponse.ok) {
-        const errorText = await birthResponse.text();
-        console.error("Birth service error:", birthResponse.status, errorText);
-        alert(`Failed to get certificate info. Status: ${birthResponse.status}`);
+      if (!serviceResponse.ok) {
+        const errorText = await serviceResponse.text();
+        console.error(`${certificateType} service error:`, serviceResponse.status, errorText);
+        alert(`Failed to get certificate info. Status: ${serviceResponse.status}`);
         return;
       }
 
-      const birthData = await birthResponse.json();
-      console.log("Birth service response:", birthData);
+      const serviceData = await serviceResponse.json();
+      console.log(`${certificateType} service response:`, serviceData?.filestoreId);
+      console.log(`Full ${certificateType} response:`, serviceData);
       
-      const filestoreId = birthData?.filestoreId;
-      if (!filestoreId) {
-        console.error("No filestoreId in response:", birthData);
-        alert("Could not get download reference from birth service.");
+      const filestoreId = serviceData?.filestoreId;
+      console.log("Extracted filestoreId:", filestoreId);
+      console.log("Type of filestoreId:", typeof filestoreId);
+      console.log("Is filestoreId truthy?", !!filestoreId);
+      
+      if (!filestoreId || filestoreId.trim() === "") {
+        console.error("No valid filestoreId in response:", serviceData);
+        alert(`Could not get download reference from ${certificateType} service.`);
         return;
       }
 
       console.log("Step 2: Getting download URL from filestore service...");
 
+      const state = Digit.ULBService.getStateId();
+      console.log(`*** ${certificateType.toUpperCase()} LOG ***`, state);
+
       // Step 4: Get the actual download URL from filestore service
-      const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${tenantId}&fileStoreIds=${filestoreId}`, {
+      const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${state}&fileStoreIds=${filestoreId}`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
+          'Accept': 'application/json, text/plain, */*',
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json;charset=utf-8',
         }
       });
 
@@ -949,125 +1245,16 @@ const PaymentComponent = (props) => {
       const link = document.createElement('a');
       link.href = fileUrl;
       link.target = '_blank';
-      link.download = `birth_certificate_${birthCertificateId.replace(/\//g, "_")}.pdf`;
+      link.download = `${certificateType}_certificate_${downloadConsumerCode.replace(/\//g, "_")}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       
-      console.log("Birth certificate download initiated successfully");
+      console.log(`${certificateType} certificate download initiated successfully`);
       
     } catch (error) {
-      console.error("Error downloading birth certificate:", error);
-      alert(`Error downloading birth certificate: ${error.message}`);
-    }
-  };
-
-  const downloadDeathCertificateFromPayment = async () => {
-    try {
-      // Step 1: Get the actual death certificate ID (from Pay and Download selection)
-      const storedDeathData = JSON.parse(sessionStorage.getItem("DeathApplicationData") || "{}");
-      
-      // Priority: Use the stored death certificate ID from the Pay and Download selection
-      let deathCertificateId = storedDeathData.id || storedDeathData.deathCertificateId;
-      
-      console.log("Stored death application data:", storedDeathData);
-      console.log("Death Certificate ID from storage:", deathCertificateId);
-      console.log("Consumer Code (receipt number):", consumerCode);
-      console.log("Tenant ID:", tenantId);
-      
-      // If no stored ID, show error message (consumer code is not the certificate ID)
-      if (!deathCertificateId) {
-        console.error("Death certificate ID not found in stored data");
-        alert("Death certificate ID not found. This usually means the payment was not initiated from the certificate search page. Please go to My Applications to download your certificate.");
-        return;
-      }
-
-      // Step 2: Prepare the API request
-      const user = Digit.UserService.getUser();
-      const userInfo = user?.info || user;
-      const authToken = user?.access_token || user?.authToken || "";
-      
-      const requestPayload = {
-        RequestInfo: {
-          apiId: "Rainmaker",
-          authToken: authToken,
-          userInfo: userInfo,
-          msgId: `${Date.now()}|en_IN`,
-          plainAccessRequest: {}
-        }
-      };
-
-      console.log("Step 1: Getting filestore ID from death service...");
-
-      // Step 3: Call death service to get filestore ID
-      const deathResponse = await fetch(`/birth-death-services/death/_download?tenantId=${tenantId}&id=${deathCertificateId}&source=web`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json, text/plain, */*',
-        },
-        body: JSON.stringify(requestPayload)
-      });
-
-      if (!deathResponse.ok) {
-        const errorText = await deathResponse.text();
-        console.error("Death service error:", deathResponse.status, errorText);
-        alert(`Failed to get certificate info. Status: ${deathResponse.status}`);
-        return;
-      }
-
-      const deathData = await deathResponse.json();
-      console.log("Death service response:", deathData);
-      
-      const filestoreId = deathData?.filestoreId;
-      if (!filestoreId) {
-        console.error("No filestoreId in response:", deathData);
-        alert("Could not get download reference from death service.");
-        return;
-      }
-
-      console.log("Step 2: Getting download URL from filestore service...");
-
-      // Step 4: Get the actual download URL from filestore service
-      const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${tenantId}&fileStoreIds=${filestoreId}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        }
-      });
-
-      if (!filestoreResponse.ok) {
-        const errorText = await filestoreResponse.text();
-        console.error("Filestore service error:", filestoreResponse.status, errorText);
-        alert(`Failed to get download URL. Status: ${filestoreResponse.status}`);
-        return;
-      }
-
-      const filestoreData = await filestoreResponse.json();
-      console.log("Filestore service response:", filestoreData);
-      
-      const fileUrl = filestoreData?.fileStoreIds?.[0]?.url;
-      if (!fileUrl) {
-        console.error("No download URL in filestore response:", filestoreData);
-        alert("Could not get download URL from filestore service.");
-        return;
-      }
-
-      // Step 5: Trigger the download
-      console.log("Step 3: Initiating download...");
-      const link = document.createElement('a');
-      link.href = fileUrl;
-      link.target = '_blank';
-      link.download = `death_certificate_${deathCertificateId.replace(/\//g, "_")}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      console.log("Death certificate download initiated successfully");
-      
-    } catch (error) {
-      console.error("Error downloading death certificate:", error);
-      alert(`Error downloading death certificate: ${error.message}`);
+      console.error(`Error downloading ${certificateType} certificate:`, error);
+      alert(`Error downloading ${certificateType} certificate: ${error.message}`);
     }
   };
 
@@ -1119,8 +1306,8 @@ const PaymentComponent = (props) => {
                     </svg>
                     {t("CS_COMMON_PRINT_RECEIPT")}
                   </div>
-                  {business_service == "DEATH_CERT" && JSON.parse(sessionStorage.getItem("DeathApplicationData") || "{}")?.id ? (
-                    <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"0px" }} onClick={downloadDeathCertificateFromPayment}>
+                  {business_service == "DEATH_CERT" ? (
+                    <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"0px" }} onClick={() => downloadCertificateFromPayment('death')}>
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
                         <path d="M0 0h24v24H0V0z" fill="none" />
                         <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />
@@ -1128,8 +1315,8 @@ const PaymentComponent = (props) => {
                       {t("BND_DEATH_CERTIFICATE")}
                     </div>
                   ) : null}
-                  {(business_service == "BIRTH_CERT.BIRTH_CERT" || business_service == "BIRTH_CERT") && JSON.parse(sessionStorage.getItem("BirthApplicationData") || "{}")?.id ? (
-                    <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"0px" }} onClick={downloadBirthCertificateFromPayment}>
+                  {(business_service == "BIRTH_CERT.BIRTH_CERT" || business_service == "BIRTH_CERT") ? (
+                    <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginTop:"0px" }} onClick={() => downloadCertificateFromPayment('birth')}>
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
                         <path d="M0 0h24v24H0V0z" fill="none" />
                         <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />

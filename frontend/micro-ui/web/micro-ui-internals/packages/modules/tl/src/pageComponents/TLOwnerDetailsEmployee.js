@@ -204,7 +204,7 @@ const OwnerForm = (_props) => {
                           type={"text"}
                           isMandatory={false}
                           value={props.value}
-                          disable={isSameAsPropertyOwner}
+                          disable={isSameAsPropertyOwner && index === 0}
                           maxlength={64}
                           autoFocus={focusIndex.index === owner?.key && focusIndex.type === "instituionName"}
                           errorStyle={localFormState.touched.instituionName && errors?.instituionName?.message ? true : false}
@@ -326,7 +326,7 @@ const OwnerForm = (_props) => {
                         isMandatory={false}
                         name="mobileNumber"
                         value={props.value}
-                        disable={isSameAsPropertyOwner}
+                        disable={isSameAsPropertyOwner && index === 0}
                         errorStyle={localFormState.touched.mobileNumber && errors?.mobileNumber?.message ? true : false}
                         autoFocus={focusIndex.index === owner?.key && focusIndex.type === "mobileNumber"}
                         onChange={(e)=>{
@@ -429,7 +429,7 @@ const OwnerForm = (_props) => {
                             setFocusIndex({ index: -1 });
                             props.onBlur(e);
                           }}
-                          disable={isSameAsPropertyOwner}
+                          disable={isSameAsPropertyOwner && index === 0}
                           style={isMulitpleOwners ? { background: "#FAFAFA" } : ""}
                         />
                       )}
@@ -459,7 +459,7 @@ const OwnerForm = (_props) => {
                           }}
                           labelStyle={{ marginTop: "unset", border: "1px solid #464646", borderRight: "none" }}
                           onBlur={props.onBlur}
-                          disable={isSameAsPropertyOwner}
+                          disable={isSameAsPropertyOwner && index === 0}
                           errorStyle={localFormState.touched.mobileNumber && errors?.mobileNumber?.message ? true : false}
                           style={isMulitpleOwners ? { background: "#FAFAFA" } : ""}
                         />
@@ -488,7 +488,7 @@ const OwnerForm = (_props) => {
                             // props.onChange(e);
                             setFocusIndex({ index: owner.key, type: "fatherOrHusbandName" });
                           }}
-                          disable={isSameAsPropertyOwner}
+                          disable={isSameAsPropertyOwner && index === 0}
                           onBlur={props.onBlur}
                         />
                       )}
@@ -516,7 +516,7 @@ const OwnerForm = (_props) => {
                           props.onChange(e);
                         }}
                         onBlur={props.onBlur}
-                        disable={isSameAsPropertyOwner}
+                        disable={isSameAsPropertyOwner && index === 0}
                         option={[
                           { i18nKey: "COMMON_RELATION_FATHER", code: "FATHER" },
                           { i18nKey: "COMMON_RELATION_HUSBAND", code: "HUSBAND" },
@@ -539,7 +539,7 @@ const OwnerForm = (_props) => {
                       <Dropdown
                         className="form-field"
                         selected={props.value}
-                        disable={isSameAsPropertyOwner}
+                        disable={isSameAsPropertyOwner && index === 0}
                         errorStyle={localFormState.touched.gender && errors?.gender?.message ? true : false}
                         select={(e) => {
                           if (e?.code != owner?.gender?.code && isRenewal) setPreviousLicenseDetails({ ...previousLicenseDetails, checkForRenewal: true });
@@ -575,7 +575,7 @@ const OwnerForm = (_props) => {
                           }}
                           labelStyle={{ marginTop: "unset" }}
                           onBlur={props.onBlur}
-                          disable={isSameAsPropertyOwner}
+                          disable={isSameAsPropertyOwner && index === 0}
                           style={isMulitpleOwners ? { background: "#FAFAFA" } : ""}
                         />
                       )}
@@ -601,7 +601,7 @@ const OwnerForm = (_props) => {
                           props.onChange(e);
                         }}
                         onBlur={props.onBlur}
-                        disable={isSameAsPropertyOwner}
+                        disable={isSameAsPropertyOwner && index === 0}
                         option={ownerTypesMenu ? ownerTypesMenu.sort((a, b) => a.name.localeCompare(b.name)) : []}
 
                         optionKey="i18nKey"
@@ -630,7 +630,7 @@ const OwnerForm = (_props) => {
                             setFocusIndex({ index: owner.key, type: "permanentAddress" });
                           }}
                           onBlur={props.onBlur}
-                          disable={isSameAsPropertyOwner}
+                          disable={isSameAsPropertyOwner && index === 0}
                           style={isMulitpleOwners ? { background: "#FAFAFA" } : ""}
                         />
                       )}

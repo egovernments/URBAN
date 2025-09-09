@@ -55,22 +55,48 @@ const NewApplication = () => {
 
   function checkforownerPresent(formData){
     if(formData?.owners){
-      formData?.owners?.map((ob) => {
-        if(!ob?.name || !ob.mobileNumber || !ob?.fatherOrHusbandName || !ob?.relationship?.code || ob?.gender?.code)
-        {
-          return true;
+      let hasInvalidOwner = false;
+      formData?.owners?.forEach((ob) => {
+        // Check for institutional owners
+        if(formData?.ownershipCategory?.code?.includes("INSTITUTIONAL")) {
+          if(!ob?.instituionName || !ob?.subOwnerShipCategory?.code || !ob?.name || !ob?.mobileNumber) {
+            hasInvalidOwner = true;
+          }
+          // Validate mobile number format for institutional
+          if(ob?.mobileNumber && !/^([6-9]{1}[0-9]{9})$/.test(ob.mobileNumber)) {
+            hasInvalidOwner = true;
+          }
+        } else {
+          // Check for individual owners
+          if(!ob?.name || !ob?.mobileNumber || !ob?.fatherOrHusbandName || !ob?.relationship?.code || !ob?.gender?.code) {
+            hasInvalidOwner = true;
+          }
+          // Validate mobile number format for individual
+          if(ob?.mobileNumber && !/^[6789]\d{9}$/.test(ob.mobileNumber)) {
+            hasInvalidOwner = true;
+          }
         }
-      })
-      return false;
+      });
+      return hasInvalidOwner;
     }
+    return false;
   }
 
   const onFormValueChange = (setValue, formData, formState) => {
     if (!_.isEqual(sessionFormData, formData)) {
       setSessionFormData({ ...sessionFormData, ...formData });
     }
-    if(checkforownerPresent(formData))
+    
+    const hasOwnerIssues = checkforownerPresent(formData);
+    console.log("*** TL FORM VALIDATION ***");
+    console.log("Owner issues found:", hasOwnerIssues);
+    console.log("Form errors:", formState.errors);
+    console.log("Owners data:", formData?.owners);
+    console.log("Can submit:", !hasOwnerIssues && !Object.keys(formState.errors).length);
+    
+    if(hasOwnerIssues)
     {
+      console.log("Disabling submit due to owner validation issues");
       setSubmitValve(false);
     }
     else if (
@@ -79,9 +105,12 @@ const NewApplication = () => {
       formState.errors["owners"] &&
       Object.entries(formState.errors["owners"].type).filter((ob) => ob?.[1].type === "required").length == 0
     ) {
+      console.log("Enabling submit - only non-required owner errors");
       setSubmitValve(true);
     } else {
-      setSubmitValve(!Object.keys(formState.errors).length);
+      const canSubmit = !Object.keys(formState.errors).length;
+      console.log("Setting submit valve based on form errors:", canSubmit);
+      setSubmitValve(canSubmit);
     }
   };
   const onSubmit = (data) => {
