@@ -19,6 +19,14 @@ export const SuccessfulPayment = (props) => {
   let { consumerCode, receiptNumber, businessService } = useParams();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   receiptNumber = receiptNumber.replace(/%2F/g, "/");
+  consumerCode = decodeURIComponent(consumerCode);
+  
+  console.log("*** EMPLOYEE PAYMENT SUCCESS PAGE ***");
+  console.log("Raw consumerCode from useParams:", useParams().consumerCode);
+  console.log("Decoded consumerCode:", consumerCode);
+  console.log("Receipt Number:", receiptNumber);
+  console.log("Business Service:", businessService);
+  console.log("Tenant ID:", tenantId);
   const { data = {}, isLoading: isBpaSearchLoading, isSuccess: isBpaSuccess, error: bpaerror } = Digit.Hooks.obps.useOBPSSearch(
     "",
     {},
@@ -28,7 +36,7 @@ export const SuccessfulPayment = (props) => {
     { enabled: businessService?.includes("BPA") ? true : false }
   );
   const FSM_EDITOR = Digit.UserService.hasAccess("FSM_EDITOR_EMP") || false;
-
+console.log("*** LogapplicationNo ===> ", useParams());
   function onActionSelect(action) {
     setSelectedAction(action);
     setDisplayMenu(false);
@@ -158,6 +166,114 @@ export const SuccessfulPayment = (props) => {
     }
   };
 
+  const downloadCertificateFromPayment = async (certificateType) => {
+    try {
+      // Step 1: Use consumer code for the new _getfilestoreid API from payment flow
+      const downloadConsumerCode = consumerCode;
+      
+      console.log(`Downloading ${certificateType} certificate from payment using consumer code:`, downloadConsumerCode);
+      console.log("Consumer Code (from payment):", consumerCode);
+      console.log("Tenant ID:", tenantId);
+
+      // Step 2: Prepare the API request
+      const user = Digit.UserService.getUser();
+      const userInfo = user?.info || user;
+      const authToken = user?.access_token || user?.authToken || "";
+      
+      const requestPayload = {
+        RequestInfo: {
+          apiId: "Rainmaker",
+          authToken: authToken,
+          userInfo: userInfo,
+          msgId: `${Date.now()}|en_IN`,
+          plainAccessRequest: {}
+        }
+      };
+
+      console.log(`Step 1: Getting filestore ID from ${certificateType} service using _getfilestoreid API...`);
+
+      // Step 3: Call birth/death service to get filestore ID using the new _getfilestoreid API
+      const serviceResponse = await fetch(`/birth-death-services/${certificateType}/_getfilestoreid?tenantId=${tenantId}&consumerCode=${encodeURIComponent(downloadConsumerCode)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json, text/plain, */*',
+        },
+        body: JSON.stringify(requestPayload)
+      });
+
+      if (!serviceResponse.ok) {
+        const errorText = await serviceResponse.text();
+        console.error(`${certificateType} service error:`, serviceResponse.status, errorText);
+        alert(`Failed to get certificate info. Status: ${serviceResponse.status}`);
+        return;
+      }
+
+      const serviceData = await serviceResponse.json();
+      console.log(`${certificateType} service response:`, serviceData?.filestoreId);
+      console.log(`Full ${certificateType} response:`, serviceData);
+      
+      const filestoreId = serviceData?.filestoreId;
+      console.log("Extracted filestoreId:", filestoreId);
+      console.log("Type of filestoreId:", typeof filestoreId);
+      console.log("Is filestoreId truthy?", !!filestoreId);
+      
+      if (!filestoreId || filestoreId.trim() === "") {
+        console.error("No valid filestoreId in response:", serviceData);
+        alert(`Could not get download reference from ${certificateType} service.`);
+        return;
+      }
+
+      console.log("Step 2: Getting download URL from filestore service...");
+
+      const state = Digit.ULBService.getStateId();
+      console.log(`*** ${certificateType.toUpperCase()} LOG ***`, state);
+
+      // Step 4: Get the actual download URL from filestore service
+      const filestoreResponse = await fetch(`/filestore/v1/files/url?tenantId=${state}&fileStoreIds=${filestoreId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json;charset=utf-8',
+        }
+      });
+
+      if (!filestoreResponse.ok) {
+        const errorText = await filestoreResponse.text();
+        console.error("Filestore service error:", filestoreResponse.status, errorText);
+        alert(`Failed to get download URL. Status: ${filestoreResponse.status}`);
+        return;
+      }
+
+      const filestoreData = await filestoreResponse.json();
+      console.log("Filestore service response:", filestoreData);
+      
+      const fileUrl = filestoreData?.fileStoreIds?.[0]?.url;
+      if (!fileUrl) {
+        console.error("No download URL in filestore response:", filestoreData);
+        alert("Could not get download URL from filestore service.");
+        return;
+      }
+
+      // Step 5: Trigger the download
+      console.log("Step 3: Initiating download...");
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.target = '_blank';
+      link.download = `${certificateType}_certificate_${downloadConsumerCode.replace(/\//g, "_")}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      console.log(`${certificateType} certificate download initiated successfully`);
+      
+    } catch (error) {
+      console.error(`Error downloading ${certificateType} certificate:`, error);
+      alert(`Error downloading ${certificateType} certificate: ${error.message}`);
+    }
+  };
+
   const printReciept = async () => {
     const tenantId = Digit.ULBService.getCurrentTenantId();
     const state = Digit.ULBService.getStateId();
@@ -200,6 +316,24 @@ export const SuccessfulPayment = (props) => {
                   <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
                 </svg>
                 {t("CS_COMMON_PRINT_CERTIFICATE")}
+              </div>
+            ) : null}
+            {businessService == "DEATH_CERT" || businessService == "DEATH_CERT.DEATH_CERT" ? (
+              <div className="primary-label-btn d-grid" style={{ marginLeft: "unset" }} onClick={() => downloadCertificateFromPayment('death')}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
+                  <path d="M0 0h24v24H0V0z" fill="none" />
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />
+                </svg>
+                {t("BND_DEATH_CERTIFICATE")}
+              </div>
+            ) : null}
+            {businessService == "BIRTH_CERT" || businessService == "BIRTH_CERT.BIRTH_CERT" ? (
+              <div className="primary-label-btn d-grid" style={{ marginLeft: "unset" }} onClick={() => downloadCertificateFromPayment('birth')}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#f47738">
+                  <path d="M0 0h24v24H0V0z" fill="none" />
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z" />
+                </svg>
+                {t("BND_BIRTH_CERTIFICATE")}
               </div>
             ) : null}
             {data?.[0]?.businessService === "BPA_OC" && (data?.[0]?.status === "APPROVED" || data?.[0]?.status === "PENDING_SANC_FEE_PAYMENT") ? (
