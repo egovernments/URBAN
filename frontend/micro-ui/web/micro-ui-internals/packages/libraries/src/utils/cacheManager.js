@@ -43,10 +43,10 @@ export class CacheManager {
       return version;
     }
     
-    // Fallback to environment variables or current time
+    // Fallback to environment variables or stable version
     const fallbackVersion = process.env.REACT_APP_VERSION || 
            process.env.REACT_APP_BUILD_TIME || 
-           new Date().getTime().toString();
+           'dev-build'; // Stable fallback instead of changing timestamp
     this.log('Current version from fallback:', fallbackVersion);
     return fallbackVersion;
   }
@@ -57,6 +57,7 @@ export class CacheManager {
     const storedVersion = localStorage.getItem(this.APP_VERSION_KEY);
     
     this.log('Version check - Current:', currentVersion, 'Stored:', storedVersion);
+    this.log('Build info available:', !!window.DIGIT_UI_BUILD_INFO);
     
     if (!storedVersion) {
       localStorage.setItem(this.APP_VERSION_KEY, currentVersion);
@@ -65,6 +66,13 @@ export class CacheManager {
     }
     
     const changed = storedVersion !== currentVersion;
+    if (changed) {
+      console.warn('[CacheManager] Version changed detected!', {
+        current: currentVersion,
+        stored: storedVersion,
+        buildInfoAvailable: !!window.DIGIT_UI_BUILD_INFO
+      });
+    }
     this.log('Version changed:', changed);
     return changed;
   }
@@ -78,13 +86,82 @@ export class CacheManager {
     this.log('Updated stored version:', currentVersion, 'at', new Date(parseInt(timestamp)));
   }
 
+  // Get all current storage keys (for debugging)
+  static getAllStorageKeys() {
+    const allLocalStorage = {};
+    const allSessionStorage = {};
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      allLocalStorage[key] = localStorage.getItem(key);
+    }
+    
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      allSessionStorage[key] = sessionStorage.getItem(key);
+    }
+    
+    return { localStorage: allLocalStorage, sessionStorage: allSessionStorage };
+  }
+
+  // Get what data would be preserved during cache clear (for debugging)
+  static getPreservedData() {
+    const preserveKeys = [
+      // Core authentication & user data
+      'token', 'user-info', 'tenantId', 'tenant-id',
+      'Citizen.token', 'Citizen.user-info', 'Citizen.tenant-id', 'Citizen.tenantId',
+      'Employee.token', 'Employee.user-info', 'Employee.tenant-id', 'Employee.tenantId',
+      'user_type', 'userType',
+      
+      // Localization & UI preferences
+      'locale', 'Citizen.locale', 'Employee.locale',
+      
+      // Cache management keys (preserve our own keys)
+      'digit-ui-app-version', 'digit-ui-last-update',
+      
+      // Security & privacy
+      'PRIVACY_OBJECT'
+    ];
+    const preserveSessionKeys = ['User', 'user_type', 'userType', 'Citizen.tenantId', 'Employee.tenantId'];
+    
+    const localData = {};
+    const sessionData = {};
+    
+    preserveKeys.forEach(key => {
+      const value = localStorage.getItem(key);
+      if (value) localData[key] = value;
+    });
+    
+    preserveSessionKeys.forEach(key => {
+      const value = sessionStorage.getItem(key);
+      if (value) sessionData[key] = value;
+    });
+    
+    return { localStorage: localData, sessionStorage: sessionData };
+  }
+
   // Clear all caches
   static async clearAllCaches() {
     try {
       this.log('Starting cache clearing process...');
       
       // Clear localStorage except essential data
-      const preserveKeys = ['token', 'user-info', 'tenantId', 'Employee.tenantId'];
+      const preserveKeys = [
+        // Core authentication & user data
+        'token', 'user-info', 'tenantId', 'tenant-id',
+        'Citizen.token', 'Citizen.user-info', 'Citizen.tenant-id', 'Citizen.tenantId',
+        'Employee.token', 'Employee.user-info', 'Employee.tenant-id', 'Employee.tenantId',
+        'user_type', 'userType',
+        
+        // Localization & UI preferences
+        'locale', 'Citizen.locale', 'Employee.locale',
+        
+        // Cache management keys (preserve our own keys)
+        'digit-ui-app-version', 'digit-ui-last-update',
+        
+        // Security & privacy
+        'PRIVACY_OBJECT'
+      ];
       const toRemove = [];
       
       for (let i = 0; i < localStorage.length; i++) {
@@ -97,9 +174,19 @@ export class CacheManager {
       this.log('Clearing localStorage keys:', toRemove.length, 'items');
       toRemove.forEach(key => localStorage.removeItem(key));
 
-      // Clear sessionStorage
-      this.log('Clearing sessionStorage');
-      sessionStorage.clear();
+      // Clear sessionStorage except essential data
+      const preserveSessionKeys = ['User', 'user_type', 'userType', 'Citizen.tenantId', 'Employee.tenantId'];
+      const sessionKeysToRemove = [];
+      
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (!preserveSessionKeys.some(preserve => key.includes(preserve))) {
+          sessionKeysToRemove.push(key);
+        }
+      }
+      
+      this.log('Clearing sessionStorage keys:', sessionKeysToRemove.length, 'items');
+      sessionKeysToRemove.forEach(key => sessionStorage.removeItem(key));
 
       // Clear browser caches if available
       if ('caches' in window) {
@@ -210,10 +297,21 @@ export class CacheManager {
       /\.chunk\.[a-f0-9]+\.css$/i.test(filename)
     );
     
-    // Exclude API endpoints and common non-chunk URLs
+    // Exclude API endpoints, analytics scripts, external assets, and common non-chunk URLs
     const isNotApiEndpoint = filename && !this.isApiEndpoint(filename);
+    const isNotAnalytics = filename && !this.isAnalyticsScript(filename);
+    const isNotExternalAsset = filename && !this.isExternalAsset(filename);
     
-    return hasChunkErrorMessage || (isChunkFile && isNotApiEndpoint);
+    const shouldHandle = hasChunkErrorMessage || (isChunkFile && isNotApiEndpoint && isNotAnalytics && isNotExternalAsset);
+    
+    if (filename && !shouldHandle) {
+      const reason = this.isApiEndpoint(filename) ? 'API endpoint' :
+                    this.isAnalyticsScript(filename) ? 'analytics script' :
+                    this.isExternalAsset(filename) ? 'external asset' : 'non-chunk source';
+      this.log(`Ignoring error from ${reason}:`, filename);
+    }
+    
+    return shouldHandle;
   }
 
   // Check if error is from chunk promise rejection
@@ -233,7 +331,7 @@ export class CacheManager {
     ) && error.name !== 'TypeError'; // Avoid API fetch errors
   }
 
-  // Check if URL is an API endpoint
+  // Check if URL is an API endpoint or analytics script
   static isApiEndpoint(url) {
     const apiPatterns = [
       /\/api\//i,
@@ -261,6 +359,83 @@ export class CacheManager {
     ];
     
     return apiPatterns.some(pattern => pattern.test(url));
+  }
+
+  // Check if URL is from analytics services (should not trigger cache clear)
+  static isAnalyticsScript(url) {
+    if (!url) return false;
+    
+    const analyticsPatterns = [
+      // Google Analytics & Tag Manager
+      /googletagmanager\.com/i,
+      /google-analytics\.com/i,
+      /googleanalytics\.com/i,
+      /analytics\.google\.com/i,
+      /gtag/i,
+      /gtm\.js/i,
+      
+      // Matomo
+      /matomo/i,
+      /piwik/i,
+      
+      // Microsoft Clarity
+      /clarity\.ms/i,
+      /c\.clarity\.ms/i,
+      /microsoft\.com.*clarity/i,
+      
+      // Other common analytics
+      /hotjar/i,
+      /mixpanel/i,
+      /segment\./i,
+      /analytics/i
+    ];
+    
+    return analyticsPatterns.some(pattern => pattern.test(url));
+  }
+
+  // Check if URL is an external asset (CDN, S3, images, etc.)
+  static isExternalAsset(url) {
+    if (!url) return false;
+    
+    const externalAssetPatterns = [
+      // AWS S3 and CloudFront
+      /s3\.amazonaws\.com/i,
+      /s3-.*\.amazonaws\.com/i,
+      /.*\.s3\.amazonaws\.com/i,
+      /.*\.s3-.*\.amazonaws\.com/i,
+      /cloudfront\.net/i,
+      /.*\.cloudfront\.net/i,
+      
+      // Common CDNs
+      /cdn\.jsdelivr\.net/i,
+      /unpkg\.com/i,
+      /cdnjs\.cloudflare\.com/i,
+      /maxcdn\.bootstrapcdn\.com/i,
+      /fonts\.googleapis\.com/i,
+      /fonts\.gstatic\.com/i,
+      
+      // DIGIT specific asset domains
+      /unified-demo\.digit\.org.*asset/i,
+      /digit\.org.*asset/i,
+      /egov.*asset/i,
+      
+      // Image and media files (any domain)
+      /\.(png|jpg|jpeg|gif|svg|ico|webp|bmp|tiff)(\?|$)/i,
+      /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?|$)/i,
+      /\.(pdf|doc|docx|xls|xlsx|ppt|pptx)(\?|$)/i,
+      /\.(ttf|woff|woff2|eot|otf)(\?|$)/i,
+      
+      // Common asset paths
+      /\/assets\//i,
+      /\/static\/media\//i,
+      /\/images\//i,
+      /\/img\//i,
+      /\/logos?\//i,
+      /\/icons?\//i,
+      /\/fonts?\//i
+    ];
+    
+    return externalAssetPatterns.some(pattern => pattern.test(url));
   }
 
   // Handle chunk loading errors
@@ -404,6 +579,8 @@ export class CacheManager {
         getCurrentVersion: () => this.getCurrentVersion(),
         checkForUpdates: () => this.checkForUpdates(),
         clearCache: () => this.clearAllCaches(),
+        getPreservedData: () => this.getPreservedData(),
+        getAllStorageKeys: () => this.getAllStorageKeys(),
         getStatus: () => ({
           currentVersion: this.getCurrentVersion(),
           storedVersion: localStorage.getItem(this.APP_VERSION_KEY),
