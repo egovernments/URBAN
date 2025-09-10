@@ -51,6 +51,7 @@ import BillServices from "./services/elements/Bill";
 import { CFService } from "./services/elements/CF";
 
 import {CustomService} from "./services/elements/CustomService";
+import { CacheManager } from "./utils/cacheManager";
 
 const setupLibraries = (Library, props) => {
   window.Digit = window.Digit || {};
@@ -116,4 +117,4 @@ const initLibraries = () => {
   });
 };
 
-export { initLibraries, Enums, Hooks, subFormRegistry };
+export { initLibraries, Enums, Hooks, subFormRegistry, CacheManager };
