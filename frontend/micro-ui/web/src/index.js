@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { initLibraries } from "@egovernments/digit-ui-libraries";
+import { initLibraries, CacheManager } from "@egovernments/digit-ui-libraries";
 // import "@egovernments/digit-ui-css/dist/index.css";
 import "./index.css";
 import App from './App';
 import { TLCustomisations } from './Customisations/tl/TLCustomisation';
 import { UICustomizations } from './Customisations/UICustomizations';
 
-initLibraries();
+initLibraries().then(() => {
+  CacheManager.init();
+});
 
 
 window.Digit.Customizations = { PGR: {} ,TL:TLCustomisations, commonUiConfig: UICustomizations};

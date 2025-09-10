@@ -40,6 +40,7 @@ import { initBirthComponents } from "@egovernments/digit-ui-module-birth";
 import { initDeathComponents,DeathModule } from "@egovernments/digit-ui-module-death";
 import { initFinanceComponents, FinanceModule } from "@egovernments/digit-ui-module-finance";
 import { UICustomizations } from "./UICustomizations";
+import { CacheManager } from "@egovernments/digit-ui-libraries";
 
 
 var Digit = window.Digit || {};
@@ -165,5 +166,8 @@ const initDigitUI = () => {
 };
 
 initLibraries().then(() => {
+  // Initialize cache manager
+  CacheManager.init();
+  
   initDigitUI();
 });
