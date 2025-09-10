@@ -29,7 +29,8 @@ const updateVersionFiles = () => {
   
   const versionFiles = [
     path.join(__dirname, '../example/public/version.json'),
-    path.join(__dirname, '../packages/react-components/public/version.json')
+    path.join(__dirname, '../packages/react-components/public/version.json'),
+    path.join(__dirname, '../../public/version.json')
   ];
   
   versionFiles.forEach(filePath => {
@@ -55,7 +56,8 @@ window.DIGIT_UI_BUILD_INFO = ${JSON.stringify(buildInfo, null, 2)};
   
   const buildInfoFiles = [
     path.join(__dirname, '../example/public/build-info.js'),
-    path.join(__dirname, '../packages/react-components/public/build-info.js')
+    path.join(__dirname, '../packages/react-components/public/build-info.js'),
+    path.join(__dirname, '../../public/build-info.js')
   ];
   
   buildInfoFiles.forEach(filePath => {
