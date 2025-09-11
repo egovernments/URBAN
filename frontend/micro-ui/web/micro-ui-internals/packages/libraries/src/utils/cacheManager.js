@@ -211,7 +211,10 @@ export class CacheManager {
   static async checkForUpdates() {
     this.log('Checking for updates from server...');
     try {
-      const response = await fetch('/version.json?' + new Date().getTime(), {
+      const base = document.baseURI || window.location.origin + window.location.pathname;
+      const basePath = base.endsWith('/') ? base : base.substring(0, base.lastIndexOf('/') + 1);
+      const url = new URL('version.json', basePath).toString() + '?' + new Date().getTime();
+      const response = await fetch(url, {
         cache: 'no-cache',
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -503,6 +506,12 @@ export class CacheManager {
 
   // Start periodic update checks
   static startUpdateChecker() {
+    const currentVersion = this.getCurrentVersion();
+    if (currentVersion === 'dev-build') {
+      this.log('Skipping update checker in dev-build environment');
+      return;
+    }
+
     // Check immediately on app start
     setTimeout(() => this.performUpdateCheck(), 5000);
     
