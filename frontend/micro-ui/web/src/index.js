@@ -7,8 +7,23 @@ import App from './App';
 import { TLCustomisations } from './Customisations/tl/TLCustomisation';
 import { UICustomizations } from './Customisations/UICustomizations';
 
-initLibraries().then(() => {
-  CacheManager.init();
+// Load app-version.json before initializing cache manager
+const loadAppVersion = () => {
+  const url = (process.env.PUBLIC_URL || '') + '/app-version.json';
+  return fetch(url, { cache: 'no-cache' })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j) => {
+      if (j && j.version) {
+        window.DIGIT_UI_VERSION = j.version;
+      }
+    })
+    .catch(() => {});
+};
+
+loadAppVersion().finally(() => {
+  initLibraries().then(() => {
+    CacheManager.init();
+  });
 });
 
 

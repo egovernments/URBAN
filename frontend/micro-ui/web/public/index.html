@@ -9,6 +9,22 @@
     rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-css@1.6.6/dist/index.css" />
 
+  <!-- Early analytics stubs (optional, console-toggleable) -->
+  <script>
+    (function(){
+      var block = localStorage.getItem('DIGIT_BLOCK_EXTERNAL_ANALYTICS') === 'true';
+      if (!block) return;
+      // No-op GA/gtag/GTM/Clarity before any external analytics script runs
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ };
+      window.clarity = function(){ };
+      window._paq = window._paq || [];
+      window.UrbanAnalyticsDisabled = true;
+      // Best-effort to mark DNT
+      try { Object.defineProperty(navigator, 'doNotTrack', { value: '1' }); } catch(e) {}
+    })();
+  </script>
+
   <head>
     <meta charset="utf-8" />
     <title>DIGIT</title>
@@ -134,8 +150,8 @@
     </script>
     <!-- End Matomo Code -->
     
-    <script src="app-version.js"></script>
-    <script src="build-info.js"></script>
+    <script src="%PUBLIC_URL%/app-version.js"></script>
+    <script src="%PUBLIC_URL%/build-info.js"></script>
   </head>
   <style>
     .options-card {
