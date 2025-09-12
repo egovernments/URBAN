@@ -34,10 +34,17 @@ export class CacheManager {
     console.log('[CacheManager] Debug logging disabled.');
   }
 
-  // Get current app version from build info or fallback
+  // Get current app version from hard-coded file, build info, or fallback
   static getCurrentVersion() {
-    // Try to get from build-info.js first
-    if (window.DIGIT_UI_BUILD_INFO) {
+    // Prefer manually set version if present
+    if (typeof window !== 'undefined' && window.DIGIT_UI_VERSION) {
+      const version = window.DIGIT_UI_VERSION;
+      this.log('Current version from app-version.js:', version);
+      return version;
+    }
+
+    // Then try build-info.js
+    if (typeof window !== 'undefined' && window.DIGIT_UI_BUILD_INFO) {
       const version = window.DIGIT_UI_BUILD_INFO.buildId || window.DIGIT_UI_BUILD_INFO.buildTime;
       this.log('Current version from build-info:', version);
       return version;
