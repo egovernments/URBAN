@@ -53,8 +53,18 @@ const updateVersionFiles = () => {
 window.DIGIT_UI_BUILD_INFO = ${JSON.stringify(buildInfo, null, 2)};
 `;
   
+  // Create app-version.js file for compatibility
+  const appVersionJs = `// Manually maintained application version for cache busting
+// Update this value before each build/deploy
+window.DIGIT_UI_VERSION = "${buildInfo.version}";
+`;
+  
   const buildInfoFiles = [
     path.join(__dirname, '../build/build-info.js')
+  ];
+  
+  const appVersionFiles = [
+    path.join(__dirname, '../build/app-version.js')
   ];
   
   buildInfoFiles.forEach(filePath => {
@@ -66,6 +76,20 @@ window.DIGIT_UI_BUILD_INFO = ${JSON.stringify(buildInfo, null, 2)};
       
       fs.writeFileSync(filePath, buildInfoJs);
       console.log(`Updated build info: ${filePath}`);
+    } catch (error) {
+      console.error(`Error updating ${filePath}:`, error.message);
+    }
+  });
+  
+  appVersionFiles.forEach(filePath => {
+    try {
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      
+      fs.writeFileSync(filePath, appVersionJs);
+      console.log(`Updated app version: ${filePath}`);
     } catch (error) {
       console.error(`Error updating ${filePath}:`, error.message);
     }
