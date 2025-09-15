@@ -22,7 +22,7 @@ const getUnique = (arr) => {
 };
 
 const LocalizationStore = {
-  getCaheData: (key) => PersistantStorage.get(key) ?? [],
+  getCaheData: (key) => PersistantStorage.get(key) || [],
   setCacheData: (key, value) => {
     const cacheSetting = ApiCacheService.getSettingByServiceUrl(Urls.localization);
     PersistantStorage.set(key, value, cacheSetting.cacheTimeInSecs);

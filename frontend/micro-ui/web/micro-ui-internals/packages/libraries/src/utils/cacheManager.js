@@ -218,9 +218,11 @@ export class CacheManager {
   static async checkForUpdates() {
     this.log('Checking for updates from server...');
     try {
-      const base = document.baseURI || window.location.origin + window.location.pathname;
-      const basePath = base.endsWith('/') ? base : base.substring(0, base.lastIndexOf('/') + 1);
-      const url = new URL('version.json', basePath).toString() + '?' + new Date().getTime();
+      // Construct URL more reliably for production
+      const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
+      const url = baseUrl + 'version.json?' + new Date().getTime();
+      this.log('Fetching version from:', url);
+      
       const response = await fetch(url, {
         cache: 'no-cache',
         headers: {
@@ -231,10 +233,11 @@ export class CacheManager {
       
       if (response.ok) {
         const data = await response.json();
-        const serverVersion = data.version || data.buildTime;
+        const serverVersion = data.buildId || data.buildTime;
         const localVersion = localStorage.getItem(this.APP_VERSION_KEY);
         
         this.log('Server version:', serverVersion, 'Local version:', localVersion);
+        this.log('Version data:', data);
         
         if (localVersion && serverVersion && localVersion !== serverVersion) {
           this.log('Update available! Server:', serverVersion, 'Local:', localVersion);
@@ -246,7 +249,7 @@ export class CacheManager {
         this.log('Version check response not OK:', response.status);
       }
     } catch (error) {
-      console.log('Version check failed, using fallback method');
+      console.log('Version check failed:', error.message);
       this.log('Version check error:', error);
     }
     

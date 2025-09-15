@@ -37,6 +37,9 @@ const SelectSpecialOwnerCategoryType = ({ t, config, onSelect, userType, formDat
 
   function goNext() {
     let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
+    if (!ownerDetails || typeof ownerDetails !== 'object') {
+      ownerDetails = {};
+    }
     ownerDetails["ownerType"] = ownerType;
     onSelect(config.key, ownerDetails, "", index);
   }
