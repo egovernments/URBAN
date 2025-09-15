@@ -9,8 +9,7 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData, ownerInde
   const isMutation = url.includes("property-mutation");
   let index = isMutation ? ownerIndex : window.location.href.charAt(window.location.href.length - 1);
   const [permanentAddress, setPermanentAddress] = useState(
-    (formData.owners && formData.owners[index] && formData.owners[index]?.permanentAddress) ||
-      formData.owners[index]?.correspondenceAddress ||
+    (formData && formData.owners && formData.owners[index] && (formData.owners[index]?.permanentAddress || formData.owners[index]?.correspondenceAddress)) ||
       formData?.owners?.permanentAddress ||
       ""
   );
@@ -52,7 +51,7 @@ const SelectOwnerAddress = ({ t, config, onSelect, userType, formData, ownerInde
     if (userType === "employee") {
       onSelect(config.key, { ...formData[config.key], permanentAddress, isCorrespondenceAddress }, index);
     } else {
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
       ownerDetails["permanentAddress"] = permanentAddress;
       ownerDetails["isCorrespondenceAddress"] = isCorrespondenceAddress;
       if (isMutation) onSelect(config.key, [ownerDetails], "", index);
