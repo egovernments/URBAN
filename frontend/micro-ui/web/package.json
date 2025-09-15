@@ -80,7 +80,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "prebuild": "node micro-ui-internals/scripts/update-version.js",
+    "build": "GENERATE_SOURCEMAP=false SKIP_PREFLIGHT_CHECK=true react-scripts build && node micro-ui-internals/scripts/update-version.js",
     "build:webpack": "webpack --mode production",
     "build:prepare": "./build.sh",
     "clean": "rm -rf node_modules"

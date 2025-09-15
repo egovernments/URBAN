@@ -12,7 +12,11 @@ const crypto = require('crypto');
 const getBuildInfo = () => {
   const packageJson = require('../package.json');
   const buildTime = new Date().toISOString();
-  const gitCommit = process.env.GIT_COMMIT || process.env.GITHUB_SHA || 'unknown';
+  const gitCommit = process.env.GIT_COMMIT || 
+                   process.env.GITHUB_SHA || 
+                   process.env.BUILD_ID || 
+                   process.env.BUILD_NUMBER || 
+                   'unknown';
   const buildId = crypto.createHash('md5').update(buildTime + gitCommit).digest('hex').substring(0, 8);
   
   return {
@@ -27,8 +31,9 @@ const getBuildInfo = () => {
 const updateVersionFiles = () => {
   const buildInfo = getBuildInfo();
   
-  // Only update build output for production
+  // Update both public folder (for development) and build output (for production)
   const versionFiles = [
+    path.join(__dirname, '../../public/version.json'),
     path.join(__dirname, '../build/version.json')
   ];
   
@@ -60,10 +65,12 @@ window.DIGIT_UI_VERSION = "${buildInfo.version}";
 `;
   
   const buildInfoFiles = [
+    path.join(__dirname, '../../public/build-info.js'),
     path.join(__dirname, '../build/build-info.js')
   ];
   
   const appVersionFiles = [
+    path.join(__dirname, '../../public/app-version.js'),
     path.join(__dirname, '../build/app-version.js')
   ];
   
