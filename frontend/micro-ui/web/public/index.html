@@ -2,11 +2,10 @@
 <html lang="en">
 
 <!-- 
-  ALL ANALYTICS DISABLED:
-  - Matomo tracking commented out
-  - External scripts (urban-analytics.js, stagingGlobalConfigs.js) should be removed from build/deployment
-  - Console controls disabled
-  - Privacy stubs disabled
+  ANALYTICS STATUS:
+  - Matomo tracking enabled
+  - Console controls enabled
+  - Privacy stubs enabled
 -->
 
 <head>
@@ -23,8 +22,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-css@1.8.41/dist/index.css" />
   <link rel="stylesheet" href="https://unpkg.com/@egovernments/digit-ui-components-css@0.2.0-beta.7/dist/index.css" />
 
-  <!-- Early analytics stubs (DISABLED - All analytics commented out) -->
-  <!--
+  <!-- Early analytics stubs -->
   <script>
     (function(){
       var block = localStorage.getItem('DIGIT_BLOCK_EXTERNAL_ANALYTICS') === 'true';
@@ -39,11 +37,9 @@
       try { Object.defineProperty(navigator, 'doNotTrack', { value: '1' }); } catch(e) {}
     })();
   </script>
-  -->
 
 
-    <!-- Analytics toggles (console manageable) - DISABLED -->
-    <!--
+    <!-- Analytics toggles (console manageable) -->
     <script>
       (function(){
         // Persisted toggle with default enabled when not set
@@ -65,10 +61,8 @@
         };
       })();
     </script>
-    -->
 
-    <!-- Matomo (DISABLED - All analytics commented out) -->
-    <!--
+    <!-- Matomo -->
     <script>
       (function () {
         if (!window.DIGIT_ENABLE_MATOMO) return;
@@ -152,8 +146,7 @@
         })();
       })();
     </script>
-    -->
-    <!-- End Matomo Code (DISABLED) -->
+    <!-- End Matomo Code -->
     
     <script src="%PUBLIC_URL%/build-info.js"></script>
   </head>
