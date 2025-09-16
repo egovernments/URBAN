@@ -59,7 +59,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
   }
 
   const goNext = () => {
-    let owner = formData.owners && formData.owners[index];
+    let owner = (formData && formData.owners && formData.owners[index]) || {};
     let ownerStep;
     if (userType === "employee") {
       ownerStep = { ...owner, name, gender, mobileNumber, fatherOrHusbandName, relationship, emailId: email };

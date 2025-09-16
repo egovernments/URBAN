@@ -29,8 +29,10 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData, o
     dropdownData.forEach((data) => {
       data.i18nKey = stringReplaceAll(data.code, ".", "_");
     });
-    dropdownData = dropdownData?.filter((dropdown) => dropdown.parentValue.includes(formData?.owners[index]?.ownerType?.code));
-    if (dropdownData.length == 1 && dropdownValue != dropdownData[0]) {
+    const ownerTypeCode = formData?.owners?.[index]?.ownerType?.code;
+    // Filter only when ownerTypeCode is available; otherwise keep all options visible
+    dropdownData = ownerTypeCode ? dropdownData?.filter((dropdown) => dropdown.parentValue?.includes(ownerTypeCode)) : dropdownData;
+    if (dropdownData?.length == 1 && dropdownValue != dropdownData[0]) {
       setTypeOfDropdownValue(dropdownData[0]);
     }
   }
@@ -46,7 +48,7 @@ const SelectSpecialProofIdentity = ({ t, config, onSelect, userType, formData, o
       fileDetails.documentType = dropdownValue;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
-    let ownerDetails = formData.owners && formData.owners[index];
+    let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
     if (ownerDetails && ownerDetails.documents) {
       ownerDetails.documents["specialProofIdentity"] = fileDetails;
     } else {

@@ -22,7 +22,7 @@ const getUnique = (arr) => {
 };
 
 const LocalizationStore = {
-  getCaheData: (key) => PersistantStorage.get(key),
+  getCaheData: (key) => PersistantStorage.get(key) || [],
   setCacheData: (key, value) => {
     const cacheSetting = ApiCacheService.getSettingByServiceUrl(Urls.localization);
     PersistantStorage.set(key, value, cacheSetting.cacheTimeInSecs);
@@ -49,7 +49,8 @@ const LocalizationStore = {
     const newModules = modules.filter((module) => !storedModules.includes(module));
     const messages = [];
     storedModules.forEach((module) => {
-      messages.push(...LocalizationStore.getCaheData(LOCALE_MODULE(locale, module)));
+      const cachedModuleMessages = LocalizationStore.getCaheData(LOCALE_MODULE(locale, module)) || [];
+      messages.push(...cachedModuleMessages);
     });
     return [newModules, messages];
   },

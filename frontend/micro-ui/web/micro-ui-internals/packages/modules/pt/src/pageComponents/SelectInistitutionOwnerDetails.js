@@ -12,13 +12,13 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
   let index = 0;
   let validation = {};
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [inistitutionName, setInistitutionName] = useState(formData.owners && formData.owners[index] && formData.owners[index].inistitutionName);
-  const [inistitutetype, setInistitutetype] = useState(formData.owners && formData.owners[index] && formData.owners[index].inistitutetype);
-  const [name, setName] = useState(formData.owners && formData.owners[index] && formData.owners[index].name);
-  const [designation, setDesignation] = useState(formData.owners && formData.owners[index] && formData.owners[index].designation);
-  const [mobileNumber, setMobileNumber] = useState(formData.owners && formData.owners[index] && formData.owners[index].mobileNumber);
-  const [altContactNumber, setAltContactNumber] = useState(formData.owners && formData.owners[index] && formData.owners[index].altContactNumber);
-  const [emailId, setEmailId] = useState(formData.owners && formData.owners[index] && formData.owners[index].emailId);
+  const [inistitutionName, setInistitutionName] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].inistitutionName) || "");
+  const [inistitutetype, setInistitutetype] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].inistitutetype) || {});
+  const [name, setName] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].name) || "");
+  const [designation, setDesignation] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].designation) || "");
+  const [mobileNumber, setMobileNumber] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || "");
+  const [altContactNumber, setAltContactNumber] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].altContactNumber) || "");
+  const [emailId, setEmailId] = useState((formData && formData.owners && formData.owners[index] && formData.owners[index].emailId) || "");
   const isUpdateProperty = formData?.isUpdateProperty || false;
   let isEditProperty = formData?.isEditProperty || false;
 
@@ -75,7 +75,7 @@ const SelectInistitutionOwnerDetails = ({ t, config, onSelect, userType, formDat
   };
 
   const goNext = () => {
-    let ownerDetails = formData.owners && formData.owners[index];
+    let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
     if (ownerDetails) {
       ownerDetails["inistitutionName"] = inistitutionName;
       ownerDetails["inistitutetype"] = inistitutetype;

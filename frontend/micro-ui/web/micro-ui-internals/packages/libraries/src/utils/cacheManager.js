@@ -4,6 +4,7 @@ export class CacheManager {
   static LAST_UPDATE_KEY = 'digit-ui-last-update';
   static UPDATE_CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes
   static DEBUG_ENABLED = false; // Can be enabled via console: window.Digit.CacheManager.enableDebug()
+  static _updateCheckInProgress = false; // Prevent concurrent version checks
 
   // Debug logging utility
   static log(...args) {
@@ -34,10 +35,57 @@ export class CacheManager {
     console.log('[CacheManager] Debug logging disabled.');
   }
 
-  // Get current app version from build info or fallback
+  // Safe localStorage access with fallback
+  static safeStorageAccess = {
+    getItem: (key) => {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        console.warn('[CacheManager] localStorage access failed, using sessionStorage fallback:', e);
+        try {
+          return sessionStorage.getItem(key);
+        } catch (e2) {
+          console.warn('[CacheManager] sessionStorage also failed:', e2);
+          return null;
+        }
+      }
+    },
+    setItem: (key, value) => {
+      try {
+        localStorage.setItem(key, value);
+      } catch (e) {
+        console.warn('[CacheManager] localStorage write failed, using sessionStorage fallback:', e);
+        try {
+          sessionStorage.setItem(key, value);
+        } catch (e2) {
+          console.warn('[CacheManager] sessionStorage write also failed:', e2);
+        }
+      }
+    },
+    removeItem: (key) => {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        try {
+          sessionStorage.removeItem(key);
+        } catch (e2) {
+          // Silent fail for removal
+        }
+      }
+    }
+  };
+
+  // Get current app version from hard-coded file, build info, or fallback
   static getCurrentVersion() {
-    // Try to get from build-info.js first
-    if (window.DIGIT_UI_BUILD_INFO) {
+    // Prefer manually set version if present
+    if (typeof window !== 'undefined' && window.DIGIT_UI_VERSION) {
+      const version = window.DIGIT_UI_VERSION;
+      this.log('Current version from app-version.js:', version);
+      return version;
+    }
+
+    // Then try build-info.js
+    if (typeof window !== 'undefined' && window.DIGIT_UI_BUILD_INFO) {
       const version = window.DIGIT_UI_BUILD_INFO.buildId || window.DIGIT_UI_BUILD_INFO.buildTime;
       this.log('Current version from build-info:', version);
       return version;
@@ -54,13 +102,13 @@ export class CacheManager {
   // Check if app version has changed
   static hasVersionChanged() {
     const currentVersion = this.getCurrentVersion();
-    const storedVersion = localStorage.getItem(this.APP_VERSION_KEY);
+    const storedVersion = this.safeStorageAccess.getItem(this.APP_VERSION_KEY);
     
     this.log('Version check - Current:', currentVersion, 'Stored:', storedVersion);
     this.log('Build info available:', !!window.DIGIT_UI_BUILD_INFO);
     
     if (!storedVersion) {
-      localStorage.setItem(this.APP_VERSION_KEY, currentVersion);
+      this.safeStorageAccess.setItem(this.APP_VERSION_KEY, currentVersion);
       this.log('No stored version found, storing current version');
       return false;
     }
@@ -81,8 +129,8 @@ export class CacheManager {
   static updateStoredVersion() {
     const currentVersion = this.getCurrentVersion();
     const timestamp = Date.now().toString();
-    localStorage.setItem(this.APP_VERSION_KEY, currentVersion);
-    localStorage.setItem(this.LAST_UPDATE_KEY, timestamp);
+    this.safeStorageAccess.setItem(this.APP_VERSION_KEY, currentVersion);
+    this.safeStorageAccess.setItem(this.LAST_UPDATE_KEY, timestamp);
     this.log('Updated stored version:', currentVersion, 'at', new Date(parseInt(timestamp)));
   }
 
@@ -188,13 +236,30 @@ export class CacheManager {
       this.log('Clearing sessionStorage keys:', sessionKeysToRemove.length, 'items');
       sessionKeysToRemove.forEach(key => sessionStorage.removeItem(key));
 
-      // Clear browser caches if available
+      // Clear only DIGIT UI related browser caches (selective clearing)
       if ('caches' in window) {
         const cacheNames = await caches.keys();
-        this.log('Clearing browser caches:', cacheNames.length, 'caches');
-        await Promise.all(
-          cacheNames.map(cacheName => caches.delete(cacheName))
+        const digitCaches = cacheNames.filter(cacheName => 
+          cacheName.includes('digit') || 
+          cacheName.includes('ui-') || 
+          cacheName.includes('workbox') ||
+          cacheName.includes('precache') ||
+          cacheName.startsWith('v') // Common versioned cache pattern
         );
+        
+        this.log('Found', cacheNames.length, 'total caches, clearing', digitCaches.length, 'DIGIT UI caches:', digitCaches);
+        
+        if (digitCaches.length > 0) {
+          await Promise.all(
+            digitCaches.map(cacheName => caches.delete(cacheName))
+          );
+        } else {
+          // Fallback: clear all caches only if no specific DIGIT caches found
+          this.warn('No specific DIGIT UI caches found, clearing all caches as fallback');
+          await Promise.all(
+            cacheNames.map(cacheName => caches.delete(cacheName))
+          );
+        }
       }
 
       console.log('Cache cleared successfully');
@@ -211,7 +276,24 @@ export class CacheManager {
   static async checkForUpdates() {
     this.log('Checking for updates from server...');
     try {
-      const response = await fetch('/version.json?' + new Date().getTime(), {
+      // Construct URL for sub-path deployments (e.g., /digit-ui/)
+      const getVersionUrl = () => {
+        // Use PUBLIC_URL from build-info if available, otherwise detect from current path
+        const publicUrl = window.DIGIT_UI_BUILD_INFO?.publicUrl || 
+                         (window.location.pathname.includes('/digit-ui/') ? '/digit-ui' : 
+                          window.location.pathname.replace(/\/[^\/]*$/, '/'));
+        return `${window.location.origin}${publicUrl}/version.json`;
+      };
+      
+      const url = getVersionUrl() + '?' + new Date().getTime();
+      this.log('Fetching version from:', url);
+      
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await fetch(url, {
+        signal: controller.signal,
         cache: 'no-cache',
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -219,12 +301,31 @@ export class CacheManager {
         }
       });
       
+      clearTimeout(timeoutId);
+      
       if (response.ok) {
         const data = await response.json();
-        const serverVersion = data.version || data.buildTime;
-        const localVersion = localStorage.getItem(this.APP_VERSION_KEY);
+        
+        // Validate version data structure
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid version.json format');
+        }
+        
+        const serverVersion = data.buildId || data.buildTime;
+        if (!serverVersion) {
+          throw new Error('No valid version identifier in version.json');
+        }
+        
+        let localVersion;
+        try {
+          localVersion = this.safeStorageAccess.getItem(this.APP_VERSION_KEY);
+        } catch (e) {
+          console.warn('localStorage access failed, using session storage fallback');
+          localVersion = sessionStorage.getItem(this.APP_VERSION_KEY);
+        }
         
         this.log('Server version:', serverVersion, 'Local version:', localVersion);
+        this.log('Version data:', data);
         
         if (localVersion && serverVersion && localVersion !== serverVersion) {
           this.log('Update available! Server:', serverVersion, 'Local:', localVersion);
@@ -236,7 +337,11 @@ export class CacheManager {
         this.log('Version check response not OK:', response.status);
       }
     } catch (error) {
-      console.log('Version check failed, using fallback method');
+      if (error.name === 'AbortError') {
+        console.log('Version check timed out after 10 seconds');
+      } else {
+        console.log('Version check failed:', error.message);
+      }
       this.log('Version check error:', error);
     }
     
@@ -503,6 +608,12 @@ export class CacheManager {
 
   // Start periodic update checks
   static startUpdateChecker() {
+    const currentVersion = this.getCurrentVersion();
+    if (currentVersion === 'dev-build') {
+      this.log('Skipping update checker in dev-build environment');
+      return;
+    }
+
     // Check immediately on app start
     setTimeout(() => this.performUpdateCheck(), 5000);
     
@@ -519,7 +630,16 @@ export class CacheManager {
 
   // Perform update check
   static async performUpdateCheck() {
-    const { hasUpdate, newVersion } = await this.checkForUpdates();
+    // Prevent concurrent version checks
+    if (this._updateCheckInProgress) {
+      this.log('Update check already in progress, skipping');
+      return;
+    }
+    
+    this._updateCheckInProgress = true;
+    
+    try {
+      const { hasUpdate, newVersion } = await this.checkForUpdates();
     
     if (hasUpdate) {
       this.showUpdateNotification(
@@ -544,6 +664,9 @@ export class CacheManager {
           window.location.reload();
         });
       }, 30000);
+    }
+    } finally {
+      this._updateCheckInProgress = false;
     }
   }
 
@@ -583,8 +706,8 @@ export class CacheManager {
         getAllStorageKeys: () => this.getAllStorageKeys(),
         getStatus: () => ({
           currentVersion: this.getCurrentVersion(),
-          storedVersion: localStorage.getItem(this.APP_VERSION_KEY),
-          lastUpdate: localStorage.getItem(this.LAST_UPDATE_KEY),
+          storedVersion: this.safeStorageAccess.getItem(this.APP_VERSION_KEY),
+          lastUpdate: this.safeStorageAccess.getItem(this.LAST_UPDATE_KEY),
           debugEnabled: this.DEBUG_ENABLED
         })
       };

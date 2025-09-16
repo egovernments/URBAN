@@ -77,7 +77,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         fileDetails.documentType = dropdownValue;
         fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
       }
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
       if (ownerDetails && ownerDetails.documents) {
         if (!isMutation) ownerDetails.documents["proofIdentity"] = fileDetails;
         else ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId };
@@ -102,7 +102,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
         setError(t("ERR_DEFAULT_INPUT_FIELD_MSG"));
         return;
       }
-      let ownerDetails = formData.owners && formData.owners[index];
+      let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
       if (ownerDetails && ownerDetails.documents) {
         ownerDetails.documents["proofIdentity"] = { documentType: dropdownValue, fileStoreId: uploadedFile };
       } else {
@@ -120,7 +120,7 @@ const SelectProofIdentity = ({ t, config, onSelect, userType, formData, ownerInd
       fileDetails.documentType = dropdownValue;
       fileDetails.fileStoreId = fileStoreId ? fileStoreId : null;
     }
-    let ownerDetails = formData.owners && formData.owners[index];
+    let ownerDetails = (formData && formData.owners && formData.owners[index]) || {};
     if (ownerDetails && ownerDetails.documents) {
       ownerDetails.documents["proofIdentity"] = fileDetails;
     } else {

@@ -12,7 +12,11 @@ const crypto = require('crypto');
 const getBuildInfo = () => {
   const packageJson = require('../package.json');
   const buildTime = new Date().toISOString();
-  const gitCommit = process.env.GIT_COMMIT || process.env.GITHUB_SHA || 'unknown';
+  const gitCommit = process.env.GIT_COMMIT || 
+                   process.env.GITHUB_SHA || 
+                   process.env.BUILD_ID || 
+                   process.env.BUILD_NUMBER || 
+                   'unknown';
   const buildId = crypto.createHash('md5').update(buildTime + gitCommit).digest('hex').substring(0, 8);
   
   return {
@@ -27,10 +31,10 @@ const getBuildInfo = () => {
 const updateVersionFiles = () => {
   const buildInfo = getBuildInfo();
   
+  // Update both public folder (for development) and build output (for production)
   const versionFiles = [
-    path.join(__dirname, '../example/public/version.json'),
-    path.join(__dirname, '../packages/react-components/public/version.json'),
-    path.join(__dirname, '../../public/version.json')
+    path.join(__dirname, '../../public/version.json'),
+    path.join(__dirname, '../build/version.json')
   ];
   
   versionFiles.forEach(filePath => {
@@ -54,10 +58,20 @@ const updateVersionFiles = () => {
 window.DIGIT_UI_BUILD_INFO = ${JSON.stringify(buildInfo, null, 2)};
 `;
   
+  // Create app-version.js file for compatibility
+  const appVersionJs = `// Manually maintained application version for cache busting
+// Update this value before each build/deploy
+window.DIGIT_UI_VERSION = "${buildInfo.version}";
+`;
+  
   const buildInfoFiles = [
-    path.join(__dirname, '../example/public/build-info.js'),
-    path.join(__dirname, '../packages/react-components/public/build-info.js'),
-    path.join(__dirname, '../../public/build-info.js')
+    path.join(__dirname, '../../public/build-info.js'),
+    path.join(__dirname, '../build/build-info.js')
+  ];
+  
+  const appVersionFiles = [
+    path.join(__dirname, '../../public/app-version.js'),
+    path.join(__dirname, '../build/app-version.js')
   ];
   
   buildInfoFiles.forEach(filePath => {
@@ -69,6 +83,20 @@ window.DIGIT_UI_BUILD_INFO = ${JSON.stringify(buildInfo, null, 2)};
       
       fs.writeFileSync(filePath, buildInfoJs);
       console.log(`Updated build info: ${filePath}`);
+    } catch (error) {
+      console.error(`Error updating ${filePath}:`, error.message);
+    }
+  });
+  
+  appVersionFiles.forEach(filePath => {
+    try {
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      
+      fs.writeFileSync(filePath, appVersionJs);
+      console.log(`Updated app version: ${filePath}`);
     } catch (error) {
       console.error(`Error updating ${filePath}:`, error.message);
     }

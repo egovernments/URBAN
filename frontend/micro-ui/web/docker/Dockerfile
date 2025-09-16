@@ -38,6 +38,9 @@ RUN yarn config set network-timeout 600000
 # Install dependencies
 RUN yarn install
 
+# Generate build metadata (build-info.js and version.json)
+RUN node ./micro-ui-internals/scripts/update-version.js
+
 # Build the project
 RUN yarn build:webpack
 
