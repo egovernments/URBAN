@@ -175,6 +175,21 @@ const getMdmsData = async (action, state, dispatch) => {
       [],
       mdmsBody
     );
+    
+    // Apply city filtering immediately after fetching data
+    if (payload && payload.MdmsRes && payload.MdmsRes.tenant && payload.MdmsRes.tenant.tenants) {
+      let filteredTenants;
+      // Check if current tenant is city-specific (contains '.')
+      if (tenantId && tenantId.includes('.')) {
+        // Filter to show only current city
+        filteredTenants = payload.MdmsRes.tenant.tenants.filter(tenant => tenant.code === tenantId);
+      } else {
+        // Show all cities of type "CITY"
+        filteredTenants = payload.MdmsRes.tenant.tenants.filter(tenant => tenant.type === "CITY");
+      }
+      payload.MdmsRes.tenant.tenants = filteredTenants;
+    }
+    
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
   } catch (e) {
     console.log(e);
