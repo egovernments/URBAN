@@ -308,8 +308,8 @@ export const propertyLocationDetails = getCommonCard(
           //Below only runs for citizen - not required here in employee
           await onchangeOfTenant(action, state, dispatch);
         },
-        beforeFieldMount: (action, state, dispatch) => {
-          // Apply city filtering when field mounts (for both citizen and employee)
+        afterFieldChange: (action, state, dispatch) => {
+          // Apply city filtering after any field changes (for both citizen and employee)
           const currentTenant = getTenantId();
           let tenantData = get(
             state.screenConfiguration.preparedFinalObject,
@@ -319,9 +319,11 @@ export const propertyLocationDetails = getCommonCard(
           
           if (tenantData && tenantData.length > 0) {
             const filteredTenants = getFilteredCityList(tenantData, currentTenant);
-            dispatch(
-              prepareFinalObject("applyScreenMdmsData.tenant.tenants", filteredTenants)
-            );
+            if (filteredTenants.length !== tenantData.length) {
+              dispatch(
+                prepareFinalObject("applyScreenMdmsData.tenant.tenants", filteredTenants)
+              );
+            }
           }
         },
       },
