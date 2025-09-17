@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StandaloneSearchBar,
   Loader,
@@ -17,6 +17,7 @@ import {
   FirenocIcon,
   BirthIcon,
   DeathIcon,
+  Modal,
 } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -30,6 +31,8 @@ const Home = () => {
   const { data: { stateInfo, uiHomePage } = {}, isLoading } = Digit.Hooks.useStore.getInitData();
   let isMobile = window.Digit.Utils.browser.isMobile();
   if (window.Digit.SessionStorage.get("TL_CREATE_TRADE")) window.Digit.SessionStorage.set("TL_CREATE_TRADE", {});
+  
+  const [showSurveyPopup, setShowSurveyPopup] = useState(false);
 
   const conditionsToDisableNotificationCountTrigger = () => {
     if (Digit.UserService?.getUser()?.info?.type === "EMPLOYEE") return false;
@@ -183,7 +186,13 @@ const Home = () => {
       {
         name: t(infoAndUpdatesObj?.props?.[3]?.label),
         Icon: <DocumentIcon />,
-        onClick: () => history.push(infoAndUpdatesObj?.props?.[3]?.navigationUrl),
+        onClick: () => {
+          if (!isOnlyCitizen) {
+            setShowSurveyPopup(true);
+          } else {
+            history.push(infoAndUpdatesObj?.props?.[3]?.navigationUrl);
+          }
+        },
       },
       // {
       //     name: t("CS_COMMON_HELP"),
@@ -241,6 +250,56 @@ const Home = () => {
           )
         ) : null}
       </div>
+      
+      {showSurveyPopup && (
+        <Modal
+          headerBarMain={<h1 className="heading-m">{t("SURVEY_MODULE_INFORMATION")}</h1>}
+          headerBarEnd={
+            <div className="icon-bg-secondary" onClick={() => setShowSurveyPopup(false)}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF">
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+              </svg>
+            </div>
+          }
+          actionCancelLabel={(t("CS_COMMON_CLOSE").toLowerCase())}
+          actionCancelOnSubmit={() => setShowSurveyPopup(false)}
+          hideSubmit={true}
+          popupStyles={{ minWidth: "400px", maxWidth: "500px" }}
+          popupModuleMianStyles={{ padding: "16px 16px 0px 16px" }}
+          style={{
+            backgroundColor: "#f47738",
+            border: "none !important",
+            borderRadius: "4px",
+            padding: "5px 16px",
+            fontSize: "11px !important",
+            fontWeight: "normal !important",
+            cursor: "pointer"
+          }}
+          popupModuleActionBarStyles={{
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "10px 16px",
+            borderTop: "1px solid #e0e0e0",
+            marginTop: "8px"
+          }}
+        >
+          <style>
+            {`
+              .popup-module .popup-module-action-bar .selector-button-border h2 {
+                color: #ffffff !important;
+                font-size: 14px !important;
+                font-weight: normal !important;
+              }
+            `}
+          </style>
+          <div className="card-body" style={{ padding: "0", marginBottom: "8px" }}>
+            <p className="card-text">
+              {t("SURVEY_WARNING_MESSAGE")}
+            </p>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
