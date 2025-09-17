@@ -429,6 +429,31 @@ const screenConfig = {
 
     // Set MDMS Data
     getMdmsData(action, state, dispatch).then(response => {
+      // Apply city filtering based on user context (similar to birth module)
+      const currentTenant = getTenantId();
+      let tenantData = get(
+        state.screenConfiguration.preparedFinalObject,
+        "applyScreenMdmsData.tenant.tenants",
+        []
+      );
+      
+      if (tenantData && tenantData.length > 0) {
+        let filteredTenants;
+        // Check if current tenant is city-specific (contains '.')
+        if (currentTenant && currentTenant.includes('.')) {
+          // Filter to show only current city
+          filteredTenants = tenantData.filter(tenant => tenant.code === currentTenant);
+        } else {
+          // Show all cities of type "CITY"
+          filteredTenants = tenantData.filter(tenant => tenant.type === "CITY");
+        }
+        
+        // Update the tenant list with filtered data
+        dispatch(
+          prepareFinalObject("applyScreenMdmsData.tenant.tenants", filteredTenants)
+        );
+      }
+      
       // Set Dropdowns Data
       let buildingUsageTypeData = get(
         state,

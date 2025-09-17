@@ -17,6 +17,23 @@ import { httpRequest } from "../../../../../ui-utils/api";
 import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
 import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import "./index.css";
+// Helper function to get filtered city list based on user context
+export const getFilteredCityList = (tenantData, rootTenant) => {
+  const allTenants = tenantData || [];
+  let filteredTenants;
+  
+  // Check if the rootTenant is a specific city tenant (contains a '.')
+  if (rootTenant && rootTenant.includes('.')) {
+    // If it is, filter to find that single tenant
+    filteredTenants = allTenants.filter(tenant => tenant.code === rootTenant);
+  } else {
+    // Otherwise, it's a state-level tenant, so get all tenants of type "CITY"
+    filteredTenants = allTenants.filter(tenant => tenant.type === "CITY");
+  }
+  
+  return filteredTenants;
+};
+
 export const onchangeOfTenant = async (action, state, dispatch) => {
   dispatch(
     prepareFinalObject(
