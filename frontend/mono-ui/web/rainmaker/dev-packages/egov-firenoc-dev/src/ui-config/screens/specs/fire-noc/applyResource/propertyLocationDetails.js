@@ -308,6 +308,22 @@ export const propertyLocationDetails = getCommonCard(
           //Below only runs for citizen - not required here in employee
           await onchangeOfTenant(action, state, dispatch);
         },
+        beforeFieldMount: (action, state, dispatch) => {
+          // Apply city filtering when field mounts (for both citizen and employee)
+          const currentTenant = getTenantId();
+          let tenantData = get(
+            state.screenConfiguration.preparedFinalObject,
+            "applyScreenMdmsData.tenant.tenants",
+            []
+          );
+          
+          if (tenantData && tenantData.length > 0) {
+            const filteredTenants = getFilteredCityList(tenantData, currentTenant);
+            dispatch(
+              prepareFinalObject("applyScreenMdmsData.tenant.tenants", filteredTenants)
+            );
+          }
+        },
       },
       propertyPlotSurveyNo: getTextField({
         label: {
