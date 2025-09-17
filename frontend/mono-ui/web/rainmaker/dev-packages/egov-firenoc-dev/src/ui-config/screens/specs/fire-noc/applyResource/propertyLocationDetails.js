@@ -24,14 +24,23 @@ export const getFilteredCityList = (tenantData, rootTenant) => {
   
   // Check if the rootTenant is a specific city tenant (contains a '.')
   if (rootTenant && rootTenant.includes('.')) {
-    // If it is, filter to find that single tenant
+    // Employee: Filter to find that single tenant
     filteredTenants = allTenants.filter(tenant => tenant.code === rootTenant);
   } else {
-    // Otherwise, it's a state-level tenant, so get all tenants of type "CITY"
-    filteredTenants = allTenants.filter(tenant => tenant.type === "CITY");
+    // Citizen: Get all tenants of type "CITY" with city codes (containing '.')
+    filteredTenants = allTenants.filter(tenant => 
+      tenant.type === "CITY" && tenant.code && tenant.code.includes('.')
+    );
   }
   
-  return filteredTenants;
+  // Apply Demo city name mapping (similar to birth module)
+  const processedTenants = filteredTenants.map(tenant => ({
+    ...tenant,
+    name: tenant.name === "Demo" ? "Demo" : tenant.name,
+    i18nKey: tenant.i18nKey || `TENANT_TENANTS_${tenant.code.replace('.', '_').toUpperCase()}`
+  }));
+  
+  return processedTenants;
 };
 
 export const onchangeOfTenant = async (action, state, dispatch) => {
@@ -308,8 +317,8 @@ export const propertyLocationDetails = getCommonCard(
           //Below only runs for citizen - not required here in employee
           await onchangeOfTenant(action, state, dispatch);
         },
-        afterFieldChange: (action, state, dispatch) => {
-          // Apply city filtering after any field changes (for both citizen and employee)
+        componentDidMount: (action, state, dispatch) => {
+          // Ensure city filtering is applied when component mounts (safety check for citizen side)
           const currentTenant = getTenantId();
           let tenantData = get(
             state.screenConfiguration.preparedFinalObject,
@@ -317,12 +326,17 @@ export const propertyLocationDetails = getCommonCard(
             []
           );
           
-          if (tenantData && tenantData.length > 0) {
+          console.log(`[FireNOC-PropertyCity] Component mounted - Tenant: ${currentTenant}, Cities available: ${tenantData.length}`);
+          
+          if (tenantData && tenantData.length > 1) {
             const filteredTenants = getFilteredCityList(tenantData, currentTenant);
-            if (filteredTenants.length !== tenantData.length) {
+            if (filteredTenants.length !== tenantData.length && filteredTenants.length > 0) {
+              console.log(`[FireNOC-PropertyCity] Applying secondary filtering: ${tenantData.length} -> ${filteredTenants.length}`);
               dispatch(
                 prepareFinalObject("applyScreenMdmsData.tenant.tenants", filteredTenants)
               );
+            } else {
+              console.log(`[FireNOC-PropertyCity] No secondary filtering needed`);
             }
           }
         },
