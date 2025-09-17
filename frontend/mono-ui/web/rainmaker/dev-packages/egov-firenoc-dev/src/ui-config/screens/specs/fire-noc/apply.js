@@ -178,16 +178,39 @@ const getMdmsData = async (action, state, dispatch) => {
     
     // Apply city filtering immediately after fetching data
     if (payload && payload.MdmsRes && payload.MdmsRes.tenant && payload.MdmsRes.tenant.tenants) {
+      const currentTenant = getTenantId();
+      const originalCount = payload.MdmsRes.tenant.tenants.length;
+      console.log(`[FireNOC-CityFilter] Original cities: ${originalCount}, Current tenant: ${currentTenant}`);
+      
       let filteredTenants;
+      
       // Check if current tenant is city-specific (contains '.')
-      if (tenantId && tenantId.includes('.')) {
-        // Filter to show only current city
-        filteredTenants = payload.MdmsRes.tenant.tenants.filter(tenant => tenant.code === tenantId);
+      if (currentTenant && currentTenant.includes('.')) {
+        // Employee: Filter to show only current city
+        filteredTenants = payload.MdmsRes.tenant.tenants.filter(tenant => tenant.code === currentTenant);
+        console.log(`[FireNOC-CityFilter] Employee - City-specific filtering for: ${currentTenant}`);
       } else {
-        // Show all cities of type "CITY"
-        filteredTenants = payload.MdmsRes.tenant.tenants.filter(tenant => tenant.type === "CITY");
+        // Citizen: Show all cities of type "CITY" only
+        filteredTenants = payload.MdmsRes.tenant.tenants.filter(tenant => 
+          tenant.type === "CITY" && tenant.code && tenant.code.includes('.')
+        );
+        console.log(`[FireNOC-CityFilter] Citizen - State-level filtering (${currentTenant}), showing CITY type tenants only`);
       }
-      payload.MdmsRes.tenant.tenants = filteredTenants;
+      
+      // Only update if we have filtered results
+      if (filteredTenants && filteredTenants.length > 0) {
+        // Apply Demo city name mapping (similar to birth module)
+        const processedTenants = filteredTenants.map(tenant => ({
+          ...tenant,
+          name: tenant.name === "Demo" ? "Demo" : tenant.name,
+          i18nKey: tenant.i18nKey || `TENANT_TENANTS_${tenant.code.replace('.', '_').toUpperCase()}`
+        }));
+        
+        payload.MdmsRes.tenant.tenants = processedTenants;
+        console.log(`[FireNOC-CityFilter] Filtered to ${processedTenants.length} cities:`, processedTenants.map(t => t.code));
+      } else {
+        console.log(`[FireNOC-CityFilter] No filtered results, keeping original data`);
+      }
     }
     
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
