@@ -74,8 +74,40 @@ const GenericChart = ({
   }
 
   const handleExcelDownload = () => {
-    return Digit.Download.Excel(chartData, t(header));
+    console.log("Original chartData:", chartData);
+    
+    // Apply localization to chartData values
+    const localizedData = chartData?.map(row => {
+      const localizedRow = {};
+      Object.keys(row).forEach(key => {
+        const originalValue = row[key];
+        let localizedValue = row[key];
+        
+        // Try different localization patterns for city/district names
+        if (typeof originalValue === 'string') {
+          // Try DSS_TB_ pattern first (standard pattern used in DSS)
+          const dssPattern = `DSS_TB_${Digit.Utils.locale.getTransformedLocale(originalValue)}`;
+          const dssTranslation = t(dssPattern);
+          
+          if (dssTranslation !== dssPattern) {
+            localizedValue = dssTranslation;
+          } else {
+            // Fallback to direct translation
+            const directTranslation = t(originalValue);
+            localizedValue = directTranslation !== originalValue ? directTranslation : originalValue;
+          }
+        }
+        
+        console.log(`Key: ${key}, Original: ${originalValue}, Localized: ${localizedValue}`);
+        localizedRow[key] = localizedValue;
+      });
+      return localizedRow;
+    }) || chartData;
+
+    console.log("Localized chartData:", localizedData);
+    return Digit.Download.Excel(localizedData, t(header));
   };
+  
   let headerName = t(Digit.Utils.locale.getTransformedLocale(header));
   return (
     <Card className={`chart-item ${className}`} ReactRef={chart}>
