@@ -35,6 +35,7 @@ import { initBillsComponents, BillsModule } from "@egovernments/digit-ui-module-
 // import { subFormRegistry } from "@egovernments/digit-ui-libraries";
 
 import { pgrCustomizations, pgrComponents } from "./pgr";
+import { initFinanceComponents, FinanceModule } from "@egovernments/digit-ui-module-finance";
 
 var Digit = window.Digit || {};
 
@@ -59,6 +60,7 @@ const enabledModules = [
   "Bills",
   "SW",
   "BillAmendment",
+  "Finance"
 ];
 
 const initTokens = (stateCode) => {
@@ -103,6 +105,8 @@ const initDigitUI = () => {
     HRMSModule,
     ReceiptsModule,
     BillsModule,
+    FinanceModule,
+    // FireNocCard
 
     // TLModule,
     // TLLinks,
@@ -122,6 +126,7 @@ const initDigitUI = () => {
   initWSComponents();
   initCommonPTComponents();
   initBillsComponents();
+  initFinanceComponents();
 
   // initCustomisationComponents();
 
