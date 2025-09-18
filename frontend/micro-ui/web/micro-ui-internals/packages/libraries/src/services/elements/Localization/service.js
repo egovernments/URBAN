@@ -68,12 +68,45 @@ export const LocalizationService = {
     }
     const [newModules, messages] = LocalizationStore.get(locale, modules);
     if (newModules.length > 0) {
-      const data = await Request({ url: Urls.localization, params: { module: newModules.join(","), locale, tenantId }, useCache: false });
-      messages.push(...data.messages);
-      setTimeout(() => LocalizationStore.store(locale, newModules, data.messages), 100);
+      const fetchOnce = () =>
+        Request({ url: Urls.localization, params: { module: newModules.join(","), locale, tenantId }, useCache: false });
+      let data = null;
+      try {
+        data = await fetchOnce();
+      } catch (e1) {
+        // one retry after short delay
+        await new Promise((r) => setTimeout(r, 300));
+        try {
+          data = await fetchOnce();
+        } catch (e2) {
+          data = null;
+        }
+      }
+      if (data && Array.isArray(data.messages)) {
+        messages.push(...data.messages);
+        // Store immediately to avoid race conditions across multiple tabs
+        try {
+          LocalizationStore.store(locale, newModules, data.messages);
+        } catch (e) {}
+      }
     }
     LocalizationStore.updateResources(locale, messages);
     return messages;
+  },
+  verifyAndRefetch: async ({ modules = [], locale = "en_IN", tenantId }) => {
+    if (locale.indexOf("_IN") === -1) {
+      locale += "_IN";
+    }
+    // If any requested module lacks cached messages, re-fetch
+    const missing = (modules || []).filter((m) => {
+      const cached = PersistantStorage.get(LOCALE_MODULE(locale, m)) || [];
+      return !cached || cached.length === 0;
+    });
+    if (missing.length > 0) {
+      try {
+        await LocalizationService.getLocale({ modules: missing, locale, tenantId });
+      } catch (e) {}
+    }
   },
   changeLanguage: (locale, tenantId) => {
     const modules = LocalizationStore.getList(locale);

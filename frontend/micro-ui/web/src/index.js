@@ -11,8 +11,39 @@ import VersionConfig from './versionConfig';
 // Set static UI version from local config (manually maintained)
 window.DIGIT_UI_VERSION = VersionConfig.version;
 
-initLibraries().then(() => {
+initLibraries().then(async () => {
   CacheManager.init();
+
+  // Prefetch critical localization bundles before first render
+  try {
+    const getLocalePref = () => {
+      const fromSession = window.Digit.SessionStorage.get("locale");
+      if (fromSession) return fromSession;
+      const emp = window.localStorage.getItem("Employee.locale");
+      const cit = window.localStorage.getItem("Citizen.locale");
+      return emp || cit || "en_IN";
+    };
+    const getTenantPref = () => {
+      return (
+        window.Digit.SessionStorage.get("Citizen.tenantId") ||
+        window.Digit.SessionStorage.get("Employee.tenantId") ||
+        window.localStorage.getItem("Citizen.tenant-id") ||
+        window.localStorage.getItem("Employee.tenant-id") ||
+        undefined
+      );
+    };
+    const locale = getLocalePref();
+    const tenantId = getTenantPref();
+    const modules = ["rainmaker-common", tenantId ? `rainmaker-${String(tenantId).toLowerCase()}` : undefined].filter(Boolean);
+    await window.Digit.LocalizationService.getLocale({ modules, locale, tenantId });
+    // Schedule a verification pass shortly after first render time
+    setTimeout(() => {
+      window.Digit.LocalizationService.verifyAndRefetch({ modules, locale, tenantId });
+    }, 1500);
+  } catch (e) {
+    // proceed to render even if localization prefetch fails; cached strings may exist
+  }
+
   ReactDOM.render(
     <React.StrictMode>
       <App />
