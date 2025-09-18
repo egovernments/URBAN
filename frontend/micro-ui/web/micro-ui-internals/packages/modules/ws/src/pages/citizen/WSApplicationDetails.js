@@ -223,19 +223,19 @@ let serviceType = data && data?.WaterConnection?.[0] ? "WATER" : "SEWERAGE";
   sessionStorage.setItem("ApplicationNoState", applicationNobyData);
   return (
     <React.Fragment>
-      {downloadOptions && downloadOptions.length > 0 && (
-        <div ref={menuRef}>
-        <MultiLink
-        className="multilinkWrapper"
-        onHeadClick={() => setShowOptions(!showOptions)}
-        displayOptions={showOptions}
-        options={downloadOptions}
-        // optionsStyle={{margin: '0px'}}
-        />
-        </div>        
-        )}
       <div className="cardHeaderWithOptions" style={{ marginRight: "auto", maxWidth: "960px" }}>
         <Header>{t("WS_APPLICATION_DETAILS_HEADER")}</Header>
+        {downloadOptions && downloadOptions.length > 0 && (
+          <div ref={menuRef}>
+          <MultiLink
+            className="multilinkWrapper"
+            onHeadClick={() => setShowOptions(!showOptions)}
+            displayOptions={showOptions}
+            options={downloadOptions}
+            optionsStyle={{margin: '0px'}}
+          />
+          </div>
+        )}
       </div>
       {checkifPrivacyenabled && <WSInfoLabel t={t} /> }
       <div className="hide-seperator">
