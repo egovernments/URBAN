@@ -6,24 +6,19 @@ import "./index.css";
 import App from './App';
 import { TLCustomisations } from './Customisations/tl/TLCustomisation';
 import { UICustomizations } from './Customisations/UICustomizations';
+import VersionConfig from './versionConfig';
 
-// Load version.json before initializing cache manager
-const loadAppVersion = () => {
-  const url = (process.env.PUBLIC_URL || '') + '/version.json';
-  return fetch(url, { cache: 'no-cache' })
-    .then((r) => (r.ok ? r.json() : null))
-    .then((j) => {
-      if (j && (j.version || j.buildTime)) {
-        window.DIGIT_UI_VERSION = j.buildId || j.buildTime;
-      }
-    })
-    .catch(() => {});
-};
+// Set static UI version from local config (manually maintained)
+window.DIGIT_UI_VERSION = VersionConfig.version;
 
-loadAppVersion().then(() => {
-  initLibraries().then(() => {
-    CacheManager.init();
-  });
+initLibraries().then(() => {
+  CacheManager.init();
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
 });
 
 
@@ -113,11 +108,4 @@ const rehydrateIfNeeded = () => {
 
 window.addEventListener("visibilitychange", () => { if (!document.hidden) rehydrateIfNeeded(); });
 window.addEventListener("focus", () => { rehydrateIfNeeded(); });
-
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
 

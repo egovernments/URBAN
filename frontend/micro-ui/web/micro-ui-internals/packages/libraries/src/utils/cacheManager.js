@@ -75,19 +75,11 @@ export class CacheManager {
     }
   };
 
-  // Get current app version from hard-coded file, build info, or fallback
+  // Get current app version from static config (window.DIGIT_UI_VERSION) or fallback
   static getCurrentVersion() {
-    // Prefer manually set version if present
     if (typeof window !== 'undefined' && window.DIGIT_UI_VERSION) {
       const version = window.DIGIT_UI_VERSION;
-      this.log('Current version from app-version.js:', version);
-      return version;
-    }
-
-    // Then try build-info.js
-    if (typeof window !== 'undefined' && window.DIGIT_UI_BUILD_INFO) {
-      const version = window.DIGIT_UI_BUILD_INFO.buildId || window.DIGIT_UI_BUILD_INFO.buildTime;
-      this.log('Current version from build-info:', version);
+      this.log('Current version:', version);
       return version;
     }
     
@@ -105,7 +97,7 @@ export class CacheManager {
     const storedVersion = this.safeStorageAccess.getItem(this.APP_VERSION_KEY);
     
     this.log('Version check - Current:', currentVersion, 'Stored:', storedVersion);
-    this.log('Build info available:', !!window.DIGIT_UI_BUILD_INFO);
+    this.log('Build info available:', false);
     
     if (!storedVersion) {
       this.safeStorageAccess.setItem(this.APP_VERSION_KEY, currentVersion);
@@ -272,79 +264,9 @@ export class CacheManager {
     }
   }
 
-  // Check for updates from server
+  // Check for updates is disabled when using static version
   static async checkForUpdates() {
-    this.log('Checking for updates from server...');
-    try {
-      // Construct URL for sub-path deployments (e.g., /digit-ui/)
-      const getVersionUrl = () => {
-        // Use PUBLIC_URL from build-info if available, otherwise detect from current path
-        const publicUrl = window.DIGIT_UI_BUILD_INFO?.publicUrl || 
-                         (window.location.pathname.includes('/digit-ui/') ? '/digit-ui' : 
-                          window.location.pathname.replace(/\/[^\/]*$/, '/'));
-        return `${window.location.origin}${publicUrl}/version.json`;
-      };
-      
-      const url = getVersionUrl() + '?' + new Date().getTime();
-      this.log('Fetching version from:', url);
-      
-      // Add timeout to prevent hanging requests
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-      
-      const response = await fetch(url, {
-        signal: controller.signal,
-        cache: 'no-cache',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        }
-      });
-      
-      clearTimeout(timeoutId);
-      
-      if (response.ok) {
-        const data = await response.json();
-        
-        // Validate version data structure
-        if (!data || typeof data !== 'object') {
-          throw new Error('Invalid version.json format');
-        }
-        
-        const serverVersion = data.buildId || data.buildTime;
-        if (!serverVersion) {
-          throw new Error('No valid version identifier in version.json');
-        }
-        
-        let localVersion;
-        try {
-          localVersion = this.safeStorageAccess.getItem(this.APP_VERSION_KEY);
-        } catch (e) {
-          console.warn('localStorage access failed, using session storage fallback');
-          localVersion = sessionStorage.getItem(this.APP_VERSION_KEY);
-        }
-        
-        this.log('Server version:', serverVersion, 'Local version:', localVersion);
-        this.log('Version data:', data);
-        
-        if (localVersion && serverVersion && localVersion !== serverVersion) {
-          this.log('Update available! Server:', serverVersion, 'Local:', localVersion);
-          return { hasUpdate: true, newVersion: serverVersion };
-        } else {
-          this.log('No updates available');
-        }
-      } else {
-        this.log('Version check response not OK:', response.status);
-      }
-    } catch (error) {
-      if (error.name === 'AbortError') {
-        console.log('Version check timed out after 10 seconds');
-      } else {
-        console.log('Version check failed:', error.message);
-      }
-      this.log('Version check error:', error);
-    }
-    
+    this.log('Remote update check disabled (static version mode)');
     return { hasUpdate: false };
   }
 
