@@ -196,6 +196,10 @@ export class CacheManager {
         // Localization & UI preferences
         'locale', 'Citizen.locale', 'Employee.locale',
         
+        // All localization cache data (preserve all translation data)
+        'Digit.Locale.',  // Preserves Digit.Locale.en_IN.rainmaker-common etc.
+        'Locale.',        // Preserves Locale.en_IN.List etc.
+        
         // Cache management keys (preserve our own keys)
         'digit-ui-app-version', 'digit-ui-last-update',
         
