@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { initLibraries, CacheManager } from "@egovernments/digit-ui-libraries";
+import { initLibraries } from "@egovernments/digit-ui-libraries";
 // import "@egovernments/digit-ui-css/dist/index.css";
 import "./index.css";
 import App from './App';
@@ -12,7 +12,6 @@ import VersionConfig from './versionConfig';
 window.DIGIT_UI_VERSION = VersionConfig.version;
 
 initLibraries().then(async () => {
-  CacheManager.init();
 
   // Prefetch critical localization bundles before first render
   try {
