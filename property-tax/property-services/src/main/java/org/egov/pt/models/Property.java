@@ -62,7 +62,7 @@ public class Property extends PropertyInfo {
 	private CreationReason creationReason;
 	
 	@JsonProperty("usageCategory")
-	
+	@NotNull(message="The usage category cannot be null")
 	private String usageCategory;
 
 	@Max(value = 500)
