@@ -76,23 +76,29 @@ public class TranslationService {
         propertyMap.put("creationReason", property.getCreationReason());
         propertyMap.put("occupancyDate", null);
 
-        String[] propertyTypeMasterData = property.getPropertyType().split("\\.");
         String propertyType = null,propertySubType = null;
-        propertyType = propertyTypeMasterData[0];
-        if(propertyTypeMasterData.length > 1)
-            propertySubType = propertyTypeMasterData[1];
+        if(property.getPropertyType() != null) {
+            String[] propertyTypeMasterData = property.getPropertyType().split("\\.");
+            propertyType = propertyTypeMasterData[0];
+            if(propertyTypeMasterData.length > 1)
+                propertySubType = propertyTypeMasterData[1];
+        }
 
-        String[] usageCategoryMasterData = property.getUsageCategory().split("\\.");
         String usageCategoryMajor = null,usageCategoryMinor = null;
-        usageCategoryMajor = usageCategoryMasterData[0];
-        if(usageCategoryMasterData.length > 1)
-            usageCategoryMinor = usageCategoryMasterData[1];
+        if(property.getUsageCategory() != null) {
+            String[] usageCategoryMasterData = property.getUsageCategory().split("\\.");
+            usageCategoryMajor = usageCategoryMasterData[0];
+            if(usageCategoryMasterData.length > 1)
+                usageCategoryMinor = usageCategoryMasterData[1];
+        }
 
-        String[] ownershipCategoryMasterData  = property.getOwnershipCategory().split("\\.");
         String ownershipCategory = null,subOwnershipCategory = null;
-        ownershipCategory = ownershipCategoryMasterData[0];
-        if(ownershipCategoryMasterData.length > 1)
-            subOwnershipCategory = ownershipCategoryMasterData[1];
+        if(property.getOwnershipCategory() != null) {
+            String[] ownershipCategoryMasterData = property.getOwnershipCategory().split("\\.");
+            ownershipCategory = ownershipCategoryMasterData[0];
+            if(ownershipCategoryMasterData.length > 1)
+                subOwnershipCategory = ownershipCategoryMasterData[1];
+        }
 
 
         propertyDetail.put("noOfFloors", property.getNoOfFloors());
@@ -129,19 +135,21 @@ public class TranslationService {
                 unitMap.put("arv", unit.getArv());
                 unitMap.put("occupancyType", unit.getOccupancyType());
 
-                String[] masterData = unit.getUsageCategory().split("\\.");
+                if(unit.getUsageCategory() != null) {
+                    String[] masterData = unit.getUsageCategory().split("\\.");
 
-                if(masterData.length >= 1)
-                    unitMap.put("usageCategoryMajor", masterData[0]);
+                    if(masterData.length >= 1)
+                        unitMap.put("usageCategoryMajor", masterData[0]);
 
-                if(masterData.length >= 2)
-                    unitMap.put("usageCategoryMinor", masterData[1]);
+                    if(masterData.length >= 2)
+                        unitMap.put("usageCategoryMinor", masterData[1]);
 
-                if(masterData.length >= 3)
-                    unitMap.put("usageCategorySubMinor", masterData[2]);
+                    if(masterData.length >= 3)
+                        unitMap.put("usageCategorySubMinor", masterData[2]);
 
-                if(masterData.length >= 4)
-                    unitMap.put("usageCategoryDetail",masterData[3]);
+                    if(masterData.length >= 4)
+                        unitMap.put("usageCategoryDetail",masterData[3]);
+                }
 
                 unitMap.put("additionalDetails", unit.getAdditionalDetails());
                 units.add(unitMap);
