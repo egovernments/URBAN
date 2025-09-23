@@ -30,9 +30,9 @@ const MyConnections = ({ view }) => {
     { filters: filter1 }
   );
   let connectionList = data?.WaterConnection.concat(SWdata?.SewerageConnections);
-  let applicationNoWS = (data && data?.WaterConnection?.map((ob) => ob?.propertyId).join(",")) || "";
-  let applicaionNoSW = (SWdata && SWdata?.SewerageConnections?.map((ob) => ob?.propertyId).join(",")) || "";
-  let applicationNos = applicationNoWS.concat(applicaionNoSW);
+  let applicationNoWS = (data && data?.WaterConnection?.map((ob) => ob?.propertyId)) || [];
+  let applicaionNoSW = (SWdata && SWdata?.SewerageConnections?.map((ob) => ob?.propertyId)) || [];
+  let applicationNos = applicationNoWS.concat(applicaionNoSW).join(",");
   const { isLoading: PTisLoading, isError: PTisError, error: PTerror, data: PTdata } = Digit.Hooks.pt.usePropertySearch(
     { filters: { propertyIds: applicationNos } },
     { filters: { propertyIds: applicationNos }, enabled: applicationNos ? true : false}
