@@ -164,7 +164,7 @@ const BPACitizenHomeScreen = ({ parentRoute }) => {
       styles: { padding: "0px", minWidth: "90%", minHeight: "90%" },
     },
     {
-      title: t("ACTION_TEST_EDCR_SCRUTINY"),
+      title: <span style={{ fontSize: "1.5rem", fontWeight: "700" }}>{t("ACTION_TEST_EDCR_SCRUTINY")}</span>,
       Icon: <EDCRIcon className="fill-path-primary-main" />,
       links: [
         {
@@ -179,7 +179,7 @@ const BPACitizenHomeScreen = ({ parentRoute }) => {
       styles: { minWidth: "90%", minHeight: "90%" },
     },
     {
-      title: t("ACTION_TEST_BPA_STAKE_HOLDER_HOME"),
+      title: <span style={{ fontSize: "1.5rem", fontWeight: "700" }}>{t("ACTION_TEST_BPA_STAKE_HOLDER_HOME")}</span>,
       Icon: <BPAIcon className="fill-path-primary-main" />,
       links: bpaLinks,
       styles: { minWidth: "90%", minHeight: "90%" },
