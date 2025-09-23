@@ -101,7 +101,7 @@ const ConnectionDetails = () => {
 
   
   const checkData = async () => {
-    console.log("***TenantId", data?.WaterConnection?.[0]?.tenantId || data?.SewerageConnections?.[0]?.tenantId);
+    console.log("TenantId", data?.WaterConnection?.[0]?.tenantId || data?.SewerageConnections?.[0]?.tenantId);
 
   }
 
