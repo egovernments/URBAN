@@ -96,11 +96,21 @@ const ConnectionDetails = () => {
     window.open(fileStore[response?.filestoreIds[0]], "_blank");
   }
 
+
+
+
+  
+  const checkData = async () => {
+    console.log("***TenantId", data?.WaterConnection?.[0]?.tenantId || data?.SewerageConnections?.[0]?.tenantId);
+
+  }
+
   const handleDownloadPdf = async () => {
     const tenantInfo = data?.WaterConnection?.[0]?.tenantId || data?.SewerageConnections?.[0]?.tenantId;
     let res = data?.WaterConnection?.[0] || data?.SewerageConnections?.[0];
     const PDFdata = getConnectionDetailsPDF({ ...res }, { ...PTData?.Properties?.[0] }, tenantInfo, t);
     PDFdata.then((ress) => Digit.Utils.pdf.generatev1(ress));
+    checkData();
     setShowOptions(false);
   };
 
