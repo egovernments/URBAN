@@ -185,13 +185,12 @@ public class EstimationService {
 		List<String> billingSlabIds = new LinkedList<>();
 
 		/*
-		 * by default land should get only one slab from database per tenantId
+		 * For vacant land, use the first matching slab
 		 */
-		if (PT_TYPE_VACANT_LAND.equalsIgnoreCase(detail.getPropertyType()) && filteredBillingSlabs.size() != 1)
-			throw new CustomException(PT_ESTIMATE_BILLINGSLABS_UNMATCH_VACANCT,PT_ESTIMATE_BILLINGSLABS_UNMATCH_VACANT_MSG
-					.replace("{count}",String.valueOf(filteredBillingSlabs.size())));
-
-		else if (PT_TYPE_VACANT_LAND.equalsIgnoreCase(detail.getPropertyType())) {
+		if (PT_TYPE_VACANT_LAND.equalsIgnoreCase(detail.getPropertyType())) {
+			if (filteredBillingSlabs.isEmpty())
+				throw new CustomException(PT_ESTIMATE_BILLINGSLABS_UNMATCH_VACANCT, "No billing slab found for vacant land");
+				
 			taxAmt = taxAmt.add(BigDecimal.valueOf(filteredBillingSlabs.get(0).getUnitRate() * detail.getLandArea()));
 		} else {
 
@@ -1143,33 +1142,39 @@ public class EstimationService {
 		billingSlabSearchCriteria.setTenantId(property.getTenantId());
 		billingSlabSearchCriteria.setMarketValue(marketValue);
 
-		String[] usageCategoryMasterData = property.getUsageCategory().split("\\.");
 		String usageCategoryMajor = null,usageCategoryMinor = null;
-		usageCategoryMajor = usageCategoryMasterData[0];
-		if(usageCategoryMasterData.length > 1)
-			usageCategoryMinor = usageCategoryMasterData[1];
+		if(property.getUsageCategory() != null) {
+			String[] usageCategoryMasterData = property.getUsageCategory().split("\\.");
+			usageCategoryMajor = usageCategoryMasterData[0];
+			if(usageCategoryMasterData.length > 1)
+				usageCategoryMinor = usageCategoryMasterData[1];
+		}
 
 		if(usageCategoryMajor != null)
 			billingSlabSearchCriteria.setUsageCategoryMajor(usageCategoryMajor);
 		if(usageCategoryMinor != null)
 			billingSlabSearchCriteria.setUsageCategoryMinor(usageCategoryMinor);
 
-		String[] propertyTypeCollection = property.getPropertyType().split("\\.");
 		String propertyType = null,propertySubType = null;
-		propertyType = propertyTypeCollection[0];
-		if(propertyTypeCollection.length > 1)
-			propertySubType = propertyTypeCollection[1];
+		if(property.getPropertyType() != null) {
+			String[] propertyTypeCollection = property.getPropertyType().split("\\.");
+			propertyType = propertyTypeCollection[0];
+			if(propertyTypeCollection.length > 1)
+				propertySubType = propertyTypeCollection[1];
+		}
 
 		if(propertyType != null)
 			billingSlabSearchCriteria.setPropertyType(propertyType);
 		if(propertySubType != null)
 			billingSlabSearchCriteria.setPropertySubType(propertySubType);
 
-		String[] ownership = property.getOwnershipCategory().split("\\.");
 		String ownershipCategory = null,subownershipCategory = null;
-		ownershipCategory = ownership[0];
-		if(ownership.length > 1)
-			subownershipCategory = ownership[1];
+		if(property.getOwnershipCategory() != null) {
+			String[] ownership = property.getOwnershipCategory().split("\\.");
+			ownershipCategory = ownership[0];
+			if(ownership.length > 1)
+				subownershipCategory = ownership[1];
+		}
 
 		if(ownershipCategory != null)
 			billingSlabSearchCriteria.setOwnerShipCategory(ownershipCategory);
