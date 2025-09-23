@@ -91,6 +91,7 @@ export const getGeneralCriteria = (tenantId, moduleCode, type) => ({
 
 export const getMultipleTypes = (tenantId, moduleCode, types) => ({
   details: {
+    tenantId,
     moduleDetails: [
       {
         moduleName: moduleCode,
@@ -99,8 +100,9 @@ export const getMultipleTypes = (tenantId, moduleCode, types) => ({
     ],
   },
 });
-export const getMultipleTypesWithFilter = (moduleCode, masterDetails) => ({
+export const getMultipleTypesWithFilter = (tenantId, moduleCode, masterDetails) => ({
   details: {
+    tenantId,
     moduleDetails: [
       {
         moduleName: moduleCode,
@@ -1638,7 +1640,7 @@ export const MdmsService = {
     return MdmsService.getDataByCriteria(tenantId, getMultipleTypes(tenantId, moduleCode, types), moduleCode);
   },
   getMultipleTypesWithFilter: (tenantId, moduleCode, types) => {
-    return MdmsService.getDataByCriteria(tenantId, getMultipleTypesWithFilter(moduleCode, types), moduleCode);
+    return MdmsService.getDataByCriteria(tenantId, getMultipleTypesWithFilter(tenantId, moduleCode, types), moduleCode);
   },
   getFSTPPlantInfo: (tenantId, moduleCode, types) => {
     return MdmsService.getDataByCriteria(tenantId, getFSTPPlantCriteria(tenantId, moduleCode, types), moduleCode);
