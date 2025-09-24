@@ -23,10 +23,10 @@ console.log("Consumer ");
 
 const run = async () => {
   await consumer.connect()
-  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX, fromBeginning: true});
-  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX, fromBeginning: true});
-  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX, fromBeginning: true});
-  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX, fromBeginning: true});
+  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX], fromBeginning: true});
+  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX], fromBeginning: true});
+  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX], fromBeginning: true});
+  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX], fromBeginning: true});
 
   await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
