@@ -25,53 +25,16 @@ const run = async () => {
   await consumer.connect()
 
   console.log("Starting consumer subscription...");
-  console.log("Payment regex:", envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX);
 
-  // KafkaJS supports regex subscription directly using 'topic' (singular) with a regex
-  try {
-    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX, fromBeginning: true});
-    console.log("Subscribed to payment topics with regex:", envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX);
-  } catch(e) {
-    console.error("Failed to subscribe to payment regex:", e);
-    // Fallback: try subscribing to specific state topic if regex fails
-    try {
-      const stateSpecificTopic = 'pg-egov.collection.payment-create';
-      await consumer.subscribe({ topic: stateSpecificTopic, fromBeginning: true});
-      console.log("Subscribed to specific topic:", stateSpecificTopic);
-    } catch(err) {
-      console.error("Failed to subscribe to specific payment topic:", err);
-    }
-  }
+  // Subscribe to payment topics with regex
+  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX, fromBeginning: true});
+  console.log("Subscribed to payment topics with regex:", envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX);
 
-  try {
-    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX, fromBeginning: true});
-    console.log("Subscribed to create SMS topics with regex");
-  } catch(e) {
-    console.error("Failed to subscribe to create SMS regex:", e);
-    if (envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS) {
-      await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS, fromBeginning: true});
-    }
-  }
-
-  try {
-    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX, fromBeginning: true});
-    console.log("Subscribed to update SMS topics with regex");
-  } catch(e) {
-    console.error("Failed to subscribe to update SMS regex:", e);
-    if (envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS) {
-      await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS, fromBeginning: true});
-    }
-  }
-
-  try {
-    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX, fromBeginning: true});
-    console.log("Subscribed to workflow SMS topics with regex");
-  } catch(e) {
-    console.error("Failed to subscribe to workflow SMS regex:", e);
-    if (envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS) {
-      await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS, fromBeginning: true});
-    }
-  }
+  // Subscribe to SMS topics with regex
+  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX, fromBeginning: true});
+  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX, fromBeginning: true});
+  await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX, fromBeginning: true});
+  console.log("Subscribed to all SMS topics with regex patterns");
 
   await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
@@ -288,10 +251,11 @@ const run = async () => {
                   const body = { RequestInfo };
                   const searchRequest = { body, query, headers };
                   const searchResponse = await searchApiResponse(searchRequest);
-                  //console.log("search response: "+JSON.stringify(searchResponse));
+                  console.log("search response: "+JSON.stringify(searchResponse));
                   const { FireNOCs } = searchResponse;
-                  if (!FireNOCs.length) {
-                    throw "FIRENOC Search error";
+                  if (!FireNOCs || !FireNOCs.length) {
+                    console.error(`No FireNOC found for application ${applicationNumber} in tenant ${tenantId}`);
+                    continue; // Skip this payment and continue with next
                   }
                   for (
                     var firenocIndex = 0;
@@ -320,24 +284,29 @@ const run = async () => {
               }
             }
           } catch (error) {
-            throw error;
+            console.error("Error processing payment:", error);
           }
         };
 
-        if(envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX.test(topic))
-          FireNOCPaymentStatus(value);
+        if(envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX && envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX.test && envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX.test(topic)) {
+          try {
+            await FireNOCPaymentStatus(value);
+          } catch (error) {
+            console.error("Error in FireNOCPaymentStatus:", error);
+          }
+        }
 
-        if(envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX.test(topic)){
+        if(envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX && envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX.test && envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX.test(topic)){
           const { FireNOCs } = value;
           sendFireNOCSMSRequest(FireNOCs);
         }
 
-        if(envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX.test(topic)){
+        if(envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX && envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX.test && envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX.test(topic)){
           const { FireNOCs } = value;
           sendFireNOCSMSRequest(FireNOCs);
         }
 
-        if(envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX.test(topic)){
+        if(envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX && envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX.test && envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX.test(topic)){
           const { FireNOCs } = value;
           sendFireNOCSMSRequest(FireNOCs);
         }
