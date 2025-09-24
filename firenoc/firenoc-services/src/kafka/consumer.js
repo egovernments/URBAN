@@ -23,10 +23,55 @@ console.log("Consumer ");
 
 const run = async () => {
   await consumer.connect()
-  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX], fromBeginning: true});
-  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX], fromBeginning: true});
-  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX], fromBeginning: true});
-  await consumer.subscribe({ topics: [envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX], fromBeginning: true});
+
+  console.log("Starting consumer subscription...");
+  console.log("Payment regex:", envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX);
+
+  // KafkaJS supports regex subscription directly using 'topic' (singular) with a regex
+  try {
+    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX, fromBeginning: true});
+    console.log("Subscribed to payment topics with regex:", envVariables.KAFKA_TOPICS_RECEIPT_CREATE_REGEX);
+  } catch(e) {
+    console.error("Failed to subscribe to payment regex:", e);
+    // Fallback: try subscribing to specific state topic if regex fails
+    try {
+      const stateSpecificTopic = 'pg-egov.collection.payment-create';
+      await consumer.subscribe({ topic: stateSpecificTopic, fromBeginning: true});
+      console.log("Subscribed to specific topic:", stateSpecificTopic);
+    } catch(err) {
+      console.error("Failed to subscribe to specific payment topic:", err);
+    }
+  }
+
+  try {
+    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS_REGEX, fromBeginning: true});
+    console.log("Subscribed to create SMS topics with regex");
+  } catch(e) {
+    console.error("Failed to subscribe to create SMS regex:", e);
+    if (envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS) {
+      await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_CREATE_SMS, fromBeginning: true});
+    }
+  }
+
+  try {
+    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS_REGEX, fromBeginning: true});
+    console.log("Subscribed to update SMS topics with regex");
+  } catch(e) {
+    console.error("Failed to subscribe to update SMS regex:", e);
+    if (envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS) {
+      await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_UPDATE_SMS, fromBeginning: true});
+    }
+  }
+
+  try {
+    await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS_REGEX, fromBeginning: true});
+    console.log("Subscribed to workflow SMS topics with regex");
+  } catch(e) {
+    console.error("Failed to subscribe to workflow SMS regex:", e);
+    if (envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS) {
+      await consumer.subscribe({ topic: envVariables.KAFKA_TOPICS_FIRENOC_WORKFLOW_SMS, fromBeginning: true});
+    }
+  }
 
   await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
