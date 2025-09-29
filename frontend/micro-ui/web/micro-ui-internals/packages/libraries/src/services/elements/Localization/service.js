@@ -57,7 +57,12 @@ const LocalizationStore = {
 
   updateResources: (locale, messages) => {
     let locales = TransformArrayToObj(messages);
-    i18next.addResources(locale, "translations", locales);
+    // Check if i18next is properly initialized before calling addResources
+    if (i18next && typeof i18next.addResources === 'function') {
+      i18next.addResources(locale, "translations", locales);
+    } else {
+      console.warn('[LocalizationService] i18next not ready, skipping resource update');
+    }
   },
 };
 

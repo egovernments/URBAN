@@ -6,7 +6,26 @@ const defaultApiCachingSettings = [
     cacheTimeInSecs: 86400,
   },
   {
+    serviceName: "access/v1/actions",
+    cacheTimeInSecs: 86400,
+  },
+  {
+    serviceName: "user/_search",
+    cacheTimeInSecs: 86400,
+  },
+  {
     serviceName: "egov-mdms-service",
+    cacheTimeInSecs: 3600,
+    debounceTimeInMS: 100,
+    moduleSettings: [
+      {
+        moduleName: "FSM",
+        cacheTimeInSecs: 7200,
+      },
+    ],
+  },
+  {
+    serviceName: "mdms-v2",
     cacheTimeInSecs: 3600,
     debounceTimeInMS: 100,
     moduleSettings: [
