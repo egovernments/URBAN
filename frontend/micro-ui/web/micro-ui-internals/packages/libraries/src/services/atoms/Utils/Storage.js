@@ -33,25 +33,7 @@ const getStorage = (storageClass) => ({
       expiry: Date.now() + ttl * 1000,
     };
     if (localStoreSupport()) {
-      try {
-        storageClass.setItem(k(key), JSON.stringify(item));
-      } catch (e) {
-        if (e.name === 'QuotaExceededError') {
-          // Clear MDMS cache when quota exceeded
-          const keys = Object.keys(storageClass);
-          keys.forEach(storageKey => {
-            if (storageKey.startsWith('Digit.MDMS.')) {
-              storageClass.removeItem(storageKey);
-            }
-          });
-          // Retry setting the item
-          try {
-            storageClass.setItem(k(key), JSON.stringify(item));
-          } catch (retryError) {
-            console.warn('Storage quota exceeded, unable to cache data:', key);
-          }
-        }
-      }
+      storageClass.setItem(k(key), JSON.stringify(item));
     } else if (typeof window !== "undefined") {
       window.eGov = window.eGov || {};
       window.eGov.Storage = window.eGov.Storage || {};
