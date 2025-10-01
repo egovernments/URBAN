@@ -58,67 +58,6 @@ const AutoLogin = () => {
 
   const handleAutoLogin = async () => {
     try {
-      // Check timestamp from REACT_APP_PUBLIC_PATH
-      const currentTimestamp = process.env['REACT_APP_PUBLIC_PATH'];
-      const storedTimestamp = localStorage.getItem("app_timestamp");
-      
-      console.log("Current timestamp from REACT_APP_PUBLIC_PATH:", currentTimestamp);
-      console.log("Stored timestamp:", storedTimestamp);
-      
-      // If no stored timestamp or stored timestamp is older, clear only user auth data
-      if (!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) {
-        console.log("Clearing user authentication data due to timestamp change");
-        
-        // Preserve only mandatory keys, clear everything else
-        const userDataKeys = [
-          "Citizen.token", "Citizen.user-info", "Citizen.tenant-id", "Citizen.locale",
-          "Employee.token", "Employee.user-info", "Employee.tenant-id", "Employee.locale",
-          "citizen.userRequestObject", "user-info", "token",
-          "Digit.initData", "Digit.locale", "Digit.ApiCachingSettings"
-        ];
-        
-        // Preserve essential localStorage items
-        const preservedLocalStorage = {};
-        userDataKeys.forEach(key => {
-          const value = localStorage.getItem(key);
-          if (value !== null) {
-            preservedLocalStorage[key] = value;
-          }
-        });
-        
-        // Preserve essential sessionStorage items
-        const preservedSessionStorage = {};
-        userDataKeys.forEach(key => {
-          const value = sessionStorage.getItem(key);
-          if (value !== null) {
-            preservedSessionStorage[key] = value;
-          }
-        });
-        
-        // Clear all localStorage
-        localStorage.clear();
-        
-        // Clear all sessionStorage
-        sessionStorage.clear();
-        
-        // Restore only the preserved items
-        Object.entries(preservedLocalStorage).forEach(([key, value]) => {
-          localStorage.setItem(key, value);
-        });
-        
-        Object.entries(preservedSessionStorage).forEach(([key, value]) => {
-          sessionStorage.setItem(key, value);
-        });
-        
-        // Store the new timestamp
-        if (currentTimestamp) {
-          localStorage.setItem("app_timestamp", currentTimestamp);
-        }
-        
-        console.log("Cleared all storage except mandatory keys:", userDataKeys);
-      } else if (storedTimestamp === currentTimestamp) {
-        console.log("Timestamp matches, proceeding with auto-login without clearing storage");
-      }
       
       // Validate required credentials
       if (!defaultCredentials.username || !defaultCredentials.password || !defaultCredentials.city?.code) {

@@ -40,6 +40,7 @@ const DigitUIWrapper = ({ stateCode, enabledModules, moduleReducers }) => {
 export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers }) => {
   const [privacy, setPrivacy] = useState(Digit.Utils.getPrivacyObject() || {});
   const userType = Digit.UserService.getType();
+  
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -54,6 +55,58 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
       },
     },
   });
+
+  // Clear cache when new build is deployed - but don't block app initialization
+  React.useEffect(() => {
+    const currentTimestamp = process.env['REACT_APP_PUBLIC_PATH'];
+    const storedTimestamp = localStorage.getItem("app_timestamp");
+    
+    // Only clear cache if we haven't done it yet for this session
+    const sessionClearFlag = sessionStorage.getItem("cache_cleared_for_build");
+    
+    if ((!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) && !sessionClearFlag) {
+      console.log("New build detected, will clear cache after app loads");
+      
+      // Mark that we're going to clear cache for this session
+      sessionStorage.setItem("cache_cleared_for_build", "true");
+      
+      // Use setTimeout to clear cache after app initialization completes
+      setTimeout(() => {
+        console.log("Clearing cache and storage for new build");
+        
+        // Preserve autologin URL parameters before clearing storage
+        const currentUrl = window.location.href;
+        const isAutoLogin = currentUrl.includes('/auto-login') && (currentUrl.includes('username=') || currentUrl.includes('mobile='));
+        
+        // Clear React Query cache first
+        queryClient.clear();
+        
+        // Clear all storage except the new timestamp and session flag
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Restore session flag to prevent infinite clearing
+        sessionStorage.setItem("cache_cleared_for_build", "true");
+        
+        // Store the new timestamp
+        if (currentTimestamp) {
+          localStorage.setItem("app_timestamp", currentTimestamp);
+        }
+        
+        console.log("Cache and storage cleared");
+        
+        // If we're in autologin, just reload to retry with same URL params
+        // Otherwise do normal reload
+        if (isAutoLogin) {
+          console.log("Reloading autologin page with preserved URL parameters");
+          window.location.reload();
+        } else {
+          console.log("Reloading page");
+          window.location.reload();
+        }
+      }, 1000);
+    }
+  }, [queryClient]);
 
   const ComponentProvider = Digit.Contexts.ComponentProvider;
   const PrivacyProvider = Digit.Contexts.PrivacyProvider;
