@@ -68,9 +68,6 @@ const AutoLogin = () => {
       if (!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) {
         console.log("Clearing localStorage and sessionStorage due to timestamp change");
         
-        // Preserve auto-login credentials by storing them in URL
-        const currentUrl = new URL(window.location.href);
-        
         // Clear all storage
         localStorage.clear();
         sessionStorage.clear();
@@ -80,21 +77,10 @@ const AutoLogin = () => {
           localStorage.setItem("app_timestamp", currentTimestamp);
         }
         
-        // Mark that we just cleared storage
-        sessionStorage.setItem("storage_cleared", "true");
-        
-        // Refresh the page to reinitialize the app with clean state
-        console.log("Refreshing page after storage clear...");
-        window.location.href = currentUrl.toString();
-        return; // Stop execution here
+        // Don't refresh the page - just proceed with auto-login after clearing storage
+        console.log("Storage cleared, proceeding with auto-login...");
       } else if (storedTimestamp === currentTimestamp) {
         console.log("Timestamp matches, proceeding with auto-login without clearing storage");
-      }
-      
-      // Check if we just cleared storage and are on the retry
-      if (sessionStorage.getItem("storage_cleared") === "true") {
-        console.log("Retrying auto-login after storage clear");
-        sessionStorage.removeItem("storage_cleared");
       }
       
       // Validate required credentials
