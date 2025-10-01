@@ -23,6 +23,7 @@ const AutoLogin = () => {
   const [error, setError] = useState(null); 
   const history = useHistory();
   const [user, setUser] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
 
   const queryParams = new URLSearchParams(location.search);
@@ -64,21 +65,28 @@ const AutoLogin = () => {
       console.log("Current timestamp from REACT_APP_PUBLIC_PATH:", currentTimestamp);
       console.log("Stored timestamp:", storedTimestamp);
       
-      // If no stored timestamp or stored timestamp is older, clear storage and refresh
+      // If no stored timestamp or stored timestamp is older, clear only user auth data
       if (!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) {
-        console.log("Clearing localStorage and sessionStorage due to timestamp change");
+        console.log("Clearing user authentication data due to timestamp change");
         
-        // Clear all storage
-        localStorage.clear();
-        sessionStorage.clear();
+        // Clear only user-specific authentication data, preserve system data
+        const userDataKeys = [
+          "Citizen.token", "Citizen.user-info", "Citizen.tenant-id", "Citizen.locale",
+          "Employee.token", "Employee.user-info", "Employee.tenant-id", "Employee.locale",
+          "citizen.userRequestObject", "user-info", "token"
+        ];
+        
+        userDataKeys.forEach(key => {
+          localStorage.removeItem(key);
+          sessionStorage.removeItem(key);
+        });
         
         // Store the new timestamp
         if (currentTimestamp) {
           localStorage.setItem("app_timestamp", currentTimestamp);
         }
         
-        // Don't refresh the page - just proceed with auto-login after clearing storage
-        console.log("Storage cleared, proceeding with auto-login...");
+        console.log("User authentication data cleared, proceeding with auto-login...");
       } else if (storedTimestamp === currentTimestamp) {
         console.log("Timestamp matches, proceeding with auto-login without clearing storage");
       }
@@ -110,6 +118,23 @@ const AutoLogin = () => {
 
     } catch (err) {
       console.error("Employee auto-login failed:", err);
+      console.error("Error details:", {
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        message: err.message
+      });
+      
+      // Don't set error immediately for network issues - try to retry (max 3 times)
+      if ((!err.response || err.response.status === 0 || err.message === 'Network Error') && retryCount < 3) {
+        console.log(`Network error detected, retrying auto-login in 2 seconds... (attempt ${retryCount + 1}/3)`);
+        setRetryCount(prev => prev + 1);
+        setTimeout(() => {
+          handleAutoLogin();
+        }, 2000);
+        return;
+      }
+      
       const errorMessage = err.response?.data?.error_description || err.message || "Employee auto-login failed";
       setError(errorMessage);
       
