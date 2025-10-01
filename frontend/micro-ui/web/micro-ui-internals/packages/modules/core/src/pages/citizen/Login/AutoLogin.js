@@ -57,6 +57,27 @@ const AutoLogin = () => {
 
   const handleAutoLogin = async () => {
     try {
+      // Check timestamp from REACT_APP_PUBLIC_PATH
+      const currentTimestamp = process.env.REACT_APP_PUBLIC_PATH;
+      const storedTimestamp = localStorage.getItem("app_timestamp");
+      
+      console.log("Current timestamp from REACT_APP_PUBLIC_PATH:", currentTimestamp);
+      console.log("Stored timestamp:", storedTimestamp);
+      
+      // If no stored timestamp or stored timestamp is older, clear storage
+      if (!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) {
+        console.log("Clearing localStorage and sessionStorage due to timestamp change");
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Store the new timestamp
+        if (currentTimestamp) {
+          localStorage.setItem("app_timestamp", currentTimestamp);
+        }
+      } else if (storedTimestamp === currentTimestamp) {
+        console.log("Timestamp matches, proceeding with auto-login without clearing storage");
+      }
+      
       const requestData = {
         username: mobileNumber,
         password: otp, 
