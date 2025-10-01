@@ -69,16 +69,45 @@ const AutoLogin = () => {
       if (!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) {
         console.log("Clearing user authentication data due to timestamp change");
         
-        // Clear only user-specific authentication data, preserve system data
+        // Preserve only mandatory keys, clear everything else
         const userDataKeys = [
           "Citizen.token", "Citizen.user-info", "Citizen.tenant-id", "Citizen.locale",
           "Employee.token", "Employee.user-info", "Employee.tenant-id", "Employee.locale",
-          "citizen.userRequestObject", "user-info", "token"
+          "citizen.userRequestObject", "user-info", "token",
+          "Digit.initData", "Digit.locale", "Digit.ApiCachingSettings"
         ];
         
+        // Preserve essential localStorage items
+        const preservedLocalStorage = {};
         userDataKeys.forEach(key => {
-          localStorage.removeItem(key);
-          sessionStorage.removeItem(key);
+          const value = localStorage.getItem(key);
+          if (value !== null) {
+            preservedLocalStorage[key] = value;
+          }
+        });
+        
+        // Preserve essential sessionStorage items
+        const preservedSessionStorage = {};
+        userDataKeys.forEach(key => {
+          const value = sessionStorage.getItem(key);
+          if (value !== null) {
+            preservedSessionStorage[key] = value;
+          }
+        });
+        
+        // Clear all localStorage
+        localStorage.clear();
+        
+        // Clear all sessionStorage
+        sessionStorage.clear();
+        
+        // Restore only the preserved items
+        Object.entries(preservedLocalStorage).forEach(([key, value]) => {
+          localStorage.setItem(key, value);
+        });
+        
+        Object.entries(preservedSessionStorage).forEach(([key, value]) => {
+          sessionStorage.setItem(key, value);
         });
         
         // Store the new timestamp
@@ -86,7 +115,7 @@ const AutoLogin = () => {
           localStorage.setItem("app_timestamp", currentTimestamp);
         }
         
-        console.log("User authentication data cleared, proceeding with auto-login...");
+        console.log("Cleared all storage except mandatory keys:", userDataKeys);
       } else if (storedTimestamp === currentTimestamp) {
         console.log("Timestamp matches, proceeding with auto-login without clearing storage");
       }
