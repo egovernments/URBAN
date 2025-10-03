@@ -13,34 +13,55 @@ window.DIGIT_UI_VERSION = VersionConfig.version;
 
 initLibraries().then(async () => {
 
+  // Skip prefetch for auto-login pages - they handle localization themselves
+  const isAutoLogin = window.location.href.includes('/auto-login');
+  console.log(`[LOCALIZATION] App initialization - isAutoLogin: ${isAutoLogin}, URL: ${window.location.href}`);
+  
   // Prefetch critical localization bundles before first render
-  try {
+  if (!isAutoLogin) {
+    try {
+    console.log("[LOCALIZATION] Starting initial prefetch for normal app flow");
+    
     const getLocalePref = () => {
       const fromSession = window.Digit.SessionStorage.get("locale");
-      if (fromSession) return fromSession;
       const emp = window.localStorage.getItem("Employee.locale");
       const cit = window.localStorage.getItem("Citizen.locale");
-      return emp || cit || "en_IN";
+      const result = fromSession || emp || cit || "en_IN";
+      console.log(`[LOCALIZATION] Locale preference - session: ${fromSession}, employee: ${emp}, citizen: ${cit}, final: ${result}`);
+      return result;
     };
+    
     const getTenantPref = () => {
-      return (
-        window.Digit.SessionStorage.get("Citizen.tenantId") ||
-        window.Digit.SessionStorage.get("Employee.tenantId") ||
-        window.localStorage.getItem("Citizen.tenant-id") ||
-        window.localStorage.getItem("Employee.tenant-id") ||
-        undefined
-      );
+      const sessionCitizen = window.Digit.SessionStorage.get("Citizen.tenantId");
+      const sessionEmployee = window.Digit.SessionStorage.get("Employee.tenantId");
+      const localCitizen = window.localStorage.getItem("Citizen.tenant-id");
+      const localEmployee = window.localStorage.getItem("Employee.tenant-id");
+      const result = sessionCitizen || sessionEmployee || localCitizen || localEmployee || undefined;
+      console.log(`[LOCALIZATION] Tenant preference - sessionCit: ${sessionCitizen}, sessionEmp: ${sessionEmployee}, localCit: ${localCitizen}, localEmp: ${localEmployee}, final: ${result}`);
+      return result;
     };
+    
     const locale = getLocalePref();
     const tenantId = getTenantPref();
     const modules = ["rainmaker-common", tenantId ? `rainmaker-${String(tenantId).toLowerCase()}` : undefined].filter(Boolean);
+    
+    console.log(`[LOCALIZATION] Initial prefetch params - locale: ${locale}, tenantId: ${tenantId}, modules: [${modules.join(', ')}]`);
+    
+    const startTime = Date.now();
     await window.Digit.LocalizationService.getLocale({ modules, locale, tenantId });
+    console.log(`[LOCALIZATION] Initial prefetch completed in ${Date.now() - startTime}ms`);
+    
     // Schedule a verification pass shortly after first render time
     setTimeout(() => {
+      console.log(`[LOCALIZATION] Running verification pass with same params`);
       window.Digit.LocalizationService.verifyAndRefetch({ modules, locale, tenantId });
     }, 1500);
-  } catch (e) {
-    // proceed to render even if localization prefetch fails; cached strings may exist
+    } catch (e) {
+      console.error("[LOCALIZATION] Initial prefetch failed:", e);
+      // proceed to render even if localization prefetch fails; cached strings may exist
+    }
+  } else {
+    console.log("[LOCALIZATION] Auto-login detected - skipping initial localization prefetch, will be handled by auto-login component");
   }
 
   ReactDOM.render(

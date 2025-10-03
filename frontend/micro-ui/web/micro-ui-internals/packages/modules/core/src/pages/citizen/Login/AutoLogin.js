@@ -42,10 +42,11 @@ const AutoLogin = () => {
   const queryParams = new URLSearchParams(location.search);
   const fromSandbox= queryParams.get("fromSandbox") || false
 
-
   const mobileNumber = queryParams.get("mobile");
   const otp = queryParams.get("otp") || "123456"; 
   const city = queryParams.get("city") || Digit.ULBService.getStateId();
+  // Check for locale parameter in URL
+  const urlLocale = queryParams.get("locale");
   Digit.SessionStorage.set("CITIZEN.COMMON.HOME.CITY", city);
   const redirectUrl = queryParams.get("redirectUrl") || DEFAULT_REDIRECT_URL;
   
@@ -58,13 +59,55 @@ const AutoLogin = () => {
     setCitizenDetail(user?.info, user?.access_token, city);
     Digit.SessionStorage.set("fromSandbox", fromSandbox);  
 
-    if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
-      history.replace("/digit-ui/citizen/select-location", {
-        redirectBackTo: redirectUrl,
-      });
-    } else {
-      history.replace(redirectUrl);
-    }
+    console.log("[AUTO-LOGIN-CITIZEN] Starting localization setup");
+    
+    // Ensure locale is properly set for localization loading
+    // Priority: URL param > localStorage > default
+    const storedLocale = localStorage.getItem("Citizen.locale");
+    const locale = urlLocale || storedLocale || "en_IN";
+    console.log(`[AUTO-LOGIN-CITIZEN] Locale selection - URL: ${urlLocale}, stored: ${storedLocale}, final: ${locale}`);
+    
+    // Set locale in both session and local storage to ensure availability
+    Digit.SessionStorage.set("locale", locale);
+    sessionStorage.setItem("locale", locale);
+    localStorage.setItem("locale", locale);
+    console.log("[AUTO-LOGIN-CITIZEN] Locale set in all storage locations");
+    
+    // Load localizations after successful login
+    const tenantId = city || user?.info?.tenantId;
+    const modules = ["rainmaker-common", tenantId ? `rainmaker-${String(tenantId).toLowerCase()}` : undefined].filter(Boolean);
+    
+    console.log(`[AUTO-LOGIN-CITIZEN] Localization params - locale: ${locale}, tenantId: ${tenantId}, city: ${city}, modules: [${modules.join(', ')}]`);
+    
+    // Load localizations before redirecting
+    const startTime = Date.now();
+    Digit.LocalizationService.getLocale({ modules, locale, tenantId }).then((messages) => {
+      console.log(`[AUTO-LOGIN-CITIZEN] Localizations loaded successfully in ${Date.now() - startTime}ms, got ${messages.length} messages`);
+      
+      // Ensure i18next is using the correct locale
+      if (window.i18next && window.i18next.changeLanguage) {
+        console.log(`[AUTO-LOGIN-CITIZEN] Setting i18next language to ${locale}`);
+        window.i18next.changeLanguage(locale);
+      }
+      
+      if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
+        history.replace("/digit-ui/citizen/select-location", {
+          redirectBackTo: redirectUrl,
+        });
+      } else {
+        history.replace(redirectUrl);
+      }
+    }).catch((err) => {
+      console.error(`[AUTO-LOGIN-CITIZEN] Failed to load localizations after ${Date.now() - startTime}ms:`, err);
+      // Still redirect even if localization fails
+      if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
+        history.replace("/digit-ui/citizen/select-location", {
+          redirectBackTo: redirectUrl,
+        });
+      } else {
+        history.replace(redirectUrl);
+      }
+    });
   }, [user]);
 
 

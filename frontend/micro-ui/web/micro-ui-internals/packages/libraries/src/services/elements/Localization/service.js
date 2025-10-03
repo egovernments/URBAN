@@ -57,11 +57,18 @@ const LocalizationStore = {
 
   updateResources: (locale, messages) => {
     let locales = TransformArrayToObj(messages);
+    console.log(`[LocalizationService] updateResources called - locale: ${locale}, messages count: ${messages.length}, transformed keys: ${Object.keys(locales).length}`);
+    
     // Check if i18next is properly initialized before calling addResources
     if (i18next && typeof i18next.addResources === 'function') {
+      console.log(`[LocalizationService] Adding ${Object.keys(locales).length} translations to i18next for locale: ${locale}`);
       i18next.addResources(locale, "translations", locales);
+      
+      // Verify the resources were added
+      const currentResources = i18next.getResourceBundle(locale, "translations");
+      console.log(`[LocalizationService] i18next now has ${Object.keys(currentResources || {}).length} translations for ${locale}`);
     } else {
-      console.warn('[LocalizationService] i18next not ready, skipping resource update');
+      console.warn('[LocalizationService] i18next not ready, skipping resource update. i18next:', !!i18next, 'addResources function:', typeof i18next?.addResources);
     }
   },
 };
@@ -71,7 +78,12 @@ export const LocalizationService = {
     if (locale.indexOf("_IN") === -1) {
       locale += "_IN";
     }
+    
+    console.log(`[LocalizationService] getLocale called - modules: [${modules.join(', ')}], locale: ${locale}, tenantId: ${tenantId}`);
+    
     const [newModules, messages] = LocalizationStore.get(locale, modules);
+    console.log(`[LocalizationService] Cache check - newModules: [${newModules.join(', ')}], cached messages: ${messages.length}`);
+    
     if (newModules.length > 0) {
       const fetchOnce = () =>
         Request({ url: Urls.localization, params: { module: newModules.join(","), locale, tenantId }, useCache: false });
@@ -88,13 +100,23 @@ export const LocalizationService = {
         }
       }
       if (data && Array.isArray(data.messages)) {
+        console.log(`[LocalizationService] API returned ${data.messages.length} new messages`);
         messages.push(...data.messages);
         // Store immediately to avoid race conditions across multiple tabs
         try {
           LocalizationStore.store(locale, newModules, data.messages);
-        } catch (e) {}
+          console.log(`[LocalizationService] Stored ${data.messages.length} messages in cache`);
+        } catch (e) {
+          console.error('[LocalizationService] Failed to store messages in cache:', e);
+        }
+      } else {
+        console.warn('[LocalizationService] API returned invalid data:', data);
       }
+    } else {
+      console.log(`[LocalizationService] Using ${messages.length} cached messages, no API call needed`);
     }
+    
+    console.log(`[LocalizationService] Total messages to add to i18next: ${messages.length}`);
     LocalizationStore.updateResources(locale, messages);
     return messages;
   },

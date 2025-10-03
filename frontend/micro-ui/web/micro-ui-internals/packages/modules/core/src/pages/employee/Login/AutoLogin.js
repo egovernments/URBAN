@@ -36,6 +36,9 @@ const AutoLogin = () => {
     },
     fromSandbox: queryParams.get("fromSandbox") || false
   };
+  
+  // Check for locale parameter in URL
+  const urlLocale = queryParams.get("locale");
   const redirectUrl = queryParams.get("redirectUrl") || "/digit-ui/employee"; 
 
   console.log(`*** LOG ***`,redirectUrl);
@@ -48,12 +51,51 @@ const AutoLogin = () => {
     if (user?.info?.roles?.length > 0) user.info.roles = filteredRoles;
     Digit.UserService.setUser(user);
     setEmployeeDetail(user?.info, user?.access_token);
-    if(queryParams.get("redirectUrl")) 
-      {
-        window.location.href = redirectUrl;
+    
+    console.log("[AUTO-LOGIN-EMPLOYEE] Starting localization setup");
+    
+    // Ensure locale is properly set for localization loading
+    // Priority: URL param > localStorage > default
+    const storedLocale = localStorage.getItem("Employee.locale");
+    const locale = urlLocale || storedLocale || "en_IN";
+    console.log(`[AUTO-LOGIN-EMPLOYEE] Locale selection - URL: ${urlLocale}, stored: ${storedLocale}, final: ${locale}`);
+    
+    // Set locale in both session and local storage to ensure availability
+    Digit.SessionStorage.set("locale", locale);
+    sessionStorage.setItem("locale", locale);
+    localStorage.setItem("locale", locale);
+    console.log("[AUTO-LOGIN-EMPLOYEE] Locale set in all storage locations");
+    
+    // Load localizations after successful login
+    const tenantId = user?.info?.tenantId;
+    const modules = ["rainmaker-common", tenantId ? `rainmaker-${String(tenantId).toLowerCase()}` : undefined].filter(Boolean);
+    
+    console.log(`[AUTO-LOGIN-EMPLOYEE] Localization params - locale: ${locale}, tenantId: ${tenantId}, modules: [${modules.join(', ')}]`);
+    
+    // Load localizations before redirecting
+    const startTime = Date.now();
+    Digit.LocalizationService.getLocale({ modules, locale, tenantId }).then((messages) => {
+      console.log(`[AUTO-LOGIN-EMPLOYEE] Localizations loaded successfully in ${Date.now() - startTime}ms, got ${messages.length} messages`);
+      
+      // Ensure i18next is using the correct locale
+      if (window.i18next && window.i18next.changeLanguage) {
+        console.log(`[AUTO-LOGIN-EMPLOYEE] Setting i18next language to ${locale}`);
+        window.i18next.changeLanguage(locale);
       }
-    else
-    history.replace(redirectUrl);
+      if(queryParams.get("redirectUrl")) {
+        window.location.href = redirectUrl;
+      } else {
+        history.replace(redirectUrl);
+      }
+    }).catch((err) => {
+      console.error(`[AUTO-LOGIN-EMPLOYEE] Failed to load localizations after ${Date.now() - startTime}ms:`, err);
+      // Still redirect even if localization fails
+      if(queryParams.get("redirectUrl")) {
+        window.location.href = redirectUrl;
+      } else {
+        history.replace(redirectUrl);
+      }
+    });
   }, [user]);
 
   const handleAutoLogin = async () => {
