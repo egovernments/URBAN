@@ -48,10 +48,15 @@ const LocalizationStore = {
     const storedModules = LocalizationStore.getList(locale);
     const newModules = modules.filter((module) => !storedModules.includes(module));
     const messages = [];
-    storedModules.forEach((module) => {
+    
+    // Only get messages for the requested modules that are cached, not all stored modules
+    const requestedCachedModules = modules.filter((module) => storedModules.includes(module));
+    requestedCachedModules.forEach((module) => {
       const cachedModuleMessages = LocalizationStore.getCaheData(LOCALE_MODULE(locale, module)) || [];
       messages.push(...cachedModuleMessages);
     });
+    
+    console.log(`[LocalizationService] Cache retrieval - requested: [${modules.join(', ')}], cached: [${requestedCachedModules.join(', ')}], missing: [${newModules.join(', ')}]`);
     return [newModules, messages];
   },
 
@@ -82,6 +87,10 @@ export const LocalizationService = {
     console.log(`[LocalizationService] getLocale called - modules: [${modules.join(', ')}], locale: ${locale}, tenantId: ${tenantId}`);
     
     const [newModules, messages] = LocalizationStore.get(locale, modules);
+    
+    // Note: The first fix (proper module filtering) should resolve most cache issues
+    // Additional validation can be added here if needed in the future
+    
     console.log(`[LocalizationService] Cache check - newModules: [${newModules.join(', ')}], cached messages: ${messages.length}`);
     
     if (newModules.length > 0) {

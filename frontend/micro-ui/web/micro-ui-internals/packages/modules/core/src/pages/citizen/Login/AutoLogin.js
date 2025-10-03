@@ -75,13 +75,21 @@ const AutoLogin = () => {
     
     // Load localizations after successful login
     const tenantId = city || user?.info?.tenantId;
-    const modules = ["rainmaker-common", tenantId ? `rainmaker-${String(tenantId).toLowerCase()}` : undefined].filter(Boolean);
+    
+    // Extract state code from tenant ID (e.g., "pg.citya" -> "pg") to match index.js logic
+    const stateCode = tenantId ? tenantId.split('.')[0] : undefined;
+    
+    // Use state-level modules instead of city-specific ones for consistency
+    const modules = [
+      'rainmaker-common',
+      stateCode ? `rainmaker-${stateCode.toLowerCase()}` : undefined
+    ].filter(Boolean);
     
     console.log(`[AUTO-LOGIN-CITIZEN] Localization params - locale: ${locale}, tenantId: ${tenantId}, city: ${city}, modules: [${modules.join(', ')}]`);
     
     // Load localizations before redirecting
     const startTime = Date.now();
-    Digit.LocalizationService.getLocale({ modules, locale, tenantId }).then((messages) => {
+    Digit.LocalizationService.getLocale({ modules, locale, tenantId: stateCode }).then((messages) => {
       console.log(`[AUTO-LOGIN-CITIZEN] Localizations loaded successfully in ${Date.now() - startTime}ms, got ${messages.length} messages`);
       
       // Ensure i18next is using the correct locale
