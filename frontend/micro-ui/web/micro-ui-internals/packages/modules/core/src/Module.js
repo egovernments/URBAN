@@ -64,7 +64,14 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
     // Only clear cache if we haven't done it yet for this session
     const sessionClearFlag = sessionStorage.getItem("cache_cleared_for_build");
     
-    if ((!storedTimestamp || (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp))) && !sessionClearFlag) {
+    if (!storedTimestamp) {
+      // First-time user - just store timestamp, no reload needed
+      console.log("First-time user detected, storing build timestamp");
+      if (currentTimestamp) {
+        localStorage.setItem("app_timestamp", currentTimestamp);
+      }
+    } else if (currentTimestamp && parseInt(currentTimestamp) > parseInt(storedTimestamp) && !sessionClearFlag) {
+      // Returning user with outdated build - clear cache and reload
       console.log("New build detected, will clear cache after app loads");
       
       // Mark that we're going to clear cache for this session
@@ -106,6 +113,7 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
         }
       }, 1000);
     }
+    // Else: returning user with current build - do nothing
   }, [queryClient]);
 
   const ComponentProvider = Digit.Contexts.ComponentProvider;
