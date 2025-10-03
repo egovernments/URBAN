@@ -43,18 +43,29 @@ initLibraries().then(async () => {
     
     const locale = getLocalePref();
     const tenantId = getTenantPref();
-    const modules = ["rainmaker-common", tenantId ? `rainmaker-${String(tenantId).toLowerCase()}` : undefined].filter(Boolean);
+    
+    // Extract state code from tenant ID (e.g., "pg.citya" -> "pg")
+    const stateCode = tenantId ? tenantId.split('.')[0] : undefined;
+    
+    // Use same module logic as StoreService.digitInitData for consistency
+    const modules = [
+      'rainmaker-common',
+      // Note: We don't check for Birth/Death modules here as enabledModules isn't available
+      // This should be enhanced later to include conditional modules like rainmaker-bnd
+      stateCode ? `rainmaker-${stateCode.toLowerCase()}` : undefined
+    ].filter(Boolean);
     
     console.log(`[LOCALIZATION] Initial prefetch params - locale: ${locale}, tenantId: ${tenantId}, modules: [${modules.join(', ')}]`);
     
     const startTime = Date.now();
-    await window.Digit.LocalizationService.getLocale({ modules, locale, tenantId });
+    // Use stateCode for API call instead of full tenantId to match StoreService behavior
+    await window.Digit.LocalizationService.getLocale({ modules, locale, tenantId: stateCode });
     console.log(`[LOCALIZATION] Initial prefetch completed in ${Date.now() - startTime}ms`);
     
     // Schedule a verification pass shortly after first render time
     setTimeout(() => {
       console.log(`[LOCALIZATION] Running verification pass with same params`);
-      window.Digit.LocalizationService.verifyAndRefetch({ modules, locale, tenantId });
+      window.Digit.LocalizationService.verifyAndRefetch({ modules, locale, tenantId: stateCode });
     }, 1500);
     } catch (e) {
       console.error("[LOCALIZATION] Initial prefetch failed:", e);
