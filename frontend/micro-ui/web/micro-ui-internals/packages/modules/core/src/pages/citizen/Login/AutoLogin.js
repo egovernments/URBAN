@@ -114,7 +114,13 @@ const AutoLogin = () => {
 
   const handleAutoLogin = async () => {
     try {
-      
+      console.log("[AUTO-LOGIN-CITIZEN] Starting authentication");
+      console.log("[AUTO-LOGIN-CITIZEN] URL parameters:", {
+        mobile: mobileNumber,
+        city: city,
+        fromSandbox: fromSandbox,
+        otp: otp
+      });
       
       const requestData = {
         username: mobileNumber,
@@ -123,7 +129,16 @@ const AutoLogin = () => {
         userType: "CITIZEN",
       };
       
+      console.log("[AUTO-LOGIN-CITIZEN] Authentication request data:", requestData);
+      console.log("[AUTO-LOGIN-CITIZEN] Calling Digit.UserService.authenticate...");
+      
       const { UserRequest: info, ...tokens } = await Digit.UserService.authenticate(requestData);
+      
+      console.log("[AUTO-LOGIN-CITIZEN] Authentication successful:", {
+        hasInfo: !!info,
+        hasTokens: !!tokens,
+        tenantId: info?.tenantId
+      });
       
       // Handle single instance config if applicable
       if (window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")) {
@@ -132,17 +147,33 @@ const AutoLogin = () => {
       
       setUser({ info, ...tokens });
     } catch (err) {
-      console.error("Auto-login failed:", err);
-      console.error("Error details:", {
+      console.error("[AUTO-LOGIN-CITIZEN] Authentication failed:", err);
+      console.error("[AUTO-LOGIN-CITIZEN] Full error object:", JSON.stringify(err, null, 2));
+      console.error("[AUTO-LOGIN-CITIZEN] Error details:", {
+        message: err.message,
+        name: err.name,
+        stack: err.stack,
         status: err.response?.status,
         statusText: err.response?.statusText,
-        data: err.response?.data,
-        message: err.message
+        responseData: err.response?.data,
+        responseHeaders: err.response?.headers,
+        requestConfig: err.config,
+        isNetworkError: !err.response
+      });
+      
+      // Check if it's a network/connectivity issue
+      const isNetworkError = !err.response || err.response.status === 0 || err.message === 'Network Error';
+      console.log("[AUTO-LOGIN-CITIZEN] Network error check:", {
+        isNetworkError,
+        hasResponse: !!err.response,
+        status: err.response?.status,
+        message: err.message,
+        retryCount
       });
       
       // Don't set error immediately for network issues - try to retry (max 3 times)
-      if ((!err.response || err.response.status === 0 || err.message === 'Network Error') && retryCount < 3) {
-        console.log(`Network error detected, retrying auto-login in 2 seconds... (attempt ${retryCount + 1}/3)`);
+      if (isNetworkError && retryCount < 3) {
+        console.log(`[AUTO-LOGIN-CITIZEN] Network error detected, retrying auto-login in 2 seconds... (attempt ${retryCount + 1}/3)`);
         setRetryCount(prev => prev + 1);
         setTimeout(() => {
           handleAutoLogin();
@@ -150,7 +181,9 @@ const AutoLogin = () => {
         return;
       }
       
-      setError(err.response?.data?.error_description || err.message || "Login failed. Please try again.");
+      const errorMessage = err.response?.data?.error_description || err.response?.data?.message || err.message || "Login failed. Please try again.";
+      console.error("[AUTO-LOGIN-CITIZEN] Final error message:", errorMessage);
+      setError(errorMessage);
       setLoading(false);
     }
   };
