@@ -108,6 +108,7 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
                     rowContainerStyles={{
                       display: "flex",
                       flexDirection: "column",
+                      gap: "8px",
                     }}
                     tableStyles={{
                       display: "grid",
@@ -137,7 +138,16 @@ const propertyOwnerHistory = ({ userType, propertyId: propertyIdFromProp }) => {
                 <div className="historyCheckpoint"></div>
                 <CardSubHeader className="historyTableDateLabel smallText"> {t("PT_DATE_OF_TRANSFER")} </CardSubHeader>
                 <CardSubHeader className="historyTableDate smallText">&nbsp;-&nbsp;{date}</CardSubHeader>
-                <TransferDetails data={ownershipInfo[key]} wrapperStyles="wrapperStyles leftBorder" showHorizontalBar={true} />
+                <TransferDetails
+                  data={ownershipInfo[key]}
+                  wrapperStyles="wrapperStyles leftBorder"
+                  showHorizontalBar={true}
+                  rowContainerStyles={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                  }}
+                />
               </div>
             );
           })}

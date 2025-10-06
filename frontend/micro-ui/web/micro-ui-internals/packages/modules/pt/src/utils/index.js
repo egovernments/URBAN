@@ -103,10 +103,17 @@ export const setOwnerDetails = (data) => {
   if (owners && owners.length > 0) {
     if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
       institution.designation = owners[0]?.designation;
-      institution.name = owners[0]?.inistitutionName;
+      // Handle both spellings: inistitutionName (typo) and institutionName (correct)
+      institution.name = owners[0]?.inistitutionName || owners[0]?.institutionName || data?.institution?.name;
       institution.nameOfAuthorizedPerson = owners[0]?.name;
-      institution.tenantId = address?.city?.code;
-      institution.type = owners[0]?.inistitutetype?.value;
+      // Use tenantId from data if available, fallback to city code, then locality-based extraction
+      institution.tenantId = data.tenantId
+        || address?.city?.code
+        || (address?.locality?.code && address.locality.code.includes('.')
+            ? address.locality.code.split('.')[0]
+            : null);
+      // Handle both spellings: inistitutetype (typo) and institutionType (correct)
+      institution.type = owners[0]?.inistitutetype?.value || owners[0]?.institutionType?.value || data?.institution?.type;
       let document = [];
       if (owners[0]?.documents["proofIdentity"]?.fileStoreId) {
         document.push({
@@ -607,10 +614,13 @@ export const setUpdateOwnerDetails = (data = []) => {
   if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
     if (data?.ownershipCategory?.value === "INSTITUTIONALPRIVATE" || data?.ownershipCategory?.value === "INSTITUTIONALGOVERNMENT") {
       institution.designation = owners[0]?.designation;
-      institution.name = owners[0]?.inistitutionName;
+      // Handle both spellings: inistitutionName (typo) and institutionName (correct)
+      institution.name = owners[0]?.inistitutionName || owners[0]?.institutionName;
       institution.nameOfAuthorizedPerson = owners[0]?.name;
-      institution.tenantId = data?.address?.city?.code;
-      institution.type = owners[0]?.inistitutetype?.value;
+      // Use tenantId from data if available, fallback to city code
+      institution.tenantId = data.tenantId || data?.address?.city?.code;
+      // Handle both spellings: inistitutetype (typo) and institutionType (correct)
+      institution.type = owners[0]?.inistitutetype?.value || owners[0]?.institutionType?.value;
       let document = [];
       if (owners[0]?.documents["proofIdentity"]?.fileStoreId && owners[0].documents["proofIdentity"].id) {
         document.push({
