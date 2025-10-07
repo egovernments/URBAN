@@ -105,6 +105,8 @@ const AutoLogin = () => {
       } else {
         history.replace(redirectUrl);
       }
+      // signal auth ready for gated requests
+      try { window.Digit.AutoLoginInProgress = false; window.dispatchEvent(new Event('digit-auth-ready')); } catch(_) {}
     }).catch((err) => {
       console.error(`[AUTO-LOGIN-CITIZEN] Failed to load localizations after ${Date.now() - startTime}ms:`, err);
       // Still redirect even if localization fails
@@ -115,6 +117,8 @@ const AutoLogin = () => {
       } else {
         history.replace(redirectUrl);
       }
+      // even on localization failure, signal auth ready
+      try { window.Digit.AutoLoginInProgress = false; window.dispatchEvent(new Event('digit-auth-ready')); } catch(_) {}
     });
   }, [user]);
 
@@ -122,6 +126,9 @@ const AutoLogin = () => {
 
   const handleAutoLogin = async () => {
     try {
+      // mark auto-login in progress for central request gating
+      window.Digit = window.Digit || {};
+      window.Digit.AutoLoginInProgress = true;
       console.log("[AUTO-LOGIN-CITIZEN] Starting authentication");
       console.log("[AUTO-LOGIN-CITIZEN] URL parameters:", {
         mobile: mobileNumber,
@@ -140,7 +147,33 @@ const AutoLogin = () => {
       console.log("[AUTO-LOGIN-CITIZEN] Authentication request data:", requestData);
       console.log("[AUTO-LOGIN-CITIZEN] Calling Digit.UserService.authenticate...");
       
-      const { UserRequest: info, ...tokens } = await Digit.UserService.authenticate(requestData);
+      // bounded retries with backoff for unknown/server/network issues
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const shouldRetry = (err) => {
+        const status = err?.response?.status;
+        const isNetwork = !err?.response;
+        const isUnknown = status == null;
+        const isServer = status >= 500;
+        return isNetwork || isUnknown || isServer;
+      };
+
+      let authResult = null;
+      let attempts = 0;
+      while (attempts <= 3) {
+        try {
+          authResult = await Digit.UserService.authenticate(requestData);
+          break;
+        } catch (e) {
+          if (attempts === 3 || !shouldRetry(e)) throw e;
+          const backoff = Math.min(1000 * Math.pow(2, attempts), 4000) + Math.floor(Math.random() * 200);
+          console.warn(`[AUTO-LOGIN-CITIZEN] Auth retry in ${backoff}ms (attempt ${attempts + 1}/3)`);
+          setRetryCount(prev => prev + 1);
+          attempts += 1;
+          await sleep(backoff);
+        }
+      }
+
+      const { UserRequest: info, ...tokens } = authResult;
       
       console.log("[AUTO-LOGIN-CITIZEN] Authentication successful:", {
         hasInfo: !!info,
@@ -193,6 +226,7 @@ const AutoLogin = () => {
       console.error("[AUTO-LOGIN-CITIZEN] Final error message:", errorMessage);
       setError(errorMessage);
       setLoading(false);
+      try { window.Digit.AutoLoginInProgress = false; } catch(_) {}
     }
   };
 

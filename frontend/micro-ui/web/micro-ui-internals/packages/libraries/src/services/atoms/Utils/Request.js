@@ -49,6 +49,46 @@ const userServiceData = () => ({ userInfo: Digit.UserService.getUser()?.info });
 
 window.Digit = window.Digit || {};
 window.Digit = { ...window.Digit, RequestCache: window.Digit.RequestCache || {} };
+
+// Simple circuit breaker state per URL
+window.Digit.RequestCircuit = window.Digit.RequestCircuit || {
+  failures: {}, // url -> count
+  openUntil: {}, // url -> timestamp
+};
+
+const isRetryableError = (err) => {
+  const status = err?.response?.status;
+  if (!status) return true; // network
+  return status >= 500 && status < 600;
+};
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function waitForAuthReady(timeoutMs = 8000) {
+  const start = Date.now();
+  const isReady = () => !!(window.Digit?.UserService?.getUser()?.access_token) && !window.Digit?.AutoLoginInProgress;
+  if (isReady()) return;
+  return new Promise((resolve) => {
+    const onReady = () => {
+      if (isReady()) {
+        cleanup();
+        resolve();
+      }
+    };
+    const iv = setInterval(onReady, 100);
+    const to = setTimeout(() => {
+      cleanup();
+      resolve();
+    }, timeoutMs);
+    function cleanup() {
+      clearInterval(iv);
+      clearTimeout(to);
+      window.removeEventListener('digit-auth-ready', onReady);
+    }
+    window.addEventListener('digit-auth-ready', onReady);
+    onReady();
+  });
+}
 export const Request = async ({
   method = "POST",
   url,
@@ -106,6 +146,15 @@ export const Request = async ({
 
   }
 
+  // Gate sensitive boot calls during auto-login until auth is ready
+  try {
+    const isAutoLogin = window.location.pathname.includes('/citizen/auto-login') || window.Digit?.AutoLoginInProgress;
+    const sensitiveBootCall = /\/user\/_search|\/access\/v1\/actions\/mdms\/_get/.test(url);
+    if (isAutoLogin && sensitiveBootCall) {
+      await waitForAuthReady(8000);
+    }
+  } catch (_) {}
+
   //for the central instance if any api doesnot need tenantId then url can be added in below confirguration
   const urlwithoutTenantId = [
     "/user/oauth/token"
@@ -162,17 +211,51 @@ export const Request = async ({
     params["tenantId"] = tenantInfo;
   }
 
-  const res = userDownload
-    ? await Axios({ method, url: _url, data, params, headers, responseType: "arraybuffer" })
-    : await Axios({ method, url: _url, data, params, headers });
-
-  if (userDownload) return res;
-
-  const returnData = res?.data || res?.response?.data || {};
-  if (useCache && res?.data && Object.keys(returnData).length !== 0) {
-    window.Digit.RequestCache[key] = returnData;
+  // Circuit breaker: short-circuit if open
+  const now = Date.now();
+  if (window.Digit.RequestCircuit.openUntil[_url] && window.Digit.RequestCircuit.openUntil[_url] > now) {
+    const err = new Error('circuit-open');
+    err.code = 'CIRCUIT_OPEN';
+    throw err;
   }
-  return returnData;
+
+  // Retry with backoff for retryable failures
+  const maxRetries = 2;
+  let attempt = 0;
+  let lastErr;
+  while (attempt <= maxRetries) {
+    try {
+      const axiosOpts = userDownload
+        ? { method, url: _url, data, params, headers, responseType: "arraybuffer", timeout: 15000 }
+        : { method, url: _url, data, params, headers, timeout: 15000 };
+      const res = await Axios(axiosOpts);
+      // Success: reset failures
+      window.Digit.RequestCircuit.failures[_url] = 0;
+      if (userDownload) return res;
+      const returnData = res?.data || res?.response?.data || {};
+      if (useCache && res?.data && Object.keys(returnData).length !== 0) {
+        window.Digit.RequestCache[key] = returnData;
+      }
+      return returnData;
+    } catch (err) {
+      lastErr = err;
+      // Increment failures
+      window.Digit.RequestCircuit.failures[_url] = (window.Digit.RequestCircuit.failures[_url] || 0) + 1;
+      const failCount = window.Digit.RequestCircuit.failures[_url];
+      // Open circuit briefly after multiple failures
+      if (failCount >= 5) {
+        window.Digit.RequestCircuit.openUntil[_url] = Date.now() + 60000; // 60s
+      }
+      if (attempt < maxRetries && isRetryableError(err)) {
+        const backoff = Math.min(2000 * Math.pow(2, attempt), 6000) + Math.floor(Math.random() * 300);
+        await sleep(backoff);
+        attempt++;
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
 };
 
 /**
