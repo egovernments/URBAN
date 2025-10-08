@@ -7,6 +7,7 @@ import { AppHome, processLinkData } from "../../components/Home";
 import TopBarSideBar from "../../components/TopBarSideBar";
 import StaticCitizenSideBar from "../../components/TopBarSideBar/SideBar/StaticCitizenSideBar";
 import CitizenHome from "./Home";
+import ChatWidget from "../../components/ChatWidget";
 import LanguageSelection from "./Home/LanguageSelection";
 import LocationSelection from "./Home/LocationSelection";
 import Login from "./Login";
@@ -187,6 +188,8 @@ const Home = ({
               {/* <Links key={index} matchPath={`/digit-ui/citizen/${code.toLowerCase()}`} userType={"citizen"} /> */}
             </div>
             <StaticDynamicCard moduleCode={code?.toUpperCase()} />
+            {/* Chat widget under moduleLinkHomePage */}
+            <ChatWidget iframeSrc="https://copilotstudio.microsoft.com/environments/55aae946-408b-e7ba-a15e-6bed88e9f400/bots/crfbe_mitraAi/webchat?__version__=2" />
           </div>
         </Route>
         <Route key={"faq" + index} path={`${path}/${code.toLowerCase()}-faq`}>
