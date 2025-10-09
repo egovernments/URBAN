@@ -12,12 +12,12 @@ const useAccessControl = (tenantId) => {
   const hasRoles = roles && roles.length > 0;
 
   // Safety check specific to auto-login: ensure user data and roles are ready
-  // Normal flow: only check if roles exist and auto-login is not in progress
-  // Auto-login flow: additionally ensure user object exists to prevent premature API calls
+  // During auto-login: block query until both user and roles are ready AND auto-login completes
+  // Normal flow: only check if roles exist
   const hasUser = !!user;
   const shouldEnable = isAutoLoginInProgress
-    ? (hasUser && hasRoles && !isAutoLoginInProgress) // Stricter check during auto-login
-    : hasRoles; // Normal check when not auto-login
+    ? false // Block during auto-login - will re-enable when AutoLoginInProgress becomes false
+    : (hasUser && hasRoles); // After auto-login or during normal flow, ensure user and roles exist
 
   const response = useQuery(["ACCESS_CONTROL", tenantId], async () => await AccessControlService.getAccessControl(roles),{enabled:shouldEnable});
   return response;
