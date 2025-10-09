@@ -7,40 +7,100 @@ import Axios from "axios";
  *
  */
 
+// Helper: Check if auto-login is in progress
+const isAutoLoginInProgress = () => {
+  return window.location.pathname.includes('/auto-login') || window.Digit?.AutoLoginInProgress;
+};
+
+// Helper: Redirect to appropriate page
+const redirectTo = (path, queryParams = {}) => {
+  const isEmployee = window.location.pathname.split("/").includes("employee");
+  const basePath = isEmployee ? `/digit-ui/employee${path}` : `/digit-ui/citizen${path}`;
+  const query = new URLSearchParams(queryParams).toString();
+  window.location.href = query ? `${basePath}?${query}` : basePath;
+};
+
+// Helper: Clear auth data and redirect to login
+const handleAuthFailure = (err, reason) => {
+  if (isAutoLoginInProgress()) {
+    console.warn(`[REQUEST-INTERCEPTOR] ${reason} during auto-login - skipping redirect`);
+    throw err;
+  }
+  localStorage.clear();
+  sessionStorage.clear();
+  redirectTo('/login', { from: window.location.pathname + window.location.search });
+};
+
+// Helper: Redirect to error page
+const handleServerError = (err, errorType, reason) => {
+  if (isAutoLoginInProgress()) {
+    console.warn(`[REQUEST-INTERCEPTOR] ${reason} during auto-login - letting retry handle it`);
+    throw err;
+  }
+  redirectTo('/error', {
+    type: errorType,
+    from: window.location.pathname + window.location.search
+  });
+};
+
 Axios.interceptors.response.use(
   (res) => res,
   (err) => {
-    const isEmployee = window.location.pathname.split("/").includes("employee");
-    const isAutoLoginInProgress = window.location.pathname.includes('/auto-login') || window.Digit?.AutoLoginInProgress;
+    const status = err?.response?.status;
+    const hasResponse = !!err?.response;
 
+    // Network error - let retry logic handle it
+    if (!hasResponse) {
+      if (isAutoLoginInProgress()) {
+        console.warn("[REQUEST-INTERCEPTOR] Network error during auto-login - letting retry handle it");
+      } else {
+        console.warn("[REQUEST-INTERCEPTOR] Network error - no response received");
+      }
+      throw err;
+    }
+
+    // HTTP Status Code based error handling
+    switch (status) {
+      case 401:
+        handleAuthFailure(err, "401 Unauthorized");
+        return;
+
+      case 403:
+        handleAuthFailure(err, "403 Forbidden");
+        return;
+
+      default:
+        if (status >= 500 && status < 600) {
+          handleServerError(err, "maintenance", `Server error ${status}`);
+          return;
+        }
+    }
+
+    // Message-based error handling (fallback for non-standard responses)
     if (err?.response?.data?.Errors) {
       for (const error of err.response.data.Errors) {
-        if (error.message.includes("InvalidAccessTokenException")) {
-          // Skip redirect if auto-login is in progress - let auto-login handle re-authentication
-          if (isAutoLoginInProgress) {
-            console.warn("[REQUEST-INTERCEPTOR] InvalidAccessToken during auto-login - skipping redirect, letting auto-login handle it");
-            throw err;
-          }
+        const errorMsg = error?.message?.toLowerCase() || "";
 
-          localStorage.clear();
-          sessionStorage.clear();
-          window.location.href =
-            (isEmployee ? "/digit-ui/employee/user/login" : "/digit-ui/citizen/login") +
-            `?from=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-        } else if (
-          error?.message?.toLowerCase()?.includes("internal server error") ||
-          error?.message?.toLowerCase()?.includes("some error occured")
-        ) {
-          window.location.href =
-            (isEmployee ? "/digit-ui/employee/user/error" : "/digit-ui/citizen/error") +
-            `?type=maintenance&from=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-        } else if (error.message.includes("ZuulRuntimeException")) {
-          window.location.href =
-            (isEmployee ? "/digit-ui/employee/user/error" : "/digit-ui/citizen/error") +
-            `?type=notfound&from=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+        // Auth errors
+        if (errorMsg.includes("invalidaccesstokenexception") || errorMsg.includes("invalid access token")) {
+          handleAuthFailure(err, "Auth error");
+          return;
+        }
+
+        // Server errors
+        if (errorMsg.includes("internal server error") || errorMsg.includes("some error occured")) {
+          handleServerError(err, "maintenance", "Server error");
+          return;
+        }
+
+        // Gateway errors
+        if (errorMsg.includes("zuulruntimeexception") || errorMsg.includes("gateway")) {
+          handleServerError(err, "notfound", "Gateway error");
+          return;
         }
       }
     }
+
     throw err;
   }
 );
@@ -73,7 +133,6 @@ const isRetryableError = (err) => {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function waitForAuthReady(timeoutMs = 8000) {
-  const start = Date.now();
   const isReady = () => !!(window.Digit?.UserService?.getUser()?.access_token) && !window.Digit?.AutoLoginInProgress;
   if (isReady()) return;
   return new Promise((resolve) => {
@@ -156,7 +215,7 @@ export const Request = async ({
 
   // Gate sensitive boot calls during auto-login until auth is ready
   try {
-    const isAutoLogin = window.location.pathname.includes('/citizen/auto-login') || window.Digit?.AutoLoginInProgress;
+    const isAutoLogin = isAutoLoginInProgress();
     const sensitiveBootCall = /\/user\/_search|\/access\/v1\/actions\/mdms\/_get/.test(url);
     if (isAutoLogin && sensitiveBootCall) {
       await waitForAuthReady(8000);
