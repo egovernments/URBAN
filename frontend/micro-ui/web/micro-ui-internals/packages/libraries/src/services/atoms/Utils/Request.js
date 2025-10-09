@@ -11,9 +11,17 @@ Axios.interceptors.response.use(
   (res) => res,
   (err) => {
     const isEmployee = window.location.pathname.split("/").includes("employee");
+    const isAutoLoginInProgress = window.location.pathname.includes('/auto-login') || window.Digit?.AutoLoginInProgress;
+
     if (err?.response?.data?.Errors) {
       for (const error of err.response.data.Errors) {
         if (error.message.includes("InvalidAccessTokenException")) {
+          // Skip redirect if auto-login is in progress - let auto-login handle re-authentication
+          if (isAutoLoginInProgress) {
+            console.warn("[REQUEST-INTERCEPTOR] InvalidAccessToken during auto-login - skipping redirect, letting auto-login handle it");
+            throw err;
+          }
+
           localStorage.clear();
           sessionStorage.clear();
           window.location.href =

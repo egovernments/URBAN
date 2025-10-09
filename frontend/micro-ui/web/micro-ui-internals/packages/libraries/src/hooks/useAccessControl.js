@@ -7,7 +7,12 @@ const useAccessControl = (tenantId) => {
     return role.code;
   });
 
-  const response = useQuery(["ACCESS_CONTROL", tenantId], async () => await AccessControlService.getAccessControl(roles),{enabled:roles?true:false});
+  // Don't run query during auto-login until authentication is ready
+  const isAutoLoginInProgress = window?.Digit?.AutoLoginInProgress || false;
+  const hasRoles = roles && roles.length > 0;
+  const shouldEnable = hasRoles && !isAutoLoginInProgress;
+
+  const response = useQuery(["ACCESS_CONTROL", tenantId], async () => await AccessControlService.getAccessControl(roles),{enabled:shouldEnable});
   return response;
 };
 export default useAccessControl;

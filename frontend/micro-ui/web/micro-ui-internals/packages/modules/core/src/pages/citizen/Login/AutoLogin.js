@@ -136,17 +136,22 @@ const AutoLogin = () => {
         fromSandbox: fromSandbox,
         otp: otp
       });
-      
+
+      // Force re-authentication: Clear session storage only (not localStorage)
+      // This ensures fresh authentication without affecting other tabs' localStorage
+      console.log("[AUTO-LOGIN-CITIZEN] Clearing session storage for force re-authentication");
+      sessionStorage.clear();
+
       const requestData = {
         username: mobileNumber,
-        password: otp, 
+        password: otp,
         tenantId: city,
         userType: "CITIZEN",
       };
-      
+
       console.log("[AUTO-LOGIN-CITIZEN] Authentication request data:", requestData);
       console.log("[AUTO-LOGIN-CITIZEN] Calling Digit.UserService.authenticate...");
-      
+
       // bounded retries with backoff for unknown/server/network issues
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       const shouldRetry = (err) => {
@@ -164,6 +169,19 @@ const AutoLogin = () => {
           authResult = await Digit.UserService.authenticate(requestData);
           break;
         } catch (e) {
+          const status = e?.response?.status;
+          const isAuthError = status === 401 || status === 403;
+
+          // For auto-login: retry on auth errors (401/403) as well
+          if (isAuthError && attempts < 3) {
+            console.warn(`[AUTO-LOGIN-CITIZEN] Auth error ${status} - retrying (attempt ${attempts + 1}/3)`);
+            const backoff = Math.min(1000 * Math.pow(2, attempts), 4000) + Math.floor(Math.random() * 200);
+            setRetryCount(prev => prev + 1);
+            attempts += 1;
+            await sleep(backoff);
+            continue;
+          }
+
           if (attempts === 3 || !shouldRetry(e)) throw e;
           const backoff = Math.min(1000 * Math.pow(2, attempts), 4000) + Math.floor(Math.random() * 200);
           console.warn(`[AUTO-LOGIN-CITIZEN] Auth retry in ${backoff}ms (attempt ${attempts + 1}/3)`);
