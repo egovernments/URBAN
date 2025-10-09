@@ -137,11 +137,6 @@ const AutoLogin = () => {
         otp: otp
       });
 
-      // Force re-authentication: Clear session storage only (not localStorage)
-      // This ensures fresh authentication without affecting other tabs' localStorage
-      console.log("[AUTO-LOGIN-CITIZEN] Clearing session storage for force re-authentication");
-      sessionStorage.clear();
-
       const requestData = {
         username: mobileNumber,
         password: otp,
