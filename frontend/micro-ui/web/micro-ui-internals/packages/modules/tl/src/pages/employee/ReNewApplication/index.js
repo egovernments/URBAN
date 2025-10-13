@@ -317,17 +317,7 @@ const ReNewApplication = (props) => {
       if (operationalArea) formData.tradeLicenseDetail.operationalArea = operationalArea;
       if (data?.accessories?.length > 0) formData.tradeLicenseDetail.accessories = data?.accessories;
       if (data?.tradeUnits?.length > 0) formData.tradeLicenseDetail.tradeUnits = data?.tradeUnits;
-      if (data?.owners?.length > 0) {
-        // Ensure owner IDs are preserved from original data
-        formData.tradeLicenseDetail.owners = data?.owners?.map((owner) => {
-          // Find the original owner data to preserve the id field
-          const originalOwner = formData.tradeLicenseDetail.owners.find((orig) => orig.uuid === owner.uuid || orig.mobileNumber === owner.mobileNumber);
-          return {
-            ...owner,
-            id: owner.id || originalOwner?.id || null, // Preserve existing id or get from original
-          };
-        });
-      }
+      if (data?.owners?.length > 0) formData.tradeLicenseDetail.owners = data?.owners;
       if (structureType) formData.tradeLicenseDetail.structureType = structureType;
       if (subOwnerShipCategory|| data?.owners?.[0]?.subOwnerShipCategory?.code) formData.tradeLicenseDetail.subOwnerShipCategory = formData?.tradeLicenseDetail?.owners?.[0]?.subOwnerShipCategory?.code?.includes("INSTITUTIONAL") ? data?.owners?.[0]?.subOwnerShipCategory.code : subOwnerShipCategory;
       if (formData?.tradeLicenseDetail?.owners?.[0]?.subOwnerShipCategory?.code?.includes("INSTITUTIONAL")) formData.tradeLicenseDetail.institution = {
@@ -370,17 +360,7 @@ const ReNewApplication = (props) => {
       if (operationalArea) formData.tradeLicenseDetail.operationalArea = operationalArea;
       if (data?.accessories?.length > 0) formData.tradeLicenseDetail.accessories = data?.accessories;
       if (data?.tradeUnits?.length > 0) formData.tradeLicenseDetail.tradeUnits = data?.tradeUnits?.filter((ob) => ob?.active !== false);
-      if (data?.owners?.length > 0) {
-        // Ensure owner IDs are preserved from original data
-        formData.tradeLicenseDetail.owners = data?.owners?.filter((ob) => ob?.active !== false).map((owner) => {
-          // Find the original owner data to preserve the id field
-          const originalOwner = formData.tradeLicenseDetail.owners.find((orig) => orig.uuid === owner.uuid || orig.mobileNumber === owner.mobileNumber);
-          return {
-            ...owner,
-            id: owner.id || originalOwner?.id || null, // Preserve existing id or get from original
-          };
-        });
-      }
+      if (data?.owners?.length > 0) formData.tradeLicenseDetail.owners = data?.owners?.filter((ob) => ob?.active !== false);
       if (data?.address) formData.tradeLicenseDetail.address = data?.address;
       if (data?.cpt?.details?.address||propertyDetails) {
         let address = {};
@@ -413,20 +393,16 @@ const ReNewApplication = (props) => {
 
       /* use customiseCreateFormData hook to make some chnages to the licence object */
       formData = Digit?.Customizations?.TL?.customiseRenewalCreateFormData ? Digit?.Customizations?.TL?.customiseRenewalCreateFormData(data, formData) : formData;
-
-      // First INITIATE call - creates user accounts and returns proper owner structure
       Digit.TLService.update({ Licenses: [formData] }, tenantId)
         .then((result, err) => {
           if (result?.Licenses?.length > 0) {
-            // Now make the APPLY call with the updated owner data from INITIATE response
-            let formDataApply = result?.Licenses[0];
-            formDataApply.action = "APPLY";
-
-            Digit.TLService.update({ Licenses: [formDataApply] }, tenantId)
-              .then((resultApply, errApply) => {
-                if (resultApply?.Licenses?.length > 0) {
-                  Digit.SessionStorage.set("EditRenewalApplastModifiedTime", resultApply?.Licenses[0]?.auditDetails?.lastModifiedTime);
-                  history.replace(`/digit-ui/employee/tl/response`, { data: resultApply?.Licenses });
+            let licenses = result?.Licenses?.[0];
+            licenses.action = "APPLY";
+            Digit.TLService.update({ Licenses: [licenses] }, tenantId)
+              .then((response) => {
+                Digit.SessionStorage.set("EditRenewalApplastModifiedTime", response?.Licenses[0]?.auditDetails?.lastModifiedTime);
+                if (response?.Licenses?.length > 0) {
+                  history.replace(`/digit-ui/employee/tl/response`, { data: response?.Licenses });
                 }
               })
               .catch((e) => {
