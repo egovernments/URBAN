@@ -79,17 +79,7 @@ const createDeathConfig = [
           name: "doRegistration",
           error: "Date of Registration is Required!",
           validation: {
-            max: new Date().toISOString().split("T")[0],
-            customValidation: {
-              validate: (value, formData) => {
-                if (!value || !formData?.dob) return true;
-                const regDate = new Date(value);
-                const deathDate = new Date(formData.dob);
-                if (isNaN(regDate.getTime()) || isNaN(deathDate.getTime())) return true;
-                return regDate >= deathDate;
-              },
-              errorMessage: "BND_REGISTRATION_DATE_LESS_THAN_DOD",
-            },
+            maxDate: new Date().toISOString().split("T")[0], 
           },
         },
       },
@@ -109,17 +99,7 @@ const createDeathConfig = [
           name: "dob",
           error: "Date of Death is Required!",
           validation: {
-            max: new Date().toISOString().split("T")[0],
-            customValidation: {
-              validate: (value, formData) => {
-                if (!value || !formData?.doRegistration) return true;
-                const deathDate = new Date(value);
-                const regDate = new Date(formData.doRegistration);
-                if (isNaN(deathDate.getTime()) || isNaN(regDate.getTime())) return true;
-                return deathDate <= regDate;
-              },
-              errorMessage: "BND_DOD_GREATER_THAN_REGISTRATION_DATE",
-            },
+            maxDate: new Date().toISOString().split("T")[0], 
           },
         },
       },

@@ -18,9 +18,6 @@ export const CreateBirth = () => {
   const { t } = useTranslation();
 
   const [isSubmitDisabledByDateError, setIsSubmitDisabledByDateError] = useState(false);
-  const [registrationDate, setRegistrationDate] = useState(null);
-  const prevRegistrationDateRef = useRef(null);
-
   // Fetch current tenant ID for hospital list
   const hospitalTenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -254,12 +251,12 @@ export const CreateBirth = () => {
     const dobStr = formData.date_of_birth;
     const doRegStr = formData.date_of_registration;
     if (dobStr && doRegStr) {
-      const birthDate = new Date(dobStr);
+      const deathDate = new Date(dobStr);
       const regDate = new Date(doRegStr);
-      if (isNaN(birthDate.getTime()) || isNaN(regDate.getTime())) return true;
-      return regDate >= birthDate;
+      if (isNaN(deathDate.getTime()) || isNaN(regDate.getTime())) return true; 
+      return regDate >= deathDate;
     }
-    return true;
+    return true; 
   };
 
   const onFormValueChange = (setValue, formData) => {
@@ -271,17 +268,9 @@ export const CreateBirth = () => {
 
     const isLegacy = !!formData["checkbox_legacy"];
     const isSameAddressChecked = !!formData["same_as_permanent_address"];
-    const currentRegDate = formData["date_of_registration"];
 
-    // Track if registration date has changed
-    const hasRegDateChanged = prevRegistrationDateRef.current !== currentRegDate;
-    if (hasRegDateChanged) {
-      prevRegistrationDateRef.current = currentRegDate;
-      setRegistrationDate(currentRegDate);
-    }
-
-    // Only rebuild if a controlling checkbox has changed OR registration date has changed
-    if (prevLegacyCheckboxRef.current !== isLegacy || prevCheckboxRef.current !== isSameAddressChecked || hasRegDateChanged) {
+    // Only rebuild if a controlling checkbox has changed
+    if (prevLegacyCheckboxRef.current !== isLegacy || prevCheckboxRef.current !== isSameAddressChecked) {
       // Update refs to prevent unnecessary reruns
       prevLegacyCheckboxRef.current = isLegacy;
       prevCheckboxRef.current = isSameAddressChecked;
@@ -332,30 +321,8 @@ export const CreateBirth = () => {
           }),
         }));
       }
-
-      // 5. Update Date of Birth max date based on Registration Date
-      if (currentRegDate) {
-        newConfig = newConfig.map((section) => ({
-          ...section,
-          body: section.body.map((field) => {
-            if (field.populators?.name === "date_of_birth") {
-              return {
-                ...field,
-                populators: {
-                  ...field.populators,
-                  validation: {
-                    ...field.populators.validation,
-                    max: currentRegDate, // Set max to registration date
-                  },
-                },
-              };
-            }
-            return field;
-          }),
-        }));
-      }
-
-      // 6. Update the state with the correctly constructed config
+      
+      // 5. Update the state with the correctly constructed config
       setFormConfig(newConfig);
 
       // Clear registration_number field if legacy is unchecked
@@ -405,9 +372,7 @@ export const CreateBirth = () => {
           // Reset internal states
           prevCheckboxRef.current = false;
           prevLegacyCheckboxRef.current = false;
-          prevRegistrationDateRef.current = null;
           setIsSubmitDisabledByDateError(false);
-          setRegistrationDate(null);
 
           // --- REBUILD CONFIG FROM SCRATCH TO RESET THE UI ---
           let newConfig = JSON.parse(JSON.stringify(BirthConfig));

@@ -16,8 +16,6 @@ export const CreateDeath = () => {
    const { t } = useTranslation();
 
   const [isSubmitDisabledByDateError, setIsSubmitDisabledByDateError] = useState(false);
-  const [registrationDate, setRegistrationDate] = useState(null);
-  const prevRegistrationDateRef = useRef(null);
   const [showToast, setShowToast] = useState(null);
   const history = useHistory();
 
@@ -209,7 +207,7 @@ export const CreateDeath = () => {
 
   const onSubmit = async (formData) => {
     if (!checkDateOrderValidity(formData)) {
-      setShowToast({ key: "error", label: t("BND_INVALID_REGISTRATION_DATE") });
+      setShowToast({ key: "error", label: t("BIRTH_INVALID_REGISTRATION_DATE") });
       setIsSubmitDisabledByDateError(true);
       return;
     }
@@ -249,17 +247,9 @@ export const CreateDeath = () => {
 
   const currentIsSameAddressChecked = !!formData?.sameAddressCheckbox;
   const currentIsLegacy = !!formData?.checkboxlabel;
-  const currentRegDate = formData?.doRegistration;
 
-  // Track if registration date has changed
-  const hasRegDateChanged = prevRegistrationDateRef.current !== currentRegDate;
-  if (hasRegDateChanged) {
-    prevRegistrationDateRef.current = currentRegDate;
-    setRegistrationDate(currentRegDate);
-  }
-
-  // Only rebuild the form config if one of the controlling checkboxes has changed OR registration date has changed.
-  if (prevCheckboxRef.current !== currentIsSameAddressChecked || prevLegacyCheckboxRef.current !== currentIsLegacy || hasRegDateChanged) {
+  // Only rebuild the form config if one of the controlling checkboxes has changed.
+  if (prevCheckboxRef.current !== currentIsSameAddressChecked || prevLegacyCheckboxRef.current !== currentIsLegacy) {
     // Update refs to prevent re-running this logic unnecessarily
     prevCheckboxRef.current = currentIsSameAddressChecked;
     prevLegacyCheckboxRef.current = currentIsLegacy;
@@ -311,29 +301,7 @@ export const CreateDeath = () => {
       }));
     }
 
-    // 5. Update Date of Death max date based on Registration Date
-    if (currentRegDate) {
-      newConfig = newConfig.map((section) => ({
-        ...section,
-        body: section.body.map((field) => {
-          if (field.populators?.name === "dob") {
-            return {
-              ...field,
-              populators: {
-                ...field.populators,
-                validation: {
-                  ...field.populators.validation,
-                  max: currentRegDate, // Set max to registration date
-                },
-              },
-            };
-          }
-          return field;
-        }),
-      }));
-    }
-
-    // 6. Finally, update the state with the correctly constructed config.
+    // 5. Finally, update the state with the correctly constructed config.
     setFormConfig(newConfig);
   }
 };
@@ -362,9 +330,7 @@ export const CreateDeath = () => {
     // setPermanent(false);
     prevCheckboxRef.current = false;
     prevLegacyCheckboxRef.current = false;
-    prevRegistrationDateRef.current = null;
     setIsSubmitDisabledByDateError(false);
-    setRegistrationDate(null);
 
     // Rebuild formConfig from scratch to ensure clean state
     let newConfig = [...createDeathConfig]; // Deep clone or ensure createDeathConfig is immutable

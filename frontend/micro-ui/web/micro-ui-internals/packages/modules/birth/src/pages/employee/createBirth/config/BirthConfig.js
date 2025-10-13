@@ -50,16 +50,6 @@ export const BirthConfig = [
           error: "Required",
           validation: {
             max: new Date().toISOString().split("T")[0],
-            customValidation: {
-              validate: (value, formData) => {
-                if (!value || !formData?.date_of_birth) return true;
-                const regDate = new Date(value);
-                const birthDate = new Date(formData.date_of_birth);
-                if (isNaN(regDate.getTime()) || isNaN(birthDate.getTime())) return true;
-                return regDate >= birthDate;
-              },
-              errorMessage: "BND_REGISTRATION_DATE_LESS_THAN_DOB",
-            },
           },
         },
       },
@@ -80,16 +70,6 @@ export const BirthConfig = [
           error: "Required",
           validation: {
             max: new Date().toISOString().split("T")[0],
-            customValidation: {
-              validate: (value, formData) => {
-                if (!value || !formData?.date_of_registration) return true;
-                const birthDate = new Date(value);
-                const regDate = new Date(formData.date_of_registration);
-                if (isNaN(birthDate.getTime()) || isNaN(regDate.getTime())) return true;
-                return birthDate <= regDate;
-              },
-              errorMessage: "BND_DOB_GREATER_THAN_REGISTRATION_DATE",
-            },
           },
         },
       },
