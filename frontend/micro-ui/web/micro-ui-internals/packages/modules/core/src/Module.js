@@ -41,17 +41,13 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
   const [privacy, setPrivacy] = useState(Digit.Utils.getPrivacyObject() || {});
   const userType = Digit.UserService.getType();
   
-  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         staleTime: 15 * 60 * 1000,
         cacheTime: 50 * 60 * 1000,
         retryDelay: (attemptIndex) => Infinity,
-        retry: false,
-        // Disable request cancellation on localhost to prevent MDMS API cancellation
-        cancelRefetch: isLocalhost ? false : true,
+        retry:false
         /*
           enable this to have auto retry incase of failure
           retryDelay: attemptIndex => Math.min(1000 * 3 ** attemptIndex, 60000)
@@ -62,15 +58,9 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
 
   // Clear localization cache when new build is deployed
   React.useEffect(() => {
-    // Skip cache clearing logic entirely on localhost to prevent reload-induced MDMS cancellation
-    if (isLocalhost) {
-      console.log("Localhost detected - skipping cache clearing logic");
-      return;
-    }
-
     const currentTimestamp = process.env['REACT_APP_PUBLIC_PATH'] || Date.now().toString();
     const storedTimestamp = localStorage.getItem("app_timestamp");
-
+    
     // Helper function to clear only localization-related cache
     const clearLocalizationCache = () => {
       const keysToRemove = [];
@@ -168,7 +158,7 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
     
     // Clean up expired cache entries
     cleanupExpiredCache();
-  }, [queryClient, isLocalhost]);
+  }, [queryClient]);
 
   const ComponentProvider = Digit.Contexts.ComponentProvider;
   const PrivacyProvider = Digit.Contexts.PrivacyProvider;

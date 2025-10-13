@@ -195,5 +195,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-frontend/.claude/settings.local.json
-frontend/nul

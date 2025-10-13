@@ -61,9 +61,9 @@ Axios.interceptors.response.use(
 
     // HTTP Status Code based error handling
     switch (status) {
-      // case 401:
-      //   handleAuthFailure(err, "401 Unauthorized");
-      //   return;
+      case 401:
+        handleAuthFailure(err, "401 Unauthorized");
+        return;
 
       case 403:
         handleAuthFailure(err, "403 Forbidden");
