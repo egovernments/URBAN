@@ -16,6 +16,7 @@ export const CreateDeath = () => {
    const { t } = useTranslation();
 
   const [isSubmitDisabledByDateError, setIsSubmitDisabledByDateError] = useState(false);
+  const [regDateMax, setRegDateMax] = useState(new Date().toISOString().split("T")[0]);
   const [showToast, setShowToast] = useState(null);
   const history = useHistory();
 
@@ -247,6 +248,8 @@ export const CreateDeath = () => {
 
   const currentIsSameAddressChecked = !!formData?.sameAddressCheckbox;
   const currentIsLegacy = !!formData?.checkboxlabel;
+  const currentRegDate = formData?.doRegistration;
+  setRegDateMax(currentRegDate || new Date().toISOString().split("T")[0]);
 
   // Only rebuild the form config if one of the controlling checkboxes has changed.
   if (prevCheckboxRef.current !== currentIsSameAddressChecked || prevLegacyCheckboxRef.current !== currentIsLegacy) {
@@ -390,10 +393,27 @@ export const CreateDeath = () => {
       <FormComposerV2
         config={formConfig.map((conf) => ({
           ...conf,
-          body: conf.body.map((field) => ({
-            ...field,
-            key: field.populators?.name || `${conf.head || 'section'}-${field.key || field.label || field.type}`, // More robust key generation
-          })),
+          body: conf.body.map((field) => {
+            if (field?.populators?.name === "dob") {
+              const updatedPopulators = {
+                ...field.populators,
+                max: regDateMax,
+                validation: {
+                  ...field.populators?.validation,
+                  max: regDateMax,
+                },
+              };
+              return {
+                ...field,
+                key: `${field.populators?.name}-dod-${regDateMax}`,
+                populators: updatedPopulators,
+              };
+            }
+            return {
+              ...field,
+              key: field.populators?.name || `${conf.head || 'section'}-${field.key || field.label || field.type}`,
+            };
+          }),
         }))}
         isDisabled={isSubmitDisabledByDateError} 
         label={t("CORE_COMMON_SUBMIT")} 
