@@ -219,7 +219,7 @@ export const BirthConfig = [
        placeholder: "National Identity Proof Number",
         populators: {
           name: "father_aadhar_number",
-          error: "Invalid Aadhar Number (12 digits)",
+          error: "Invalid National Identity Proof Number (12 digits)",
           validation: {
             pattern: /^\d{12}$/,
             minLength: 12,
@@ -374,10 +374,10 @@ export const BirthConfig = [
         inline: true,
         label: "BND_AADHAR_NO",
         type: "text",
-       placeholder: "National Identity Proof Number",
+        placeholder: "National Identity Proof Number",
         populators: {
           name: "mother_aadhar_number",
-          error: "Invalid Aadhar Number (12 digits)",
+          error: "Invalid National Identity Proof Number (12 digits)",
           validation: {
             pattern: /^\d{12}$/,
             minLength: 12,

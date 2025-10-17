@@ -199,14 +199,16 @@ const createDeathConfig = [
       {
         inline: true,
         label: "BND_AADHAR_NO",
-        type: "number",
+        type: "text",
         isMandatory: false,
         placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber",
-          error: "Aadhar Number is Required!",
+          error: "Invalid National Identity Proof Number (12 digits)",
           validation: {
-            pattern: /^[0-9]{12}$/, // 12-digit number
+            pattern: /^\d{12}$/,
+            minLength: 12,
+            maxLength: 12,
           },
         },
       },
@@ -330,14 +332,16 @@ const createDeathConfig = [
       {
         inline: true,
         label: "BND_AADHAR_NO",
-        type: "number",
+        type: "text",
         isMandatory: false,
         placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber2",
-          error: "Aadhar Number is Required!",
+          error: "Invalid National Identity Proof Number (12 digits)",
           validation: {
-            pattern: /^[0-9]{12}$/, // 12-digit number
+            pattern: /^\d{12}$/,
+            minLength: 12,
+            maxLength: 12,
           },
         },
       },
@@ -424,14 +428,16 @@ const createDeathConfig = [
       {
         inline: true,
         label: "BND_AADHAR_NO",
-        type: "number",
+        type: "text",
         isMandatory: false,
         placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber3",
-          error: "Aadhar Number is Required!",
+          error: "Invalid National Identity Proof Number (12 digits)",
           validation: {
-            pattern: /^[0-9]{12}$/, // 12-digit number
+            pattern: /^\d{12}$/,
+            minLength: 12,
+            maxLength: 12,
           },
         },
       },
@@ -517,16 +523,18 @@ const createDeathConfig = [
       {
         inline: true,
         label: "BND_AADHAR_NO",
-        type: "number",
+        type: "text",
         isMandatory: false,
         placeholder: "National Identity Proof Number",
         populators: {
           name: "AadharNumber4",
-          error: "Aadhar Number is Required!",
+          error: "Invalid National Identity Proof Number (12 digits)",
           validation: {
-            pattern: /^[0-9]{12}$/, // 12-digit number
+            pattern: /^\d{12}$/,
+            minLength: 12,
+            maxLength: 12,
           },
-      },
+        },
       },
       {
         inline: true,
