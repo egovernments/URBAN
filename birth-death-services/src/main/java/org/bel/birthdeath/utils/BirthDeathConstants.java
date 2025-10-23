@@ -12,9 +12,9 @@ public class BirthDeathConstants {
 
 	public static final String BILLING_SERVICE = "BillingService";
 
-	public static final String BIRTH_CERT = "BIRTH_CERT.BIRTH_CERT";
+	public static final String BIRTH_CERT = "BIRTH_CERT";
 
-	public static final String BIRTH_CERT_FEE = "BIRTH_CERT.BIRTH_CERT_CHARGES";
+	public static final String BIRTH_CERT_FEE = "BIRTH_CERT_CHARGES";
 
 	public static final String DEATH_CERT = "DEATH_CERT";
 
