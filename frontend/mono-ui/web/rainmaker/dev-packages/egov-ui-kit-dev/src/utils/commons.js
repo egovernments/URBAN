@@ -1114,7 +1114,7 @@ export const getModuleName = () => {
   } else if (pathName.indexOf("digit-ui/employee") > -1) {
     return "rainmaker-common";
   } else {
-    return "rainmaker-common,rainmaker-noc,rainmaker-pgr,rainmaker-bnd";
+    return "rainmaker-common,rainmaker-noc,rainmaker-pgr";
   }
 };
 

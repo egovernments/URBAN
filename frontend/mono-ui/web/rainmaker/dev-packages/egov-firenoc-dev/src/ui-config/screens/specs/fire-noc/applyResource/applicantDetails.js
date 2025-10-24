@@ -571,7 +571,7 @@ const institutionInformation = () => {
         },
         required: true,
         pattern: getPattern("MobileNo"),
-        errorMessage: "Invalid Number",
+        errorMessage: "Enter valid number",
         jsonPath:
           "FireNOCs[0].fireNOCDetails.applicantDetails.additionalDetail.telephoneNumber",
         gridDefination: {
@@ -630,7 +630,7 @@ const institutionInformation = () => {
         },
         required: true,
         pattern: getPattern("MobileNo"),
-        errorMessage: "Invalid MobileNo.",
+        errorMessage: "Enter a 10-digit number starting with 6/7/8/9 (e.g. 9XXXXXXXXX)",
 
         jsonPath:
           "FireNOCs[0].fireNOCDetails.applicantDetails.owners[0].mobileNumber",
