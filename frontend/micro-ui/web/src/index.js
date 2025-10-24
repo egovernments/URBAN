@@ -8,6 +8,54 @@ import { TLCustomisations } from './Customisations/tl/TLCustomisation';
 import { UICustomizations } from './Customisations/UICustomizations';
 import VersionConfig from './versionConfig';
 
+// Intercept localStorage setItem to handle QuotaExceededError globally
+(function() {
+  const originalSetItem = Storage.prototype.setItem;
+
+  Storage.prototype.setItem = function(key, value) {
+    try {
+      originalSetItem.call(this, key, value);
+    } catch (error) {
+      if (error.name === 'QuotaExceededError') {
+        console.warn('Storage quota exceeded. Clearing storage and triggering logout...');
+
+        // Show alert to user
+        const alertMessage = 'The system has detected an issue and needs to log you out to prevent further problems. Please login again to continue.';
+        if (typeof window !== 'undefined' && window.alert) {
+          window.alert(alertMessage);
+        }
+
+        // Check if user came from sandbox before clearing storage
+        const fromSandbox = window.Digit?.SessionStorage?.get?.('fromSandbox') ||
+                          window.sessionStorage?.getItem?.('Digit.fromSandbox');
+
+        // Clear storage
+        try {
+          window.localStorage.clear();
+          window.sessionStorage.clear();
+        } catch (clearError) {
+          console.error('Failed to clear storage:', clearError);
+        }
+
+        // Trigger logout with appropriate redirect
+        if (fromSandbox === 'true' || fromSandbox === true) {
+          // For sandbox/auto-login users: hard reload to sandbox login page
+          window.location.href = 'https://sandbox-prod.digit.org/sandbox-ui/user/login';
+        } else if (window.Digit && window.Digit.UserService && typeof window.Digit.UserService.logout === 'function') {
+          // Normal logout flow
+          window.Digit.UserService.logout();
+        } else {
+          // Fallback: redirect to citizen page
+          window.location.replace('/digit-ui/citizen');
+        }
+      } else {
+        // Re-throw other errors
+        throw error;
+      }
+    }
+  };
+})();
+
 // Set static UI version from local config (manually maintained)
 window.DIGIT_UI_VERSION = VersionConfig.version;
 
