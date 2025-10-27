@@ -19,6 +19,8 @@ const UpdateDeath = () => {
   const [sameAddressChecked, setSameAddressChecked] = useState(false);
   const prevCheckboxRef = useRef(false);
   const prevLegacyCheckboxRef = useRef(false);
+  const prevDateOfDeathRef = useRef(null);
+  const prevDateOfRegistrationRef = useRef(null);
 
   const hospitalTenantId = Digit.ULBService.getCurrentTenantId();
   const { isLoading: hospitalListLoading, data: hospitalListData } = Digit.Hooks.useCustomMDMS(
@@ -349,20 +351,20 @@ const UpdateDeath = () => {
       // When the box is checked, clear the permanent address fields to avoid stale data.
       if (currentIsSameAddressChecked) {
         const permanentFields = [
-          'permanentBuildingNumber', 'permanentHouseNo', 'permanentStreetName', 
-          'permanentLocality', 'permanentTehsil', 'permanentDistrict', 
+          'permanentBuildingNumber', 'permanentHouseNo', 'permanentStreetName',
+          'permanentLocality', 'permanentTehsil', 'permanentDistrict',
           'permanentCity', 'permanentState', 'permanentCountry', 'permanentPincode'
         ];
         permanentFields.forEach(field => {
           setValue(field, "");
         });
       }
-      
+
       const newVisibleConfig = updateConfigBasedOnSameAddressCheckbox(
         currentIsSameAddressChecked,
-        baseFormConfigRef.current 
+        baseFormConfigRef.current
       );
-      
+
       // Update the state to re-render the form.
       setFormConfig(newVisibleConfig);
     }
@@ -370,6 +372,71 @@ const UpdateDeath = () => {
     const currentIsLegacy = !!formData?.checkboxlabel;
     if (prevLegacyCheckboxRef.current !== currentIsLegacy) {
       prevLegacyCheckboxRef.current = currentIsLegacy;
+    }
+
+    // B. Handle dynamic date validation
+    // Date of Death should not be after Date of Registration
+    const dateOfRegistration = formData?.doRegistration;
+    const dateOfDeath = formData?.dob;
+
+    // Only update config if dates have actually changed
+    if (baseFormConfigRef.current &&
+        (prevDateOfDeathRef.current !== dateOfDeath || prevDateOfRegistrationRef.current !== dateOfRegistration)) {
+
+      prevDateOfDeathRef.current = dateOfDeath;
+      prevDateOfRegistrationRef.current = dateOfRegistration;
+
+      const updatedConfig = baseFormConfigRef.current.map((section) => {
+        if (section.head === "BND_INFO_OF_DECEASED") {
+          return {
+            ...section,
+            body: section.body.map((field) => {
+              if (field.populators?.name === "dob") {
+                return {
+                  ...field,
+                  populators: {
+                    ...field.populators,
+                    validation: {
+                      ...field.populators.validation,
+                      max: dateOfRegistration || new Date().toISOString().split("T")[0],
+                    },
+                  },
+                };
+              }
+              return field;
+            }),
+          };
+        }
+        if (section.head === "BND_REGISTRATION") {
+          return {
+            ...section,
+            body: section.body.map((field) => {
+              if (field.populators?.name === "doRegistration") {
+                return {
+                  ...field,
+                  populators: {
+                    ...field.populators,
+                    validation: {
+                      ...field.populators.validation,
+                      max: new Date().toISOString().split("T")[0],
+                      min: dateOfDeath || undefined,
+                    },
+                  },
+                };
+              }
+              return field;
+            }),
+          };
+        }
+        return section;
+      });
+
+      baseFormConfigRef.current = updatedConfig;
+      const newVisibleConfig = updateConfigBasedOnSameAddressCheckbox(
+        currentIsSameAddressChecked,
+        updatedConfig
+      );
+      setFormConfig(newVisibleConfig);
     }
   };
   
