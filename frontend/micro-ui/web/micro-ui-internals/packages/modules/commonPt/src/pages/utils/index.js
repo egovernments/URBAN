@@ -162,6 +162,13 @@ export const convertToPropertyLightWeight = (data = {}) => {
   let propertyType = data.PropertyType;
   let noOfFloors = 1;
   let ownershipCategory= data?.owners?.[0]?.ownershipCategory;
+
+  // Extract base ownership category if it contains a dot (e.g., INSTITUTIONALGOVERNMENT.STATEGOVERNMENT -> INSTITUTIONALGOVERNMENT)
+  let baseOwnershipCategory = ownershipCategory;
+  if (ownershipCategory && ownershipCategory.includes(".")) {
+    baseOwnershipCategory = ownershipCategory.split(".")[0];
+  }
+
   data = setOwnerDetailsLW(data);
   data = setAddressDetailsLW(data);
   data = setPropertyDetailsLW(data);
@@ -172,7 +179,7 @@ export const convertToPropertyLightWeight = (data = {}) => {
       address: data.address,
       propertyType: propertyType,
       ...data.propertyDetails,
-      ownershipCategory: ownershipCategory,
+      ownershipCategory: baseOwnershipCategory,
       usageCategory: data?.assemblyDet?.usageCategoryMajor?.code,
       owners: data.owners,
       noOfFloors: noOfFloors,
@@ -184,8 +191,8 @@ export const convertToPropertyLightWeight = (data = {}) => {
       channel: "SYSTEM",
     },
   };
-  
-  if (ownershipCategory.includes("INSTITUTIONALPRIVATE") || ownershipCategory.includes("INSTITUTIONALGOVERNMENT")) {
+
+  if (baseOwnershipCategory.includes("INSTITUTIONALPRIVATE") || baseOwnershipCategory.includes("INSTITUTIONALGOVERNMENT")) {
     formdata.Property.institution = data?.institution;
   }
   return formdata;
