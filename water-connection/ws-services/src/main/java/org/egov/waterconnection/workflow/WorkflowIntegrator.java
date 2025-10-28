@@ -105,16 +105,25 @@ public class WorkflowIntegrator {
 			 * extracting message from client error exception
 			 */
 			DocumentContext responseContext = JsonPath.parse(e.getResponseBodyAsString());
-			List<Object> errros = null;
+			List<Map<String, Object>> errors = null;
 			try {
-				errros = responseContext.read("$.Errors");
+				errors = responseContext.read("$.Errors");
 			} catch (PathNotFoundException pnfe) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(" Unable to read the json path in error object : ").append(pnfe.getMessage());
 				log.error("EG_WS_WF_ERROR_KEY_NOT_FOUND", builder.toString());
 				throw new CustomException("EG_WS_WF_ERROR_KEY_NOT_FOUND", builder.toString());
 			}
-			throw new CustomException("EG_WF_ERROR", errros.toString());
+
+			// Extract the actual error code and message from the first error instead of stringifying the entire list
+			if (errors != null && !errors.isEmpty()) {
+				Map<String, Object> firstError = errors.get(0);
+				String code = (String) firstError.get("code");
+				String message = (String) firstError.get("message");
+				throw new CustomException(code != null ? code : "EG_WF_ERROR",
+										 message != null ? message : "Workflow error occurred");
+			}
+			throw new CustomException("EG_WF_ERROR", "Unknown workflow error occurred");
 		} catch (Exception e) {
 			throw new CustomException("EG_WF_ERROR",
 					" Exception occured while integrating with workflow : " + e.getMessage());
