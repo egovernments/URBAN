@@ -57,6 +57,12 @@ public class PropertyValidator {
     @Value("${egov.mdms.search.endpoint}")
     private String mdmsEndpoint;
 
+    @Value("${egov.mdmsv2.host}")
+    private String mdmsv2Host;
+
+    @Value("${egov.mdmsv2.search.endpoint}")
+    private String mdmsv2Endpoint;
+
 
 
     /**
@@ -125,7 +131,7 @@ public class PropertyValidator {
      *
      */
     private Map<String,List<String>> getAttributeValues(String tenantId, String moduleName, List<String> names, String filter,String jsonpath, RequestInfo requestInfo){
-        StringBuilder uri = new StringBuilder(mdmsHost).append(mdmsEndpoint);
+        StringBuilder uri = new StringBuilder(mdmsv2Host).append(mdmsv2Endpoint);
         MdmsCriteriaReq criteriaReq = propertyUtil.prepareMdMsRequest(tenantId,moduleName,names,filter,requestInfo);
         try {
             Object result = serviceRequestRepository.fetchResult(uri, criteriaReq);
