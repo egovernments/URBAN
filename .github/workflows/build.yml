@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - core-services
-          - urban
+          - property-tax
         default: core-services
       service:
         description: 'Name of the service to build and deploy'
