@@ -118,7 +118,7 @@ const CustomTable = ({ data = {}, onSearch, setChartData, setChartDenomination, 
           cellValue = Math.round((cellValue + Number.EPSILON) * 100) / 100;
         }
         if (typeof cellValue === "string" && rowNamesToBeLocalised?.includes(row.name)) {
-          cellValue = t(`DSS_TB_` + Digit.Utils.locale.getTransformedLocale(cellValue));
+          cellValue = t(Digit.Utils.locale.getTransformedLocale(cellValue));
         }
         acc[t(`DSS_HEADER_${Digit.Utils.locale.getTransformedLocale(row?.name)}`)] =
           insight !== null ? { value: cellValue, insight } : row?.name === "S.N." ? id + 1 : cellValue;
