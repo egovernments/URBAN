@@ -86,7 +86,7 @@ public class PaymentUpdateService {
 					searchCriteria.setTenantId(tenantId);
 //					List<String> codes = Arrays.asList(paymentDetail.getBill().getConsumerCode());
 					searchCriteria.setApplicationNo(paymentDetail.getBill().getConsumerCode());
-					List<BPA> bpas = repository.getBPAData(searchCriteria, null);
+					List<BPA> bpas = repository.getBPAData(searchCriteria, null, requestInfo);
 					if (CollectionUtils.isEmpty(bpas)) {
 						throw new CustomException(BPAErrorConstants.INVALID_RECEIPT,
 								"No Building Plan Application found for the comsumerCode "
@@ -94,16 +94,18 @@ public class PaymentUpdateService {
 					}
 					Workflow workflow = Workflow.builder().action("PAY").build();
 					bpas.forEach(bpa -> bpa.setWorkflow(workflow));
-					
+
+					BPA bpa = bpas.get(0);
+
 					// FIXME check if the update call to repository can be avoided
 					// FIXME check why aniket is not using request info from consumer
 					// REMOVE SYSTEM HARDCODING AFTER ALTERING THE CONFIG IN WF FOR TL
 
-					Role role = Role.builder().code("SYSTEM_PAYMENT").tenantId(bpas.get(0).getTenantId()).build();
+					Role role = Role.builder().code("SYSTEM_PAYMENT").tenantId(bpa.getTenantId()).build();
 					requestInfo.getUserInfo().getRoles().add(role);
-					role = Role.builder().code("CITIZEN").tenantId(bpas.get(0).getTenantId()).build();
+					role = Role.builder().code("CITIZEN").tenantId(bpa.getTenantId()).build();
 					requestInfo.getUserInfo().getRoles().add(role);
-					BPARequest updateRequest = BPARequest.builder().requestInfo(requestInfo).BPA(bpas.get(0)).build();
+					BPARequest updateRequest = BPARequest.builder().requestInfo(requestInfo).BPA(bpa).build();
 
 					/*
 					 * calling workflow to update status
