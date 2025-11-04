@@ -386,8 +386,25 @@ public class BPAService {
 		if (CollectionUtils.isEmpty(searchResult) || searchResult.size() > 1) {
 			throw new CustomException(BPAErrorConstants.UPDATE_ERROR, "Failed to Update the Application, Found None or multiple applications!");
 		}
-		
-		
+
+		// Fetch and populate landInfo if not present in the request
+		if (bpa.getLandInfo() == null && bpa.getLandId() != null) {
+			LandSearchCriteria landCriteria = new LandSearchCriteria();
+			List<String> landIds = new ArrayList<>();
+			landIds.add(bpa.getLandId());
+			landCriteria.setIds(landIds);
+			landCriteria.setTenantId(bpa.getTenantId());
+			log.debug("Fetching landInfo for landId: " + bpa.getLandId());
+			ArrayList<LandInfo> landInfos = landService.searchLandInfoToBPA(requestInfo, landCriteria);
+			if (!landInfos.isEmpty()) {
+				bpa.setLandInfo(landInfos.get(0));
+				log.debug("LandInfo populated for BPA update");
+			} else {
+				log.warn("No landInfo found for landId: " + bpa.getLandId());
+			}
+		}
+
+
 		Map<String, String> additionalDetails = bpa.getAdditionalDetails() != null ? (Map<String, String>)bpa.getAdditionalDetails()
 				: new HashMap<String, String>();
 		
