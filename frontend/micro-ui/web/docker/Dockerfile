@@ -12,6 +12,10 @@ ENV NODE_OPTIONS="--max-old-space-size=8500"
 ENV YARN_DEBUG=true
 ENV GENERATE_SOURCEMAP "false"
 
+# Accept the build argument
+ARG REACT_APP_PUBLIC_PATH
+ENV REACT_APP_PUBLIC_PATH=${REACT_APP_PUBLIC_PATH}
+
 COPY ${WORK_DIR} .
 RUN ls -lah
 
@@ -41,7 +45,7 @@ RUN yarn install
 # Build metadata generation disabled (using static versionConfig)
 
 # Build the project
-RUN yarn build:webpack
+RUN REACT_APP_PUBLIC_PATH=${REACT_APP_PUBLIC_PATH} yarn build:webpack
 
 FROM nginx:mainline-alpine
 ENV WORK_DIR=/var/web/digit-ui

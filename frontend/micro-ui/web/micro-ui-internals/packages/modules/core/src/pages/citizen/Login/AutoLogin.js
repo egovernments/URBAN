@@ -3,7 +3,20 @@ import { Loader } from "@egovernments/digit-ui-react-components";
 import { useHistory, useLocation } from "react-router-dom";
 
 const setCitizenDetail = (userObject, token, tenantId) => {
-  let locale = JSON.parse(sessionStorage.getItem("Digit.locale"))?.value?.selectedLanguage || "en_IN";
+  // Fix: Use same locale access pattern as employee to prevent breaking
+  const digitLocale = sessionStorage.getItem("Digit.locale");
+  let locale = "en_IN"; // Default fallback
+  
+  try {
+    if (digitLocale) {
+      const parsed = JSON.parse(digitLocale);
+      // Handle both citizen (.selectedLanguage) and employee (.value) patterns
+      locale = parsed?.value?.selectedLanguage || parsed?.value || parsed?.selectedLanguage || "en_IN";
+    }
+  } catch (e) {
+    console.warn("Failed to parse Digit.locale, using default:", e);
+  }
+  
   localStorage.setItem("Citizen.tenant-id", tenantId);
   localStorage.setItem("tenant-id", tenantId);
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
@@ -19,6 +32,7 @@ const AutoLogin = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
   const history = useHistory();
   const location = useLocation();
 
@@ -28,10 +42,11 @@ const AutoLogin = () => {
   const queryParams = new URLSearchParams(location.search);
   const fromSandbox= queryParams.get("fromSandbox") || false
 
-
   const mobileNumber = queryParams.get("mobile");
   const otp = queryParams.get("otp") || "123456"; 
   const city = queryParams.get("city") || Digit.ULBService.getStateId();
+  // Check for locale parameter in URL
+  const urlLocale = queryParams.get("locale");
   Digit.SessionStorage.set("CITIZEN.COMMON.HOME.CITY", city);
   const redirectUrl = queryParams.get("redirectUrl") || DEFAULT_REDIRECT_URL;
   
@@ -44,27 +59,140 @@ const AutoLogin = () => {
     setCitizenDetail(user?.info, user?.access_token, city);
     Digit.SessionStorage.set("fromSandbox", fromSandbox);  
 
-    if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
-      history.replace("/digit-ui/citizen/select-location", {
-        redirectBackTo: redirectUrl,
-      });
-    } else {
-      history.replace(redirectUrl);
-    }
+    console.log("[AUTO-LOGIN-CITIZEN] Starting localization setup");
+    
+    // Ensure locale is properly set for localization loading
+    // Priority: URL param > localStorage > default
+    const storedLocale = localStorage.getItem("Citizen.locale");
+    const locale = urlLocale || storedLocale || "en_IN";
+    console.log(`[AUTO-LOGIN-CITIZEN] Locale selection - URL: ${urlLocale}, stored: ${storedLocale}, final: ${locale}`);
+    
+    // Set locale in both session and local storage to ensure availability
+    Digit.SessionStorage.set("locale", locale);
+    sessionStorage.setItem("locale", locale);
+    localStorage.setItem("locale", locale);
+    console.log("[AUTO-LOGIN-CITIZEN] Locale set in all storage locations");
+    
+    // Load localizations after successful login
+    const tenantId = city || user?.info?.tenantId;
+    
+    // Extract state code from tenant ID (e.g., "pg.citya" -> "pg") to match index.js logic
+    const stateCode = tenantId ? tenantId.split('.')[0] : undefined;
+    
+    // Use state-level modules instead of city-specific ones for consistency
+    const modules = [
+      'rainmaker-common',
+      stateCode ? `rainmaker-${stateCode.toLowerCase()}` : undefined
+    ].filter(Boolean);
+    
+    console.log(`[AUTO-LOGIN-CITIZEN] Localization params - locale: ${locale}, tenantId: ${tenantId}, city: ${city}, modules: [${modules.join(', ')}]`);
+    
+    // Load localizations before redirecting
+    const startTime = Date.now();
+    Digit.LocalizationService.getLocale({ modules, locale, tenantId: stateCode }).then((messages) => {
+      console.log(`[AUTO-LOGIN-CITIZEN] Localizations loaded successfully in ${Date.now() - startTime}ms, got ${messages.length} messages`);
+      
+      // Ensure i18next is using the correct locale
+      if (window.i18next && window.i18next.changeLanguage) {
+        console.log(`[AUTO-LOGIN-CITIZEN] Setting i18next language to ${locale}`);
+        window.i18next.changeLanguage(locale);
+      }
+      
+      if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
+        history.replace("/digit-ui/citizen/select-location", {
+          redirectBackTo: redirectUrl,
+        });
+      } else {
+        history.replace(redirectUrl);
+      }
+      // signal auth ready for gated requests
+      try { window.Digit.AutoLoginInProgress = false; window.dispatchEvent(new Event('digit-auth-ready')); } catch(_) {}
+    }).catch((err) => {
+      console.error(`[AUTO-LOGIN-CITIZEN] Failed to load localizations after ${Date.now() - startTime}ms:`, err);
+      // Still redirect even if localization fails
+      if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
+        history.replace("/digit-ui/citizen/select-location", {
+          redirectBackTo: redirectUrl,
+        });
+      } else {
+        history.replace(redirectUrl);
+      }
+      // even on localization failure, signal auth ready
+      try { window.Digit.AutoLoginInProgress = false; window.dispatchEvent(new Event('digit-auth-ready')); } catch(_) {}
+    });
   }, [user]);
 
 
 
   const handleAutoLogin = async () => {
     try {
+      // mark auto-login in progress for central request gating
+      window.Digit = window.Digit || {};
+      window.Digit.AutoLoginInProgress = true;
+      console.log("[AUTO-LOGIN-CITIZEN] Starting authentication");
+      console.log("[AUTO-LOGIN-CITIZEN] URL parameters:", {
+        mobile: mobileNumber,
+        city: city,
+        fromSandbox: fromSandbox,
+        otp: otp
+      });
+
       const requestData = {
         username: mobileNumber,
-        password: otp, 
+        password: otp,
         tenantId: city,
         userType: "CITIZEN",
       };
+
+      console.log("[AUTO-LOGIN-CITIZEN] Authentication request data:", requestData);
+      console.log("[AUTO-LOGIN-CITIZEN] Calling Digit.UserService.authenticate...");
+
+      // bounded retries with backoff for unknown/server/network issues
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const shouldRetry = (err) => {
+        const status = err?.response?.status;
+        const isNetwork = !err?.response;
+        const isUnknown = status == null;
+        const isServer = status >= 500;
+        return isNetwork || isUnknown || isServer;
+      };
+
+      let authResult = null;
+      let attempts = 0;
+      while (attempts <= 3) {
+        try {
+          authResult = await Digit.UserService.authenticate(requestData);
+          break;
+        } catch (e) {
+          const status = e?.response?.status;
+          const isAuthError = status === 401 || status === 403;
+
+          // For auto-login: retry on auth errors (401/403) as well
+          if (isAuthError && attempts < 3) {
+            console.warn(`[AUTO-LOGIN-CITIZEN] Auth error ${status} - retrying (attempt ${attempts + 1}/3)`);
+            const backoff = Math.min(1000 * Math.pow(2, attempts), 4000) + Math.floor(Math.random() * 200);
+            setRetryCount(prev => prev + 1);
+            attempts += 1;
+            await sleep(backoff);
+            continue;
+          }
+
+          if (attempts === 3 || !shouldRetry(e)) throw e;
+          const backoff = Math.min(1000 * Math.pow(2, attempts), 4000) + Math.floor(Math.random() * 200);
+          console.warn(`[AUTO-LOGIN-CITIZEN] Auth retry in ${backoff}ms (attempt ${attempts + 1}/3)`);
+          setRetryCount(prev => prev + 1);
+          attempts += 1;
+          await sleep(backoff);
+        }
+      }
+
+      const { UserRequest: info, ...tokens } = authResult;
       
-      const { UserRequest: info, ...tokens } = await Digit.UserService.authenticate(requestData);
+      console.log("[AUTO-LOGIN-CITIZEN] Authentication successful:", {
+        hasInfo: !!info,
+        hasTokens: !!tokens,
+        tenantId: info?.tenantId
+      });
       
       // Handle single instance config if applicable
       if (window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")) {
@@ -73,9 +201,45 @@ const AutoLogin = () => {
       
       setUser({ info, ...tokens });
     } catch (err) {
-      console.error("Auto-login failed:", err);
-      setError(err.response?.data?.error_description || "Login failed. Please try again.");
+      console.error("[AUTO-LOGIN-CITIZEN] Authentication failed:", err);
+      console.error("[AUTO-LOGIN-CITIZEN] Full error object:", JSON.stringify(err, null, 2));
+      console.error("[AUTO-LOGIN-CITIZEN] Error details:", {
+        message: err.message,
+        name: err.name,
+        stack: err.stack,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        responseData: err.response?.data,
+        responseHeaders: err.response?.headers,
+        requestConfig: err.config,
+        isNetworkError: !err.response
+      });
+      
+      // Check if it's a network/connectivity issue
+      const isNetworkError = !err.response || err.response.status === 0 || err.message === 'Network Error';
+      console.log("[AUTO-LOGIN-CITIZEN] Network error check:", {
+        isNetworkError,
+        hasResponse: !!err.response,
+        status: err.response?.status,
+        message: err.message,
+        retryCount
+      });
+      
+      // Don't set error immediately for network issues - try to retry (max 3 times)
+      if (isNetworkError && retryCount < 3) {
+        console.log(`[AUTO-LOGIN-CITIZEN] Network error detected, retrying auto-login in 2 seconds... (attempt ${retryCount + 1}/3)`);
+        setRetryCount(prev => prev + 1);
+        setTimeout(() => {
+          handleAutoLogin();
+        }, 2000);
+        return;
+      }
+      
+      const errorMessage = err.response?.data?.error_description || err.response?.data?.message || err.message || "Login failed. Please try again.";
+      console.error("[AUTO-LOGIN-CITIZEN] Final error message:", errorMessage);
+      setError(errorMessage);
       setLoading(false);
+      try { window.Digit.AutoLoginInProgress = false; } catch(_) {}
     }
   };
 

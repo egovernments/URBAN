@@ -20,6 +20,7 @@ const EditApplication = () => {
   const [config, setConfig] = useState({ head: "", body: [] });
   const [enabledLoader, setEnabledLoader] = useState(true);
   const [isAppDetailsPage, setIsAppDetailsPage] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   let tenantId = Digit.ULBService.getCurrentTenantId();
   tenantId ? tenantId : Digit.SessionStorage.get("CITIZEN.COMMON.HOME.CITY")?.code;
@@ -101,8 +102,10 @@ const EditApplication = () => {
     if (!_.isEqual(sessionFormData, formData)) {
       setSessionFormData({ ...sessionFormData, ...formData });
     }
-    if (Object.keys(formState.errors).length > 0 && Object.keys(formState.errors).length == 1 && formState.errors["owners"] && Object.values(formState.errors["owners"].type).filter((ob) => ob.type === "required").length == 0 && !formData?.cpt?.details?.propertyId) setSubmitValve(true);
-    else setSubmitValve(!(Object.keys(formState.errors).length));
+    if (!isSubmitting) {
+      if (Object.keys(formState.errors).length > 0 && Object.keys(formState.errors).length == 1 && formState.errors["owners"] && Object.values(formState.errors["owners"].type).filter((ob) => ob.type === "required").length == 0 && !formData?.cpt?.details?.propertyId) setSubmitValve(true);
+      else setSubmitValve(!(Object.keys(formState.errors).length));
+    }
   };
 
   const onSubmit = async (data) => {
@@ -112,12 +115,13 @@ const EditApplication = () => {
         setShowToast(false);
       }, 3000);
     }
-    else{ 
-    const details = sessionStorage.getItem("WS_EDIT_APPLICATION_DETAILS") ? JSON.parse(sessionStorage.getItem("WS_EDIT_APPLICATION_DETAILS")) : {};    
+    else{
+    const details = sessionStorage.getItem("WS_EDIT_APPLICATION_DETAILS") ? JSON.parse(sessionStorage.getItem("WS_EDIT_APPLICATION_DETAILS")) : {};
     let convertAppData = await convertEditApplicationDetails(data, details, actionData);
     const reqDetails = data?.ConnectionDetails?.[0]?.serviceName == "WATER" ? { WaterConnection: convertAppData } : { SewerageConnection: convertAppData }
     setSubmitValve(false);
-    
+    setIsSubmitting(true);
+
     if (details?.processInstancesDetails?.[0]?.state?.applicationStatus?.includes("CITIZEN_ACTION")) {
       if (mutate) {
         mutate(reqDetails, {
@@ -125,6 +129,7 @@ const EditApplication = () => {
             setShowToast({ key: "error", message: error?.message ? error.message : error });
             setTimeout(closeToastOfError, 5000);
             setSubmitValve(true);
+            setIsSubmitting(false);
           },
           onSuccess: (data, variables) => {
             setShowToast({ key: false, message: "WS_APPLICATION_SUBMITTED_SUCCESSFULLY_LABEL" });
@@ -159,7 +164,7 @@ const EditApplication = () => {
         config={config.body}
         userType={"employee"}
         onFormValueChange={onFormValueChange}
-        // isDisabled={!canSubmit}
+        isDisabled={!canSubmit || isSubmitting}
         label={t("CS_COMMON_SUBMIT")}
         onSubmit={onSubmit}
         defaultValues={sessionFormData}

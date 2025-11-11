@@ -47,14 +47,22 @@ const PTAcknowledgement = ({ data, onSuccess }) => {
 
   useEffect(() => {
     try {
-      let tenantId = isPropertyMutation ? data.Property?.address.tenantId : data?.address?.city ? data.address?.city?.code : tenantId;
-      data.tenantId = tenantId;
+      // Derive tenantId with multiple fallback strategies
+      let derivedTenantId = isPropertyMutation
+        ? data.Property?.address.tenantId
+        : data?.address?.city?.code
+          || (data?.address?.locality?.code && data.address.locality.code.includes('.')
+              ? data.address.locality.code.split('.')[0]
+              : null)
+          || tenantId;
+
+      data.tenantId = derivedTenantId;
       let formdata = !window.location.href.includes("edit-application")
         ? isPropertyMutation
           ? data
           : convertToProperty(data)
         : convertToUpdateProperty(data,t);
-      formdata.Property.tenantId = formdata?.Property?.tenantId || tenantId;
+      formdata.Property.tenantId = formdata?.Property?.tenantId || derivedTenantId;
       mutation.mutate(formdata, {
         onSuccess,
       });

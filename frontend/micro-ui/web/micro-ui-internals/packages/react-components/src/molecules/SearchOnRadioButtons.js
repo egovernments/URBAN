@@ -3,7 +3,7 @@ import RadioButtons from "../atoms/RadioButtons"
 import TextInput from "../atoms/TextInput"
 import { SearchIconSvg } from "../atoms/svgindex"
 
-const SearchOnRadioButtons = ({options,optionsKey,additionalWrapperClass,onSelect,selectedOption, SignatureImage = () => <SearchIconSvg />, onSearchQueryChange, SearchQueryValue, placeholder}) => {
+const SearchOnRadioButtons = ({options,optionsKey,additionalWrapperClass,onSelect,selectedOption, SignatureImage = () => <SearchIconSvg />, onSearchQueryChange, SearchQueryValue, placeholder, maxWidth = "100%"}) => {
     
     function optionsReducer(state, action){
         switch (action.type){
@@ -13,14 +13,14 @@ const SearchOnRadioButtons = ({options,optionsKey,additionalWrapperClass,onSelec
     }
 
     const [ filteredOptions, optionsDispatch ] = useReducer(optionsReducer, options)
-
+        
     function defaultSearchQueryChange(e){
         optionsDispatch({type: "filter", payload: e.target.value, options})
     }
 
-    return <div className="SearchOnRadioButton">
-        <TextInput textInputStyle={{maxWidth:"100%"}} signature={true} signatureImg={<SignatureImage />} onChange={onSearchQueryChange || defaultSearchQueryChange} value={SearchQueryValue} placeholder={placeholder} />
-        <RadioButtons {...{options: filteredOptions,optionsKey,additionalWrapperClass,onSelect,selectedOption}} />
+    return <div className="SearchOnRadioButton" style={{maxWidth: maxWidth}}>
+        <TextInput textInputStyle={{maxWidth: maxWidth}} style={{maxWidth: maxWidth}} signature={true} signatureImg={<SignatureImage />} onChange={onSearchQueryChange || defaultSearchQueryChange} value={SearchQueryValue} placeholder={placeholder} />
+        <RadioButtons {...{options: filteredOptions,optionsKey,additionalWrapperClass,onSelect,selectedOption}} style={{maxWidth: maxWidth}} />
     </div>
 }
 

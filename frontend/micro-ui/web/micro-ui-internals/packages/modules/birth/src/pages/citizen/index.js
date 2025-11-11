@@ -9,7 +9,7 @@ import { Route } from "react-router-dom/cjs/react-router-dom.min";
 
 const CitizenApp = ({ path, url, userType }) => {
   return (
-    <span className={"birth-citizen"}>
+    <span className={"birth-citizen"} style={{ width: "100%" }}>
       <Switch>
         <Route exact path={path}>
           <AppContainer>

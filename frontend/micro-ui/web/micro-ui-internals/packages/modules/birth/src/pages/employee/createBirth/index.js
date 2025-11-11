@@ -17,7 +17,10 @@ export const CreateBirth = () => {
   const prevCheckboxRef = useRef(false);
   const { t } = useTranslation();
 
+  
+
   const [isSubmitDisabledByDateError, setIsSubmitDisabledByDateError] = useState(false);
+  const [regDateMax, setRegDateMax] = useState(new Date().toISOString().split("T")[0]);
   // Fetch current tenant ID for hospital list
   const hospitalTenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -268,6 +271,8 @@ export const CreateBirth = () => {
 
     const isLegacy = !!formData["checkbox_legacy"];
     const isSameAddressChecked = !!formData["same_as_permanent_address"];
+    const currentRegDate = formData["date_of_registration"];
+    setRegDateMax(currentRegDate || new Date().toISOString().split("T")[0]);
 
     // Only rebuild if a controlling checkbox has changed
     if (prevLegacyCheckboxRef.current !== isLegacy || prevCheckboxRef.current !== isSameAddressChecked) {
@@ -343,10 +348,27 @@ export const CreateBirth = () => {
       <FormComposerV2
         config={formConfig.map((conf, i) => ({
           head: conf.head,
-          body: conf.body.map((field, j) => ({
-            ...field,
-            key: `${i}-${j}`,
-          })),
+          body: conf.body.map((field, j) => {
+            if (field?.populators?.name === "date_of_birth") {
+              const updatedPopulators = {
+                ...field.populators,
+                max: regDateMax,
+                validation: {
+                  ...field.populators?.validation,
+                  max: regDateMax,
+                },
+              };
+              return {
+                ...field,
+                key: `${i}-${j}-dob-${regDateMax}`,
+                populators: updatedPopulators,
+              };
+            }
+            return {
+              ...field,
+              key: `${i}-${j}`,
+            };
+          }),
         }))}
         label={t("CORE_COMMON_SUBMIT")}
         onSubmit={onSubmit}

@@ -35,21 +35,41 @@ const getStorage = (storageClass) => ({
     if (localStoreSupport()) {
       try {
         storageClass.setItem(k(key), JSON.stringify(item));
-      } catch (e) {
-        if (e.name === 'QuotaExceededError') {
-          // Clear MDMS cache when quota exceeded
-          const keys = Object.keys(storageClass);
-          keys.forEach(storageKey => {
-            if (storageKey.startsWith('Digit.MDMS.')) {
-              storageClass.removeItem(storageKey);
-            }
-          });
-          // Retry setting the item
-          try {
-            storageClass.setItem(k(key), JSON.stringify(item));
-          } catch (retryError) {
-            console.warn('Storage quota exceeded, unable to cache data:', key);
+      } catch (error) {
+        if (error.name === 'QuotaExceededError') {
+          console.warn('Storage quota exceeded. Clearing storage and triggering logout...');
+
+          // Show alert to user
+          const alertMessage = 'The system has detected an issue and needs to log you out to prevent further problems. Please login again to continue.';
+          if (typeof window !== 'undefined' && window.alert) {
+            window.alert(alertMessage);
           }
+
+          // Check if user came from sandbox before clearing storage
+          const fromSandbox = window.Digit?.SessionStorage?.get?.('fromSandbox') ||
+                            window.sessionStorage?.getItem?.('Digit.fromSandbox');
+
+          // Clear storage
+          try {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+          } catch (clearError) {
+            console.error('Failed to clear storage:', clearError);
+          }
+
+          // Trigger logout with appropriate redirect
+          if (fromSandbox === 'true' || fromSandbox === true) {
+            // For sandbox/auto-login users: hard reload to sandbox login page
+            window.location.href = 'https://sandbox-prod.digit.org/sandbox-ui/user/login';
+          } else if (window.Digit && window.Digit.UserService && typeof window.Digit.UserService.logout === 'function') {
+            // Normal logout flow
+            window.Digit.UserService.logout();
+          } else {
+            // Fallback: redirect to citizen page
+            window.location.replace('/digit-ui/citizen');
+          }
+        } else {
+          console.error('Error setting storage item:', error);
         }
       }
     } else if (typeof window !== "undefined") {

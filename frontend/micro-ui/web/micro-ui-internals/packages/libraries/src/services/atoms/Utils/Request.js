@@ -7,32 +7,100 @@ import Axios from "axios";
  *
  */
 
+// Helper: Check if auto-login is in progress
+const isAutoLoginInProgress = () => {
+  return window.location.pathname.includes('/auto-login') || window.Digit?.AutoLoginInProgress;
+};
+
+// Helper: Redirect to appropriate page
+const redirectTo = (path, queryParams = {}) => {
+  const isEmployee = window.location.pathname.split("/").includes("employee");
+  const basePath = isEmployee ? `/digit-ui/employee${path}` : `/digit-ui/citizen${path}`;
+  const query = new URLSearchParams(queryParams).toString();
+  window.location.href = query ? `${basePath}?${query}` : basePath;
+};
+
+// Helper: Clear auth data and redirect to login
+const handleAuthFailure = (err, reason) => {
+  if (isAutoLoginInProgress()) {
+    console.warn(`[REQUEST-INTERCEPTOR] ${reason} during auto-login - skipping redirect`);
+    throw err;
+  }
+  localStorage.clear();
+  sessionStorage.clear();
+  redirectTo('/login', { from: window.location.pathname + window.location.search });
+};
+
+// Helper: Redirect to error page
+const handleServerError = (err, errorType, reason) => {
+  if (isAutoLoginInProgress()) {
+    console.warn(`[REQUEST-INTERCEPTOR] ${reason} during auto-login - letting retry handle it`);
+    throw err;
+  }
+  redirectTo('/error', {
+    type: errorType,
+    from: window.location.pathname + window.location.search
+  });
+};
+
 Axios.interceptors.response.use(
   (res) => res,
   (err) => {
-    const isEmployee = window.location.pathname.split("/").includes("employee");
+    const status = err?.response?.status;
+    const hasResponse = !!err?.response;
+
+    // Network error - let retry logic handle it
+    if (!hasResponse) {
+      if (isAutoLoginInProgress()) {
+        console.warn("[REQUEST-INTERCEPTOR] Network error during auto-login - letting retry handle it");
+      } else {
+        console.warn("[REQUEST-INTERCEPTOR] Network error - no response received");
+      }
+      throw err;
+    }
+
+    // HTTP Status Code based error handling
+    switch (status) {
+      // case 401:
+      //   handleAuthFailure(err, "401 Unauthorized");
+      //   return;
+
+      case 403:
+        handleAuthFailure(err, "403 Forbidden");
+        return;
+
+      default:
+        if (status >= 500 && status < 600) {
+          handleServerError(err, "maintenance", `Server error ${status}`);
+          return;
+        }
+    }
+
+    // Message-based error handling (fallback for non-standard responses)
     if (err?.response?.data?.Errors) {
       for (const error of err.response.data.Errors) {
-        if (error.message.includes("InvalidAccessTokenException")) {
-          localStorage.clear();
-          sessionStorage.clear();
-          window.location.href =
-            (isEmployee ? "/digit-ui/employee/user/login" : "/digit-ui/citizen/login") +
-            `?from=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-        } else if (
-          error?.message?.toLowerCase()?.includes("internal server error") ||
-          error?.message?.toLowerCase()?.includes("some error occured")
-        ) {
-          window.location.href =
-            (isEmployee ? "/digit-ui/employee/user/error" : "/digit-ui/citizen/error") +
-            `?type=maintenance&from=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-        } else if (error.message.includes("ZuulRuntimeException")) {
-          window.location.href =
-            (isEmployee ? "/digit-ui/employee/user/error" : "/digit-ui/citizen/error") +
-            `?type=notfound&from=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+        const errorMsg = error?.message?.toLowerCase() || "";
+
+        // Auth errors
+        if (errorMsg.includes("invalidaccesstokenexception") || errorMsg.includes("invalid access token")) {
+          handleAuthFailure(err, "Auth error");
+          return;
+        }
+
+        // Server errors
+        if (errorMsg.includes("internal server error") || errorMsg.includes("some error occured")) {
+          handleServerError(err, "maintenance", "Server error");
+          return;
+        }
+
+        // Gateway errors
+        if (errorMsg.includes("zuulruntimeexception") || errorMsg.includes("gateway")) {
+          handleServerError(err, "notfound", "Gateway error");
+          return;
         }
       }
     }
+
     throw err;
   }
 );
@@ -49,6 +117,45 @@ const userServiceData = () => ({ userInfo: Digit.UserService.getUser()?.info });
 
 window.Digit = window.Digit || {};
 window.Digit = { ...window.Digit, RequestCache: window.Digit.RequestCache || {} };
+
+// Simple circuit breaker state per URL
+window.Digit.RequestCircuit = window.Digit.RequestCircuit || {
+  failures: {}, // url -> count
+  openUntil: {}, // url -> timestamp
+};
+
+const isRetryableError = (err) => {
+  const status = err?.response?.status;
+  if (!status) return true; // network
+  return status >= 500 && status < 600;
+};
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function waitForAuthReady(timeoutMs = 8000) {
+  const isReady = () => !!(window.Digit?.UserService?.getUser()?.access_token) && !window.Digit?.AutoLoginInProgress;
+  if (isReady()) return;
+  return new Promise((resolve) => {
+    const onReady = () => {
+      if (isReady()) {
+        cleanup();
+        resolve();
+      }
+    };
+    const iv = setInterval(onReady, 100);
+    const to = setTimeout(() => {
+      cleanup();
+      resolve();
+    }, timeoutMs);
+    function cleanup() {
+      clearInterval(iv);
+      clearTimeout(to);
+      window.removeEventListener('digit-auth-ready', onReady);
+    }
+    window.addEventListener('digit-auth-ready', onReady);
+    onReady();
+  });
+}
 export const Request = async ({
   method = "POST",
   url,
@@ -106,6 +213,15 @@ export const Request = async ({
 
   }
 
+  // Gate sensitive boot calls during auto-login until auth is ready
+  try {
+    const isAutoLogin = isAutoLoginInProgress();
+    const sensitiveBootCall = /\/user\/_search|\/access\/v1\/actions\/mdms\/_get/.test(url);
+    if (isAutoLogin && sensitiveBootCall) {
+      await waitForAuthReady(8000);
+    }
+  } catch (_) {}
+
   //for the central instance if any api doesnot need tenantId then url can be added in below confirguration
   const urlwithoutTenantId = [
     "/user/oauth/token"
@@ -122,7 +238,7 @@ export const Request = async ({
 
   let key = "";
   if (useCache) {
-    key = `${method.toUpperCase()}.${url}.${btoa(escape(JSON.stringify(params, null, 0)))}.${btoa(escape(JSON.stringify(data, null, 0)))}`;
+    key = `${method.toUpperCase()}.${url}.${JSON.stringify(params)}.${JSON.stringify(data)}`;
     const value = window.Digit.RequestCache[key];
     if (value) {
       return value;
@@ -162,17 +278,51 @@ export const Request = async ({
     params["tenantId"] = tenantInfo;
   }
 
-  const res = userDownload
-    ? await Axios({ method, url: _url, data, params, headers, responseType: "arraybuffer" })
-    : await Axios({ method, url: _url, data, params, headers });
-
-  if (userDownload) return res;
-
-  const returnData = res?.data || res?.response?.data || {};
-  if (useCache && res?.data && Object.keys(returnData).length !== 0) {
-    window.Digit.RequestCache[key] = returnData;
+  // Circuit breaker: short-circuit if open
+  const now = Date.now();
+  if (window.Digit.RequestCircuit.openUntil[_url] && window.Digit.RequestCircuit.openUntil[_url] > now) {
+    const err = new Error('circuit-open');
+    err.code = 'CIRCUIT_OPEN';
+    throw err;
   }
-  return returnData;
+
+  // Retry with backoff for retryable failures
+  const maxRetries = 2;
+  let attempt = 0;
+  let lastErr;
+  while (attempt <= maxRetries) {
+    try {
+      const axiosOpts = userDownload
+        ? { method, url: _url, data, params, headers, responseType: "arraybuffer", timeout: 15000 }
+        : { method, url: _url, data, params, headers, timeout: 15000 };
+      const res = await Axios(axiosOpts);
+      // Success: reset failures
+      window.Digit.RequestCircuit.failures[_url] = 0;
+      if (userDownload) return res;
+      const returnData = res?.data || res?.response?.data || {};
+      if (useCache && res?.data && Object.keys(returnData).length !== 0) {
+        window.Digit.RequestCache[key] = returnData;
+      }
+      return returnData;
+    } catch (err) {
+      lastErr = err;
+      // Increment failures
+      window.Digit.RequestCircuit.failures[_url] = (window.Digit.RequestCircuit.failures[_url] || 0) + 1;
+      const failCount = window.Digit.RequestCircuit.failures[_url];
+      // Open circuit briefly after multiple failures
+      if (failCount >= 5) {
+        window.Digit.RequestCircuit.openUntil[_url] = Date.now() + 60000; // 60s
+      }
+      if (attempt < maxRetries && isRetryableError(err)) {
+        const backoff = Math.min(2000 * Math.pow(2, attempt), 6000) + Math.floor(Math.random() * 300);
+        await sleep(backoff);
+        attempt++;
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
 };
 
 /**

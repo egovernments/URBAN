@@ -90,7 +90,21 @@ const OwnerDetails = ({ t, config, onSelect, userType, formData }) => {
     // },[showToast]);
 
     function selectedValue(value) {
+        // Update selection
         setOwnershipCategory(value);
+
+        // Reset all owner details on toggle to let user start fresh
+        const isMultiple = value?.code?.includes("MULTIPLEOWNERS");
+        const resetOwner = { name: "", gender: "", mobileNumber: "", isPrimaryOwner: isMultiple ? false : true };
+        setFeilds([resetOwner]);
+        setName("");
+        setGender("");
+        setMobileNumber("");
+        setisPrimaryOwner(!isMultiple);
+        setownerRoleCheck({});
+        setShowToast(null);
+        // Disable Next until mandatory fields are filled again
+        setCanmovenext(true);
     }
 
     function handleAdd() {

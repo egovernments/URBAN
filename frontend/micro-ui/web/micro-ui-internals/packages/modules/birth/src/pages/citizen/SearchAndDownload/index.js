@@ -127,16 +127,9 @@ const SearchAndDownload = () => {
     <React.Fragment>
       <div className="digit-inbox-search-wrapper" style={{ padding: "16px", width: "100%" }}>
         <Header styles={{ fontSize: "32px" }}>{t(baseSearchConfigTemplate.label || "BND_SEARCH_BUTTON")}</Header>
-        <Card style={{ marginBottom: "16px", padding: "10px" }}>
-          <CardLabel styles={{ fontWeight: "bold", marginBottom: "8px" }}>{t("City")}*</CardLabel>
-          <Dropdown
-            t={t}
-            option={cityOptionsFromHook || []}
-            selected={externalSelectedCity}
-            optionKey="name"
-            select={handleExternalCityChange}
-            placeholder={t("BND_APPL_CANT_PLACEHOLDER")}
-          />
+        <Card style={{marginBottom: "16px", padding: "24px"}}>
+          <CardLabel styles={{fontWeight: "bold", marginBottom:"8px"}}>{t("City")}*</CardLabel>
+          <Dropdown t={t} option={cityOptionsFromHook || []} selected={externalSelectedCity} optionKey="name" select={handleExternalCityChange} placeholder={t("BND_APPL_CANT_PLACEHOLDER")} style={{width: "100%", maxWidth: "100%"}} />
         </Card>
         {internalCityToSet && hospitalListLoading && <Loader message={t("BND_LOADING_HOSPITALS_MSG")} />}
         <InboxSearchComposer key={internalCityToSet?.code || "isc-no-city-initially"} configs={configsForISC} />

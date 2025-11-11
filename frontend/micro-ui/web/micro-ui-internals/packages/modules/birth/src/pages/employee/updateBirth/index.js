@@ -20,8 +20,10 @@ const UpdateBirth = () => {
   const [showToast, setShowToast] = useState(null);
   const [sameAddressChecked, setSameAddressChecked] = useState(false);
   const prevCheckboxRef = useRef(false);
-   const prevLegacyCheckboxRef = useRef(false); 
+   const prevLegacyCheckboxRef = useRef(false);
    const prevSameAddressCheckboxRef = useRef(false);
+   const prevDateOfBirthRef = useRef(null);
+   const prevDateOfRegistrationRef = useRef(null);
 
   // Fetch hospital list from MDMS
   const hospitalTenantId = Digit.ULBService.getCurrentTenantId();
@@ -472,13 +474,78 @@ const UpdateBirth = () => {
         currentIsSameAddressChecked,
         baseFormConfigRef.current
       );
-      
+
       setFormConfig(newVisibleConfig);
     }
 
     const currentIsLegacy = !!formData?.checkbox_legacy;
     if (prevLegacyCheckboxRef.current !== currentIsLegacy) {
       prevLegacyCheckboxRef.current = currentIsLegacy;
+    }
+
+    // Handle dynamic date validation
+    // Date of Birth should not be after Date of Registration
+    const dateOfRegistration = formData?.date_of_registration;
+    const dateOfBirth = formData?.date_of_birth;
+
+    // Only update config if dates have actually changed
+    if (baseFormConfigRef.current &&
+        (prevDateOfBirthRef.current !== dateOfBirth || prevDateOfRegistrationRef.current !== dateOfRegistration)) {
+
+      prevDateOfBirthRef.current = dateOfBirth;
+      prevDateOfRegistrationRef.current = dateOfRegistration;
+
+      const updatedConfig = baseFormConfigRef.current.map((section) => {
+        if (section.head === "BND_INFO_OF_CHILD") {
+          return {
+            ...section,
+            body: section.body.map((field) => {
+              if (field.populators?.name === "date_of_birth") {
+                return {
+                  ...field,
+                  populators: {
+                    ...field.populators,
+                    validation: {
+                      ...field.populators.validation,
+                      max: dateOfRegistration || new Date().toISOString().split("T")[0],
+                    },
+                  },
+                };
+              }
+              return field;
+            }),
+          };
+        }
+        if (section.head === "BND_REGISTRATION") {
+          return {
+            ...section,
+            body: section.body.map((field) => {
+              if (field.populators?.name === "date_of_registration") {
+                return {
+                  ...field,
+                  populators: {
+                    ...field.populators,
+                    validation: {
+                      ...field.populators.validation,
+                      max: new Date().toISOString().split("T")[0],
+                      min: dateOfBirth || undefined,
+                    },
+                  },
+                };
+              }
+              return field;
+            }),
+          };
+        }
+        return section;
+      });
+
+      baseFormConfigRef.current = updatedConfig;
+      const newVisibleConfig = updateConfigBasedOnSameAddressCheckbox(
+        currentIsSameAddressChecked,
+        updatedConfig
+      );
+      setFormConfig(newVisibleConfig);
     }
   };
 

@@ -38,7 +38,8 @@ const EmployeeApp = ({
   const isUserProfile = userScreensExempted.some((url) => location?.pathname?.includes(url));
   useEffect(() => {
     Digit.UserService.setType("employee");
-  }, []);
+    // localeValidation removed
+  }, [location?.pathname]);
 
   return (
     <div className="employee">
