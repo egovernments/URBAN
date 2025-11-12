@@ -80,12 +80,144 @@
         var _paq = window._paq = window._paq || [];
         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
         _paq.push(["setExcludedQueryParams", ["account", "accountnum", "address", "address1", "address2", "address3", "addressline1", "addressline2", "adres", "adresse", "age", "alter", "auth", "authpw", "bic", "billingaddress", "billingaddress1", "billingaddress2", "calle", "cardnumber", "cc", "ccc", "cccsc", "cccvc", "cccvv", "ccexpiry", "ccexpmonth", "ccexpyear", "ccname", "ccnumber", "cctype", "cell", "cellphone", "city", "clientid", "clientsecret", "company", "consumerkey", "consumersecret", "contrasenya", "contrase\u00f1a", "creditcard", "creditcardnumber", "cvc", "cvv", "dateofbirth", "debitcard", "direcci\u00f3n", "dob", "domain", "ebost", "email", "emailaddress", "emailadresse", "epos", "epost", "eposta", "exp", "familyname", "firma", "firstname", "formlogin", "fullname", "gender", "geschlecht", "gst", "gstnumber", "handynummer", "has\u0142o", "heslo", "iban", "ibanaccountnum", "ibanaccountnumber", "id", "identifier", "indirizzo", "kartakredytowa", "kennwort", "keyconsumerkey", "keyconsumersecret", "konto", "kontonr", "kontonummer", "kredietkaart", "kreditkarte", "kreditkort", "lastname", "login", "mail", "mobiili", "mobile", "mobilne", "nachname", "name", "nickname", "osoite", "parole", "pass", "passord", "password", "passwort", "pasword", "paswort", "paword", "phone", "pin", "plz", "postalcode", "postcode", "postleitzahl", "privatekey", "publickey", "pw", "pwd", "pword", "pwrd", "rue", "secret", "secretq", "secretquestion", "shippingaddress", "shippingaddress1", "shippingaddress2", "socialsec", "socialsecuritynumber", "socsec", "sokak", "ssn", "steuernummer", "strasse", "street", "surname", "swift", "tax", "taxnumber", "tel", "telefon", "telefonnr", "telefonnummer", "telefono", "telephone", "token", "token_auth", "tokenauth", "t\u00e9l\u00e9phone", "ulica", "user", "username", "vat", "vatnumber", "via", "vorname", "wachtwoord", "wagwoord", "webhooksecret", "website", "zip", "zipcode"]]);
+        // Function to get page title based on URL
+        function getPageTitle(url) {
+          try {
+            const pathname = new URL(url).pathname;
+            const path = pathname.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
+            // Define URL → Page Title mappings
+            const pageTitleMap = {
+              "employee/login": "Employee Login Page2",
+              "citizen/login": "Citizen Login Page2",
+              "error": "Error Page",
+              "citizen/tl/tradelicence/my-application": "Trade License My Applications",
+              "citizen/pt/property/my-applications": "Property Tax My Applications",
+              "employee/pt/inbox": "PT Inbox",
+              "employee/tl/inbox": "TL Inbox",
+              "employee/ws/water/inbox": "Water Inbox",
+              "employee/pt/application-details": "PT Application Details",
+              "employee/tl/application-details": "TL Application Details",
+              "employee/ws/application-details": "WS Application Details",
+              "employee/ws/activate-connection": "WS Activate Connection",
+              "employee/payment/collect": "Employee Payment Collect",
+              "employee/payment/success": "Payment Success Page",
+              "citizen/payment/my-bills": "Citizen Payments",
+              "citizen/ws/my-applications": "WS My Applications",
+              "user/profile": "User Profile",
+              "citizen/pt/property": "Citizen PT Property",
+              "citizen/obps/bpa": "Citizen OBPS BPA",
+              "citizen/tl/tradelicence": "Citizen TL Tradelicence",
+              "ws/connection-details": "WS Connection Details",
+              "ws/consumption-details": "WS Consumption Details",
+              "ws/disconnection-details": "WS Disconnection Details",
+              "payment/my-bills": "Citizen My Bills",
+              "employee/mcollect/inbox": "Employee MCollect Inbox",
+              "employee/pt/search": "Employee Property Tax Search",
+              "employee/pt/application-search": "Employee Property Tax Application Search",
+              "employee/ws/water/search-application": "Employee WS Water Search Application",
+              "employee/death/death-common": "Employee Death Management",
+              "employee/birth/birth-common": "Employee Birth Management",
+              "employee/tl/": "Employee Trade License",
+              "employee/commonpt/": "Employee Common Property Tax",
+              "employee/fsm/": "Employee FSM",
+              "employee/ws/": "Employee WS Management",
+              "citizen/pt-home": "Citizen PT Home",
+              "citizen/tl-home": "Citizen TL Home",
+              "citizen/ws-home": "Citizen WS Home",
+              "citizen/mcollect-home": "Citizen MCollect Home",
+              "citizen/obps-home": "Citizen OBPS Home",
+              "citizen/birth-home": "Citizen Birth Home",
+              "citizen/death/death-citizen": "Citizen Death Applications",
+              "citizen/ws/connection": "Citizen WS Connection",
+              "citizen/payment": "Citizen Payment",
+              "citizen/engagement/surveys": "Citizen Survey",
+              "employee/mcollect/challansearch": "Employee MCollect Challan Search",
+              "employee/mcollect/new-application": "Employee MCollect New Application",
+              "employee/mcollect/acknowledgement": "Employee MCollect Acknowledgement",
+              "employee/pt/property-details": "Employee PT Property Details",
+              "employee/pt/applicationsearch/application-details": "Employee PT Application Details2",
+              "employee/pt/ptsearch/assessment-details": "Employee PT Assessment Details",
+              "employee/pt/ptsearch/property-details": "Employee PT Property Details2",
+              "employee/pt/property-mutate": "Employee PT Property Mutate",
+              "employee/pt/property-mutate-docs-required": "Employee PT Property Mutate Docs Required",
+              "employee/noc/inbox": "Employee NOC Inbox",
+              "employee/obps/inbox": "Employee OBPS Inbox",
+              "employee/obps/search/application": "Employee OBPS Search Application",
+              "employee/engagement/surveys": "Employee Engagement Surveys",
+              "employee/finance": "Employee Finance Services",
+              "employee/hrms/inbox": "Employee HRMS Inbox",
+              "employee/birth/viewbirth": "Employee Birth View",
+              "citizen/ws/create-application": "Citizen WS Create Application",
+              "citizen/ws/disconnect-application": "Citizen WS Disconnect Application",
+              "citizen/obps": "Citizen OBPS",
+              "citizen/birth": "Citizen Birth Services",
+              "citizen/death": "Citizen Death Services",
+              "citizen/ws/my-connections": "Citizen WS My Connections",
+              "citizen/mcollect": "Citizen MCollect",
+              "citizen/pgr": "Citizen PGR",
+              "citizen/select-language": "Citizen Select Language",
+              "digit-ui/version.json": "Version Info",
+              "/digit-ui/employee/user/auto-login": "Employee Auto-Login Page2",
+              "/digit-ui/citizen/auto-login": "Citizen Auto-Login Page2",
+              "/digit-ui/citizen/USer/LOGIN": "Digit UI User Login Page",
+              "/digit-ui/employee/dss/landing/home": "Employee DSS Landing Home",
+              "/digit-ui/employee/pt/new-application": "PT New Application",
+              "/digit-ui/employee/pt/response": "PT Response Page",
+              "/digit-ui/employee/pt/payment-details": "PT Payment Details",
+              "/digit-ui/employee/": "Other Employee Page",
+              "/digit-ui/citizen/ws/my-payments": "Citizen My Payments",
+              "/digit-ui/citizen/ws/my-bills": "Citizen My Bills2",
+              "/digit-ui/citizen/ws/search-results": "Citizen Search Results",
+              "/digit-ui/citizen/ws/search": "Citizen Search Page",
+              "/digit-ui/citizen/ws/consumption/details": "Citizen Consumption Details",
+              "/digit-ui/citizen/ws-faq": "Citizen WS FAQ",
+              "/digit-ui/citizen/commonpt/view-property": "Citizen View Property",
+              "/digit-ui/citizen/": "Other Citizen Page",
+              "/digit-ui/public": "Public Page",
+              "/digit-ui/language": "Language Selection Page2",
+              "/digit-ui/citizen": "Digit UI Citizen Page",
+              "/digit-ui/employee": "Digit UI Employee Page",
+              "Page URL not defined": "Page URL Not Defined",
+              "/digit-ui/build-info.js": "Digit UI Build Info Page",
+              "/digit-ui/empl": "Digit UI Empl Page",
+              "/digit-ui/empoyee": "Digit UI Empoyee Page",
+              "login?from=/digit-ui/citizen": "Digit UI Citizen Login Page 1",
+              "citizen/auto-login": "Citizen Auto-Login Page1",
+              "employee/user/auto-login": "Employee Auto-Login Page1",
+              "/digit-ui/": "Digit UI Root Page",
+              "/$": "Root Page",
+            };
+            // Exact match first
+            if (pageTitleMap[path]) {
+              return pageTitleMap[path];
+            }
+            // Partial match fallback (for dynamic routes / queries)
+            for (const key in pageTitleMap) {
+              if (path.includes(key)) {
+                return pageTitleMap[key];
+              }
+            }
+            // Default fallback
+            return "DIGIT";
+
+          } catch (e) {
+            console.error("Error getting page title:", e);
+            return "DIGIT";
+          }
+        }
+        // Set initial page title and track
+        const initialPageTitle = getPageTitle(location.href);
+        document.title = initialPageTitle;
+        _paq.push(['setDocumentTitle', initialPageTitle]);
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         (function () {
           var u = window?.globalConfigs?.getConfig("MATOMO_URL") || "https://unified-demo.digit.org/matomo/";
           _paq.push(['setTrackerUrl', u + 'matomo.php']);
-          _paq.push(['setSiteId', '2']);
+          // For UNIFIED-DEMO & SANBOX DASHBOARD IN MATOMO
+          _paq.push(['setSiteId', '1']);
+          // FOR ONLY UNIFIED-DEMO DASHBOARD IN MATOMO
+          _paq.push(['addTracker', u + 'matomo.php', 3]);
           var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
           g.async = true; g.src = u + 'matomo.js';
           s.parentNode.insertBefore(g, s);
@@ -93,7 +225,50 @@
 
         (function () {
           let lastUrl = location.href;
-
+          let lastPageTitle = getPageTitle(location.href);
+          // Store flow in closure variable as backup (won't be lost when sessionStorage is cleared)
+          let userFlow = [];
+          // Get user flow from sessionStorage (tab-specific, isolated per tab)
+          function getUserFlow() {
+            try {
+              const flow = sessionStorage.getItem('matomoUserFlow');
+              return flow ? JSON.parse(flow) : [];
+            } catch (e) {
+              return [];
+            }
+          }
+          // Save user flow to BOTH sessionStorage AND closure variable
+          function saveUserFlow(flow) {
+            try {
+              userFlow = flow; // Save to closure variable (backup)
+              sessionStorage.setItem('matomoUserFlow', JSON.stringify(flow));
+            } catch (e) {
+              console.error('Failed to save user flow:', e);
+            }
+          }
+          // Send complete journey summary using backup flow
+          function sendCompleteFlow(reason) {
+            if (userFlow.length > 1) {
+              const journeySummary = userFlow.join(' → ');
+              // Send final journey as event
+              _paq.push([
+                'trackEvent',
+                'User Journey',
+                reason || 'Session End',
+                journeySummary,
+                userFlow.length
+              ]);
+              // Clear both storage and backup
+              try {
+                sessionStorage.removeItem('matomoUserFlow');
+                userFlow = [];
+              } catch (e) {
+                console.error('Failed to clear user flow:', e);
+              }
+            } else {
+              console.error('[Matomo] Flow too short (length=' + userFlow.length + '), not sending. Flow needs at least 2 pages.');
+            }
+          }
           function trackUrlChange() {
             const url = location.href;
             if (url !== lastUrl) {
@@ -102,6 +277,93 @@
               _paq.push(['trackPageView']);
             }
           }
+          function trackUrlChange() {
+            const url = location.href;
+            if (url !== lastUrl) {
+              const pageTitle = getPageTitle(url);
+              // Add new page to flow
+              const flow = getUserFlow();
+              flow.push(pageTitle);
+              saveUserFlow(flow);
+              // Track individual navigation step
+              _paq.push([
+                'trackEvent',
+                'User Flow',
+                'Navigation',
+                `${lastPageTitle} → ${pageTitle}`
+              ]);
+              // Update Matomo with new page view
+              document.title = pageTitle;
+              _paq.push(['setCustomUrl', url]);
+              _paq.push(['setDocumentTitle', pageTitle]);
+              // _paq.push(['setReferrerUrl', lastUrl]);
+              _paq.push(['deleteCustomVariables', 'page']);
+              _paq.push(['trackPageView']);
+              // Update tracking variables
+              lastUrl = url;
+              lastPageTitle = pageTitle;
+            }
+          }
+          // Load initial flow from sessionStorage and save to backup
+          userFlow = getUserFlow();
+          if (userFlow.length === 0 || userFlow[userFlow.length - 1] !== lastPageTitle) {
+            userFlow.push(lastPageTitle);
+            saveUserFlow(userFlow);
+          } else {
+            console.error('[Matomo] Initial page already in flow:', userFlow);
+          }
+          // Expose function for manual trigger (e.g., on logout)
+          // This WILL clear the flow when called explicitly
+          window.sendMatomoUserFlow = function (reason) {
+            sendCompleteFlow(reason || 'Manual Trigger');
+          };
+          // Expose function to manually clear the flow without sending
+          window.clearMatomoUserFlow = function () {
+            try {
+              sessionStorage.removeItem('matomoUserFlow');
+            } catch (e) {
+              console.error('[Matomo] Failed to clear user flow:', e);
+            }
+          };
+          // Send and clear flow on tab close
+          window.addEventListener('beforeunload', function () {
+            sendCompleteFlow('Tab Close');
+          });
+          // Send flow when tab visibility changes (user switches tabs)
+          document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+              if (userFlow.length > 1) {
+                sendCompleteFlow('Tab Switch');
+              } else {
+                console.error('[Matomo] Flow not sent on tab switch - flow too short (length=' + userFlow.length + ')');
+              }
+            }
+          });
+          // Monitor access token changes (logout detection)
+          let lastAccessToken = null;
+          let isInitialCheck = true;
+          setInterval(function () {
+            try {
+              const currentToken = window.Digit?.UserService?.getUser()?.access_token;
+              // Skip initial check to set baseline
+              if (isInitialCheck) {
+                lastAccessToken = currentToken;
+                isInitialCheck = false;
+                return;
+              }
+              // Detect token removal (logout) - send the stored flow
+              if (lastAccessToken && !currentToken) {
+                sendCompleteFlow('Logout - Token Removed');
+              }
+              // Detect token change (new login after logout)
+              else if (lastAccessToken && currentToken && lastAccessToken !== currentToken) {
+                sendCompleteFlow('Logout - Token Changed');
+              }
+              lastAccessToken = currentToken;
+            } catch (e) {
+              console.error('[Matomo] Error checking access token:', e);
+            }
+          }, 500); // Check every 500ms for faster detection
 
           // Wrap pushState
           history.pushState = (function (original) {
@@ -143,12 +405,12 @@
               const id = target.id || 'no-id';
               const classes = target.className || 'no-class';
               const href = target.getAttribute('href') || '';
-
+              const pageTitle = getPageTitle(location.href);
               _paq.push([
                 'trackEvent',
                 'UI Interaction',            // Category
                 `${elementType} click`,      // Action
-                `Text: ${text}, ID: ${id}, Class: ${classes}, Href: ${href}`
+                `Text: ${text}, Page: ${pageTitle}, ID: ${id}, Class: ${classes}, Href: ${href}`
               ]);
             }
           });
@@ -157,7 +419,7 @@
     </script>
     <!-- End Matomo Code -->
 
-    
+
   </head>
   <style>
     .options-card {
