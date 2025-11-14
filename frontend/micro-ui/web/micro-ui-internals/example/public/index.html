@@ -21,13 +21,49 @@
   <!-- Matomo -->
   <script>
     (function () {
-      if (!window.DIGIT_ENABLE_MATOMO) return;
       var _paq = window._paq = window._paq || [];
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       _paq.push(["setExcludedQueryParams", ["account", "accountnum", "address", "address1", "address2", "address3", "addressline1", "addressline2", "adres", "adresse", "age", "alter", "auth", "authpw", "bic", "billingaddress", "billingaddress1", "billingaddress2", "calle", "cardnumber", "cc", "ccc", "cccsc", "cccvc", "cccvv", "ccexpiry", "ccexpmonth", "ccexpyear", "ccname", "ccnumber", "cctype", "cell", "cellphone", "city", "clientid", "clientsecret", "company", "consumerkey", "consumersecret", "contrasenya", "contrase\u00f1a", "creditcard", "creditcardnumber", "cvc", "cvv", "dateofbirth", "debitcard", "direcci\u00f3n", "dob", "domain", "ebost", "email", "emailaddress", "emailadresse", "epos", "epost", "eposta", "exp", "familyname", "firma", "firstname", "formlogin", "fullname", "gender", "geschlecht", "gst", "gstnumber", "handynummer", "has\u0142o", "heslo", "iban", "ibanaccountnum", "ibanaccountnumber", "id", "identifier", "indirizzo", "kartakredytowa", "kennwort", "keyconsumerkey", "keyconsumersecret", "konto", "kontonr", "kontonummer", "kredietkaart", "kreditkarte", "kreditkort", "lastname", "login", "mail", "mobiili", "mobile", "mobilne", "nachname", "name", "nickname", "osoite", "parole", "pass", "passord", "password", "passwort", "pasword", "paswort", "paword", "phone", "pin", "plz", "postalcode", "postcode", "postleitzahl", "privatekey", "publickey", "pw", "pwd", "pword", "pwrd", "rue", "secret", "secretq", "secretquestion", "shippingaddress", "shippingaddress1", "shippingaddress2", "socialsec", "socialsecuritynumber", "socsec", "sokak", "ssn", "steuernummer", "strasse", "street", "surname", "swift", "tax", "taxnumber", "tel", "telefon", "telefonnr", "telefonnummer", "telefono", "telephone", "token", "token_auth", "tokenauth", "t\u00e9l\u00e9phone", "ulica", "user", "username", "vat", "vatnumber", "via", "vorname", "wachtwoord", "wagwoord", "webhooksecret", "website", "zip", "zipcode"]]);
       // Function to get page title based on URL
       function getPageTitle(url) {
         try {
+                    // --- Auto-login dynamic title logic ---
+            if (url.includes("auto-login")) {
+              const params = new URL(url).searchParams;
+              const module = params.get("module");
+              const userType = params.get("userType");
+
+              if (module && userType) {
+                const moduleMap = {
+                  PT: "Property Tax",
+                  WS: "Water & Sewerage",
+                  TL: "Trade License",
+                  PGR: "Complaints",
+                  OBPS: "Building Permit",
+                  mCollect: "mCollect",
+                  FSM: "FSM",
+                  SURVEY: "Survey",
+                  Firenoc: "FNOC",
+                  Finance: "Finance",
+                  BND: "Birth & Death"
+                };
+
+                const userTypeLabel = {
+                  citizen: "Citizen",
+                  employee: "Employee",
+                  stakeholder: "Stakeholder"
+                }[userType.toLowerCase()] || userType;
+
+                const moduleName = moduleMap[module] || module;
+
+                document.title = `${moduleName} ${userTypeLabel}`;
+
+                return `${moduleName} ${userTypeLabel}`;
+              }
+            }
+
+
+
           const pathname = new URL(url).pathname;
           const path = pathname.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
           // Define URL → Page Title mappings
@@ -273,16 +309,6 @@
         // Send and clear flow on tab close
         window.addEventListener('beforeunload', function () {
           sendCompleteFlow('Tab Close');
-        });
-        // Send flow when tab visibility changes (user switches tabs)
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) {
-            if (userFlow.length > 1) {
-              sendCompleteFlow('Tab Switch');
-            } else {
-              console.error('[Matomo] Flow not sent on tab switch - flow too short (length=' + userFlow.length + ')');
-            }
-          }
         });
         // Monitor access token changes (logout detection)
         let lastAccessToken = null;
