@@ -346,9 +346,16 @@ public class BPAValidator {
 
 		log.debug("Fetching MDMS result for the state " + wfState);
 
+		// ✅ MUST ADD THIS: Null check for riskType
+		if (bpa.getRiskType() == null || bpa.getRiskType().trim().isEmpty()) {
+			log.warn("RiskType is null or empty for BPA: {}, State: {}, skipping question validation",
+					bpa.getApplicationNo(), wfState);
+			return;  // Skip validation for null riskType
+		}
+
 		try {
 			String questionsPath = BPAConstants.QUESTIONS_MAP.replace("{1}", wfState)
-					.replace("{2}", bpa.getRiskType().toString()).replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
+					.replace("{2}", bpa.getRiskType()).replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
 					.replace("{4}", edcrResponse.get(BPAConstants.APPLICATIONTYPE));
 
 			List<Object> mdmsQuestionsArray = (List<Object>) JsonPath.read(mdmsData, questionsPath);
