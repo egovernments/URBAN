@@ -27,40 +27,40 @@
       // Function to get page title based on URL
       function getPageTitle(url) {
         try {
-                    // --- Auto-login dynamic title logic ---
-            if (url.includes("auto-login")) {
-              const params = new URL(url).searchParams;
-              const module = params.get("module");
-              const userType = params.get("userType");
+          // --- Auto-login dynamic title logic ---
+          if (url.includes("auto-login")) {
+            const params = new URL(url).searchParams;
+            const module = params.get("module");
+            const userType = params.get("userType");
 
-              if (module && userType) {
-                const moduleMap = {
-                  PT: "Property Tax",
-                  WS: "Water & Sewerage",
-                  TL: "Trade License",
-                  PGR: "Complaints",
-                  OBPS: "Building Permit",
-                  mCollect: "mCollect",
-                  FSM: "FSM",
-                  SURVEY: "Survey",
-                  Firenoc: "FNOC",
-                  Finance: "Finance",
-                  BND: "Birth & Death"
-                };
+            if (module && userType) {
+              const moduleMap = {
+                PT: "Property Tax",
+                WS: "Water & Sewerage",
+                TL: "Trade License",
+                PGR: "Complaints",
+                OBPS: "Building Permit",
+                mCollect: "mCollect",
+                FSM: "FSM",
+                SURVEY: "Survey",
+                Firenoc: "FNOC",
+                Finance: "Finance",
+                BND: "Birth & Death"
+              };
 
-                const userTypeLabel = {
-                  citizen: "Citizen",
-                  employee: "Employee",
-                  stakeholder: "Stakeholder"
-                }[userType.toLowerCase()] || userType;
+              const userTypeLabel = {
+                citizen: "Citizen",
+                employee: "Employee",
+                stakeholder: "Stakeholder"
+              }[userType.toLowerCase()] || userType;
 
-                const moduleName = moduleMap[module] || module;
+              const moduleName = moduleMap[module] || module;
 
-                document.title = `${moduleName} ${userTypeLabel}`;
+              document.title = `${moduleName} ${userTypeLabel}`;
 
-                return `${moduleName} ${userTypeLabel}`;
-              }
+              return `${moduleName} ${userTypeLabel}`;
             }
+          }
 
 
 
@@ -68,105 +68,39 @@
           const path = pathname.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
           // Define URL → Page Title mappings
           const pageTitleMap = {
-            "employee/login": "Employee Login Page2",
-            "citizen/login": "Citizen Login Page2",
-            "error": "Error Page",
-            "citizen/tl/tradelicence/my-application": "Trade License My Applications",
-            "citizen/pt/property/my-applications": "Property Tax My Applications",
-            "employee/pt/inbox": "PT Inbox",
-            "employee/tl/inbox": "TL Inbox",
-            "employee/ws/water/inbox": "Water Inbox",
-            "employee/pt/application-details": "PT Application Details",
-            "employee/tl/application-details": "TL Application Details",
-            "employee/ws/application-details": "WS Application Details",
-            "employee/ws/activate-connection": "WS Activate Connection",
-            "employee/payment/collect": "Employee Payment Collect",
-            "employee/payment/success": "Payment Success Page",
-            "citizen/payment/my-bills": "Citizen Payments",
-            "citizen/ws/my-applications": "WS My Applications",
-            "user/profile": "User Profile",
-            "citizen/pt/property": "Citizen PT Property",
-            "citizen/obps/bpa": "Citizen OBPS BPA",
-            "citizen/tl/tradelicence": "Citizen TL Tradelicence",
-            "ws/connection-details": "WS Connection Details",
-            "ws/consumption-details": "WS Consumption Details",
-            "ws/disconnection-details": "WS Disconnection Details",
-            "payment/my-bills": "Citizen My Bills",
-            "employee/mcollect/inbox": "Employee MCollect Inbox",
-            "employee/pt/search": "Employee Property Tax Search",
-            "employee/pt/application-search": "Employee Property Tax Application Search",
-            "employee/ws/water/search-application": "Employee WS Water Search Application",
-            "employee/death/death-common": "Employee Death Management",
-            "employee/birth/birth-common": "Employee Birth Management",
-            "employee/tl/": "Employee Trade License",
-            "employee/commonpt/": "Employee Common Property Tax",
-            "employee/fsm/": "Employee FSM",
-            "employee/ws/": "Employee WS Management",
-            "citizen/pt-home": "Citizen PT Home",
-            "citizen/tl-home": "Citizen TL Home",
-            "citizen/ws-home": "Citizen WS Home",
-            "citizen/mcollect-home": "Citizen MCollect Home",
-            "citizen/obps-home": "Citizen OBPS Home",
-            "citizen/birth-home": "Citizen Birth Home",
-            "citizen/death/death-citizen": "Citizen Death Applications",
-            "citizen/ws/connection": "Citizen WS Connection",
-            "citizen/payment": "Citizen Payment",
-            "citizen/engagement/surveys": "Citizen Survey",
-            "employee/mcollect/challansearch": "Employee MCollect Challan Search",
-            "employee/mcollect/new-application": "Employee MCollect New Application",
-            "employee/mcollect/acknowledgement": "Employee MCollect Acknowledgement",
-            "employee/pt/property-details": "Employee PT Property Details",
-            "employee/pt/applicationsearch/application-details": "Employee PT Application Details2",
-            "employee/pt/ptsearch/assessment-details": "Employee PT Assessment Details",
-            "employee/pt/ptsearch/property-details": "Employee PT Property Details2",
-            "employee/pt/property-mutate": "Employee PT Property Mutate",
-            "employee/pt/property-mutate-docs-required": "Employee PT Property Mutate Docs Required",
-            "employee/noc/inbox": "Employee NOC Inbox",
-            "employee/obps/inbox": "Employee OBPS Inbox",
-            "employee/obps/search/application": "Employee OBPS Search Application",
-            "employee/engagement/surveys": "Employee Engagement Surveys",
-            "employee/finance": "Employee Finance Services",
-            "employee/hrms/inbox": "Employee HRMS Inbox",
-            "employee/birth/viewbirth": "Employee Birth View",
-            "citizen/ws/create-application": "Citizen WS Create Application",
-            "citizen/ws/disconnect-application": "Citizen WS Disconnect Application",
-            "citizen/obps": "Citizen OBPS",
-            "citizen/birth": "Citizen Birth Services",
-            "citizen/death": "Citizen Death Services",
-            "citizen/ws/my-connections": "Citizen WS My Connections",
-            "citizen/mcollect": "Citizen MCollect",
-            "citizen/pgr": "Citizen PGR",
-            "citizen/select-language": "Citizen Select Language",
-            "digit-ui/version.json": "Version Info",
-            "/digit-ui/employee/user/auto-login": "Employee Auto-Login Page2",
-            "/digit-ui/citizen/auto-login": "Citizen Auto-Login Page2",
-            "/digit-ui/citizen/USer/LOGIN": "Digit UI User Login Page",
-            "/digit-ui/employee/dss/landing/home": "Employee DSS Landing Home",
-            "/digit-ui/employee/pt/new-application": "PT New Application",
-            "/digit-ui/employee/pt/response": "PT Response Page",
-            "/digit-ui/employee/pt/payment-details": "PT Payment Details",
-            "/digit-ui/employee/": "Other Employee Page",
-            "/digit-ui/citizen/ws/my-payments": "Citizen My Payments",
-            "/digit-ui/citizen/ws/my-bills": "Citizen My Bills2",
-            "/digit-ui/citizen/ws/search-results": "Citizen Search Results",
-            "/digit-ui/citizen/ws/search": "Citizen Search Page",
-            "/digit-ui/citizen/ws/consumption/details": "Citizen Consumption Details",
-            "/digit-ui/citizen/ws-faq": "Citizen WS FAQ",
-            "/digit-ui/citizen/commonpt/view-property": "Citizen View Property",
-            "/digit-ui/citizen/": "Other Citizen Page",
-            "/digit-ui/public": "Public Page",
-            "/digit-ui/language": "Language Selection Page2",
-            "/digit-ui/citizen": "Digit UI Citizen Page",
-            "/digit-ui/employee": "Digit UI Employee Page",
-            "Page URL not defined": "Page URL Not Defined",
-            "/digit-ui/build-info.js": "Digit UI Build Info Page",
-            "/digit-ui/empl": "Digit UI Empl Page",
-            "/digit-ui/empoyee": "Digit UI Empoyee Page",
-            "login?from=/digit-ui/citizen": "Digit UI Citizen Login Page 1",
-            "citizen/auto-login": "Citizen Auto-Login Page1",
-            "employee/user/auto-login": "Employee Auto-Login Page1",
-            "/digit-ui/": "Digit UI Root Page",
-            "/$": "Root Page",
+            "https://unified-demo.digit.org/digit-ui/citizen/select-location": "Citizen Select Location",
+            "https://unified-demo.digit.org/digit-ui/citizen/error": "Cititzen Error",
+            "citizen/tl": "Business License Citizen",
+            "employee/tl": "Business License Employee",
+            "employee/dss/dashboard/tradelicense": "Business License Employee",
+            "citizen/pt": "Property Tax Citizen",
+            "employee/pt": "Property Tax Employee",
+            "employee/dss/dashboard/propertytax": "Property Tax Employee",
+            "citizen/obps": "Building Permit Citizen",
+            "employee/obps": "Building Permit Employee",
+            "employee/dss/dashboard/obps": "Building Permit Employee",
+            "employee/noc": "Building Permit Employee",
+            "citizen/mcollect": "mCollect Citizen",
+            "employee/mcollect": "mCollect Employee",
+            "employee/dss/dashboard/mcollect": "mCollect Employee",
+            "employee/finance": "Finance Employee",
+            "citizen/ws": "WS Citizen",
+            "employee/ws": "WS Employee",
+            "employee/dss/dashboard/ws": "WS Employee",
+            "citizen/birth": "Birth Citizen",
+            "employee/birth": "Birth Employee",
+            "employee/dss/dashboard/birth-death": "Birth&Death Dashboard Employee",
+            "citizen/death": "Death Citizen",
+            "employee/death": "Death Employee",
+            "citizen/fsm": "FSM Citizen",
+            "employee/fsm": "FSM Administrator",
+            "employee/dss/dashboard/fsm": "FSM Administrator",
+            "employee/tqm": "FSM Plant Operator",
+            "employee/dss/dashboard/pqm": "FSM Plant Operator",
+            "citizen/fire-noc": "FNOC Citizen",
+            "employee/fire-noc": "FNOC Employee",
+            "citizen/engagement/surveys": "Survey Citizen",
+            "employee/engagement/surveys": "Survey Employee"
           };
           // Exact match first
           if (pageTitleMap[path]) {
