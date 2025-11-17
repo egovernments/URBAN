@@ -17,20 +17,123 @@
 
   <script src="https://s3.ap-south-1.amazonaws.com/egov-dev-assets/globalConfigs.js"></script>
   <script src="%REACT_APP_GLOBAL%"></script>
-  
+
   <!-- Matomo -->
   <script>
     (function () {
-      if (!window.DIGIT_ENABLE_MATOMO) return;
       var _paq = window._paq = window._paq || [];
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       _paq.push(["setExcludedQueryParams", ["account", "accountnum", "address", "address1", "address2", "address3", "addressline1", "addressline2", "adres", "adresse", "age", "alter", "auth", "authpw", "bic", "billingaddress", "billingaddress1", "billingaddress2", "calle", "cardnumber", "cc", "ccc", "cccsc", "cccvc", "cccvv", "ccexpiry", "ccexpmonth", "ccexpyear", "ccname", "ccnumber", "cctype", "cell", "cellphone", "city", "clientid", "clientsecret", "company", "consumerkey", "consumersecret", "contrasenya", "contrase\u00f1a", "creditcard", "creditcardnumber", "cvc", "cvv", "dateofbirth", "debitcard", "direcci\u00f3n", "dob", "domain", "ebost", "email", "emailaddress", "emailadresse", "epos", "epost", "eposta", "exp", "familyname", "firma", "firstname", "formlogin", "fullname", "gender", "geschlecht", "gst", "gstnumber", "handynummer", "has\u0142o", "heslo", "iban", "ibanaccountnum", "ibanaccountnumber", "id", "identifier", "indirizzo", "kartakredytowa", "kennwort", "keyconsumerkey", "keyconsumersecret", "konto", "kontonr", "kontonummer", "kredietkaart", "kreditkarte", "kreditkort", "lastname", "login", "mail", "mobiili", "mobile", "mobilne", "nachname", "name", "nickname", "osoite", "parole", "pass", "passord", "password", "passwort", "pasword", "paswort", "paword", "phone", "pin", "plz", "postalcode", "postcode", "postleitzahl", "privatekey", "publickey", "pw", "pwd", "pword", "pwrd", "rue", "secret", "secretq", "secretquestion", "shippingaddress", "shippingaddress1", "shippingaddress2", "socialsec", "socialsecuritynumber", "socsec", "sokak", "ssn", "steuernummer", "strasse", "street", "surname", "swift", "tax", "taxnumber", "tel", "telefon", "telefonnr", "telefonnummer", "telefono", "telephone", "token", "token_auth", "tokenauth", "t\u00e9l\u00e9phone", "ulica", "user", "username", "vat", "vatnumber", "via", "vorname", "wachtwoord", "wagwoord", "webhooksecret", "website", "zip", "zipcode"]]);
+      // Function to get page title based on URL
+      function getPageTitle(url) {
+        try {
+          // --- Auto-login dynamic title logic ---
+          if (url.includes("auto-login")) {
+            const params = new URL(url).searchParams;
+            const module = params.get("module");
+            const userType = params.get("userType");
+
+            if (module && userType) {
+              const moduleMap = {
+                PT: "Property Tax",
+                WS: "Water & Sewerage",
+                TL: "Trade License",
+                PGR: "Complaints",
+                OBPS: "Building Permit",
+                mCollect: "mCollect",
+                FSM: "FSM",
+                SURVEY: "Survey",
+                Firenoc: "FNOC",
+                Finance: "Finance",
+                BND: "Birth & Death"
+              };
+
+              const userTypeLabel = {
+                citizen: "Citizen",
+                employee: "Employee",
+                stakeholder: "Stakeholder"
+              }[userType.toLowerCase()] || userType;
+
+              const moduleName = moduleMap[module] || module;
+
+              document.title = `${moduleName} ${userTypeLabel}`;
+
+              return `${moduleName} ${userTypeLabel}`;
+            }
+          }
+
+
+
+          const pathname = new URL(url).pathname;
+          const path = pathname.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
+          // Define URL → Page Title mappings
+          const pageTitleMap = {
+            "https://unified-demo.digit.org/digit-ui/citizen/select-location": "Citizen Select Location",
+            "https://unified-demo.digit.org/digit-ui/citizen/error": "Cititzen Error",
+            "https://unified-demo.digit.org/digit-ui/employee/error" :	"Employee Error",
+            "citizen/tl": "Business License Citizen",
+            "employee/tl": "Business License Employee",
+            "employee/dss/dashboard/tradelicense": "Business License Employee",
+            "citizen/pt": "Property Tax Citizen",
+            "employee/pt": "Property Tax Employee",
+            "employee/dss/dashboard/propertytax": "Property Tax Employee",
+            "citizen/obps": "Building Permit Citizen",
+            "employee/obps": "Building Permit Employee",
+            "employee/dss/dashboard/obps": "Building Permit Employee",
+            "employee/noc": "Building Permit Employee",
+            "citizen/mcollect": "mCollect Citizen",
+            "employee/mcollect": "mCollect Employee",
+            "employee/dss/dashboard/mcollect": "mCollect Employee",
+            "employee/finance": "Finance Employee",
+            "citizen/ws": "WS Citizen",
+            "employee/ws": "WS Employee",
+            "employee/dss/dashboard/ws": "WS Employee",
+            "citizen/birth": "Birth Citizen",
+            "employee/birth": "Birth Employee",
+            "employee/dss/dashboard/birth-death": "Birth&Death Dashboard Employee",
+            "citizen/death": "Death Citizen",
+            "employee/death": "Death Employee",
+            "citizen/fsm": "FSM Citizen",
+            "employee/fsm": "FSM Administrator",
+            "employee/dss/dashboard/fsm": "FSM Administrator",
+            "employee/tqm": "FSM Plant Operator",
+            "employee/dss/dashboard/pqm": "FSM Plant Operator",
+            "citizen/fire-noc": "FNOC Citizen",
+            "employee/fire-noc": "FNOC Employee",
+            "citizen/engagement/surveys": "Survey Citizen",
+            "employee/engagement/surveys": "Survey Employee"
+          };
+          // Exact match first
+          if (pageTitleMap[path]) {
+            return pageTitleMap[path];
+          }
+          // Partial match fallback (for dynamic routes / queries)
+          for (const key in pageTitleMap) {
+            if (path.includes(key)) {
+              return pageTitleMap[key];
+            }
+          }
+          // Default fallback
+          return "DIGIT";
+
+        } catch (e) {
+          console.error("Error getting page title:", e);
+          return "DIGIT";
+        }
+      }
+      // Set initial page title and track
+      const initialPageTitle = getPageTitle(location.href);
+      document.title = initialPageTitle;
+      _paq.push(['setDocumentTitle', initialPageTitle]);
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
       (function () {
         var u = window?.globalConfigs?.getConfig("MATOMO_URL") || "https://unified-demo.digit.org/matomo/";
         _paq.push(['setTrackerUrl', u + 'matomo.php']);
-        _paq.push(['setSiteId', '2']);
+        // For UNIFIED-DEMO & SANBOX DASHBOARD IN MATOMO
+        _paq.push(['setSiteId', '1']);
+        // FOR ONLY UNIFIED-DEMO DASHBOARD IN MATOMO
+        _paq.push(['addTracker', u + 'matomo.php', 3]);
         var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
         g.async = true; g.src = u + 'matomo.js';
         s.parentNode.insertBefore(g, s);
@@ -38,7 +141,50 @@
 
       (function () {
         let lastUrl = location.href;
-
+        let lastPageTitle = getPageTitle(location.href);
+        // Store flow in closure variable as backup (won't be lost when sessionStorage is cleared)
+        let userFlow = [];
+        // Get user flow from sessionStorage (tab-specific, isolated per tab)
+        function getUserFlow() {
+          try {
+            const flow = sessionStorage.getItem('matomoUserFlow');
+            return flow ? JSON.parse(flow) : [];
+          } catch (e) {
+            return [];
+          }
+        }
+        // Save user flow to BOTH sessionStorage AND closure variable
+        function saveUserFlow(flow) {
+          try {
+            userFlow = flow; // Save to closure variable (backup)
+            sessionStorage.setItem('matomoUserFlow', JSON.stringify(flow));
+          } catch (e) {
+            console.error('Failed to save user flow:', e);
+          }
+        }
+        // Send complete journey summary using backup flow
+        function sendCompleteFlow(reason) {
+          if (userFlow.length > 1) {
+            const journeySummary = userFlow.join(' → ');
+            // Send final journey as event
+            _paq.push([
+              'trackEvent',
+              'User Journey',
+              reason || 'Session End',
+              journeySummary,
+              userFlow.length
+            ]);
+            // Clear both storage and backup
+            try {
+              sessionStorage.removeItem('matomoUserFlow');
+              userFlow = [];
+            } catch (e) {
+              console.error('Failed to clear user flow:', e);
+            }
+          } else {
+            console.error('[Matomo] Flow too short (length=' + userFlow.length + '), not sending. Flow needs at least 2 pages.');
+          }
+        }
         function trackUrlChange() {
           const url = location.href;
           if (url !== lastUrl) {
@@ -47,6 +193,83 @@
             _paq.push(['trackPageView']);
           }
         }
+        function trackUrlChange() {
+          const url = location.href;
+          if (url !== lastUrl) {
+            const pageTitle = getPageTitle(url);
+            // Add new page to flow
+            const flow = getUserFlow();
+            flow.push(pageTitle);
+            saveUserFlow(flow);
+            // Track individual navigation step
+            _paq.push([
+              'trackEvent',
+              'User Flow',
+              'Navigation',
+              `${lastPageTitle} → ${pageTitle}`
+            ]);
+            // Update Matomo with new page view
+            document.title = pageTitle;
+            _paq.push(['setCustomUrl', url]);
+            _paq.push(['setDocumentTitle', pageTitle]);
+            // _paq.push(['setReferrerUrl', lastUrl]);
+            _paq.push(['deleteCustomVariables', 'page']);
+            _paq.push(['trackPageView']);
+            // Update tracking variables
+            lastUrl = url;
+            lastPageTitle = pageTitle;
+          }
+        }
+        // Load initial flow from sessionStorage and save to backup
+        userFlow = getUserFlow();
+        if (userFlow.length === 0 || userFlow[userFlow.length - 1] !== lastPageTitle) {
+          userFlow.push(lastPageTitle);
+          saveUserFlow(userFlow);
+        } else {
+          console.error('[Matomo] Initial page already in flow:', userFlow);
+        }
+        // Expose function for manual trigger (e.g., on logout)
+        // This WILL clear the flow when called explicitly
+        window.sendMatomoUserFlow = function (reason) {
+          sendCompleteFlow(reason || 'Manual Trigger');
+        };
+        // Expose function to manually clear the flow without sending
+        window.clearMatomoUserFlow = function () {
+          try {
+            sessionStorage.removeItem('matomoUserFlow');
+          } catch (e) {
+            console.error('[Matomo] Failed to clear user flow:', e);
+          }
+        };
+        // Send and clear flow on tab close
+        window.addEventListener('beforeunload', function () {
+          sendCompleteFlow('Tab Close');
+        });
+        // Monitor access token changes (logout detection)
+        let lastAccessToken = null;
+        let isInitialCheck = true;
+        setInterval(function () {
+          try {
+            const currentToken = window.Digit?.UserService?.getUser()?.access_token;
+            // Skip initial check to set baseline
+            if (isInitialCheck) {
+              lastAccessToken = currentToken;
+              isInitialCheck = false;
+              return;
+            }
+            // Detect token removal (logout) - send the stored flow
+            if (lastAccessToken && !currentToken) {
+              sendCompleteFlow('Logout - Token Removed');
+            }
+            // Detect token change (new login after logout)
+            else if (lastAccessToken && currentToken && lastAccessToken !== currentToken) {
+              sendCompleteFlow('Logout - Token Changed');
+            }
+            lastAccessToken = currentToken;
+          } catch (e) {
+            console.error('[Matomo] Error checking access token:', e);
+          }
+        }, 500); // Check every 500ms for faster detection
 
         // Wrap pushState
         history.pushState = (function (original) {
@@ -74,13 +297,13 @@
       (function () {
         document.addEventListener("click", function (e) {
           const selector = `
-                          button,
-                          input[type="button"],
-                          input[type="submit"],
-                          input[type="actionButton"],
-                          [role="button"],
-                          a[href]:not([href^="mailto:"]):not([href^="tel:"]):not([href^="#"]):not([href^="javascript:"])
-                        `;
+                        button,
+                        input[type="button"],
+                        input[type="submit"],
+                        input[type="actionButton"],
+                        [role="button"],
+                        a[href]:not([href^="mailto:"]):not([href^="tel:"]):not([href^="#"]):not([href^="javascript:"])
+                      `;
           const target = e.target.closest(selector);
           if (target) {
             const elementType = target.tagName.toLowerCase();
@@ -88,12 +311,12 @@
             const id = target.id || 'no-id';
             const classes = target.className || 'no-class';
             const href = target.getAttribute('href') || '';
-
+            const pageTitle = getPageTitle(location.href);
             _paq.push([
               'trackEvent',
               'UI Interaction',            // Category
               `${elementType} click`,      // Action
-              `Text: ${text}, ID: ${id}, Class: ${classes}, Href: ${href}`
+              `Text: ${text}, Page: ${pageTitle}, ID: ${id}, Class: ${classes}, Href: ${href}`
             ]);
           }
         });
@@ -190,9 +413,8 @@
   }
 
   .citizen-form-wrapper .citizen-card-input.citizen-card-input--front {
-  margin-bottom: 24px !important;
+    margin-bottom: 24px !important;
   }
-
 </style>
 
 <body>
