@@ -311,6 +311,49 @@ export const currentFinancialYear = () => {
 export const convertToTrade = (data = {}) => {
   let Financialyear = sessionStorage.getItem("CurrentFinancialYear");
   let isSameAsPropertyOwner = sessionStorage.getItem("isSameAsPropertyOwner");
+
+  // Determine owners based on isSameAsPropertyOwner flag
+  let owners = [];
+  let subOwnerShipCategory = data?.ownershipCategory?.code;
+
+  if (isSameAsPropertyOwner === "true" && data?.cpt?.details?.owners) {
+    // Use owners from property
+    owners = data.cpt.details.owners.map((owner) => ({
+      mobileNumber: owner.mobileNumber,
+      name: owner.name,
+      fatherOrHusbandName: owner.fatherOrHusbandName,
+      relationship: owner.relationship,
+      dob: null,
+      gender: owner.gender,
+      permanentAddress: owner.permanentAddress,
+      emailId: owner.emailId,
+    }));
+
+    // Construct proper subOwnerShipCategory from property data
+    const propertyOwnershipCategory = data.cpt.details.ownershipCategory;
+    if (propertyOwnershipCategory && propertyOwnershipCategory.includes(".")) {
+      // Already in full format
+      subOwnerShipCategory = propertyOwnershipCategory;
+    } else if (propertyOwnershipCategory === "INDIVIDUAL") {
+      // Construct based on number of owners
+      const numberOfOwners = data.cpt.details.owners.length;
+      subOwnerShipCategory = numberOfOwners === 1 ? "INDIVIDUAL.SINGLEOWNER" : "INDIVIDUAL.MULTIPLEOWNERS";
+    } else if (propertyOwnershipCategory === "INSTITUTIONAL") {
+      // Get institution type from property
+      const institutionType = data?.cpt?.details?.institution?.type || "OTHERSPRIVATEINSTITUITION";
+      subOwnerShipCategory = `INSTITUTIONAL.${institutionType}`;
+    } else {
+      subOwnerShipCategory = propertyOwnershipCategory;
+    }
+  } else {
+    // Use owners from form (manual entry)
+    owners = getownerarray(data);
+    // Try to get subOwnerShipCategory from form data
+    if (data?.owners?.owners?.[0]?.subOwnerShipCategory?.code) {
+      subOwnerShipCategory = data.owners.owners[0].subOwnerShipCategory.code;
+    }
+  }
+
   const formdata = {
     Licenses: [
       {
@@ -337,19 +380,16 @@ export const convertToTrade = (data = {}) => {
           operationalArea : data?.TradeDetails?.OperationalSqFtArea || null,
           applicationDocuments: null,
           accessories: data?.TradeDetails?.accessories && data?.TradeDetails?.isAccessories?.i18nKey?.includes("YES") ? getaccessories(data) : null,
-          owners: getownerarray(data),
+          owners: owners,
           ...(data?.ownershipCategory?.code.includes("INSTITUTIONAL") && {institution: {
-            designation: data?.owners?.owners?.[0]?.designation,
-            ContactNo: data?.owners?.owners?.[0]?.altContactNumber,
-            mobileNumber: data?.owners?.owners?.[0]?.mobilenumber,
-            instituionName: data?.owners?.owners?.[0]?.institutionName,
-            name: data?.owners?.owners?.[0]?.name,
+            designation: data?.owners?.owners?.[0]?.designation || data?.cpt?.details?.institution?.designation,
+            ContactNo: data?.owners?.owners?.[0]?.altContactNumber || data?.cpt?.details?.owners?.[0]?.altContactNumber,
+            mobileNumber: data?.owners?.owners?.[0]?.mobilenumber || data?.cpt?.details?.owners?.[0]?.mobileNumber,
+            instituionName: data?.owners?.owners?.[0]?.institutionName || data?.cpt?.details?.institution?.name,
+            name: data?.owners?.owners?.[0]?.name || data?.cpt?.details?.institution?.nameOfAuthorizedPerson,
            }}),
-          // ...data?.owners.owners?.[0]?.designation && data?.owners.owners?.[0]?.designation !== "" ? { institution: {
-          //   designation: data?.owners.owners?.[0]?.designation
-          // }} : {},
           structureType: data?.TradeDetails?.StructureType?.code !=="IMMOVABLE" ? data?.TradeDetails?.VehicleType?.code : data?.TradeDetails?.BuildingType?.code,
-          subOwnerShipCategory: data?.owners.owners?.[0]?.subOwnerShipCategory?.code ? data?.owners.owners?.[0]?.subOwnerShipCategory?.code : data?.ownershipCategory?.code,
+          subOwnerShipCategory: subOwnerShipCategory,
           tradeUnits: gettradeunits(data),
           additionalDetail: {
             propertyId: !data?.cpt ? "" :data?.cpt?.details?.propertyId,
@@ -497,8 +537,26 @@ export const convertToUpdateTrade = (data = {}, datafromflow, tenantId) => {
     ...data.Licenses[0],
   }
   formdata1.Licenses[0].action = "APPLY";
-  formdata1.Licenses[0].wfDocuments = formdata1.Licenses[0].wfDocuments ? formdata1.Licenses[0].wfDocuments : getwfdocuments(datafromflow);
-  formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments = !isEdit ? (formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments ? formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments : getwfdocuments(datafromflow)):getEditRenewTradeDocumentUpdate(data?.Licenses[0],datafromflow);
+  formdata1.Licenses[0].wfDocuments = formdata1.Licenses[0].wfDocuments ? formdata1.Licenses[0].wfDocuments : (datafromflow?.owners?.documents ? getwfdocuments(datafromflow) : []);
+
+  // For applicationDocuments, prioritize existing documents from the created license
+  if (!isEdit) {
+    // For new applications, use existing documents if available, otherwise try to get from form data
+    if (formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments && formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments.length > 0) {
+      // Already has documents from create response, keep them
+      formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments = formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments;
+    } else if (datafromflow?.owners?.documents) {
+      // Try to get documents from form data
+      formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments = getwfdocuments(datafromflow);
+    } else {
+      // No documents available, set empty array
+      formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments = [];
+    }
+  } else {
+    // For edit/renew
+    formdata1.Licenses[0].tradeLicenseDetail.applicationDocuments = getEditRenewTradeDocumentUpdate(data?.Licenses[0],datafromflow);
+  }
+
   return formdata1;
 }
 
