@@ -346,12 +346,12 @@ public class BPAValidator {
 
 		log.debug("Fetching MDMS result for the state " + wfState);
 
-		// ✅ MUST ADD THIS: Null check for riskType
-//		if (bpa.getRiskType() == null || bpa.getRiskType().trim().isEmpty()) {
-//			log.warn("RiskType is null or empty for BPA: {}, State: {}, skipping question validation",
-//					bpa.getApplicationNo(), wfState);
-//			return;  // Skip validation for null riskType
-//		}
+//		 ✅ MUST ADD THIS: Null check for riskType
+		if (bpa.getRiskType() == null || bpa.getRiskType().trim().isEmpty()) {
+			log.warn("RiskType is null or empty for BPA: {}, State: {}, skipping question validation",
+					bpa.getApplicationNo(), wfState);
+			return;  // Skip validation for null riskType
+		}
 
 		try {
 			String questionsPath = BPAConstants.QUESTIONS_MAP.replace("{1}", wfState)
@@ -442,12 +442,12 @@ public class BPAValidator {
 
 		log.debug("Fetching MDMS result for the state " + wfState);
 
-		// ✅ ADD NULL CHECK HERE - Same as validateQuestions
-//		if (bpa.getRiskType() == null || bpa.getRiskType().trim().isEmpty()) {
-//			log.warn("RiskType is null or empty for BPA: {}, State: {}, skipping document validation",
-//					bpa.getApplicationNo(), wfState);
-//			return;  // Skip validation for null riskType
-//		}
+//		 ✅ ADD NULL CHECK HERE - Same as validateQuestions
+		if (bpa.getRiskType() == null || bpa.getRiskType().trim().isEmpty()) {
+			log.warn("RiskType is null or empty for BPA: {}, State: {}, skipping document validation",
+					bpa.getApplicationNo(), wfState);
+			return;  // Skip validation for null riskType
+		}
 
 		try {
 			String docTypesPath = BPAConstants.DOCTYPES_MAP.replace("{1}", wfState)
