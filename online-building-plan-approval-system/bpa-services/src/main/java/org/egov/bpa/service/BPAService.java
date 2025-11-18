@@ -376,6 +376,8 @@ public class BPAService {
 			throw new CustomException(BPAErrorConstants.UPDATE_ERROR, "Application Not found in the System" + bpa);
 		}
 
+		enrichmentService.computeAndSetRiskType(bpaRequest,mdmsData);
+
 		Map<String, String> edcrResponse = edcrService.getEDCRDetails(bpaRequest.getRequestInfo(), bpaRequest.getBPA());
 		String applicationType = edcrResponse.get(BPAConstants.APPLICATIONTYPE);
 		log.debug("applicationType is " + applicationType);

@@ -208,6 +208,18 @@ public class EnrichmentService {
 			bpa.setApplicationDate(Calendar.getInstance().getTimeInMillis());
 		}
 
+		computeAndSetRiskType(bpaRequest,mdmsData);
+		log.info("Application state is : " + state);
+		this.generateApprovalNo(bpaRequest, state);
+		nocService.initiateNocWorkflow(bpaRequest, mdmsData);
+
+	}
+
+
+	public void computeAndSetRiskType(BPARequest bpaRequest, Object mdmsData) {
+
+		BPA bpa = bpaRequest.getBPA();   // extracted here
+
 		if (StringUtils.isEmpty(bpa.getRiskType())) {
 			if (bpa.getBusinessService().equals(BPAConstants.BPA_LOW_MODULE_CODE)) {
 				bpa.setRiskType(BPAConstants.LOW_RISKTYPE);
@@ -236,9 +248,8 @@ public class EnrichmentService {
 
 				DocumentContext context = JsonPath.using(Configuration.defaultConfiguration()).parse(jsonString);
 
-				Integer	plotArea = context.read("edcrDetail[0].planDetail.planInformation.plotArea");
-				Double	buildingHeight = context.read("edcrDetail[0].planDetail.blocks[0].building.buildingHeight");
-
+				Integer plotArea = context.read("edcrDetail[0].planDetail.planInformation.plotArea");
+				Double buildingHeight = context.read("edcrDetail[0].planDetail.blocks[0].building.buildingHeight");
 
 				List jsonOutput = JsonPath.read(masterData, BPAConstants.RISKTYPE_COMPUTATION);
 				String filterExp = "$.[?((@.fromPlotArea < " + plotArea + " && @.toPlotArea >= " + plotArea
@@ -248,24 +259,15 @@ public class EnrichmentService {
 				List<String> riskTypes = JsonPath.read(jsonOutput, filterExp);
 
 				if (!CollectionUtils.isEmpty(riskTypes)) {
-					String	expectedRiskType  = riskTypes.get(0);
+					String expectedRiskType = riskTypes.get(0);
 					bpa.setRiskType(expectedRiskType);
-				}else
-				{
-					throw new CustomException(BPAErrorConstants.INVALID_RISK_TYPE, "The Risk Type is not valid " );
+				} else {
+					throw new CustomException(BPAErrorConstants.INVALID_RISK_TYPE, "The Risk Type is not valid ");
 				}
-
-
-
-
 			}
 		}
-
-		log.info("Application state is : " + state);
-		this.generateApprovalNo(bpaRequest, state);
-		nocService.initiateNocWorkflow(bpaRequest, mdmsData);
-
 	}
+
 
 	/**
 	 * generate the permit and oc number on approval status of the BPA and BPAOC
