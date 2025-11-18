@@ -220,7 +220,7 @@ public class NocService {
 				.replace("{1}", edcrResponse.get(BPAConstants.APPLICATIONTYPE))
 				.replace("{2}", edcrResponse.get(BPAConstants.SERVICETYPE))
 				.replace("{3}", (StringUtils.isEmpty(bpa.getRiskType()) || !bpa.getRiskType().equalsIgnoreCase("LOW"))
-						? "ALL" : bpa.getRiskType().toString());
+						? "ALL" : bpa.getRiskType());
 		List<Object> triggerActionStates = (List<Object>) JsonPath.read(mdmsData, nocPath);
 		log.debug("====> initiateNocWorkflow = triggerStates" + triggerActionStates.toString());
 		if (!CollectionUtils.isEmpty(triggerActionStates)

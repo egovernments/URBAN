@@ -279,7 +279,7 @@ public class EnrichmentService {
 		if ((bpa.getBusinessService().equalsIgnoreCase(BPAConstants.BPA_OC_MODULE_CODE)
 				&& bpa.getStatus().equalsIgnoreCase(BPAConstants.APPROVED_STATE))
 				|| (!bpa.getBusinessService().equalsIgnoreCase(BPAConstants.BPA_OC_MODULE_CODE)
-				&& ((!bpa.getRiskType().toString().equalsIgnoreCase(BPAConstants.LOW_RISKTYPE)
+				&& ((!bpa.getRiskType().equalsIgnoreCase(BPAConstants.LOW_RISKTYPE)
 				&& state.equalsIgnoreCase(BPAConstants.APPROVED_STATE))
 				|| (state.equalsIgnoreCase(BPAConstants.DOCVERIFICATION_STATE) && bpa.getRiskType()
 				.toString().equalsIgnoreCase(BPAConstants.LOW_RISKTYPE))))) {
@@ -302,7 +302,7 @@ public class EnrichmentService {
 					config.getPermitNoIdgenName(), config.getPermitNoIdgenFormat(), 1).getIdResponses();
 			bpa.setApprovalNo(idResponses.get(0).getId());
 			if (state.equalsIgnoreCase(BPAConstants.DOCVERIFICATION_STATE)
-					&& bpa.getRiskType().toString().equalsIgnoreCase(BPAConstants.LOW_RISKTYPE)) {
+					&& bpa.getRiskType().equalsIgnoreCase(BPAConstants.LOW_RISKTYPE)) {
 
 				Object mdmsData = bpaUtil.mDMSCall(bpaRequest.getRequestInfo(), bpaRequest.getBPA().getTenantId());
 				Map<String, String> edcrResponse = edcrService.getEDCRDetails(bpaRequest.getRequestInfo(),
@@ -311,7 +311,7 @@ public class EnrichmentService {
 				log.debug("serviceType is " + edcrResponse.get(BPAConstants.SERVICETYPE));
 
 				String condeitionsPath = BPAConstants.CONDITIONS_MAP.replace("{1}", BPAConstants.PENDING_APPROVAL_STATE)
-						.replace("{2}", bpa.getRiskType().toString())
+						.replace("{2}", bpa.getRiskType())
 						.replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
 						.replace("{4}", edcrResponse.get(BPAConstants.APPLICATIONTYPE));
 				log.debug(condeitionsPath);
