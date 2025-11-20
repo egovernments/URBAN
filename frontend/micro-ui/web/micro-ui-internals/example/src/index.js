@@ -64,7 +64,8 @@ const enabledModules = [
 const initTokens = (stateCode) => {
   const userType = window.sessionStorage.getItem("userType") || process.env.REACT_APP_USER_TYPE || "CITIZEN";
 
-  const token = window.localStorage.getItem("token") || process.env[`REACT_APP_${userType}_TOKEN`];
+  // Token is now handled via cookies - removed localStorage.getItem("token")
+  // const token = window.localStorage.getItem("token") || process.env[`REACT_APP_${userType}_TOKEN`];
 
   const citizenInfo = window.localStorage.getItem("Citizen.user-info");
 
@@ -77,15 +78,22 @@ const initTokens = (stateCode) => {
   window.Digit.SessionStorage.set("user_type", userTypeInfo);
   window.Digit.SessionStorage.set("userType", userTypeInfo);
 
+  // Token handling removed - now using cookie-based authentication
+  // User object is set during login and stored in SessionStorage
   if (userType !== "CITIZEN") {
-    window.Digit.SessionStorage.set("User", { access_token: token, info: userType !== "CITIZEN" ? JSON.parse(employeeInfo) : citizenInfo });
-  } else {
-    // if (!window.Digit.SessionStorage.get("User")?.extraRoleInfo) window.Digit.SessionStorage.set("User", { access_token: token, info: citizenInfo });
+    if (employeeInfo) {
+      window.Digit.SessionStorage.set("User", { info: JSON.parse(employeeInfo) });
+    }
   }
 
   window.Digit.SessionStorage.set("Citizen.tenantId", citizenTenantId);
 
   if (employeeTenantId && employeeTenantId.length) window.Digit.SessionStorage.set("Employee.tenantId", employeeTenantId);
+
+  // Clean up old tokens from localStorage if they exist
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("Citizen.token");
+  window.localStorage.removeItem("Employee.token");
 };
 
 const initDigitUI = () => {
