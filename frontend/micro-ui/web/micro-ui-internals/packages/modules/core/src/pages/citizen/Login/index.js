@@ -20,8 +20,8 @@ const setCitizenDetail = (userObject, token, tenantId) => {
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Citizen.locale", locale);
-  localStorage.setItem("token", token);
-  localStorage.setItem("Citizen.token", token);
+  // Token is now handled via cookies - removed localStorage.setItem("token", token);
+  // Token is now handled via cookies - removed localStorage.setItem("Citizen.token", token);
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Citizen.user-info", JSON.stringify(userObject));
 };

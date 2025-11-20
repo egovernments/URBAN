@@ -13,8 +13,8 @@ const setEmployeeDetail = (userObject, token) => {
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Employee.locale", locale);
-  localStorage.setItem("token", token);
-  localStorage.setItem("Employee.token", token);
+  // Token is now handled via cookies - removed localStorage.setItem("token", token);
+  // Token is now handled via cookies - removed localStorage.setItem("Employee.token", token);
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Employee.user-info", JSON.stringify(userObject));
 };
