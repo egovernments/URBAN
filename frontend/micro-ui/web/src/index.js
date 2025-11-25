@@ -14,9 +14,9 @@ window.Digit.Customizations = { PGR: {} ,TL:TLCustomisations};
 
 const user = window.Digit.SessionStorage.get("User");
 
-if (!user || !user.access_token || !user.info) {
-  // login detection
-
+// Cookie-based authentication: Check for user.info instead of access_token
+// Auth tokens are now stored server-side in Redis and managed via SESSION_ID cookie
+if (!user || !user.info) {
   const parseValue = (value) => {
     try {
       return JSON.parse(value)
@@ -30,28 +30,33 @@ if (!user || !user.access_token || !user.info) {
     return value && value !== "undefined" ? parseValue(value) : null;
   }
 
-  const token = getFromStorage("token")
-
-  const citizenToken = getFromStorage("Citizen.token")
   const citizenInfo = getFromStorage("Citizen.user-info")
   const citizenTenantId = getFromStorage("Citizen.tenant-id")
 
-  const employeeToken = getFromStorage("Employee.token")
   const employeeInfo = getFromStorage("Employee.user-info")
   const employeeTenantId = getFromStorage("Employee.tenant-id")
 
-  const userType = token === citizenToken ? "citizen" : "employee";
+  // Determine user type based on available info
+  const userType = employeeInfo ? "employee" : "citizen";
   window.Digit.SessionStorage.set("user_type", userType);
   window.Digit.SessionStorage.set("userType", userType);
 
-  const getUserDetails = (access_token, info) => ({ token: access_token, access_token, info })
+  // Restore user info (without tokens) from localStorage on page refresh
+  if (userType === "employee" && employeeInfo) {
+    window.Digit.SessionStorage.set("User", { info: employeeInfo });
+  } else if (citizenInfo) {
+    window.Digit.SessionStorage.set("User", { info: citizenInfo });
+  }
 
-  const userDetails = userType === "citizen" ? getUserDetails(citizenToken, citizenInfo) : getUserDetails(employeeToken, employeeInfo)
-
-  window.Digit.SessionStorage.set("User", userDetails);
   window.Digit.SessionStorage.set("Citizen.tenantId", citizenTenantId);
-  window.Digit.SessionStorage.set("Employee.tenantId", employeeTenantId);
-  // end
+  if (employeeTenantId) {
+    window.Digit.SessionStorage.set("Employee.tenantId", employeeTenantId);
+  }
+
+  // Clean up legacy token storage from previous implementation
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("Citizen.token");
+  window.localStorage.removeItem("Employee.token");
 }
 
 ReactDOM.render(
