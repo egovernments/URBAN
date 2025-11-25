@@ -172,7 +172,8 @@ const StaticCitizenSideBar = ({ linkData, islinkDataLoading }) => {
   };
   let profileItem;
 
-  if (isFetched && user && user.access_token) {
+  // Cookie-based auth: Check for user.info instead of access_token
+  if (isFetched && user && user.info) {
     profileItem = <Profile info={user?.info} stateName={stateInfo?.name} t={t} />;
     menuItems = menuItems.filter((item) => item?.id !== "login-btn" && item?.id !== "help-line");
     menuItems = [

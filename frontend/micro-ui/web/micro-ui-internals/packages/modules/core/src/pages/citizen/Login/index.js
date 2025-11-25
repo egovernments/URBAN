@@ -12,16 +12,15 @@ const TYPE_LOGIN = { type: "login" };
 const DEFAULT_USER = "digit-user";
 const DEFAULT_REDIRECT_URL = "/digit-ui/citizen";
 
-/* set citizen details to enable backward compatiable */
-const setCitizenDetail = (userObject, token, tenantId) => {
+/* set citizen details to enable backward compatible */
+const setCitizenDetail = (userObject, tenantId) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.initData"))?.value?.selectedLanguage;
   localStorage.setItem("Citizen.tenant-id", tenantId);
   localStorage.setItem("tenant-id", tenantId);
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Citizen.locale", locale);
-  // Token is now handled via cookies - removed localStorage.setItem("token", token);
-  // Token is now handled via cookies - removed localStorage.setItem("Citizen.token", token);
+  // Cookie-based authentication: Tokens managed server-side via SESSION_ID cookie
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Citizen.user-info", JSON.stringify(userObject));
 };
@@ -69,7 +68,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
     }
     Digit.SessionStorage.set("citizen.userRequestObject", user);
     Digit.UserService.setUser(user);
-    setCitizenDetail(user?.info, user?.access_token, stateCode);
+    setCitizenDetail(user?.info, stateCode);
     const redirectPath = location.state?.from || DEFAULT_REDIRECT_URL;
     if (!Digit.ULBService.getCitizenCurrentTenant(true)) {
       history.replace("/digit-ui/citizen/select-location", {

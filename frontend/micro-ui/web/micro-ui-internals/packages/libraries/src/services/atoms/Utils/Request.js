@@ -38,12 +38,14 @@ Axios.interceptors.response.use(
 );
 
 const requestInfo = () => ({
-   // authToken removed - now using cookie-based authentication 
-   // authToken: Digit.UserService.getUser()?.access_token || null,
+   // Cookie-based authentication via Zuul Token Handler
+   // Auth tokens are stored server-side in Redis
+   // Zuul automatically injects authToken from SESSION_ID cookie
 });
 
 const authHeaders = () => ({
-  "auth-token": Digit.UserService.getUser()?.access_token || null,
+  // Cookie-based authentication: No need to send auth-token header
+  // Zuul extracts token from SESSION_ID cookie and forwards it
 });
 
 const userServiceData = () => ({ userInfo: Digit.UserService.getUser()?.info });
@@ -75,7 +77,9 @@ export const Request = async ({
     data.RequestInfo = {
       apiId: "Rainmaker",
     };
-    if (auth || !!Digit.UserService.getUser()?.access_token) {
+    // Cookie-based auth: Always include RequestInfo for authenticated requests
+    // Zuul handles token injection server-side
+    if (auth || !!Digit.UserService.getUser()?.info) {
       data.RequestInfo = { ...data.RequestInfo, ...requestInfo() };
     }
     if (userService) {
@@ -146,8 +150,8 @@ export const Request = async ({
       url: _url,
       data: multipartData.data,
       params,
-      headers: { "Content-Type": "multipart/form-data", "auth-token": Digit.UserService.getUser()?.access_token || null },
-      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true, // Send SESSION_ID cookie with request
     });
     return multipartFormDataRes;
   }

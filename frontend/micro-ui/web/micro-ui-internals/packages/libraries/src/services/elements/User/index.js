@@ -20,12 +20,14 @@ export const UserService = {
   },
   logoutUser: () => {
     let user = UserService.getUser();
-    if (!user || !user.info || !user.access_token) return false;
+    if (!user || !user.info) return false;
     const { type } = user.info;
+    // Cookie-based authentication: Token is managed server-side via SESSION_ID cookie
+    // No need to send access_token in logout request
     return ServiceRequest({
       serviceName: "logoutUser",
       url: Urls.UserLogout,
-      data: { access_token: user?.access_token },
+      data: {},
       auth: true,
       params: { tenantId: type === "CITIZEN" ? Digit.ULBService.getStateId() : Digit.ULBService.getCurrentTenantId() },
     });
@@ -38,6 +40,9 @@ export const UserService = {
     Storage.set("user_type", userType);
   },
   getUser: () => {
+    // Note: Auth tokens are now stored server-side in Redis
+    // The client only maintains a SESSION_ID cookie managed by Zuul
+    // This method returns user info without the access_token
     return Digit.SessionStorage.get("User");
   },
   logout: async () => {
@@ -65,7 +70,10 @@ export const UserService = {
       params: { tenantId: stateCode },
     }),
   setUser: (data) => {
-    return Digit.SessionStorage.set("User", data);
+    // Cookie-based authentication: Store only user info, not tokens
+    // Tokens are stored server-side in Redis and managed via SESSION_ID cookie
+    const { access_token, refresh_token, ...userDataWithoutTokens } = data;
+    return Digit.SessionStorage.set("User", userDataWithoutTokens);
   },
   setExtraRoleDetails: (data) => {
     const userDetails = Digit.SessionStorage.get("User");

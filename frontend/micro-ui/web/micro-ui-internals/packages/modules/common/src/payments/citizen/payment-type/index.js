@@ -97,7 +97,8 @@ export const SelectPaymentType = (props) => {
     }
   };
 
-  if (authorization === "true" && !userInfo.access_token) {
+  // Cookie-based auth: Check for user.info instead of access_token
+  if (authorization === "true" && !userInfo?.info) {
     localStorage.clear();
     sessionStorage.clear();
     window.location.href = `/digit-ui/citizen/login?from=${encodeURIComponent(pathname + search)}`;

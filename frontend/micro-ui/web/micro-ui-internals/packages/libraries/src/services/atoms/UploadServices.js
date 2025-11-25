@@ -10,9 +10,10 @@ export const UploadServices = {
     let tenantInfo=`?tenantId=${tenantId}`;
     var config = {
       method: "post",
-      url:`${Urls.FileStore}${tenantInfo}`,   
+      url:`${Urls.FileStore}${tenantInfo}`,
       data: formData,
-      headers: { "auth-token": Digit.UserService.getUser() ? Digit.UserService.getUser()?.access_token : null},
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true, // Send SESSION_ID cookie with request
     };
 
     return Axios(config);
@@ -27,9 +28,10 @@ export const UploadServices = {
     let tenantInfo=`?tenantId=${tenantId}`;
     var config = {
       method: "post",
-      url:`${Urls.FileStore}${tenantInfo}`, 
+      url:`${Urls.FileStore}${tenantInfo}`,
       data: formData,
-      headers: { 'Content-Type': 'multipart/form-data',"auth-token": Digit.UserService.getUser().access_token },
+      headers: { 'Content-Type': 'multipart/form-data' },
+      withCredentials: true, // Send SESSION_ID cookie with request
     };
 
     return Axios(config);
@@ -39,20 +41,22 @@ export const UploadServices = {
     let tenantInfo=window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")?`?tenantId=${tenantId}`:"";
     var config = {
       method: "get",
-      url:`${Urls.FileFetch}${tenantInfo}`, 
+      url:`${Urls.FileFetch}${tenantInfo}`,
       params: {
         tenantId: tenantId,
         fileStoreIds: filesArray?.join(","),
       },
+      withCredentials: true, // Send SESSION_ID cookie with request
     };
 
     if (window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")) {
       config = {
         method: "get",
-        url:`${Urls.FileFetch}${tenantInfo}`, 
+        url:`${Urls.FileFetch}${tenantInfo}`,
         params: {
           fileStoreIds: filesArray?.join(","),
         },
+        withCredentials: true, // Send SESSION_ID cookie with request
       };
     }
     const res = await Axios(config);

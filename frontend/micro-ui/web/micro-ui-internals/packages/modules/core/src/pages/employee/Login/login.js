@@ -5,16 +5,15 @@ import { useHistory } from "react-router-dom";
 import Background from "../../../components/Background";
 import Header from "../../../components/Header";
 
-/* set employee details to enable backward compatiable */
-const setEmployeeDetail = (userObject, token) => {
+/* set employee details to enable backward compatible */
+const setEmployeeDetail = (userObject) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.locale"))?.value || "en_IN";
   localStorage.setItem("Employee.tenant-id", userObject?.tenantId);
   localStorage.setItem("tenant-id", userObject?.tenantId);
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Employee.locale", locale);
-  // Token is now handled via cookies - removed localStorage.setItem("token", token);
-  // Token is now handled via cookies - removed localStorage.setItem("Employee.token", token);
+  // Cookie-based authentication: Tokens managed server-side via SESSION_ID cookie
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Employee.user-info", JSON.stringify(userObject));
 };
@@ -38,7 +37,7 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
     const filteredRoles = user?.info?.roles?.filter((role) => role.tenantId === Digit.SessionStorage.get("Employee.tenantId"));
     if (user?.info?.roles?.length > 0) user.info.roles = filteredRoles;
     Digit.UserService.setUser(user);
-    setEmployeeDetail(user?.info, user?.access_token);
+    setEmployeeDetail(user?.info);
     let redirectPath = "/digit-ui/employee";
 
     /* logic to redirect back to same screen where we left off  */

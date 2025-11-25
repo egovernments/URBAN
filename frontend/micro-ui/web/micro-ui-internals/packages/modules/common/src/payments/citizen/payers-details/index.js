@@ -81,7 +81,8 @@ const SelectPaymentType = (props) => {
   }
 
   const checkDisbaled = () => {
-    if (isCCFEnabled?.isCitizenConsentFormEnabled && !isLoggedIn?.access_token) {
+    // Cookie-based auth: Check for user.info instead of access_token
+    if (isCCFEnabled?.isCitizenConsentFormEnabled && !isLoggedIn?.info) {
       const isData = paymentType?.code !== optionSecound?.code ? false : userInfo ? false : !canSubmit;
       let isEnabled = false
       if (!isData && isCheckBox) isEnabled = false;
@@ -205,7 +206,7 @@ const SelectPaymentType = (props) => {
             ) : null}
           </div>
 
-          {isCCFEnabled?.isCitizenConsentFormEnabled && !isLoggedIn?.access_token && <div>
+          {isCCFEnabled?.isCitizenConsentFormEnabled && !isLoggedIn?.info && <div>
             <CheckBox
               className="form-field"
               label={checkLabels()}

@@ -74,8 +74,9 @@ const TopBar = ({
     history.push("/digit-ui/citizen/engagement/notifications");
   }
 
+  // Cookie-based auth: Check for user.info instead of access_token
   const urlsToDisableNotificationIcon = (pathname) =>
-    !!Digit.UserService?.getUser()?.access_token
+    !!Digit.UserService?.getUser()?.info
       ? false
       : ["/digit-ui/citizen/select-language", "/digit-ui/citizen/select-location"].includes(pathname);
 
@@ -99,7 +100,8 @@ const TopBar = ({
       </div>
     );
   }
-  const loggedin = userDetails?.access_token ? true : false;
+  // Cookie-based auth: Check for user.info instead of access_token
+  const loggedin = userDetails?.info ? true : false;
   return (
     <div className="topbar">
       {mobileView ? <Hamburger handleClick={toggleSidebar} color="#9E9E9E" /> : null}
@@ -127,7 +129,7 @@ const TopBar = ({
               )}
             </div>
             <div className="left">{showLanguageChange && <ChangeLanguage dropdown={true} />}</div>
-            {userDetails?.access_token && (
+            {userDetails?.info && (
               <div className="left">
                 <Dropdown
                   option={userOptions}

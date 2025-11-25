@@ -50,7 +50,8 @@ const DocumentCategories = ({ t, parentRoute }) => {
     }
   );
 
-  if (!Digit.UserService?.getUser()?.access_token) {
+  // Cookie-based auth: Check for user.info instead of access_token
+  if (!Digit.UserService?.getUser()?.info) {
     return <Redirect to={{ pathname: `/digit-ui/citizen/login`, state: { from: location.pathname + location.search } }} />;
   }
 

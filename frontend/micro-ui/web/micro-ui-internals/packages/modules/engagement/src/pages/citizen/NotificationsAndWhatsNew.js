@@ -17,7 +17,8 @@ const NotificationsAndWhatsNew = ({ variant, parentRoute }) => {
   } = Digit.Hooks.useNotificationCount({
     tenantId,
     config: {
-      enabled: !!Digit.UserService?.getUser()?.access_token,
+      // Cookie-based auth: Check for user.info instead of access_token
+      enabled: !!Digit.UserService?.getUser()?.info,
     },
   });
 

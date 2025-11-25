@@ -64,13 +64,14 @@ const enabledModules = [
 const initTokens = (stateCode) => {
   const userType = window.sessionStorage.getItem("userType") || process.env.REACT_APP_USER_TYPE || "CITIZEN";
 
-  // Token is now handled via cookies - removed localStorage.getItem("token")
-  // const token = window.localStorage.getItem("token") || process.env[`REACT_APP_${userType}_TOKEN`];
+  // Cookie-based authentication via Zuul Token Handler:
+  // - Auth tokens are stored server-side in Redis
+  // - Client receives SESSION_ID cookie (HttpOnly, Secure, SameSite=Lax)
+  // - Zuul automatically injects authToken from SESSION_ID cookie on each request
+  // - Frontend NEVER stores or handles auth tokens directly
 
   const citizenInfo = window.localStorage.getItem("Citizen.user-info");
-
   const citizenTenantId = window.localStorage.getItem("Citizen.tenant-id") || stateCode;
-
   const employeeInfo = window.localStorage.getItem("Employee.user-info");
   const employeeTenantId = window.localStorage.getItem("Employee.tenant-id");
 
@@ -78,8 +79,7 @@ const initTokens = (stateCode) => {
   window.Digit.SessionStorage.set("user_type", userTypeInfo);
   window.Digit.SessionStorage.set("userType", userTypeInfo);
 
-  // Token handling removed - now using cookie-based authentication
-  // User object is set during login and stored in SessionStorage
+  // Restore user info (without tokens) from localStorage on page refresh
   if (userType !== "CITIZEN") {
     if (employeeInfo) {
       window.Digit.SessionStorage.set("User", { info: JSON.parse(employeeInfo) });
@@ -87,10 +87,11 @@ const initTokens = (stateCode) => {
   }
 
   window.Digit.SessionStorage.set("Citizen.tenantId", citizenTenantId);
+  if (employeeTenantId && employeeTenantId.length) {
+    window.Digit.SessionStorage.set("Employee.tenantId", employeeTenantId);
+  }
 
-  if (employeeTenantId && employeeTenantId.length) window.Digit.SessionStorage.set("Employee.tenantId", employeeTenantId);
-
-  // Clean up old tokens from localStorage if they exist
+  // Clean up legacy token storage from previous implementation
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("Citizen.token");
   window.localStorage.removeItem("Employee.token");

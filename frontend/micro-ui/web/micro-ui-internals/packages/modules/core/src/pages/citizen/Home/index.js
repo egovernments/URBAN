@@ -30,7 +30,8 @@ const Home = () => {
 
   const conditionsToDisableNotificationCountTrigger = () => {
     if (Digit.UserService?.getUser()?.info?.type === "EMPLOYEE") return false;
-    if (!Digit.UserService?.getUser()?.access_token) return false;
+    // Cookie-based auth: Check for user.info instead of access_token
+    if (!Digit.UserService?.getUser()?.info) return false;
     return true;
   };
 

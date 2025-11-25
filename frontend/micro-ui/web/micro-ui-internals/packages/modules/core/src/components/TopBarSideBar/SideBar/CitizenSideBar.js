@@ -121,7 +121,8 @@ export const CitizenSideBar = ({ isOpen, isMobile = false, toggleSidebar, onLogo
 
   let menuItems = [...SideBarMenu(t, closeSidebar, redirectToLoginPage, isEmployee, storeData, tenantId)];
   let profileItem;
-  if (isFetched && user && user.access_token) {
+  // Cookie-based auth: Check for user.info instead of access_token
+  if (isFetched && user && user.info) {
     profileItem = <Profile info={user?.info} stateName={stateInfo?.name} t={t} />;
     menuItems = menuItems.filter((item) => item?.id !== "login-btn" && item?.id !== "help-line");
     menuItems = [
