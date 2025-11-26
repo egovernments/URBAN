@@ -44,6 +44,7 @@ const requestInfo = () => ({
 });
 
 const authHeaders = () => ({
+  "Access-Control-Allow-Credentials":true
   // Cookie-based authentication: No need to send auth-token header
   // Zuul extracts token from SESSION_ID cookie and forwards it
 });
@@ -118,6 +119,7 @@ export const Request = async ({
 
   const headers1 = {
     "Content-Type": "application/json",
+    
     Accept: window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE") ? "application/pdf,application/json" : "application/pdf",
   };
 
