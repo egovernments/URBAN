@@ -11,7 +11,8 @@ export const Api = () => {
   const instance = axios.create({
     baseURL: window.location.origin,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true
     }
   });
 

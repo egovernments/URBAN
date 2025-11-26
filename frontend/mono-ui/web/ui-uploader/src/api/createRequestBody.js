@@ -15,7 +15,6 @@ export const requestInfo = () => {
     msgId: "20170310130900",
     requesterId: "rajesh",
     userInfo,
-    authToken
   };
   return RequestInfo;
 };
