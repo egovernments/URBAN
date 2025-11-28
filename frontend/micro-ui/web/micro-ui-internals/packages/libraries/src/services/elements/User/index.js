@@ -39,8 +39,8 @@ export const UserService = {
     Storage.set("user_type", userType);
   },
   getUser: () => {
-    // Returns user data including access_token needed for Authorization header
-    // SESSION_ID cookie is also maintained for Zuul token handler
+    // Returns user data including access_token for auth-token header
+    // Hybrid auth: Both SESSION_ID cookie and auth-token header are used
     return Digit.SessionStorage.get("User");
   },
   logout: async () => {
@@ -68,8 +68,9 @@ export const UserService = {
       params: { tenantId: stateCode },
     }),
   setUser: (data) => {
-    // Cookie-based authentication: Store user data including tokens
-    // Tokens are needed for Authorization header in authenticated API requests
+    // Hybrid authentication: Store user data including tokens in sessionStorage
+    // Both SESSION_ID cookie and auth-token header are sent to server
+    // sessionStorage clears on tab close (more secure than localStorage)
     return Digit.SessionStorage.set("User", data);
   },
   setExtraRoleDetails: (data) => {

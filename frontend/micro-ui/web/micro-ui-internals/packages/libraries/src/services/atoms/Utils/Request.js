@@ -38,25 +38,15 @@ Axios.interceptors.response.use(
 );
 
 const requestInfo = () => {
-  const user = Digit.UserService.getUser();
-  const token = user?.access_token;
-
-  return {
-    // Include authToken in RequestInfo for authenticated requests
-    // This works alongside SESSION_ID cookie for authentication
-    ...(token && { authToken: token })
-  };
+  // Cookie-based authentication via SESSION_ID cookie and auth-token header
+  // No need to include authToken in RequestInfo body
+  return {};
 };
 
 const authHeaders = () => {
-  const user = Digit.UserService.getUser();
-  const token = user?.access_token;
-
+  // Additional headers for requests that explicitly need authHeader=true
   return {
-    "Access-Control-Allow-Credentials": true,
-    // Include auth token in Authorization header for authenticated requests
-    // SESSION_ID cookie is also sent via withCredentials
-    ...(token && { "auth-token": token })
+    "Access-Control-Allow-Credentials": true
   };
 };
 
@@ -130,9 +120,16 @@ export const Request = async ({
 
   const headers1 = {
     "Content-Type": "application/json",
-    
+
     Accept: window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE") ? "application/pdf,application/json" : "application/pdf",
   };
+
+  // Hybrid authentication: Send both SESSION_ID cookie and auth-token header
+  // Automatically add auth-token header for authenticated users
+  const user = Digit.UserService.getUser();
+  if (user?.access_token) {
+    headers = { ...headers, "auth-token": user.access_token };
+  }
 
   if (authHeader) headers = { ...headers, ...authHeaders() };
 
@@ -163,7 +160,10 @@ export const Request = async ({
       url: _url,
       data: multipartData.data,
       params,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        ...(user?.access_token && { "auth-token": user.access_token })
+      },
       withCredentials: true, // Send SESSION_ID cookie with request
     });
     return multipartFormDataRes;

@@ -12,15 +12,38 @@ const TYPE_LOGIN = { type: "login" };
 const DEFAULT_USER = "digit-user";
 const DEFAULT_REDIRECT_URL = "/digit-ui/citizen";
 
+/* Clean up any token-related keys from localStorage for security */
+const cleanupTokensFromLocalStorage = () => {
+  const keysToRemove = [];
+
+  // Scan all localStorage keys for token-related entries
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    // Check if key contains 'token' (case-insensitive)
+    if (key && key.toLowerCase().includes('token')) {
+      keysToRemove.push(key);
+    }
+  }
+
+  // Remove all token-related keys
+  keysToRemove.forEach(key => {
+    console.log(`Removing token key from localStorage: ${key}`);
+    localStorage.removeItem(key);
+  });
+};
+
 /* set citizen details to enable backward compatible */
 const setCitizenDetail = (userObject, tenantId) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.initData"))?.value?.selectedLanguage;
+
+  // Clean up all token-related keys from localStorage
+  cleanupTokensFromLocalStorage();
+
   localStorage.setItem("Citizen.tenant-id", tenantId);
   localStorage.setItem("tenant-id", tenantId);
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Citizen.locale", locale);
-  // Cookie-based authentication: Tokens managed server-side via SESSION_ID cookie
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Citizen.user-info", JSON.stringify(userObject));
 };

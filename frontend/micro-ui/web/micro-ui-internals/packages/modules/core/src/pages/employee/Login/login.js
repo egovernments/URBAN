@@ -5,15 +5,38 @@ import { useHistory } from "react-router-dom";
 import Background from "../../../components/Background";
 import Header from "../../../components/Header";
 
+/* Clean up any token-related keys from localStorage for security */
+const cleanupTokensFromLocalStorage = () => {
+  const keysToRemove = [];
+
+  // Scan all localStorage keys for token-related entries
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    // Check if key contains 'token' (case-insensitive)
+    if (key && key.toLowerCase().includes('token')) {
+      keysToRemove.push(key);
+    }
+  }
+
+  // Remove all token-related keys
+  keysToRemove.forEach(key => {
+    console.log(`Removing token key from localStorage: ${key}`);
+    localStorage.removeItem(key);
+  });
+};
+
 /* set employee details to enable backward compatible */
 const setEmployeeDetail = (userObject) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.locale"))?.value || "en_IN";
+
+  // Clean up all token-related keys from localStorage
+  cleanupTokensFromLocalStorage();
+
   localStorage.setItem("Employee.tenant-id", userObject?.tenantId);
   localStorage.setItem("tenant-id", userObject?.tenantId);
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Employee.locale", locale);
-  // Store user info for backward compatibility
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Employee.user-info", JSON.stringify(userObject));
 };
