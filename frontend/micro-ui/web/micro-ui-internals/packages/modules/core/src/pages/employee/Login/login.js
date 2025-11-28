@@ -13,7 +13,7 @@ const setEmployeeDetail = (userObject) => {
   localStorage.setItem("citizen.userRequestObject", JSON.stringify(userObject));
   localStorage.setItem("locale", locale);
   localStorage.setItem("Employee.locale", locale);
-  // Cookie-based authentication: Tokens managed server-side via SESSION_ID cookie
+  // Store user info for backward compatibility
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Employee.user-info", JSON.stringify(userObject));
 };

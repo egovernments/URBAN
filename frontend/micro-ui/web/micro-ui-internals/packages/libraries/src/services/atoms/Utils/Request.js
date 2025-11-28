@@ -37,17 +37,28 @@ Axios.interceptors.response.use(
   }
 );
 
-const requestInfo = () => ({
-   // Cookie-based authentication via Zuul Token Handler
-   // Auth tokens are stored server-side in Redis
-   // Zuul automatically injects authToken from SESSION_ID cookie
-});
+const requestInfo = () => {
+  const user = Digit.UserService.getUser();
+  const token = user?.access_token;
 
-const authHeaders = () => ({
-  "Access-Control-Allow-Credentials":true
-  // Cookie-based authentication: No need to send auth-token header
-  // Zuul extracts token from SESSION_ID cookie and forwards it
-});
+  return {
+    // Include authToken in RequestInfo for authenticated requests
+    // This works alongside SESSION_ID cookie for authentication
+    ...(token && { authToken: token })
+  };
+};
+
+const authHeaders = () => {
+  const user = Digit.UserService.getUser();
+  const token = user?.access_token;
+
+  return {
+    "Access-Control-Allow-Credentials": true,
+    // Include auth token in Authorization header for authenticated requests
+    // SESSION_ID cookie is also sent via withCredentials
+    ...(token && { "auth-token": token })
+  };
+};
 
 const userServiceData = () => ({ userInfo: Digit.UserService.getUser()?.info });
 

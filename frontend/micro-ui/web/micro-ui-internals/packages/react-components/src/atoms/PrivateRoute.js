@@ -16,8 +16,8 @@ export const PrivateRoute = ({ component: Component, roles, ...rest }) => {
             return "/digit-ui/citizen/login"
           }
         }
-        // Cookie-based authentication: Check for user.info instead of access_token
-        // Auth token is stored server-side in Redis, not on client
+        // Check if user is authenticated
+        // User data includes access_token which is sent in API request headers
         if (!user || !user.info) {
           // not logged in so redirect to login page with the return url
           return <Redirect to={{ pathname: getLoginRedirectionLink(), state: { from: props.location.pathname + props.location.search } }} />;
