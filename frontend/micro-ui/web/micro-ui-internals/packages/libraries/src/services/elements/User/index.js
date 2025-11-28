@@ -68,10 +68,13 @@ export const UserService = {
       params: { tenantId: stateCode },
     }),
   setUser: (data) => {
-    // Hybrid authentication: Store user data including tokens in sessionStorage
-    // Both SESSION_ID cookie and auth-token header are sent to server
-    // sessionStorage clears on tab close (more secure than localStorage)
-    return Digit.SessionStorage.set("User", data);
+    // Hybrid authentication: Keep access_token for auth-token header (required by backend)
+    // Remove refresh_token and other sensitive fields to minimize security exposure
+    const { refresh_token, token_type, expires_in, scope, ResponseInfo, ...userDataToStore } = data || {};
+
+    // Store user data with access_token (needed for API headers)
+    // but without refresh_token and other unnecessary sensitive fields
+    return Digit.SessionStorage.set("User", userDataToStore);
   },
   setExtraRoleDetails: (data) => {
     const userDetails = Digit.SessionStorage.get("User");

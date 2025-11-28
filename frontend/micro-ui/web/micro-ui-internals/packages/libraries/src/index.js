@@ -51,6 +51,7 @@ import BillServices from "./services/elements/Bill";
 import { CFService } from "./services/elements/CF";
 
 import {CustomService} from "./services/elements/CustomService";
+import { TokenSecurityService } from "./services/elements/TokenSecurity";
 
 const setupLibraries = (Library, props) => {
   window.Digit = window.Digit || {};
@@ -111,6 +112,11 @@ const initLibraries = () => {
   setupLibraries("AccessControlService", AccessControlService);
   setupLibraries("BillServices", BillServices);
   setupLibraries("AuditService",AuditService);
+  setupLibraries("TokenSecurityService", TokenSecurityService);
+
+  // Start token security monitoring immediately
+  TokenSecurityService.startMonitor();
+
   return new Promise((resolve) => {
     initI18n(resolve);
   });

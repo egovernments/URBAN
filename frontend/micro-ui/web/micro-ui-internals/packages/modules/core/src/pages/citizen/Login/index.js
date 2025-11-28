@@ -12,32 +12,37 @@ const TYPE_LOGIN = { type: "login" };
 const DEFAULT_USER = "digit-user";
 const DEFAULT_REDIRECT_URL = "/digit-ui/citizen";
 
-/* Clean up any token-related keys from localStorage for security */
-const cleanupTokensFromLocalStorage = () => {
-  const keysToRemove = [];
-
-  // Scan all localStorage keys for token-related entries
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    // Check if key contains 'token' (case-insensitive)
-    if (key && key.toLowerCase().includes('token')) {
-      keysToRemove.push(key);
+/* Intercept localStorage.setItem to catch who sets "token" key */
+const interceptTokenStorage = () => {
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    if (key === "token") {
+      console.error('[SECURITY] ⚠️ CAUGHT: Attempt to set "token" key in localStorage');
+      console.error('[SECURITY] Value being set:', value);
+      console.error('[SECURITY] Stack trace of who is setting it:');
+      console.trace();
+      console.error('[SECURITY] This call will be BLOCKED to prevent insecure token storage');
+      // Block the call - do NOT store it
+      return;
     }
-  }
+    // Allow other keys
+    return originalSetItem.apply(this, arguments);
+  };
+  console.log('[SECURITY] localStorage.setItem interceptor installed - will block "token" key');
+};
 
-  // Remove all token-related keys
-  keysToRemove.forEach(key => {
-    console.log(`Removing token key from localStorage: ${key}`);
-    localStorage.removeItem(key);
-  });
+/* Clean up specific token key from localStorage for security */
+const cleanupTokensFromLocalStorage = () => {
+  // Remove only the exact "token" key (legacy)
+  if (localStorage.getItem("token")) {
+    console.log('[SECURITY] Removing "token" key from localStorage');
+    localStorage.removeItem("token");
+  }
 };
 
 /* set citizen details to enable backward compatible */
 const setCitizenDetail = (userObject, tenantId) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.initData"))?.value?.selectedLanguage;
-
-  // Clean up all token-related keys from localStorage
-  cleanupTokensFromLocalStorage();
 
   localStorage.setItem("Citizen.tenant-id", tenantId);
   localStorage.setItem("tenant-id", tenantId);
@@ -46,6 +51,10 @@ const setCitizenDetail = (userObject, tenantId) => {
   localStorage.setItem("Citizen.locale", locale);
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Citizen.user-info", JSON.stringify(userObject));
+
+  // Clean up all token-related keys from localStorage AFTER setting user info
+  // This ensures any legacy code that sets token keys gets cleaned up
+  setTimeout(() => cleanupTokensFromLocalStorage(), 100);
 };
 
 const getFromLocation = (state, searchParams) => {

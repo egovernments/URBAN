@@ -5,32 +5,40 @@ import { useHistory } from "react-router-dom";
 import Background from "../../../components/Background";
 import Header from "../../../components/Header";
 
-/* Clean up any token-related keys from localStorage for security */
-const cleanupTokensFromLocalStorage = () => {
-  const keysToRemove = [];
-
-  // Scan all localStorage keys for token-related entries
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    // Check if key contains 'token' (case-insensitive)
-    if (key && key.toLowerCase().includes('token')) {
-      keysToRemove.push(key);
+/* Intercept localStorage.setItem to catch who sets "token" key */
+const interceptTokenStorage = () => {
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    if (key === "token") {
+      console.error('[SECURITY] ⚠️ CAUGHT: Attempt to set "token" key in localStorage');
+      console.error('[SECURITY] Value being set:', value);
+      console.error('[SECURITY] Stack trace of who is setting it:');
+      console.trace();
+      console.error('[SECURITY] This call will be BLOCKED to prevent insecure token storage');
+      // Block the call - do NOT store it
+      return;
     }
-  }
+    // Allow other keys
+    return originalSetItem.apply(this, arguments);
+  };
+  console.log('[SECURITY] localStorage.setItem interceptor installed - will block "token" key');
+};
 
-  // Remove all token-related keys
-  keysToRemove.forEach(key => {
-    console.log(`Removing token key from localStorage: ${key}`);
-    localStorage.removeItem(key);
-  });
+/* Clean up specific token key from localStorage for security */
+const cleanupTokensFromLocalStorage = () => {
+  // Remove only the exact "token" key (legacy)
+  const tokenValue = localStorage.getItem("token");
+  if (tokenValue) {
+    console.log('[SECURITY] Found and removing "token" key from localStorage');
+    console.log('[SECURITY] Token value:', tokenValue);
+    localStorage.removeItem("token");
+    console.log('[SECURITY] "token" key removed successfully');
+  }
 };
 
 /* set employee details to enable backward compatible */
 const setEmployeeDetail = (userObject) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.locale"))?.value || "en_IN";
-
-  // Clean up all token-related keys from localStorage
-  cleanupTokensFromLocalStorage();
 
   localStorage.setItem("Employee.tenant-id", userObject?.tenantId);
   localStorage.setItem("tenant-id", userObject?.tenantId);
@@ -39,6 +47,10 @@ const setEmployeeDetail = (userObject) => {
   localStorage.setItem("Employee.locale", locale);
   localStorage.setItem("user-info", JSON.stringify(userObject));
   localStorage.setItem("Employee.user-info", JSON.stringify(userObject));
+
+  // Clean up all token-related keys from localStorage AFTER setting user info
+  // This ensures any legacy code that sets token keys gets cleaned up
+  setTimeout(() => cleanupTokensFromLocalStorage(), 100);
 };
 
 const Login = ({ config: propsConfig, t, isDisabled }) => {
@@ -51,6 +63,11 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
 
   const history = useHistory();
   // const getUserType = () => "EMPLOYEE" || Digit.UserService.getType();
+
+  // Install localStorage interceptor on component mount to catch token storage attempts
+  useEffect(() => {
+    interceptTokenStorage();
+  }, []);
 
   useEffect(() => {
     if (!user) {

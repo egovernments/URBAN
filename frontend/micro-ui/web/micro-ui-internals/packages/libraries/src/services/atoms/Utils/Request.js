@@ -125,7 +125,9 @@ export const Request = async ({
   };
 
   // Hybrid authentication: Send both SESSION_ID cookie and auth-token header
-  // Automatically add auth-token header for authenticated users
+  // This supports transition period while backend is being migrated to cookie-only auth
+  // SESSION_ID cookie: HttpOnly, Secure (sent automatically by browser)
+  // auth-token header: Required by current backend implementation
   const user = Digit.UserService.getUser();
   if (user?.access_token) {
     headers = { ...headers, "auth-token": user.access_token };
@@ -162,6 +164,7 @@ export const Request = async ({
       params,
       headers: {
         "Content-Type": "multipart/form-data",
+        // Hybrid auth: Include auth-token header for authenticated uploads
         ...(user?.access_token && { "auth-token": user.access_token })
       },
       withCredentials: true, // Send SESSION_ID cookie with request

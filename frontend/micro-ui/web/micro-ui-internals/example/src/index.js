@@ -95,6 +95,9 @@ const initTokens = (stateCode) => {
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("Citizen.token");
   window.localStorage.removeItem("Employee.token");
+
+  // Token cleanup monitor is now running automatically from libraries initialization
+  // See: packages/libraries/src/services/elements/TokenSecurity.js
 };
 
 const initDigitUI = () => {
