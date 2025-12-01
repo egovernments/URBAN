@@ -41,7 +41,7 @@ const clearServerSession = async () => {
   try {
     // Call logout endpoint to clear server-side session
     // This will clear the HttpOnly SESSION_ID cookie (which JavaScript can't access)
-    await fetch('/user/_logout', {
+    const response = await fetch('/user/_logout', {
       method: 'POST',
       credentials: 'include', // Send existing SESSION_ID cookie
       headers: {
@@ -49,10 +49,16 @@ const clearServerSession = async () => {
       },
       body: JSON.stringify({})
     });
-    console.log('[SECURITY] Called logout endpoint to clear stale server-side session');
+
+    if (response.ok) {
+      console.log('[SECURITY] Successfully cleared stale server-side session');
+    } else {
+      console.log('[SECURITY] Logout endpoint returned error (session may not exist):', response.status);
+    }
   } catch (err) {
-    // Ignore errors - the session might not exist or already be invalid
-    console.log('[SECURITY] Logout call completed (session may not have existed)');
+    // Ignore errors - the session might not exist, endpoint might not be implemented yet,
+    // or CORS might be blocking. Login will proceed regardless.
+    console.log('[SECURITY] Could not call logout endpoint (session cleanup skipped):', err.message);
   }
 };
 
