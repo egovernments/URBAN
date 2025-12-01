@@ -14,8 +14,9 @@ window.Digit.Customizations = { PGR: {} ,TL:TLCustomisations};
 
 const user = window.Digit.SessionStorage.get("User");
 
-// Cookie-based authentication: Check for user.info instead of access_token
-// Auth tokens are now stored server-side in Redis and managed via SESSION_ID cookie
+// Cookie-only authentication: Check for user.info instead of access_token
+// Auth tokens are stored server-side in Redis and managed via SESSION_ID cookie only
+// No auth tokens are stored on the client side
 if (!user || !user.info) {
   const parseValue = (value) => {
     try {

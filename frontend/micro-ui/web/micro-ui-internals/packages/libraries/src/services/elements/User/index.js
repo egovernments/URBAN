@@ -22,7 +22,7 @@ export const UserService = {
     let user = UserService.getUser();
     if (!user || !user.info) return false;
     const { type } = user.info;
-    // Logout request includes auth token in header and SESSION_ID cookie
+    // Logout request uses SESSION_ID cookie for authentication
     return ServiceRequest({
       serviceName: "logoutUser",
       url: Urls.UserLogout,
@@ -39,8 +39,8 @@ export const UserService = {
     Storage.set("user_type", userType);
   },
   getUser: () => {
-    // Returns user data including access_token for auth-token header
-    // Hybrid auth: Both SESSION_ID cookie and auth-token header are used
+    // Returns user data (info only, no tokens)
+    // Cookie-only auth: SESSION_ID cookie is used for all authenticated requests
     return Digit.SessionStorage.get("User");
   },
   logout: async () => {
@@ -68,12 +68,11 @@ export const UserService = {
       params: { tenantId: stateCode },
     }),
   setUser: (data) => {
-    // Hybrid authentication: Keep access_token for auth-token header (required by backend)
-    // Remove refresh_token and other sensitive fields to minimize security exposure
-    const { refresh_token, token_type, expires_in, scope, ResponseInfo, ...userDataToStore } = data || {};
+    // Cookie-only authentication: Remove all tokens from client storage
+    // Auth tokens are stored server-side in Redis and managed via SESSION_ID cookie only
+    const { access_token, refresh_token, token_type, expires_in, scope, ResponseInfo, ...userDataToStore } = data || {};
 
-    // Store user data with access_token (needed for API headers)
-    // but without refresh_token and other unnecessary sensitive fields
+    // Store only user info, no tokens (SESSION_ID cookie handles authentication)
     return Digit.SessionStorage.set("User", userDataToStore);
   },
   setExtraRoleDetails: (data) => {

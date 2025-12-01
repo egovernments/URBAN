@@ -38,8 +38,9 @@ Axios.interceptors.response.use(
 );
 
 const requestInfo = () => {
-  // Cookie-based authentication via SESSION_ID cookie and auth-token header
-  // No need to include authToken in RequestInfo body
+  // Cookie-only authentication via SESSION_ID cookie
+  // No auth tokens included in RequestInfo body or headers
+  // Zuul handles token injection server-side from Redis session
   return {};
 };
 
@@ -79,8 +80,8 @@ export const Request = async ({
     data.RequestInfo = {
       apiId: "Rainmaker",
     };
-    // Cookie-based auth: Always include RequestInfo for authenticated requests
-    // Zuul handles token injection server-side
+    // Cookie-only auth: SESSION_ID cookie sent automatically with each request
+    // Zuul handles token injection server-side from Redis session
     if (auth || !!Digit.UserService.getUser()?.info) {
       data.RequestInfo = { ...data.RequestInfo, ...requestInfo() };
     }
@@ -124,14 +125,9 @@ export const Request = async ({
     Accept: window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE") ? "application/pdf,application/json" : "application/pdf",
   };
 
-  // Hybrid authentication: Send both SESSION_ID cookie and auth-token header
-  // This supports transition period while backend is being migrated to cookie-only auth
+  // Cookie-only authentication: Only SESSION_ID cookie is sent
   // SESSION_ID cookie: HttpOnly, Secure (sent automatically by browser)
-  // auth-token header: Required by current backend implementation
-  const user = Digit.UserService.getUser();
-  if (user?.access_token) {
-    headers = { ...headers, "auth-token": user.access_token };
-  }
+  // Zuul handles token injection server-side from Redis session storage
 
   if (authHeader) headers = { ...headers, ...authHeaders() };
 
@@ -164,8 +160,7 @@ export const Request = async ({
       params,
       headers: {
         "Content-Type": "multipart/form-data",
-        // Hybrid auth: Include auth-token header for authenticated uploads
-        ...(user?.access_token && { "auth-token": user.access_token })
+        // Cookie-only auth: SESSION_ID cookie sent automatically by browser
       },
       withCredentials: true, // Send SESSION_ID cookie with request
     });

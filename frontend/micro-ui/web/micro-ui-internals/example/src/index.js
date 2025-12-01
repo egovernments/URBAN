@@ -64,11 +64,12 @@ const enabledModules = [
 const initTokens = (stateCode) => {
   const userType = window.sessionStorage.getItem("userType") || process.env.REACT_APP_USER_TYPE || "CITIZEN";
 
-  // Cookie-based authentication via Zuul Token Handler:
+  // Cookie-only authentication via SESSION_ID cookie:
   // - Auth tokens are stored server-side in Redis
   // - Client receives SESSION_ID cookie (HttpOnly, Secure, SameSite=Lax)
   // - Zuul automatically injects authToken from SESSION_ID cookie on each request
-  // - Frontend NEVER stores or handles auth tokens directly
+  // - Frontend NEVER stores or handles auth tokens (no access_token in storage)
+  // - Only SESSION_ID cookie is required for authentication
 
   const citizenInfo = window.localStorage.getItem("Citizen.user-info");
   const citizenTenantId = window.localStorage.getItem("Citizen.tenant-id") || stateCode;
