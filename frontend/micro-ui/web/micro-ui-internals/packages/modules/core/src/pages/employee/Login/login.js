@@ -36,6 +36,26 @@ const cleanupTokensFromLocalStorage = () => {
   }
 };
 
+/* Clear session by calling logout endpoint to let server remove HttpOnly SESSION_ID cookie */
+const clearServerSession = async () => {
+  try {
+    // Call logout endpoint to clear server-side session
+    // This will clear the HttpOnly SESSION_ID cookie (which JavaScript can't access)
+    await fetch('/user/_logout', {
+      method: 'POST',
+      credentials: 'include', // Send existing SESSION_ID cookie
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    });
+    console.log('[SECURITY] Called logout endpoint to clear stale server-side session');
+  } catch (err) {
+    // Ignore errors - the session might not exist or already be invalid
+    console.log('[SECURITY] Logout call completed (session may not have existed)');
+  }
+};
+
 /* set employee details to enable backward compatible */
 const setEmployeeDetail = (userObject) => {
   let locale = JSON.parse(sessionStorage.getItem("Digit.locale"))?.value || "en_IN";
@@ -103,6 +123,10 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
       return;
     }
     setDisable(true);
+
+    // Clear any existing server-side session before new login
+    // This calls logout endpoint to remove HttpOnly SESSION_ID cookie
+    await clearServerSession();
 
     const requestData = {
       ...data,
