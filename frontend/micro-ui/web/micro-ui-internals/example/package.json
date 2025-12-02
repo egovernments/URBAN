@@ -24,7 +24,7 @@
     "@egovernments/digit-ui-module-bills": "1.7.40",
     "@egovernments/digit-ui-module-commonpt": "1.7.40",
     "@egovernments/digit-ui-module-hrms":"1.7.40",
-    "@egovernments/digit-ui-module-core":"1.7.41",
+    "@egovernments/digit-ui-module-core":"1.7.40",
     "@egovernments/digit-ui-module-dss":"1.7.40",
     "@egovernments/digit-ui-react-components":"1.7.40",
     "http-proxy-middleware": "1.0.5",

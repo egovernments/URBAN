@@ -4,17 +4,10 @@ import { Storage } from "../../atoms/Utils/Storage";
 
 export const UserService = {
   authenticate: (details) => {
-    console.log('[LOGIN-FLOW] UserService.authenticate: Called with details:', details);
-
     const data = new URLSearchParams();
     Object.entries(details).forEach(([key, value]) => data.append(key, value));
     data.append("scope", "read");
     data.append("grant_type", "password");
-
-    console.log('[LOGIN-FLOW] UserService.authenticate: Request URL:', Urls.Authenticate);
-    console.log('[LOGIN-FLOW] UserService.authenticate: Request params:', data.toString());
-    console.log('[LOGIN-FLOW] UserService.authenticate: Making OAuth request...');
-
     return ServiceRequest({
       serviceName: "authenticate",
       url: Urls.Authenticate,
@@ -75,28 +68,12 @@ export const UserService = {
       params: { tenantId: stateCode },
     }),
   setUser: (data) => {
-    console.log('[LOGIN-FLOW] UserService.setUser: Called with data:', data);
-
     // Cookie-only authentication: Remove all tokens from client storage
     // Auth tokens are stored server-side in Redis and managed via SESSION_ID cookie only
     const { access_token, refresh_token, token_type, expires_in, scope, ResponseInfo, ...userDataToStore } = data || {};
 
-    console.log('[LOGIN-FLOW] UserService.setUser: Extracted tokens (will be discarded):', {
-      access_token: access_token ? '***EXISTS***' : 'N/A',
-      refresh_token: refresh_token ? '***EXISTS***' : 'N/A',
-      token_type,
-      expires_in,
-      scope
-    });
-
-    console.log('[LOGIN-FLOW] UserService.setUser: User data to store (without tokens):', userDataToStore);
-
     // Store only user info, no tokens (SESSION_ID cookie handles authentication)
-    console.log('[LOGIN-FLOW] UserService.setUser: Setting User in SessionStorage');
-    const result = Digit.SessionStorage.set("User", userDataToStore);
-    console.log('[LOGIN-FLOW] UserService.setUser: User stored successfully');
-
-    return result;
+    return Digit.SessionStorage.set("User", userDataToStore);
   },
   setExtraRoleDetails: (data) => {
     const userDetails = Digit.SessionStorage.get("User");
