@@ -6,6 +6,7 @@
     "packages/libraries",
     "example",
     "packages/react-components",
+    "packages/modules/core",
     "packages/modules/*"
   ],
   "author": "Abhinav Kushwaha <abhinav.kushwaha@egovernments.org>",
