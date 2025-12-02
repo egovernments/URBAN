@@ -158,22 +158,29 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
   }, [user]);
 
   const onLogin = async (data) => {
-    console.log('[LOGIN-FLOW] Step 0: onLogin called with data:', data);
+    console.log('╔════════════════════════════════════════════════════════════╗');
+    console.log('║ [STEP 1] LOGIN INITIATED - onLogin() called               ║');
+    console.log('╚════════════════════════════════════════════════════════════╝');
+    console.log('[STEP 1.1] Form data received:', data);
 
     if (!data.city) {
-      console.error('[LOGIN-FLOW] ERROR: No city selected');
+      console.error('[STEP 1 - ERROR] ❌ No city selected');
       alert("Please Select City!");
       return;
     }
 
-    console.log('[LOGIN-FLOW] Step 1: Setting disable state to true');
+    console.log('[STEP 1.2] ✓ City validated');
+    console.log('[STEP 1.3] Setting form disable state to true');
     setDisable(true);
 
     // Clear any existing server-side session before new login
     // This calls logout endpoint to remove HttpOnly SESSION_ID cookie
-    console.log('[LOGIN-FLOW] Step 1a: Clearing server session');
+    console.log('\n╔════════════════════════════════════════════════════════════╗');
+    console.log('║ [STEP 2] CLEARING OLD SESSION                             ║');
+    console.log('╚════════════════════════════════════════════════════════════╝');
+    console.log('[STEP 2.1] Calling logout endpoint to clear old SESSION_ID cookie...');
     await clearServerSession();
-    console.log('[LOGIN-FLOW] Step 1b: Server session cleared');
+    console.log('[STEP 2.2] ✓ Old session cleared');
 
     const requestData = {
       ...data,
@@ -182,38 +189,55 @@ const Login = ({ config: propsConfig, t, isDisabled }) => {
     requestData.tenantId = data.city.code;
     delete requestData.city;
 
-    console.log('[LOGIN-FLOW] Step 2: Prepared request data:', requestData);
-    console.log('[LOGIN-FLOW] Step 2a: Calling OAuth endpoint /user/oauth/token');
+    console.log('\n╔════════════════════════════════════════════════════════════╗');
+    console.log('║ [STEP 3] OAUTH AUTHENTICATION CALL                        ║');
+    console.log('╚════════════════════════════════════════════════════════════╝');
+    console.log('[STEP 3.1] Prepared OAuth request data:', requestData);
+    console.log('[STEP 3.2] Calling /user/oauth/token endpoint...');
 
     try {
       const response = await Digit.UserService.authenticate(requestData);
-      console.log('[LOGIN-FLOW] Step 3: OAuth response received:', response);
-      console.log('[LOGIN-FLOW] Step 3a: Response keys:', Object.keys(response));
+
+      console.log('\n╔════════════════════════════════════════════════════════════╗');
+      console.log('║ [STEP 4] OAUTH RESPONSE RECEIVED                          ║');
+      console.log('╚════════════════════════════════════════════════════════════╝');
+      console.log('[STEP 4.1] ✓ OAuth API call successful');
+      console.log('[STEP 4.2] Response object:', response);
+      console.log('[STEP 4.3] Response keys:', Object.keys(response));
 
       const { UserRequest: info, ...tokens } = response;
-      console.log('[LOGIN-FLOW] Step 3b: UserRequest (info):', info);
-      console.log('[LOGIN-FLOW] Step 3c: Tokens object:', tokens);
-      console.log('[LOGIN-FLOW] Step 3d: Tokens keys:', Object.keys(tokens));
+      console.log('[STEP 4.4] Destructured UserRequest (user info):', info);
+      console.log('[STEP 4.5] Destructured tokens object:', tokens);
+      console.log('[STEP 4.6] Token keys present:', Object.keys(tokens));
 
-      console.log('[LOGIN-FLOW] Step 3e: Setting Employee.tenantId to:', info?.tenantId);
+      console.log('\n╔════════════════════════════════════════════════════════════╗');
+      console.log('║ [STEP 5] STORING USER DATA                                ║');
+      console.log('╚════════════════════════════════════════════════════════════╝');
+      console.log('[STEP 5.1] Setting Employee.tenantId in SessionStorage:', info?.tenantId);
       Digit.SessionStorage.set("Employee.tenantId", info?.tenantId);
 
-      console.log('[LOGIN-FLOW] Step 3f: Calling setUser with info and tokens');
+      console.log('[STEP 5.2] Preparing user data for setState...');
       const userDataToSet = { info, ...tokens };
-      console.log('[LOGIN-FLOW] Step 3g: User data being set:', userDataToSet);
+      console.log('[STEP 5.3] User data structure to set:', userDataToSet);
+      console.log('[STEP 5.4] Calling setUser() to update state...');
       setUser(userDataToSet);
-      console.log('[LOGIN-FLOW] Step 3h: setUser called - this will trigger useEffect');
+      console.log('[STEP 5.5] ✓ setUser() called - React will trigger useEffect next');
 
     } catch (err) {
-      console.error('[LOGIN-FLOW] ERROR: Authentication failed:', err);
-      console.error('[LOGIN-FLOW] ERROR: Error response:', err?.response);
-      console.error('[LOGIN-FLOW] ERROR: Error data:', err?.response?.data);
+      console.log('\n╔════════════════════════════════════════════════════════════╗');
+      console.log('║ [STEP 4 - ERROR] AUTHENTICATION FAILED                    ║');
+      console.log('╚════════════════════════════════════════════════════════════╝');
+      console.error('[STEP 4 - ERROR] ❌ Authentication error:', err);
+      console.error('[STEP 4 - ERROR] Error response:', err?.response);
+      console.error('[STEP 4 - ERROR] Error data:', err?.response?.data);
+      console.error('[STEP 4 - ERROR] Error message:', err?.response?.data?.error_description);
       setShowToast(err?.response?.data?.error_description || "Invalid login credentials!");
       setTimeout(closeToast, 5000);
     }
 
-    console.log('[LOGIN-FLOW] Step 3i: Setting disable state to false');
+    console.log('[STEP 5.6] Re-enabling form (setting disable to false)');
     setDisable(false);
+    console.log('════════════════════════════════════════════════════════════\n');
   };
 
   const closeToast = () => {
