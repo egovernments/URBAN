@@ -1,0 +1,28 @@
+HOW TO VIEW AND EXPORT SLIDES
+=============================
+
+Your slides are located in: TL_Module_Demo_Slides.md
+
+Option 1: Using VS Code (Recommended)
+-------------------------------------
+1. Install the "Marp for VS Code" extension.
+   - Go to the Extensions view (Ctrl+Shift+X).
+   - Search for "Marp for VS Code".
+   - Click Install.
+
+2. Open "TL_Module_Demo_Slides.md".
+
+3. To View:
+   - Click the "Open Preview to the Side" button (top right, looks like a split window with a magnifying glass).
+
+4. To Export as PDF or PowerPoint:
+   - Click the Marp icon (triangle logo) in the top-right editor toolbar.
+   - Select "Export Slide Deck..."
+   - Choose "PDF" or "PowerPoint document" from the "Save as type" dropdown.
+   - Click Save.
+
+Option 2: Using Command Line (Advanced)
+---------------------------------------
+If you have Node.js installed, you can use the Marp CLI:
+
+npx @marp-team/marp-cli TL_Module_Demo_Slides.md --pdf
