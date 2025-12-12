@@ -21,7 +21,7 @@ export const searchApiCall = async (state, dispatch) => {
   ];
   let searchScreenObject = get(
     state.screenConfiguration.preparedFinalObject,
-    "receiptCancelSearch",
+    "searchScreen",
     {}
   );
   const isSearchBoxFirstRowValid = validateFields(
@@ -70,9 +70,10 @@ export const searchApiCall = async (state, dispatch) => {
       }
     }
     disableFieldAndShowSpinner('search', "components.div.children.UCSearchCard.children.cardContent.children.buttonContainer.children.searchButton", dispatch);
-    const responseFromAPI = await getPaymentSearchResults(queryObject, dispatch);
+    const responseFromAPIAll = await getPaymentSearchResults(queryObject, dispatch);
+    const responseFromAPI=responseFromAPIAll.Payments.filter(item=> item.instrumentStatus != "CANCELLED");
     dispatch(prepareFinalObject("receiptSearchResponse", responseFromAPI));
-    const Payments = (responseFromAPI && responseFromAPI.Payments) || [];
+    const Payments = responseFromAPI;
     const response = [];
     for (let i = 0; i < Payments.length; i++) {
       const serviceTypeLabel = getTransformedLocale(
@@ -83,7 +84,8 @@ export const searchApiCall = async (state, dispatch) => {
         payeeName: get(Payments[i], `payerName`),
         serviceType: get(Payments[i], `paymentDetails[0].bill.businessService`),
         receiptdate: get(Payments[i], `paymentDetails[0].receiptDate`),
-        amount: get(Payments[i], `paymentDetails[0].bill.consumerCode`),
+        consumerCode: get(Payments[i], `paymentDetails[0].bill.consumerCode`),
+        amount: get(Payments[i], `paymentDetails[0].totalAmountPaid`),
         status: get(Payments[i], `paymentStatus`),
         businessService: get(Payments[i], `paymentDetails[0].bill.businessService`),
         tenantId: get(Payments[i], `tenantId`),
@@ -99,12 +101,25 @@ export const searchApiCall = async (state, dispatch) => {
       let data = response.map(item => ({
         ['CR_COMMON_TABLE_COL_RECEIPT_NO']: item.receiptNumber || "-",
         ['CR_COMMON_TABLE_COL_PAYEE_NAME']: item.payeeName || "-",
-        ['CR_SERVICE_TYPE_LABEL']: getTextToLocalMapping(`BILLINGSERVICE_BUSINESSSERVICE_${item.serviceType}`) || "-",
+        ['CR_SERVICE_TYPE_LABEL']: item.businessService.includes(".")?getTextToLocalMapping(`BILLINGSERVICE_BUSINESSSERVICE_${item.serviceType}`.replace('.','_').toUpperCase()):getTextToLocalMapping(`BILLINGSERVICE_BUSINESSSERVICE_${item.serviceType}`),
         ['CR_COMMON_TABLE_COL_DATE']: convertEpochToDate(item.receiptdate) || "-",
-        ['CR_COMMON_TABLE_CONSUMERCODE']: item.amount || "-",
+        ['CR_COMMON_TABLE_CONSUMERCODE']: item.consumerCode || "-",       
+        ['Amount']: item.amount || "-",
         ['CR_COMMON_TABLE_COL_STATUS']: item.status || "-",
-        ['CR_COMMON_TABLE_ACTION']:item.status!=="CANCELLED"&&(item.instrumentStatus="APPROVED"||item.instrumentStatus=="REMITTED")&&(convertedConfig[item.businessService]?convertedConfig[item.businessService].cancelReceipt:convertedConfig['DEFAULT'].cancelReceipt)? "CANCEL":"NA",
-        ["RECEIPT_KEY"]: get(uiConfigs.filter(item => item.code === item.businessService), "0.receiptKey", "consolidatedreceipt"),
+        ['CR_COMMON_TABLE_ACTION']:item.businessService.includes(".")?
+        (item.status!=="CANCELLED"&&
+        (item.instrumentStatus="APPROVED"||item.instrumentStatus=="REMITTED")
+        &&(convertedConfig[item.businessService.split(".")[0]]?convertedConfig[item.businessService.split(".")[0]].cancelReceipt:convertedConfig['DEFAULT'].cancelReceipt)
+        
+        ? "CANCEL":"NA")
+        
+        :(
+        item.status!=="CANCELLED"&&
+        (item.instrumentStatus="APPROVED"||item.instrumentStatus=="REMITTED")
+        &&(convertedConfig[item.businessService]?convertedConfig[item.businessService].cancelReceipt:convertedConfig['DEFAULT'].cancelReceipt)
+        
+        ? "CANCEL":"NA"),
+        ["RECEIPT_KEY"]: get(uiConfigs.filter(item => item.code === item.businessService), item.receiptKey, "consolidatedreceipt"),
         ["TENANT_ID"]: item.tenantId || "-",
         ["SERVICE_TYPE"]: item.serviceType
       }));
@@ -132,6 +147,7 @@ export const searchApiCall = async (state, dispatch) => {
       showHideTable(true, dispatch);
     } catch (error) {
       dispatch(toggleSnackbar(true, error.message, "error"));
+      console.log(error);
     }
     // } else {
     //   dispatch(

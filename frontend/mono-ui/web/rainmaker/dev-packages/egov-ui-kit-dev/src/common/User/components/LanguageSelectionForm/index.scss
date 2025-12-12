@@ -25,7 +25,15 @@
   display: flex;
   justify-content: center;
 }
-
+.pmidclogo {
+  width: 60px;
+  position: relative;
+  left: 330px;
+  bottom: 70px;
+}
+.msevaonelogo {
+width: 250px;
+}
 @media only screen and (max-width: 360px) {
   .button-toggle-container button {
     padding: 0 10px !important;
@@ -36,3 +44,9 @@
   }
 }
 
+.rainmaker-displayInline.pmidclogo {
+  width: 70px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

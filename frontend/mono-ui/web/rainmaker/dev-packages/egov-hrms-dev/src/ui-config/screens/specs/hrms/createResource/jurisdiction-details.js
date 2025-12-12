@@ -241,38 +241,38 @@ const jurisdictionDetailsCard = {
             },
           },
           role: {
-        uiFramework: "custom-containers-local",
-        moduleName: "egov-hrms",
-        componentPath: "AutosuggestContainer",
-        jsonPath: "Employee[0].jurisdictions[0].roles",
-        required: true,
-        props: {
-          className:"autocomplete-dropdown hrms-role-dropdown",
-          label: { labelName: "Role", labelKey: "HR_ROLE_LABEL" },
-          placeholder: {
-            labelName: "Select Role",
-            labelKey: "HR_ROLE_PLACEHOLDER"
-          },
-          jsonPath: "Employee[0].jurisdictions[0].roles",
-          sourceJsonPath: "createScreenMdmsData.furnishedRolesList",
-          labelsFromLocalisation: true,
-          suggestions: [],
-          fullwidth: true,
-          required: true,
-          inputLabelProps: {
-            shrink: true
-          },
-          localePrefix: {
-            moduleName: "ACCESSCONTROL_ROLES",
-            masterName: "ROLES"
-          },
-          isMulti: true,
-        },
-        gridDefination: {
-          xs: 12,
-          sm: 6
-        }
-      }
+            uiFramework: "custom-containers-local",
+            moduleName: "egov-hrms",
+            componentPath: "AutosuggestContainer",
+            jsonPath: "Employee[0].jurisdictions[0].roles",
+            required: true,
+            props: {
+              className:"autocomplete-dropdown hrms-role-dropdown",
+              label: { labelName: "Role", labelKey: "HR_ROLE_LABEL" },
+              placeholder: {
+                labelName: "Select Role",
+                labelKey: "HR_ROLE_PLACEHOLDER"
+              },
+              jsonPath: "Employee[0].jurisdictions[0].roles",
+              sourceJsonPath: "createScreenMdmsData.furnishedRolesList",
+              labelsFromLocalisation: true,
+              suggestions: [],
+              fullwidth: true,
+              required: true,
+              inputLabelProps: {
+                shrink: true
+              },
+              localePrefix: {
+                moduleName: "ACCESSCONTROL_ROLES",
+                masterName: "ROLES"
+              },
+              isMulti: true,
+            },
+            gridDefination: {
+              xs: 12,
+              sm: 6
+            }
+          }
         },
         {
           style: {

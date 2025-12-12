@@ -9,20 +9,19 @@ import { resetFiles } from "egov-ui-kit/redux/form/actions";
 import { fetchComplaints } from "egov-ui-kit/redux/complaints/actions";
 import { getDateFromEpoch, mapCompIDToName, isImage, fetchImages, getPropertyFromObj } from "egov-ui-kit/utils/commons";
 import { fetchComplaintCategories } from "egov-ui-kit/redux/complaints/actions";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import "./index.css";
-const getServiceId=(param="")=>{
-  let id=param&&decodeURIComponent(param.split('&')[0]);
-  return id;
-}
+
 class ComplaintDetails extends Component {
   componentDidMount() {
     let { fetchComplaints, match, resetFiles,fetchComplaintCategories } = this.props;
     fetchComplaintCategories();
-    fetchComplaints([{ key: "serviceRequestId", value: getServiceId(match.params.serviceRequestId) }]);
+    fetchComplaints([{ key: "serviceRequestId", value: match.params.serviceRequestId }]);
     if (this.props.form && this.props.form.complaint) {
       resetFiles("complaint");
     }
   }
+
   render() {
     let { complaint, timeLine } = this.props.transformedComplaint;
     let { history, reopenValidChecker } = this.props;
@@ -56,7 +55,12 @@ const mapStateToProps = (state, ownProps) => {
   const { complaints, common, form } = state;
 
   const { employeeById, departmentById, designationsById, cities } = common || {};
-  let selectedComplaint = complaints["byId"][getServiceId(ownProps.match.params.serviceRequestId)];
+  let selectedComplaint;
+  if(getQueryArg(window.location.href, "smsLink")){
+    selectedComplaint = complaints["byId"][decodeURIComponent(ownProps.match.params.serviceRequestId.split('&')[0])];
+  } else {
+    selectedComplaint = complaints["byId"][decodeURIComponent(ownProps.match.params.serviceRequestId)];
+  }
   const reopenValidChecker = get(state, "common.pgrContants.RAINMAKER-PGR.UIConstants[0].REOPENSLA", 4232000000)
   if (selectedComplaint) {
     let details = {

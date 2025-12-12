@@ -55,6 +55,14 @@ const PaymentRedirectPage = asyncComponent(() =>
 const HowItWorks = asyncComponent(() =>
   import("egov-ui-kit/common/propertyTax/HowItWorks").then(module => module.default)
 );
+const PropertTaxNotification = asyncComponent(() =>
+ 
+import("egov-ui-kit/common/propertyTax/PropertTaxNotification").then(module => module.default)
+);
+// const PropertyTaxProvides = asyncComponent(() =>
+ 
+// import("egov-ui-kit/common/propertyTax/PropertyTaxProvides").then(module => module.default)
+// );
 const PTExamples = asyncComponent(() =>
   import("egov-ui-kit/common/propertyTax/PTExample").then(module => module.default)
 );
@@ -238,6 +246,16 @@ const routes = [
       hideFooter: true,
       // hideBackButton: true,
       title: "PT_HOW_IT_WORKS"
+    }
+  },
+  {
+    path: "property-tax/propertY-tax-notification",
+    component: PropertTaxNotification,
+    needsAuthentication: true,
+    options: {
+      hideFooter: true,
+      // hideBackButton: true,
+      title: "How_to_apply_&_pay_PROPERTY_TAX"
     }
   },
   {

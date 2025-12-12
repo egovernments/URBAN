@@ -5,8 +5,14 @@ import { CityPicker } from "modules/common";
 import { ProfileSection } from "modules/common";
 
 const ProfileForm = ({ form, handleFieldChange, onClickAddPic, img, profilePic }) => {
-  const fields = form.fields || {};
+  
+  let fields = form.fields || {};
   const submit = form.submit;
+  
+  if(Object.keys(fields).length === 3){
+    fields.email.value = fields.email.value.trim();
+  }
+  //
   return (
     <div>
       <div className="profile-card-container">

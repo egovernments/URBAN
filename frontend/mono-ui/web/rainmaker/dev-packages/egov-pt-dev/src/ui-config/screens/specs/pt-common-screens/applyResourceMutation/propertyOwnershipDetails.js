@@ -59,6 +59,7 @@ const institutionTypeInformation = () => {
           pattern: getPattern("Name"),
           jsonPath: "Property.institution.name"
         }),
+
         privateInstitutionTypeDetails: {
           uiFramework: "custom-containers-local",
           moduleName: "egov-pt",
@@ -92,12 +93,11 @@ const institutionTypeInformation = () => {
             inputLabelProps: {
               shrink: true
             },
-    
           },
           gridDefination: {
             xs: 12,
-            sm: 6,
-          },
+            sm: 6
+          }
         },
       }),
     })
@@ -206,13 +206,13 @@ const institutionInformation = () => {
           gridDefination: { xs: 12, sm: 12, md: 12 },
           props: {
             labelKey: "PT_COMMON_SAME_AS_PROPERTY_ADDRESS",
-            jsonPath: "Property.owners[0].sameAsPropertyAddress",
+            jsonPath: "Property.owners[0].sameAsPeropertyAddress",
             required: false,
             destinationJsonPath: "correspondenceAddress"
           },
           required:false,
           type: "array",
-          jsonPath: "Property.owners[0].sameAsPropertyAddress"
+          jsonPath: "Property.owners[0].sameAsPeropertyAddress"
         },
       })
     })
@@ -301,7 +301,7 @@ const commonApplicantInformation = () => {
             {
               labelName: "Transgender",
               labelKey: "PT_COMMON_GENDER_TRANSGENDER",
-              value: "TRANSGENDER"
+              value: "OTHERS"
             }
           ],
           jsonPath: "Property.owners[0].gender",
@@ -326,8 +326,8 @@ const commonApplicantInformation = () => {
         jsonPath: "Property.owners[0].fatherOrHusbandName",
         gridDefination: {
           xs: 12,
-          sm: 12,
-          md: 6
+          sm: 4,
+          md: 4
         },
         props: {
           className: "applicant-details-error"
@@ -369,9 +369,9 @@ const commonApplicantInformation = () => {
         },
         gridDefination: {
           xs: 12,
-          sm: 12,
-          md: 6
-        },
+          sm: 2,
+          md: 2
+        }
       },
       specialApplicantCategory: {
         uiFramework: "custom-containers-local",
@@ -384,11 +384,11 @@ const commonApplicantInformation = () => {
             width: "100%",
             cursor: "pointer"
           },
-          className: "hr-generic-selectfield autocomplete-dropdown",
           label: {
             labelName: "Special Applicant Category",
             labelKey: "PT_COMMON_SPECIAL_APPLICANT_CATEGORY_LABEL"
           },
+          className: "hr-generic-selectfield autocomplete-dropdown",
           placeholder: {
             labelName: "Select Special Applicant Category",
             labelKey: "PT_COMMON_SPECIAL_APPLICANT_CATEGORY_PLACEHOLDER"
@@ -426,7 +426,7 @@ const commonApplicantInformation = () => {
         pattern: getPattern("Address"),
         required: true,
         errorMessage: "Invalid Address",
-        jsonPath: "Property.owners[0].permanentAddress",
+        jsonPath: "Property.owners[0].correspondenceAddress",
         gridDefination: {
           xs: 12,
           sm: 12,
@@ -443,12 +443,12 @@ const commonApplicantInformation = () => {
         gridDefination: { xs: 12, sm: 12, md: 12 },
         props: {
           labelKey: "PT_COMMON_SAME_AS_PROPERTY_ADDRESS",
-          jsonPath: "Property.owners[0].sameAsPropertyAddress",
+          jsonPath: "Property.owners[0].sameAsPeropertyAddress",
           required: false,
-          destinationJsonPath: "permanentAddress"
+          destinationJsonPath: "correspondenceAddress"
         },
         type: "array",
-        jsonPath: "Property.owners[0].sameAsPropertyAddress"
+        jsonPath: "Property.owners[0].sameAsPeropertyAddress"
       },
     })
   });

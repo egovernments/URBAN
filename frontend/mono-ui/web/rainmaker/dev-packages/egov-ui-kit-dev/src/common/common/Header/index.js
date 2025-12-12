@@ -11,7 +11,6 @@ import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import get from "lodash/get";
 import "./index.css";
 import { updateActiveRoute } from "egov-ui-kit/redux/app/actions";
-import commonConfig from "config/common.js";
 import { getTenantId, getUserInfo, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 
 // get userInfo role
@@ -36,7 +35,7 @@ class Header extends Component {
     const { role, userInfo } = this.props;
     const permanentCity = get(nextProps, "userInfo.permanentCity");
     if (get(userInfo ,"permanentCity") !== get(nextProps, "userInfo.permanentCity")) {
-      const tenantId = role.toLowerCase() === "citizen" ? (permanentCity?permanentCity:commonConfig.tenantId) : getTenantId();
+      const tenantId = role.toLowerCase() === "citizen" ? permanentCity : getTenantId();
       const ulbLogo = `https://s3.ap-south-1.amazonaws.com/pb-egov-assets/${tenantId}/logo.png`;
       this.setState({ ulbLogo });
     }
@@ -60,11 +59,6 @@ class Header extends Component {
   _handleBackNavigation = () => {
     this.props.history.goBack();
   };
-
-  _handleBackToHome= () => {
-    this.props.history.push('/');
-  };
-
 
   _logout = () => {
     this._closeLogoutDialog();
@@ -110,10 +104,9 @@ class Header extends Component {
       </div>
     );
 
-    let  onLeftIconButtonClick = isHomeScreen ? this._handleToggleMenu : hideBackButton ? null : this._handleBackNavigation;
+    const onLeftIconButtonClick = isHomeScreen ? this._handleToggleMenu : hideBackButton ? null : this._handleBackNavigation;
     const onToolBarIconClick = this._handleToggleMenu;
-    let pathname=window.location.pathname;
-    onLeftIconButtonClick= pathname&&(pathname.includes('/property-tax')||pathname.includes('/home'))?this._handleBackToHome:onLeftIconButtonClick;
+
     return { style, iconElementLeft, onLeftIconButtonClick, onToolBarIconClick, isHomeScreen };
   };
 

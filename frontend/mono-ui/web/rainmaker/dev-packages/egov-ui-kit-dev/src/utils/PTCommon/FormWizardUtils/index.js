@@ -9,6 +9,7 @@ import Label from "../../../utils/translationNode";
 import { httpRequest } from "../../api";
 import { convertUnitsToSqFt, findCorrectDateObj, findCorrectDateObjPenaltyIntrest, getFinancialYearFromQuery, getQueryValue } from "../../PTCommon";
 
+
 export const updateDraftinLocalStorage = async (draftInfo, assessmentNumber, self) => {
   // localStorageSet("draftId", draftInfo.id);
   self.setState(
@@ -33,7 +34,7 @@ export const updateDraftinLocalStorage = async (draftInfo, assessmentNumber, sel
           prepareFormData,
         };
         try {
-          let draftResponse = await httpRequest("property-services/drafts/_update", "_update", [], draftRequest);
+          let draftResponse = await httpRequest("pt-services-v2/drafts/_update", "_update", [], draftRequest);
           const draftInfo = draftResponse.drafts[0];
           updateDraftinLocalStorage(draftInfo);
         } catch (e) {
@@ -45,11 +46,10 @@ export const updateDraftinLocalStorage = async (draftInfo, assessmentNumber, sel
   );
 };
 export const getBusinessServiceNextAction = (businessServiceName, currentAction) => {
-  const businessServiceData =
-    JSON.parse(window.localStorage.getItem("businessServiceData")) || JSON.parse(window.localStorage.getItem("Employee.businessServiceData"));
+  const businessServiceData = JSON.parse(window.localStorage.getItem("businessServiceData")) || JSON.parse(window.localStorage.getItem("Employee.businessServiceData"))
 
-  const data = businessServiceData && businessServiceData.filter((businessService) => businessService.businessService == "PT.CREATE");
-  let { states } = (data && data.length > 0 && data[0]) || [];
+  const data = businessServiceData && businessServiceData.filter(businessService => businessService.businessService == "PT.CREATE");
+  let { states } = data && data.length > 0 && data[0] || [];
 
   if (states && states.length > 0) {
     states = states.filter((item, index) => {
@@ -58,20 +58,18 @@ export const getBusinessServiceNextAction = (businessServiceName, currentAction)
       }
     });
     const actions = states && states.length > 0 && states[0].actions;
-    let returnAction = "";
-    actions &&
-      actions.length > 0 &&
-      actions.map((action) => {
-        if (action.action == "REOPEN") {
-          returnAction = action.action;
-        }
-      });
-    if (returnAction == "REOPEN") {
+    let returnAction=''
+    actions && actions.length > 0 && actions.map(action=>{
+      if(action.action=="REOPEN"){
+        returnAction=action.action;
+      }
+    })
+    if(returnAction=="REOPEN"){
       return returnAction;
     }
     return actions && actions.length > 0 && actions[0] && actions[0].action;
   }
-};
+}
 
 export const callDraft = async (self, formArray = [], assessmentNumber = "") => {
   let { draftRequest, selected } = self.state;
@@ -127,7 +125,7 @@ export const callDraft = async (self, formArray = [], assessmentNumber = "") => 
             prepareFormData,
           };
           try {
-            let draftResponse = await httpRequest("property-services/drafts/_create", "_cretae", [], draftRequest);
+            let draftResponse = await httpRequest("pt-services-v2/drafts/_create", "_cretae", [], draftRequest);
             const draftInfo = draftResponse.drafts[0];  
             updateDraftinLocalStorage(draftInfo, assessmentNumber, self);
           } catch (e) {
@@ -157,7 +155,7 @@ export const callDraft = async (self, formArray = [], assessmentNumber = "") => 
                 },
               };
             }
-            let draftResponse = await httpRequest("property-services/drafts/_update", "_update", [], draftRequest);
+            let draftResponse = await httpRequest("pt-services-v2/drafts/_update", "_update", [], draftRequest);
             const draftInfo = draftResponse.drafts[0];  
             updateDraftinLocalStorage(draftInfo, "", self);
           } catch (e) {
@@ -165,6 +163,8 @@ export const callDraft = async (self, formArray = [], assessmentNumber = "") => 
           }
         } */
   }
+
+
 };
 
 export const updateTotalAmount = (value, isFullPayment, errorText) => {
@@ -358,12 +358,12 @@ export const getInstituteInfo = (self) => {
   const instiObj = {};
   Object.keys(institutionAuthority.fields).map((field) => {
     const jsonPath = institutionAuthority.fields[field].jsonPath;
-    ownerObj[jsonPath.substring(jsonPath.lastIndexOf(".") + 1, jsonPath.length)] =
+    ownerObj[jsonPath && jsonPath.substring(jsonPath.lastIndexOf(".") + 1, jsonPath.length)] =
       get(institutionAuthority, `fields.${field}.value`, undefined) || null;
   });
   Object.keys(institutionDetails.fields).map((field) => {
     const jsonPath = institutionDetails.fields[field].jsonPath;
-    instiObj[jsonPath.substring(jsonPath.lastIndexOf(".") + 1, jsonPath.length)] =
+    instiObj[jsonPath && jsonPath.substring(jsonPath.lastIndexOf(".") + 1, jsonPath.length)] =
       get(institutionDetails, `fields.${field}.value`, undefined) || null;
   });
   instiObj.designation = get(institutionAuthority, "fields.designation.value", "");
@@ -497,8 +497,8 @@ export const normalizePropertyDetails = (properties, self) => {
   const units =
     propertyDetails[0] && propertyDetails[0].units
       ? propertyDetails[0].units.filter((item, ind) => {
-          return item !== null;
-        })
+        return item !== null;
+      })
       : [];
   if (isReassesment && propertyId) {
     property.propertyId = propertyId;
@@ -579,23 +579,13 @@ export const removeAdhocIfDifferentFY = (property, fY) => {
 export const getSortedTaxSlab = (estimateResponse) => {
   if (estimateResponse && estimateResponse.Calculation && estimateResponse.Calculation.length > 0) {
     if (estimateResponse.Calculation[0].taxHeadEstimates && estimateResponse.Calculation[0].taxHeadEstimates.length > 0) {
-      const taxHeadKeys = [
-        "PT_TAX",
-        "PT_CANCER_CESS",
-        "PT_TIME_REBATE",
-        "PT_TIME_PENALTY",
-        "PT_TIME_INTEREST",
-        "PT_OWNER_EXEMPTION",
-        "PT_ROUNDOFF",
-        "PT_UNIT_USAGE_EXEMPTION",
-        "PT_FIRE_CESS",
-      ];
+      const taxHeadKeys = ["PT_TAX", "PT_CANCER_CESS", "PT_TIME_REBATE", "PT_TIME_PENALTY", "PT_TIME_INTEREST", "PT_OWNER_EXEMPTION", "PT_ROUNDOFF", "PT_UNIT_USAGE_EXEMPTION", "PT_FIRE_CESS"];
       const tempArray = estimateResponse.Calculation[0].taxHeadEstimates;
       if (tempArray && tempArray.length > 0) {
         let tempArray1 = [];
         taxHeadKeys.map((key) => {
           let itemKeys = {};
-          itemKeys = tempArray[tempArray.findIndex((item) => item.taxHeadCode.indexOf(key) !== -1)];
+          itemKeys = tempArray[tempArray.findIndex(item => item.taxHeadCode.indexOf(key) !== -1)];
           if (itemKeys) tempArray1.push(itemKeys);
         });
         estimateResponse.Calculation[0].taxHeadEstimates = tempArray1;
@@ -603,4 +593,4 @@ export const getSortedTaxSlab = (estimateResponse) => {
     }
   }
   return estimateResponse;
-};
+}

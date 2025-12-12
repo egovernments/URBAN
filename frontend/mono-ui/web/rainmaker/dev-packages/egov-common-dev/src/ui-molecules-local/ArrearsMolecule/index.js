@@ -1,9 +1,8 @@
 import React from "react";
 import ArrearTable from "../../ui-atoms-local/ArrearTable";
-import './index.css';
+import './index.scss';
 
 const ArrearsMolecule = (props) => {
-
     let head = {};
     props.fees ? Object.keys(props.fees).map((key, ind) => {
         let value = [];
@@ -13,7 +12,6 @@ const ArrearsMolecule = (props) => {
     }
     ) : "NA"
     let keys = [];
-
     keys = Object.keys(head);
     keys.sort((x, y) => head[x] - head[y]);
     return (<ArrearTable headers={[...keys]} values={props.fees} arrears={props.arrears}></ArrearTable>)

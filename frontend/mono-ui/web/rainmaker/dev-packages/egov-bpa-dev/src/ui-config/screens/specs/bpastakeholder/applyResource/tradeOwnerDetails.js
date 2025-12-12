@@ -1,14 +1,26 @@
 import {
   getCommonCard,
-  getCommonContainer, getCommonSubHeader, getCommonTitle,
+  getCommonGrayCard,
+  getCommonTitle,
+  getCommonSubHeader,
+  getTextField,
+  getSelectField,
+  getCommonContainer,
   getDateField,
-  getPattern, getTextField
+  getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+
 import {
-  getEighteenYearOldDateForDOB, getHundredYearOldDateForDOB, getTodaysDateInYMD
+  getDetailsForOwner,
+  getTodaysDateInYMD,
+  getHundredYearOldDateForDOB,
+  getEighteenYearOldDateForDOB,
+  getRadioGroupWithLabel
 } from "../../utils";
 
-
+import { prepareFinalObject as pFO } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getRadioButton } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 export const getOwnerMobNoField = getTextField({
   label: {
@@ -66,7 +78,7 @@ export const getGenderRadioButton = {
       {
         label: "Transgender",
         labelKey: "COMMON_GENDER_TRANSGENDER",
-        value: "TRANSGENDER"
+        value: "OTHERS"
       }
     ],
     jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].gender",
@@ -148,8 +160,8 @@ export const OwnerInfoCard = getCommonCard({
         isDOB: true,
         errorMessage: "TL_DOB_ERROR_MESSAGE",
         jsonPath: "Licenses[0].tradeLicenseDetail.owners[0].dob",
-        minValue: getHundredYearOldDateForDOB(),
-        maxValue: getEighteenYearOldDateForDOB(),
+        minValue : getHundredYearOldDateForDOB(),
+        maxValue : getEighteenYearOldDateForDOB(),
         props: {
           inputProps: {
             max: getTodaysDateInYMD()

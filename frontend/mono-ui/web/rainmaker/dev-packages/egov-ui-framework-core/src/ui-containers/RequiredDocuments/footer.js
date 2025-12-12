@@ -1,17 +1,19 @@
 import { getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
-import {localStorageGet} from "egov-ui-kit/utils/localStorageUtils";
 import "./index.css";
 
 const printDiv = () => {
   let content = document.getElementById("documents-div").innerHTML;
-  let printWindow = window.open("", "");
+  let printWindow = window.open("", "Print");
 
-  printWindow.document.write(`<html><body>${content}</body></html>`);
+  printWindow.document.write("<html><body >");
+  printWindow.document.write(content);
+  printWindow.document.write("</body></html>");
 
   printWindow.document.close();
   printWindow.focus();
   printWindow.print();
+  printWindow.close();
 };
 
 // const startApplyFlow = (state, dispatch) => {
@@ -59,7 +61,7 @@ export const footer = ( startApplyFlow, moduleName )=>{
           labelKey: getTransformedLocale(`${moduleName}_COMMON_BUTTON_PRINT`)
         })
       },
-      visible: !JSON.parse(localStorageGet('isMobileApp')),
+      visible: true,
       onClickDefination: {
         action: "condition",
         callBack: printDiv

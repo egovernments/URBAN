@@ -4,7 +4,7 @@ import {
   getPattern, getSelectField, getTextField
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getQueryArg, getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
+import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
 import get from "lodash/get";
 
 const onIconClick = (state, dispatch, index) => {
@@ -91,15 +91,13 @@ export const payeeDetails = getCommonContainer({
       let tabs = get(state.screenConfiguration.screenConfig, "pay.components.div.children.formwizardFirstStep.children.paymentDetails.children.cardContent.children.capturePaymentDetails.children.cardContent.children.tabSection.props.tabs", []);
       let tabValue = get(tabs[tabIndex], "code", '').toLowerCase();
       let componentPath = process.env.REACT_APP_NAME === "Citizen" ? "components.div.children.formwizardFirstStep.children.paymentDetails.children.cardContent.children.capturePayerDetails.children.cardContent.children.payerDetailsCardContainer" : `components.div.children.formwizardFirstStep.children.paymentDetails.children.cardContent.children.capturePaymentDetails.children.cardContent.children.tabSection.props.tabs[${tabIndex}].tabContent.${tabValue}.children.payeeDetails`;
-      let payerOtherName = process.env.REACT_APP_NAME === "Citizen" ? getQueryArg(window.location.href, "name") : "" || "";
-      let payerOtherNumber = process.env.REACT_APP_NAME === "Citizen" ? getQueryArg(window.location.href, "mobileNumber") : "" || "";
       if (action.value === "COMMON_OTHER") {
         dispatch(
           handleField(
             "pay",
             `${componentPath}.children.payerName`,
             "props.value",
-            payerOtherName
+            ""
           )
         );
         dispatch(
@@ -107,7 +105,7 @@ export const payeeDetails = getCommonContainer({
             "pay",
             `${componentPath}.children.payerMobileNo`,
             "props.value",
-            payerOtherNumber
+            ""
           )
         );
         dispatch(
@@ -126,42 +124,7 @@ export const payeeDetails = getCommonContainer({
             false
           )
         );
-
-        dispatch(
-          handleField(
-            "pay",
-            `${componentPath}.children.payerName`,
-            "props.disabled",
-            false
-          )
-        );
-        dispatch(
-          handleField(
-            "pay",
-            `${componentPath}.children.payerMobileNo`,
-            "props.disabled",
-            false
-          )
-        );
-
       } else {
-        /* To disable the payer name and mobile number incase the user is not owner */
-        dispatch(
-          handleField(
-            "pay",
-            `${componentPath}.children.payerName`,
-            "props.disabled",
-            true
-          )
-        );
-        dispatch(
-          handleField(
-            "pay",
-            `${componentPath}.children.payerMobileNo`,
-            "props.disabled",
-            true
-          )
-        );
         dispatch(
           handleField(
             "pay",
@@ -192,7 +155,6 @@ export const payeeDetails = getCommonContainer({
       labelKey: "NOC_PAYMENT_PAYER_NAME_PLACEHOLDER"
     },
     jsonPath: "ReceiptTemp[0].Bill[0].paidBy",
-    pattern: getPattern("Name"),
     required: true
   }),
   payerMobileNo: getTextField({
@@ -205,7 +167,7 @@ export const payeeDetails = getCommonContainer({
       labelKey: "NOC_PAYMENT_PAYER_MOB_PLACEHOLDER"
     },
     jsonPath: "ReceiptTemp[0].Bill[0].payerMobileNumber",
-    pattern: getPattern("MobileNo"),
+    pattern: /^(?!.*(\d)\1{9})([0]|(\+\d{1,2}-?))?\(?[6-9]\d{2}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
     errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
     iconObj: {
       position: "start",
@@ -421,6 +383,41 @@ export const poDetails = getCommonContainer({
   })
 });
 
+export const qrCodeDetails = getCommonContainer({
+  txnNo: getTextField({
+    label: {
+      labelName: "Transaction No.",
+      labelKey: "PAYMENT_TXN_NO_LABEL"
+    },
+    placeholder: {
+      labelName: "Enter Transaction  no.",
+      labelKey: "PAYMENT_TXN_NO_PLACEHOLDER"
+    },
+    jsonPath: "ReceiptTemp[0].instrument.transactionNumber",
+    required: true
+  }),
+  txnDate: getDateField({
+    label: {
+      labelName: "Transaction Date",
+      labelKey: "PAYMENT_TXN_DATE_LABEL"
+    },
+    placeholder: {
+      labelName: "dd/mm/yy",
+      labelKey: "PAYMENT_TXN_DATE_PLACEHOLDER"
+    },
+    pattern: getPattern("Date"),
+    errorMessage: "PAYMENT_TX_ERROR_MESSAGE",
+    required: true,
+    isDOB: true,
+    jsonPath: "ReceiptTemp[0].instrument.transactionDateInput",
+    props: {
+      inputProps: {
+        max: getTodaysDateInYMD()
+      }
+    }
+  })
+});
+
 export const cheque = getCommonContainer({
   payeeDetails,
   chequeDetails
@@ -443,6 +440,11 @@ export const neftRtgs = getCommonContainer({
 export const postal_order = getCommonContainer({
   payeeDetails,
   poDetails: { ...poDetails }
+});
+
+export const qr_code = getCommonContainer({
+  payeeDetails,
+  onlineDetails: { ...qrCodeDetails }
 });
 
 export const demandDraftDetails = getCommonContainer({
@@ -623,6 +625,12 @@ export const paymentMethods = [
     tabButton: "COMMON_POSTAL_ORDER",
     tabIcon: "Schedule",
     tabContent: { postal_order }
+  },
+  {
+    code: "QR_CODE",
+    tabButton: "COMMON_QR_CODE",
+    tabIcon: "Schedule",
+    tabContent: { qr_code }
   }
 ]
 

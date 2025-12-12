@@ -1,12 +1,40 @@
-import commonConfig from "config/common";
+import * as actionTypes from "./actionTypes";
+import { LOCALATION, ACTIONMENU, MDMS, EVENTSCOUNT, NOTIFICATIONS } from "egov-ui-kit/utils/endPoints";
 import { httpRequest } from "egov-ui-kit/utils/api";
 import { getCurrentAddress, getTransformedNotifications } from "egov-ui-kit/utils/commons";
-import { ACTIONMENU, EVENTSCOUNT, LOCALATION, MDMS, NOTIFICATIONS } from "egov-ui-kit/utils/endPoints";
-import { getLocale, getTenantId, localStorageSet, setLocale } from "egov-ui-kit/utils/localStorageUtils";
+import commonConfig from "config/common";
 import { debug } from "util";
-import { INBOXESCALTEDRECORDS, INBOXRECORDS, INBOXRECORDSCOUNT } from "../../utils/endPoints";
-import { getLocalizationLabels, getModule, getStoredModulesList, setStoredModulesList } from "../../utils/localStorageUtils";
-import * as actionTypes from "./actionTypes";
+import { setLocale, localStorageSet, localStorageGet, getLocale, isValidLocale } from "egov-ui-kit/utils/localStorageUtils";
+// import { getModuleName } from "../../utils/commons";
+import { getLocalization, getLocalizationLabels, getModule, getStoredModulesList, setStoredModulesList, setLocalizationLabelsAsync } from "../../utils/localStorageUtils";
+
+// Helper function to deduplicate localization messages by 'code' field
+const deduplicateLocalizationMessages = (messages) => {
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    return [];
+  }
+
+  // Use Map to keep only the last occurrence of each code (newer data overwrites older)
+  const messageMap = new Map();
+  messages.forEach(message => {
+    if (message && message.code) {
+      messageMap.set(message.code, message);
+    }
+  });
+
+  const deduplicatedArray = Array.from(messageMap.values());
+  const duplicatesRemoved = messages.length - deduplicatedArray.length;
+
+  if (duplicatesRemoved > 0) {
+    console.log(`[Localization] Deduplication: Removed ${duplicatesRemoved} duplicate entries out of ${messages.length} total messages`);
+  }
+
+  return deduplicatedArray;
+};
+
+// Request tracking to prevent race conditions
+// Track per-module to allow parallel fetches for different modules
+let localizationRequestsInProgress = new Set();
 
 export const updateActiveRoute = (routePath, menuName) => {
   localStorageSet("menuPath", routePath);
@@ -27,8 +55,82 @@ export const setBottomNavigationIndex = (bottomNavigationIndex) => {
 };
 
 export const setLocalizationLabels = (locale, localizationLabels) => {
-  window.localStorage.setItem(`localization_${locale}`, JSON.stringify(localizationLabels));
+  // SMART STORAGE STRATEGY TO PREVENT LOCALSTORAGE OVERFLOW:
+  // - rainmaker-common → localStorage ONLY (used everywhere, needs instant sync access)
+  // - ALL data → IndexedDB (unlimited storage capacity)
+  // - NO combined data in localStorage (this was causing quota exceeded errors)
+
+  // FIX: Validate input - only reject if data is actually invalid (not array, null, undefined)
+  // Allow empty array [] - it's valid for tenant modules with no custom translations
+  if (!localizationLabels || !Array.isArray(localizationLabels)) {
+    console.error('[setLocalizationLabels] ERROR: Received invalid localization data (not an array)! Aborting save.');
+    console.error('[setLocalizationLabels] Input:', { type: typeof localizationLabels, isArray: Array.isArray(localizationLabels) });
+    return { type: actionTypes.ADD_LOCALIZATION, locale, localizationLabels: [] };
+  }
+
+  // Log for debugging
+  if (localizationLabels.length === 0) {
+    console.warn(`[setLocalizationLabels] WARNING: Received empty array. This might be valid (tenant with no translations) or an error.`);
+  }
+
+  // Separate rainmaker-common from other modules
+  const rainmakerCommon = localizationLabels.filter(item => item && item.module === 'rainmaker-common');
+  const otherModules = localizationLabels.filter(item => item && item.module !== 'rainmaker-common');
+
+  console.log(`Log => ** [Storage Strategy] Total: ${localizationLabels.length}, Common: ${rainmakerCommon.length}, Others: ${otherModules.length}`);
+
+  // CRITICAL FIX: Only update rainmaker-common if we have valid data
+  // Never overwrite existing common data with empty array!
+  if (rainmakerCommon.length > 0) {
+    try {
+      window.localStorage.setItem(`localization_${locale}_common`, JSON.stringify(rainmakerCommon));
+      console.log(`Log => ** [localStorage] Saved rainmaker-common: ${rainmakerCommon.length} entries (instant access)`);
+    } catch (e) {
+      console.error(`Log => ** [localStorage] CRITICAL: Failed to save rainmaker-common:`, e);
+      // Don't delete existing data on error!
+    }
+  } else {
+    console.warn(`Log => ** [localStorage] WARNING: Skipping rainmaker-common save - no common data in payload (${rainmakerCommon.length} entries). Preserving existing data.`);
+  }
+
+  // FIX: REMOVED combined data write to localStorage to prevent quota exceeded
+  // Previously: window.localStorage.setItem(`localization_${locale}`, JSON.stringify(localizationLabels));
+  // This was causing overflow after 2-3 modules despite IndexedDB implementation
+
+  // Instead, only write to localStorage if data is small (< 3MB) for backward compatibility
+  const dataSize = JSON.stringify(localizationLabels).length;
+  const sizeLimit = 3 * 1024 * 1024; // 3MB limit
+
+  if (dataSize < sizeLimit) {
+    try {
+      window.localStorage.setItem(`localization_${locale}`, JSON.stringify(localizationLabels));
+      console.log(`Log => ** [localStorage] Saved combined data: ${(dataSize / 1024).toFixed(2)} KB (under limit)`);
+    } catch (e) {
+      console.warn(`Log => ** [localStorage] Failed to save combined data (quota exceeded), using IndexedDB only`);
+      // Clean up old combined data if it exists
+      window.localStorage.removeItem(`localization_${locale}`);
+    }
+  } else {
+    console.log(`Log => ** [localStorage] Skipping combined data save: ${(dataSize / 1024).toFixed(2)} KB exceeds ${(sizeLimit / 1024).toFixed(0)} KB limit, using IndexedDB only`);
+    // Remove old combined data to free up space
+    window.localStorage.removeItem(`localization_${locale}`);
+  }
+
   setLocale(locale);
+
+  // Save other modules to IndexedDB (async, non-blocking)
+  if (otherModules.length > 0) {
+    console.log(`Log => ** [IndexedDB] Saving ${otherModules.length} other module entries...`);
+    setLocalizationLabelsAsync(locale, otherModules, 'other_modules').catch(error => {
+      console.warn('Log => ** [IndexedDB] Failed to save other modules (non-critical):', error);
+    });
+  }
+
+  // CRITICAL: Save complete data to IndexedDB as primary storage
+  setLocalizationLabelsAsync(locale, localizationLabels, 'combined').catch(error => {
+    console.warn('Log => ** [IndexedDB] Failed to save combined data (CRITICAL - may lose data):', error);
+  });
+
   return { type: actionTypes.ADD_LOCALIZATION, locale, localizationLabels };
 };
 
@@ -41,76 +143,189 @@ export const toggleSnackbarAndSetText = (open, message = {}, variant) => {
   };
 };
 
-export const fetchLocalizationLabel = (locale = 'en_IN', module, tenantId, isFromModule) => {
+// export const checkModuleLocalisationPresent=(locale='en_IN')=>{
+//   const moduleToLoad=getModuleName();
+//   let isPresent=false;
+//   let localizationLabels=JSON.parse(getLocalization(`localization_${locale}`))||[];
+//   if(localizationLabels.length==0){
+//     return true;
+//   }else if(!localizationLabels.find(localizationLabel=>localizationLabel.module==moduleToLoad.split(",")[0])){
+//     return true;
+//   }
+//   return isPresent;
+// }
+
+export const fetchLocalizationLabel = (locale='en_IN', module, tenantId, isFromModule) => {
   return async (dispatch) => {
-    let storedModuleList = [];
-    if (getStoredModulesList() !== null) {
-      storedModuleList = JSON.parse(getStoredModulesList());
+    // FIX: Validate locale before processing, fallback to en_IN if invalid
+    if (!isValidLocale(locale)) {
+      console.warn(`[fetchLocalizationLabel] Invalid locale provided: "${locale}", falling back to en_IN`);
+      locale = 'en_IN';
     }
-    const moduleName = getModule();
-    let localeModule;
-    if (moduleName === 'rainmaker-common') {
-      localeModule = 'rainmaker-common';
-    }
-    else if (storedModuleList.includes('rainmaker-common')) {
-      localeModule = moduleName;
-    }
-    else {
-      localeModule = moduleName ? `rainmaker-common,${moduleName}` : `rainmaker-common`;
-    }
+
     try {
+      console.log(`Log => ** [Localization] Fetching for locale=${locale}, module=${module}, isFromModule=${isFromModule}`);
+
+      let storedModuleList=[];
+      // const isLocalizationTriggered = localStorageGet("isLocalizationTriggered");
+      // if(isLocalizationTriggered === "true") {
+      //   return;
+      // }
+      if(getStoredModulesList()!==null){
+          storedModuleList =JSON.parse(getStoredModulesList());
+      }
+      const moduleName = getModule();
+      let localeModule;
+      if(moduleName==='rainmaker-common'){
+          localeModule='rainmaker-common';
+      }
+      else if(storedModuleList.includes('rainmaker-common')){
+          localeModule=moduleName;
+      }
+      else{
+        localeModule=moduleName?`rainmaker-common,${moduleName}`:`rainmaker-common`;
+      }
+
       let resultArray = [], tenantModule = "", isCommonScreen;
-      if (module != null) {
-        tenantModule = `rainmaker-${module}`;
+      if(module!=null){
+       tenantModule=`rainmaker-${module}`;
       }
 
-      if ((window.location.href.includes("/language-selection") || window.location.href.includes("/user/register") || window.location.href.includes("/user/login") || window.location.href.includes("/withoutAuth"))) {
-        if ((moduleName && storedModuleList.includes(moduleName) === false) || moduleName == null) isCommonScreen = true;
+      if((window.location.href.includes("/language-selection") || window.location.href.includes("/user/login")|| window.location.href.includes("/withoutAuth"))) {
+         if((moduleName && storedModuleList.includes(moduleName) === false) || moduleName == null) isCommonScreen = true;
       }
 
-      if ((window.location.href.includes("/inbox"))) {
-        if (moduleName && storedModuleList.includes(`rainmaker-common`)) isFromModule = false;
+      if((window.location.href.includes("/inbox"))) {
+          if(moduleName && storedModuleList.includes(`rainmaker-common`)) isFromModule = false;
       }
 
-      if ((moduleName && storedModuleList.includes(moduleName) === false) || isFromModule || isCommonScreen) {
-        const payload1 = await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [
+
+      // FIX: Check if ALL modules in localeModule are already cached
+      // localeModule can be "rainmaker-common" or "rainmaker-common,rainmaker-pgr"
+      const modulesToFetch = localeModule ? localeModule.split(',').map(m => m.trim()) : [];
+      const allModulesCached = modulesToFetch.every(mod => storedModuleList.includes(mod));
+
+      // CRITICAL FIX: Only fetch if modules are NOT cached
+      // isCommonScreen should NOT bypass cache check - if data is cached, use it!
+      // This prevents redundant API calls when rainmaker-common is already in localStorage
+      if(moduleName && !allModulesCached){
+        console.log(`Log => ** [Localization] Fetching module data: ${localeModule} (not in cache: [${storedModuleList.join(', ')}])`);
+        // localStorageSet("isLocalizationTriggered", "true");
+          const payload1 = await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [
           { key: "module", value: localeModule },
           { key: "locale", value: locale },
           { key: "tenantId", value: commonConfig.tenantId },
         ]);
         resultArray = [...payload1.messages];
+        console.log(`Log => ** [Localization] Received ${payload1.messages?.length || 0} messages for ${localeModule}`);
+
+        // Mark all fetched modules as loaded to prevent re-fetching
+        modulesToFetch.forEach(mod => {
+          if (!storedModuleList.includes(mod)) {
+            storedModuleList.push(mod);
+          }
+        });
+        setStoredModulesList(JSON.stringify(storedModuleList));
+      } else {
+        console.log(`Log => ** [Localization] ✅ Skipping fetch - all modules already cached: ${localeModule} in [${storedModuleList.join(', ')}]`);
       }
 
-      if ((module && storedModuleList.includes(tenantModule) === false)) {
+      if((module && storedModuleList.includes(tenantModule)===false)){
+        console.log(`Log => ** [Localization] Fetching tenant module: ${tenantModule}`);
         storedModuleList.push(tenantModule);
-        var newList = JSON.stringify(storedModuleList);
+        var newList =JSON.stringify(storedModuleList);
+
         const payload2 = module
-          ? await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [
-            { key: "module", value: `rainmaker-${module}` },
-            { key: "locale", value: locale },
-            { key: "tenantId", value: tenantId ? tenantId : commonConfig.tenantId },
-          ])
-          : [];
-        if (payload2 && payload2.messages) {
-          setStoredModulesList(newList);
-          resultArray = [...resultArray, ...payload2.messages];
+        ? await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [
+          { key: "module", value: `rainmaker-${module}` },
+          { key: "locale", value: locale },
+          { key: "tenantId", value: tenantId ? tenantId : commonConfig.tenantId },
+        ])
+        : [];
+
+      // FIX: Always save tenant module to cache, even if it returns empty messages
+      // This prevents infinite re-fetching of tenant modules with no custom translations
+      setStoredModulesList(newList);
+
+      if (payload2 && payload2.messages && payload2.messages.length > 0) {
+        console.log(`Log => ** [Localization] Received ${payload2.messages.length} messages for ${tenantModule}`);
+        resultArray = [...resultArray, ...payload2.messages];
+      } else {
+        console.log(`Log => ** [Localization] Tenant module ${tenantModule} has no custom translations (empty response)`);
+      }
+    } else if (module) {
+        console.log(`Log => ** [Localization] Skipping fetch - ${tenantModule} already in cache`);
+    }
+
+    // CRITICAL FIX: Always load from storage and dispatch to Redux
+    // When modules are cached (no API fetch), we MUST load ALL cached modules from IndexedDB
+    // to ensure components have access to ALL localization data (not just rainmaker-common)
+    let prevLocalisationLabels = [];
+
+    try {
+      // First, try to get from IndexedDB (async) - has complete data
+      const { getLocalizationLabelsAsync } = require('../../utils/localStorageUtils');
+      const indexedDBData = await getLocalizationLabelsAsync(locale);
+
+      if (indexedDBData) {
+        prevLocalisationLabels = JSON.parse(indexedDBData);
+        console.log(`Log => ** [Localization] Loaded ${prevLocalisationLabels.length} previous entries from IndexedDB (hybrid storage)`);
+
+        // CRITICAL: Log what modules we have to debug missing module data
+        const modulesInData = [...new Set(prevLocalisationLabels.map(item => item.module))];
+        console.log(`Log => ** [Localization] Modules in IndexedDB: [${modulesInData.join(', ')}]`);
+      } else {
+        // Fallback to localStorage if IndexedDB is empty
+        if (getLocalizationLabels() != null && !isCommonScreen && storedModuleList.length > 0) {
+          prevLocalisationLabels = JSON.parse(getLocalizationLabels());
+          console.log(`Log => ** [Localization] Loaded ${prevLocalisationLabels.length} previous entries from localStorage (fallback)`);
+        } else {
+          console.warn(`Log => ** [Localization] WARNING: No data in IndexedDB or localStorage! This will cause missing labels.`);
         }
       }
-
-      let prevLocalisationLabels = [];
+    } catch (error) {
+      console.warn('Log => ** [Localization] Error loading from IndexedDB, using localStorage fallback:', error);
+      // Final fallback to localStorage on error
       if (getLocalizationLabels() != null && !isCommonScreen && storedModuleList.length > 0) {
         prevLocalisationLabels = JSON.parse(getLocalizationLabels());
       }
-      resultArray = [...prevLocalisationLabels, ...resultArray];
-      localStorage.removeItem(`localization_${getLocale()}`);
-      dispatch(setLocalizationLabels(locale, resultArray));
-    } catch (error) {
     }
-  };
+
+    // FIX: Combine and deduplicate (even if resultArray is empty from cache hit)
+    const combinedArray = [...prevLocalisationLabels, ...resultArray];
+    const deduplicatedArray = deduplicateLocalizationMessages(combinedArray);
+
+    console.log(`Log => ** [Localization] Final count: ${deduplicatedArray.length} entries (prev: ${prevLocalisationLabels.length}, new: ${resultArray.length})`);
+
+    // FIX: Always dispatch to Redux to ensure components have access to data
+    // Even if resultArray is empty (cache hit), we need to populate Redux from storage
+    if (deduplicatedArray.length === 0) {
+      console.warn(`[Localization] WARNING: No localization data available (not in storage, not fetched). This may cause display issues.`);
+    }
+
+    // REMOVED: localStorage.removeItem() - This was deleting data before save, causing navigation breaks!
+    // The setLocalizationLabels function now handles cleanup internally based on size
+    dispatch(setLocalizationLabels(locale, deduplicatedArray));
+  } catch (error) {
+    // FIX: Add proper error handling instead of silent failure
+    console.error('[Localization] Failed to fetch localization labels:', error);
+    dispatch(toggleSnackbarAndSetText(true, {
+      labelName: "Failed to load translations. Please refresh the page.",
+      labelKey: "ERR_LOCALIZATION_FETCH_FAILED"
+    }, "error"));
+  }
+};
 };
 
 export const fetchLocalizationLabelForOpenScreens= (locale = 'en_IN', module, tenantId, isFromModule) => {
-  return async (dispatch) => {
+return async (dispatch) => {
+  // FIX: Validate locale before processing, fallback to en_IN if invalid
+  if (!isValidLocale(locale)) {
+    console.warn(`[fetchLocalizationLabelForOpenScreens] Invalid locale provided: "${locale}", falling back to en_IN`);
+    locale = 'en_IN';
+  }
+
+  try {
     let storedModuleList = [];
     if (getStoredModulesList() !== null) {
       storedModuleList = JSON.parse(getStoredModulesList());
@@ -126,35 +341,71 @@ export const fetchLocalizationLabelForOpenScreens= (locale = 'en_IN', module, te
     else {
       localeModule = moduleName ? `rainmaker-common,${moduleName}` : `rainmaker-common`;
     }
-    try {
-      let resultArray = [], tenantModule = "", isCommonScreen;
-      if (module != null) {
-        tenantModule = `rainmaker-${module}`;
-      }
 
+    let resultArray = [], tenantModule = "", isCommonScreen;
+    if (module != null) {
+      tenantModule = `rainmaker-${module}`;
+    }
 
-      if ((module && storedModuleList.includes(tenantModule) === false)) {
-        storedModuleList.push(tenantModule);
-        const payload2 = module
+    if ((module && storedModuleList.includes(tenantModule) === false)) {
+      console.log(`Log => ** [Localization:OpenScreens] Fetching tenant module: ${tenantModule}`);
+      storedModuleList.push(tenantModule);
+      setStoredModulesList(JSON.stringify(storedModuleList));
+
+      const payload2 = module
           ? await httpRequest(LOCALATION.GET.URL, LOCALATION.GET.ACTION, [
-            { key: "module", value: `rainmaker-${module}` },
-            { key: "locale", value: locale },
-            { key: "tenantId", value: tenantId ? tenantId : commonConfig.tenantId },
-          ])
+              { key: "module", value: `rainmaker-${module}` },
+              { key: "locale", value: locale },
+              { key: "tenantId", value: tenantId ? tenantId : commonConfig.tenantId },
+            ])
           : [];
-        if (payload2 && payload2.messages) {
-          resultArray = [...resultArray, ...payload2.messages];
+
+      if (payload2 && payload2.messages && payload2.messages.length > 0) {
+        console.log(`Log => ** [Localization:OpenScreens] Received ${payload2.messages.length} messages for ${tenantModule}`);
+        resultArray = [...resultArray, ...payload2.messages];
+      } else {
+        console.log(`Log => ** [Localization:OpenScreens] Tenant module ${tenantModule} has no custom translations (empty response)`);
+      }
+    }
+
+      // FIX: Load previous localization labels with HYBRID STORAGE support
+      // Try IndexedDB first (has all modules), fallback to localStorage
+      let prevLocalisationLabels = [];
+
+      try {
+        // First, try to get from IndexedDB (async) - has complete data
+        const { getLocalizationLabelsAsync } = require('../../utils/localStorageUtils');
+        const indexedDBData = await getLocalizationLabelsAsync(locale);
+
+        if (indexedDBData) {
+          prevLocalisationLabels = JSON.parse(indexedDBData);
+          console.log(`Log => ** [Localization:OpenScreens] Loaded ${prevLocalisationLabels.length} previous entries from IndexedDB`);
+        } else if (getLocalizationLabels() != null && !isCommonScreen && storedModuleList.length > 0) {
+          prevLocalisationLabels = JSON.parse(getLocalizationLabels());
+          console.log(`Log => ** [Localization:OpenScreens] Loaded ${prevLocalisationLabels.length} previous entries from localStorage (fallback)`);
+        }
+      } catch (error) {
+        console.warn('Log => ** [Localization:OpenScreens] Error loading from IndexedDB, using localStorage:', error);
+        if (getLocalizationLabels() != null && !isCommonScreen && storedModuleList.length > 0) {
+          prevLocalisationLabels = JSON.parse(getLocalizationLabels());
         }
       }
 
-      let prevLocalisationLabels = [];
-      if (getLocalizationLabels() != null && !isCommonScreen && storedModuleList.length > 0) {
-        prevLocalisationLabels = JSON.parse(getLocalizationLabels());
-      }
-      resultArray = [...prevLocalisationLabels, ...resultArray];
-      localStorage.removeItem(`localization_${getLocale()}`);
-      dispatch(setLocalizationLabels(locale, resultArray));
+      // FIX: Deduplicate before saving to prevent duplicate entries
+      const combinedArray = [...prevLocalisationLabels, ...resultArray];
+      const deduplicatedArray = deduplicateLocalizationMessages(combinedArray);
+
+      // REMOVED: localStorage.removeItem() - This was deleting data before save, causing navigation breaks!
+      // The setLocalizationLabels function now handles cleanup internally based on size
+      // localStorageSet("isLocalizationTriggered", "false");
+      dispatch(setLocalizationLabels(locale, deduplicatedArray));
     } catch (error) {
+      // FIX: Add proper error handling instead of just logging
+      console.error('[Localization] Failed to fetch localization labels for open screens:', error);
+      dispatch(toggleSnackbarAndSetText(true, {
+        labelName: "Failed to load translations. Please refresh the page.",
+        labelKey: "ERR_LOCALIZATION_FETCH_FAILED"
+      }, "error"));
     }
   };
 };
@@ -164,64 +415,6 @@ const setActionItems = (payload) => {
   return {
     type: actionTypes.FETCH_ACTIONMENU,
     payload,
-  };
-};
-
-const fetchInboxCount = (payload) => {
-  return {
-    type: actionTypes.FETCH_INBOX_COUNT,
-    payload,
-  };
-};
-const fetchInboxRecords = (payload) => {
-  return {
-    type: actionTypes.FETCH_INBOX_RECORDS,
-    payload,
-  };
-};
-const fetchInboxRecordsError = (payload) => {
-  return {
-    type: actionTypes.FETCH_INBOX_RECORDS_ERROR,
-    payload
-  };
-};
-const fetchInboxRecordsPending = () => {
-  return {
-    type: actionTypes.FETCH_INBOX_RECORDS_PENDING,
-  };
-};
-const fetchRemInboxRecords = (payload) => {
-  return {
-    type: actionTypes.FETCH_REM_INBOX_RECORDS_COMPLETE,
-    payload,
-  };
-};
-const fetchResetInboxRecords = () => {
-  return {
-    type: actionTypes.FETCH_RESET_INBOX_RECORDS,
-  };
-};
-
-const fetchRemInboxRecordsError = (payload) => {
-  return {
-    type: actionTypes.FETCH_REM_INBOX_RECORDS_ERROR,
-    payload
-  };
-};
-const fetchRemInboxRecordsPending = () => {
-  return {
-    type: actionTypes.FETCH_REM_INBOX_RECORDS_PENDING,
-  };
-};
-const fetchActionItemsError = (payload) => {
-  return {
-    type: actionTypes.FETCH_ACTIONMENU_ERROR,
-    payload
-  };
-};
-const fetchActionItemsPending = () => {
-  return {
-    type: actionTypes.FETCH_ACTIONMENU_PENDING,
   };
 };
 
@@ -244,32 +437,15 @@ export const fetchCurrentLocation = () => {
 };
 export const fetchActionItems = (role, ts) => {
   return async (dispatch, getState) => {
-    dispatch(fetchActionItemsPending());
     try {
       const payload = await httpRequest(ACTIONMENU.GET.URL, ACTIONMENU.GET.ACTION, [], role, [], ts);
-      let inboxPath = process.env.NODE_ENV === "production" ? "/employee/inbox" : "/inbox";
-      if (payload &&
-        window.location.pathname == inboxPath &&
-        payload.actions &&
-        Array.isArray(payload.actions) &&
-        payload.actions.some &&
-        payload.actions.some((x) => x.name == "rainmaker-common-workflow")) {
 
-        const state = getState();
-        const { app } = state;
-        const { inbox } = app;
-        const { loaded = false, loading = false } = inbox || {};
-        // loaded == false && loading == false && dispatch(fetchInboxRecordsCount());
-        // loaded == false && loading == false && dispatch(fetchRecords());
-      }
       dispatch(setActionItems(payload.actions));
     } catch (error) {
-      dispatch(fetchActionItemsError(error.message));
       // dispatch(complaintFetchError(error.message));
     }
   };
 };
-
 
 export const setUiCommonConfig = (payload) => {
   return {
@@ -310,6 +486,7 @@ export const fetchUiCommonConfig = () => {
       const UiCommonConfig = commonMasters["uiCommonConfig"];
       dispatch(setUiCommonConfig(UiCommonConfig[0]));
     } catch (error) {
+      console.log('Log => ** [MDMS:UiCommonConfig]', error);
     }
   };
 };
@@ -339,6 +516,7 @@ export const fetchUiCommonConstants = () => {
       const UiCommonConstants = commonMasters["uiCommonConstants"];
       dispatch(setUiCommonConstants(UiCommonConstants[0]));
     } catch (error) {
+      console.log('Log => ** [MDMS:UiCommonConstants]', error);
     }
   };
 };
@@ -356,6 +534,7 @@ export const getNotificationCount = (queryObject, requestBody) => {
       const payload = await httpRequest(EVENTSCOUNT.GET.URL, EVENTSCOUNT.GET.ACTION, queryObject, requestBody);
       dispatch(setNotificationCount(payload.unreadCount));
     } catch (error) {
+      console.log('Log => ** [Notifications:Count]', error);
     }
   };
 };
@@ -388,110 +567,6 @@ export const getNotifications = (queryObject, requestBody) => {
       dispatch(setNotificationsComplete(transformedEvents));
     } catch (error) {
       dispatch(setNotificationsError(error.message));
-    }
-  };
-};
-
-export const fetchInboxRecordsCount = () => {
-  return async (dispatch, getState) => {
-    try {
-      const tenantId = getTenantId();
-      const requestBody = [{ key: "tenantId", value: tenantId }];
-      const payload = await httpRequest(INBOXRECORDSCOUNT.GET.URL, INBOXRECORDSCOUNT.GET.ACTION, requestBody);
-      const state = getState();
-      const { app } = state;
-      const { inboxRemData } = app;
-      const { loaded: remainingDataLoaded = false } = inboxRemData || {};
-      remainingDataLoaded == false && payload > 100 && dispatch(fetchRemRecords(payload))
-      dispatch(fetchInboxCount(payload));
-    } catch (error) {
-      dispatch(fetchInboxRecordsError(error.message));
-
-    }
-  };
-};
-export const fetchRecords = () => {
-  return async (dispatch, getState) => {
-    dispatch(fetchInboxRecordsPending());
-    try {
-      const tenantId = getTenantId();
-      const requestBody = [{ key: "tenantId", value: tenantId }, { key: "offset", value: 0 }, { key: "limit", value: 100 }];
-      const escRequestBody = [{ key: "tenantId", value: tenantId }];
-      let payload = await httpRequest(INBOXRECORDS.GET.URL, INBOXRECORDS.GET.ACTION, requestBody);
-      if (payload.ProcessInstances && payload.ProcessInstances.length > 0 && payload.ProcessInstances.length != 100) {
-        let escalatedPayload = await httpRequest(INBOXESCALTEDRECORDS.GET.URL, INBOXESCALTEDRECORDS.GET.ACTION, escRequestBody);
-        escalatedPayload.ProcessInstances && escalatedPayload.ProcessInstances.length > 0 &&
-          escalatedPayload.ProcessInstances.forEach(data => {
-            data.isEscalatedApplication = true;
-            payload.ProcessInstances.push(data);
-          })
-      }
-      dispatch(fetchInboxRecords(payload.ProcessInstances));
-    } catch (error) {
-      dispatch(fetchInboxRecordsError(error.message));
-    }
-  };
-};
-export const fetchRemRecords = (count = 0) => {
-  return async (dispatch, getState) => {
-    dispatch(fetchRemInboxRecordsPending());
-    try {
-      const tenantId = getTenantId();
-      count = localStorage.getItem('jk-test-inbox-record-count') || count;
-      const requestBody = [{ key: "tenantId", value: tenantId }, { key: "offset", value: 100 }, { key: "limit", value: count - 100 }];
-      const escRequestBody = [{ key: "tenantId", value: tenantId }];
-      let payload = await httpRequest(INBOXRECORDS.GET.URL, INBOXRECORDS.GET.ACTION, requestBody);
-      if (payload.ProcessInstances && payload.ProcessInstances.length > 0) {
-        let escalatedPayload = await httpRequest(INBOXESCALTEDRECORDS.GET.URL, INBOXESCALTEDRECORDS.GET.ACTION, escRequestBody);
-        escalatedPayload.ProcessInstances && escalatedPayload.ProcessInstances.length > 0 &&
-          escalatedPayload.ProcessInstances.forEach(data => {
-            data.isEscalatedApplication = true;
-            payload.ProcessInstances.push(data);
-          })
-      }
-      dispatch(fetchRemInboxRecords(payload.ProcessInstances));
-    } catch (error) {
-      dispatch(fetchRemInboxRecordsError(error.message));
-    }
-  };
-};
-export const resetFetchRecords = () => {
-  return async (dispatch, getState) => {
-    dispatch(fetchResetInboxRecords());
-  };
-};
-
-export const setCitizenConsertFormData = (payload) => {
-  return {
-    type: actionTypes.FETCH_CITIZEN_CONSENT_FORM,
-    payload,
-  };
-};
-
-export const fetchCitizenConsentForm = () => {
-  return async (dispatch) => {
-    const requestBody = {
-      MdmsCriteria: {
-        tenantId: commonConfig.tenantId,
-        moduleDetails: [
-          {
-            moduleName: "common-masters",
-            masterDetails: [
-              {
-                name: "CitizenConsentForm",
-              },
-            ],
-          },
-        ],
-      },
-    };
-    try {
-      const payload = await httpRequest(MDMS.GET.URL, MDMS.GET.ACTION, [], requestBody);
-      const { MdmsRes } = payload;
-      const commonMasters = MdmsRes["common-masters"];
-      const citizenConsertFormData = commonMasters["CitizenConsentForm"];
-      dispatch(setCitizenConsertFormData(citizenConsertFormData[0]));
-    } catch (error) {
     }
   };
 };

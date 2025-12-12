@@ -15,7 +15,6 @@ import isEqual from "lodash/isEqual";
 import { prepareFormData } from "egov-ui-kit/redux/common/actions";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { fetchComplaintCategories } from "egov-ui-kit/redux/complaints/actions";
-
 import {
   getDateFromEpoch,
   mapCompIDToName,
@@ -487,6 +486,7 @@ const mapStateToProps = (state, ownProps) => {
         complaints.categoriesById,
         selectedComplaint.serviceCode
       ),
+      phone:selectedComplaint.phone || "NA",
       applicationNo: selectedComplaint.serviceRequestId,
       description: selectedComplaint.description,
       submittedDate: getDateFromEpoch(
@@ -534,6 +534,8 @@ const mapStateToProps = (state, ownProps) => {
     timeLine = selectedComplaint.actions.filter(
       action => action.status && action.status
     );
+    timeLine = timeLine.sort((timeLine1,timeLine2)=> timeLine2.when - timeLine1.when);
+
     isAssignedToEmployee = id == findLatestAssignee(timeLine) ? true : false; //not checking for type equality due to mismatch
     timeLine.map(action => {
       if (action && action.status && action.status === "assigned") {

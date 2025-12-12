@@ -7,8 +7,11 @@ import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
 import filter from "lodash/filter";
 import get from "lodash/get";
 import sortBy from "lodash/sortBy";
-import {getPattern} from "egov-ui-framework/ui-config/screens/specs/utils";
+let floorDropDownData = [];
 
+floorDropDownData.push({ label: "2013-14", value: "2013-14" }, { label: "2014-15", value: "2014-15" }, { label: "2015-16", value: "2015-16" }, { label: "2016-17", value: "2016-17" }, { label: "2017-18", value: "2017-18" }, { label: "2018-19", value: "2018-19" },
+  { label: "2019-20", value: "2019-20" }, { label: "2020-21", value: "2020-21" },
+  { label: "2021-22", value: "2021-22" }, { label: "2022-23", value: "2022-23" }, { label: "2023-24", value: "2023-24" }, { label: "2024-25", value: "2024-25" }, { label: "2025-26", value: "2025-26" });
 const formConfig = {
   name: "propertyAddress",
   fields: {
@@ -16,6 +19,7 @@ const formConfig = {
       id: "city",
       jsonPath: "PropertiesTemp[0].address.city",
       required: true,
+      formName: "propertyAddress",
       localePrefix: { moduleName: "tenant", masterName: "tenants" },
       labelsFromLocalisation: true,
       type: "AutocompleteDropdown",
@@ -55,10 +59,6 @@ const formConfig = {
         );
       },
     },
-    dummy: {
-      numcols: 6,
-      type: "dummy",
-    },
     houseNumber: {
       id: "house-number",
       jsonPath: "Properties[0].address.doorNo",
@@ -66,7 +66,6 @@ const formConfig = {
       floatingLabelText: "PT_PROPERTY_DETAILS_DOOR_NUMBER",
       hintText: "PT_PROPERTY_DETAILS_DOOR_NUMBER_PLACEHOLDER",
       numcols: 6,
-      pattern:getPattern("DoorHouseNo"),
       errorMessage: "PT_PROPERTY_DETAILS_DOOR_NUMBER_ERRORMSG",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
       maxLength: 64,
@@ -104,23 +103,73 @@ const formConfig = {
       //errorMessage: "PT_PROPERTY_DETAILS_PINCODE_ERRORMSG",
       errorMessage: "PT_PINCODE_ERROR_MESSAGE",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      pattern: "^([0-9]){6}$",
+      // pattern: "^([0-9]){6}$",
+      pattern: "^(?!000000|111111|222222|333333|444444|555555|666666|777777|888888|999999)(14[0-9][0-9][0-9][0-9]|151[0-9]{3}|1520[0-9]{2}|1521[0-2][0-9]|15213[0-2])$",
     },
-    oldPID: {
-      id: "oldpid",
-      type: "textFieldIcon",
+    // oldPID: {
+    //   id: "oldpid",
+    //   type: "textField",
+    //   className: "pt-old-pid-text-field",
+    //   //text: "PT_SEARCH_BUTTON",
+    //   //iconRedirectionURL: "https://pmidc.punjab.gov.in/propertymis/search.php",
+    //   jsonPath: "Properties[0].oldPropertyId",
+    //   floatingLabelText: "PT_PROPERTY_ADDRESS_EXISTING_PID",
+    //   hintText: "PT_PROPERTY_ADDRESS_EXISTING_PID_PLACEHOLDER",
+    //   numcols: 6,
+    //   errorMessage: "PT_PROPERTY_DETAILS_PINCODE_ERRORMSG",
+    //   errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
+    //   toolTip: true,
+    //   pattern: /^[^\$\"'<>?\\\\~`!@$%^+={}*,.:;“”‘’]{1,64}$/i,
+    //   toolTipMessage: "PT_OLDPID_TOOLTIP_MESSAGE",
+    //   maxLength: 64,
+    // },
+    UID: {
+      id: "UID",
+      type: "textfield",
       className: "pt-old-pid-text-field",
-      text: "PT_SEARCH_BUTTON",
-      iconRedirectionURL: "https://pmidc.punjab.gov.in/propertymis/search.php",
-      jsonPath: "Properties[0].oldPropertyId",
-      floatingLabelText: "PT_PROPERTY_ADDRESS_EXISTING_PID",
-      hintText: "PT_PROPERTY_ADDRESS_EXISTING_PID_PLACEHOLDER",
+      required: process.env.REACT_APP_NAME === "Citizen" ? false : true,
+      // text: "PT_SEARCH_BUTTON",
+      // iconRedirectionURL: "https://pmidc.punjab.gov.in/propertymis/search.php",
+      jsonPath: "Properties[0].surveyId",
+      floatingLabelText: "Survey Id/UID",
+      hintText: "Enter Survey Id/UID",
       numcols: 6,
       errorMessage: "PT_PROPERTY_DETAILS_PINCODE_ERRORMSG",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      toolTip: true,
-      pattern: /^[^\$\"'<>?\\\\~`!@$%^+={}*,.:;“”‘’]{1,64}$/i,
-      toolTipMessage: "PT_OLDPID_TOOLTIP_MESSAGE",
+      // toolTip: true,
+      //pattern: /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;“”‘’]{1,64}$/i,
+      // toolTipMessage: "PT_OLDPID_TOOLTIP_MESSAGE",
+      maxLength: 64,
+    },
+    YearcreationProperty: {
+      id: "YearcreationProperty",
+      type: "AutocompleteDropdown",
+      className: "pt-old-pid-text-field",
+      // iconRedirectionURL: getTenantId()=='pb.amritsar'? "https://arcserver.punjab.gov.in/portal/apps/webappviewer/index.html?id=8b678d4d5020448499054bf346843ea9": getTenantId()=='pb.hoshiarpur'?"https://arcserver.punjab.gov.in/portal/apps/webappviewer/index.html?id=9bc1b255320a49c590dd17d4d258e054": "https://gis.punjab.gov.in",
+      jsonPath: "Properties[0].additionalDetails.yearConstruction",
+      floatingLabelText: "Year of creation of Property",
+      required: true,
+      hintText: "Select",
+      numcols: 6,
+      gridDefination: {
+        xs: 12,
+        sm: 6
+      },
+      errorMessage: "PT_PROPERTY_DETAILS_PINCODE_ERRORMSG",
+      errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
+      formName: "propertyAddress",
+      dropDownData: floorDropDownData,
+      updateDependentFields: ({ formKey, field, dispatch }) => {
+        if (field.value && field.value.length > 0) {
+          const mohalla = field.dropDownData.find((option) => {
+            return option.value === field.value;
+          });
+          dispatch(prepareFormData("Properties[0].additionalDetails.yearConstruction", mohalla.code));
+        }
+      },
+      // toolTip: true,
+      //pattern: /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;“”‘’]{1,64}$/i,
+      // toolTipMessage: "PT_OLDPID_TOOLTIP_MESSAGE",
       maxLength: 64,
     },
   },
@@ -143,7 +192,13 @@ const formConfig = {
         dispatch(setFieldProperty("propertyAddress", "city", "dropDownData", sortBy(dd, ["label"])));
       }
       const tenant = get(state, 'form.propertyAddress.fields.city.value', null);
-      const mohallaDropDownData = get(state, 'form.propertyAddress.fields.mohalla.dropDownData', []);
+      const mohallaDropDownData = get(state, 'form.propertyAddress.fields.mohalla.dropDownData', []);    
+    // const yearConstructionValue = get(state, 'screenConfiguration.preparedFinalObject.Properties[0].additionalDetails.yearConstruction', null);
+    // get(state, 'Properties[0].additionalDetails.yearConstruction', null) ||  get(state, 'form.Properties[0].additionalDetails.yearConstruction', null) ||
+    
+    // if (yearConstructionValue) {
+    //   dispatch(setFieldProperty("propertyAddress", "YearcreationProperty", "value", yearConstructionValue));
+    // }
 
       if (process.env.REACT_APP_NAME === "Citizen" && tenant && mohallaDropDownData.length == 0) {
         const dataFetchConfig = {
@@ -161,6 +216,7 @@ const formConfig = {
       }
       return action;
     } catch (e) {
+      console.log(e);
       return action;
     }
   },

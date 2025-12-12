@@ -6,6 +6,8 @@ import {
   convertDateToEpoch,
   getTextToLocalMapping
 } from "../../utils/index";
+import { edcrHttpRequest, httpRequest, wrapRequestBody } from "../../../../../ui-utils/api";
+//"../../../../ui-utils/api"
 import {
  enableFieldAndHideSpinner,disableFieldAndShowSpinner
 } from "egov-ui-framework/ui-utils/commons";
@@ -14,6 +16,53 @@ import { validateFields } from "../../utils";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 //import { LabelContainer } from "egov-ui-framework/ui-containers";
 
+export const ENAKSHA = async (state, dispatch) => {
+  window.open('https://enaksha.lgpunjab.gov.in/', '_blank');
+}
+
+export const filestoreid = async (state, dispatch) => {
+  
+  let searchScreenObject = get(
+    state.screenConfiguration.preparedFinalObject.searchScreen,
+    "applicationNumber",
+    {}
+  );
+  let tenant= getTenantId();
+  alert("File Store id NULL "+ searchScreenObject+"  "+tenant);
+  const queryObj = [
+    { key: "tenantId", tenant },
+    { key: "consumerCode", searchScreenObject }
+  ];
+  try {
+    let payload = null;
+
+    let response = await httpRequest(
+      "post",
+      "collection-services/payments/_update",
+       "",
+       queryObj
+    );
+  console.log(response);
+
+    // payload = "https://mseva-uat.lgpunjab.gov.in/collection-services/payments/_update?receiptNumbers="+searchScreenObject +"&"+"tenantId="+tenant ;
+    //  console.log(payload,"payload");
+    //  fetch (payload, {
+    //   headers: {
+    //   'content-type': 'application/json'
+    //   },
+    
+    // }).then((data)=>{
+    //   console.log(data);
+    // })
+  } catch (e) {
+    console.log(e);
+  }
+
+
+}
+export const selfdeclarationdoc = async () => {
+  window.open('https://pmidc-firenoc-documents.s3.amazonaws.com/SELFDECLARATION.pdf', '_blank');
+};
 export const searchApiCall = async (state, dispatch) => {
   showHideTable(false, dispatch);
   let queryObject = [
@@ -80,7 +129,17 @@ export const searchApiCall = async (state, dispatch) => {
         "warning"
       )
     );
-  } else {
+  } 
+  else if (searchScreenObject["mobileNumber"] === "9999999999") {
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: "Please fill From Date", labelKey: "ERR_FILL_FROM_DATE_DEFAULT_NUMBER" },
+        "warning"
+      )
+    );
+      }
+  else {
     for (var key in searchScreenObject) {
       if (
         searchScreenObject.hasOwnProperty(key) &&
@@ -97,7 +156,7 @@ export const searchApiCall = async (state, dispatch) => {
             value: convertDateToEpoch(searchScreenObject[key], "dayend")
           });
         } else {
-          queryObject.push({ key: key, value: searchScreenObject[key].trim().toUpperCase() });
+          queryObject.push({ key: key, value: searchScreenObject[key].trim() });
         }
       }
     }

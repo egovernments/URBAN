@@ -1,5 +1,5 @@
 import React from "react";
-import { LabelContainer } from "egov-ui-framework/ui-containers";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 const styles = {
   backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
@@ -15,12 +15,9 @@ const styles = {
 
 function ApplicationNoContainer(props) {
   const { number } = props;
-  return <div style={styles}>
-  <LabelContainer
-    labelName={'Application No.'}
-    labelKey={'NOC_COMMON_TABLE_COL_APP_NO_LABEL'}
-  />
-  <span> </span>{number}</div>;
+  const applicationNumber = getQueryArg(window.location.href, "applicationNumber")
+  const applicationNo = (number === applicationNumber) ? number : applicationNumber;
+  return <div style={styles}>Application No. {applicationNo}</div>;
 }
 
 export default ApplicationNoContainer;

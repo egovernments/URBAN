@@ -21,13 +21,21 @@ class CheckboxLabels extends React.Component {
     checkedG: true
   };
 
+  // handleChange = name => event => {
+  //   this.setState({ [name]: event.target.checked });
+  // };
+
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    // this.setState({ [name]: event.target.checked });
+    const { jsonPath, prepareFinalObject, preparedFinalObject } = this.props;
+    const checkedG = get(preparedFinalObject, jsonPath, false);
+    prepareFinalObject(jsonPath, !checkedG);
   };
 
   render() {
-    const { classes, content } = this.props;
-
+    //const { classes, content } = this.props;
+    const { classes, content, jsonPath, preparedFinalObject } = this.props;
+    const checkedG = get(preparedFinalObject, jsonPath, false);
     return (
       <FormGroup row>
         <FormControlLabel
@@ -53,5 +61,22 @@ class CheckboxLabels extends React.Component {
 CheckboxLabels.propTypes = {
   classes: PropTypes.object.isRequired
 };
+const mapStateToProps = (state, ownProps) => {
+  let preparedFinalObject = get(state, 'screenConfiguration.preparedFinalObject', {})
+  return { preparedFinalObject: { ...preparedFinalObject } };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    prepareFinalObject: (jsonPath, value) => {
+      dispatch(prepareFinalObject(jsonPath, value));
+    }
+  };
+};
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(CheckboxLabels))
+);
 
-export default withStyles(styles)(CheckboxLabels);
+

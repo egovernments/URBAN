@@ -4,7 +4,7 @@ import { getLocaleLabels, getTransformedLocalStorgaeLabels, getStatusKey } from 
 // import { setRoute } from "egov-ui-kit/redux/app/actions";
 import { getApplicationType,setRoute } from "egov-ui-kit/utils/commons";
 import { getLocalization } from "egov-ui-kit/utils/localStorageUtils";
-
+import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 // import store from "ui-redux/store";
 import { getEpochForDate, getTextToLocalMapping, sortByEpoch } from "../../utils";
 
@@ -304,17 +304,16 @@ const applicationNumberClick = async (item) => {
     navigate(`/pt-mutation/search-preview?applicationNumber=${item.acknowldgementNumber}&tenantId=${item.tenantId}`);
   } else if (businessService == 'PT.CREATE') {
     navigate(`/property-tax/application-preview?applicationNumber=${item.acknowldgementNumber}&tenantId=${item.tenantId}&type=property`);
-  } else if (businessService == 'PT.LEGACY') {
-    navigate(`/property-tax/application-preview?applicationNumber=${item.acknowldgementNumber}&tenantId=${item.tenantId}&type=legacy`);
-  }  else if (businessService == 'PT.UPDATE') {
-    navigate(`/property-tax/application-preview?applicationNumber=${item.acknowldgementNumber}&tenantId=${item.tenantId}&type=updateProperty`);
   } else {
     navigate(propertyInformationScreenLink(item.propertyId,item.tenantId));
   }
 
 }
-
+let newtenantId ;
 const propertyIdClick = (item) => {
+  //item.tenantId = process.env.REACT_APP_NAME === "Employee" ? getTenantId() : JSON.parse(getUserInfo()).permanentCity;
+  item.tenantId = process.env.REACT_APP_NAME === "Employee" ? getTenantId() : item.address.tenantId;
+ // newtenantId = item.address.tenantId;
   navigate(propertyInformationScreenLink(item.propertyId,item.tenantId));
 }
 
@@ -324,6 +323,7 @@ const navigate=(url)=>{
 }
 
 const propertyInformationScreenLink=(propertyId,tenantId)=>{
+  
   if(process.env.REACT_APP_NAME == "Citizen"){
     return `/property-tax/my-properties/property/${propertyId}/${tenantId}`;
   }else{

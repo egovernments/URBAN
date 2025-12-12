@@ -1,9 +1,10 @@
 import * as actionTypes from "./actionTypes";
-import { transformById, getTotalAmountDue } from "egov-ui-kit/utils/commons";
+import { transformById, getTotalAmountDue, transformByIdnew } from "egov-ui-kit/utils/commons";
 
 const initialState = {
   loading: false,
   propertiesById: {},
+  propertiesByIdnew:{},
   draftsById: {},
   assessmentsByStatus: {},
   error: false,
@@ -85,14 +86,21 @@ const propertyReducer = (state = initialState, action) => {
         errorMessage: action.error,
       };
     case actionTypes.PROPERTY_FETCH_COMPLETE:
+      
       const propertiesById = transformById(action.payload["Properties"], "propertyId");
+      const propertiesByIdnew = transformByIdnew(action.payload["Properties"], "propertyId");
+      
       return {
         ...state,
         loading: false,
         error: false,
         errorMessage: "",
         propertiesById,
+        propertiesByIdnew,
       };
+      
+      
+      
     case actionTypes.DRAFT_FETCH_COMPLETE:
       const draftsById = transformById(action.payload["drafts"], "id");
       return {

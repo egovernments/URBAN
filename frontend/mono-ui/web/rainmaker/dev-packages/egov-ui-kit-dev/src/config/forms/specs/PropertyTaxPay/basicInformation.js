@@ -11,7 +11,6 @@ import { localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 
 
 const options = [
-  
   { value: true, label: getLocaleLabels("Yes", "PT_COMMON_YES") },
   { value: false, label: getLocaleLabels("No", "PT_COMMON_NO") },
 ];
@@ -85,40 +84,40 @@ const formConfig = {
       },
       dropDownData: [],
     },
-    rainwaterHarvesting: {
-      id: "rainwaterHarvesting",
-      jsonPath: "Properties[0].additionalDetails.isRainwaterHarvesting",
-      type: "radioButton",
-      localePrefix: "PROPERTYTAX_BILLING_SLAB",
-      floatingLabelText: "PT_COMMONS_IS_RAINWATER_HARVESTING",
-      hintText: "PT_COMMONS_IS_RAINWATER_HARVESTING",
-      required: false,
-      fullWidth: true,
-      showFloatingLabelText:true,
-      labelsFromLocalisation:false,
-      gridDefination: {
-        xs: 12,
-        sm: 6
-      },
-      dropDownData: [],
-    },
-    propertyEntryType: {
-      id: "propertyEntryType",
-      jsonPath: "Properties[0].creationReason",
-      type: "radioButton",
-      localePrefix: "PROPERTYTAX_BILLING_SLAB",
-      floatingLabelText: "PT_PROPERTY_ADDRESS_ENTRY_TYPE",
-      hintText: "PT_PROPERTY_ADDRESS_ENTRY_TYPE",
-      required: false,
-      fullWidth: true,
-      showFloatingLabelText:true,
-      labelsFromLocalisation:false,
-      gridDefination: {
-        xs: 0,
-        sm: 0
-      },
-      dropDownData: [],
-    }
+    // rainwaterHarvesting: {
+    //   id: "rainwaterHarvesting",
+    //   jsonPath: "Properties[0].additionalDetails.isRainwaterHarvesting",
+    //   type: "radioButton",
+    //   localePrefix: "PROPERTYTAX_BILLING_SLAB",
+    //   floatingLabelText: "PT_COMMONS_IS_RAINWATER_HARVESTING",
+    //   hintText: "PT_COMMONS_IS_RAINWATER_HARVESTING",
+    //   required: false,
+    //   fullWidth: true,
+    //   showFloatingLabelText:true,
+    //   labelsFromLocalisation:false,
+    //   gridDefination: {
+    //     xs: 12,
+    //     sm: 6
+    //   },
+    //   dropDownData: [],
+    // },
+    // propertyEntryType: {
+    //   id: "propertyEntryType",
+    //   jsonPath: "Properties[0].creationReason",
+    //   type: "radioButton",
+    //   localePrefix: "PROPERTYTAX_BILLING_SLAB",
+    //   floatingLabelText: "PT_PROPERTY_ADDRESS_ENTRY_TYPE",
+    //   hintText: "PT_PROPERTY_ADDRESS_ENTRY_TYPE",
+    //   required: false,
+    //   fullWidth: true,
+    //   showFloatingLabelText:true,
+    //   labelsFromLocalisation:false,
+    //   gridDefination: {
+    //     xs: 0,
+    //     sm: 0
+    //   },
+    //   dropDownData: [],
+    // }
   },
   action: "",
   redirectionRoute: "",
@@ -136,13 +135,14 @@ const formConfig = {
       masterOne = Object.values(get(state, "common.generalMDMSDataById.PropertyType")).filter(item=> item.propertyType !== "BUILTUP");
       masterTwo = get(state, "common.generalMDMSDataById.PropertySubType");
       set(action, "form.fields.typeOfBuilding.dropDownData", mergeMaster(masterOne, masterTwo, "propertyType"));
-      set(action, "form.fields.rainwaterHarvesting.options",options);
-      set(action, "form.fields.rainwaterHarvesting.value", get(state.common.prepareFormData,'Properties[0].additionalDetails.isRainwaterHarvesting',false));
-      set(action, "form.fields.propertyEntryType.options",propertyOptions);
-      set(action, "form.fields.propertyEntryType.value", get(state.common.prepareFormData,'Properties[0].creationReason',"CREATE"));
-      process.env.REACT_APP_NAME == "Citizen" ? set(action, "form.fields.propertyEntryType.visible", false) : set(action, "form.fields.propertyEntryType.visible", true)
+      // set(action, "form.fields.rainwaterHarvesting.options",options);
+      // set(action, "form.fields.rainwaterHarvesting.value", get(state.common.prepareFormData,'Properties[0].additionalDetails.isRainwaterHarvesting',false));
+      // set(action, "form.fields.propertyEntryType.options",propertyOptions);
+      // set(action, "form.fields.propertyEntryType.value", get(state.common.prepareFormData,'Properties[0].creationReason',"CREATE"));
+      // process.env.REACT_APP_NAME == "Citizen" ? set(action, "form.fields.propertyEntryType.visible", false) : set(action, "form.fields.propertyEntryType.visible", true)
       return action;
     } catch (e) {
+      console.log(e);
     }
   },
 };
@@ -158,6 +158,7 @@ const mergeMaster = (masterOne, masterTwo, parentName = "") => {
     }
   }
   let masterOneData = getAbsentMasterObj(prepareDropDownData(masterOne, true), prepareDropDownData(masterTwo, true), parentName);
+  // console.log(masterOneData);
   for (var i = 0; i < masterOneData.length; i++) {
     // masterOneData[i][parentName]=masterOneData[i].code;
     dropDownData.push({ label: masterOneData[i].name, value: masterOneData[i].code });

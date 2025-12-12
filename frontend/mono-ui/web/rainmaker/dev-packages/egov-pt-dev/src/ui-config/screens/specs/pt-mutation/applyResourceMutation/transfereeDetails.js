@@ -73,7 +73,7 @@ const commonApplicantInformation = () => {
             {
               labelName: "Transgender",
               labelKey: "PT_MUTATION_TRANSFEREE_GENDER_TRANSGENDER_RADIOBUTTON",
-              value: "TRANSGENDER"
+              value: "OTHERS"
             }
           ],
           jsonPath:
@@ -105,35 +105,29 @@ const commonApplicantInformation = () => {
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
         jsonPath:
           "Property.ownersTemp[0].mobileNumber",
+        // props: {
+        //   style: {
+        //     maxWidth: "450px"
+        //   }
+        // },
         gridDefination: {
           xs: 12,
           sm: 12,
           md: 6
         }
       }),
-      alterMobileNo: getTextField({
-        label: {
-          labelName: "Mobile No.",
-          labelKey: "PT_FORM3_ALT_MOBILE_NO"
-        },
-        placeholder: {
-          labelName: "Enter Mobile No.",
-          labelKey: "PT_FORM3_ALT_MOBILE_NO_PLACEHOLDER"
-        },
-        required: false,
-        props: {
-          className: "applicant-details-error"
-        },
-        pattern: getPattern("MobileNo"),
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        jsonPath:
-          "Property.ownersTemp[0].alternatemobilenumber",
-        gridDefination: {
-          xs: 12,
-          sm: 12,
-          md: 6
-        }
-      }),
+      // dummyDiv: {
+      //   uiFramework: "custom-atoms",
+      //   componentPath: "Div",
+      //   gridDefination: {
+      //     xs: 12,
+      //     sm: 12,
+      //     md: 6
+      //   },
+      //   props: {
+      //     disabled: true
+      //   }
+      // },
       guardianName: getTextField({
         label: {
           labelName: "Guardian's Name",
@@ -157,79 +151,63 @@ const commonApplicantInformation = () => {
           className: "applicant-details-error"
         }
       }),
-      relationshipWithGuardian: {
-        uiFramework: "custom-containers-local",
-        moduleName: "egov-pt",
-        componentPath: "AutosuggestContainer",
+      ownershipPercentage: getTextField({
+        label: {
+          labelName: "Ownership Percentage",
+          labelKey: "PT_MUTATION_TRANSFEREE_OWNERSHIP_PERCENTAGE_LABEL"
+        },
+        placeholder: {
+          labelName: "Enter Ownership Percentage",
+          labelKey: "PT_MUTATION_TRANSFEREE_OWNERSHIP_PERCENTAGE_LABEL_PLACEHOLDER"
+        },
+        required: true,
+        pattern: /^[1-9][0-9]?$|^100$/i,
+        errorMessage: "Percentgae 1-100",
+        jsonPath:
+          "Property.ownersTemp[0].ownerShipPercentage",
+        gridDefination: {
+          xs: 12,
+          sm: 12,
+          md: 6
+        },
         props: {
-          label: {
-            labelName: "Relationship with Guardian",
-            labelKey: "PT_MUTATION_TRANSFEREE_APPLICANT_RELATIONSHIP_LABEL"
-          },
-          placeholder: {
-            labelName: "Select Relationship with Guardian",
-            labelKey: "PT_MUTATION_TRANSFEREE_APPLICANT_RELATIONSHIP_LABEL_PLACEHOLDER"
-          },
-          required: true,
-          localePrefix: {
-            moduleName: "common-masters",
-            masterName: "OwnerType"
-          },
-          isClearable: true,
-          labelsFromLocalisation: true,
-          className: "autocomplete-dropdown",
-          jsonPath:
-          "Property.ownersTemp[0].relationship",
-          data: [
-            {
-              code: "FATHER"
-            },
-            {
-              code: "HUSBAND"
-            }
-          ],
-          // sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
+          className: "applicant-details-error"
+        }
+      }),
+      relationshipWithGuardian: getSelectField({
+        label: {
+          labelName: "Relationship with Guardian",
+          labelKey: "PT_MUTATION_TRANSFEREE_APPLICANT_RELATIONSHIP_LABEL"
+        },
+        placeholder: {
+          labelName: "Select Relationship with Guardian",
+          labelKey: "PT_MUTATION_TRANSFEREE_APPLICANT_RELATIONSHIP_LABEL_PLACEHOLDER"
         },
         required: true,
         jsonPath:
-        "Property.ownersTemp[0].relationship",
-        // sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
+          "Property.ownersTemp[0].relationship",
+        data: [
+          {
+            code: "FATHER"
+          },
+          {
+            code: "HUSBAND"
+          },
+          {
+            code: "MOTHER"
+          }
+        ],
+        localePrefix: {
+          moduleName: "common-masters",
+          masterName: "OwnerType"
+        },
+        //sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
         gridDefination: {
           xs: 12,
           sm: 12,
           md: 6
         }
-      },
-      //   label: {
-      //     labelName: "Relationship with Guardian",
-      //     labelKey: "PT_MUTATION_TRANSFEREE_APPLICANT_RELATIONSHIP_LABEL"
-      //   },
-      //   placeholder: {
-      //     labelName: "Select Relationship with Guardian",
-      //     labelKey: "PT_MUTATION_TRANSFEREE_APPLICANT_RELATIONSHIP_LABEL_PLACEHOLDER"
-      //   },
-      //   required: true,
-      //   jsonPath:
-      //     "Property.ownersTemp[0].relationship",
-      //   data: [
-      //     {
-      //       code: "FATHER"
-      //     },
-      //     {
-      //       code: "HUSBAND"
-      //     }
-      //   ],
-      //   localePrefix: {
-      //     moduleName: "common-masters",
-      //     masterName: "OwnerType"
-      //   },
-      //   //sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
-      //   gridDefination: {
-      //     xs: 12,
-      //     sm: 12,
-      //     md: 6
-      //   }
-      // }),
+      }),
       applicantEmail: getTextField({
         label: {
           labelName: "Email",
@@ -322,7 +300,7 @@ const commonApplicantInformation = () => {
           } else {
             let documentType = get(
               state,
-              "screenConfiguration.preparedFinalObject.applyScreenMdmsData.OwnerTypeDocument",
+              "screenConfiguration.preparedFinalObject.OwnerTypeDocument",
               []
             );
             documentType = documentType.filter(document => {
@@ -379,7 +357,7 @@ const commonApplicantInformation = () => {
           masterName: "ReasonForTransfer"
         },
         jsonPath: "Property.ownersTemp[0].documentType",
-        sourceJsonPath: "applyScreenMdmsData.OwnerTypeDocument",
+        sourceJsonPath: "OwnerTypeDocument",
         required: true,
         visible: false,
         gridDefination: {
@@ -546,28 +524,6 @@ const institutionInformation = () => {
           required: true,
           pattern: getPattern("MobileNo"),
           jsonPath: "Property.institutionTemp.mobileNumber"
-        }), alterMobileNo: getTextField({
-          label: {
-            labelName: "Mobile No.",
-            labelKey: "PT_FORM3_ALT_MOBILE_NO"
-          },
-          placeholder: {
-            labelName: "Enter Mobile No.",
-            labelKey: "PT_FORM3_ALT_MOBILE_NO_PLACEHOLDER"
-          },
-          required: false,
-          props: {
-            className: "applicant-details-error"
-          },
-          pattern: getPattern("MobileNo"),
-          errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-          jsonPath:
-            "Property.ownersTemp[0].alternatemobilenumber",
-          gridDefination: {
-            xs: 12,
-            sm: 12,
-            md: 6
-          }
         }),
         authorisedLandline: getTextField({
           label: {

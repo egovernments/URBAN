@@ -30,8 +30,6 @@ import React from "react";
 import { connect } from "react-redux";
 import "./index.css";
 import { getWFConfig } from "./workflowRedirectionConfig";
-import Tooltip from '@material-ui/core/Tooltip';
-
 const actionsStyles = theme => ({
   root: {
     flexShrink: 0,
@@ -175,6 +173,7 @@ class InboxData extends React.Component {
         })
       }
     } catch (e) {
+      console.log(e);
     }
   }
 
@@ -193,18 +192,6 @@ class InboxData extends React.Component {
   onHistoryClick = async (moduleNumber) => {
     const { toggleSnackbarAndSetText, prepareFinalObject } = this.props;
     const processInstances = await this.getProcessIntanceData(moduleNumber.text);
-    let exclamationMarkIndex;
-    if (processInstances && processInstances.length > 0) {
-      processInstances.map((data, index) => {
-        if (data.assigner && data.assigner.roles && data.assigner.roles.length > 0) {
-          data.assigner.roles.map(role => {
-            if (role.code === "AUTO_ESCALATE") return exclamationMarkIndex = index - 1;
-          })
-        }
-      });
-      if (exclamationMarkIndex) processInstances[exclamationMarkIndex].isExclamationMark = true;
-    }
-
     if (processInstances && processInstances.length > 0) {
       await addWflowFileUrl(processInstances, prepareFinalObject);
       this.setState({
@@ -235,13 +222,8 @@ class InboxData extends React.Component {
     // }
     let contextPath = status === "Initiated" ? getWFConfig(row[0].hiddenText, row[0].subtext).INITIATED : getWFConfig(row[0].hiddenText, row[0].subtext).DEFAULT;
     let queryParams = `applicationNumber=${taskId}&tenantId=${tenantId}`;
-    if (row[0].subtext === "PT.CREATE" ) {
+    if (row[0].subtext === "PT.CREATE") {
       queryParams += '&type=property';
-    } else if (row[0].subtext === "PT.UPDATE" ) {
-      queryParams += '&type=updateProperty';
-    } 
-    else if (row[0].subtext === "PT.LEGACY") {
-      queryParams += '&type=legacy';
     }
     else if (row[0].subtext === "ASMT") {
       queryParams += '&type=assessment';
@@ -263,10 +245,9 @@ class InboxData extends React.Component {
     const { wfSlaConfig } = this.state;
     const MAX_SLA = businessServiceSla[businessService];
     if (wfSlaConfig) {
-      // if ((MAX_SLA - (MAX_SLA * wfSlaConfig[0].slotPercentage / 100) <= sla) && sla <= MAX_SLA) {
-      if ((MAX_SLA - (MAX_SLA * wfSlaConfig[0].slotPercentage / 100) <= sla)) {
+      if ((MAX_SLA - (MAX_SLA * eval(wfSlaConfig[0].slotPercentage)) <= sla) && sla <= MAX_SLA) {
         return wfSlaConfig[0].positiveSlabColor;
-      } else if (0 < sla && sla < MAX_SLA - (MAX_SLA * wfSlaConfig[0].slotPercentage / 100)) {
+      } else if (0 < sla && sla < MAX_SLA - (MAX_SLA * eval(wfSlaConfig[0].slotPercentage))) {
         return wfSlaConfig[0].middleSlabColor;
       } else {
         return wfSlaConfig[0].negativeSlabColor;
@@ -293,7 +274,7 @@ class InboxData extends React.Component {
   };
 
   render() {
-    const { data={rows:[],headers:[]}, ProcessInstances, classes ,remainingDataLoading} = this.props;
+    const { data={rows:[],headers:[]}, ProcessInstances, classes } = this.props;
     const { onHistoryClick, onDialogClose, getModuleLink } = this;
     const { isSorting, sortOrder } = this.state;
     const { rows, rowsPerPage, page, rowsPerPageOptions } = this.state;
@@ -338,7 +319,7 @@ class InboxData extends React.Component {
             </TableHead>
             {data.rows.length === 0 ? (
               <TableBody>
-                {!remainingDataLoading&&<Label labelClassName="" label="COMMON_INBOX_NO_DATA" />}
+                <Label labelClassName="" label="COMMON_INBOX_NO_DATA" />
               </TableBody>
             ) : (
                 <TableBody>
@@ -361,14 +342,7 @@ class InboxData extends React.Component {
                           } else if (item.badge) {
                             return (
                               <TableCell className={classNames}>
-                                <div style= {item.isEscalatedApplication ? {width: "80%", display: "flex", justifyContent: "space-between"}: {}}>
-                                  <span class={"inbox-cell-badge-primary"} style={{ backgroundColor: this.getSlaColor(item.text, row[2].text.props.label.includes("AIRPORT_NOC_OFFLINE") ? "AIRPORT_NOC_OFFLINE" : row[2].text.props.label.includes("FIRE_NOC_SRV") ? "FIRE_NOC_SRV" : row[2].text.props.label.split("_")[1]) }}>{item.text}</span>
-                                    {item.isEscalatedApplication ?
-                                    <Tooltip title="Escalated" placement="top">
-                                      <span> <i class="material-icons" style={{color: "rgb(244, 67, 54)"}}>error</i> </span>
-                                    </Tooltip>
-                                    : ""}
-                                </div>
+                                <span class={"inbox-cell-badge-primary"} style={{ backgroundColor: this.getSlaColor(item.text, row[2].text.props.label.split("_")[1]) }}>{item.text}</span>
                               </TableCell>
                             );
                           } else if (item.historyButton) {
@@ -399,7 +373,7 @@ class InboxData extends React.Component {
                   <TableCell colSpan={6} />
                 </TableRow>
               )} */}
-            {!remainingDataLoading&&<TableFooter>
+            <TableFooter>
               <TablePagination
                 rowsPerPageOptions={rowsPerPageOptions}
                 count={data.rows.length}
@@ -410,7 +384,7 @@ class InboxData extends React.Component {
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActionsWrapped}
               />
-            </TableFooter>}
+            </TableFooter>
           </Table>
         </Hidden>
         <Hidden only={["sm", "md", "lg", "xl"]} implementation="css">
@@ -429,7 +403,7 @@ class InboxData extends React.Component {
             )}
           </div>
           {data.rows.length === 0 ? (
-            <Card textChildren={!remainingDataLoading&&<Label labelClassName="" label="COMMON_INBOX_NO_DATA" />} />
+            <Card textChildren={<Label labelClassName="" label="COMMON_INBOX_NO_DATA" />} />
           ) : (
               <div>
                 {data.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
@@ -464,11 +438,9 @@ class InboxData extends React.Component {
                             <Label label={data.headers[4]} labelStyle={{ fontWeight: "500" }} />
                           </div>
                           <div className="card-sladiv-style">
-                            <span class={"inbox-cell-badge-primary"} style={{ backgroundColor: this.getSlaColor(row[4].text, row[2].text.props.label.includes("AIRPORT_NOC_OFFLINE") ? "AIRPORT_NOC_OFFLINE" : row[2].text.props.label.includes("FIRE_NOC_SRV") ? "FIRE_NOC_SRV" : row[2].text.props.label.split("_")[1]) }}>{row[4].text}</span>
+                            <span class={"inbox-cell-badge-primary"} style={{ backgroundColor: this.getSlaColor(row[4].text, row[2].text.props.label.split("_")[1]) }}>{row[4].text}</span>
                           </div>
-                          {/* <div>
-                                <i class="material-icons">error</i>
-                          </div> */}
+
                           <div className="card-viewHistory-icon" onClick={() => onHistoryClick(row[0])}>
                             <i class="material-icons">history</i>
                           </div>
@@ -478,7 +450,7 @@ class InboxData extends React.Component {
                   );
                 })}
                 <TaskDialog open={this.state.dialogOpen} onClose={onDialogClose} history={ProcessInstances} />
-                {!remainingDataLoading&&<TableFooter>
+                <TableFooter>
                   <div className={'inbox-table-pagination-sm'}>
                     <TablePagination
                       colSpan={6}
@@ -492,7 +464,7 @@ class InboxData extends React.Component {
                       ActionsComponent={TablePaginationActionsWrapped}
                     />
                   </div>
-                </TableFooter>}
+                </TableFooter>
               </div>
             )}
         </Hidden>

@@ -15,6 +15,7 @@ class SwitchButton extends Component {
     }
 
     handleAlignment = (event, newAlignment) => {
+        // console.log(this.state);
     };
 
     handleClick(value) {

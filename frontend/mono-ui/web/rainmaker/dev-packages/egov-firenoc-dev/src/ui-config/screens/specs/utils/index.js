@@ -3,7 +3,7 @@ import { getCommonCaption, getCommonCard, getPattern } from "egov-ui-framework/u
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels } from "egov-ui-framework/ui-utils/commons";
+import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels, getObjectValues } from "egov-ui-framework/ui-utils/commons";
 import { getPaymentSearchAPI } from "egov-ui-kit/utils/commons";
 import { getUserInfo, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
@@ -169,24 +169,10 @@ export const getCurrentFinancialYear = () => {
   var fiscalYr = "";
   if (curMonth > 3) {
     var nextYr1 = (today.getFullYear() + 1).toString();
-    fiscalYr = today.getFullYear().toString() + "-" + nextYr1.slice(-2);
+    fiscalYr = today.getFullYear().toString() + "-" + nextYr1;
   } else {
     var nextYr2 = today.getFullYear().toString();
-    fiscalYr = (today.getFullYear() - 1).toString() + "-" + nextYr2.slice(-2);
-  }
-  return fiscalYr;
-};
-
-export const getCurrentFinancialYearForFireNoc = () => {
-  var today = new Date();
-  var curMonth = today.getMonth();
-  var fiscalYr = "";
-  if (curMonth > 3) {
-    var nextYr1 = (today.getFullYear() + 1).toString();
-    fiscalYr = today.getFullYear().toString() + "-" + nextYr1.slice(-2);
-  } else {
-    var nextYr2 = today.getFullYear().toString();
-    fiscalYr = (today.getFullYear() - 1).toString() + "-" + nextYr2.slice(-2);
+    fiscalYr = (today.getFullYear() - 1).toString() + "-" + nextYr2;
   }
   return fiscalYr;
 };
@@ -239,7 +225,7 @@ export const gotoApplyWithStep = (state, dispatch, step) => {
   const applyUrl =
     process.env.REACT_APP_SELF_RUNNING === "true"
       ? `/egov-ui-framework/fire-noc/apply?step=${step}${applicationNumberQueryString}`
-      : `/fire-noc/apply?step=${step}${applicationNumberQueryString}&isSummaryPage=${true}`;
+      : `/fire-noc/apply?step=${step}${applicationNumberQueryString}`;
   dispatch(setRoute(applyUrl));
 };
 
@@ -483,6 +469,61 @@ export const getDetailsForOwner = async (state, dispatch, fieldInfo) => {
   }
 };
 
+export const updateOwnerShipEdit = async ( state, dispatch ) => {
+  let applicantSubType = get(
+    state,
+    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipType"
+  );
+  let applicantType = "";
+  if (applicantSubType) {
+    applicantType = applicantSubType.split(".")[0];
+  } else {
+    applicantType = get(
+      state.screenConfiguration.preparedFinalObject,
+      "DynamicMdms.common-masters.applicantDetails.applicantTypeTransformed[0].code",
+      ""
+    );
+    applicantSubType = get(
+      state.screenConfiguration.preparedFinalObject,
+      `DynamicMdms.common-masters.applicantDetails.applicantTypeTransformed.${applicantType}[0].code`,
+      ""
+    );
+    set(
+      state.screenConfiguration.preparedFinalObject,
+      "FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipType",
+      applicantSubType
+    );
+      dispatch(
+        prepareFinalObject(
+          "FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipType",
+          applicantSubType
+        )
+      );
+  }
+  set(
+    state,
+    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipMajorType",
+    applicantType
+  );
+  set(
+    state,
+    "screenConfiguration.preparedFinalObject.DynamicMdms.common-masters.applicantDetails.selectedValues[0].applicantType",
+    applicantType
+  );
+  try {
+      dispatch(
+        prepareFinalObject(
+          "DynamicMdms.common-masters.applicantDetails.selectedValues[0].applicantType",
+          applicantType
+        )
+      );
+    dispatch(prepareFinalObject( `DynamicMdms.common-masters.applicantDetails.applicantSubTypeTransformed.allDropdown[0]`, getObjectValues(get( state.screenConfiguration.preparedFinalObject, `DynamicMdms.common-masters.applicantDetails.applicantDetailsTransformed.${applicantType}`, [])) ));
+    dispatch(prepareFinalObject( `DynamicMdms.common-masters.applicantDetails.selectedValues[0].applicantSubType`, applicantSubType ));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export const validateOwners = (state, dispatch) => {
   let ownersJsonPath = "";
   let owners = [];
@@ -673,27 +714,21 @@ export const searchBill = async (dispatch, applicationNumber, tenantId) => {
   }
 };
 
-const isApplicationPaid = (currentStatus, workflowCode) => {
+const isApplicationPaid = (currentStatus, nextAction, workflowCode) => {
   let isPAID = false;
-  // if (currentStatus === "CITIZENACTIONREQUIRED") {
-  //   return true;
-  // }
+  if (currentStatus === "CITIZENACTIONREQUIRED") {
+    return true;
+  }
   const businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
 
   if (!isEmpty(businessServiceData)) {
     const tlBusinessService = JSON.parse(localStorageGet("businessServiceData")).filter(item => item.businessService === workflowCode)
     const states = tlBusinessService && tlBusinessService.length > 0 && tlBusinessService[0].states;
-    for (var i = 0; i < states.length; i++) {
-      if (states[i].state === currentStatus) {
-        break;
-      }
-      if (
-        states[i].actions &&
-        states[i].actions.filter(item => item.action === "PAY").length > 0
-      ) {
-        isPAID = true;
-        break;
-      }
+    if(currentStatus!=null && currentStatus!= "INITIATED" && currentStatus != "CITIZENACTIONREQUIRED" && currentStatus != "PENDINGPAYMENT"){
+      isPAID = true;
+    }
+    else if (nextAction) {
+      isPAID = true;
     }
   } else {
     isPAID = false;
@@ -704,7 +739,9 @@ const isApplicationPaid = (currentStatus, workflowCode) => {
 
 export const createEstimateData = (billObject, dispatch) => {
   dispatch(prepareFinalObject("ReceiptTemp[0].Bill", [billObject]));
+  
   const billDetails = billObject && billObject.billDetails;
+  console.log("billObject"+JSON.stringify(billDetails));
   let fees =
     billDetails &&
     billDetails[0].billAccountDetails &&
@@ -729,22 +766,20 @@ export const createBill = async (queryObject, dispatch) => {
     );
     return response;
   } catch (error) {
-    if(error.code!="EG_BS_BILL_NO_DEMANDS_FOUND"){
-      dispatch(
-        toggleSnackbar(
-          true,
-          { labelName: error.message, labelKey: error.message },
-          "warning"
-        )
-      );
-      console.error(error);
-    }
+    dispatch(
+      toggleSnackbar(
+        true,
+        { labelName: error.message, labelKey: error.message },
+        "error"
+      )
+    );
+    console.log(error, 'fetxh');
   }
 };
 
-export const generateBill = async (dispatch, applicationNumber, tenantId, status) => {
+export const generateBill = async (state, dispatch, applicationNumber, tenantId, status) => {
   try {
-    if (applicationNumber && tenantId && status) {
+    if (applicationNumber && tenantId) {
       const queryObj = [
         {
           key: "tenantId",
@@ -766,9 +801,28 @@ export const generateBill = async (dispatch, applicationNumber, tenantId, status
           value: applicationNumber
         }
       ];
-      const isPAID = isApplicationPaid(status, "FIRENOC");
-      const payload = isPAID ? await getReceiptData(billQueryObj) : await createBill(queryObj, dispatch);
-      let estimateData = payload ? isPAID ? payload && payload.Payments && payload.Payments.length > 0 && createEstimateData(payload.Payments[0].paymentDetails[0].bill, dispatch) : payload && createEstimateData(payload.Bill[0], dispatch) : [];
+      const AmountPaid = get(state.screenConfiguration.preparedFinalObject, "AmountPaid");
+      let nextAction = false;
+        if( AmountPaid > 0 ) {
+          nextAction = true;
+        } 
+      const isPAID = isApplicationPaid(status, nextAction, "FIRENOC");
+      const fetchBillResponse = await createBill(queryObj, dispatch);
+      const payload = isPAID
+        ? await getReceiptData(billQueryObj.filter(item => item.key !== "businessService"))
+        : fetchBillResponse && fetchBillResponse.Bill && fetchBillResponse.Bill[0];
+        console.log("PAYLOAD"+JSON.stringify(payload))
+      let estimateData = payload
+      ? isPAID
+      ? payload &&
+      payload.Payments &&
+      payload.Payments.length > 0 &&
+      createEstimateData(
+        payload.Payments[0].paymentDetails[0].bill,
+        dispatch
+      )
+      : payload && createEstimateData(payload, dispatch)
+      : [];
       estimateData = estimateData || [];
       set(estimateData, "payStatus", isPAID);
       dispatch(prepareFinalObject("applyScreenMdmsData.estimateCardData", estimateData));

@@ -6,9 +6,9 @@ import { generateBill, ifUserRoleExists } from "../utils";
 import acknowledgementCard from "./acknowledgementResource/acknowledgementUtils";
 import { paymentFooter } from "./acknowledgementResource/paymentFooter";
 import "./index.css";
-import {postPaymentSuccess} from "egov-bnd/ui-config/screens/specs/utils";
 import { getHeader } from "./pay";
-
+import { httpRequest } from "../../../../ui-utils/api";
+import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons"
 const downloadprintMenu = (
   state,
   applicationNumber,
@@ -17,14 +17,12 @@ const downloadprintMenu = (
 ) => {
   const receiptKey = get(
     uiCommonPayConfig,
-    "receiptKey",
-    "consolidatedreceipt"
+    "receiptKey"
   );
-  const pdfModule = get(
-    uiCommonPayConfig,
-    "pdfModule",
-    "PAYMENT"
-  );
+
+  const businessService=get(state.screenConfiguration.preparedFinalObject,"Licenses[0].businessService");
+  const applicationType=get(state.screenConfiguration.preparedFinalObject,"Licenses[0].applicationType")?get(state.screenConfiguration.preparedFinalObject,"Licenses[0].applicationType"):"NA";
+  const workflowCode=get(state.screenConfiguration.preparedFinalObject,"Licenses[0].workflowCode")?get(state.screenConfiguration.preparedFinalObject,"Licenses[0].workflowCode"):"NA";
   let receiptDownloadObject = {
     label: {
       labelName: "DOWNLOAD RECEIPT",
@@ -39,9 +37,25 @@ const downloadprintMenu = (
           value: getQueryArg(window.location.href, "businessService"),
         },
       ];
-      download(receiptQueryString, "download", receiptKey, pdfModule,state);
+      download(receiptQueryString, "download", receiptKey, state);
     },
     leftIcon: "receipt",
+  };
+  let tlCertificateDownloadObject = {
+    label: { labelName: "TL Certificate", labelKey: "TL_CERTIFICATE" },
+    link: () => {
+      const { Licenses } = state.screenConfiguration.preparedFinalObject;
+      downloadCertificateForm(Licenses,applicationNumber,tenantId,);
+    },
+    leftIcon: "book"
+  };
+  let tlCertificatePrintObject = {
+    label: { labelName: "TL Certificate", labelKey: "TL_CERTIFICATE" },
+    link: () => {
+      const { Licenses } = state.screenConfiguration.preparedFinalObject;
+      downloadCertificateForm(Licenses,applicationNumber,tenantId,'print');
+    },
+    leftIcon: "book"
   };
   let receiptPrintObject = {
     label: { labelName: "PRINT RECEIPT", labelKey: "COMMON_PRINT_RECEIPT" },
@@ -54,15 +68,21 @@ const downloadprintMenu = (
           value: getQueryArg(window.location.href, "businessService"),
         },
       ];
-      download(receiptQueryString, "print", receiptKey, pdfModule,state );
+      download(receiptQueryString, "print", receiptKey, state);
     },
     leftIcon: "receipt",
   };
   let downloadMenu = [];
   let printMenu = [];
-  downloadMenu = [receiptDownloadObject];
-  printMenu = [receiptPrintObject];
-
+  if(businessService == "TL" && applicationType == "RENEWAL" && workflowCode == "DIRECTRENEWAL")
+    {
+        downloadMenu = [receiptDownloadObject,tlCertificateDownloadObject];
+        printMenu = [receiptPrintObject,tlCertificatePrintObject];
+    }
+    else{
+        downloadMenu = [receiptDownloadObject];
+        printMenu = [receiptPrintObject];
+    } 
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
@@ -132,6 +152,7 @@ const getAcknowledgementCard = (
     "commonPayInfo"
   );
   if (status === "success") {
+    let extraData= {...state.properties, 'payment':state.screenConfiguration.paymentDetails}
     return {
       header,
       headerdownloadprint: downloadprintMenu(
@@ -162,13 +183,8 @@ const getAcknowledgementCard = (
                 ? `CITIZEN_SUCCESS_${transBusinessService}_PAYMENT_RECEIPT_NO`
                 : `EMPLOYEE_SUCCESS_${transBusinessService}_PAYMENT_RECEIPT_NO`,
             },
-            number: receiptNumber,
+            number: receiptNumber
           }),
-          linkComponent: {
-            uiFramework: "custom-atoms-local",
-            componentPath: "LinkComponent",
-            moduleName: "egov-common",
-          },
         },
       },
       paymentFooter: paymentFooter(
@@ -176,7 +192,8 @@ const getAcknowledgementCard = (
         consumerCode,
         tenant,
         status,
-        businessService
+        businessService,
+        extraData
       ),
     };
   } else if (status === "failure") {
@@ -200,11 +217,6 @@ const getAcknowledgementCard = (
                 : `EMPLOYEE_FAILURE_${transBusinessService}_PAYMENT_MESSAGE_DETAIL`,
             },
           }),
-          linkComponent: {
-            uiFramework: "custom-atoms-local",
-            componentPath: "LinkComponent",
-            moduleName: "egov-common",
-          }
         },
       },
       paymentFooter: paymentFooter(
@@ -212,9 +224,70 @@ const getAcknowledgementCard = (
         consumerCode,
         tenant,
         status,
-        businessService
+        businessService,
+        null
       ),
     };
+  }
+};
+const downloadCertificateForm = async(Licenses,applicationNumber,tenantId,mode='download') => {
+  const applicationType= Licenses &&  Licenses.length >0 ? get(Licenses[0],"applicationType") : "NEW";
+  const workflowCode=Licenses &&  Licenses.length >0 ? get(Licenses[0],"workflowCode"):"EDITRENEWAL";
+
+   const queryStr = [
+     { key: "key", value:workflowCode==="DIRECTRENEWAL"?"tlrenewalcertificate": "tlcertificate" },
+     { key: "tenantId", value: "pb" }
+   ]
+   const DOWNLOADRECEIPT = {
+     GET: {
+       URL: "/pdf-service/v1/_create",
+       ACTION: "_get",
+     },
+   };
+   let queryObject = [
+     { key: "tenantId", value: tenantId},
+     {
+       key: "applicationNumber",
+       value: Licenses[0].applicationNumber
+     }
+   ];
+   const LicensesPayload = await getSearchResults(queryObject);
+   Licenses=get(LicensesPayload,"Licenses");
+   const oldFileStoreId=get(Licenses[0],"fileStoreId")
+   if(oldFileStoreId){
+     downloadReceiptFromFilestoreID(oldFileStoreId,mode)
+   }
+   else{
+   try { 
+     httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Licenses }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+       .then(res => {
+         res.filestoreIds[0]
+         if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+           res.filestoreIds.map(fileStoreId => {
+             downloadReceiptFromFilestoreID(fileStoreId,mode)
+           })
+         } else {
+           console.log("Error In Acknowledgement form Download");
+         }
+       });
+   } catch (exception) {
+     alert('Some Error Occured while downloading Acknowledgement form!');
+   }
+ }
+ };
+
+ const getSearchResults = async queryObject => {
+  try {
+    const response = await httpRequest(
+      "post",
+      "/tl-services/v1/_search",
+      "",
+      queryObject
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    return {};
   }
 };
 const screenConfig = {
@@ -239,19 +312,14 @@ const screenConfig = {
       window.location.href,
       "businessService"
     );
-    if(businessService=="BIRTH_CERT.BIRTH_CERT" || businessService=="DEATH_CERT")
-    {
-        //Only for birth and death certificate.
-        postPaymentSuccess({consumerCode:consumerCode, tenantId:tenant, businessService: businessService});
+    if (status == 'success' && localStorage.getItem('pay-channel') && localStorage.getItem('pay-redirectNumber')) {
+      setTimeout(() => {
+        const weblink = "https://api.whatsapp.com/send?phone=" + localStorage.getItem('pay-redirectNumber') + "&text=" + ``;
+        window.location.href = weblink
+      }, 1500)
     }
     // Calling the Bill so that payer information can be set in the PDF for Citizen application
     if (process.env.REACT_APP_NAME === "Citizen") {
-      if ((status == 'success'||status == 'failure') && localStorage.getItem('pay-channel')=="whatsapp" && localStorage.getItem('pay-redirectNumber')) {
-        setTimeout(() => {
-          const weblink = "https://api.whatsapp.com/send?phone=" + localStorage.getItem('pay-redirectNumber') + "&text=" + ``;
-          window.location.href = weblink
-        }, 1500)
-      }
       generateBill(dispatch, consumerCode, tenant, businessService);
     }
     const data = getAcknowledgementCard(

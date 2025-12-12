@@ -112,7 +112,7 @@ export const receiptPaymentDetails = {
     },
     {
       jsonPath:
-        "PaymentReceipt.pendingAmountCalculated",
+        "PaymentReceipt.totalAmountPaid1",
       callBack: checkValueForNA
     }
   ), paymentMode: getLabelWithValue(

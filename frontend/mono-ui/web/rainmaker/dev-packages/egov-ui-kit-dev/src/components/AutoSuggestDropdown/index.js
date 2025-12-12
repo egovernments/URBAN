@@ -96,9 +96,6 @@ class AutoSuggestDropdown extends React.Component {
       list = dataSource;
     }
     const items = list && list.length > 0 && list.sort((a,b)=>a.label - b.label);
-    if(value&&searchText==""){
-onChange({value:""});
-    }
     return (
       <div style={{ display: "flex", position: "relative", width: "100%" }}>
         <AutoComplete

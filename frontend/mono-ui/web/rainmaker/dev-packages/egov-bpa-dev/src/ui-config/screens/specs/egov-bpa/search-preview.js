@@ -20,7 +20,7 @@ import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
 import { edcrHttpRequest, httpRequest } from "../../../../ui-utils/api";
-import { getAppSearchResults, getNocSearchResults, prepareNOCUploadData, nocapplicationUpdate, getStakeHolderRoles } from "../../../../ui-utils/commons";
+import { getAppSearchResults, getNocSearchResults, prepareNOCUploadData, nocapplicationUpdate } from "../../../../ui-utils/commons";
 import "../egov-bpa/applyResource/index.css";
 import "../egov-bpa/applyResource/index.scss";
 import { permitConditions } from "../egov-bpa/summaryResource/permitConditions";
@@ -342,7 +342,7 @@ const setDownloadMenu = async (action, state, dispatch, applicationNumber, tenan
   if(riskType === "LOW") {
     let lowAppPaymentPayload = await httpRequest(
       "post",
-      getPaymentSearchAPI("BPA.LOW_RISK_PERMIT_FEE", true),
+      getPaymentSearchAPI("BPA.LOW_RISK_PERMIT_FEE"),
       "",
       queryObject
     );
@@ -352,7 +352,7 @@ const setDownloadMenu = async (action, state, dispatch, applicationNumber, tenan
     for(let fee = 0; fee < businessServicesList.length; fee++ ) {
       let lowAppPaymentPayload = await httpRequest(
         "post",
-        getPaymentSearchAPI(businessServicesList[fee], true),
+        getPaymentSearchAPI(businessServicesList[fee]),
         "",
         queryObject
       );
@@ -441,8 +441,6 @@ const setDownloadMenu = async (action, state, dispatch, applicationNumber, tenan
   );
   /** END */
 };
-
-const stakeholerRoles = getStakeHolderRoles();
 
 const getRequiredMdmsDetails = async (state, dispatch) => {
   let mdmsBody = {
@@ -572,7 +570,7 @@ const setSearchResponse = async (
     let userInfo = JSON.parse(getUserInfo()), roles = get(userInfo, "roles"), isArchitect = false;
     if (roles && roles.length > 0) {
       roles.forEach(role => {
-        if (stakeholerRoles.includes(role.code)) {
+        if (role.code === "BPA_ARCHITECT") {
           isArchitect = true;
         }
       })
@@ -601,10 +599,11 @@ const setSearchResponse = async (
     let userInfo = JSON.parse(getUserInfo()),
       roles = get(userInfo, "roles"),
       owners = get(response.BPA["0"].landInfo, "owners"),
+      archtect = "BPA_ARCHITECT",
       isTrue = false, isOwner = true;
     if (roles && roles.length > 0) {
       roles.forEach(role => {
-        if (stakeholerRoles.includes(role.code)) {
+        if (role.code === archtect) {
           isTrue = true;
         }
       })
@@ -615,7 +614,7 @@ const setSearchResponse = async (
         if (owner.mobileNumber === userInfo.mobileNumber) { //owner.uuid === userInfo.uuid
           if (owner.roles && owner.roles.length > 0) {
             owner.roles.forEach(owrRole => {
-              if (stakeholerRoles.includes(owrRole.code)) {
+              if (owrRole.code === archtect) {
                 isOwner = false;
               }
             })

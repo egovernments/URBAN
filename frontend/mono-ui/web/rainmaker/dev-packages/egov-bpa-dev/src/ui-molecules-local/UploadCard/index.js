@@ -228,7 +228,7 @@ const UploadCard = (props) => {
             label={{
               labelKey: getTransformedLocale(docItem.dropDownValues.label),
             }}
-            placeholder={{ labelKey: getTransformedLocale(docItem.dropDownValues.label) }}
+            placeholder={{ labelKey: docItem.dropDownValues.label }}
             data={docItem.dropDownValues.menu}
             optionValue="code"
             optionLabel="label"
@@ -270,11 +270,7 @@ const UploadCard = (props) => {
             color="primary"
             style={{ float: "right" }}
             onClick={() => props.toggleEditClick(docIndex)}
-          >
-            <LabelContainer
-              labelKey={getTransformedLocale("BPA_PREVIEW_LABEL")}
-            />
-            </Button>
+          >PREVIEW</Button>
         </Grid> : ""
       }
     </Grid>

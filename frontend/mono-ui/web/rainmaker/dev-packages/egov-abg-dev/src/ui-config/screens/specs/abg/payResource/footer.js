@@ -199,6 +199,7 @@ const callBackForPay = async (state, dispatch) => {
         "Receipt[0].Bill[0].billDetails[0].receiptNumber",
         null
       );
+      console.log(receiptNumber, response);
       dispatch(prepareFinalObject("receiptSearchResponse", response));
       // moveToSuccess(href, dispatch, receiptNumber);
       dispatch(
@@ -208,6 +209,7 @@ const callBackForPay = async (state, dispatch) => {
       );
     } catch (e) {
       dispatch(toggleSnackbar(true, { labelName: e.message }, "error"));
+      console.log(e);
     }
   } else {
     dispatch(

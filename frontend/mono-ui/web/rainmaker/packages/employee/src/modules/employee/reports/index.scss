@@ -109,16 +109,5 @@
 @media only screen and (max-width: 704px) {
   #reportTable_wrapper {
     overflow: scroll;
-    .col-xs-12 .text-center{
-      position: unset;
-          }
   }
-}
-
-
-.dt-button-collection{
-  margin-top: 2% !important;
-    display: flex!important;
-    flex-direction: row-reverse!important;
-    width: 100%!important;
 }

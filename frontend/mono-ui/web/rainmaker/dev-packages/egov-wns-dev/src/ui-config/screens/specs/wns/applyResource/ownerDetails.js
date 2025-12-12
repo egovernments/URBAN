@@ -145,10 +145,6 @@ export const specialApplicantCategory = getLabelWithValue(
   },
   {
     jsonPath: "applyScreen.property.owners[0].ownerType",
-    localePrefix: {
-      moduleName: "COMMON_MASTERS",
-      masterName: "OWNERTYPE"
-    },
     callBack: handleNA
   }
 )
@@ -272,10 +268,6 @@ export const getOwnerDetails = (isEditable = true) => {
                 labelKey: "WS_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
               },
               { jsonPath: "applyScreen.property.owners[0].ownerType",
-              localePrefix: {
-                moduleName: "COMMON_MASTERS",
-                masterName: "OWNERTYPE"
-              },
               callBack: handleNA }
             )
           }),

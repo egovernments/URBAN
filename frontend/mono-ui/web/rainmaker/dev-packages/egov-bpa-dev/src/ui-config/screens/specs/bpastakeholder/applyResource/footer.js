@@ -913,17 +913,12 @@ export const updateDownloadandPrintMenu = (action, state, dispatch, status) => {
         state.screenConfiguration.preparedFinalObject.Licenses[0],
         "tenantId"
       )
-    },
-    {
-      key: "businessService",
-      value: "BPAREG"
-      
     }
   ];
   let receiptDownloadObject = {
     label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
     link: () => {
-      download(receiptQueryString,"download",'consolidatedreceipt','PAYMENT');
+      download(receiptQueryString,"download");
     },
     leftIcon: "receipt"
   };
@@ -931,7 +926,7 @@ export const updateDownloadandPrintMenu = (action, state, dispatch, status) => {
   let receiptPrintObject = {
     label: { labelName: "Receipt", labelKey: "TL_RECEIPT" },
     link: () => {
-      download(receiptQueryString,"print",'consolidatedreceipt','PAYMENT');
+      download(receiptQueryString,"print");
     },
     leftIcon: "receipt"
   };

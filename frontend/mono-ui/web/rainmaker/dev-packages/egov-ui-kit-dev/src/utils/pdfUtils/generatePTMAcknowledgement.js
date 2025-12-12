@@ -6,7 +6,7 @@ import { getFromObject } from "../PTCommon/FormWizardUtils/formUtils";
 import { getAddressItems } from "../../common/propertyTax/Property/components/PropertyAddressInfo";
 import { generateKeyValue, generatePDF, getDocumentsCard, getMultiItems, getMultipleItemCard } from "./generatePDF";
 
-export const generatePTMAcknowledgement = (preparedFinalObject, fileName = "acknowledgement.pdf") => {
+export const generatePTMAcknowledgement = (preparedFinalObject, fileName = "acknowledgement.pdf",ulbGrade) => {
     registrationSummaryDetails.transferReason.localiseValue=true;
     transferorSummaryDetails.ownerType.localiseValue=true;
     transfereeSummaryDetails.ownerType.localiseValue=true;
@@ -52,7 +52,7 @@ export const generatePTMAcknowledgement = (preparedFinalObject, fileName = "ackn
     } else if (getFromObject(property, "ownershipCategoryInit", "").includes("SINGLEOWNER")) {
         transferorDetails = generateKeyValue(preparedFinalObject, transferorSummaryDetails)
     } else {
-        transferorDetailsInfo = getMultiItems(preparedFinalObject, transferorSummaryDetails, 'Property.ownersTemp[0]')
+        transferorDetailsInfo = getMultiItems(preparedFinalObject, transferorSummaryDetails, 'Property.ownersInit')
         transferorDetails = getMultipleItemCard(transferorDetailsInfo, 'PT_OWNER')
     }
     let transfereeDetails = []
@@ -62,14 +62,15 @@ export const generatePTMAcknowledgement = (preparedFinalObject, fileName = "ackn
     } else if (getFromObject(property, "ownershipCategoryTemp", "").includes("SINGLEOWNER")) {
         transfereeDetails = generateKeyValue(preparedFinalObject, transfereeSummaryDetails)
     } else {
-        transfereeDetailsInfo = getMultiItems(preparedFinalObject, transfereeSummaryDetails, 'Property.ownersInit[0]')
-        transfereeDetails = getMultipleItemCard(transferorDetailsInfo, 'PT_OWNER')
+        transfereeDetailsInfo = getMultiItems(preparedFinalObject, transfereeSummaryDetails, 'Property.ownersTemp')
+        transfereeDetails = getMultipleItemCard(transfereeDetailsInfo, 'PT_OWNER')
     }
 
     const addressCard = getAddressItems(getFromObject(preparedFinalObject, 'Property', {}));
     const documentsUploadRedux = getFromObject(preparedFinalObject, 'documentsUploadRedux', []);
     const documentCard = getDocumentsCard(documentsUploadRedux);
     let pdfData = {
+        ulbGrade:"ULB_GRADE",ulbGrade:ulbGrade,
         header: "PTM_ACKNOWLEDGEMENT", tenantId: property.tenantId,
         applicationNoHeader: 'PT_PROPERRTYID', applicationNoValue: property.propertyId,
         additionalHeader: "PT_APPLICATION_NO", additionalHeaderValue: property.acknowldgementNumber,

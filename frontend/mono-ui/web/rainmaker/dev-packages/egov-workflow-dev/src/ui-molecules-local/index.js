@@ -18,10 +18,13 @@ const TaskDialog = Loadable({
   loader: () => import("./TaskDialog"),
   loading: () => <Loading />
 });
-
+const TlRenewDialog = Loadable({
+  loader: () => import("./TlRenewDialog"),
+  loading : () => <Loading />
+})
 const TaskStatusComponents = Loadable({
   loader: () => import("./TaskStatusComponents"),
   loading: () => <Loading />
 });
 
-export { Footer, ActionDialog, TaskDialog, TaskStatusComponents };
+export { Footer, ActionDialog, TaskDialog, TaskStatusComponents, TlRenewDialog };

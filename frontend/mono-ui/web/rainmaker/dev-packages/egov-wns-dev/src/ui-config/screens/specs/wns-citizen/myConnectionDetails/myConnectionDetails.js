@@ -20,7 +20,7 @@ export const fetchData = async (action, state, dispatch) => {
             key: "tenantId",
             value: JSON.parse(getUserInfo()).permanentCity ? JSON.parse(getUserInfo()).permanentCity : JSON.parse(getUserInfo()).roles[0].tenantId
         }
-    ];
+    ];      
 
     const response = await getWSMyResults(queryObject, "CONNECTION", dispatch);
     const swResponse = await getSWMyResults(queryObject, "CONNECTION", dispatch);
@@ -51,5 +51,6 @@ export const fetchData = async (action, state, dispatch) => {
             );
         }
     } catch (error) {
+        console.log(error);
     };
 }

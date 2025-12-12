@@ -11,8 +11,8 @@ import Label from "egov-ui-kit/utils/translationNode";
 import LanguageSelection from "./LanguageSelection";
 // import menuItems from "./menuItems";
 import { ActionMenu } from "modules/common";
-import logoMseva from "egov-ui-kit/assets/images/logo_black.png";
 import logo from "egov-ui-kit/assets/images/logo_black.png";
+import logoone from "egov-ui-kit/assets/images/mseva-pmidc-punjab.png";
 
 const styles = {
   // listInnerDivStyle: {
@@ -55,7 +55,6 @@ const NavigationDrawer = ({
   isADMIN,
   isUserSetting,
 }) => {
-  let sourceUrl=`${window.location.origin}/employee`;
   return (
     <Drawer
       containerStyle={{ ...defaultContainerStyle, ...containerStyle }}
@@ -106,11 +105,22 @@ const NavigationDrawer = ({
             </div>
           );
         })}
-        <div style={{ width: '100%', display: 'flex', flexFlow: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img style={{ display: "inline-flex", height: '1em' ,cursor:'pointer'}} alt={"Powered by DIGIT"} src={`${sourceUrl}/digit-footer.png`} onError={"this.src='./../digit-footer.png'"} onClick={() => {
-              window.open('https://www.digit.org/', '_blank').focus();
-            }}></img>
+
+        <div className="rainmaker-displayInline" style={{ justifyContent: "left" ,marginLeft:"10px"}}>
+          <div style={{ marginTop: "42px" }}>
+            <img  src={logo} height="14px !important"/>
+          </div >
+          <div style={{ marginTop: "42px" }}>
+            <img  src={logoone} height="14px !important"/>
+          </div >
+          {/* <div style={{ marginLeft: "2px", marginTop: "44px"  }}>
+            <Label bold={true} fontSize="13px" bold={true} label="|" />
+          </div>
+          <div style={{ marginLeft: "2px" ,marginTop: "44px"  }}>
+            <Label bold={true} color="black" bold={true} fontSize="13px" label="STATE_LABEL" />
+          </div > */}
+          <div style={{ marginTop: "42px" ,marginLeft:"65px" }}>
+          <img src={digitLogo} height="14px !important" />
           </div>
         </div>
       </div>

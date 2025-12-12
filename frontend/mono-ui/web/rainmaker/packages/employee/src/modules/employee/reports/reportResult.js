@@ -5,26 +5,25 @@ import { commonApiPost } from "egov-ui-kit/utils/api";
 import { translate } from "./commons/common";
 import $ from "jquery";
 import _ from "lodash";
-// import "datatables-buttons";
-// import "datatables";
-// import "datatables.net";
-// import "datatables.net-buttons";
-// import "datatables.net-dt";
-// import "datatables.net-buttons-bs";
-// import "datatables.net-responsive";
-// import "datatables.net-responsive-dt";
+import "datatables-buttons";
+import "datatables";
+import "datatables.net";
+import "datatables.net-buttons";
+import "datatables.net-dt";
+import "datatables.net-buttons-bs";
+import "datatables.net-responsive";
+import "datatables.net-responsive-dt";
 import JSZip from "jszip/dist/jszip";
 import get from "lodash/get";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-// import "datatables.net-buttons/js/buttons.html5.js"; // HTML 5 file export
-// import "datatables.net-buttons/js/buttons.flash.js"; // Flash file export
-// import "datatables.net-buttons/js/buttons.colVis.min.js";
+import "datatables.net-buttons/js/buttons.html5.js"; // HTML 5 file export
+import "datatables.net-buttons/js/buttons.flash.js"; // Flash file export
+import "datatables.net-buttons/js/buttons.colVis.min.js";
 import { getResultUrl } from "./commons/url";
 import Label from "egov-ui-kit/utils/translationNode";
 import commonConfig from "config/common.js";
 import { getTenantId, setReturnUrl, localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
-import { getLocaleLabels ,getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
 import "./index.css";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -33,17 +32,6 @@ window.JSZip = JSZip;
 var sumColumn = [];
 var footerexist = false;
 let rTable;
-
-const formatLocaleKeys=(key="")=>{
-if(typeof key!='string'){
-  return key;
-}
-key=key.trim&&key.trim()||key;
-key=key.toUpperCase&&key.toUpperCase()||key;
-key=key.replace(/[.:-\s\/]/g, "_")||key;
-return key;
-}
-
 class ShowField extends Component {
   constructor(props) {
     super(props);
@@ -100,27 +88,27 @@ class ShowField extends Component {
 
     const { tabLabel, metaData } = _this.props;
     const reportDetails = metaData.hasOwnProperty("reportDetails") ? metaData.reportDetails : {};
-    const additionalConfig = reportDetails.hasOwnProperty("additionalConfig") && reportDetails.additionalConfig ? reportDetails.additionalConfig : {};
+    const additionalConfig = reportDetails.hasOwnProperty("additionalConfig") && reportDetails.additionalConfig ? reportDetails.additionalConfig: {};
     const reportHeader = reportDetails.hasOwnProperty("reportHeader") ? reportDetails.reportHeader : [];
-    const pageSize = (additionalConfig.print && additionalConfig.print.pdfPageSize) ? additionalConfig.print.pdfPageSize : "LEGAL"
+    const pageSize = (additionalConfig.print && additionalConfig.print.pdfPageSize)? additionalConfig.print.pdfPageSize: "LEGAL"
     let reportTitle = this.getReportTitle();
     let xlsTitle = this.getXlsReportTitle();
     let orientation = reportHeader.length > 6 ? "landscape" : "portrait";
 
     const buttons = [
       {
-        text: `<span style="color:#767676">${getLocaleLabels("RT_DOWNLOAD_AS","RT_DOWNLOAD_AS")}</span>`,
+        text: "<span>Download as : </span>",
         className: "report-download-button-text",
       },
       {
         extend: "pdf",
         filename: _this.state.reportName,
         messageTop: tabLabel,
-        text: getLocaleLabels("RT_DOWNLOAD_PDF","RT_DOWNLOAD_PDF"),
+        text: "PDF",
         orientation: orientation,
         pageSize: pageSize,
         footer: true,
-        customize: function (doc) {
+        customize: function(doc) {
           doc.content[0].text = [];
           doc.content[0].text.push({ text: "mSeva System Reports\n\n", bold: true, fontSize: 20 });
           doc.content[0].text.push({ text: reportTitle, fontSize: 18 });
@@ -129,7 +117,7 @@ class ShowField extends Component {
       },
       {
         extend: "excel",
-        text: getLocaleLabels("RT_DOWNLOAD_XLS","RT_DOWNLOAD_XLS"),
+        text: "XLS",
         filename: _this.state.reportName,
         title: xlsTitle,
         messageTop: tabLabel,
@@ -174,12 +162,12 @@ class ShowField extends Component {
       scrollY: 400,
       aLengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
       scrollX: true,
-      fnInitComplete: function () {
+      fnInitComplete: function() {
         this.css("visibility", "visible");
 
         $(".dataTables_scrollBody thead tr").css({ visibility: "collapse" });
       },
-      drawCallback: function (settings) {
+      drawCallback: function(settings) {
         $(".dataTables_scrollBody thead tr").css({ visibility: "collapse" });
       },
       ...tableConfig,
@@ -236,7 +224,7 @@ class ShowField extends Component {
           searchParams,
         }
       ).then(
-        function (response) {
+        function(response) {
           if (response.viewPath && response.reportData && response.reportData[0]) {
             localStorage.reportData = JSON.stringify(response.reportData);
             setReturnUrl(window.location.hash.split("#/")[1]);
@@ -261,7 +249,8 @@ class ShowField extends Component {
             setFlag(1);
           }
         },
-        function (err) {
+        function(err) {
+          console.log(err);
         }
       );
     } else if (object.defaultValue && object.defaultValue.search("_url") > -1) {
@@ -316,31 +305,8 @@ class ShowField extends Component {
         (reportResult.reportHeader[i].type == "currency" || reportResult.reportHeader[i].total)
       ) {
         return this.addCommas(Number(val) % 1 === 0 ? Number(val) : Number(val).toFixed(2));
-      }
-      else if (val && reportResult &&
-        reportResult.reportHeader &&
-        reportResult.reportHeader.length &&
-        reportResult.reportHeader[i] &&
-        reportResult.reportHeader[i].isLocalisationRequired && reportResult.reportHeader[i].localisationPrefix) {
-
-          if(reportResult.reportHeader[i].localisationPrefix=='ACCESSCONTROL_ROLES_ROLES_'){
-            let list=val&&val.split(',');
-            return list.map(v1=>(<Label
-            className="report-header-row-label"
-            labelStyle={{ wordWrap: "unset", wordBreak: "unset" }}
-            label={`${reportResult.reportHeader[i].localisationPrefix}${formatLocaleKeys(v1)||v1}`}
-          />))           
-            
-          }
-        return <Label
-          className="report-header-row-label"
-          labelStyle={{ wordWrap: "unset", wordBreak: "unset" }}
-          label={`${reportResult.reportHeader[i].localisationPrefix}${formatLocaleKeys(val)}`}
-        />;
-      }
-      else {
+      } else {
         return val;
-
       }
     }
   };
@@ -378,11 +344,7 @@ class ShowField extends Component {
       <thead>
         <tr className="report-table-header">
           <th key={"S. No."} className="report-header-cell">
-            <Label
-                      className="report-header-row-label"
-                      labelStyle={{ wordWrap: "unset", wordBreak: "unset", fontWeight: "bold" }}
-                      label={'RT_SNO'}
-                    />
+            S. No
           </th>
           {metaData && metaData.reportDetails && metaData.reportDetails.selectiveDownload && (
             <th key={"testKey"}>
@@ -460,7 +422,7 @@ class ShowField extends Component {
       let resulturl = getResultUrl(match.params.moduleName);
 
       var tenantId = getTenantId() ? getTenantId() : commonConfig.tenantId;
-      resulturl &&
+        resulturl &&
         commonApiPost(
           resulturl,
           {},
@@ -470,14 +432,15 @@ class ShowField extends Component {
             searchParams,
           }
         ).then(
-          function (response) {
+          function(response) {
             if (response.viewPath && response.reportData) {
               localStorage.reportData = JSON.stringify(response.reportData);
               setReturnUrl(window.location.hash.split("#/")[1]);
               setRoute("/print/report/" + response.viewPath);
             }
           },
-          function (err) {
+          function(err) {
+            console.log(err);
           }
         );
     }
@@ -490,7 +453,7 @@ class ShowField extends Component {
       reportResult.reportHeader &&
       reportResult.reportHeader.length &&
       reportResult.reportHeader[i] &&
-      (reportResult.reportHeader[i].type == "currency" || reportResult.reportHeader[i].total)
+      (reportResult.reportHeader[i].type == "currency" ||reportResult.reportHeader[i].total)
     ) {
       return { textAlign: "right" };
     } else {
@@ -598,7 +561,7 @@ class ShowField extends Component {
       sumColumn.unshift(firstColObj);
     }
 
-    var intVal = function (i) {
+    var intVal = function(i) {
       if (typeof i === "string") {
         let a = i.replace(/,/g, "");
         a = a.replace(/[^-+0-9. ]/g, " ").split(" ")[0];
@@ -641,7 +604,7 @@ class ShowField extends Component {
               return (
                 <th style={index !== 0 ? { textAlign: "right" } : {}} key={index}>
                   {index === 0
-                    ? getLocaleLabels('RT_TOTAL',"RT_TOTAL")
+                    ? "Total"
                     : this.addCommas(Number(total[index - 1]) % 1 === 0 ? total[index - 1] : Number(total[index - 1]).toFixed(2))}
                 </th>
               );
@@ -690,7 +653,7 @@ class ShowField extends Component {
         if (char.length == 1) {
           reportTitle = char + "";
           reportHeaderName += char;
-        } else if (typeof char === "object") {
+        } else if(typeof char === "object") {
           reportTitle = char.text + "";
         } else {
           reportTitle = " " + char;
@@ -702,16 +665,14 @@ class ShowField extends Component {
     // return reportTitle;
     return [reportHeaderName];
   };
-
+  
 
   render() {
     let { isTableShow, metaData, reportResult } = this.props;
     let self = this;
     const viewTabel = () => {
       return (
-        // <div>
-              <div class="table-responsive">  
-
+        <div>
           <table
             id="reportTable"
             style={{

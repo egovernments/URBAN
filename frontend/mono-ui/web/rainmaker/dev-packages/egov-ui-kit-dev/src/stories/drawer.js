@@ -76,7 +76,7 @@ storiesOf("Drawer", module)
       <br />
       <div>
         For more props information please visit{" "}
-        <a href="http://www.material-ui.com/#/components/drawer" target="_blank" rel="noopener noreferrer">
+        <a href="http://www.material-ui.com/#/components/drawer" target="_blank">
           Drawer
         </a>
       </div>

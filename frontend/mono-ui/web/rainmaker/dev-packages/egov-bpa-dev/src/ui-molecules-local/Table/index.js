@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LabelContainer } from "egov-ui-framework/ui-containers";
 
 class Table extends React.Component {
   state = {
@@ -53,13 +52,10 @@ class Table extends React.Component {
         // Object.keys(columns).forEach(column => {
         columns.forEach(column => {
           // Handling the case where column name is an object with options
-          column = typeof column === "object" ? get(column, "key") : column;
+          column = typeof column === "object" ? get(column, "name") : column;
           let columnValue = get(curr, `${column}`, "");
           if (get(columns, `${column}.format`, "")) {
             columnValue = columns[column].format(curr);
-          }
-          if(typeof columnValue === "string") {
-            columnValue = <LabelContainer labelKey={columnValue} labelName={columnValue} />
           }
           dataRow.push(columnValue);
         });
@@ -80,15 +76,6 @@ class Table extends React.Component {
     this.updateTable(data, columns);
   }
 
-  getTranslatedHeader = (columns) => {
-    if(columns) {
-      columns.map((item,key)=>{
-        columns[key].name = <LabelContainer labelKey={item.name} labelName={item.name} />
-      })
-      return columns;
-    }
-  }
-
   updateTable = (data, columns) => {
     // const updatedData = this.formatData(data, columns);
     // Column names should be array not keys of an object!
@@ -98,7 +85,7 @@ class Table extends React.Component {
     this.setState({
       data: updatedData,
       // columns: Object.keys(columns)
-      columns: this.getTranslatedHeader(fixedColumns)
+      columns: fixedColumns
     });
   };
 
@@ -136,7 +123,7 @@ class Table extends React.Component {
 }
 
 Table.propTypes = {
-  columns: PropTypes.array.isRequired,
+  columns: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
   // title: PropTypes.string.isRequired,
   // options: PropTypes.object.isRequired

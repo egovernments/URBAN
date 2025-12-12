@@ -83,6 +83,7 @@ class WhatsAppCity extends React.Component {
       );
       return payload;
     } catch (e) {
+      console.log(e);
     }
   };
 
@@ -97,19 +98,19 @@ class WhatsAppCity extends React.Component {
     this.setState({
       stateId: stateId,
     })
+
     let locale = getQueryArg(window.location.href, "locale") || 'en_IN';
     setLocale(locale);
     setModule('rainmaker-common');
     this.props.fetchLocalizationLabel(getLocale(), commonConfig.tenantId, commonConfig.tenantId);
 
     const citydata = await this.getMDMSData(stateId);
-
     const citylistCodeModule = get(citydata, "MdmsRes.tenant.citymodule", []);
     const citylistCode = citylistCodeModule.filter(item => item.module === "PGR.WHATSAPP")[0].tenants
     const citylist = citylistCode.map((item) => {
       return {
         code: item.code,
-        label: item.name
+        label: item.name 
       }
     })
 
@@ -117,7 +118,6 @@ class WhatsAppCity extends React.Component {
       citylist: citylist,
       data: [...citylist]
     })
-
   };
 
 

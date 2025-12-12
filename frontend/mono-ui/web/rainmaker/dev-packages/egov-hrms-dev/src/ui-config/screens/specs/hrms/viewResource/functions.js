@@ -3,7 +3,6 @@ import {
   handleScreenConfigurationFieldChange as handleField, prepareFinalObject,
   toggleSnackbar
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getLocaleLabels, getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import set from "lodash/set";
@@ -83,9 +82,6 @@ const returnEmptyArrayIfNull = value => {
 };
 
 export const setRolesList = (state, dispatch) => {
-
-
-
   let jurisdictions = get(
     state.screenConfiguration.preparedFinalObject,
     `Employee[0].jurisdictions`,
@@ -95,7 +91,7 @@ export const setRolesList = (state, dispatch) => {
 
   jurisdictions.map((judis, ind) => {
     let furnishedRolesList = judis && judis.roles && Array.isArray(judis.roles) && judis.roles.map(role => {
-      return ` ${getLocaleLabels("NA", `ACCESSCONTROL_ROLES_ROLES_${getTransformedLocale(role.code||role.value)}`)}`;
+      return " " + role.label;
     }) || [];
     dispatch(
       prepareFinalObject(
@@ -104,7 +100,6 @@ export const setRolesList = (state, dispatch) => {
       )
     );
   })
-
 
   // let rolesList = get(
   //   state.screenConfiguration.preparedFinalObject,
@@ -116,7 +111,7 @@ export const setRolesList = (state, dispatch) => {
   // });
   // dispatch(
   //   prepareFinalObject(
-  //     "Employee[0].jurisdictions[0].furnishedRolesList",
+  //     "hrms.reviewScreen.furnishedRolesList",
   //     furnishedRolesList.join()
   //   )
   // );
@@ -243,7 +238,7 @@ export const createUpdateEmployee = async (state, dispatch, action) => {
     "Employee",
     []
   );
-
+  
   handleDeletedCards(employeeObject[0], "jurisdictions", "id");
   handleDeletedCards(employeeObject[0], "assignments", "id");
   handleDeletedCards(employeeObject[0], "serviceHistory", "id");
@@ -260,7 +255,6 @@ export const createUpdateEmployee = async (state, dispatch, action) => {
     []
   );
   deletedJurisdiction.map(jurisdiction => jurisdiction.isActive = false);
-
   // DEACTIVATE EMPLOYEE VALIDATIONS
   if (action === "DEACTIVATE") {
     const isDeactivateEmployeeDetailsValid = validateFields(
@@ -429,7 +423,6 @@ export const createUpdateEmployee = async (state, dispatch, action) => {
     };
   });
   set(employeeObject[0], "user.roles", processedRoles);
-
   if (action === "CREATE") {
     try {
       let response = await createEmployee(
@@ -455,6 +448,7 @@ export const createUpdateEmployee = async (state, dispatch, action) => {
       if (get(employeeObject[0], 'user.photo', null)) {
         set(employeeObject[0], 'user.photo', get(employeeObject[0], 'user.identificationMark', null));
       }
+
       let employee = {};
       employee = { ...employeeObject[0] }
       set(employee, 'jurisdictions', [...employeeJurisdictions, ...deletedJurisdiction])
@@ -575,7 +569,7 @@ export const getEmployeeData = async (
       true
     )
   );
-
+  
   const judis = get(response, 'Employees[0].jurisdictions', []);
   const roles = get(response, 'Employees[0].user.roles', [])
   judis.map(judis => {
@@ -719,7 +713,7 @@ const showActivateDetails = (dispatch, activate = true) => {
     )
   );
 
-
+  
   dispatch(
     handleField(
       "view",

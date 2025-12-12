@@ -1,10 +1,8 @@
-import { LabelContainer } from "egov-ui-framework/ui-containers";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import React from "react";
-import store from "ui-redux/store";
+import { LabelContainer } from "egov-ui-framework/ui-containers";
 import {
   getEpochForDate,
-  sortByEpoch
+  sortByEpoch,
 } from "../../utils";
 import { setRoute } from "egov-ui-kit/utils/commons";
 
@@ -22,6 +20,7 @@ export const searchPropertyTable = {
         labelName: "Property Status",
         labelKey: "PT_COMMON_TABLE_PROPERTY_STATUS",
       },
+      { labelName: "Tax paid years", labelKey: "PT_COMMON_PAID_YEARS" },
       { labelName: "Amount Due", labelKey: "PT_AMOUNT_DUE" },
       {
         labelName: "Action",
@@ -82,12 +81,7 @@ export const searchPropertyTable = {
 };
 
 const payAmount = (tableMeta) => {
-  const data=tableMeta.rowData[5]||{};
-  // if(data.warningEnabled&&data.isInvalidNum){
-  //   store.dispatch(prepareFinalObject("pt-warning-popup", { link: `/withoutAuth/egov-common/pay?consumerCode=${tableMeta.rowData[0]}&tenantId=${tableMeta.rowData[6]}&businessService=PT`, UpdateNumber: data.UpdateNumber, showPopup: true }));
-  // }else{
-    setRoute(`/withoutAuth/egov-common/pay?consumerCode=${tableMeta.rowData[0]}&tenantId=${tableMeta.rowData[6]}&businessService=PT`);
-  // }  
+    setRoute(`/withoutAuth/egov-common/pay?consumerCode=${tableMeta.rowData[0]}&tenantId=${tableMeta.rowData[7]}&businessService=PT`);
 };
 
 const getPayButton = (tableMeta) => {

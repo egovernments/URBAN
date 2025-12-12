@@ -88,9 +88,6 @@ const styles = {
   },
   nocTitle: {
     color: "rgba(0, 0, 0, 0.87)",
-    wordBreak: "break-word",
-    width: "90%",
-    marginRight: "7px"
   },
   spanStyle : {
     paddingLeft: "2px"
@@ -262,9 +259,7 @@ class NocDetailCard extends Component {
                         variant="subtitle1"
                         style={{ fontWeight: "bold", fontSize: "12px" }}
                       >
-                      <LabelContainer
-                        labelKey="BPA_APPROVAL_NUMBER_LABEL"
-                      />
+                      Approval Number
                       </Typography>
                       {card.additionalDetails.nocNo ?
                       <div style={styles.fontStyle}>

@@ -4,6 +4,7 @@ import {
   getCommonHeader,
   getLabelWithValue
 } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getFileUrlFromAPI,
   getQueryArg,
@@ -20,91 +21,14 @@ import { estimateSummary } from "./summaryResource/estimateSummary";
 import { footer } from "./summaryResource/footer";
 import { nocSummary } from "./summaryResource/nocSummary";
 import { propertySummary } from "./summaryResource/propertySummary";
-import { generateBill, checkValueForNA } from "../utils/index";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-
-
+import { generateBill } from "../utils/index";
+import {getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 const header = getCommonContainer({
   header: getCommonHeader({
     labelName: "Fire NOC - Application Summary",
     labelKey: "NOC_SUMMARY_HEADER"
   })
 });
-
-
-const prepareUoms = async (state, dispatch) => {
-  let buildings = get(
-    state,
-    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.buildings",
-    []
-  );
-  buildings.forEach((building, index) => {
-    let uoms = get(building, "uoms", []);
-    let filterUoms = uoms.filter(dataUm => dataUm.active)
-    let uomsMap = {};
-    filterUoms.forEach(uom => {
-      uomsMap[uom.code] = uom.value;
-    });
-    dispatch(
-      prepareFinalObject(
-        `FireNOCs[0].fireNOCDetails.buildings[${index}].uomsMap`,
-        uomsMap
-      )
-    );
-
-    // Display UOMS on search preview page
-    filterUoms.forEach(item => {
-      let labelElement = getLabelWithValue(
-        {
-          labelName: item.code,
-          labelKey: `NOC_PROPERTY_DETAILS_${item.code}_LABEL`
-        },
-        {
-          jsonPath: `FireNOCs[0].fireNOCDetails.buildings[${index}].uomsMap.${item.code}`,
-          // callBack: checkValueForNA,
-          callBack: value => {
-            if (value == 0 || value == '0') {
-              return "0";
-            } else if (value) {
-              return value
-            } else {
-              return checkValueForNA
-            }
-          }
-        }
-      );
-
-      // dispatch(
-      //   handleField(
-      //     "summary",
-      //     "components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.propertyContainer.children",
-      //     item.code,
-      //     labelElement
-      //   )
-      // );
-
-      // set(
-      //   action,
-      //   `screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.propertyContainer.children.${item.code}`,
-      //   labelElement
-      // );
-      // set(
-      //   action,
-      //   `screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.items[${index}].item${index}.children.cardContent.children.propertyContainer.children.${item.code}`,
-      //   labelElement
-      // );
-
-      dispatch(
-        handleField(
-          "summary",
-          `components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.items[${index}].item${index}.children.cardContent.children.propertyContainer.children`,
-          item.code,
-          labelElement
-        )
-      );
-    });
-  });
-};
 
 const prepareDocumentsView = async (state, dispatch) => {
   let documentsPreview = [];
@@ -113,14 +37,19 @@ const prepareDocumentsView = async (state, dispatch) => {
     "screenConfiguration.preparedFinalObject.documentsUploadRedux",
     {}
   );
-  jp.query(reduxDocuments, "$.*").forEach(doc => {
+  jp.query(reduxDocuments, "$.*").forEach((doc, index) => {
     if (doc.documents && doc.documents.length > 0) {
       documentsPreview.push({
-        title: getTransformedLocale(doc.documentSubCode || doc.documentCode),
+        title: getTransformedLocale(doc.documentCode),
         name: doc.documents[0].fileName,
         fileStoreId: doc.documents[0].fileStoreId,
         linkText: "View"
       });
+      if(doc && doc.dropdown && doc.dropdown.value) {
+        documentsPreview[index].dropdown = {
+          value : doc.dropdown.value
+        }
+      }
     }
   });
   let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
@@ -132,8 +61,6 @@ const prepareDocumentsView = async (state, dispatch) => {
   });
   dispatch(prepareFinalObject("documentsPreview", documentsPreview));
   dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.additionalDetail.documents", documentsPreview));
-  await prepareUoms(state, dispatch);
-  
 };
 
 const screenConfig = {
@@ -146,36 +73,61 @@ const screenConfig = {
         state.screenConfiguration.preparedFinalObject,
         "FireNOCs[0].fireNOCDetails.applicationNumber"
       );
-    let tenantId =
-      getQueryArg(window.location.href, "tenantId") ||
-      get(
-        state.screenConfiguration.preparedFinalObject,
-        "FireNOCs[0].tenantId"
+    // let tenantId =
+    //   getQueryArg(window.location.href, "tenantId") ||
+    //   get(
+    //     state.screenConfiguration.preparedFinalObject,
+    //     "FireNOCs[0].tenantId"
+    //   );
+      let userInfodata = JSON.parse(getUserInfo());
+    const tenantId = get(userInfodata, "tenantId");
+    let uomsObject = {};
+    let buildings = get(
+      state,
+      "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.buildings",
+      []
+    );
+    
+    buildings.forEach((building, index) => { uomsObject={};
+      let uoms = get(building, "uoms", []);
+      if(uoms){ 
+      uoms.forEach(uom => {
+        if(uom.active==true){
+          uomsObject[uom.code] = uom.value;}
+      });} else {
+        uomsObject = get(
+          state.screenConfiguration.preparedFinalObject,
+          "FireNOCs[0].fireNOCDetails.buildings[0].uomsMap"
+         );
+      }   
+        
+      set(state,"prepareFinalObject.FireNOCs[0].fireNOCDetails.buildings["+index+"].uomsMap",uomsObject);
+
+      dispatch(
+        prepareFinalObject(
+          `FireNOCs[0].fireNOCDetails.buildings[${index}].uomsMap`,
+          uomsObject
+        )
       );
-
-    // let uomsObject = get(
-    //   state.screenConfiguration.preparedFinalObject,
-    //   "FireNOCs[0].fireNOCDetails.buildings[0].uomsMap"
-    // );
-    // if (uomsObject) {
-    //   for (const [key, value] of Object.entries(uomsObject)) {
-    //     let labelElement = getLabelWithValue(
-    //       {
-    //         labelName: key,
-    //         labelKey: `NOC_PROPERTY_DETAILS_${key}_LABEL`
-    //       },
-    //       {
-    //         jsonPath: `FireNOCs[0].fireNOCDetails.buildings[0].uomsMap.${key}`
-    //       }
-    //     );
-    //     set(
-    //       action,
-    //       `screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.propertyContainer.children.${key}`,
-    //       labelElement
-    //     );
-    //   }
-    // }
-
+        });
+    if (uomsObject) {
+      for (const [key, value] of Object.entries(uomsObject)) {
+        let labelElement = getLabelWithValue(
+          {
+            labelName: key,
+            labelKey: `NOC_PROPERTY_DETAILS_${key}_LABEL`
+          },
+          {
+            jsonPath: `FireNOCs[0].fireNOCDetails.buildings[0].uomsMap.${key}`
+          }
+        );
+        set(
+          action,
+          `screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.propertyContainer.children.${key}`,
+          labelElement
+        );
+      }
+    }
 
     // Set Institution/Applicant info card visibility
     if (
@@ -201,10 +153,66 @@ const screenConfig = {
       state,
       "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.status"
     );
-    generateBill(dispatch, applicationNumber, tenantId, status);
-    prepareDocumentsView(state, dispatch);
-    
+    let firNOCType = get(
+      state.screenConfiguration.preparedFinalObject,
+      "FireNOCs[0].fireNOCDetails.fireNOCType",[]);
 
+
+      if( firNOCType === "RENEWAL")
+      {           
+        set(
+          action,
+          "screenConfig.components.div.children.body.children.cardContent.children.nocSummary.children.cardContent.children.body.children.fireNocNumber.visible",
+          false
+        );      
+  
+      }       
+      else {      
+        set(
+          action,
+          "screenConfig.components.div.children.body.children.cardContent.children.nocSummary.children.cardContent.children.body.children.oldFireNocNumber.visible",
+          false
+        );  
+  
+        } 
+
+    let value = get(
+      state.screenConfiguration.preparedFinalObject,
+      "FireNOCs[0].fireNOCDetails.propertyDetails.address.areaType",[]);
+    let currentcity = get(
+      state.screenConfiguration.preparedFinalObject,
+      "FireNOCs[0].fireNOCDetails.propertyDetails.address.subDistrict",[]);
+    var mtenantid = value === 'Urban'? currentcity : tenantId
+    if( value === 'Urban')
+    {           
+      set(
+        action,
+        "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.subDistrict.visible",
+        false
+      );   
+      
+      
+      set(
+        action,
+        "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.villageName.visible",
+        false
+      );  
+
+    }       
+    else {      
+      set(
+        action,
+        "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.city.visible",
+        false
+      );
+      set(
+        action,
+        "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.mohalla.visible",
+        false
+      );
+      }
+    generateBill(state, dispatch, applicationNumber, tenantId, status);
+    prepareDocumentsView(state, dispatch);
     return action;
   },
   components: {

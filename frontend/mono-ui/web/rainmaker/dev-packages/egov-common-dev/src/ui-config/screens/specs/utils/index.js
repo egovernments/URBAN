@@ -11,13 +11,12 @@ import {
   getLocaleLabels, getQueryArg,
   getTransformedLocalStorgaeLabels
 } from "egov-ui-framework/ui-utils/commons";
-import { multiHttpRequest } from "egov-ui-kit/utils/api";
-import { getUserSearchedResponse } from "egov-ui-kit/utils/commons";
 import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
-import set from "lodash/set";
 import { httpRequest } from "../../../../ui-utils/api";
+import { multiHttpRequest } from "egov-ui-kit/utils/api";
+import set from "lodash/set";
 
 export const getCommonApplyFooter = children => {
   return {
@@ -486,15 +485,13 @@ export const getMdmsData = async queryObject => {
 // Get user data from uuid API call
 export const getUserDataFromUuid = async bodyObject => {
   try {
-    // const response = await httpRequest(
-    //   "post",
-    //   "/user/_search",
-    //   "",
-    //   [],
-    //   bodyObject
-    // );
-
-    const response = getUserSearchedResponse();
+    const response = await httpRequest(
+      "post",
+      "/user/_search",
+      "",
+      [],
+      bodyObject
+    );
     return response;
   } catch (error) {
     console.log(error);
@@ -512,12 +509,12 @@ export const getBill = async (queryObject, dispatch) => {
     );
     return response;
   } catch (error) {
-    if (!window.location.pathname.includes('acknowledgement')) {
+    if(!window.location.pathname.includes('acknowledgement')){
       dispatch(
         toggleSnackbar(
           true,
           { labelName: error.message, labelKey: error.message },
-          error.message && error.message.includes && error.message.includes("No Demands Found") ? "warning" : "error"
+          error.message&& error.message.includes&& error.message.includes("No Demands Found") ? "warning" : "error"
         )
       );
     }
@@ -543,6 +540,7 @@ export const getOtherBillDetails = async (queryObject, dispatch) => {
     );
   }
 };
+
 export const searchBill = async (dispatch, applicationNumber, tenantId) => {
   try {
     let queryObject = [
@@ -670,6 +668,7 @@ export const getBusinessServiceMdmsData = async (dispatch, tenantId) => {
     console.log(e);
   }
 };
+
 const loadArrearsDetails = async (dispatch, Bill = []) => {
   if (Bill &&
     Array.isArray(Bill) &&
@@ -755,10 +754,8 @@ export const generateBill = async (dispatch, consumerCode, tenantId, businessSer
       }
       const payload = await getBill(queryObj, dispatch);
       // let payload = sampleGetBill();
-
       if (payload && payload.Bill[0]) {
         dispatch(prepareFinalObject("ReceiptTemp[0].Bill", payload.Bill));
-        localStorage.setItem("pay-bill-mobile",payload.Bill[0].mobileNumber);
         loadArrearsDetails(dispatch, payload.Bill);
         const estimateData = createEstimateData(payload.Bill[0], payload.Bill[0].totalAmount);
         estimateData &&

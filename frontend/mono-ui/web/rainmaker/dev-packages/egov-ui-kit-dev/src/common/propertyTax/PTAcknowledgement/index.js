@@ -43,6 +43,17 @@ class PTAcknowledgement extends React.Component {
   onGoHomeClick = () => {
     process.env.REACT_APP_NAME === "Employee" ? store.dispatch(setRoute("/pt-mutation/propertySearch")) : store.dispatch(setRoute("/property-tax"));
   };
+
+  onGoBackClick = () => {
+    const propertyIDD=getQueryArg(window.location.href,"propertyId");
+    const tenant=getQueryArg(window.location.href,"tenantId");
+    if (process.env.REACT_APP_NAME === "Citizen") {
+      store.dispatch(setRoute("/property-tax/my-properties/property/" + propertyIDD + "/" + tenant));
+    }else{
+      store.dispatch(setRoute("/property-tax/property/" + propertyIDD + "/" + tenant));
+    }
+      
+  };
   download() {
     const { UlbLogoForPdf, selPropertyDetails, generalMDMSDataById } = this.props;
     generatePTAcknowledgment(selPropertyDetails, generalMDMSDataById, UlbLogoForPdf, `pt-acknowledgement-${selPropertyDetails.propertyId}.pdf`);
@@ -70,6 +81,8 @@ class PTAcknowledgement extends React.Component {
     const { owners } = propertyDetails[0];
     const { localizationLabels } = app;
     const { cities, generalMDMSDataById } = common;
+    const oldPropertyId =convertedResponse[0].oldPropertyId;
+    const applicationNo= convertedResponse[0].acknowldgementNumber;
     const header = getHeaderDetails(convertedResponse[0], cities, localizationLabels, true);
     let receiptDetails = {};
     receiptDetails = {
@@ -78,7 +91,9 @@ class PTAcknowledgement extends React.Component {
       owners,
       header,
       propertyId,
-    };
+      oldPropertyId,
+      applicationNo
+      };
     AcknowledgementReceipt("pt-reciept-citizen", receiptDetails, generalMDMSDataById, null);
   };
   getFetchBillResponse = async (propertyId, tenantId) => {
@@ -98,7 +113,7 @@ class PTAcknowledgement extends React.Component {
       this.setState({ showPay, fetchBill });
     } catch (error) {
       this.props.toggleSnackbarAndSetText(true,  { labelName: error.message, labelKey: error.message },           error.message&& error.message.includes&& error.message.includes("No Demands Found") ? "warning" : "error");
-      console.log(e);
+      console.log(error);
     }
   };
   render() {
@@ -132,14 +147,14 @@ class PTAcknowledgement extends React.Component {
       label: { labelName: "Application", labelKey: "PT_APPLICATION" },
       link: () => {
         // generatePdfFromDiv("download", propertyId, "#property-review-form");
-        this.download();
-        //this.downloadAcknowledgementForm();
+        //this.download();
+        this.downloadAcknowledgementForm();
         console.log("Download");
       },
       leftIcon: "assignment",
     };
 
-    let tlCertificatePrintObject = {
+    let applicationPrintObject = {
       label: { labelName: "Application", labelKey: "PT_APPLICATION" },
       link: () => {
         this.print();
@@ -150,7 +165,7 @@ class PTAcknowledgement extends React.Component {
     };
 
     downloadMenu.push(applicationDownloadObject);
-    printMenu.push(tlCertificatePrintObject);
+    printMenu.push(applicationPrintObject);
     let icon;
     let iconColor;
     if (acknowledgeType == "success") {
@@ -166,6 +181,7 @@ class PTAcknowledgement extends React.Component {
     let ptHeader = {};
     let ptMsg = {};
     let ptSubMsg = {};
+    let Button0 = { name: "", onClick: "", visibility: false };
     let Button1 = { name: "", onClick: "", visibility: false };
     let Button2 = { name: "", onClick: "", visibility: false };
     let downloadButton = { menu: downloadMenu, onClick: "", visibility: (purpose === PROPERTY_FORM_PURPOSE.CREATE || purpose === PROPERTY_FORM_PURPOSE.UPDATE) && status === "success" ? true : false };
@@ -199,6 +215,7 @@ class PTAcknowledgement extends React.Component {
         labelKey: "PT_ACKNOWLEDGEMENT_ID",
         visibility: true,
       };
+      Button0 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
       Button2 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: false };
       // downloadButton={menu:downloadMenu,visibility:true} ;
@@ -230,6 +247,7 @@ class PTAcknowledgement extends React.Component {
         labelKey: "PT_ACKNOWLEDGEMENT_ID",
         visibility: true,
       };
+      Button0 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
       Button2 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: false };
       // downloadButton={menu:downloadMenu,visibility:true} ;
@@ -258,7 +276,7 @@ class PTAcknowledgement extends React.Component {
         labelName: "A notification regarding new property application has been sent to property owner at registered Mobile No.",
         labelKey: "PT_NEW_PROPERTY_FAILURE_SUB_MSG",
       };
-
+      //Button0 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
       Button2 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: false };
       // downloadButton={menu:downloadMenu,visibility:false} ;
@@ -287,7 +305,7 @@ class PTAcknowledgement extends React.Component {
         labelName: "A notification regarding new property application has been sent to property owner at registered Mobile No.",
         labelKey: "PT_UPDATE_PROPERTY_FAILURE_SUB_MSG",
       };
-
+      Button0 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
       Button2 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: false };
       // downloadButton={menu:downloadMenu,visibility:false} ;
@@ -315,9 +333,11 @@ class PTAcknowledgement extends React.Component {
       ptSubMsg = {
         labelName: "A notification regarding property assessment has been sent to property owner at registered Mobile No.",
         labelKey: "PT_PROPERTY_ASSESSMENT_SUCCESS_SUB_MSG",
-      };
+      };    
+      
       Button1 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: this.state.showPay };
-      Button2 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
+      Button0 ={ name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
+      Button2 =  { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       // downloadButton={menu:downloadMenu,visibility:true} ;
       // printButton={menu:printMenu,visibility:true} ;
     } else if (purpose === PROPERTY_FORM_PURPOSE.ASSESS && status === "failure") {
@@ -344,6 +364,7 @@ class PTAcknowledgement extends React.Component {
         labelName: "A notification regarding property assessment has been sent to property owner at registered Mobile No.",
         labelKey: "PT_PROPERTY_ASSESSMENT_FAILURE_SUB_MSG",
       };
+      Button0 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
       Button2 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: false };
       // downloadButton={menu:downloadMenu,visibility:false} ;
@@ -372,8 +393,9 @@ class PTAcknowledgement extends React.Component {
         labelName: "A notification regarding property assessment has been sent to property owner at registered Mobile No.",
         labelKey: "PT_PROPERTY_RE_ASSESSMENT_SUCCESS_SUB_MSG",
       };
-      Button1 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: this.state.showPay };
-      Button2 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
+      Button0 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: this.state.showPay };
+      Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
+      Button2 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       // downloadButton={menu:downloadMenu,visibility:false} ;
       // printButton={menu:printMenu,visibility:false} ;
     } else if (purpose === PROPERTY_FORM_PURPOSE.REASSESS && status === "failure") {
@@ -400,6 +422,7 @@ class PTAcknowledgement extends React.Component {
         labelName: "A notification regarding property reassessment has been sent to property owner at registered Mobile No.",
         labelKey: "PT_PROPERTY_RE_ASSESSMENT_FAILURE_SUB_MSG",
       };
+      Button0 = { name: "Go Back", buttonClick: this.onGoBackClick, visibility: true };
       Button1 = { name: "PT_GOHOME", buttonClick: this.onGoHomeClick, visibility: true };
       Button2 = { name: "PT_PROCEED_PAYMENT", buttonClick: this.onAssessPayClick, visibility: false };
       // downloadButton={menu:downloadMenu,visibility:false} ;
@@ -518,8 +541,21 @@ class PTAcknowledgement extends React.Component {
                     </h1>
                   </div>
                   <div id="tax-wizard-buttons" className="wizard-footer col-sm-12" style={{ textAlign: "right" }}>
-                    <div
+                  <div
                       className="button-container col-xs-12 col-md-4 col-lg-2 property-info-access-btn first-button"
+                      style={{ float: "right", right: "10px", width: "auto" }}
+                    >
+                      {Button0 && Button0.visibility && (
+                        <Button
+                          onClick={Button0.buttonClick}
+                          label={<Label buttonLabel={true} label={Button0.name} fontSize="16px" />}
+                          primary={true}
+                          style={{ lineHeight: "auto", minWidth: "inherit", width: "200px" }}
+                        />
+                      )}
+                    </div>
+                    <div
+                      className="button-container col-xs-12 col-md-4 col-lg-2 property-info-access-btn"
                       style={{ float: "right", right: "20px", width: "auto" }}
                     >
                       {Button1 && Button1.visibility && (

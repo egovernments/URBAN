@@ -1,48 +1,50 @@
 import _ from 'lodash';
-import { getTenantId } from '../utils/commons';
 
-export default function getMDMSData(tenants){
-let tempDRRsObj = {},tempDDRs=[],tempULBS=[],tenantId = "",tenantLogo ={},tenantName='',corpName = '';
-_.each(tenants,(v,k) => {
+export default function getMDMSData(tenants) {
+    let tempDRRsObj = {}, tempDDRs = [], tempULBS = [], tenantId = "", tenantLogo = {}, tenantName = '', corpName = '';
+    _.each(tenants, (v, k) => {
 
-    if(v.code){
-        tenantLogo[v.code] = v.logoId;
-        tempULBS.push(v.code);
-    }
-    if(v.code === getTenantId())
-        tenantName = v.code;
-    if(v.city.ddrName){     
-        tenantId = v.code;
-        if(!_.isEmpty(tempDRRsObj,true) && typeof tempDRRsObj[v.city.districtTenantCode] != 'undefined'){
-            tempDRRsObj[v.city.districtTenantCode].push(tenantId);
-        }else{
-            tempDRRsObj[v.city.districtTenantCode] = [tenantId]
-            tempDDRs.push(v.city.districtTenantCode);
+        if (v.code) {
+            tenantLogo[v.code] = v.logoId;
+            tempULBS.push(v.name);
+        }
+        if (v.code === localStorage.getItem('tenant-id'))
+            tenantName = v.name;
+        if (v.city.ddrName) {
+            tenantId = v.code;
+            if (!_.isEmpty(tempDRRsObj, true) && typeof tempDRRsObj[v.city.ddrName] != 'undefined') {
+                tempDRRsObj[v.city.ddrName].push(tenantId);
+            } else {
+                tempDRRsObj[v.city.ddrName] = [tenantId]
+                tempDDRs.push(v.city.ddrName);
+            }
+        }
+    })
+
+    if(localStorage.getItem("localization_" + localStorage.getItem("locale"))){
+        let localVal = JSON.parse(localStorage.getItem("localization_" + localStorage.getItem("locale")));
+        for (var i = 0; i < localVal.length; i++) {
+            if (localVal[i].code === "ULBGRADE_MC1") {
+                corpName = localVal[i]['message'];
+                break;
+            }
         }
     }
-})
 
-
-let localVal = JSON.parse(localStorage.getItem("localization_"+localStorage.getItem("locale") ) );
-for(var i=0; i<localVal.length;i++){    
-     if(localVal[i].code === "ULBGRADE_MC1"){ 
-        corpName = localVal[i]['message'];
-        break;        
-    } 
-}
-return {
-    label: "DDRs",
-    type: "dropdown",
-    values : tempDDRs,
-    master : tempDRRsObj,
-    tentantLogo : tenantLogo,
-    tenantName : tenantName,
-    corpName : corpName,
-    ULBS :{
-        label: "ULBS",
-        label_locale: "DSS_ULBS",
+    
+    return {
+        label: "DDRs",
         type: "dropdown",
-        values : tempULBS
+        values: tempDDRs,
+        master: tempDRRsObj,
+        tentantLogo: tenantLogo,
+        tenantName: tenantName,
+        corpName: corpName,
+        ULBS: {
+            label: "ULBS",
+            label_locale: "DSS_ULBS",
+            type: "dropdown",
+            values: tempULBS
+        }
     }
-}
 };

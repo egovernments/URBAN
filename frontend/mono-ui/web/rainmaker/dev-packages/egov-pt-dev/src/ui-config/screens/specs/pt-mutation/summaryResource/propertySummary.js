@@ -64,8 +64,11 @@ const propertyDetails =  getCommonGrayCard({
         jsonPath:
           "Property.address.locality.code",
         callBack: value => {
-          return value ? `${getTransformedLocale(tenantId)}_REVENUE_${value}` : "NA";
-        }
+          return value ? tenantId
+          .toUpperCase()
+          .replace(/[.]/g, "_") +'_REVENUE_'+value
+              .toUpperCase()
+              .replace(/[._:-\s\/]/g, "_"): "NA";        }
       }
     ),
     pincode: getLabelWithValue(
@@ -82,6 +85,13 @@ const propertyDetails =  getCommonGrayCard({
       },
       { jsonPath: "Property.oldPropertyId", callBack: checkValueForNA }
     ),
+    UID: getLabelWithValue(
+      {
+        labelName: "Survey Id/UID",
+        labelKey: "Survey Id/UID"
+      },
+      { jsonPath: "Property.surveyId", callBack: checkValueForNA }
+    )
   })
 })
 

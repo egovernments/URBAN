@@ -337,7 +337,7 @@ const getSpecialCategoryDocumentTypeMDMSData = async (action, state, dispatch) =
       "MdmsRes.PropertyTax.OwnerTypeDocument"
     )
     let propertyConfiguation = get(payload, "MdmsRes.PropertyTax.PropertyConfiguration");
-    dispatch(prepareFinalObject("applyScreenMdmsData.OwnerTypeDocument", OwnerTypeDocument));
+    dispatch(prepareFinalObject("OwnerTypeDocument", OwnerTypeDocument));
     dispatch(prepareFinalObject("PropertyConfiguration", propertyConfiguation));
     showHideMutationDetailsCard(action, state, dispatch);
   } catch (e) {
@@ -375,7 +375,7 @@ const getMdmsData = async (action, state, dispatch) => {
             }
           ]
         },
-        { moduleName: "PropertyTax", masterDetails: [{ name: "MutationDocuments" }] }
+        { moduleName: "PropertyTax", masterDetails: [{ name: "MutationDocuments" },{ name: "OwnerTypeDocument" }, { name: "PropertyConfiguration" }] }
       ]
     }
   };
@@ -388,7 +388,7 @@ const getMdmsData = async (action, state, dispatch) => {
       [],
       mdmsBody
     );
-
+    
     let OwnerShipCategory = get(
       payload,
       "MdmsRes.common-masters.OwnerShipCategory"
@@ -531,18 +531,7 @@ const screenConfig = {
     const tenantId = getQueryArg(window.location.href, "tenantId");
     const step = getQueryArg(window.location.href, "step");
     const isEdit = getQueryArg(window.location.href, "action") === "edit";
-    dispatch(
-      prepareFinalObject(
-        "Property",
-        {}
-      )
-    );
-    dispatch(
-      prepareFinalObject(
-        "ptmDocumentsUploadRedux",
-        {}
-      )
-    );
+    dispatch(prepareFinalObject("Property",{}));
     dispatch(
       prepareFinalObject(
         "Property.additionalDetails",

@@ -12,9 +12,12 @@ import acknowledgementCard from "./acknowledgementResource/acknowledgementUtils"
 import { applicationSuccessFooter } from "./acknowledgementResource/applicationSuccessFooter";
 import { approvalSuccessFooter } from "./acknowledgementResource/approvalSuccessFooter";
 import { gotoHomeFooter } from "./acknowledgementResource/gotoHomeFooter";
+import { homeFooter } from "./acknowledgementResource/homeFooter";
 import { paymentFailureFooter } from "./acknowledgementResource/paymentFailureFooter";
 import { paymentSuccessFooter } from "./acknowledgementResource/paymentSuccessFooter";
+import { sendBackSuccessFooter } from "./acknowledgementResource/sendBackSuccessFooter";
 import "./index.css";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 
 
 
@@ -209,7 +212,8 @@ const getAcknowledgementCard = (
         state,
         dispatch,
         applicationNumber,
-        tenant
+        tenant,
+        status
       )
     };
   } else if (purpose === "resubmit" && status === "success") {
@@ -254,7 +258,8 @@ const getAcknowledgementCard = (
         state,
         dispatch,
         applicationNumber,
-        tenant
+        tenant,
+        status
       )
     };
   } else if (purpose === "pay" && status === "success") {
@@ -393,7 +398,7 @@ const getAcknowledgementCard = (
           })
         }
       },
-      approvalSuccessFooter
+      sendBackSuccessFooter
     };
   } else if (purpose === "sendbacktocitizen" && status === "success") {
     loadReceiptGenerationData(applicationNumber, tenant);
@@ -437,7 +442,7 @@ const getAcknowledgementCard = (
           })
         }
       },
-      approvalSuccessFooter
+      sendBackSuccessFooter
     };
   } else if (purpose === "application" && status === "rejected") {
     return {
@@ -475,7 +480,7 @@ const getAcknowledgementCard = (
           })
         }
       },
-      gotoHomeFooter
+      homeFooter
     };
   } else if (purpose === "application" && status === "cancelled") {
     return {
@@ -621,7 +626,7 @@ const getAcknowledgementCard = (
           })
         }
       },
-      gotoHomeFooter
+      homeFooter
     };
   } else if ((purpose === "EDITRENEWAL" || purpose === "DIRECTRENEWAL") && status === "success") {
     return {
@@ -705,6 +710,9 @@ const screenConfig = {
       tenant
     );
     set(action, "screenConfig.components.div.children", data);
+    const status1 =get(state.screenConfiguration.preparedFinalObject, "Licenses[0].status" );
+    console.log(status1, "applStatus");
+    const applicationType =get(state.screenConfiguration.preparedFinalObject, "Licenses[0].applicationType" );
     return action;
   }
 };

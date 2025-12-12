@@ -6,6 +6,8 @@ import {
   occupancy,
   builtArea,
   annualRent,
+  noOfMonths,
+  usageForDueMonths,
   beforeInitForm,
   mergeMaster,
   prepareDropDownData,
@@ -65,6 +67,8 @@ const formConfig = {
     ...builtArea,
     ...floorName,
     ...annualRent,
+    ...noOfMonths,
+    ...usageForDueMonths
   },
   isFormValid: false,
   ...beforeInitForm,

@@ -11,7 +11,9 @@ import "./index.css";
 import { searchResults } from "./universalCollectionResources/searchResults";
 import { UCSearchCard } from "./universalCollectionResources/ucSearch";
 
-
+let result = [];
+(JSON.parse(localStorage.getItem("user-info"))).roles.filter((item) => { result.push(item.code); });
+const values = result.includes("ESEWAEMP");
 const tenantId = getTenantId();
 const header = getCommonHeader({
   labelName: "Receipt",
@@ -27,6 +29,9 @@ const getData = async (action, state, dispatch) => {
 };
 
 const getMDMSData = async (action, state, dispatch) => {
+  var filter_Service = "[?(@.type=='Adhoc')]";
+  if (((JSON.parse(localStorage.getItem("user-info"))).roles[0].code) == "UC_COWCESS_USER" || values == true)
+    filter_Service = "[?(@.code=='CSS.cow_cess')]";
 
   let mdmsBody = {
     MdmsCriteria: {
@@ -35,7 +40,7 @@ const getMDMSData = async (action, state, dispatch) => {
         {
           moduleName: "BillingService",
           masterDetails: [
-            { name: "BusinessService", filter: "[?(@.type=='Adhoc')]" }
+            { name: "BusinessService", filter: filter_Service }
           ]
         },
         {

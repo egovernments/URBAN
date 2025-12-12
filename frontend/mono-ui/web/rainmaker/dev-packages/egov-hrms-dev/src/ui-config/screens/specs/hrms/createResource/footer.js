@@ -49,7 +49,11 @@ export const callBackForNext = async (state, dispatch) => {
     if (!(isEmployeeDetailsValid && isProfessionalDetailsValid)) {
       isFormValid = false;
     }
-    let tenantId = getTenantId();
+    //let tenantId = getTenantId();
+    let tenantId =get(
+      state.screenConfiguration.preparedFinalObject,
+      "Employee[0].tenantId"
+    );
     const errorMessage = {
       labelName: "Mobile number already exists . Please try with different mobile number",
       labelKey: "ERR_MOBILE_NUMBER_EXISTS_FIELDS"
@@ -57,7 +61,7 @@ export const callBackForNext = async (state, dispatch) => {
     let existingPhoneNumbers = get(state.screenConfiguration.preparedFinalObject, "existingPhoneNumbers", []);
     if (get(state.screenConfiguration.preparedFinalObject, "empPhoneNumber") != get(state.screenConfiguration.preparedFinalObject, "Employee[0].user.mobileNumber")) {
 
-
+    
       if (existingPhoneNumbers.includes(get(state.screenConfiguration.preparedFinalObject, "Employee[0].user.mobileNumber"))) {
         dispatch(toggleSnackbar(true, errorMessage, "error"));
         return;
@@ -100,7 +104,6 @@ export const callBackForNext = async (state, dispatch) => {
         }
       }
     }
-
     dispatch(handleField("create", "components.div.children.formwizardSecondStep.children.jurisdictionDetails.children.cardContent.children.jurisdictionDetailsCard", "props.items", []));
   }
   if (activeStep === 1) {
@@ -195,6 +198,7 @@ export const callBackForNext = async (state, dispatch) => {
       `Employee[0].jurisdictions`,
       []
     );
+
     let deletedJurisdictions = get(
       state.screenConfiguration.preparedFinalObject,
       `deletedJurisdiction`,
@@ -203,6 +207,7 @@ export const callBackForNext = async (state, dispatch) => {
     let deletedJurisdiction = [];
     deletedJurisdiction = jurisdictions.filter(jurisdiction => jurisdiction.isDeleted === false && jurisdiction.isActive)
     deletedJurisdiction = [...deletedJurisdictions, ...deletedJurisdiction]
+
     jurisdictions = jurisdictions.filter(jurisdiction => jurisdiction.isDeleted !== false);
     let rolesList = [];
     let baseTenant = false;
@@ -220,14 +225,14 @@ export const callBackForNext = async (state, dispatch) => {
       }
       tenants.push(judis.boundary);
     })
-    if (!baseTenant) {
-      const errorMessage2 = {
-        labelName: "Please select at least one Role in Base Tenant",
-        labelKey: "ERR_BASE_TENANT_MANDATORY"
-      };
-      dispatch(toggleSnackbar(true, errorMessage2, "warning"));
-      return;
-    }
+    // if (!baseTenant) {
+    //   const errorMessage2 = {
+    //     labelName: "Please select at least one Role in Base Tenant",
+    //     labelKey: "ERR_BASE_TENANT_MANDATORY"
+    //   };
+    //   dispatch(toggleSnackbar(true, errorMessage2, "warning"));
+    //   return;
+    // }
     if (repeatedTenant) {
       const errorMessage3 = {
         labelName: "Please select at least one Role in Base Tenant",
@@ -236,13 +241,12 @@ export const callBackForNext = async (state, dispatch) => {
       dispatch(toggleSnackbar(true, errorMessage3, "warning"));
       return;
     }
-
     dispatch(prepareFinalObject("deletedJurisdiction", [...deletedJurisdiction]));
-
     dispatch(prepareFinalObject("Employee[0].jurisdictions", [...jurisdictions]));
     dispatch(prepareFinalObject("Employee[0].user.roles", rolesList))
     dispatch(handleField("create", "components.div.children.formwizardThirdStep.children.reviewDetails.children.cardContent.children.viewJurisdictionDetails.children.cardContent.children.viewOne", "props.items", []));
     dispatch(handleField("create", "components.div.children.formwizardSecondStep.children.jurisdictionDetails.children.cardContent.children.jurisdictionDetailsCard", "props.items", []));
+
     setRolesList(state, dispatch);
   }
   if (activeStep === 2) {

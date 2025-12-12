@@ -9,7 +9,7 @@ import {
   getDateField,
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { searchApiCall } from "./functions";
+import { searchApiCall, exceldatadownload } from "./functions";
 import { resetFieldsForApplication } from '../../utils';
 import {
   handleScreenConfigurationFieldChange as handleField,
@@ -83,10 +83,6 @@ export const searchApplications = getCommonCard({
       moduleName: "egov-wns",
       componentPath: "AutosuggestContainer",
       jsonPath: "searchScreen.applicationType",
-      localePrefix: {
-        moduleName: "WS",
-        masterName: "APPLICATION_TYPE"
-      },
       props: {
         className: "autocomplete-dropdown",
         style: {
@@ -105,11 +101,7 @@ export const searchApplications = getCommonCard({
         fullwidth: true,
         inputLabelProps: {
           shrink: true
-        },
-        localePrefix: {
-          moduleName: "WS",
-          masterName: "APPLICATION_TYPE"
-        },
+        }
       },
       required: false,
       gridDefination: { xs: 12, sm: 4 },
@@ -236,7 +228,8 @@ export const searchApplications = getCommonCard({
           action: "condition",
           callBack: searchApiCall
         }
-      },
+      }
+    
     })
   })
 });

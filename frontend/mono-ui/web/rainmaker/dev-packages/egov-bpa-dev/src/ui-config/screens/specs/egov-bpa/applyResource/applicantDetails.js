@@ -132,7 +132,7 @@ const commonApplicantInformation = () => {
             label: "COMMON_GENDER_FEMALE"
           },
           {
-            code: "TRANSGENDER",
+            code: "OTHERS",
             label: "COMMON_GENDER_TRANSGENDER"
           }
         ],

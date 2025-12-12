@@ -15,7 +15,6 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
-import "../../../../../index.css";
 
 import { confirmationDialog } from "../confirmationDialog";
 const tenantId = getTenantId();
@@ -186,6 +185,9 @@ const prepareObj =(state,dispatch) =>{
     });
     set(eChallans[0],"taxPeriodFrom", convertDateToEpoch(eChallans[0].taxPeriodFrom));
     set(eChallans[0], "taxPeriodTo", convertDateToEpoch(eChallans[0].taxPeriodTo));
+    if(eChallans[0].address.locality == null){
+      set(eChallans[0], "address.locality.code", null);
+    } 
     // set(eChallans[0], "payer.mobileNumber", eChallans[0].citizen.mobileNumber);
     // set(eChallans[0], "payer.name",  eChallans[0].citizen.name);
 

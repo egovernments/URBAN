@@ -4,14 +4,11 @@ import Label from "egov-ui-kit/utils/translationNode";
 import UserSettings from "../UserSettings";
 import Toolbar from "material-ui/Toolbar";
 import Badge from "@material-ui/core/Badge";
-import digitLogo from "egov-ui-kit/assets/images/Digit_logo.png";
+import digitLogo from "egov-ui-kit/assets/images/Upyog-logo.png";
 import pbLogo from "egov-ui-kit/assets/images/pblogo.png";
 import IconButton from "material-ui/IconButton";
 import { onNotificationClick } from "egov-ui-kit/utils/commons";
 import "./index.css";
-import { connect } from "react-redux";
-import get from "lodash/get";
-
 
 const styles = {
   titleStyle: { fontSize: "20px", fontWeight: 500 },
@@ -47,7 +44,6 @@ const EgovAppBar = ({
   hasLocalisation,
   notificationsCount,
   isUserSetting,
-  logoImage,
   ...rest
 }) => {
   return (
@@ -106,7 +102,7 @@ const EgovAppBar = ({
         )}
 
         <div className="appbar-right-logo">
-          <img src={logoImage?logoImage:digitLogo} />
+          <img src={digitLogo} />
         </div>
         <div className="icon-button">
           {refreshButton && (
@@ -152,13 +148,4 @@ const onSearchClick = (history) => {
   history.push("search-complaint");
 };
 
-const mapStateToProps = ({ common }) => {
-  const { stateInfoById } = common;
-  let logoImage = get(stateInfoById, "0.logoUrl");
-  return {  logoImage };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(EgovAppBar);
+export default EgovAppBar;

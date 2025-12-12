@@ -7,7 +7,7 @@ import {
   getDivider,
   getLabelWithValueForModifiedLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { convertEpochToDateAndHandleNA, handleNA, handleRoadType } from '../../utils';
+import { convertEpochToDateAndHandleNA, handleNA,handleNAnew, handleRoadType } from '../../utils';
 import { changeStep } from "./footer";
 
 const getHeader = label => {
@@ -36,11 +36,32 @@ const connectionChargeDetailsHeader = getHeader({
 const roadCuttingChargesHeader = getHeader({
   labelKey: "WS_ROAD_CUTTING_CHARGE_DETAILS"
 });
+const roadCuttingChargesHeadersw = getHeader({
+  labelKey: "Sewerage Road Cutting Charges"
+ // labelKey: "WS_ROAD_CUTTING_CHARGE_DETAILSsss"
+});
+
 
 const activationDetailsHeader = getHeader({
   labelKey: "WS_ACTIVATION_DETAILS"
 });
-
+export const reviewOldConsumerNo = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Old Consumer No",
+    labelKey: "WS_OLD_CONSUMER_NO"
+  },
+  {
+    jsonPath: "applyScreen.oldConnectionNo",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "applyScreenOld.oldConnectionNo",
+    callBack: handleNA
+  }
+);
 export const reviewConnectionType = getLabelWithValueForModifiedLabel(
   {
     labelName: "Connection Type",
@@ -48,10 +69,6 @@ export const reviewConnectionType = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "applyScreen.connectionType",
-    localePrefix: {
-      moduleName: "WS_SERVICES_MASTERS",
-      masterName: "WATERSOURCE"
-    },
     callBack: handleNA
   },
   {
@@ -59,10 +76,6 @@ export const reviewConnectionType = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "applyScreenOld.connectionType",
-    localePrefix: {
-      moduleName: "WS_SERVICES_MASTERS",
-      masterName: "WATERSOURCE"
-    },
     callBack: handleNA
   }
 );
@@ -83,6 +96,173 @@ export const reviewNumberOfTaps = getLabelWithValueForModifiedLabel(
     callBack: handleNA
   }
 );
+export const reviewBillingAmount = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "No. of Taps",
+    labelKey: "WS_SERV_DETAIL_BILLING_AMOUNT"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.billingAmount",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.billingAmount",
+    callBack: handleNA
+  }
+);
+export const reviewBillingType = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Billing Type",
+    labelKey: "WS_SERV_DETAIL_BILLING_TYPE"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.billingType",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.billingType",
+    callBack: handleNA
+  }
+);
+export const reviewLedgerId = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "No. of Taps",
+    labelKey: "WS_SERV_DETAIL_LEDGER_ID"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.ledgerId",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.ledgerId",
+    callBack: handleNA
+  }
+);
+export const reviewGroups = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Group",
+    labelKey: "Group"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.groups",
+    callBack: handleNA
+  },
+  {
+    labelKey: "Group"
+  },
+  {
+    jsonPath: "applyScreenOld.additionalDetails.groups",
+    callBack: handleNA
+  }
+);
+export const reviewConnectionCategory = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Connection Category",
+    labelKey: "WS_SERV_CONNECTION_CATEGORY"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.connectionCategory",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.connectionCategory",
+    callBack: handleNA
+  }
+);
+export const reviewCompositionFee = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Area (in sq ft)",
+    labelKey: "WS_ADDN_DETAILS_COMPOSITION_LABEL"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.compositionFee",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.compositionFee",
+    callBack: handleNA
+  }
+);
+export const reviewUserCharges = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Area (in sq ft)",
+    labelKey: "WS_ADDN_USER_CHARGES_LABEL"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.userCharges",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.userCharges",
+    callBack: handleNA
+  }
+);
+export const reviewOthersFee = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Area (in sq ft)",
+    labelKey: "WS_ADDN_OTHER_FEE_LABEL"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.othersFee",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.othersFee",
+    callBack: handleNA
+  }
+);
+export const reviewMeterMakeReading = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Initial Meter Reading",
+    labelKey: "WS_ADDN_DETAILS_INITIAL_METER_MAKE"
+  },
+  { jsonPath: "applyScreen.additionalDetails.meterMake",
+    callBack: handleNA },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.meterMake",
+    callBack: handleNA
+  }
+);
+export const reviewAverageMakeReading = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Initial Meter Reading",
+    labelKey: "WS_ADDN_DETAILS_INITIAL_AVERAGE_MAKE"
+  },
+  { jsonPath: "applyScreen.additionalDetails.avarageMeterReading",
+    callBack: handleNA },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.avarageMeterReading",
+    callBack: handleNA
+  }
+);
+
 export const reviewWaterSource = getLabelWithValueForModifiedLabel(
   {
     labelName: "Water Source",
@@ -90,10 +270,6 @@ export const reviewWaterSource = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "WaterConnection[0].waterSource",
-    localePrefix: {
-      moduleName: "WS_SERVICES_MASTERS",
-      masterName: "WATERSOURCE"
-    },
     callBack: handleNA
   },
   {
@@ -104,23 +280,23 @@ export const reviewWaterSource = getLabelWithValueForModifiedLabel(
     callBack: handleNA
   }
 );
-export const reviewWaterSubSource = getLabelWithValueForModifiedLabel(
-  {
-    labelName: "Water Sub Source",
-    labelKey: "WS_SERV_DETAIL_WATER_SUB_SOURCE"
-  },
-  {
-    jsonPath: "WaterConnection[0].waterSubSource",
-    callBack: handleNA
-  },
-  {
-    labelKey: "WS_OLD_LABEL_NAME"
-  },
-  {
-    jsonPath: "applyScreenOld.waterSubSource",
-    callBack: handleNA
-  }
-);
+// export const reviewWaterSubSource = getLabelWithValueForModifiedLabel(
+//   {
+//     labelName: "Water Sub Source",
+//     labelKey: "WS_SERV_DETAIL_WATER_SUB_SOURCE"
+//   },
+//   {
+//     jsonPath: "WaterConnection[0].waterSubSource",
+//     callBack: handleNA
+//   },
+//   {
+//     labelKey: "WS_OLD_LABEL_NAME"
+//   },
+//   {
+//     jsonPath: "applyScreenOld.waterSubSource",
+//     callBack: handleNA
+//   }
+// );
 export const reviewPipeSize = getLabelWithValueForModifiedLabel(
   {
     labelName: "Pipe Size (in inches)",
@@ -175,6 +351,33 @@ export const reviewNumberOfToilets = getLabelWithValueForModifiedLabel(
   }
 );
 
+export const reviewSubUsageType = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Sub Usage Type",
+    labelKey: "WS_SERV_DETAIL_SUB_USAGE_TYPE"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.waterSubUsageType",
+    callBack: handleNA
+  }
+);
+export const reviewUnitUsageType = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Unit Usage Type",
+    labelKey: "WS_SERV_DETAIL_UNIT_USAGE_TYPE"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.unitUsageType",
+    callBack: handleNA
+  },
+  {
+    labelKey: "WS_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "applyScreenOld.additionalDetails.unitUsageType",
+    callBack: handleNA
+  }
+);
 export const reviewPlumberProvidedBy = getLabelWithValueForModifiedLabel(
   {
     labelName: "Plumber Provided By",
@@ -182,18 +385,14 @@ export const reviewPlumberProvidedBy = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "applyScreen.additionalDetails.detailsProvidedBy",
-    callBack: value => {
-      return value ? `WS_PLUMBER_${value.toUpperCase()}` : handleNA;
-    }
+    callBack: handleNA
   },
   {
     labelKey: "WS_OLD_LABEL_NAME"
   },
   {
     jsonPath: "applyScreenOld.additionalDetails.detailsProvidedBy",
-    callBack: value => {
-      return value ? `WS_PLUMBER_${value.toUpperCase()}` : handleNA;
-    }
+    callBack: handleNA
   }
 );
 export const reviewPlumberLicenseNo = getLabelWithValueForModifiedLabel(
@@ -253,7 +452,7 @@ export const reviewRoadType = getLabelWithValueForModifiedLabel(
     labelKey: "WS_ADDN_DETAIL_ROAD_TYPE"
   },
   {
-    jsonPath: "applyScreen.roadType",
+    jsonPath: "applyScreen.roadCuttingInfo[0].roadType",
     // localePrefix: {
     //   moduleName: "WS",
     //   masterName: "ROADTYPE"
@@ -268,6 +467,27 @@ export const reviewRoadType = getLabelWithValueForModifiedLabel(
     callBack: handleNA
   }
 );
+export const reviewRoadTypesw = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Road Type",
+    labelKey: "SW_ADDN_DETAIL_ROAD_TYPE"
+  },
+  {
+    jsonPath: "applyScreen.roadCuttingInfosw[0].roadType",
+    // localePrefix: {
+    //   moduleName: "WS",
+    //   masterName: "ROADTYPE"
+    // },
+    callBack: handleNA
+  },
+  {
+    labelKey: "SW_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "applyScreenOld.roadType",
+    callBack: handleNA
+  }
+);
 
 export const reviewArea = getLabelWithValueForModifiedLabel(
   {
@@ -275,7 +495,7 @@ export const reviewArea = getLabelWithValueForModifiedLabel(
     labelKey: "WS_ADDN_DETAILS_AREA_LABEL"
   },
   {
-    jsonPath: "applyScreen.roadCuttingArea",
+    jsonPath: "applyScreen.roadCuttingInfo[0].roadCuttingArea",
     callBack: handleNA
   },
   {
@@ -343,13 +563,14 @@ export const reviewInitialMeterReading = getLabelWithValueForModifiedLabel(
     labelKey: "WS_ADDN_DETAILS_INITIAL_METER_READING"
   },
   { jsonPath: "applyScreen.additionalDetails.initialMeterReading",
-    callBack: handleNA },
+    callBack: handleNAnew 
+  },
   {
     labelKey: "WS_OLD_LABEL_NAME"
   },
   {
     jsonPath: "applyScreenOld.additionalDetails.initialMeterReading",
-    callBack: handleNA
+    callBack: handleNAnew
   }
 );
 
@@ -413,20 +634,32 @@ export const reviewOwner = (isEditable = true) => {
     viewEight: connectionChargeDetails,
     viewNine: roadCuttingChargesHeader,
     viewTen: roadCuttingCharges,
-    viewEleven: activationDetailsHeader,
-    viewTwelve: activationDetails
+    viewEleven: roadCuttingExtraCharges,
+    viewTwelve: activationDetailsHeader,
+    viewThirteen: activationDetails,
+    viewFourteen: roadCuttingChargesHeadersw,
+    viewFifteen: roadCuttingChargessw,
+    viewSixteen: roadCuttingExtraChargessw,
   })
 };
 
 const connectionDetails = getCommonContainer({
+  reviewOldConsumerNo,
   reviewConnectionType,
   reviewNumberOfTaps,
+  reviewBillingType,
+  reviewBillingAmount,
+  reviewConnectionCategory,
+  reviewLedgerId,
+  reviewGroups,
   reviewWaterSource,
-  reviewWaterSubSource,
+  // reviewWaterSubSource,
   reviewPipeSize,
-  // reviewBillingType,
+  
   reviewWaterClosets,
-  reviewNumberOfToilets
+  reviewNumberOfToilets,
+  reviewSubUsageType,
+  reviewUnitUsageType
 });
 
 const connectionChargeDetails = getCommonContainer({
@@ -461,8 +694,7 @@ const roadCuttingCharges = {
             jsonPath: "applyScreen.roadCuttingInfo[0].roadCuttingArea",
             callBack: handleNA
           }
-        )
-        
+        ),
     }),
     items: [],
     hasAddItem: false,
@@ -474,9 +706,112 @@ const roadCuttingCharges = {
   type: "array"
 }
 
+const roadCuttingExtraCharges = getCommonContainer({
+  reviewCompositionFee,
+  reviewUserCharges,
+  reviewOthersFee,
+  
+});
+const roadCuttingChargessw = {
+  uiFramework: "custom-containers",
+  componentPath: "MultiItem",
+  props: {
+    className: "applicant-summary",
+    scheama: getCommonContainer({
+        reviewRoadTypesw : getLabelWithValue(
+          {
+            labelName: "Road Type",
+            labelKey: "SW_ADDN_DETAIL_ROAD_TYPE"
+          },
+          {     
+            jsonPath: "applyScreen.roadCuttingInfosw[0].roadType",
+            callBack: handleRoadType
+          }
+        ),
+        reviewArea : getLabelWithValue(
+          {
+            labelName: "Area (in sq ft)",
+            labelKey: "SW_ADDN_DETAILS_AREA_LABEL"
+          },
+          {
+            jsonPath: "applyScreen.roadCuttingInfosw[0].roadCuttingArea",
+            callBack: handleNA
+          }
+        ),
+    }),
+    items: [],
+    hasAddItem: false,
+    isReviewPage: true,
+    sourceJsonPath: "applyScreen.roadCuttingInfosw",
+    prefixSourceJsonPath: "children",
+    afterPrefixJsonPath: "children.value.children.key"
+  },
+  type: "array"
+}
+
+export const reviewCompositionFeesw = getLabelWithValueForModifiedLabel(
+  
+  {
+    labelName: "Area (in sq ft)",
+    labelKey: "SW_ADDN_DETAILS_COMPOSITION_LABEL"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.compositionFeesw",
+    callBack: handleNA
+  },
+  {
+    labelKey: "SW_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.compositionFeesw",
+    callBack: handleNA
+  }
+);
+export const reviewUserChargessw = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Area (in sq ft)",
+    labelKey: "SW_ADDN_USER_CHARGES_LABEL"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.userChargessw",
+    callBack: handleNA
+  },
+  {
+    labelKey: "SW_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.userChargessw",
+    callBack: handleNA
+  }
+);
+export const reviewOthersFeesw = getLabelWithValueForModifiedLabel(
+  {
+    labelName: "Area (in sq ft)",
+    labelKey: "SW_ADDN_OTHER_FEE_LABEL"
+  },
+  {
+    jsonPath: "applyScreen.additionalDetails.othersFeesw",
+    callBack: handleNA
+  },
+  {
+    labelKey: "SW_OLD_LABEL_NAME"
+  },
+  {
+    jsonPath: "WaterConnectionOld[0].additionalDetails.othersFeesw",
+    callBack: handleNA
+  }
+);
+
+const roadCuttingExtraChargessw = getCommonContainer({
+  reviewCompositionFeesw,
+  reviewUserChargessw,
+  reviewOthersFeesw
+});
 const activationDetails = getCommonContainer({
   reviewConnectionExecutionDate,
   reviewMeterId,
   reviewMeterInstallationDate,
-  reviewInitialMeterReading
+  reviewInitialMeterReading,
+  reviewMeterMakeReading,
+  reviewAverageMakeReading,
 });

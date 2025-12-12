@@ -71,8 +71,8 @@ class SingleProperty extends React.Component {
                     {item.status}
                   </Grid>
                 </Grid>
-
-                {/*                
+                
+{/*                
                 <div onClick={onActionClick ? onActionClick : () => this.onCardClick(item)}>
                   <Label label={action} textTransform={"uppercase"} color="#fe7a51" fontSize={14} labelStyle={{ textTransform: "uppercase" }} />
                 </div> */}

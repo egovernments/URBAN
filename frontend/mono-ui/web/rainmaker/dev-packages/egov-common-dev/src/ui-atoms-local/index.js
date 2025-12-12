@@ -7,11 +7,11 @@ const TestAtoms = Loadable({
   loader: () => import("./TestAtoms"),
   loading: () => <Loading />
 });
+
 const ArrearTable = Loadable({
   loader: () => import("./ArrearTable"),
   loading: () => <Loading />
 });
-
 const AutoSuggest = Loadable({
   loader: () => import("./AutoSuggest"),
   loading: () => <Loading />
@@ -29,14 +29,7 @@ const DisabledComponent = Loadable({
   loading: () => <Loading />
 });
 
-const LinkComponent = Loadable({
-  loader: () => import("./LinkComponent"),
-  loading: () => <Loading />
-});
-
-
 export {
-  LinkComponent,
   TestAtoms,
   ArrearTable,
   AutoSuggest,

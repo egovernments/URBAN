@@ -5,11 +5,30 @@ import {
   getCommonContainer,
   getLabel, getTextField
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-// import { generateMultipleBill } from "../../utils/receiptPdf";
+import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getTenantId, getUserInfo, getTenantIdCommon } from "egov-ui-kit/utils/localStorageUtils";
+import { generateMultipleBill } from "../../utils/receiptPdf";
 import { searchApiCall } from "./functions";
+import { httpRequest } from "../../../../../ui-utils";
+import get from 'lodash/get';
+let arr =[
+  {
+    code: "Batch",
+    value: "Batch",
+  },
+  {
+    code: "Locality",
+    value: "Locality",
+  },
+  {
+    code: "Integrated Bill",
+    value: "Integrated Bill",
+  }
 
+];
+if(getTenantIdCommon() == "pb.patiala"){
+  arr.push({code: "Group",value: "Group"});
+}
 // const wsBillinData = [
 //   {
 //     code: "JAN 2018 - MAR 2018",
@@ -193,6 +212,163 @@ export const abgSearchCard = getCommonCard({
 
         // }
       },
+      batchtype: {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-abg",
+        componentPath: "AutosuggestContainer",
+        jsonPath: "generateBillScreen.batchtype",
+        required: true,
+        props: {
+          label: {
+            labelName: "select Batch or Locality",
+            labelKey: "select Batch or Locality"
+          },
+          labelPrefix: {
+            moduleName: "TENANT",
+            masterName: "TENANTS"
+          },
+          optionLabel: "name",
+          placeholder: {
+            labelName: "Select Batch or Locality",
+            labelKey: "Select Batch or Locality"
+          },
+          labelsFromLocalisation: true,
+          required: true,
+          isClearable:true,
+          data: arr,
+  
+          className: "autocomplete-dropdown",
+          jsonPath: "generateBillScreen.batchtype",
+  
+        },
+        afterFieldChange: async (action, state, dispatch) => {
+       
+       
+          let ConectionCategory = await get(state, "screenConfiguration.preparedFinalObject.generateBillScreen.batchtype");
+          if(ConectionCategory=="Batch"){
+          try {
+            let payload = await httpRequest(
+              "post",
+              "/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Block",
+              "_search",
+              [{ key: "tenantId", value: getTenantIdCommon() }],
+              {}
+            );
+            let batchar = [];
+            const batches =
+              payload &&
+              payload.TenantBoundary[0] &&
+              payload.TenantBoundary[0].boundary &&
+              payload.TenantBoundary[0].boundary.filter((item) => {
+                batchar.push({ item });
+                return batchar;
+              }, []);
+            dispatch(
+              prepareFinalObject(
+                "applyScreenMdmsData.tenant.batchs",
+                batches
+              )
+            );
+            dispatch(prepareFinalObject("applyScreenMdmsData.tenant.mohaladata", ""));
+            dispatch(prepareFinalObject("applyScreenMdmsData.tenant.groups",""));
+  
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        else if(ConectionCategory=="Group"){
+          let mdmsBody = {
+            MdmsCriteria: {
+              tenantId: getTenantIdCommon(),
+              moduleDetails: [
+                {
+                  moduleName: "ws-services-masters",
+                  masterDetails: [{ name: "groups"}]
+                }
+              ]
+            }
+          };
+          try {
+            let payload = await httpRequest(
+              "post",
+              "/egov-mdms-service/v1/_search",
+              "_search",
+              [],
+              mdmsBody
+             
+            );
+            payload = payload.MdmsRes['ws-services-masters'];
+            let groupsar = [];
+            const batches =
+              payload &&
+              payload.groups.filter((item) => {
+                groupsar.push({ item });
+                return groupsar;
+              }, []);
+            dispatch(
+              prepareFinalObject(
+                "applyScreenMdmsData.tenant.groups",
+                batches
+              )
+            );
+            dispatch(prepareFinalObject("applyScreenMdmsData.tenant.mohaladata", ""));
+            dispatch(prepareFinalObject("applyScreenMdmsData.tenant.batchs",""));
+  
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        else{
+  //locality
+  
+  let response = await httpRequest(
+    "post",
+    "/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality",
+    "_search",
+    [{ key: "tenantId", value: getTenantIdCommon() }],
+    {}
+  );
+  let mohallaDataArray = [];
+  let localitysar = [];
+  let mohallaDataRow=null;
+  let name,code;
+  // response.TenantBoundary[0].boundary.map((element,index) => {
+  //  // name = element.name + "( "+element.code+" )";
+  //  // code=element.code;
+  //   mohallaDataRow={"code":element.code};
+  //  mohallaDataArray.push(mohallaDataRow);
+  
+  // });
+  mohallaDataArray =
+  response &&
+  response.TenantBoundary[0].boundary.filter((item) => {
+    localitysar.push({ item });
+    return localitysar;
+  }, []);
+  dispatch(prepareFinalObject("applyScreenMdmsData.tenant.mohaladata", mohallaDataArray));
+  dispatch(
+    prepareFinalObject(
+      "applyScreenMdmsData.tenant.batchs",
+      ""
+    )
+    
+  );
+  dispatch(
+    prepareFinalObject(
+      "applyScreenMdmsData.tenant.groups",
+      ""
+    )  
+  );
+        }
+        },
+        required: true,
+        labelsFromLocalisation: true,
+        isClearable: true,
+        gridDefination: {
+          xs: 12,
+          sm: 4
+        }
+      },
       // billingPeriod: getSelectField({
       //   label: {
       //     labelName: "Financial Year",
@@ -220,7 +396,7 @@ export const abgSearchCard = getCommonCard({
           sm: 4
         },
         jsonPath: "searchCriteria.locality",
-        required: true,
+        required: false,
         props: {
           className: "autocomplete-dropdown",
           label: {
@@ -232,10 +408,58 @@ export const abgSearchCard = getCommonCard({
             labelKey: "ABG_LOCMOHALLA_PLACEHOLDER"
           },
           jsonPath: "searchCriteria.locality",
-          sourceJsonPath: "searchScreenMdmsData.localities",
+          sourceJsonPath: "applyScreenMdmsData.tenant.mohaladata", //applyScreenMdmsData.tenant.mohaladata
+          //sourceJsonPath: mohallaDataArray,
           labelsFromLocalisation: true,
-          required: true,
+          required: false,
           isClearable:true,
+        }
+      },
+      batch: {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-abg",
+        componentPath: "AutosuggestContainer",
+        sourceJsonPath: "applyScreenMdmsData.tenant.batchs",
+        jsonPath: "searchCriteria.locality",
+        props: {
+          label: { labelName: "Batch", labelKey: "Batch" },
+          placeholder: { labelName: "Select Batch", labelKey: "Select Batch" },
+          optionLabel: "name",
+          required: false,
+          labelsFromLocalisation: true,
+          isClearable: true,
+          className: "autocomplete-dropdown",
+          sourceJsonPath: "applyScreenMdmsData.tenant.batchs",
+          jsonPath: "searchCriteria.locality",
+  
+        },
+        required: false,
+        gridDefination: {
+          xs: 12,
+          sm: 4
+        }
+      },
+      groUp: {
+        uiFramework: "custom-containers-local",
+        moduleName: "egov-wns",
+        componentPath: "AutosuggestContainer",
+        sourceJsonPath: "applyScreenMdmsData.tenant.groups",
+        jsonPath: "searchCriteria.group",
+        props: {
+          label: { labelName: "Group", labelKey: "Group" },
+          placeholder: { labelName: "Select Group", labelKey: "Select Group" },
+          optionLabel: "name",
+          required: false,
+          labelsFromLocalisation: true,
+          className: "autocomplete-dropdown",
+          sourceJsonPath: "applyScreenMdmsData.tenant.groups",
+          jsonPath: "searchCriteria.group",
+  
+        },
+        required: false,
+        gridDefination: {
+          xs: 12,
+          sm: 4
         }
       },
       consumerId: getTextField({
@@ -375,67 +599,34 @@ export const mergeDownloadButton = {
   props: {
     className: "abg-button-container",
     style: {
-      textAlign: "right",
-      display: "flex",
-      justifyContent : "flex-end"
+      textAlign: "right"
     }
   },
   children: {
     mergeButton: {
-      uiFramework: "custom-molecules",
-      componentPath: "DownloadPrintButton",
+      componentPath: "Button",
       visible: false,
       props: {
-        data: {
-          label: { labelName: "MERGE & DOWNLOAD", labelKey: "ABG_GROUP_BILLS_MERGE_AND_DOWNLOAD_BUTTON" },
-          rightIcon: "arrow_drop_down",
-          props: { 
-            variant: "outlined", 
-            style: { 
-              height: "60px", 
-              backgroundColor: "#FE7A51",
-              color: "#ffffff", 
-              // marginRight: 10,
-              // width: "368px"
-              // width: "329px",
-              minWidth: "260px",
-              maxWidth: "415px",
-              width: "100%",
-              menuListStyle: {
-                minWidth: "260px",
-                maxWidth: "415px",
-                width: "92%",
-                zIndex:100
-              }
-            } },
-          menu: []
+        variant: "contained",
+        color: "primary",
+        style: {
+          color: "white",
+          borderRadius: "2px",
+          width: "250px",
+          height: "48px"
         }
-      }
-    },
-    // mergeButton: {
-    //   componentPath: "Button",
-    //   visible: false,
-    //   props: {
-    //     variant: "contained",
-    //     color: "primary",
-    //     style: {
-    //       color: "white",
-    //       borderRadius: "2px",
-    //       width: "250px",
-    //       height: "48px"
-    //     }
-    //   },
-    //   children: {
-    //     buttonLabel: getLabel({
-    //       labelName: "MERGE & DOWNLOAD",
-    //       labelKey: "ABG_GROUP_BILLS_MERGE_AND_DOWNLOAD_BUTTON"
-    //     })
-    //   },
-    //   onClickDefination: {
-    //     action: "condition",
-    //     callBack: generateMultipleBill
-    //   },
-    //   visible: false
-    // }
+      },
+      children: {
+        buttonLabel: getLabel({
+          labelName: "MERGE & DOWNLOAD",
+          labelKey: "ABG_GROUP_BILLS_MERGE_AND_DOWNLOAD_BUTTON"
+        })
+      },
+      onClickDefination: {
+        action: "condition",
+        callBack: generateMultipleBill
+      },
+      visible: false
+    }
   }
 };

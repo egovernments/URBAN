@@ -500,6 +500,178 @@ export const setOwnerShipDropDownFieldChange = (state, dispatch, payload) => {
   }
 };
 
+export const resetFieldsForApplication = (state, dispatch) => {
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.dateOfAppointment",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.employeeDetails.children.cardContent.children.employeeDetailsContainer.children.employeeName",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.employeeDetails.children.cardContent.children.employeeDetailsContainer.children.mobileNumber",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.employeeDetails.children.cardContent.children.employeeDetailsContainer.children.guardianName",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.employeeDetails.children.cardContent.children.employeeDetailsContainer.children.relationShipType",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.employeeDetails.children.cardContent.children.employeeDetailsContainer.children.gender",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.employeeDetails.children.cardContent.children.employeeDetailsContainer.children.dateOfBirth",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.employmentType",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.role",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.jurisdictionDetails.children.cardContent.children.jurisdictionDetailsCard.props.items[0].item0.children.cardContent.children.jnDetailsCardContainer.children.hierarchy",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.jurisdictionDetails.children.cardContent.children.jurisdictionDetailsCard.props.items[0].item0.children.cardContent.children.jnDetailsCardContainer.children.boundaryType",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.jurisdictionDetails.children.cardContent.children.jurisdictionDetailsCard.props.items[0].item0.children.cardContent.children.jnDetailsCardContainer.children.boundary",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.assignFromDate",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.assignToDate",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.department",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.designation",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.reportingTo",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.currentAssignment",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardSecondStep.children.assignmentDetails.children.cardContent.children.assignmentDetailsCard.props.items[0].item0.children.cardContent.children.asmtDetailsCardContainer.children.headOfDepartment",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "create",
+      "components.div.children.formwizardFirstStep.children.professionalDetails.children.cardContent.children.employeeDetailsContainer.children.employeeId",
+      "props.value",
+      ""
+    )
+  );
+};
+export const resetFieldsForApplicationn = (state, dispatch) => {
+  dispatch(
+    handleField(
+      "search",
+      "components.cityPickerDialog.children.dialogContent.children.popup.children.cityPicker.children.cityDropdown",
+      "props.value",
+      ""
+    )
+  );
+}
 export const showHideBreakupPopup = (state, dispatch, screenKey) => {
   let toggle = get(
     state.screenConfiguration.screenConfig[screenKey],
@@ -615,6 +787,9 @@ export const createEmployee = (state, dispatch) => {
     ) || get(
       state.screenConfiguration.preparedFinalObject,
       "citiesByModule.tenantId.value"
+    ) || get(
+      state.screenConfiguration.preparedFinalObject,
+      "Employee[0].tenantId"
     );
     tenantId=tenantId?tenantId:getTenantId();
     get(state.screenConfiguration.preparedFinalObject, "Employee") &&

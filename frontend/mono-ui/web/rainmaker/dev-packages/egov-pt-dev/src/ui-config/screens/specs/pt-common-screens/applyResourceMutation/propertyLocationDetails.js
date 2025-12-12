@@ -2,8 +2,7 @@ import {
   getCommonCard,
   getCommonContainer,
   getCommonTitle,
-  getTextField,
-  getPattern
+  getTextField
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import {
   prepareFinalObject
@@ -40,7 +39,7 @@ export const propertyLocationDetails = getCommonCard({
         },
         optionLabel: "name",
         optionValue: "code",
-        className: "hr-generic-selectfield autocomplete-dropdown",
+        className: "hr-generic-selectfield autocomplete-dropdown",      
         label: {
           labelKey: "PT_COMMON_CITY",
           labelName: "City"
@@ -66,7 +65,7 @@ export const propertyLocationDetails = getCommonCard({
       gridDefination: {
         xs: 12,
         sm: 6
-      },
+      },      
       beforeFieldChange: async (action, state, dispatch) => {
         //Below only runs for citizen - not required here in employee
         dispatch(fetchLocalizationLabel(getLocale(), action.value, action.value));
@@ -133,6 +132,7 @@ export const propertyLocationDetails = getCommonCard({
           console.log(e);
         }
       }
+
     },
     localityOrMohalla: {
       uiFramework: "custom-containers-local",
@@ -146,13 +146,13 @@ export const propertyLocationDetails = getCommonCard({
           cursor: "pointer"
         },
         label: {
-          labelName: "Locality/Mohalla",
-          labelKey: "PT_COMMON_LOCALITY_OR_MOHALLA"
-        },
+              labelName:"Locality/Mohalla",
+              labelKey: "PT_COMMON_LOCALITY_OR_MOHALLA"
+            },
         placeholder: {
-          labelName: "Enter Mohalla",
-          labelKey: "PT_COMMON_LOCALITY_OR_MOHALLA_PLACEHOLDER"
-        },
+              labelName:"Enter Mohalla",
+              labelKey: "PT_COMMON_LOCALITY_OR_MOHALLA_PLACEHOLDER"
+            },
         jsonPath: "Property.address.locality.code",//db sake
         sourceJsonPath: "applyScreenMdmsData.tenant.localities",
         labelsFromLocalisation: true,
@@ -162,11 +162,11 @@ export const propertyLocationDetails = getCommonCard({
         inputLabelProps: {
           shrink: true
         },
-
+        
       },
-      gridDefination: {
-        xs: 12,
-        sm: 6,
+        gridDefination:{
+            xs: 12,
+            sm: 6,
       },
     },
 
@@ -182,7 +182,7 @@ export const propertyLocationDetails = getCommonCard({
         sm: 6
       },
       required: true,
-      pattern: /^[a-zA-Z0-9-]*$/i,
+      // pattern: /^[a-zA-Z0-9-]*$/i,
       errorMessage: "PT_COMMON_ERR_INVALID_DOOR_NO",
       jsonPath: "Property.address.doorNo"
     }),
@@ -198,8 +198,7 @@ export const propertyLocationDetails = getCommonCard({
         sm: 6
       },
       required: true,
-      pattern: /^[a-zA-Z0-9-]*$/i,
-      pattern: getPattern("BuildingStreet"),
+      // pattern: /^[a-zA-Z0-9\s]+$/i,
       errorMessage: "PT_COMMON_ERR_INVALID_BUILDING_COLONY",
       jsonPath: "Property.address.buildingName"
     })

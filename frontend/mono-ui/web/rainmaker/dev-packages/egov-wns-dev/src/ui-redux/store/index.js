@@ -21,5 +21,11 @@ const store = createStore(combineReducers({
    applyMiddleware(...middlewares),
    window.devToolsExtension ? window.devToolsExtension() : f => f
  ))
-
+ export const prepareFinalObject = (jsonPath, value) => {
+  return {
+    type: screenActionTypes.PREPARE_FINAL_OBJECT,
+    jsonPath,
+    value
+  };
+};
 export default store

@@ -157,13 +157,27 @@ export const applicantSummary = getCommonGrayCard({
             callBack: checkValueForNA
           }
         ),
+        ownerShipPercentage: getLabelWithValue(
+          {
+            labelName: "OWNERSHIP_PERCENTAGE",
+            labelKey: "PT_OWNERSHIP_PERCENTAGE_LABEL"
+          },
+          {
+            jsonPath: "Property.owners[0].ownerShipPercentage",
+            localePrefix: {
+              moduleName: "common-masters",
+              masterName: "OwnerShipPercentage"
+            },
+            callBack: checkValueForNA
+          }
+        ),
         reviewSameAsPropertyAddress: getLabelWithValue(
           {
             labelName: "Same as property address",
             labelKey: "PT_COMMON_SAME_AS_PROPERTY_ADDRESS"
           },
           {
-            jsonPath: "Property.owners[0].sameAsPropertyAddress",
+            jsonPath: "Property.owners[0].sameAsPeropertyAddress",
             localePrefix: {
               moduleName: "common-masters",
               masterName: "OwnerType"
@@ -313,7 +327,7 @@ export const institutionSummary = getCommonGrayCard({
             labelKey: "PT_COMMON_SAME_AS_PROPERTY_ADDRESS"
           },
           {
-            jsonPath: "Property.owners[0].sameAsPropertyAddress",
+            jsonPath: "Property.owners[0].sameAsPeropertyAddress",
             callBack: checkValueForNA
           }
         ),

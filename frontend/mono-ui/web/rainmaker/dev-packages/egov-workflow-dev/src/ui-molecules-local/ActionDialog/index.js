@@ -4,7 +4,8 @@ import { Grid, Typography, Button } from "@material-ui/core";
 import { Container } from "egov-ui-framework/ui-atoms";
 import {
   LabelContainer,
-  TextFieldContainer
+  TextFieldContainer,
+  
 } from "egov-ui-framework/ui-containers";
 import { Dialog, DialogContent } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
@@ -31,6 +32,26 @@ const fieldConfig = {
       labelKey: "WF_ASSIGNEE_NAME_PLACEHOLDER"
     }
   },
+  Respresntativename: {
+    label: {
+      labelName: "Name",
+      labelKey: "Name"
+    },
+    placeholder: {
+      labelName: "Enter Name",
+      labelKey: "Enter Name"
+    }
+  },
+  datetime: {
+    label: {
+      labelName: "Date",
+      labelKey: "Date"
+    },
+    placeholder: {
+      labelName: "Enter Date",
+      labelKey: "Enter Date"
+    }
+  },
   comments: {
     label: {
       labelName: "Comments",
@@ -41,6 +62,7 @@ const fieldConfig = {
       labelKey: "WF_ADD_HOC_CHARGES_POPUP_COMMENT_LABEL"
     }
   }
+
 };
 
 class ActionDialog extends React.Component {
@@ -90,6 +112,7 @@ class ActionDialog extends React.Component {
       open,
       onClose,
       dropDownData,
+      nocValid,
       handleFieldChange,
       onButtonClick,
       dialogData,
@@ -104,17 +127,13 @@ class ActionDialog extends React.Component {
     } = dialogData;
     const { getButtonLabelName } = this;
     let fullscreen = false;
-    let showAssignee = process.env.REACT_APP_NAME === "Citizen" ? false : true;
 
-    if (dialogData.buttonLabel == "APPROVE" && dialogData.moduleName == "FIRENOC") {
-      showAssignee = false;
-    }
-
+    const showAssignee = process.env.REACT_APP_NAME === "Citizen" ? false : true;
     if (window.innerWidth <= 768) {
       fullscreen = true;
     }
     if (dataPath === "FireNOCs") {
-      dataPath = `${dataPath}[0].fireNOCDetails.additionalDetail`
+      dataPath = `${dataPath}[0].fireNOCDetails`
     } else if (dataPath === "Assessment"||dataPath === "Property" || dataPath === "BPA" || dataPath === "Noc") {
       dataPath = `${dataPath}.workflow`;
     } else {
@@ -194,6 +213,7 @@ class ActionDialog extends React.Component {
                         style={{ marginRight: "15px" }}
                         label={fieldConfig.approverName.label}
                         placeholder={fieldConfig.approverName.placeholder}
+                        required={true}
                         data={dropDownData}
                         optionValue="value"
                         optionLabel="label"
@@ -213,6 +233,7 @@ class ActionDialog extends React.Component {
                     <TextFieldContainer
                       InputLabelProps={{ shrink: true }}
                       label={fieldConfig.comments.label}
+                      required={nocValid}
                       onChange={e =>
                         handleFieldChange(`${dataPath}.comment`, e.target.value)
                       }
@@ -220,6 +241,31 @@ class ActionDialog extends React.Component {
                       placeholder={fieldConfig.comments.placeholder}
                     />
                   </Grid>
+                  <Grid item sm="6">
+                    <TextFieldContainer
+                      InputLabelProps={{ shrink: true }}
+                      label={fieldConfig.Respresntativename.label} 
+                      required={nocValid}
+                      onChange={e =>
+                        handleFieldChange(`${dataPath}.name`, e.target.value)
+                      }
+                      jsonPath={`${dataPath}.name`}
+                      placeholder={fieldConfig.Respresntativename.placeholder} 
+                    />
+                  </Grid>
+                  <Grid item sm="6">
+                    <TextFieldContainer
+                      InputLabelProps={{ shrink: true }}
+                      label={fieldConfig.datetime.label}
+                      required={nocValid}
+                      onChange={e =>
+                        handleFieldChange(`${dataPath}.date`, e.target.value)
+                      }
+                      jsonPath={`${dataPath}.date`}
+                      placeholder={fieldConfig.datetime.placeholder}
+                    />
+                  </Grid>
+                  
                   <Grid item sm="12">
                     <Typography
                       component="h3"
@@ -238,9 +284,10 @@ class ActionDialog extends React.Component {
                           labelName="Supporting Documents"
                           labelKey="WF_APPROVAL_UPLOAD_HEAD"
                         />
-                        {isDocRequired && (
+                        {isDocRequired || nocValid && (
                           <span style={{ marginLeft: 5, color: "red" }}>*</span>
-                        )}
+                        )
+                       }
                       </div>
                     </Typography>
                     <div
@@ -263,6 +310,7 @@ class ActionDialog extends React.Component {
                         accept: "image/*, .pdf, .png, .jpeg"
                       }}
                       buttonLabel={{ labelName: "UPLOAD FILES",labelKey : "TL_UPLOAD_FILES_BUTTON" }}
+                      required ={true}
                       jsonPath={wfDocumentsPath}
                       maxFileSize={5000}
                     />
@@ -270,6 +318,7 @@ class ActionDialog extends React.Component {
                       <Button
                         variant={"contained"}
                         color={"primary"}
+                        required ={true}
                         style={{
                           minWidth: "200px",
                           height: "48px"

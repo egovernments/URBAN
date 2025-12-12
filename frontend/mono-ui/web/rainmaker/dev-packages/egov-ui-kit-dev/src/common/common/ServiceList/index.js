@@ -7,17 +7,13 @@ import Icon from "egov-ui-kit/components/Icon";
 import Label from "egov-ui-kit/utils/translationNode";
 import React from "react";
 import { connect } from "react-redux";
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import "./index.css";
 
 const styles = (theme) => ({
   webRoot: {
     flexGrow: 1,
-    width: "9em",
-    padding: "1%"
-  },
-  webRoot1: {
-    flexGrow: "unset",
-    width: "11em",
+    width: "10%",
     padding: "1%"
   },
   mobileRoot: {
@@ -38,7 +34,6 @@ const styles = (theme) => ({
     justifyContent: "center",
     display: "flex",
     cursor: "pointer",
-    whiteSpace: "nowrap"
   },
   icon: {
     color: "#fe7a51",
@@ -65,9 +60,15 @@ class ServiceList extends React.Component {
   };
   componentWillReceiveProps(nextProps) {
     const { menu } = nextProps;
+    const citizenRoleCode = JSON.parse(getUserInfo()).roles;
+    console.log("menu",citizenRoleCode)
     let list;
     if (process.env.REACT_APP_NAME === "Citizen") {
-      list = menu && menu.filter((item) => item.url === "card" && item.name.startsWith("rainmaker-citizen"));
+      if(citizenRoleCode.some((role)=> role.code === 'PESCO')){
+        list = menu && menu.filter((item) => item.url === "card" && item.name.startsWith("rainmaker-citizen-Swach"));
+      }else{
+        list = menu && menu.filter((item) => item.url === "card" && item.name.startsWith("rainmaker-citizen") && item.name !== 'rainmaker-citizen-Swach');
+      }
     } else {
       list = menu && menu.filter((item) => item.url === "card");
     }
@@ -82,7 +83,6 @@ class ServiceList extends React.Component {
       <Grid container>
         <Hidden smUp>
           {actionList.map((service) => {
-            service.leftIcon = service.name == "digit-ui FSM" ? "custom:localShipping" : service.leftIcon;
             const translatedLabel = service.displayName.toUpperCase().replace(/[.:\-\s]/g, "_");
 
             return (
@@ -114,7 +114,7 @@ class ServiceList extends React.Component {
           {actionList.map((service) => {
             const translatedLabel = service.displayName.toUpperCase().replace(/[.:\-\s]/g, "_");
             return (
-              <Grid className={actionList.length > 10 ? classes.webRoot1 : classes.webRoot} item align="center">
+              <Grid className={classes.webRoot} item align="center">
                 <Card
                   className={`${classes.paper} service-module-style`}
                   onClick={(e) => {

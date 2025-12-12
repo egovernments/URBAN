@@ -64,16 +64,18 @@ export const transferorSummaryDetails = {
         "Property.ownersInit[0].emailId",
       callBack: checkValueForNA
     }
-  ), alterMobile: getLabelWithValue(
-        {
-          labelName: "Mobile No.",
-          labelKey: "PT_FORM3_ALT_MOBILE_NO"
-        },
-        {
-          jsonPath: "Property.ownersInit[0].alternatemobilenumber",
-          callBack: checkValueForNA
-        }
-      ),
+  ),
+  ownerShipPercentage: getLabelWithValue(
+    {
+      labelName: "OwnerPercentage",
+      labelKey: "PT_OWNERSHIP_INFO_EMAIL_ID"
+    },
+    {
+      jsonPath:
+        "Property.ownersInit[0].ownerShipPercentage",
+      callBack: checkValueForNA
+    }
+  ),
   ownerDob: getLabelWithValue(
     {
       labelName: "Special Category",
@@ -198,16 +200,7 @@ export const transferorInstitutionSummaryDetails = {
         "Property.ownersInit[0].mobileNumber",
       callBack: checkValueForNA
     }
-  ), alterMobile: getLabelWithValue(
-        {
-          labelName: "Mobile No.",
-          labelKey: "PT_FORM3_ALT_MOBILE_NO"
-        },
-        {
-          jsonPath: "Property.ownersInit[0].alternatemobilenumber",
-          callBack: checkValueForNA
-        }
-      ),
+  ),
   officialAddress: getLabelWithValue(
     {
       labelName: "Official Correspondence Address",

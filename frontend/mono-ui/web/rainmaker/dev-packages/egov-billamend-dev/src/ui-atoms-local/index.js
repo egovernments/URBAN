@@ -22,16 +22,10 @@ const AutoSuggest = Loadable({
   loader: () => import("./AutoSuggest"),
   loading: () => <Loading />
 });
-const MenuButton = Loadable({
-  loader: () => import("./MenuButton"),
-  loading: () => <Loading />
-});
-
 
 export {
   TestAtoms,
   ConsumerNo,
   ToolTipContainer,
-  AutoSuggest,
-  MenuButton
+  AutoSuggest
 };

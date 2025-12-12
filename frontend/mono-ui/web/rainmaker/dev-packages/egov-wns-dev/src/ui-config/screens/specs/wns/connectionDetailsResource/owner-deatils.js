@@ -184,11 +184,11 @@ export const connectionHolderDetails={
     {
       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_MOBILE_NO_LABEL"
     },
-    { jsonPath: "WaterConnection[0].connectionHolders[0].mobileNumber", callBack: handleNA },
+    { jsonPath: "WaterConnection[0].connectionHolders[0].mobileNumber" },
     {
       labelKey: "WS_OLD_LABEL_NAME"
     },
-    { jsonPath: "applyScreenOld.connectionHolders[0].mobileNumber", callBack: handleNA }
+    { jsonPath: "applyScreenOld.connectionHolders[0].mobileNumber" }
     
   ),
   name: getLabelWithValueForModifiedLabel(
@@ -196,11 +196,11 @@ export const connectionHolderDetails={
       labelName: "Name",
       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_OWN_NAME_LABEL"
     },
-    { jsonPath: "WaterConnection[0].connectionHolders[0].name", callBack: handleNA },
+    { jsonPath: "WaterConnection[0].connectionHolders[0].name"},
     {
       labelKey: "WS_OLD_LABEL_NAME"
     },
-    { jsonPath: "applyScreenOld.connectionHolders[0].name", callBack: handleNA }
+    { jsonPath: "applyScreenOld.connectionHolders[0].name"}
     
   ),
   gender: getLabelWithValueForModifiedLabel(
@@ -209,7 +209,7 @@ export const connectionHolderDetails={
     },
     {
       jsonPath: "WaterConnection[0].connectionHolders[0].gender",
-      callBack: handleNA,
+      
       localePrefix: {
         moduleName: "COMMON",
         masterName: "GENDER"
@@ -220,7 +220,7 @@ export const connectionHolderDetails={
     },
     {
       jsonPath: "applyScreenOld.connectionHolders[0].gender",
-      callBack: handleNA,
+      
       localePrefix: {
         moduleName: "COMMON",
         masterName: "GENDER"
@@ -231,36 +231,36 @@ export const connectionHolderDetails={
     {
       labelKey: "WS_CONN_HOLDER_COMMON_FATHER_OR_HUSBAND_NAME"
     },
-    { jsonPath: "WaterConnection[0].connectionHolders[0].fatherOrHusbandName", callBack: handleNA },
+    { jsonPath: "WaterConnection[0].connectionHolders[0].fatherOrHusbandName"},
     {
       labelKey: "WS_OLD_LABEL_NAME"
     },
-    { jsonPath: "applyScreenOld.connectionHolders[0].fatherOrHusbandName", callBack: handleNA }
+    { jsonPath: "applyScreenOld.connectionHolders[0].fatherOrHusbandName"}
   ),
   relationship: getLabelWithValueForModifiedLabel(
     {
       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_RELATION_LABEL"
     },
-    { jsonPath: "WaterConnection[0].connectionHolders[0].relationship", callBack: handleNA },
+    { jsonPath: "WaterConnection[0].connectionHolders[0].relationship"},
     {
       labelKey: "WS_OLD_LABEL_NAME"
     },
-    { jsonPath: "applyScreenOld.connectionHolders[0].relationship", callBack: handleNA }
+    { jsonPath: "applyScreenOld.connectionHolders[0].relationship"}
   ),
   correspondenceAddress: getLabelWithValueForModifiedLabel(
     {
       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_CROSADD"
     },
     {
-      jsonPath: "WaterConnection[0].connectionHolders[0].correspondenceAddress",
-      callBack: handleNA
+      jsonPath: "WaterConnection[0].connectionHolders[0].correspondenceAddress"
+     
     },
     {
       labelKey: "WS_OLD_LABEL_NAME"
     },
     {
-      jsonPath: "applyScreenOld.connectionHolders[0].correspondenceAddress",
-      callBack: handleNA
+      jsonPath: "applyScreenOld.connectionHolders[0].correspondenceAddress"
+     
     }
   ),
   specialApplicantCategory: getLabelWithValueForModifiedLabel(
@@ -268,15 +268,15 @@ export const connectionHolderDetails={
       labelKey: "WS_CONN_HOLDER_OWN_DETAIL_SPECIAL_APPLICANT_LABEL"
     },
     {
-      jsonPath: "WaterConnection[0].connectionHolders[0].ownerType",
-      callBack: handleNA
+      jsonPath: "WaterConnection[0].connectionHolders[0].ownerType"
+      
     },
     {
       labelKey: "WS_OLD_LABEL_NAME"
     },
     {
-      jsonPath: "applyScreenOld.connectionHolders[0].ownerType",
-      callBack: handleNA
+      jsonPath: "applyScreenOld.connectionHolders[0].ownerType"
+      
     }
   )
 };
@@ -322,6 +322,7 @@ export const connHolderDetailsSummary = () => {
 
 
 export const connectionHolderSameAsOwnerDetails={
+
  sameAsOwnerDetails : getLabelWithValue(
     {
       labelKey: "WS_CONN_HOLDER_SAME_AS_OWNER_DETAILS"

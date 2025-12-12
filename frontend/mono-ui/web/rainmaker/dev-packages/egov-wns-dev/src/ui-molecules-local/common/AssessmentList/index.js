@@ -18,7 +18,7 @@ const downloadReceipt = (tenantId, consumerCode,businessService) => {
     { key: 'tenantId', value: tenantId }
     ,
     { key: 'businessService', value: businessService }]
-  download(val,'download',"consolidatedreceipt",'PAYMENT')
+  download(val)
 }
 
 export const getItemStatus = (due, paid, tenantId, consumerCode, history = "",businessService) => {

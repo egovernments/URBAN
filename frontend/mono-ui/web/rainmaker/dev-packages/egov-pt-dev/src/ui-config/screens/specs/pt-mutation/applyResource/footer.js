@@ -4,6 +4,7 @@ import { prepareFinalObject,handleScreenConfigurationFieldChange as handleField,
 import { disableField, enableField, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import compact from "lodash/compact";
 import get from "lodash/get";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import store from "ui-redux/store";
 import { httpRequest } from "../../../../../ui-utils";
 import { prepareDocumentsUploadData } from "../../../../../ui-utils/commons";
@@ -28,7 +29,7 @@ const setReviewPageRoute = (state, dispatch) => {
 };
 const moveToReview = (state, dispatch) => {
   const documentsFormat = Object.values(
-    get(state.screenConfiguration.preparedFinalObject, "ptmDocumentsUploadRedux")
+    get(state.screenConfiguration.preparedFinalObject, "documentsUploadRedux")
   );
 
   let validateDocumentField = false;
@@ -118,7 +119,7 @@ const getMdmsData = async (state, dispatch) => {
 
 const callBackForApply = async (state, dispatch) => {
 
-  let tenantId = getQueryArg(window.location.href, "tenantId");
+  let tenantId = getTenantId();
   let consumerCode = getQueryArg(window.location.href, "consumerCode");
   let propertyPayload = get(
     state, "screenConfiguration.preparedFinalObject.Property");
@@ -136,7 +137,7 @@ const callBackForApply = async (state, dispatch) => {
 
 
   let documentsUploadRedux = get(
-    state, "screenConfiguration.preparedFinalObject.ptmDocumentsUploadRedux");
+    state, "screenConfiguration.preparedFinalObject.documentsUploadRedux");
 
   let isDocumentValid = true;
   Object.keys(documentsUploadRedux).map((key) => {
@@ -264,6 +265,26 @@ const callBackForApply = async (state, dispatch) => {
       { Property: propertyPayload }
 
     );
+    // propertyPayload.owners =propertyPayload.owners.filter(owner=>owner.isDeleted!==false);
+    // propertyPayload.creationReason = 'MUTATION';
+    // console.log("==========",propertyPayload.owners[0]);
+    // console.log("==========",propertyPayload.owners[0].documentType);
+    // if(propertyPayload.owners[0].documentType===null){
+    //   propertyPayload.owners[0].documentType="NA"
+    // }
+    // if(propertyPayload.owners[0].documents[0].documentType===null){
+    //   propertyPayload.owners[0].documents[0].documentType="NA"
+    // }
+    // let payload = null;
+    // 
+    // payload = await httpRequest(
+    //   "post",
+    //   "/property-services/property/_update",
+    //   "_update",
+    //   queryObject,
+    //   { Property: propertyPayload }
+
+    // );
     // dispatch(prepareFinalObject("Properties", payload.Properties));
     // dispatch(prepareFinalObject("PropertiesTemp",cloneDeep(payload.Properties)));
     if (payload) {
@@ -360,16 +381,41 @@ const callBackForNext = async (state, dispatch) => {
   let hasFieldToaster = false;
 
   if (activeStep === 0) {
-    let isSingleOwnerValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.transfereeDetails.children.cardContent.children.applicantTypeContainer.children.singleApplicantContainer.children.individualApplicantInfo.children.cardContent.children.applicantCard.children",
-      state,
-      dispatch
-    );
-    let isMutilpleOwnerValid = validateFields(
-      "components.div.children.formwizardFirstStep.children.transfereeDetails.children.cardContent.children.applicantTypeContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items[0].item0.children.cardContent.children.applicantCard.children",
-      state,
-      dispatch
-    );
+    let isSingleOwnerValid=false; // initialy let singleOwnerValid is False
+    // check if ownerShipCategory is SingleOwner then Check SingleOwnerVaidation
+    if(state.screenConfiguration.preparedFinalObject.Property.ownershipCategoryTemp == "INDIVIDUAL.SINGLEOWNER")
+    {
+       isSingleOwnerValid = validateFields(
+       "components.div.children.formwizardFirstStep.children.transfereeDetails.children.cardContent.children.applicantTypeContainer.children.singleApplicantContainer.children.individualApplicantInfo.children.cardContent.children.applicantCard.children",
+       state,
+       dispatch
+      );
+    }
+    //check multiple ownership validation (as per existing code validation for only first owner was being checked) 
+    //and sum of ownership percentage for mutiple owners to be 100 
+    let isMutilpleOwnerValid = false; //default, even when ownershipCateory is SINGLWOWNER
+    if(state.screenConfiguration.preparedFinalObject.Property.ownershipCategoryTemp == "INDIVIDUAL.MULTIPLEOWNERS")
+    {
+      isMutilpleOwnerValid = true; //if ownershipCategory is MULTIPLEOWNER, let it be true intialy
+
+        var i;
+        var sumP=0;
+        for(i=0;i<state.screenConfiguration.preparedFinalObject.Property.ownersTemp.length;i++)
+          {
+            isMutilpleOwnerValid = validateFields(
+              "components.div.children.formwizardFirstStep.children.transfereeDetails.children.cardContent.children.applicantTypeContainer.children.multipleApplicantContainer.children.multipleApplicantInfo.props.items["+i+"].item0.children.cardContent.children.applicantCard.children",
+              state,
+              dispatch
+              );
+            sumP=sumP+ parseInt(state.screenConfiguration.preparedFinalObject.Property.ownersTemp[i].ownerShipPercentage);
+          }
+
+          if(sumP!=100)
+          {
+          alert("total sum for ownership percentage must be 100");
+          isMutilpleOwnerValid = false;
+          }
+      }
     let isInstitutionValid = validateFields(
       "components.div.children.formwizardFirstStep.children.transfereeDetails.children.cardContent.children.applicantTypeContainer.children.institutionContainer.children.institutionInfo.children.cardContent.children.institutionDetailsContainer.children",
       state,

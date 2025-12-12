@@ -6,14 +6,18 @@ import { httpRequest } from "../../../../ui-utils";
 import { billSearchCard } from "./billSearchResources/billSearchCard";
 import { searchResults } from "./billSearchResources/searchResults";
 import "./index.css";
-
+let result = [];
+(JSON.parse(localStorage.getItem("user-info"))).roles.filter((item) => { result.push(item.code); });
+const values = result.includes("ESEWAEMP");
 const header = getCommonHeader({
   labelName: "Universal Bill",
   labelKey: "ABG_UNIVERSAL_BILL_COMMON_HEADER"
 });
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
+let enableGroupBillButton = true;
 enableButton = hasButton && hasButton === "false" ? false : true;
+enableGroupBillButton = ((((JSON.parse(localStorage.getItem("user-info"))).roles[0].code) == "UC_COWCESS_USER") || values == true) ? false : true;
 
 const getMDMSData = async (action, state, dispatch) => {
   const tenantId = getTenantId();
@@ -56,14 +60,14 @@ const getMDMSData = async (action, state, dispatch) => {
       [],
       mdmsBody
     );
-    payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.filter(service => service.billGineiURL)
-  //   payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.map(service => {if(!service.billGineiURL){
-  //     // service.billGineiURL= "egov-searcher/bill-genie/mcollectbills/_get"
-  //   }
-  //   return {...service}
-  // });
+
+    payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.filter(service => service.billGineiURL);
+    if (((JSON.parse(localStorage.getItem("user-info"))).roles[0].code) == "UC_COWCESS_USER" || values == true)
+      payload.MdmsRes.BillingService.BusinessService = payload.MdmsRes.BillingService.BusinessService.filter(service => (service.code == "CSS.cow_cess"));
+
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
   } catch (e) {
+    console.log(e);
   }
 };
 
@@ -129,7 +133,7 @@ const billSearchAndResult = {
                 sm: 6,
                 align: "right"
               },
-              visible: enableButton,
+              visible: enableGroupBillButton,
               props: {
                 variant: "contained",
                 color: "primary",
@@ -153,7 +157,7 @@ const billSearchAndResult = {
                     ? `/egov-ui-framework/abg/groupBills`
                     : `/abg/groupBills`
               },
-              visible: process.env.REACT_APP_NAME === "Citizen" ? false : true
+              visible: (process.env.REACT_APP_NAME === "Citizen" || enableGroupBillButton == false) ? false : true
             }
           }
         },

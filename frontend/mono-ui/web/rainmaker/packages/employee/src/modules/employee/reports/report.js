@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { commonApiPost } from "egov-ui-kit/utils/api";
 import SearchForm from "./searchForm";
-import ReportResult from "egov-ui-kit/utils/reportResult";
+import ReportResult from "./reportResult";
 import { getMetaDataUrl } from "./commons/url";
 import commonConfig from "config/common.js";
 import { Screen } from "modules/common";
 import { getTenantId, setReturnUrl, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
-import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
-import { getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
+
 class Report extends Component {
   constructor(props) {
     super(props);
@@ -36,32 +35,21 @@ class Report extends Component {
     }
   }
 
-  setError = (err) => {
-    err &&
-      err.message &&
-      this.props.toggleSnackbarAndSetText(
-        true,
-        { labelName: getTransformedLocale(err.message), labelKey: getTransformedLocale(err.message) },
-        "error"
-      );
-  };
-
   initData = (moduleName, reportName) => {
     let { setMetaData, setFlag, showTable, setReportResult } = this.props;
     var tenantId = getTenantId() ? getTenantId() : commonConfig.tenantId;
-    let urlBase = getMetaDataUrl(moduleName, reportName);
-    const { setError } = this;
+    let urlBase = getMetaDataUrl(moduleName,reportName);
     urlBase &&
-      commonApiPost(urlBase, {}, { tenantId: tenantId, reportName: reportName }).then(
-        function (response) {
+      commonApiPost(urlBase, {}, { tenantId: tenantId, reportName: reportName}).then(
+        function(response) {
           if (response && response.reportDetails) response.reportDetails.reportName = reportName; //temp soln for custom report name
           setFlag(1);
           showTable(false);
           setReportResult({});
           setMetaData(response);
         },
-        function (err) {
-          setError(err ? err : "Try again later");
+        function(err) {
+          alert("Try again later");
         }
       );
   };
@@ -107,7 +95,6 @@ const mapDispatchToProps = (dispatch) => ({
   setLoadingStatus: (loadingStatus) => {
     dispatch({ type: "SET_LOADING_STATUS", loadingStatus });
   },
-  toggleSnackbarAndSetText: (open, message, error) => dispatch(toggleSnackbarAndSetText(open, message, error)),
   toggleDailogAndSetText: (dailogState, msg) => {
     dispatch({ type: "TOGGLE_DAILOG_AND_SET_TEXT", dailogState, msg });
   },
@@ -130,4 +117,7 @@ const mapDispatchToProps = (dispatch) => ({
     });
   },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Report);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Report);

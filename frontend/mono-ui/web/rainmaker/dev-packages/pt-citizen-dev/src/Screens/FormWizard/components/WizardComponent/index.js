@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Button } from "components";
 import BreadCrumbsForm from "./components/BreadCrumbsForm";
 import Declaration from "./components/Declaration";
@@ -6,10 +7,11 @@ import Label from "egov-ui-kit/utils/translationNode";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import get from "lodash/get";
 import generateReceipt from "egov-ui-kit/common/propertyTax/PaymentStatus/Components/receiptsPDF";
 import "./index.css";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
+import store from "redux/store";
 
 
 const theme = createMuiTheme({
@@ -25,13 +27,45 @@ const theme = createMuiTheme({
   },
 })
 
-const ptSteps = [
+let cityconditionval;
+let ptSteps = [
   "PT_PROPERTY_ADDRESS_SUB_HEADER",
   "PT_ASSESMENT_INFO_SUB_HEADER",
   "PT_OWNERSHIP_INFO_SUB_HEADER",
   "PT_DOCUMENT_INFO",
   "PT_COMMON_SUMMARY"
 ];
+const citycondition = (selected) => {
+
+  let state = store.getState();
+  cityconditionval = get(state, 'form.propertyAddress.fields.city.value', null)
+  let removedIndex = -1;
+  if (cityconditionval == 'pb.mohali' && selected <= 0) {
+    let index = ptSteps.indexOf("PT_DOCUMENT_INFO");
+    removedIndex = index;
+    if (index > 0) {
+      ptSteps.splice(index, 1);
+
+    }
+    else {
+      if (removedIndex !== -1 && !ptSteps.includes("PT_DOCUMENT_INFO")) {
+        ptSteps.splice(removedIndex, 0, "PT_DOCUMENT_INFO");
+      }
+    }
+  }
+  else {
+    if (removedIndex == -1 && !ptSteps.includes("PT_DOCUMENT_INFO") && cityconditionval != 'pb.mohali') {
+      ptSteps.splice(removedIndex, 0, "PT_DOCUMENT_INFO");
+    }
+  }
+}
+
+
+
+
+
+//ptSteps.push("PT_COMMON_SUMMARY");
+
 const downloadReceipt = () => {
   generateReceipt("pt-reciept-citizen", receiptDetails, {}, '');
 }
@@ -99,7 +133,7 @@ const WizardComponent = ({
                 label={
                   backLabel
                 }
-                label={backLabel}
+
                 color="#fe7a51" />
             }
             onClick={() => {
@@ -131,10 +165,14 @@ const WizardComponent = ({
             labelStyle={{ letterSpacing: 0.7, padding: 0, color: "#fff" }}
             buttonStyle={{ border: 0 }}
             onClick={
+
+
               selected === 4
                 ? onPayButtonClick
                 : () => {
                   updateIndex(selected + 1);
+                  citycondition(selected);
+
                 }
             }
             disabled={!nextButtonEnabled}

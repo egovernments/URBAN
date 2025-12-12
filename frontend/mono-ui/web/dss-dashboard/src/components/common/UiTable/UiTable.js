@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Arrow_Downward from '../../../images/arrows/Arrow_Downward.svg';
 import Arrow_Upward from '../../../images/arrows/Arrow_Upward.svg';
-import { convertLabelValue, getLocaleLabels } from '../../../utils/commons';
 import ExportToExcel from '../ExportToExel';
 import TableSearch from '../TableSearch/TableSearch';
 import UiTableHead from './UiTableHead';
@@ -194,7 +193,7 @@ class EnhancedTable extends React.Component {
     if (rowName === 'Complaint Date') {
       return value && Number(value) && new Date(Number(value)).toLocaleDateString();
     }
-    return getLocaleLabels(value);
+    return value;
   }
 
   getFilter(value) {
@@ -250,6 +249,7 @@ class EnhancedTable extends React.Component {
         }
         {_.keys(n).map(d => {
 
+          /* console.log(n,d,n[d],n[d]&&n[d][1],'table'); */
           let value = Math.round(n[d].toString().replace(/[&\/\\#,%]/g, ''));
           if (value > 100) {
             value = 100;
@@ -313,7 +313,7 @@ class EnhancedTable extends React.Component {
               component='td' scope='row' data-title={d} >
               {title === 'CUSTOM' ?
                 d === this.props.column ?
-                  <span onClick={this.cellClick.bind(this, n)} className={classes.link}>{convertLabelValue(n[d][1])}</span>
+                  <span onClick={this.cellClick.bind(this, n)} className={classes.link}>{n[d][1]}</span>
                   : (typeof n[d] === 'object') ?
 
                     this.convertToDateString(n[d][1], d)
@@ -330,7 +330,7 @@ class EnhancedTable extends React.Component {
                     </div>
                 :
                 d === this.props.column ?
-                  <span onClick={this.cellClick.bind(this, n)} className={classes.link}>{convertLabelValue(n[d][1])}</span>
+                  <span onClick={this.cellClick.bind(this, n)} className={classes.link}>{n[d][1]}</span>
                   : (typeof n[d] === 'object') ?
                     this.convertToDateString(n[d][1], d)
                     :
@@ -410,6 +410,7 @@ class EnhancedTable extends React.Component {
           if (typeof expData[i][key] === 'object') {
             expData[i][key] = expData[i][key][1]
           }
+          //console.log(expData[i][key]);     
         }
       }
     }

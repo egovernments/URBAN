@@ -10,6 +10,11 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { searchApiCall } from "./functions";
 import { resetFieldsForConnection } from '../../utils';
+import { prepareFinalObject , handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
+import { httpRequest } from "../../../../../ui-utils/api";
+import store from "../../../../../ui-redux/store";
+import { getTenantId, getUserInfo, getLocale } from "egov-ui-kit/utils/localStorageUtils";
 
 export const wnsApplication = getCommonCard({
   subHeader: getCommonTitle({
@@ -21,7 +26,7 @@ export const wnsApplication = getCommonCard({
   wnsApplicationContainer: getCommonContainer({
     city: {
       uiFramework: "custom-containers-local",
-      moduleName: "egov-hrms",
+      moduleName: "egov-wns",
       componentPath: "AutosuggestContainer",
       jsonPath: "searchConnection.tenantId",
       gridDefination: {
@@ -48,81 +53,202 @@ export const wnsApplication = getCommonCard({
         jsonPath: "searchConnection.tenantId",
         labelsFromLocalisation: true,
         required: true,
-        disabled: true,
-        isDisabled:true,
       },
       required: true,
-      disabled: true,
-      isDisabled:true,
+       beforeFieldChange: async (action, state, dispatch) => {
+        //Below only runs for citizen - not required here in employee
+          
+        try {
+          let payload = await httpRequest(
+            "post",
+            "/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality",
+            "_search",
+            [{ key: "tenantId", value: action.value }],
+            {}
+          );
+          console.log("payload", payload)
+          const mohallaData =
+            payload &&
+            payload.TenantBoundary[0] &&
+            payload.TenantBoundary[0].boundary &&
+            payload.TenantBoundary[0].boundary.reduce((result, item) => {
+              result.push({
+                ...item,
+                name: `${action.value
+                  .toUpperCase()
+                  .replace(
+                    /[.]/g,
+                    "_"
+                  )}_REVENUE_${item.code
+                    .toUpperCase()
+                    .replace(/[._:-\s\/]/g, "_")}`
+              });
+              return result;
+            }, []);
+
+          console.log(mohallaData, "mohallaData")
+
+
+
+          dispatch(
+            prepareFinalObject(
+              "applyScreenMdmsData.searchConnection.locality",
+              mohallaData
+            )
+          );
+          dispatch(
+            handleField(
+              "apply",
+              "components.div.children.showSearches.children.showSearchScreens.props.tabs[0].tabContent.wnsApplication.children.cardContent.children.wnsApplicationContainer.children.propertyMohalla",
+              "props.suggestions",
+              mohallaData
+            )
+          );
+          const mohallaLocalePrefix = {
+            moduleName: action.value,
+            masterName: "REVENUE"
+          };
+          
+          dispatch(
+            handleField(
+              "apply",
+              "components.div.children.showSearches.children.showSearchScreens.props.tabs[0].tabContent.wnsApplication.children.cardContent.children.wnsApplicationContainer.children.propertyMohalla",
+              "props.localePrefix",
+              mohallaLocalePrefix
+            )
+          );
+
+           dispatch(
+             fetchLocalizationLabel(getLocale(), action.value, action.value)
+           );
+
+        } catch (e) {
+          console.log(e);
+        }
+
+      }
     },
     propertyid: getTextField({
-        label: {
-            labelKey: "WS_PROPERTY_ID_LABEL"
-        },
-        placeholder: {
-            labelKey: "WS_PROPERTY_ID_PLACEHOLDER"
-        },
-        gridDefination: {
-            xs: 12,
-            sm: 4
-        },
-        required: false,
-        pattern: /^[a-zA-Z0-9-]*$/i,
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        jsonPath: "searchConnection.propertyId"
+      label: {
+        labelKey: "WS_PROPERTY_ID_LABEL"
+      },
+      placeholder: {
+        labelKey: "WS_PROPERTY_ID_PLACEHOLDER"
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 4
+      },
+      required: false,
+      pattern: /^[a-zA-Z0-9-]*$/i,
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      jsonPath: "searchConnection.propertyId"
     }),
     ownerMobNo: getTextField({
-        label: {
-            labelKey: "WS_HOME_SEARCH_RESULTS_OWN_MOB_LABEL"
-        },
-        placeholder: {
-            labelKey: "WS_OWN_DETAIL_MOBILE_NO_PLACEHOLDER"
-        },
-        gridDefination: {
-            xs: 12,
-            sm: 4
-        },
-        iconObj: {
-            label: "+91 |",
-            position: "start"
-        },
-        required: false,
-        pattern: getPattern("MobileNo"),
-        jsonPath: "searchConnection.mobileNumber",
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
+      label: {
+        labelKey: "WS_HOME_SEARCH_RESULTS_OWN_MOB_LABEL"
+      },
+      placeholder: {
+        labelKey: "WS_OWN_DETAIL_MOBILE_NO_PLACEHOLDER"
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 4
+      },
+      iconObj: {
+        label: "+91 |",
+        position: "start"
+      },
+      required: false,
+      pattern: getPattern("MobileNo"),
+      jsonPath: "searchConnection.mobileNumber",
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG"
     }),
     consumerid: getTextField({
-        label: {
-            labelKey: "WS_MYCONNECTIONS_CONSUMER_NO"
-        },
-        placeholder: {
-            labelKey: "WS_SEARCH_CONNNECTION_CONSUMER_PLACEHOLDER"
-        },
-        gridDefination: {
-            xs: 12,
-            sm: 4
-        },
-        required: false,
-        pattern: getPattern("consumerNo"),
-        errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        jsonPath: "searchConnection.connectionNumber"
+      label: {
+        labelKey: "WS_MYCONNECTIONS_CONSUMER_NO"
+      },
+      placeholder: {
+        labelKey: "WS_SEARCH_CONNNECTION_CONSUMER_PLACEHOLDER"
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 4
+      },
+      required: false,
+      pattern: getPattern("consumerNo"),
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      jsonPath: "searchConnection.connectionNumber"
     }),
     oldConsumerid: getTextField({
+      label: {
+        labelKey: "WS_SEARCH_CONNNECTION_OLD_CONSUMER_LABEL"
+      },
+      placeholder: {
+        labelKey: "WS_SEARCH_CONNNECTION_OLD_CONSUMER_PLACEHOLDER"
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 4
+      },
+      required: false,
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      jsonPath: "searchConnection.oldConnectionNumber"
+    }),
+    //-------------locality--------------
+    propertyMohalla: {
+      uiFramework: "custom-containers",
+      componentPath: "AutosuggestContainer",
+      jsonPath: "searchConnection.locality",
+      required: true,
+      props: {
         label: {
-            labelKey: "WS_SEARCH_CONNNECTION_OLD_CONSUMER_LABEL"
+          labelName: "Locality/Mohalla",
         },
         placeholder: {
-            labelKey: "WS_SEARCH_CONNNECTION_OLD_CONSUMER_PLACEHOLDER"
+          labelName: "Select Locality/Mohalla",
         },
-        gridDefination: {
-            xs: 12,
-            sm: 4
-        },
-        required: false,
-        pattern: /^[a-zA-Z0-9-]*$/i,
+
+        sourceJsonPath: "applyScreenMdmsData.searchConnection.locality",
+        labelsFromLocalisation: true,
         errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
-        jsonPath: "searchConnection.oldConnectionNumber"
-    })
+        suggestions: [],
+        fullwidth: true,
+        required: false,
+        disabled: process.env.REACT_APP_NAME === "Citizen" ? true : false,
+        inputLabelProps: {
+          shrink: true
+        }
+
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 4
+      }
+    },
+    //---------------locality-end--------------
+    //-------------------Owner Name----------------------
+    ownerName: getTextField({
+      label: {
+        labelName: "Owner Name",
+        labelKey: "Owner Name"
+      },
+      placeholder: {
+        labelName: "Enter Owner Name",
+        labelKey: "Owner Name"
+      },
+      gridDefination: {
+        xs: 12,
+        sm: 4,
+
+      },
+      required: false,
+      // pattern: /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;“”‘’]{1,64}$/i,
+      errorMessage: "ERR_INVALID_PROPERTY_ID",
+      jsonPath: "searchConnection.ownerName",
+      disabled: process.env.REACT_APP_NAME === "Citizen" ? true : false,
+    }),
+    //-------------------End Owner Name--------------------------------
   }),
 
   button: getCommonContainer({

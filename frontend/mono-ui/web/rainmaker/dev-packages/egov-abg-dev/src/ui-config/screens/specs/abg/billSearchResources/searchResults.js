@@ -1,19 +1,11 @@
-import { download, downloadBill } from "egov-common/ui-utils/commons";
-import { getLocaleLabels, getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
-import { downloadWNSBillFromConsumer } from "egov-ui-kit/utils/commons";
 import React from "react";
 import {
-
-  getEpochForDate, sortByEpoch
+  sortByEpoch,
+  getEpochForDate,
+  getTextToLocalMapping
 } from "../../utils";
-
-export const billDownload = async (consumerCode, tenantId, billKey, searchURL, service) => {
-  if (billKey == "ws-bill") {
-    downloadWNSBillFromConsumer(consumerCode, tenantId, service);
-  } else {
-    downloadBill(consumerCode, tenantId, billKey, searchURL);
-  }
-}
+import { download, downloadBill } from "egov-common/ui-utils/commons";
+import {  getLocaleLabels} from "egov-ui-framework/ui-utils/commons";
 
 export const searchResults = {
   uiFramework: "custom-molecules",
@@ -29,7 +21,7 @@ export const searchResults = {
           customBodyRender: (value, tableMeta, updateValue) => (
             <a href="javascript:void(0)"
               onClick={() => {
-                billDownload(tableMeta.rowData[1], tableMeta.rowData[10], tableMeta.rowData[9], tableMeta.rowData[12], tableMeta.rowData[7]);
+                downloadBill(tableMeta.rowData[1], tableMeta.rowData[10], tableMeta.rowData[9],tableMeta.rowData[12],tableMeta.rowData[7]);
               }}
             >
               {value}
@@ -59,11 +51,11 @@ export const searchResults = {
       {
         labelName: "Status",
         labelKey: "ABG_COMMON_TABLE_COL_STATUS",
-        options: {
+        options:{
           filter: false,
           customBodyRender: value => (
             <span>
-              {getLocaleLabels(value.toUpperCase(), value.toUpperCase())}
+               {getLocaleLabels(value.toUpperCase(),value.toUpperCase())}
             </span>
           )
 
@@ -74,7 +66,7 @@ export const searchResults = {
         labelKey: "ABG_COMMON_TABLE_COL_ACTION",
         options: {
           filter: false,
-          customBodyRender: (value, tableMeta) => value === "ABG_PAY" ? (tableMeta.rowData[4] > 0 ? getActionButton(value, tableMeta) : (tableMeta.rowData[4] <= 0 && tableMeta.rowData[13] ? getActionButton(value, tableMeta) : "")) : getActionButton(value, tableMeta)
+          customBodyRender: (value, tableMeta) => value === "PAY" ? (tableMeta.rowData[4] > 0 ? getActionButton(value, tableMeta):(tableMeta.rowData[4] <= 0 && tableMeta.rowData[13] ? getActionButton(value, tableMeta) : "")) : getActionButton(value, tableMeta)
         }
       },
       {
@@ -131,7 +123,7 @@ export const searchResults = {
       labelName: "Search Results for Bill",
       labelKey: "BILL_GENIE_SEARCH_TABLE_HEADER"
     },
-    rows: "",
+    rows : "",
     options: {
       filter: false,
       download: false,
@@ -176,21 +168,25 @@ const getActionButton = (value, tableMeta) => {
             { key: "tenantId", value: tableMeta.rowData[10] },
             { key: "businessService", value: tableMeta.rowData[7] }
           ];
-          download(receiptQueryString, "download", tableMeta.rowData[8] || 'consolidatedreceipt', 'PAYMENT');
+          download(receiptQueryString , "download" ,tableMeta.rowData[8]);
         } else {
           const url =
             process.env.NODE_ENV === "development"
-              ? `/egov-common/pay?consumerCode=${tableMeta.rowData[1]
-              }&tenantId=${tableMeta.rowData[10]}&businessService=${tableMeta.rowData[7]
-              }`
-              : `/${appName}/egov-common/pay?consumerCode=${tableMeta.rowData[1]
-              }&tenantId=${tableMeta.rowData[10]}&businessService=${tableMeta.rowData[7]
-              }`;
+              ? `/egov-common/pay?consumerCode=${
+                  tableMeta.rowData[1]
+                }&tenantId=${tableMeta.rowData[10]}&businessService=${
+                  tableMeta.rowData[7]
+                }`
+              : `/${appName}/egov-common/pay?consumerCode=${
+                  tableMeta.rowData[1]
+                }&tenantId=${tableMeta.rowData[10]}&businessService=${
+                  tableMeta.rowData[7]
+                }`;
           document.location.href = `${document.location.origin}${url}`;
         }
       }}
     >
-      {getLocaleLabels(value, getTransformedLocale(`${value}`))}
+      {getLocaleLabels(value,value)}
     </a>
   )
 }

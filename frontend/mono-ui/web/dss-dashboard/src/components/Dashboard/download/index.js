@@ -78,6 +78,7 @@ export function CustomizedMenus(props) {
             props.APITrans(false);
             setAnchorEl(null);
         }.bind(this)).catch(function (err) {
+            console.log(err);
             setAnchorEl(null);
         }.bind(this))
 
@@ -104,6 +105,7 @@ export function CustomizedMenus(props) {
 
             } catch{ }
         }.bind(this)).catch(function (error) {
+            console.log(error);
             setAnchorEl(null);
         }.bind(this))
 
@@ -135,13 +137,13 @@ export function CustomizedMenus(props) {
                     <ListItemIcon>
                         <PdfIcon style={{color: '#ff0000'}}/>
                     </ListItemIcon>
-                    <ListItemText  primary={props.strings['DSS_DOWNLOAD_PDF'] || 'DSS_DOWNLOAD_PDF'}  />
+                    <ListItemText primary="PDF" />
                 </StyledMenuItem>
                 <StyledMenuItem onClick={downloadImage.bind(this)}>
                     <ListItemIcon>
                         <ImageIcon style={{color: '#ff0000'}}/>
                     </ListItemIcon>
-                    <ListItemText primary={props.strings['DSS_DOWNLOAD_IMAGE'] || 'DSS_DOWNLOAD_IMAGE'} />
+                    <ListItemText primary="Image" />
                 </StyledMenuItem>
             </StyledMenu>
         </div>

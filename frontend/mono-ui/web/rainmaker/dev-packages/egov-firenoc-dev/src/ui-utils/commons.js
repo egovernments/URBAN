@@ -5,14 +5,17 @@ import {
   toggleSnackbar,
   toggleSpinner
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { httpRequest } from "egov-ui-framework/ui-utils/api";
-import { disableField, enableField, getFileUrl, getFileUrlFromAPI, getQueryArg, getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+import { getTransformedLocale, getFileUrlFromAPI,enableField, disableField } from "egov-ui-framework/ui-utils/commons";
+import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { downloadPdf, openPdf, printPdf } from "egov-ui-kit/utils/commons";
 import jp from "jsonpath";
 import get from "lodash/get";
 import set from "lodash/set";
 import store from "ui-redux/store";
-import { getTranslatedLabel, getCurrentFinancialYearForFireNoc } from "../ui-config/screens/specs/utils";
+import {convertEpochToDate, getTranslatedLabel } from "../ui-config/screens/specs/utils";
+import axios from 'axios';
 
 const handleDeletedCards = (jsonObject, jsonPath, key) => {
   let originalArray = get(jsonObject, jsonPath, []);
@@ -27,6 +30,218 @@ const handleDeletedCards = (jsonObject, jsonPath, key) => {
   });
   set(jsonObject, jsonPath, modifiedArray);
 };
+export const getPaymentSearchAPI = (businessService='')=>{
+  var PAYMENTSEARCH = exports.PAYMENTSEARCH = {
+    GET: {
+      URL: "/collection-services/payments/",
+      ACTION: "_search"
+    }
+  };
+  if(businessService=='-1'){
+    return `${PAYMENTSEARCH.GET.URL}${PAYMENTSEARCH.GET.ACTION}`
+  }else if (process.env.REACT_APP_NAME === "Citizen") {
+    return `${PAYMENTSEARCH.GET.URL}${PAYMENTSEARCH.GET.ACTION}`;
+  }
+  return `${PAYMENTSEARCH.GET.URL}${businessService}/${PAYMENTSEARCH.GET.ACTION}`;
+}
+
+export const download = async (receiptQueryString, mode = "download" ,configKey = "consolidatedreceipt" , state) => {
+
+  const FETCHRECEIPT = {
+    GET: {
+      URL: "/collection-services/payments/FIRENOC/_search",
+      ACTION: "_get",
+    },
+  };
+  const DOWNLOADRECEIPT = {
+    GET: {
+      URL: "/pdf-service/v1/_create",
+      ACTION: "_get",
+    },
+  };
+
+  
+  let consumerCode = getQueryArg(window.location.href, "consumerCode");
+  let tenantId = getQueryArg(window.location.href, "tenantId");
+  let applicationNumber = getQueryArg(window.location.href, "applicationNumber");
+
+  let queryObject = [
+    { key: "tenantId", value:tenantId },
+    { key: "applicationNumber", value: consumerCode?consumerCode:applicationNumber}
+  ];
+  const FETCHFIREDETAILS = {
+    GET: {
+      URL: "/firenoc-services/v1/_search",
+      ACTION: "_get",
+    },
+  };
+  const response = await httpRequest("post", FETCHFIREDETAILS.GET.URL, FETCHFIREDETAILS.GET.ACTION,queryObject);
+
+  try {
+		httpRequest("post", FETCHRECEIPT.GET.URL, FETCHRECEIPT.GET.ACTION, receiptQueryString).then((payloadReceiptDetails) => {
+      const queryStr = [
+        { key: "key", value: configKey },
+        { key: "tenantId", value: tenantId.split('.')[0] }
+      ]
+      if (payloadReceiptDetails && payloadReceiptDetails.Payments && payloadReceiptDetails.Payments.length == 0) {
+        console.log("Could not find any receipts");
+        store.dispatch(toggleSnackbar(true, { labelName: "Receipt not Found", labelKey: "ERR_RECEIPT_NOT_FOUND" }
+          , "error"));
+        return;
+      }  
+      if(payloadReceiptDetails.Payments[0].payerName!=null){
+        payloadReceiptDetails.Payments[0].payerName=payloadReceiptDetails.Payments[0].payerName.trim();}
+        else if(payloadReceiptDetails.Payments[0].payerName == null && payloadReceiptDetails.Payments[0].paymentDetails[0].businessService=="FIRENOC" && payloadReceiptDetails.Payments[0].paidBy !=null)
+         { payloadReceiptDetails.Payments[0].payerName=payloadReceiptDetails.Payments[0].paidBy.trim();
+        }
+        if(payloadReceiptDetails.Payments[0].paidBy!=null)
+        {
+          payloadReceiptDetails.Payments[0].paidBy?payloadReceiptDetails.Payments[0].paidBy.trim():payloadReceiptDetails.Payments[0].paidBy;
+        }
+      if(payloadReceiptDetails.Payments[0].paymentDetails[0].businessService=="FIRENOC"){
+        let owners=""; let contacts="";
+        response.FireNOCs[0].fireNOCDetails.applicantDetails.owners.map(ele=>{
+          if(owners=="")
+          {owners=ele.name; 
+            contacts=ele.mobileNumber;}
+          else{
+            owners=owners+","+ele.name; 
+            contacts=contacts+","+ele.mobileNumber;
+          }
+          
+        });
+        payloadReceiptDetails.Payments[0].validityYears = response.FireNOCs[0].fireNOCDetails.additionalDetail  ? response.FireNOCs[0].fireNOCDetails.additionalDetail.validityYears : 1;
+        payloadReceiptDetails.Payments[0].payerName=owners;
+        payloadReceiptDetails.Payments[0].mobileNumber=contacts;
+        let receiptDate=convertEpochToDate(payloadReceiptDetails.Payments[0].paymentDetails[0].receiptDate);
+        let year=receiptDate.split("/")[2];
+        year++;
+        var nextyear=year;
+        year--;        var lastyear=year-1;
+        let month=receiptDate.split("/")[1];
+        let from=null,to=null;
+        if(month<=3){ from=convertDateToEpoch("04/01/"+lastyear);
+        to=convertDateToEpoch("03/31/"+year);}
+        else{from=convertDateToEpoch("04/01/"+year);
+        to=convertDateToEpoch("03/31/"+nextyear);}
+        let building='';
+        let length=response.FireNOCs[0].fireNOCDetails.buildings.length;
+        response.FireNOCs[0].fireNOCDetails.buildings.map( (item,index) => {
+  if(index == 0)
+        building=building + item.name;
+  else 
+  building = building + "," + item.name;
+        });
+  
+  
+        const details = {
+      "address": "Building:"+building +","+ response.FireNOCs[0].fireNOCDetails.applicantDetails.owners[0].correspondenceAddress
+    }
+         payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].additionalDetails=details; 
+         payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].fromPeriod=from;
+         payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].toPeriod=to; 
+
+    } 
+      // Setting the Payer and mobile from Bill to reflect it in PDF
+      state = state ? state : {};
+         if(payloadReceiptDetails.Payments[0].paymentMode=="CHEQUE" || payloadReceiptDetails.Payments[0].paymentMode=="DD" || payloadReceiptDetails.Payments[0].paymentMode=="OFFLINE_NEFT" || payloadReceiptDetails.Payments[0].paymentMode=="OFFLINE_RTGS" ){
+        let ifsc = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].instrument.ifscCode", null);
+        let branchName = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].instrument.branchName", null);
+        let bank = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].instrument.bank.name", null);
+        payloadReceiptDetails.Payments[0].ifscCode=ifsc; 
+        const details = [{
+           "branchName": branchName ,
+          "bankName":bank }
+        ]       
+      payloadReceiptDetails.Payments[0].additionalDetails=details; 
+    }
+      let billDetails = get(state, "screenConfiguration.preparedFinalObject.ReceiptTemp[0].Bill[0]", null);
+      if ((billDetails && !billDetails.payerName) || !billDetails) {
+        billDetails = {
+          payerName: get(state, "screenConfiguration.preparedFinalObject.applicationDataForReceipt.owners[0].name", null) || get(state, "screenConfiguration.preparedFinalObject.applicationDataForPdf.owners[0].name", null),
+          mobileNumber: get(state, "screenConfiguration.preparedFinalObject.applicationDataForReceipt.owners[0].mobile", null) || get(state, "screenConfiguration.preparedFinalObject.applicationDataForPdf.owners[0].mobile", null),
+        };
+      }
+       if(payloadReceiptDetails.Payments[0].paymentMode=="CASH")
+      {
+        payloadReceiptDetails.Payments[0].instrumentDate=null;
+        payloadReceiptDetails.Payments[0].instrumentNumber=null;
+
+      }
+      if (!payloadReceiptDetails.Payments[0].payerName && process.env.REACT_APP_NAME === "Citizen" && billDetails) {
+        payloadReceiptDetails.Payments[0].payerName = billDetails.payerName;
+        // payloadReceiptDetails.Payments[0].paidBy = billDetails.payer;
+        payloadReceiptDetails.Payments[0].mobileNumber = billDetails.mobileNumber;
+      }
+
+      const oldFileStoreId = get(payloadReceiptDetails.Payments[0], "fileStoreId")
+       if (oldFileStoreId) {
+         downloadReceiptFromFilestoreID(oldFileStoreId, mode)
+       }
+      else {
+        const propertiesById = get(state.properties , "propertiesById");
+        const propertiesFound = propertiesById ? Object.values(propertiesById) : null;
+        let queryData = { Payments: payloadReceiptDetails.Payments };
+        if(propertiesFound) {
+          queryData.properties = propertiesFound;
+        }
+        httpRequest("post", DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, queryData, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+          .then(res => {
+            res.filestoreIds[0]
+            if (res && res.filestoreIds && res.filestoreIds.length > 0) {
+              res.filestoreIds.map(fileStoreId => {
+                downloadReceiptFromFilestoreID(fileStoreId, mode)
+              })
+            } else {
+              console.log('Some Error Occured while downloading Receipt!');
+              store.dispatch(toggleSnackbar(true, { labelName: "Error in Receipt Generation", labelKey: "ERR_IN_GENERATION_RECEIPT" }
+                , "error"));
+            }
+          });
+      }
+    })
+  } catch (exception) {
+    console.log('Some Error Occured while downloading Receipt!');
+    store.dispatch(toggleSnackbar(true, { labelName: "Error in Receipt Generation", labelKey: "ERR_IN_GENERATION_RECEIPT" }
+      , "error"));
+  }
+}
+export const downloadReceiptFromFilestoreID = (fileStoreId, mode, tenantId,showConfirmation=false) => {
+  getFileUrlFromAPI(fileStoreId, tenantId).then(async (fileRes) => {
+  if (fileRes && !fileRes[fileStoreId]) {
+    console.error('ERROR IN DOWNLOADING RECEIPT');
+    return;
+  }
+  if (mode === 'download') {
+    if(localStorage.getItem('pay-channel')&&localStorage.getItem('pay-redirectNumber')){
+    setTimeout(()=>{
+      const weblink = "https://api.whatsapp.com/send?phone=" + localStorage.getItem('pay-redirectNumber') + "&text=" + ``;
+      window.location.href = weblink
+    },1500)
+    }
+    downloadPdf(fileRes[fileStoreId]);
+    if(showConfirmation){
+    store.dispatch(toggleSnackbar(true, { labelName: "Success in Receipt Generation", labelKey: "SUCCESS_IN_GENERATION_RECEIPT" }
+    , "success"));
+    }
+  } else if (mode === 'open') {
+    if(localStorage.getItem('pay-channel')&&localStorage.getItem('pay-redirectNumber')){
+    setTimeout(()=>{
+      const weblink = "https://api.whatsapp.com/send?phone=" + localStorage.getItem('pay-redirectNumber') + "&text=" + ``;
+      window.location.href = weblink
+    },1500)
+    }
+    openPdf(fileRes[fileStoreId], '_self')
+    if(showConfirmation){
+    store.dispatch(toggleSnackbar(true, { labelName: "Success in Receipt Generation", labelKey: "SUCCESS_IN_GENERATION_RECEIPT" }
+    , "success"));
+    }
+  }
+  else {
+    printPdf(fileRes[fileStoreId]);
+  }
+  });
+}
 
 export const getLocaleLabelsforTL = (label, labelKey, localizationLabels) => {
   if (labelKey) {
@@ -50,15 +265,44 @@ export const findItemInArrayOfObject = (arr, conditionCheckerFn) => {
 };
 
 export const getSearchResults = async (queryObject, dispatch) => {
+
   try {
-    store.dispatch(toggleSpinner());
+    // store.dispatch(toggleSpinner());
     const response = await httpRequest(
       "post",
       "/firenoc-services/v1/_search",
       "",
       queryObject
     );
-    store.dispatch(toggleSpinner());
+    // store.dispatch(toggleSpinner());
+
+    if (response === '') {
+      store.dispatch(
+        toggleSnackbar(
+          true,
+          {
+            labelName: "This Provisional NoC number is not registered!",
+            //labelKey: "ERR_PROVISIONAL_NUMBER_NOT_REGISTERED"
+          },
+          "info"
+        )
+      );
+      return null;
+    }
+
+    response.FireNOCs.forEach(firenoc => {
+
+      let buildings = firenoc.fireNOCDetails.buildings;
+
+      for (let i = 0; i < buildings.length; i++) {
+
+        buildings[i].landArea = parseInt(buildings[i].landArea);
+        buildings[i].parkingArea = parseInt(buildings[i].parkingArea);
+        buildings[i].totalCoveredArea = parseInt(buildings[i].totalCoveredArea);
+
+      }
+    });
+
     return response;
   } catch (error) {
     store.dispatch(
@@ -68,70 +312,8 @@ export const getSearchResults = async (queryObject, dispatch) => {
         "error"
       )
     );
-    store.dispatch(toggleSpinner());
     throw error;
   }
-};
-export const setDocsForEditFlow = async (state, dispatch) => {
-  let applicationDocuments = get(
-    state.screenConfiguration.preparedFinalObject,
-    "FireNOCs[0].fireNOCDetails.additionalDetail.documents",
-    []
-  );
-  /* To change the order of application documents similar order of mdms order*/
-  const mdmsDocs = get(
-    state.screenConfiguration.preparedFinalObject,
-    "applyScreenMdmsData.FireNoc.Documents",
-    []
-  );
-  let orderedApplicationDocuments = mdmsDocs.map(mdmsDoc => {
-    let applicationDocument = {}
-    applicationDocuments && applicationDocuments.map(appDoc => {
-      if (appDoc.documentType == mdmsDoc.code) {
-        applicationDocument = { ...appDoc }
-      }
-    })
-    return applicationDocument;
-  }
-  ).filter(docObj => Object.keys(docObj).length > 0)
-  applicationDocuments = [...orderedApplicationDocuments];
-  dispatch(
-    prepareFinalObject("FireNOCs[0].fireNOCDetails.additionalDetail.documents", applicationDocuments)
-  );
-
-  let uploadedDocuments = {};
-  let fileStoreIds =
-    applicationDocuments &&
-    applicationDocuments.map(item => item.fileStoreId).join(",");
-  const fileUrlPayload =
-    fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
-  applicationDocuments &&
-    applicationDocuments.forEach((item, index) => {
-      uploadedDocuments[index] =
-      {
-        fileName:
-          (fileUrlPayload &&
-            fileUrlPayload[item.fileStoreId] &&
-            decodeURIComponent(
-              getFileUrl(fileUrlPayload[item.fileStoreId])
-                .split("?")[0]
-                .split("/")
-                .pop()
-                .slice(13)
-            )) ||
-          `Document - ${index + 1}`,
-        fileStoreId: item.fileStoreId,
-        fileUrl: Object.values(fileUrlPayload)[index],
-        documentType: item.documentType,
-        tenantId: item.tenantId,
-        id: item.id
-      }
-
-    });
-
-  dispatch(
-    prepareFinalObject("documentsUploadRedux", uploadedDocuments)
-  );
 };
 
 export const createUpdateNocApplication = async (state, dispatch, status) => {
@@ -139,22 +321,107 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
     state,
     "screenConfiguration.preparedFinalObject.FireNOCs[0].id"
   );
-
   let method = nocId ? "UPDATE" : "CREATE";
-  if (getQueryArg(window.location.href, "action") == 'edit') {
-    method = 'edit'
-  }
   try {
+
     let payload = get(
       state.screenConfiguration.preparedFinalObject,
       "FireNOCs",
       []
     );
+    let newbuildings = get(
+      state.screenConfiguration.preparedFinalObject,
+      "FireNOCs[0].fireNOCDetails.buildings",
+      []
+    );
+    newbuildings.map(index => {
+
+      set(
+        index,
+        `landArea`,
+        parseInt(index.landArea)
+      );
+
+      set(
+        index,
+        `totalCoveredArea`,
+        parseInt(index.totalCoveredArea)
+      );
+      set(
+        index,
+        `parkingArea`,
+        parseInt(index.parkingArea)
+      );
+
+
+      if (!index.parkingArea) {
+        set(
+          index,
+          `parkingArea`,
+          0
+        );
+
+      }
+      else {
+        set(
+          index,
+          `parkingArea`,
+          parseInt(index.parkingArea)
+        );
+      }
+    })
+
+    let noctypedata = get(
+      state,
+      "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.fireNOCType"
+    );
+
+    if (noctypedata === "NEW" || noctypedata === "PROVISIONAL") {
+
+      let isLegacy = false;
+      set(
+        payload[0],
+        "isLegacy",
+        isLegacy
+      );
+    }
+
+
+    let provisionalnocnumber = get(
+      state.screenConfiguration.preparedFinalObject,
+      "FireNOCs[0].provisionFireNOCNumber",
+      []
+    )
+
+
+    if (provisionalnocnumber.length === 0) {
+
+      provisionalnocnumber = get(
+        state.screenConfiguration.preparedFinalObject,
+        "FireNOCs[0].provisionFireNOCNumber",
+        []
+      )
+
+      var keyToDelete = "provisionFireNOCNumber";
+
+      const codefull = get(
+        state.screenConfiguration,
+        "preparedFinalObject"
+      );
+
+      delete codefull.FireNOCs[0][keyToDelete];
+
+    }
+
+    let userInfodata = JSON.parse(getUserInfo());
+    //const tenantId1 = get(userInfodata, "permanentCity");
     let tenantId = get(
       state.screenConfiguration.preparedFinalObject,
-      "FireNOCs[0].fireNOCDetails.propertyDetails.address.city",
+      "FireNOCs[0].tenantId",
       getTenantId()
-    );
+     );
+   //let tenantId = process.env.REACT_APP_NAME === "Citizen" ?  tenantId1: tenantId2;
+
     set(payload[0], "tenantId", tenantId);
     set(payload[0], "fireNOCDetails.action", status);
 
@@ -164,18 +431,16 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
       "screenConfiguration.preparedFinalObject.documentsUploadRedux",
       {}
     );
-
-    let isDocumentValid = true;
+    // let isDocumentValid = true;
     // Object.keys(reduxDocuments).map((key) => {
-    //   // if (reduxDocuments[key].documentType === "OWNER" && reduxDocuments[key].documents && reduxDocuments[key].documents.length > 0 && !(reduxDocuments[key].dropdown && reduxDocuments[key].dropdown.value)) {
-    //     if (reduxDocuments[key].documentType === "OWNER" && reduxDocuments[key].documents && reduxDocuments[key].documents.length > 0 && !(reduxDocuments[key].dropdown && reduxDocuments[key].dropdown.value)) {
-    //     isDocumentValid = false;
-    //   }
+    //     if(reduxDocuments[key].documentType==="OWNER" && reduxDocuments[key].documents && reduxDocuments[key].documents.length > 0 && !(reduxDocuments[key].dropdown && reduxDocuments[key].dropdown.value)){
+    //         isDocumentValid = false;
+    //     }
     // });
-    if (!isDocumentValid) {
-      dispatch(toggleSnackbar(true, { labelName: "Please select document type for uploaded document", labelKey: "ERR_DOCUMENT_TYPE_MISSING" }, "error"));
-      return;
-    }
+    // if(!isDocumentValid){
+    //     dispatch(toggleSnackbar(true, { labelName: "Please select document type for uploaded document", labelKey: "ERR_DOCUMENT_TYPE_MISSING" }, "error"));
+    //     return;
+    // }
 
     handleDeletedCards(payload[0], "fireNOCDetails.buildings", "id");
     handleDeletedCards(
@@ -202,7 +467,7 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
           ...[
             "NO_OF_FLOORS",
             "NO_OF_BASEMENTS",
-            "PLOT_SIZE",
+            // "PLOT_SIZE",
             "BUILTUP_AREA",
             "HEIGHT_OF_BUILDING"
           ]
@@ -211,7 +476,7 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
       let finalUoms = [];
       allUoms.forEach(uom => {
         let value = get(building.uomsMap, uom);
-        (value|| value == 0) &&
+        value &&
           finalUoms.push({
             code: uom,
             value: parseInt(value),
@@ -276,7 +541,7 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
     // Set owners & other documents
     let ownerDocuments = [];
     let otherDocuments = [];
-    jp.query(reduxDocuments, "$.*").forEach(doc => {
+    jp.query(reduxDocuments, "$.*").forEach((doc, index) => {
       if (doc.documents && doc.documents.length > 0) {
         if (doc.documentType === "OWNER") {
           ownerDocuments = [
@@ -289,6 +554,11 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
               fileStoreId: doc.documents[0].fileStoreId
             }
           ];
+          if(doc && doc.dropdown && doc.dropdown.value) {
+            ownerDocuments[index].dropdown = {
+              value : doc.dropdown.value
+            }
+          }
         } else if (!doc.documentSubCode) {
           // SKIP BUILDING PLAN DOCS
           otherDocuments = [
@@ -299,13 +569,18 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
               fileStoreId: doc.documents[0].fileStoreId
             }
           ];
+          if(doc && doc.dropdown && doc.dropdown.value) {
+            ownerDocuments[index].dropdown = {
+              value : doc.dropdown.value
+            }
+          }
         }
       }
     });
 
     set(
       payload[0],
-      "fireNOCDetails.applicantDetails.additionalDetail.documents",
+      "fireNOCDetails.applicantDetails.additionalDetail.ownerAuditionalDetail.documents",
       ownerDocuments
     );
     set(
@@ -313,14 +588,14 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
       "fireNOCDetails.additionalDetail.documents",
       otherDocuments
     );
-    disableField('apply', "components.div.children.footer.children.nextButton", dispatch);
+    // disableField('apply',"components.div.children.footer.children.nextButton",dispatch);
     // disableField('summary',"components.div.children.footer.children.submitButton",dispatch);
 
     // Set Channel and Financial Year
     process.env.REACT_APP_NAME === "Citizen"
       ? set(payload[0], "fireNOCDetails.channel", "CITIZEN")
       : set(payload[0], "fireNOCDetails.channel", "COUNTER");
-    set(payload[0], "fireNOCDetails.financialYear", getCurrentFinancialYearForFireNoc());
+    set(payload[0], "fireNOCDetails.financialYear", "2019-20");
 
     // Set Dates to Epoch
     let owners = get(payload[0], "fireNOCDetails.applicantDetails.owners", []);
@@ -331,25 +606,31 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
         convertDateToEpoch(get(owner, "dob"))
       );
     });
-    if (payload[0] && payload[0].provisionFireNOCNumber == "") {
-      delete payload[0].provisionFireNOCNumber;
-    }
-   
+    
+    payload[0].fireNOCDetails.buildings[0].landArea = parseInt(payload[0].fireNOCDetails.buildings[0].landArea);
+    payload[0].fireNOCDetails.buildings[0].parkingArea = parseInt(payload[0].fireNOCDetails.buildings[0].parkingArea);
+    payload[0].fireNOCDetails.buildings[0].totalCoveredArea = parseInt(payload[0].fireNOCDetails.buildings[0].totalCoveredArea);
+    payload[0].fireNOCDetails.tenantId = get(payload[0], "tenantId", "");
     let response;
+    
     if (method === "CREATE") {
+      let querypayload=[];
+      querypayload.push(payload[0]),
       response = await httpRequest(
         "post",
         "/firenoc-services/v1/_create",
         "",
         [],
-        { FireNOCs: [payload[0]] }
+        { FireNOCs:querypayload }
       );
       response = furnishNocResponse(response);
-      enableField('apply', "components.div.children.footer.children.nextButton", dispatch);
+      enableField('apply',"components.div.children.footer.children.nextButton",dispatch);
       // enableField('summary',"components.div.children.footer.children.submitButton",dispatch);
       dispatch(prepareFinalObject("FireNOCs", response.FireNOCs));
       setApplicationNumberBox(state, dispatch);
     } else if (method === "UPDATE") {
+      let isEdited = getQueryArg(window.location.href, "action") === "edit";
+      if(!isEdited) {
       response = await httpRequest(
         "post",
         "/firenoc-services/v1/_update",
@@ -357,22 +638,17 @@ export const createUpdateNocApplication = async (state, dispatch, status) => {
         [],
         { FireNOCs: payload }
       );
+     
       response = furnishNocResponse(response);
-      enableField('apply', "components.div.children.footer.children.nextButton", dispatch);
+      enableField('apply',"components.div.children.footer.children.nextButton",dispatch);
       // enableField('summary',"components.div.children.footer.children.submitButton",dispatch);
       dispatch(prepareFinalObject("FireNOCs", response.FireNOCs));
-      dispatch(prepareFinalObject("DYNAMIC_MDMS_Trigger", false));
-    } else if (method === 'edit') {
-
-      enableField('apply', "components.div.children.footer.children.nextButton", dispatch);
-      // enableField('summary',"components.div.children.footer.children.submitButton",dispatch);
-      dispatch(prepareFinalObject("FireNOCs", payload));
     }
-
+  }
     return { status: "success", message: response };
   } catch (error) {
-    enableField('apply', "components.div.children.footer.children.nextButton", dispatch);
-    enableField('summary', "components.div.children.footer.children.submitButton", dispatch);
+    enableField('apply',"components.div.children.footer.children.nextButton",dispatch);
+    enableField('summary',"components.div.children.footer.children.submitButton",dispatch);
     dispatch(toggleSnackbar(true, { labelName: error.message }, "error"));
 
     // Revert the changed pfo in case of request failure
@@ -394,6 +670,10 @@ export const prepareDocumentsUploadData = (state, dispatch) => {
     "screenConfiguration.preparedFinalObject.applyScreenMdmsData.FireNoc.Documents",
     []
   );
+  console.log("======>>>>",documents);
+  let NOCType = get(state, "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.fireNOCType", []);
+  documents = documents.filter(doc=>{return doc.applicationType  === NOCType });
+  documents = documents.length ? documents[0].allowedDocs : [] ;
   documents = documents.filter(item => {
     return item.active;
   });
@@ -537,7 +817,7 @@ export const furnishNocResponse = response => {
     let uoms = get(building, "uoms", []);
     let uomMap = {};
     uoms.forEach(uom => {
-      if (uom.active)uomMap[uom.code] = `${uom.value}`;
+      uomMap[uom.code] = `${uom.value}`;
     });
     set(
       response,

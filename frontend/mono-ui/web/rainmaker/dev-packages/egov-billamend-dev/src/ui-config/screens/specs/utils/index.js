@@ -51,6 +51,7 @@ export const getMdmsData = async  requestBody=> {
    
     return response;
   } catch (error) {
+    console.log(error);
     return {};
   }
 };
@@ -274,13 +275,13 @@ export const getRequiredDocData = async (action, dispatch, moduleDetails, closeP
     dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
     return { payload, reqDocuments };
   } catch (e) {
+    console.log(e);
   }
 };
 const footerCallBackForRequiredDataModal = (moduleName, closePopUp) => {
   const connectionNumber = getQueryArg( window.location.href, "connectionNumber");
   const tenantId = getQueryArg( window.location.href, "tenantId");
-  const businessService = connectionNumber.includes("WS") ? "WS" : "SW";
-
+  const businessService = getQueryArg( window.location.href, "service")==="WATER" ? "WS" : "SW";
   switch (moduleName) {
    
     case "BillAmendment":
@@ -510,28 +511,7 @@ export const getFetchBill = async(state, dispatch, action, queryObject) => {
         "error"
       )
     );
-  }
-}
-
-export const searchBill = async(state, dispatch, action, queryObject) => {
-  try {
-    const response = await httpRequest(
-      "post",
-      "/billing-service/bill/v2/_search",
-      "",
-      queryObject
-    );
-    const billdetails=get(response,'Bill[0].billDetails',[]);
-    set(response,'Bill[0].billDetails',billdetails.sort((x,y)=>y.fromPeriod-x.fromPeriod));
-    return response;
-  } catch (error) {
-    dispatch(
-      toggleSnackbar(
-        true,
-        { labelName: error.message, labelKey: error.message },
-        "error"
-      )
-    );
+    console.log(error, "fetxh");
   }
 }
 

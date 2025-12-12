@@ -2,7 +2,7 @@ import { LabelContainer } from "egov-ui-framework/ui-containers";
 import {
   getLocaleLabels,
 
-  getStatusKey, getTransformedLocale, getTransformedLocalStorgaeLabels
+  getStatusKey, getTransformedLocalStorgaeLabels
 } from "egov-ui-framework/ui-utils/commons";
 import { getLocalization } from "egov-ui-kit/utils/localStorageUtils";
 import { routeTo } from "egov-ui-kit/utils/PTCommon/FormWizardUtils/formActionUtils";
@@ -91,6 +91,11 @@ export const textToLocalMapping = {
     "WF_FIRENOC_FIELDINSPECTION",
     getTransformedLocalStorgaeLabels()
   ),
+  CITIZENACTIONREQUIRED: getLocaleLabels(
+    "Pending at Citizen",
+    "WF_FIRENOC_CITIZENACTIONREQUIRED",
+    getTransformedLocalStorgaeLabels()
+  ),
   "Search Results for Fire-NOC Applications": getLocaleLabels(
     "Search Results for Fire-NOC Applications",
     "NOC_HOME_SEARCH_RESULTS_TABLE_HEADING",
@@ -120,15 +125,7 @@ export const searchResults = {
       },
       {
         labelName: "NOC Type",
-        labelKey: "NOC_TYPE_LABEL",
-        options: {
-          filter: false,
-          customBodyRender: value => (
-            <span style={{ color: '#000000' }}>
-              {getLocaleLabels("NA", getTransformedLocale(`FN_${value}`))}
-            </span>
-          )
-        }
+        labelKey: "NOC_TYPE_LABEL"
       },
       {
         labelName: "Owner Name",
@@ -196,11 +193,13 @@ export const searchResults = {
 const onRowClick = rowData => {
   switch (rowData[5]) {
     case "INITIATED":
-      routeTo(`apply?applicationNumber=${rowData[0]}&tenantId=${rowData[6]
+      routeTo(`apply?applicationNumber=${rowData[0]}&tenantId=${
+        rowData[6]
         }`)
       break;
     default:
-      routeTo(`search-preview?applicationNumber=${rowData[0]
+      routeTo(`search-preview?applicationNumber=${
+        rowData[0]
         }&tenantId=${rowData[6]}`);
       break;
   }

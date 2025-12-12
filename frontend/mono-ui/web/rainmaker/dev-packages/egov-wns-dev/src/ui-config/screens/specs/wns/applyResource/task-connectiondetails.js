@@ -68,39 +68,31 @@ export const getConnectionDetails = () => {
         },
         {
             jsonPath: "WaterConnection[0].service",
-            localePrefix: {
-                moduleName: "WS",
-                masterName: "APPLY"
-              },
         },  {
             labelKey: "WS_OLD_LABEL_NAME"
           },
-          { jsonPath: "WaterConnectionOld[0].service",
-          localePrefix: {
-            moduleName: "WS",
-            masterName: "APPLY"
-          }, }),
+          { jsonPath: "WaterConnectionOld[0].service" }),
     
-     taskNumberOfTapsPropsed : getLabelWithValueForModifiedLabel(
-        {
-            labelName:"No of Taps Proposed",
-            labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TAPS_PROPOSED"
-        },
-        {
-            jsonPath: "WaterConnection[0].proposedTaps",
-        },  {
-            labelKey: "WS_OLD_LABEL_NAME"
-          },
-          { jsonPath: "WaterConnectionOld[0].proposedTaps" }),
-     taskPipeSizeProposed : getLabelWithValueForModifiedLabel(
-        {
-            labelName:"No of pipe size proposed",
-            labelKey: "WS_TASK_DETAILS_CONN_DETAIL_PIPE_SIZE_PROPOSED"
-        },
-        { jsonPath: "WaterConnection[0].proposedPipeSize" },  {
-            labelKey: "WS_OLD_LABEL_NAME"
-          },
-          { jsonPath: "WaterConnectionOld[0].proposedPipeSize" })
+    //  taskNumberOfTapsPropsed : getLabelWithValueForModifiedLabel(
+    //     {
+    //         labelName:"No of Taps Proposed",
+    //         labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TAPS_PROPOSED"
+    //     },
+    //     {
+    //         jsonPath: "WaterConnection[0].proposedTaps",
+    //     },  {
+    //         labelKey: "WS_OLD_LABEL_NAME"
+    //       },
+    //       { jsonPath: "WaterConnectionOld[0].proposedTaps" }),
+    //  taskPipeSizeProposed : getLabelWithValueForModifiedLabel(
+    //     {
+    //         labelName:"No of pipe size proposed",
+    //         labelKey: "WS_TASK_DETAILS_CONN_DETAIL_PIPE_SIZE_PROPOSED"
+    //     },
+    //     { jsonPath: "WaterConnection[0].proposedPipeSize" },  {
+    //         labelKey: "WS_OLD_LABEL_NAME"
+    //       },
+    //       { jsonPath: "WaterConnectionOld[0].proposedPipeSize" })
 
 }
  export const connectionDetailsSewerage={
@@ -111,38 +103,30 @@ export const getConnectionDetails = () => {
         },
         {
             jsonPath: "WaterConnection[0].service",
-            localePrefix: {
-                moduleName: "WS",
-                masterName: "APPLY"
-              },
         },  {
             labelKey: "WS_OLD_LABEL_NAME"
           },
-          { jsonPath: "WaterConnectionOld[0].service",
-          localePrefix: {
-            moduleName: "WS",
-            masterName: "APPLY"
-          }, }),
-    taskNoOfClosets : getLabelWithValueForModifiedLabel(
-        {
-            labelName:"No of closets proposed",
-            labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_CLOSETS_PROPOSED"
-        },
-        { jsonPath: "WaterConnection[0].proposedWaterClosets" },  {
-            labelKey: "WS_OLD_LABEL_NAME"
-          },
-          { jsonPath: "WaterConnectionOld[0].proposedWaterClosets" }
-    ),
-     taskNoOfToilets : getLabelWithValueForModifiedLabel(
-        {
-            labelName:"No of toilets proposed",
-            labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TOILETS_PROPOSED"
-        },
-        { jsonPath: "WaterConnection[0].proposedToilets" },  {
-            labelKey: "WS_OLD_LABEL_NAME"
-          },
-          { jsonPath: "WaterConnectionOld[0].proposedToilets" }
-    )
+          { jsonPath: "WaterConnectionOld[0].service" }),
+    // taskNoOfClosets : getLabelWithValueForModifiedLabel(
+    //     {
+    //         labelName:"No of closets proposed",
+    //         labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_CLOSETS_PROPOSED"
+    //     },
+    //     { jsonPath: "WaterConnection[0].proposedWaterClosets" },  {
+    //         labelKey: "WS_OLD_LABEL_NAME"
+    //       },
+    //       { jsonPath: "WaterConnectionOld[0].proposedWaterClosets" }
+    // ),
+    //  taskNoOfToilets : getLabelWithValueForModifiedLabel(
+    //     {
+    //         labelName:"No of toilets proposed",
+    //         labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TOILETS_PROPOSED"
+    //     },
+    //     { jsonPath: "WaterConnection[0].proposedToilets" },  {
+    //         labelKey: "WS_OLD_LABEL_NAME"
+    //       },
+    //       { jsonPath: "WaterConnectionOld[0].proposedToilets" }
+    // )
 
 }
 

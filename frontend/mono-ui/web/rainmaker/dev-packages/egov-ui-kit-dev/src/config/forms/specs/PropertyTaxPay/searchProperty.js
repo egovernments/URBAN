@@ -1,3 +1,4 @@
+
 import { setFieldProperty, handleFieldChange } from "egov-ui-kit/redux/form/actions";
 import { CITY } from "egov-ui-kit/utils/endPoints";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
@@ -10,7 +11,7 @@ const formConfig = {
     city: {
       id: "city",
       numcols: 4,
-      dontReset: process.env.REACT_APP_NAME !== "Citizen" ? true : false,
+      dontReset:(process.env.REACT_APP_NAME !== "Citizen"? true: false),
       fullWidth: true,
       className: "search-property-form-pt",
       jsonPath: "",
@@ -58,7 +59,7 @@ const formConfig = {
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
       maxLength: 64,
       value: "",
-      pattern: /^[^\$\"'<>?\\\\~`!@$%^+={}*,.:;“”‘’]{1,64}$/i,
+      pattern: /^[^\$\"'<>?\\\\~`!@$%^+={}*,.:;“”‘’]{1,64}$/i
     },
     applicationNumber: {
       id: "application-number",
@@ -90,7 +91,7 @@ const formConfig = {
           let selected = cities.find((city) => {
             return city.code === tenant.code;
           });
-          dd.push({ label: `TENANT_TENANTS_${selected.code.toUpperCase().replace(/[.:-\s\/]/g, "_")}`, value: selected.code });
+          dd.push({ label: `TENANT_TENANTS_${selected.code.toUpperCase().replace(/[.:-\s\/]/g, "_")}` , value: selected.code });
           return dd;
         }, []);
         dispatch(setFieldProperty("searchProperty", "city", "dropDownData", sortBy(dd, ["label"])));
@@ -105,10 +106,12 @@ const formConfig = {
         }
       }
       return action;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   },
   action: "_search",
-  saveUrl: "/property-services/property",
+  saveUrl: "/pt-services-v2/property",
   redirectionRoute: "",
   isFormValid: false,
 };

@@ -1,11 +1,9 @@
-import { getTenantId, stateTenant } from "../utils/commons";
-
-let tenent = stateTenant()||"";
+let tenent = `${localStorage.getItem('tenant-id')}` ? (`${localStorage.getItem('tenant-id')}`).split('.')[0] : ''
 
 const commonConfig = {
-  MAP_API_KEY:  window.globalConfigs.getConfig("GMAPS_API_KEY"),
+  MAP_API_KEY: "AIzaSyBN01pR2wGavj2_q3v4-vFgQzmcx-gllk0",
   tenantId: tenent,
-  forgotPasswordTenant: `${getTenantId()}`
+  forgotPasswordTenant: `${localStorage.getItem('tenant-id')}`
 };
 
 export default commonConfig;

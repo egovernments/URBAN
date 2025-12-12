@@ -29,6 +29,25 @@ import {
         sm: 6
       },
     }),
+    
+    email: getTextField({
+      label: {
+        labelName: "EMAIL",
+        labelKey: "Email"
+      },
+      placeholder: {
+        labelName: "Enter Email.",
+        labelKey: "Enter Email "
+      },
+      //required: true,
+      pattern: "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$",
+      errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+      jsonPath: "connectionHolders[0].email",
+      gridDefination: {
+        xs: 12,
+        sm: 6
+      },
+    }),
     applicantName: getTextField({
       label: {
         labelName: "Name",
@@ -111,7 +130,7 @@ import {
       },
       required: true,
       jsonPath: "connectionHolders[0].relationship",
-      data: [{ code: "FATHER" }, { code: "HUSBAND" }],
+      data: [{ code: "Father" }, { code: "Husband" }, { code: "Mother" }],
       localePrefix: {
         moduleName: "common-masters",
         masterName: "OwnerType"

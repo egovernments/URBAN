@@ -12,7 +12,7 @@ import {
 } from "../../ui-utils/commons";
 import { sortDropdownLabels } from "egov-ui-framework/ui-utils/commons";
 
-class TextFieldContainer extends React.PureComponent{
+class TextFieldContainer extends React.Component {
   componentDidMount() {
     const { hasDependant, onChange, value } = this.props;
     if (hasDependant && value) {
@@ -43,7 +43,6 @@ class TextFieldContainer extends React.PureComponent{
       title,
       errorMessage,
       error,
-      defaultSort=true,
       disabled=false,
       multiline=false,
       rows="1",
@@ -83,7 +82,7 @@ class TextFieldContainer extends React.PureComponent{
         )
       : "";
     if (dropdownData.length > 0) {
-      dropdownData=defaultSort?dropdownData&&Array.isArray(dropdownData)&&dropdownData.sort(sortDropdownLabels):dropdownData||[];
+      dropdownData=dropdownData.sort(sortDropdownLabels)
       return (
         <TextfieldWithIcon
           label={translatedLabel}

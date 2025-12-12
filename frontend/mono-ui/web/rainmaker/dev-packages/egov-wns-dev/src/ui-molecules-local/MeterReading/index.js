@@ -5,12 +5,13 @@ import Label from "../../ui-containers-local/LabelContainer";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import get from "lodash/get";
 import LabelContainer from "egov-ui-framework/ui-containers/LabelContainer";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { convertEpochToDate } from "../../ui-config/screens/specs/utils";
-import { getLocaleLabels, getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
+import {addMeterReading} from "../../ui-config/screens/specs/wns/meter-reading"
 const styles = {
   card: {
     marginLeft: 8,
@@ -31,6 +32,7 @@ const styles = {
 class MeterReading extends React.Component {
   render() {
     const { consumptionDetails, onActionClick, classes } = this.props;
+    //console.log("fdfd",this.props)
     // if (consumptionDetails.length > 0) {
     //   var lastReadingDate = convertEpochToDate(consumptionDetails[0].lastReadingDate)
     //   var currentReadingDate = convertEpochToDate(consumptionDetails[0].currentReadingDate)
@@ -38,7 +40,7 @@ class MeterReading extends React.Component {
     return (
       <div>
         {consumptionDetails && consumptionDetails.length > 0 ? (
-          consumptionDetails.map(item => {
+          consumptionDetails.map((item, index) => {
             return (
               <Card className={classes.card}>
                 <CardContent>
@@ -69,7 +71,7 @@ class MeterReading extends React.Component {
                       </Grid>
                       <Grid item md={8} xs={6}>
                         <Label
-                          labelName={`${getLocaleLabels("NA", `WS_SERVICES_CALCULATION_METERSTATUS_${getTransformedLocale(item.meterStatus)}`)}`}
+                          labelName={item.meterStatus}
                           fontSize={14}
                           style={{ fontSize: 14 }}
                         />
@@ -154,6 +156,17 @@ class MeterReading extends React.Component {
                           style={{ fontSize: 14, color: "rgba(0, 0, 0, 0.87" }}
                         />
                       </Grid>
+                      <Grid container style={{ justifyContent: "flex-end" }}>
+                        {index === 0 && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                             onClick={() => this.props.addMeterReadingWithState(this.props.state)}
+                          >
+                            Update
+                          </Button>
+                        )}
+                      </Grid>
                     </Grid>
                   </div>
                 </CardContent>
@@ -161,18 +174,18 @@ class MeterReading extends React.Component {
             );
           })
         ) : (
-            <div style={{
-              display: "flex",
-              width: "100%",
-              height: '50vh',
-              alignItems: 'center',
-              justifyContent: "center",
-              textAlign: "center"
-            }}>
-              <LabelContainer
-                labelKey={"No results Found!"}
-              />
-              {/* <Button
+          <div style={{
+            display: "flex",
+            width: "100%",
+            height: '50vh',
+            alignItems: 'center',
+            justifyContent: "center",
+            textAlign: "center"
+          }}>
+            <LabelContainer
+              labelKey={"No results Found!"}
+            />
+            {/* <Button
                 style={{
                   height: 36,
                   lineHeight: "auto",
@@ -185,8 +198,8 @@ class MeterReading extends React.Component {
               >
                 <Label labelKey="NEW TRADE LICENSE" />
               </Button> */}
-            </div>
-          )}
+          </div>
+        )}
       </div>
     );
   }
@@ -198,11 +211,12 @@ const mapStateToProps = state => {
     []
   );
   const screenConfig = get(state.screenConfiguration, "screenConfig");
-  return { screenConfig, consumptionDetails };
+  return { screenConfig, consumptionDetails, state };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setRoute: path => dispatch(setRoute(path))
+    setRoute: path => dispatch(setRoute(path)),
+    addMeterReadingWithState: (state) => addMeterReading(state, dispatch, 'edit')
     // handleField: (screenKey, jsonPath, fieldKey, value) =>
     //   dispatch(handleField(screenKey, jsonPath, fieldKey, value))
   };

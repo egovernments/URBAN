@@ -30,12 +30,11 @@ export const createPropertyPayload = (properties, documentsUploadRedux) => {
       obj.ownerType = obj.ownerType || "NONE";
     });
   }
-  let floorArray = {};
+  
   properties[0].units.map((unit) => {
-    floorArray[unit.floorNo] = unit.floorNo;
     unit.constructionDetail = {
-      builtUpArea: unit.unitArea,
-    };
+      builtUpArea: unit.unitArea
+     };
     unit.tenantId = properties[0].tenantId;
     unit.usageCategory =
       unit.usageCategoryMajor +
@@ -51,6 +50,7 @@ export const createPropertyPayload = (properties, documentsUploadRedux) => {
     delete unit.usageCategoryDetail;
     delete unit.usageCategorySubMinor;
     delete unit.unitArea;
+    //delete unit.additionalDetails.rentedformonths;
   });
   
   if(getQueryArg(window.location.href,  "mode") == 'WORKFLOWEDIT'){
@@ -82,7 +82,7 @@ export const createPropertyPayload = (properties, documentsUploadRedux) => {
     });
   }
 
- if (properties[0].institution) {
+  if (properties[0].institution) {
     properties[0].institution.nameOfAuthorizedPerson = properties[0].owners[0].name;
     properties[0].institution.tenantId = properties[0].tenantId;
   }
@@ -100,23 +100,19 @@ export const createPropertyPayload = (properties, documentsUploadRedux) => {
   // Deleting object keys from request payload which are not required now
   //   delete properties[0].usageCategoryMajor;
   //   delete properties[0].usageCategoryMinor;
-
-  if (properties[0].propertyType.includes("SHAREDPROPERTY")) {
-    properties[0].noOfFloors = Object.keys(floorArray).length;
-    properties[0].landArea = properties[0].superBuiltUpArea;
-  }
   delete properties[0].citizenInfo;
   delete properties[0].propertyDetails;
   delete properties[0].subOwnershipCategory;
   delete properties[0].propertySubType;
   delete properties[0].buildUpArea;
+  // console.log("PT Info------", properties[0]);
   return properties[0];
 };
 
 export const createAssessmentPayload = (properties, propertyPayload) => {
   const Assessment = {
     financialYear: propertyPayload.financialYear,
-    tenantId: properties.tenantId,
+    tenantId: properties.tenantId === "pb" ? getQueryArg(window.location.href,  "tenantId") : properties.tenantId,
     propertyId: properties.propertyId,
     source: "MUNICIPAL_RECORDS",
     channel: "CFC_COUNTER",

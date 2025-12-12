@@ -123,19 +123,6 @@ export const transfereeSummary = getCommonGrayCard({
             labelKey: "PTM_OLD_LABEL_NAME"
           },
             { jsonPath: "PropertyOld.ownersTemp[0].mobileNumber", callBack: checkValueForNA },
-          ),alterMobileNo: getLabelWithValue(
-            {
-              labelName: "Mobile No.",
-              labelKey: "PT_FORM3_ALT_MOBILE_NO" 
-            },
-            {
-              jsonPath:
-              "Property.ownersTemp[0].alternatemobilenumber" ,
-              callBack: checkValueForNA
-            },{
-              labelKey: "PTM_OLD_LABEL_NAME"
-            },
-              { jsonPath: "PropertyOld.ownersTemp[0].alternatemobilenumber", callBack: checkValueForNA }
           ), ownerEmail: getLabelWithValue(
             {
               labelName: "Email",
@@ -150,6 +137,24 @@ export const transfereeSummary = getCommonGrayCard({
           },
             { jsonPath: "PropertyOld.ownersTemp[0].emailId", callBack: checkValueForNA },
           ),
+
+          ownerShipPercentage: getLabelWithValue(
+            {
+              labelName: "Percentage",
+              labelKey: "PT_OWNERSHIP_PERCENTAGE"
+            },
+            {
+              jsonPath:
+                "Property.ownersTemp[0].ownerShipPercentage",
+              callBack: checkValueForNA
+            }, {
+            labelKey: "PTM_OLD_LABEL_NAME"
+          },
+            { jsonPath: "PropertyOld.ownersTemp[0].ownerShipPercentage", callBack: checkValueForNA },
+          ),
+
+
+
           ownerDob: getLabelWithValue(
             {
               labelName: "Special Category",
@@ -167,6 +172,8 @@ export const transfereeSummary = getCommonGrayCard({
           },
             { jsonPath: "PropertyOld.ownersTemp[0].ownerType", callBack: checkValueForNA },
           ),
+
+
           ownerAddress: getLabelWithValue(
             {
               labelName: "Correspondence Address",
@@ -397,20 +404,7 @@ export const transfereeInstitutionSummary = getCommonGrayCard({
     },
       { jsonPath: "PropertyOld.institutionTemp.mobileNumber", callBack: checkValueForNA },
     ),
-    alterMobileNo: getLabelWithValue(
-      {
-        labelName: "Mobile No.",
-        labelKey: "PT_FORM3_ALT_MOBILE_NO" 
-      },
-      {
-        jsonPath:
-        "Property.institutionTemp.alternatemobilenumber" ,
-        callBack: checkValueForNA
-      }, {
-        labelKey: "PTM_OLD_LABEL_NAME"
-      },
-        { jsonPath: "PropertyOld.institutionTemp.alternatemobilenumber", callBack: checkValueForNA }
-    ),
+
     officialAddress: getLabelWithValueForModifiedLabel(
       {
         labelName: "Official Correspondence Address",

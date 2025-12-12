@@ -5,8 +5,6 @@ import { convertEpochToDate, getTextToLocalMapping } from "../../utils/index";
 import { toggleSnackbar } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validateFields } from "../../utils";
 import { httpRequest } from "../../../../../ui-utils";
-import { handleAddress } from "../../wns/searchResource/functions";
-
 export const searchApiCall = async (state, dispatch) => {
   showHideTable(false, dispatch);
   let queryObject = [
@@ -73,14 +71,13 @@ export const searchApiCall = async (state, dispatch) => {
         //Read metered & non-metered demand expiry date and assign value.
         payloadbillingPeriod = await httpRequest("post", "/egov-mdms-service/v1/_search", "_search", [], mdmsBody);
         
-      } catch (err) {  }
-      if(queryObject.length > 0) queryObject.push({key: "searchType", value: "CONNECTION" })
+      } catch (err) { console.log(err) }
       let getSearchResult = getSearchResults(queryObject)
       let getSearchResultForSewerage = getSearchResultsForSewerage(queryObject, dispatch)
       let finalArray = [];
       let searchWaterConnectionResults, searcSewerageConnectionResults;
-      try { searchWaterConnectionResults = await getSearchResult } catch (error) { finalArray = []; }
-      try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = [];  }
+      try { searchWaterConnectionResults = await getSearchResult } catch (error) { finalArray = []; console.log(error) }
+      try { searcSewerageConnectionResults = await getSearchResultForSewerage } catch (error) { finalArray = []; console.log(error) }
       const waterConnections = searchWaterConnectionResults ? searchWaterConnectionResults.WaterConnection.map(e => { e.service = serviceConst.WATER; return e }) : []
       const sewerageConnections = searcSewerageConnectionResults ? searcSewerageConnectionResults.SewerageConnections.map(e => { e.service = serviceConst.SEWERAGE; return e }) : [];
       let combinedSearchResults = searchWaterConnectionResults || searcSewerageConnectionResults ? sewerageConnections.concat(waterConnections) : []
@@ -112,44 +109,62 @@ export const searchApiCall = async (state, dispatch) => {
           }
 
           let billResults = await fetchBill(queryObjectForWaterFetchBill, dispatch)
-          billResults && billResults.Bill &&Array.isArray(billResults.Bill)&&billResults.Bill.length>0 ? billResults.Bill.map(bill => {
-            let updatedDueDate = 0;
+          let updatedDueDate = 0;
+          billResults && billResults.Bill.length > 0 && billResults.Bill[0].billDetails.map(bill => {
             if(element.service === serviceConst.WATER) {
-              updatedDueDate = (element.connectionType === 'Metered' ?
-              (bill.billDetails[0].toPeriod+waterMeteredDemandExipryDate) :
-              (bill.billDetails[0].toPeriod+waterNonMeteredDemandExipryDate));
+              updatedDueDate = bill.expiryDate;
             } else if (element.service === serviceConst.SEWERAGE) {
-              updatedDueDate = bill.billDetails[0].toPeriod + sewerageNonMeteredDemandExpiryDate;
+              updatedDueDate = bill.expiryDate;
             }
-            let obj = {
-              due: bill.totalAmount,
-              dueDate: updatedDueDate,
-              service: element.service,
-              connectionNo: element.connectionNo,
-              name: (element.property && element.property !== "NA" && element.property.owners)?element.property.owners[0].name:'',
-              status: element.status,
-              address: handleAddress(element),
-              tenantId: element.tenantId,
-              connectionType: element.connectionType
-            }
-            finalArray.push(obj)
-          }) : finalArray.push({
-            due: 'NA',
-            dueDate: 'NA',
+          });
+          billResults && billResults.Bill.length > 0 ? finalArray.push({
+            due: billResults.Bill[0].totalAmount,
+            dueDate: updatedDueDate,
             service: element.service,
             connectionNo: element.connectionNo,
-            name: (element.property && element.property !== "NA" && element.property.owners)?element.property.owners[0].name:'',
+            name: (element.property)?element.property.owners[0].name:'',
             status: element.status,
-            address:handleAddress(element),
-            tenantId: element.tenantId,
-            connectionType: element.connectionType
+            address: handleAddress(element),
+            connectionType: element.connectionType,
+            tenantId:element.tenantId
           })
+          : finalArray.push({
+          due: billResults && billResults.Bill.length > 0 ? billResults.Bill[0].totalAmount : '0',
+          dueDate: 'NA',
+          service: element.service,
+          connectionNo: element.connectionNo,
+          name: (element.property)?element.property.owners[0].name:'',
+          status: element.status,
+          address: handleAddress(element),
+          connectionType: element.connectionType,
+          tenantId:element.tenantId
+        })
         }
       }
       showResults(finalArray, dispatch, tenantId)
-    } catch (err) {  }
+    } catch (err) { console.log(err) }
   }
 }
+
+const handleAddress = (element) => {
+  let city = (
+    element.property &&
+    element.property !== "NA" &&
+    element.property.address !== undefined &&
+    element.property.address.city !== undefined &&
+    element.property.address.city !== null
+  ) ? element.property.address.city : "";
+  let localityName = (
+    element.property &&
+    element.property !== "NA" &&
+    element.property.address.locality !== undefined &&
+    element.property.address.locality !== null &&
+    element.property.address.locality.name !== null
+  ) ? element.property.address.locality.name : "";
+
+  return (city === "" && localityName === "") ? "NA" : `${localityName}, ${city}`;
+}
+
 const showHideTable = (booleanHideOrShow, dispatch) => {
   dispatch(
     handleField(

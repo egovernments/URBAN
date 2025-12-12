@@ -2,7 +2,7 @@ import { Icon, TextFieldIcon } from "components";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
 import { fetchFromLocalStorage, getModuleName } from "egov-ui-kit/utils/commons";
-import { getLocale, getStoredModulesList, getTenantId, localStorageGet, localStorageSet, setModule, setStoredModulesList } from "egov-ui-kit/utils/localStorageUtils";
+import { getLocale, getStoredModulesList, getTenantId, getUserInfo, localStorageGet, localStorageSet, setModule, setStoredModulesList } from "egov-ui-kit/utils/localStorageUtils";
 import Label from "egov-ui-kit/utils/translationNode";
 import { orderBy, some, split } from "lodash";
 import get from "lodash/get";
@@ -186,8 +186,8 @@ class ActionMenuComp extends Component {
     for (var i = 0; i < (actionList && actionList.length); i++) {
       if (actionList[i].path !== "") {
         if (path && !path.parentMenu && actionList[i].path.startsWith(path + ".")) {
-          let splitArray = actionList[i].path.split(path + ".")[1].split(".");
-          let leftIconArray = actionList[i].leftIcon.split(".");
+          let splitArray =  actionList[i].path && actionList[i].path.split(path + ".")[1].split(".");
+          let leftIconArray = actionList[i] && actionList[i].leftIcon && actionList[i].leftIcon.split(".");
           let leftIcon =
             leftIconArray &&
             (leftIconArray.length > path.split(".").length
@@ -197,8 +197,8 @@ class ActionMenuComp extends Component {
                 : null);
           this.addMenuItems(path, splitArray, menuItems, i, leftIcon);
         } else if (pathParam && pathParam.parentMenu && actionList[i].navigationURL) {
-          let splitArray = actionList[i].path.split(".");
-          let leftIconArray = actionList[i].leftIcon.split(".");
+          let splitArray = actionList[i].path && actionList[i].path.split(".");
+          let leftIconArray = actionList[i] && actionList[i].leftIcon && actionList[i].leftIcon.split(".");
           let leftIcon = leftIconArray && leftIconArray.length >= 1 ? leftIconArray[0] : null;
           this.addMenuItems(path, splitArray, menuItems, i, leftIcon);
         }
@@ -265,9 +265,18 @@ class ActionMenuComp extends Component {
     let actionList = actionListArr;
     let menuTitle = path.split(".");
     let activeItmem = localStorageGet("menuName");
+    if(process.env.REACT_APP_NAME === "Citizen"){
+      if(JSON.parse(getUserInfo()).roles.some((role)=> role.code === 'PESCO')){
+          menuItems = menuItems.filter(menu => menu.name.toUpperCase() === 'SWACH');
+          //menuItems = filterMenuItem;
+      }else{
+          menuItems = menuItems.filter(menu => menu.name.toUpperCase() !== 'SWACH');
+      }
+    }
     const showMenuItem = () => {
       const navigationURL = window.location.href.split("/").pop();
       if (searchText.length == 0) {
+        //console.log("menuItems",menuItems)
         return menuItems.map((item, index) => {
           let iconLeft;
           if (item.leftIcon) {
@@ -318,12 +327,11 @@ class ActionMenuComp extends Component {
             );
           } else {
             if (item.navigationURL && item.navigationURL !== "newTab") {
-              let url=item.navigationURL.startsWith('/')?item.navigationURL:`/${item.navigationURL}`;
               return (
                 <Link
                   style={{ textDecoration: "none" }}
                   key={index}
-                  to={url}
+                  to={item.navigationURL === "/" ? `${item.navigationURL}` : `/${item.navigationURL}`}
                 >
                   <div className={`sideMenuItem ${activeItmem == item.name ? "selected" : ""}`}>
                     {/* <Tooltip
@@ -336,7 +344,7 @@ class ActionMenuComp extends Component {
                       style={{ whiteSpace: "initial" }}
                       key={index}
                       id={item.name.toUpperCase().replace(/[\s]/g, "-") + "-" + index}
-                      onClick={(e) => {
+                      onClick={() => {
                         //  localStorageSet("menuPath", item.path);
                         if (item.navigationURL === "tradelicence/apply") {
                           this.props.setRequiredDocumentFlag()
@@ -345,12 +353,12 @@ class ActionMenuComp extends Component {
                         document.title = item.name;
                         if (item.navigationURL && item.navigationURL.includes('digit-ui')) {
                           window.location.href = item.navigationURL
-                          e.preventDefault()
                           return;
                         }
                         else {
                           updateActiveRoute(item.path, item.name);
                         }
+
                         toggleDrawer && toggleDrawer();
                         if (window.location.href.indexOf(item.navigationURL) > 0 && item.navigationURL.startsWith("integration")) {
                           window.location.reload();
@@ -372,7 +380,7 @@ class ActionMenuComp extends Component {
               );
             } else {
               return (
-                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                <a href={item.url} target="_blank">
                   <div className="sideMenuItem">
                     {/* <Tooltip
                       id={"menu-toggle-tooltip"}
@@ -415,12 +423,11 @@ class ActionMenuComp extends Component {
             }
             if (item.path && item.url && item.displayName.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
               if (item.navigationURL) {
-                let url=item.navigationURL.startsWith('/')?item.navigationURL:`/${item.navigationURL}`;
                 return (
                   <Link
                     style={{ textDecoration: "none" }}
                     key={index}
-                    to={url}
+                    to={item.navigationURL === "/" ? `${item.navigationURL}` : `/${item.navigationURL}`}
                   >
                     <div className="sideMenuItem">
                       {/* <Tooltip
@@ -432,17 +439,10 @@ class ActionMenuComp extends Component {
                         innerDivStyle={styles.defaultMenuItemStyle}
                         style={{ whiteSpace: "initial" }}
                         id={item.name.toUpperCase().replace(/[\s]/g, "-") + "-" + index}
-                        onClick={(e) => {
+                        onClick={() => {
                           document.title = item.displayName;
-                          if (item.navigationURL && item.navigationURL.includes('digit-ui')) {
-                            window.location.href = item.navigationURL
-                            e.preventDefault()
-                            return;
-                          }
-                          else {
-                            updateActiveRoute(item.path, item.displayName);
-                          }
                           toggleDrawer && toggleDrawer();
+                          updateActiveRoute(item.path, item.displayName);
                         }}
                         leftIcon={this.renderLeftIcon(iconLeft, item)}
                         primaryText={
@@ -465,7 +465,7 @@ class ActionMenuComp extends Component {
       }
     };
 
-    return actionList ? (
+    return actionList ? (       
       <div ref={this.setWrapperRef}>
         <div className="whiteColor" />
         <div className="menu-item-title">

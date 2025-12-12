@@ -11,18 +11,23 @@ import set from "lodash/set";
 import React from "react";
 import { connect } from "react-redux";
 import { ActionDialog } from "../";
+import { TlRenewDialog } from "../"
 import {
   getNextFinancialYearForRenewal
 } from "../../ui-utils/commons";
 import { getDownloadItems } from "./downloadItems";
 import "./index.css";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 
 class Footer extends React.Component {
   state = {
     open: false,
+    nocValid : false,
     data: {},
-    employeeList: []
+    employeeList: [],
+    tlpopUp : false,
+    licenseData : [],
+    wFCode : "",
+    isHAZ : false
     //responseLength: 0
   };
 
@@ -42,7 +47,21 @@ class Footer extends React.Component {
       // menu: ["One ", "Two", "Three"]
     };
   };
-
+  getCurrentFinancialYear = () => {
+    var today = new Date();
+    var curMonth = today.getMonth();
+    var fiscalYr = "";
+    if (curMonth >= 3) {
+      var nextYr1 = (today.getFullYear() + 1).toString();
+      var nextYr1format = nextYr1.substring(2, 4);
+      fiscalYr = today.getFullYear().toString() + "-" + nextYr1format;
+    } else {
+      var nextYr2 = today.getFullYear().toString();
+      var nextYr2format = nextYr2.substring(2, 4);
+      fiscalYr = (today.getFullYear() - 1).toString() + "-" + nextYr2format;
+    }
+    return fiscalYr;
+  };
   getPrintData = () => {
     const { dataPath, state } = this.props;
     const data = get(
@@ -60,168 +79,352 @@ class Footer extends React.Component {
     };
   };
 
-  openActionDialog = async item => {
-    const { handleFieldChange, setRoute, dataPath } = this.props;
-    let employeeList = [];
-    if (item.buttonLabel === "ACTIVATE_CONNECTION") {
-      if (item.moduleName === "NewWS1" || item.moduleName === "NewSW1") {
-        item.showEmployeeList = false;
+  openActionDialog = async (item, label) => {
+    const { dataPath, state } = this.props;
+    let diffDays;
+    
+    const getdate = get(
+      state,
+      "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicationNumber"
+    );
+    const applicationstatus = get(
+      state,
+      "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicationStatus"
+    );
+    const firenocstatus = get(
+      state,
+      "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.status","NA"
+    );
+    if (getdate) {
+      const cd = getdate.split("PB-FN-");
+      const appActualDate = cd[1].slice(0, 10);
+      console.log(appActualDate);
+      const currentDate = new Date();
+      const appDate = new Date(cd[1].slice(0, 10));
+      const diffTime = Math.abs(appDate - currentDate);
+      diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      console.log(diffTime + " milliseconds");
+      console.log(diffDays + " days");
+    }
+    if(firenocstatus && firenocstatus.toUpperCase() == "FIELDINSPECTION"){
+      this.setState({ nocValid: true});
+    }
+    //if(firenocstatus.toUpperCase() == "CITIZENACTIONREQUIRED-DV" || firenocstatus.toUpperCase() == "CITIZENACTIONREQUIRED"){
+    if (true) {
+      // if (diffDays>=90){
+      //   alert("You are not eligible for Re-Submit ");
+      //   }
+      // console.log(data, "test1");
+      // alert("Test Re-Submit");
+      // else{
+      const { handleFieldChange, setRoute, dataPath, onDialogButtonClick } = this.props;
+      let employeeList = [], empList = [];
+      
+      if (item.buttonLabel === "ACTIVATE_CONNECTION") {
+        if (item.moduleName === "NewWS1" || item.moduleName === "NewSW1") {
+          item.showEmployeeList = false;
+        }
       }
-    }
-    if (dataPath === "BPA") {
-      handleFieldChange(`${dataPath}.comment`, "");
-      handleFieldChange(`${dataPath}.wfDocuments`, []);
-      handleFieldChange(`${dataPath}.assignees`, "");
-    } else if (dataPath === "FireNOCs") {
-      handleFieldChange(`${dataPath}[0].fireNOCDetails.additionalDetail.comment`, "");
-      handleFieldChange(`${dataPath}[0].fireNOCDetails.additionalDetail.assignee`, []);
-      handleFieldChange(`${dataPath}[0].fireNOCDetails.additionalDetail.wfDocuments`, []);
-    } else if (dataPath === "Property") {
-      handleFieldChange(`${dataPath}.workflow.comment`, "");
-      handleFieldChange(`${dataPath}.workflow.assignes`, []);
-      handleFieldChange(`${dataPath}.workflow.wfDocuments`, []);
-    } else {
-      handleFieldChange(`${dataPath}[0].comment`, "");
-      handleFieldChange(`${dataPath}[0].wfDocuments`, []);
-      handleFieldChange(`${dataPath}[0].assignee`, []);
-    }
-
-    const applicationNumber = getQueryArg( window.location.href, "applicationNumber" );
-    const tenantId = getQueryArg( window.location.href, "tenantId" );
-    if (item.moduleName == "FIRENOC" && item.buttonLabel == "APPLY") {
-      setRoute(`/fire-noc/apply?applicationNumber=${applicationNumber}&tenantId=${tenantId}`);
-    }
-
-    if (item.isLast) {
-      let url =
-        process.env.NODE_ENV === "development"
-          ? item.buttonUrl
-          : item.buttonUrl;
-
-      /* Quick fix for edit mutation application */
-      if (url.includes('pt-mutation/apply')) {
-        url = url + '&mode=MODIFY';
-        window.location.href = url.replace("/pt-mutation/", '');
-        return;
+      
+      if (item.buttonLabel === "APPROVE_CONNECTION") {
+        if (item.moduleName === "DisconnectWSConnection" || item.moduleName === "DisconnectSWConnection") {
+          item.showEmployeeList = false;
+        }
+      }
+      
+      if (dataPath === "BPA") {
+        handleFieldChange(`${dataPath}.comment`, "");
+        handleFieldChange(`${dataPath}.assignees`, "");
+      } else {
+        handleFieldChange(`${dataPath}[0].comment`, "");
+        handleFieldChange(`${dataPath}[0].assignee`, []);
       }
 
-      setRoute(url);
-      return;
-    }
-    if (item.showEmployeeList && process.env.REACT_APP_NAME !== "Citizen") {
-      const tenantId = getTenantId();
-      const queryObj = [
-        {
-          key: "roles",
-          value: item.roles
-        },
-        {
-          key: "tenantId",
-          value: tenantId
-        }, {
-          key: "isActive",
-          value: true
+      if (item.isLast) {
+        let url =
+          process.env.NODE_ENV === "development"
+            ? item.buttonUrl
+            : item.buttonUrl;
+
+        /* Quick fix for edit mutation application */
+        if (url.includes('pt-mutation/apply')) {
+          url = url + '&mode=MODIFY';
+          window.location.href = url.replace("/pt-mutation/", '');
+          return;
         }
 
-      ];
-      const payload = await httpRequest(
-        "post",
-        "/egov-hrms/employees/_search",
-        "",
-        queryObj
-      );
-      employeeList =
-        payload &&
-        payload.Employees.map((item, index) => {
-          const name = get(item, "user.name");
-          return {
-            value: item.uuid,
-            label: name
-          };
+        setRoute(url);
+        return;
+      }
+      if (item.showEmployeeList) {
+        const tenantId = getTenantId();
+        const queryObj = [
+          {
+            key: "roles",
+            value: item.roles
+          },
+          {
+            key: "tenantId",
+            value: tenantId
+          }
+        ];
+        //   const payload = await httpRequest(
+        //     "post",
+        //     "/egov-hrms/employees/_search",
+        //     "",
+        //     queryObj
+        //   );
+        //   employeeList =
+        //     payload &&
+        //     payload.Employees.map((item, index) => {
+        //       const name = get(item, "user.name");
+        //       return {
+        //         value: item.uuid,
+        //         label: name
+        //       };
+        //     });
+        // }
+
+        const payload = await httpRequest(
+          "post",
+          "/egov-hrms/employees/_search",
+          "",
+          queryObj
+        );
+        empList = payload && payload.Employees.map((item, index) => {
+          // Add only User With Active Status 
+          const active = JSON.stringify(item.user.active);
+          if (active == "true") {
+            const name = get(item, "user.name");
+            return {
+              value: item.uuid,
+              label: name
+            };
+          }
+          else {
+            return {
+              value: item.uuid,
+              label: 'blank'
+            };
+          }
         });
+        empList.forEach((res, index) => {
+          if (res.label == 'blank') {
+            empList.splice(index, 1) // remove element
+          };
+        })
+        for (var i of empList) {
+          employeeList.push(i);
+        }
+      }
+
+      if (label === "APPROVE") {
+        this.setState({ data: item, employeeList });
+
+        onDialogButtonClick(label, false);
+
+      }
+      else {
+        this.setState({ open: true, data: item, employeeList });
+
+      }
+      // this.setState({ open: true, data: item, employeeList });
+      //  }
     }
+    else {
+      const { handleFieldChange, setRoute, dataPath, onDialogButtonClick } = this.props;
+      let employeeList = [], empList = [];
+      if (item.buttonLabel === "ACTIVATE_CONNECTION") {
+        if (item.moduleName === "NewWS1" || item.moduleName === "NewSW1") {
+          item.showEmployeeList = false;
+        }
+      }
+      if (dataPath === "BPA") {
+        handleFieldChange(`${dataPath}.comment`, "");
+        handleFieldChange(`${dataPath}.assignees`, "");
+      } else {
+        handleFieldChange(`${dataPath}[0].comment`, "");
+        handleFieldChange(`${dataPath}[0].assignee`, []);
+      }
 
-    this.setState({ open: true, data: item, employeeList });
+      if (item.isLast) {
+        let url =
+          process.env.NODE_ENV === "development"
+            ? item.buttonUrl
+            : item.buttonUrl;
+
+        /* Quick fix for edit mutation application */
+        if (url.includes('pt-mutation/apply')) {
+          url = url + '&mode=MODIFY';
+          window.location.href = url.replace("/pt-mutation/", '');
+          return;
+        }
+
+        setRoute(url);
+        return;
+      }
+      if (item.showEmployeeList) {
+        const tenantId = getTenantId();
+        const queryObj = [
+          {
+            key: "roles",
+            value: item.roles
+          },
+          {
+            key: "tenantId",
+            value: tenantId
+          }
+        ];
+        //   const payload = await httpRequest(
+        //     "post",
+        //     "/egov-hrms/employees/_search",
+        //     "",
+        //     queryObj
+        //   );
+        //   employeeList =
+        //     payload &&
+        //     payload.Employees.map((item, index) => {
+        //       const name = get(item, "user.name");
+        //       return {
+        //         value: item.uuid,
+        //         label: name
+        //       };
+        //     });
+        // }
+
+        const payload = await httpRequest(
+          "post",
+          "/egov-hrms/employees/_search",
+          "",
+          queryObj
+        );
+        empList = payload && payload.Employees.map((item, index) => {
+          // Add only User With Active Status 
+          const active = JSON.stringify(item.user.active);
+          if (active == "true") {
+            const name = get(item, "user.name");
+            return {
+              value: item.uuid,
+              label: name
+            };
+          }
+          else {
+            return {
+              value: item.uuid,
+              label: 'blank'
+            };
+          }
+        });
+        empList.forEach((res, index) => {
+          if (res.label == 'blank') {
+            empList.splice(index, 1) // remove element
+          };
+        })
+        for (var i of empList) {
+          employeeList.push(i);
+        }
+      }
+
+      if (label === "APPROVE") {
+        this.setState({ data: item, employeeList });
+
+        onDialogButtonClick(label, false);
+
+      }
+      else {
+        this.setState({ open: true, data: item, employeeList });
+
+      }
+      // this.setState({ open: true, data: item, employeeList });
+    }
   };
-
+  tlPopUpClose = () => {
+    this.setState({
+      tlpopUp: false
+    });
+  };
   onClose = () => {
     this.setState({
       open: false
     });
   };
-
-  renewTradelicence = async (financialYear, tenantId, routeUrl) => {
-    const { setRoute, state, toggleSnackbar } = this.props;
-    const licences = get(
-      state.screenConfiguration.preparedFinalObject,
-      `Licenses`
-    );
-    this.props.showSpinner();
-    const nextFinancialYear = await getNextFinancialYearForRenewal(
-      financialYear
-    );
-    const AllLicences = get(
-      state.screenConfiguration.preparedFinalObject,
-      `AllLicences`, []
-    );
-
-    if (nextFinancialYear && AllLicences && Array.isArray(AllLicences)) {
-      if (AllLicences.filter(licence => licence.financialYear == nextFinancialYear).length > 0) {
-        this.props.hideSpinner();
-
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Please fill all the mandatory fields!",
-            labelKey: "TL_RENEWAL_APPLICATION_EXITS_ALREADY"
-          },
-          "error"
-        );
-        return;
-      }
-    }
-    if (routeUrl) {
-      this.props.setRoute(
-        routeUrl
+  openTLPopup = async (financialYear, tenantId)=>{
+      //console.log("shdgshdfs")
+      
+      let payload = null;
+      let uuType ="TL"
+      const { setRoute, state, toggleSnackbar } = this.props;
+      const licences = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Licenses`
       );
-      return;
-    }
-    const wfCode = "DIRECTRENEWAL";
-    set(licences[0], "action", "INITIATE");
-    set(licences[0], "workflowCode", wfCode);
-    set(licences[0], "applicationType", "RENEWAL");
-    set(licences[0], "financialYear", nextFinancialYear);
-
-    try {
-      const response = await httpRequest(
-        "post",
-        "/tl-services/v1/_update",
-        "",
-        [],
-        {
-          Licenses: licences
+      const licenseWorkflow = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Licenses[0].workflowCode`
+      );
+      this.setState({
+        wFCode : licenseWorkflow
+      })
+      var nextFinancialYear = await getNextFinancialYearForRenewal(
+        financialYear
+      );
+      var currentFinancialYear = this.getCurrentFinancialYear();
+      nextFinancialYear = currentFinancialYear;
+      const wfCode = "DIRECTRENEWAL";
+        set(licences[0], "action", "INITIATE");
+        set(licences[0], "workflowCode", wfCode);
+        set(licences[0], "applicationType", "RENEWAL");
+        set(licences[0], "financialYear", nextFinancialYear);
+        set(licences[0], "tradeLicenseDetail.adhocPenalty", null);
+        set(licences[0], "tradeLicenseDetail.adhocExemption", null);
+        this.setState({
+          tlpopUp : true,
+          licenseData : licences[0]
+        })
+        let mdmsBody = {
+          MdmsCriteria: {
+            tenantId: "pb",
+            moduleDetails: [
+              {
+                moduleName: "TradeLicense",
+                masterDetails: [{ name: "TradeType"}]
+              }
+            ]
+          }
+        };
+        let tradeDataFetched = get(licences[0],"tradeLicenseDetail")
+        try {
+            
+          payload = await httpRequest(
+            "post",
+            "/egov-mdms-service/v1/_search",
+            "_search",
+            [],
+            mdmsBody
+          );
+          const tradeUnitMDMS = payload.MdmsRes.TradeLicense;
+           for(let tradeData of tradeDataFetched.tradeUnits){
+            //  console.log("tradeData"+JSON.stringify(tradeData))
+             for(let tradeMdms of tradeUnitMDMS.TradeType){
+              if(tradeData.tradeType === tradeMdms.code){
+                 // console.log(tradeData.tradeType+"==>"+tradeMdms.ishazardous)
+                 if(tradeMdms.ishazardous === true){
+                  this.setState({
+                      isHAZ : true
+                    })
+                    return false;
+                 }
+                
+               }
+             }
+           } 
+          
+        }catch(e){
+          console.log(e.message)
         }
-      );
-      const renewedapplicationNo = get(response, `Licenses[0].applicationNumber`);
-      const licenseNumber = get(response, `Licenses[0].licenseNumber`);
-      this.props.hideSpinner();
-      setRoute(
-        `/tradelicence/acknowledgement?purpose=DIRECTRENEWAL&status=success&applicationNumber=${renewedapplicationNo}&licenseNumber=${licenseNumber}&FY=${nextFinancialYear}&tenantId=${tenantId}&action=${wfCode}`
-      );
-    } catch (exception) {
-      this.props.hideSpinner();
-      toggleSnackbar(
-        true,
-        {
-          labelName: "Please fill all the mandatory fields!",
-          labelKey: exception && exception.message || exception
-        },
-        "error"
-      );
-
-    }
-
-  };
+      
+  }
+  ;
   render() {
     const {
       contractData,
@@ -232,19 +435,20 @@ class Footer extends React.Component {
       state,
       dispatch
     } = this.props;
-    const { open, data, employeeList } = this.state;
+    const { open, data, employeeList, nocValid, tlpopUp, licenseData, wFCode, isHAZ } = this.state;
     const { isDocRequired } = data;
     const appName = process.env.REACT_APP_NAME;
     const downloadMenu =
       contractData &&
       contractData.map(item => {
         const { buttonLabel, moduleName } = item;
+
         return {
           labelName: { buttonLabel },
           labelKey: `WF_${appName.toUpperCase()}_${moduleName.toUpperCase()}_${buttonLabel}`,
           link: () => {
             (moduleName === "NewTL" || moduleName === "EDITRENEWAL") && buttonLabel === "APPLY" ? onDialogButtonClick(buttonLabel, isDocRequired) :
-              this.openActionDialog(item);
+              this.openActionDialog(item, buttonLabel);
           }
         };
       });
@@ -279,7 +483,11 @@ class Footer extends React.Component {
         `licenseCount`,
         1
       );
-
+      const licenseWorkflow = get(
+        state.screenConfiguration.preparedFinalObject,
+        `Licenses[0].workflowCode`,
+        ""
+      );
       const rolearray =
         getUserInfo() &&
         JSON.parse(getUserInfo()).roles.filter(item => {
@@ -310,11 +518,9 @@ class Footer extends React.Component {
               process.env.REACT_APP_NAME === "Citizen"
                 ? "/tradelicense-citizen/apply"
                 : "/tradelicence/apply";
-            const routeUrl = `${baseURL}?applicationNumber=${applicationNumber}&licenseNumber=${licenseNumber}&tenantId=${tenantId}&action=EDITRENEWAL`;
-            // this.props.setRoute(
-            //   `${baseURL}?applicationNumber=${applicationNumber}&licenseNumber=${licenseNumber}&tenantId=${tenantId}&action=EDITRENEWAL`
-            // );
-            this.renewTradelicence(financialYear, tenantId, routeUrl);
+            this.props.setRoute(
+              `${baseURL}?applicationNumber=${applicationNumber}&licenseNumber=${licenseNumber}&tenantId=${tenantId}&action=EDITRENEWAL`
+            );
           }
         };
 
@@ -322,7 +528,8 @@ class Footer extends React.Component {
           label: "Submit",
           labelKey: "WF_TL_RENEWAL_SUBMIT_BUTTON",
           link: () => {
-            this.renewTradelicence(financialYear, tenantId);
+           // this.renewTradelicence(financialYear, tenantId);
+           this.openTLPopup(financialYear, tenantId, licenseWorkflow);
           }
         };
         if (responseLength > 1) {
@@ -359,6 +566,7 @@ class Footer extends React.Component {
       },
       menu: downloadMenu
     };
+    //console.log("download Menu : "+JSON.stringify(downloadMenu))
     return (
       <div className="wf-wizard-footer" id="custom-atoms-footer">
         {!isEmpty(downloadMenu) && (
@@ -372,10 +580,18 @@ class Footer extends React.Component {
           open={open}
           onClose={this.onClose}
           dialogData={data}
+          nocValid={nocValid}
           dropDownData={employeeList}
           handleFieldChange={handleFieldChange}
           onButtonClick={onDialogButtonClick}
           dataPath={dataPath}
+        />
+        <TlRenewDialog
+          open={tlpopUp}
+          onClose={this.tlPopUpClose}
+          licenseData ={licenseData}
+          wFCode = {wFCode}
+          isHAZ ={isHAZ}
         />
       </div>
     );

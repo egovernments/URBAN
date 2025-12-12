@@ -123,16 +123,6 @@ export const transferorSummary = getCommonGrayCard({
               "Property.ownersInit[0].mobileNumber" ,
               callBack: checkValueForNA
             }
-          ), alterMobileNo: getLabelWithValue(
-            {
-              labelName: "Mobile No.",
-              labelKey: "PT_FORM3_ALT_MOBILE_NO" 
-            },
-            {
-              jsonPath:
-              "Property.ownersInit[0].alternatemobilenumber" ,
-              callBack: checkValueForNA
-            }
           ),  ownerEmail: getLabelWithValue(
             {
               labelName: "Email",
@@ -143,7 +133,18 @@ export const transferorSummary = getCommonGrayCard({
               "Property.ownersInit[0].emailId",
               callBack: checkValueForNA
             }
-          ),       
+          ),
+          ownerShipPercentage: getLabelWithValue(
+            {
+              labelName: "OwnerPercentage",
+              labelKey: "PT_OWNERSHIP_PERCENTAGE"
+            },
+            {
+              jsonPath:
+              "Property.ownersInit[0].ownerShipPercentage",
+              callBack: checkValueForNA
+            }
+          ),         
           ownerDob: getLabelWithValue(
             {
               labelName: "Special Category",
@@ -342,17 +343,6 @@ export const transferorInstitutionSummary = getCommonGrayCard({
         jsonPath:
           "Property.ownersInit[0].mobileNumber",
           callBack: checkValueForNA
-      }
-    ),
-    alterMobileNo: getLabelWithValue(
-      {
-        labelName: "Mobile No.",
-        labelKey: "PT_FORM3_ALT_MOBILE_NO" 
-      },
-      {
-        jsonPath:
-        "Property.ownersInit[0].alternatemobilenumber" ,
-        callBack: checkValueForNA
       }
     ),
     officialAddress: getLabelWithValue(

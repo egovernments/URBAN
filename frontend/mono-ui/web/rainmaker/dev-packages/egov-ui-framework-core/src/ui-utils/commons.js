@@ -1,24 +1,9 @@
 import commonConfig from "config/common.js";
 import { getRequiredDocuments } from "egov-ui-framework/ui-containers/RequiredDocuments/reqDocs";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import {
-  handleScreenConfigurationFieldChange as handleField,
-  hideSpinner,
-  prepareFinalObject,
-  showSpinner,
-  toggleSnackbar,
-  toggleSpinner
-} from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField, hideSpinner, prepareFinalObject, showSpinner, toggleSnackbar, toggleSpinner } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getUserSearchedResponse } from "egov-ui-kit/utils/commons";
-import {
-  getLocale,
-  getLocalization,
-  getTenantId,
-  getUserInfo,
-  localStorageGet,
-  localStorageSet
-} from "egov-ui-kit/utils/localStorageUtils";
+import { getLocale, getLocalization, getTenantId, getUserInfo, localStorageGet, localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -59,7 +44,7 @@ export const addQueryArg = (url, queries = []) => {
   const urlParts = url.split("?");
   const path = urlParts[0];
   let queryParts = urlParts.length > 1 ? urlParts[1].split("&") : [];
-  queries.forEach((query) => {
+  queries.forEach(query => {
     const key = query.key;
     const value = query.value;
     const newQuery = `${key}=${value}`;
@@ -69,7 +54,7 @@ export const addQueryArg = (url, queries = []) => {
   return newUrl;
 };
 
-export const isFieldEmpty = (field) => {
+export const isFieldEmpty = field => {
   if (field === undefined || field === null) {
     return true;
   }
@@ -80,31 +65,31 @@ export const isFieldEmpty = (field) => {
   return false;
 };
 
-export const slugify = (term) => {
+export const slugify = term => {
   return term.toLowerCase().replace(/\s+/, "-");
 };
 
-export const persistInLocalStorage = (obj) => {
-  Object.keys(obj).forEach((objKey) => {
+export const persistInLocalStorage = obj => {
+  Object.keys(obj).forEach(objKey => {
     const objValue = obj[objKey];
     localStorageSet(objKey, objValue);
   }, this);
 };
 
-export const ifUserRoleExists = (role) => {
+export const ifUserRoleExists = role => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map((role) => role.code) : [];
+  const roleCodes = roles ? roles.map(role => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const fetchFromLocalStorage = (key) => {
+export const fetchFromLocalStorage = key => {
   return localStorageGet(key) || null;
 };
 
-export const trimObj = (obj) => {
+export const trimObj = obj => {
   if (!Array.isArray(obj) && typeof obj !== "object") return obj;
   for (var key in obj) {
     obj[key.trim()] =
@@ -118,18 +103,18 @@ export const getDateInEpoch = () => {
   return new Date().getTime();
 };
 
-export const getImageUrlByFile = (file) => {
-  return new Promise((resolve) => {
+export const getImageUrlByFile = file => {
+  return new Promise(resolve => {
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = (e) => {
+    reader.onload = e => {
       const fileurl = e.target.result;
       resolve(fileurl);
     };
   });
 };
 
-export const getFileSize = (file) => {
+export const getFileSize = file => {
   const size = parseFloat(file.size / 1024).toFixed(2);
   return size;
 };
@@ -149,7 +134,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item,
+        ...item
       };
 
       return result;
@@ -158,10 +143,22 @@ export const transformById = (payload, id) => {
 };
 
 export const getTransformedLocalStorgaeLabels = () => {
-  const localeLabels = JSON.parse(
-    getLocalization(`localization_${getLocale()}`)
-  );
-  return transformById(localeLabels, "code");
+  // FIX: Add proper error handling for localStorage access
+  try {
+    const localStorageData = getLocalization(`localization_${getLocale()}`);
+    if (localStorageData) {
+      const localeLabels = JSON.parse(localStorageData);
+      return transformById(localeLabels, "code");
+    } else {
+      // No localization data available - return empty object
+      console.warn('[getTransformedLocalStorgaeLabels] No localization data found in storage');
+      return {};
+    }
+  } catch (error) {
+    // Handle JSON parse errors or localStorage access errors
+    console.warn('[getTransformedLocalStorgaeLabels] Error loading localization from storage:', error);
+    return {};
+  }
 };
 
 export const getTranslatedLabel = (labelKey, localizationLabels) => {
@@ -178,7 +175,7 @@ export const getTranslatedLabel = (labelKey, localizationLabels) => {
   return translatedLabel || labelKey;
 };
 
-export const epochToYmd = (et) => {
+export const epochToYmd = et => {
   // Return null if et already null
   if (!et) return null;
   // Return the same format if et is already a string (boundary case)
@@ -193,15 +190,29 @@ export const epochToYmd = (et) => {
 };
 
 export const getLocaleLabels = (label, labelKey, localizationLabels) => {
-  if (!localizationLabels)
-    localizationLabels = transformById(
-      JSON.parse(getLocalization(`localization_${getLocale()}`)),
-      "code"
-    );
+  // FIX: Add proper error handling for localStorage access
+  if (!localizationLabels) {
+    try {
+      const localStorageData = getLocalization(`localization_${getLocale()}`);
+      if (localStorageData) {
+        localizationLabels = transformById(JSON.parse(localStorageData), "code");
+      } else {
+        // No localization data available - return fallback immediately
+        localizationLabels = {};
+      }
+    } catch (error) {
+      // Handle JSON parse errors or localStorage access errors
+      console.warn('[getLocaleLabels] Error loading localization from storage:', error);
+      localizationLabels = {};
+    }
+  }
+
   if (labelKey) {
     let translatedLabel = getTranslatedLabel(labelKey, localizationLabels);
+    // FIX: If translation not found (key equals translated), use labelName fallback
     if (!translatedLabel || labelKey === translatedLabel) {
-      return translatedLabel;
+      // Return labelName fallback if provided, otherwise return key
+      return label || translatedLabel;
     } else {
       return translatedLabel;
     }
@@ -219,10 +230,25 @@ export const replaceStrInPath = (inputString, search, replacement) => {
 };
 
 export const getFileUrlFromAPI = async (fileStoreId, tenantId) => {
+  //let tenantIdd = getQueryArg(window.location.href, "tenantId")
+  //let service = getQueryArg(window.location.href, "service")
   const queryObject = [
     { key: "tenantId", value: tenantId || commonConfig.tenantId },
-    { key: "fileStoreIds", value: fileStoreId },
+    { key: "fileStoreIds", value: fileStoreId }
   ];
+  // let queryObject;
+  // if (service == "WATER" || service == "SEWERAGE") {
+  //   queryObject = [
+  //     { key: "tenantId", value: tenantIdd },
+  //     { key: "fileStoreIds", value: fileStoreId }
+  //   ];
+  // } else {
+
+  //   queryObject = [
+  //     { key: "tenantId", value: tenantId || commonConfig.tenantId },
+  //     { key: "fileStoreIds", value: fileStoreId }
+  //   ];
+  // }
   try {
     const fileUrl = await httpRequest(
       "get",
@@ -236,12 +262,12 @@ export const getFileUrlFromAPI = async (fileStoreId, tenantId) => {
   }
 };
 
-const getAllFileStoreIds = async (ProcessInstances) => {
+const getAllFileStoreIds = async ProcessInstances => {
   return (
     ProcessInstances &&
     ProcessInstances.reduce((result, eachInstance) => {
       if (eachInstance.documents) {
-        let fileStoreIdArr = eachInstance.documents.map((item) => {
+        let fileStoreIdArr = eachInstance.documents.map(item => {
           return item.fileStoreId;
         });
         result[eachInstance.id] = fileStoreIdArr.join(",");
@@ -251,22 +277,17 @@ const getAllFileStoreIds = async (ProcessInstances) => {
   );
 };
 
+
 export const getFileUrl = (linkText = "") => {
-  const linkList =
-    (linkText && typeof linkText == "string" && linkText.split(",")) || [];
-  let fileURL = "";
-  linkList &&
-    linkList.map((link) => {
-      if (
-        !link.includes("large") &&
-        !link.includes("medium") &&
-        !link.includes("small")
-      ) {
-        fileURL = link;
-      }
-    });
+  const linkList = linkText.split(",");
+  let fileURL = '';
+  linkList && linkList.map(link => {
+    if (!link.includes('large') && !link.includes('medium') && !link.includes('small')) {
+      fileURL = link;
+    }
+  })
   return fileURL;
-};
+}
 
 export const setDocuments = async (
   payload,
@@ -280,7 +301,7 @@ export const setDocuments = async (
   const fileStoreIds =
     uploadedDocData &&
     uploadedDocData
-      .map((item) => {
+      .map(item => {
         return item.fileStoreId;
       })
       .join(",");
@@ -307,11 +328,12 @@ export const setDocuments = async (
                 .pop()
                 .slice(13)
             )) ||
-          `Document - ${index + 1}`,
+          `Document - ${index + 1}`
       };
     });
   reviewDocData && dispatch(prepareFinalObject(destJsonPath, reviewDocData));
 };
+
 
 export const addWflowFileUrl = async (ProcessInstances, prepareFinalObject) => {
   const fileStoreIdByAction = await getAllFileStoreIds(ProcessInstances);
@@ -319,9 +341,9 @@ export const addWflowFileUrl = async (ProcessInstances, prepareFinalObject) => {
     Object.values(fileStoreIdByAction).join(",")
   );
   const processInstances = cloneDeep(ProcessInstances);
-  processInstances.map((item) => {
+  processInstances.map(item => {
     if (item.documents && item.documents.length > 0) {
-      item.documents.forEach((i) => {
+      item.documents.forEach(i => {
         if (i.fileStoreId && fileUrlPayload[i.fileStoreId]) {
           i.link = getFileUrl(fileUrlPayload[i.fileStoreId]);
           i.title = `TL_${i.documentType}`;
@@ -362,34 +384,34 @@ export const setBusinessServiceDataToLocalStorage = async (
         JSON.stringify(get(payload, "BusinessServices"))
       );
     } else {
-      dispatch(
-        toggleSnackbar(
-          true,
-          {
-            labelName: "Business Service returned empty object",
-            labelKey: "ERR_NOT_AUTHORISED_BUSINESS_SERVICE",
-          },
-          "error"
-        )
-      );
+      // dispatch(
+      //   toggleSnackbar(
+      //     true,
+      //     {
+      //       labelName: "Business Service returned empty object",
+      //       labelKey: "ERR_NOT_AUTHORISED_BUSINESS_SERVICE"
+      //     },
+      //     "error"
+      //   )
+      // );
     }
     dispatch(toggleSpinner());
   } catch (e) {
     dispatch(toggleSpinner());
-    dispatch(
-      toggleSnackbar(
-        true,
-        {
-          labelName: "Not authorized to access Business Service!",
-          labelKey: "ERR_NOT_AUTHORISED_BUSINESS_SERVICE",
-        },
-        "error"
-      )
-    );
+    // dispatch(
+    //   toggleSnackbar(
+    //     true,
+    //     {
+    //       labelName: "Not authorized to access Business Service!",
+    //       labelKey: "ERR_NOT_AUTHORISED_BUSINESS_SERVICE"
+    //     },
+    //     "error"
+    //   )
+    // );
   }
 };
 
-export const acceptedFiles = (acceptedExt) => {
+export const acceptedFiles = acceptedExt => {
   const splitExtByName = acceptedExt.split(",");
   const acceptedFileTypes = splitExtByName.reduce((result, curr) => {
     if (curr.includes("image")) {
@@ -402,18 +424,12 @@ export const acceptedFiles = (acceptedExt) => {
   return acceptedFileTypes;
 };
 
-export const handleFileUpload = (
-  event,
-  handleDocument,
-  props,
-  afterFileSelected,
-  ifError
-) => {
+export const handleFileUpload = (event, handleDocument, props) => {
   const S3_BUCKET = {
-    endPoint: "filestore/v1/files",
+    endPoint: "filestore/v1/files"
   };
   let uploadDocument = true;
-  const { inputProps, maxFileSize, moduleName = "common" } = props;
+  const { inputProps, maxFileSize, moduleName } = props;
   const input = event.target;
   if (input.files && input.files.length > 0) {
     const files = input.files;
@@ -430,29 +446,22 @@ export const handleFileUpload = (
         uploadDocument = false;
       }
       if (uploadDocument) {
-        afterFileSelected &&
-          typeof afterFileSelected == "function" &&
-          afterFileSelected();
-        try {
-          if (file.type.match(/^image\//)) {
-            const fileStoreId = await uploadFile(
-              S3_BUCKET.endPoint,
-              moduleName,
-              file,
-              commonConfig.tenantId
-            );
-            handleDocument(file, fileStoreId);
-          } else {
-            const fileStoreId = await uploadFile(
-              S3_BUCKET.endPoint,
-              moduleName,
-              file,
-              commonConfig.tenantId
-            );
-            handleDocument(file, fileStoreId);
-          }
-        } catch (e) {
-          ifError && typeof ifError == "function" && ifError();
+        if (file.type.match(/^image\//)) {
+          const fileStoreId = await uploadFile(
+            S3_BUCKET.endPoint,
+            moduleName,
+            file,
+            commonConfig.tenantId
+          );
+          handleDocument(file, fileStoreId);
+        } else {
+          const fileStoreId = await uploadFile(
+            S3_BUCKET.endPoint,
+            moduleName,
+            file,
+            commonConfig.tenantId
+          );
+          handleDocument(file, fileStoreId);
         }
       }
     });
@@ -460,8 +469,7 @@ export const handleFileUpload = (
 };
 
 //localizations
-export const getTransformedLocale = (label) => {
-  if (typeof label === "number") return label;
+export const getTransformedLocale = label => {
   return label && label.toUpperCase().replace(/[.:-\s\/]/g, "_");
 };
 
@@ -474,7 +482,7 @@ export const appendModulePrefix = (value, localePrefix) => {
   return transformedValue;
 };
 
-export const orderWfProcessInstances = (processInstances) => {
+export const orderWfProcessInstances = processInstances => {
   processInstances = orderBy(
     processInstances,
     "auditDetails.lastModifiedTime",
@@ -493,41 +501,41 @@ export const orderWfProcessInstances = (processInstances) => {
   return filteredInstances.reverse();
 };
 
-export const getSelectedTabIndex = (paymentType) => {
+export const getSelectedTabIndex = paymentType => {
   switch (paymentType) {
     case "Cash":
       return {
         selectedPaymentMode: "cash",
         selectedTabIndex: 0,
-        fieldsToValidate: ["payeeDetails"],
+        fieldsToValidate: ["payeeDetails"]
       };
     case "Cheque":
       return {
         selectedPaymentMode: "cheque",
         selectedTabIndex: 1,
-        fieldsToValidate: ["payeeDetails", "chequeDetails"],
+        fieldsToValidate: ["payeeDetails", "chequeDetails"]
       };
     case "DD":
       return {
         selectedPaymentMode: "demandDraft",
         selectedTabIndex: 2,
-        fieldsToValidate: ["payeeDetails", "demandDraftDetails"],
+        fieldsToValidate: ["payeeDetails", "demandDraftDetails"]
       };
     case "Card":
       return {
         selectedPaymentMode: "card",
         selectedTabIndex: 3,
-        fieldsToValidate: ["payeeDetails", "cardDetails"],
+        fieldsToValidate: ["payeeDetails", "cardDetails"]
       };
     default:
       return {
         selectedPaymentMode: "cash",
         selectedTabIndex: 0,
-        fieldsToValidate: ["payeeDetails"],
+        fieldsToValidate: ["payeeDetails"]
       };
   }
 };
-export const getMultiUnits = (multiUnits) => {
+export const getMultiUnits = multiUnits => {
   let hasTradeType = false;
   let hasAccessoryType = false;
 
@@ -558,7 +566,7 @@ export const getMultiUnits = (multiUnits) => {
   return mergedUnits;
 };
 
-export const getUlbGradeLabel = (ulbGrade) => {
+export const getUlbGradeLabel = ulbGrade => {
   if (ulbGrade) {
     let ulbWiseHeaderName = ulbGrade.toUpperCase();
     if (ulbWiseHeaderName.indexOf(" ") > 0) {
@@ -602,7 +610,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            ),
+            )
           },
           dispatch,
           true
@@ -616,20 +624,14 @@ export const validateFields = (
 };
 
 export const downloadPDFFileUsingBase64 = (receiptPDF, filename) => {
-  if (
-    window &&
-    window.mSewaApp &&
-    window.mSewaApp.isMsewaApp &&
-    window.mSewaApp.isMsewaApp() &&
-    window.mSewaApp.downloadBase64File
-  ) {
-    // we are running under webview
-    receiptPDF.getBase64((data) => {
-      window.mSewaApp.downloadBase64File(data, filename);
-    });
-  } else {
+  if (typeof mSewaApp === "undefined") {
     // we are running in browser
     receiptPDF.download(filename);
+  } else {
+    // we are running under webview
+    receiptPDF.getBase64(data => {
+      mSewaApp.downloadBase64File(data, filename);
+    });
   }
 };
 
@@ -637,17 +639,15 @@ if (window) {
   window.downloadPDFFileUsingBase64 = downloadPDFFileUsingBase64;
 }
 // Get user data from uuid API call
-export const getUserDataFromUuid = async (bodyObject) => {
+export const getUserDataFromUuid = async bodyObject => {
   try {
-    // const response = await httpRequest(
-    //   "post",
-    //   "/user/_search",
-    //   "",
-    //   [],
-    //   bodyObject
-    // );
-
-    const response = getUserSearchedResponse();
+    const response = await httpRequest(
+      "post",
+      "/user/_search",
+      "",
+      [],
+      bodyObject
+    );
     return response;
   } catch (error) {
     console.log(error);
@@ -655,12 +655,7 @@ export const getUserDataFromUuid = async (bodyObject) => {
   }
 };
 
-export const getCommonPayUrl = (
-  dispatch,
-  applicationNo,
-  tenantId,
-  businessService
-) => {
+export const getCommonPayUrl = (dispatch, applicationNo, tenantId, businessService) => {
   const url = `/egov-common/pay?consumerCode=${applicationNo}&tenantId=${tenantId}&businessService=${businessService}`;
   dispatch(setRoute(url));
 };
@@ -682,20 +677,9 @@ export const getMaxDate = (yr) => {
   return date;
 };
 
-export const getMaxDateInYMDForAbove18 = () => {
-  let date = new Date();
-  date.setFullYear(date.getFullYear() - 18); // subtract 18 years
-  let month = date.getMonth() + 1;
-  let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-  month = month < 10 ? `0${month}` : month;
-  return `${date.getFullYear()}-${month}-${day}`;
-};
-
 export const isPublicSearch = () => {
-  return (
-    location && location.pathname && location.pathname.includes("/withoutAuth")
-  );
-};
+  return location && location.pathname && location.pathname.includes("/withoutAuth");
+}
 
 export const getStatusKey = (status) => {
   switch (status) {
@@ -718,51 +702,46 @@ export const getStatusKey = (status) => {
       return { labelName: "Cancelled", labelKey: "CANCELLED" };
     case "PENDINGAPPROVAL ":
       return {
-        labelName: "Pending for Approval",
-        labelKey: "PENDINGAPPROVAL",
+        labelName:
+          "Pending for Approval",
+        labelKey:
+          "PENDINGAPPROVAL"
       };
     case "PENDINGPAYMENT":
       return {
-        labelName: "Pending payment",
-        labelKey: "PENDINGPAYMENT",
+        labelName:
+          "Pending payment",
+        labelKey:
+          "PENDINGPAYMENT"
       };
     case "DOCUMENTVERIFY":
       return {
-        labelName: "Pending for Document Verification",
-        labelKey: "DOCUMENTVERIFY",
+        labelName:
+          "Pending for Document Verification",
+        labelKey: "DOCUMENTVERIFY"
       };
     case "FIELDINSPECTION":
       return {
-        labelKey: "FIELDINSPECTION",
-        labelName: "Pending for Field Inspection",
+        labelKey:
+          "FIELDINSPECTION", labelName:
+          "Pending for Field Inspection"
       };
     default:
       return {
-        labelName: status,
-        labelKey: status,
-      };
-  }
-};
+        labelName: status, labelKey: status
+      }
 
-export const getRequiredDocData = async (
-  action,
-  dispatch,
-  moduleDetails,
-  closePopUp
-) => {
+  }
+}
+
+export const getRequiredDocData = async (action, dispatch, moduleDetails, closePopUp) => {
   let tenantId =
-    process.env.REACT_APP_NAME === "Citizen"
-      ? JSON.parse(getUserInfo()).permanentCity || commonConfig.tenantId
-      : getTenantId();
+    process.env.REACT_APP_NAME === "Citizen" ? JSON.parse(getUserInfo()).permanentCity || commonConfig.tenantId : getTenantId();
   let mdmsBody = {
     MdmsCriteria: {
-      tenantId:
-        moduleDetails[0].moduleName === "ws-services-masters" ||
-        moduleDetails[0].moduleName === "PropertyTax"
-          ? commonConfig.tenantId
-          : tenantId,
-      moduleDetails: moduleDetails,
-    },
+      tenantId: moduleDetails[0].moduleName === "ws-services-masters" || moduleDetails[0].moduleName === "PropertyTax" || moduleDetails[0].moduleName === "FireNoc" || moduleDetails[0].moduleName === "TradeLicense" ? commonConfig.tenantId : tenantId,
+      moduleDetails: moduleDetails
+    }
   };
   try {
     let payload = null;
@@ -774,17 +753,21 @@ export const getRequiredDocData = async (
       mdmsBody
     );
     const moduleName = moduleDetails[0].moduleName;
-    let documents = get(payload.MdmsRes, `${moduleName}.Documents`, []);
+    let documents = moduleName === "FireNoc" ? get(
+      payload.MdmsRes,
+      `${moduleName}.Documents[0].allowedDocs`,
+      []
+    ) : get(
+      payload.MdmsRes,
+      `${moduleName}.Documents`,
+      []
+    );
 
     if (moduleName === "PropertyTax") {
-      payload.MdmsRes.tenant.tenants =
-        payload.MdmsRes.tenant.citymodule[1].tenants;
+      payload.MdmsRes.tenant.tenants = payload.MdmsRes.tenant.citymodule[1].tenants;
     }
-    const reqDocuments = getRequiredDocuments(
-      documents,
-      moduleName,
-      footerCallBackForRequiredDataModal(moduleName, closePopUp)
-    );
+    const reqDocuments = getRequiredDocuments(documents, moduleName, footerCallBackForRequiredDataModal(moduleName, closePopUp));
+    console.log(reqDocuments, "reqqqqq");
     set(
       action,
       "screenConfig.components.adhocDialog.children.popup",
@@ -806,9 +789,7 @@ const footerCallBackForRequiredDataModal = (moduleName, closePopUp) => {
         dispatch(prepareFinalObject("DynamicMdms", {}));
         dispatch(prepareFinalObject("documentsUploadRedux", {}));
         const applyUrl =
-          process.env.REACT_APP_SELF_RUNNING === "true"
-            ? `/egov-ui-framework/fire-noc/apply`
-            : `/fire-noc/apply`;
+          process.env.REACT_APP_SELF_RUNNING === "true" ? `/egov-ui-framework/fire-noc/apply` : `/fire-noc/apply`;
         dispatch(setRoute(applyUrl));
       };
     case "PropertyTax":
@@ -823,13 +804,10 @@ const footerCallBackForRequiredDataModal = (moduleName, closePopUp) => {
         dispatch(prepareFinalObject("SewerageConnection", []));
         dispatch(prepareFinalObject("applyScreen", {}));
         dispatch(prepareFinalObject("searchScreen", {}));
-        const applyUrl =
-          process.env.REACT_APP_NAME === "Citizen"
-            ? `/wns/apply`
-            : `/wns/apply`;
+        const applyUrl = process.env.REACT_APP_NAME === "Citizen" ? `/wns/apply` : `/wns/apply`
         dispatch(setRoute(applyUrl));
       };
-    case "TradeLicense":
+    case 'TradeLicense':
       if (closePopUp) {
         return (state, dispatch) => {
           dispatch(prepareFinalObject("Licenses", []));
@@ -843,7 +821,7 @@ const footerCallBackForRequiredDataModal = (moduleName, closePopUp) => {
         };
       }
   }
-};
+}
 export const showHideAdhocPopup = (state, dispatch, screenKey) => {
   let toggle = get(
     state.screenConfiguration.screenConfig[screenKey],
@@ -854,35 +832,36 @@ export const showHideAdhocPopup = (state, dispatch, screenKey) => {
     handleField(screenKey, "components.adhocDialog", "props.open", !toggle)
   );
 };
-export const getObjectValues = (objData) => {
+export const getObjectValues = objData => {
   return (
     objData &&
-    Object.values(objData).map((item) => {
+    Object.values(objData).map(item => {
       return item;
     })
   );
 };
-export const getObjectKeys = (objData) => {
+export const getObjectKeys = objData => {
   return (
     objData &&
-    Object.keys(objData).map((item) => {
+    Object.keys(objData).map(item => {
       return { code: item, active: true };
     })
   );
 };
 export const getMdmsJson = async (state, dispatch, reqObj) => {
-  let { setPath, setTransformPath, dispatchPath, moduleName, name, filter } =
-    reqObj;
+  let { setPath, setTransformPath, dispatchPath, moduleName, name, filter } = reqObj;
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: commonConfig.tenantId,
       moduleDetails: [
         {
           moduleName,
-          masterDetails: [{ name, filter }],
-        },
-      ],
-    },
+          masterDetails: [
+            { name, filter }
+          ]
+        }
+      ]
+    }
   };
   try {
     let payload = null;
@@ -895,7 +874,11 @@ export const getMdmsJson = async (state, dispatch, reqObj) => {
     );
     let result = get(payload, `MdmsRes.${moduleName}.${name}`, []);
     // let filterResult = type ? result.filter(item => item.type == type) : result;
-    set(payload, setPath, result);
+    set(
+      payload,
+      setPath,
+      result
+    );
     payload = getTransformData(payload, setPath, setTransformPath);
     dispatch(prepareFinalObject(dispatchPath, get(payload, dispatchPath, [])));
     //dispatch(prepareFinalObject(dispatchPath, payload.DynamicMdms));
@@ -911,85 +894,90 @@ export const getTransformData = (object, getPath, transerPath) => {
   var formTreeBase = (transformedData, row) => {
     const splitList = row.code.split(".");
     splitList.map(function (value, i) {
-      transformedData =
-        i == splitList.length - 1
-          ? (transformedData[value] = row)
-          : transformedData[value] || (transformedData[value] = {});
+      transformedData = (i == splitList.length - 1) ? transformedData[value] = row : transformedData[value] || (transformedData[value] = {});
     });
-  };
-  data.map((a) => {
+  }
+  data.map(a => {
     formTreeBase(transformedData, a);
   });
   set(object, transerPath, transformedData);
   return object;
 };
 
-export const enableField = (screenKey, jsonPath = "components", dispatch) => {
+
+
+
+export const enableField = (screenKey, jsonPath = 'components', dispatch) => {
   dispatch(handleField(screenKey, jsonPath, "props.disabled", false));
-};
-export const disableField = (screenKey, jsonPath = "components", dispatch) => {
+}
+export const disableField = (screenKey, jsonPath = 'components', dispatch) => {
   dispatch(handleField(screenKey, jsonPath, "props.disabled", true));
-};
-export const enableFieldAndHideSpinner = (
-  screenKey,
-  jsonPath = "components",
-  dispatch
-) => {
+}
+export const enableFieldAndHideSpinner = (screenKey, jsonPath = 'components', dispatch) => {
   dispatch(hideSpinner());
   enableField(screenKey, jsonPath, dispatch);
-};
-export const disableFieldAndShowSpinner = (
-  screenKey,
-  jsonPath = "components",
-  dispatch
-) => {
+}
+export const disableFieldAndShowSpinner = (screenKey, jsonPath = 'components', dispatch) => {
   dispatch(showSpinner());
   disableField(screenKey, jsonPath, dispatch);
-};
+}
+
 
 export const sortDropdownNames = (e1, e2) => {
-  if (e1 && e1.name && typeof e1.name == "string") {
-    return (
-      e1 &&
-      e1.name &&
-      e1.name.localeCompare &&
-      e1.name.localeCompare((e2 && e2.name && e2.name) || "")
-    );
-  } else if (e1 && e1.name && typeof e1.name == "number") {
+  if (e1 && e1.name && typeof e1.name == 'string') {
+    return e1 && e1.name && e1.name.localeCompare && e1.name.localeCompare(e2 && e2.name && e2.name || '');
+  } else if (e1 && e1.name && typeof e1.name == 'number') {
     return e1.name - e2.name;
   } else {
     return 1;
   }
-};
+}
 
 export const sortDropdownLabels = (e1, e2) => {
-  if (e1 && e1.label && typeof e1.label == "string") {
-    return (
-      e1 &&
-      e1.label &&
-      e1.label.localeCompare &&
-      e1.label.localeCompare((e2 && e2.label && e2.label) || "")
-    );
-  } else if (e1 && e1.label && typeof e1.label == "number") {
+  if (e1 && e1.label && typeof e1.label == 'string') {
+    return e1 && e1.label && e1.label.localeCompare && e1.label.localeCompare(e2 && e2.label && e2.label || '');
+  } else if (e1 && e1.label && typeof e1.label == 'number') {
     return e1.label - e2.label;
   } else {
     return 1;
   }
-};
+}
 
-export const captureSource = () => {
-  //Set the source of the Booking.
-  if (window.mSewaApp) localStorageSet("isNative", "true");
-  else localStorageSet("isNative", "false");
-  const isNative = localStorageGet("isNative")==="true";
-  try {
-    let source = process.env.REACT_APP_NAME === "Citizen"
-      ? (isNative
-        ? "mobileapp"
-        : "web")
-      : "ivr";
-    return source;
-  } catch (error) {
-    console.error(error);
+export const validateFieldsNew = (
+  objectJsonPath,
+  state,
+  dispatch,
+  screen = "apply"
+) => {
+  const fields = get(
+    state.screenConfiguration.screenConfig[screen],
+    objectJsonPath,
+    {}
+  );
+  let isFormValid = true;
+  for (var variable in fields) {
+    if (variable && fields[variable].required) {
+      let value = get(
+        state.screenConfiguration.preparedFinalObject,
+        fields[variable].jsonPath
+      )
+      console.log("value variable", value, variable);
+      if (!value || value == null) {
+        !validate(
+          screen,
+          {
+            ...fields[variable],
+            value: get(
+              state.screenConfiguration.preparedFinalObject,
+              fields[variable].jsonPath
+            )
+          },
+          dispatch,
+          true
+        )
+        isFormValid = false;
+      }
+    }
   }
+  return isFormValid;
 };

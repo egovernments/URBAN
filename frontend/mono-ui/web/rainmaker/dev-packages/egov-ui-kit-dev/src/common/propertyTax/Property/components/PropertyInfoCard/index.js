@@ -1,10 +1,9 @@
+import React, { Component } from "react";
 import { Card, UpdateMobile } from "components";
 import { getLocaleLabels, getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import Label from "egov-ui-kit/utils/translationNode";
-import React, { Component } from "react";
-import OldValueLabelContainer from "../../../../../common/common/OldValueLabelContainer";
 import "./index.css";
-
+import OldValueLabelContainer from "../../../../../common/common/OldValueLabelContainer";
 class PropertyInfoCard extends Component {
   render() {
     const {
@@ -12,13 +11,13 @@ class PropertyInfoCard extends Component {
       header,
       editIcon,
       backgroundColor = "rgb(242, 242, 242)",
+      items2 = [],
       items = [],
       subSection = [],
       hideSubsectionLabel = false,
       additionalKey = {},
       showEditNumber = false,
     } = this.props;
-
     const isModify = getQueryArg(window.location.href, "mode") == "WORKFLOWEDIT";
     return (
       <div>
@@ -33,7 +32,7 @@ class PropertyInfoCard extends Component {
                     <div className="rainmaker-displayInline" style={{ alignItems: "center", marginLeft: "13px", marginTop: 20 }}>
                       {header && (
                         <Label
-                          labelStyle={{ letterSpacing: "0.67px", color: "rgba(0, 0, 0, 0.87)", fontWeight: "400", lineHeight: "19px" }}
+                          labelStyle={{ letterSpacing: "0.67px", color: "rgba(0, 0, 0, 0.87)", fontWeight: "400", lineHeight: "0px" }}
                           label={header}
                           fontSize="18px"
                         />
@@ -41,12 +40,11 @@ class PropertyInfoCard extends Component {
                       {{ editIcon } && <span style={{ position: "absolute", right: "25px" }}>{editIcon}</span>}
                     </div>
                   )}
-
                   {items.map((item) => {
                     if (item) {
                       return (
                         <div>
-                          <div className="col-sm-3 col-xs-12" style={{ marginTop: 5 }}>
+                          <div className="col-sm-3 col-xs-12" style={{ marginBottom: 10, marginTop: 5 }}>
                             <div className="col-sm-12 col-xs-12" style={{ padding: "5px 0px 0px 0px" }}>
                               <Label
                                 labelStyle={{ letterSpacing: "0.67px", color: "rgba(0, 0, 0, 0.54)", fontWeight: "400", lineHeight: "1.375em" }}
@@ -60,28 +58,34 @@ class PropertyInfoCard extends Component {
                                 label={item.value ? item.value : "NA"}
                                 fontSize="16px"
                               />
-                              {showEditNumber &&
-                                additionalKey &&
-                                additionalKey.key &&
-                                (additionalKey.key == item.key || additionalKey.key1 == item.key) && (
-                                  <div style={{ padding: "5px 0px 0px 0px" }}>
-                                    <UpdateMobile
-                                      number={item.value}
-                                      type={"UPDATE"}
-                                      isAlternate={additionalKey.key1 == item.key}
-                                      {...additionalKey}
-                                    ></UpdateMobile>
-                                  </div>
-                                )}
-                              {showEditNumber && additionalKey && (additionalKey.key2 == item.key || additionalKey.key3 == item.key) && (
-                                <div style={{ padding: "5px 0px 0px 0px" }}>
-                                  <div style={{ margin: "2px", height: "25px" }}> </div>
-                                </div>
-                              )}
                             </div>
+                            {item.showEditButton && (
+                              <div className="col-sm-12 col-xs-12" style={{ padding: "5px 0px 0px 0px" }}>
+                                <button
+                                  style={{
+                                    backgroundColor: "transparent",
+                                    border: "none",
+                                    color: "#fe7a51",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                    fontSize: "14px",
+                                    textDecoration: "underline",
+                                  }}
+                                  onClick={item.onEdit}
+                                  type="button"
+                                >
+                                  EDIT
+                                </button>
+                              </div>
+                            )}
                             {isModify && (
                               <div className="col-sm-12 col-xs-12" style={{ padding: "5px 0px 0px 0px" }}>
                                 <OldValueLabelContainer value={item.value} jsonPath={item.jsonPath} oldValue={item.oldValue} />
+                              </div>
+                            )}
+                            {showEditNumber && additionalKey && additionalKey.key && additionalKey.key == item.key && (
+                              <div className="col-sm-12 col-xs-12" style={{ padding: "5px 0px 0px 0px" }}>
+                                <UpdateMobile number={item.value} type={"UPDATE"} {...additionalKey}></UpdateMobile>
                               </div>
                             )}
                           </div>
@@ -89,6 +93,36 @@ class PropertyInfoCard extends Component {
                       );
                     }
                   })}
+                  {items2 &&
+                    items2.map((item) => {
+                      if (item) {
+                        return (
+                          <div>
+                            <div className="col-sm-3 col-xs-12" style={{ marginBottom: 0.2, marginTop: 0.2 }}>
+                              <div className="col-sm-12 col-xs-12" style={{ padding: "5px 0px 0px 0px" }}>
+                                <Label
+                                  labelStyle={{ letterSpacing: "0.67px", color: "rgba(0, 0, 0, 0.54)", fontWeight: "400", lineHeight: "1.375em" }}
+                                  label={item.key ? item.key : "NA"}
+                                  fontSize="12px"
+                                />
+                              </div>
+                              <div className="col-sm-12 col-xs-12" style={{ padding: "5px 0px 0px 0px" }}>
+                                <Label
+                                  labelStyle={{
+                                    letterSpacing: "0.67px",
+                                    color: "rgba(0, 0, 0, 0.87)",
+                                    fontWeight: "400",
+                                    lineHeight: "19px",
+                                  }}
+                                  label={item.value ? item.value : "NA"}
+                                  fontSize="16px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
                 </div>
                 {subSection && (
                   <div>
@@ -103,6 +137,7 @@ class PropertyInfoCard extends Component {
                                 labelStyle={{
                                   letterSpacing: "0.67px",
                                   marginTop: 15,
+                                  marginBottom: 0,
                                   color: "rgba(0, 0, 0, 0.87)",
                                   fontWeight: "400",
                                   lineHeight: "19px",
@@ -128,5 +163,4 @@ class PropertyInfoCard extends Component {
     );
   }
 }
-
 export default PropertyInfoCard;

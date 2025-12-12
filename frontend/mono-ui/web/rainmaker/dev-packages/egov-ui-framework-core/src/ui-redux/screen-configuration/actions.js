@@ -106,7 +106,7 @@ export const submitForm = (
             query,
             queryObjectJsonPath
           );
- 
+          //preparing body data
           screenConfigResponse = await httpRequest(
             method,
             endpoint,
@@ -122,6 +122,7 @@ export const submitForm = (
       } catch (error) {
         dispatch(hideSpinner());
         // const { message } = error;
+        console.log(error);
         // throw new Error(error);
       }
     } else {
@@ -129,3 +130,10 @@ export const submitForm = (
     }
   };
 };
+
+export const setPaymentDetails=(paymentDetails)=>{
+  return {
+    type:screenActionTypes.SET_PAYMENT_DETAILS,
+    paymentDetails
+  }
+}

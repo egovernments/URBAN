@@ -24,6 +24,11 @@ module.exports = {
     extensions: [".js", ".jsx"]
   },
   devServer: {
-    port: 3001
+    port: 3001,
+    headers: {
+      'X-Frame-Options': 'sameorigin',
+      'Cache-Control': "no-cache, no-store, no-transform, must-revalidate, max-age=0",
+      
+  }
   }
 };

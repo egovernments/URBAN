@@ -47,7 +47,6 @@ export const gotoHomeFooter = () => {
   });
 };
 
-
 export const gotoInboxFooter = () => {
   return getCommonApplyFooter({
     gotoHome: {

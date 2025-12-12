@@ -7,10 +7,10 @@ import { getCurrentFinancialYear } from "../utils";
 import { footer } from "./applyResource/footer";
 import { nocDetails } from "./applyResource/nocDetails";
 import { propertyDetails } from "./applyResource/propertyDetails";
-import { onchangeOfTenant, propertyLocationDetails } from "./applyResource/propertyLocationDetails";
+import { propertyLocationDetails } from "./applyResource/propertyLocationDetails";
 import { applicantDetails } from "./applyResource/applicantDetails";
 import { documentDetails } from "./applyResource/documentDetails";
-import { getFileUrl, getFileUrlFromAPI, getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import {
   prepareFinalObject,
   handleScreenConfigurationFieldChange as handleField
@@ -31,7 +31,6 @@ import {
   setApplicationNumberBox
 } from "../../../../ui-utils/commons";
 import "./index.css";
-import cloneDeep from "lodash/cloneDeep";
 
 export const stepsData = [
   { labelName: "NOC Details", labelKey: "NOC_COMMON_NOC_DETAILS" },
@@ -98,8 +97,8 @@ export const formwizardSecondStep = {
     id: "apply_form2"
   },
   children: {
+    propertyLocationDetails,
     propertyDetails,
-    propertyLocationDetails
   },
   visible: false
 };
@@ -187,9 +186,10 @@ const getFirstListFromDotSeparated = list => {
       return item.code.split(".")[0];
     }
   });
-  list = [...new Set(list)].map(item => {
-    return { code: item };
-  });
+  list = [...new Set(list)]
+  .map(item => ({ code: item }));
+  list = list.filter(item => item.code);
+  //console.log("Hello List", list);
   return list;
 };
 
@@ -218,86 +218,37 @@ const setCardsIfMultipleBuildings = (state, dispatch) => {
     );
   }
 };
-const setDocsForEditFlow = async (state, dispatch) => {
-  let applicationDocuments = get(
-    state.screenConfiguration.preparedFinalObject,
-    "FireNOCs[0].fireNOCDetails.applicantDetails.additionalDetail.documents",
-    []
-  );
-  let buildingDocuments = get(
-    state.screenConfiguration.preparedFinalObject,
-    "FireNOCs[0].fireNOCDetails.buildings[0].applicationDocuments",
-    []
-  );
 
-  let otherDocuments = get(
-    state.screenConfiguration.preparedFinalObject,
-    "FireNOCs[0].fireNOCDetails.additionalDetail.documents",
-    []
-  );
-  applicationDocuments=[...applicationDocuments,...buildingDocuments, ...otherDocuments]
-  /* To change the order of application documents similar order of mdms order*/
-  const mdmsDocs = get(
-    state.screenConfiguration.preparedFinalObject,
-    "applyScreenMdmsData.FireNoc.Documents",
-    []
-  );
-  let orderedApplicationDocuments = mdmsDocs.map(mdmsDoc => {
-    let applicationDocument = []
-    applicationDocuments&&applicationDocuments.map(appDoc => {
-      if (appDoc.documentType == mdmsDoc.code) {
-        applicationDocument.push({ ...appDoc })
-      }
-      if (mdmsDoc.hasMultipleRows&&mdmsDoc.options.map(option=>option.code).includes(appDoc.documentType)) {
-        applicationDocument.push({ ...appDoc })
-      }  
-    })
-    return applicationDocument;
-  }
-  )
-  let newOrder=[]
-  orderedApplicationDocuments.map(orderedApplicationDocument=>{
-    newOrder.push(...orderedApplicationDocument)
-  })
-  applicationDocuments = [...newOrder];
-  dispatch(
-    prepareFinalObject("FireNocTemp[0].applicationDocuments", applicationDocuments)
-  );
-
-  let uploadedDocuments = {};
-  let uploadedDocumentObject = {};
-  let fileStoreIds =
-    applicationDocuments &&
-    applicationDocuments.map(item => item.fileStoreId).join(",");
-  const fileUrlPayload =
-    fileStoreIds && (await getFileUrlFromAPI(fileStoreIds));
-  applicationDocuments &&
-    applicationDocuments.forEach((item, index) => {
-      uploadedDocuments[index] =         {
-          fileName:
-            (fileUrlPayload &&
-              fileUrlPayload[item.fileStoreId] &&
-              decodeURIComponent(
-                getFileUrl(fileUrlPayload[item.fileStoreId])
-                  .split("?")[0]
-                  .split("/")
-                  .pop()
-                  .slice(13)
-              )) ||
-            `Document - ${index + 1}`,
-          fileStoreId: item.fileStoreId,
-          fileUrl: Object.values(fileUrlPayload)[index],
-          documentType: item.documentType,
-          tenantId: item.tenantId,
-          id: item.id
-        }
-        uploadedDocumentObject[item.documentType]=uploadedDocuments[index]
-    });
-    let edited =getQueryArg(window.location.href, "edited");
-    edited?{} : dispatch(
-      prepareFinalObject("documentsEditFlow", uploadedDocumentObject)
+ const getMdmsDataForDocs = async (state, dispatch) => {
+  let tenantId = "pb";
+  let mdmsBody = {
+    MdmsCriteria: {
+      tenantId: tenantId,
+      moduleDetails: [
+        { moduleName: "FireNoc", masterDetails: [{ name: "Documents" }] }
+      ]
+    }
+  };
+  try {
+    let payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
     );
+    dispatch(
+      prepareFinalObject(
+        "applyScreenMdmsData.FireNoc.Documents",
+        payload.MdmsRes.FireNoc.Documents
+      )
+    );
+    prepareDocumentsUploadData(state, dispatch);
+  } catch (e) {
+    console.log(e);
+  }
 };
+
 export const prepareEditFlow = async (
   state,
   dispatch,
@@ -309,61 +260,22 @@ export const prepareEditFlow = async (
     "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.buildings",
     []
   );
-  if (applicationNumber ) {
-    let edited =getQueryArg(window.location.href, "edited");
-    let isSummaryPage = getQueryArg(window.location.href, "isSummaryPage");
-   
-    let response =  edited || isSummaryPage ?{FireNOCs:get(state.screenConfiguration.preparedFinalObject,'FireNOCs')}:await getSearchResults([
+  if (applicationNumber) {
+    let response = await getSearchResults([
       {
         key: "tenantId",
-        value: tenantId
+        value: tenantId ? tenantId : getTenantId()
       },
       { key: "applicationNumber", value: applicationNumber }
     ]);
     // let response = sampleSingleSearch();
 
-    if (!edited && !isSummaryPage) {
-      response.FireNOCs[0].fireNOCDetails.buildings.reverse();
-    }
+    response = furnishNocResponse(response);
 
-    response = await furnishNocResponse(response);
-
-    let buildingTypes = get(response, "FireNOCs[0].fireNOCDetails.buildings", []);
-    let selectedValuesArray = [];
-    buildingTypes.map(bData => {
-      selectedValuesArray.push({
-        buildingSubUsageType: bData.usageType,
-        buildingUsageType: bData.usageType.split(".")[0]
-      })
-    })
-    dispatch(prepareFinalObject("DynamicMdms.firenoc.buildings.selectedValues", selectedValuesArray));
-  
     dispatch(prepareFinalObject("FireNOCs", get(response, "FireNOCs", [])));
-
-    if (!edited && !isSummaryPage) {
-      const additionalDocuments = cloneDeep(get(response, "FireNOCs[0].fireNOCDetails.additionalDetail.documents", [])); 
-      dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.additionalDetail.document", additionalDocuments));
-    }
-    
-
-    await onchangeOfTenant({value:tenantId},state,dispatch);
-    await setDocsForEditFlow(state,dispatch);
     if (applicationNumber) {
       setApplicationNumberBox(state, dispatch, applicationNumber);
     }
-
-    dispatch(
-      handleField(
-        "apply", "components.div.children.formwizardSecondStep.children.propertyLocationDetails.children.cardContent.children.propertyDetailsConatiner.children.propertyMohalla",
-        "props.disable",
-        true
-        ))
-        dispatch(
-          handleField(
-            "apply", "components.div.children.formwizardSecondStep.children.propertyLocationDetails.children.cardContent.children.propertyDetailsConatiner.children.propertyMohalla",
-            "disable",
-            true
-            ))
     // Set no of buildings radiobutton and eventually the cards
     let noOfBuildings =
       get(response, "FireNOCs[0].fireNOCDetails.noOfBuildings", "SINGLE") ===
@@ -404,24 +316,11 @@ const screenConfig = {
   uiFramework: "material-ui",
   name: "apply",
   beforeInitScreen: (action, state, dispatch) => {
-    dispatch(prepareFinalObject("FireNOCs[0].provisionFireNOCNumber", ""));
-    dispatch(prepareFinalObject("DYNAMIC_MDMS_Trigger", false));
-    let edited =getQueryArg(window.location.href, "edited");
-    let isSummaryPage = getQueryArg(window.location.href, "isSummaryPage");
-    if (!edited && !isSummaryPage) {
-      dispatch(prepareFinalObject("FireNOCs", []));
-    }
     const applicationNumber = getQueryArg(
       window.location.href,
       "applicationNumber"
     );
-    const tenantId = getQueryArg(window.location.href, "tenantId") || get(
-      state.screenConfiguration.preparedFinalObject,
-      "FireNOCs[0].fireNOCDetails.propertyDetails.address.city"
-    ) || getTenantId();
-
-
-
+    const tenantId = getQueryArg(window.location.href, "tenantId");
     const step = getQueryArg(window.location.href, "step");
 
     //Set Module Name
@@ -456,13 +355,14 @@ const screenConfig = {
           ownershipCategory
         )
       );
-
+      getMdmsDataForDocs(state, dispatch);
+      
       // Set Documents Data (TEMP)
       prepareDocumentsUploadData(state, dispatch);
     });
-
+    
     // Search in case of EDIT flow
-    prepareEditFlow(state, dispatch, applicationNumber, tenantId).then(response => {});
+    prepareEditFlow(state, dispatch, applicationNumber, tenantId);
 
     // // Set Property City
     // dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.propertyDetails.address.city", getTenantId()));
@@ -529,7 +429,7 @@ const screenConfig = {
     let nocType = get(
       state,
       "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.fireNOCType",
-      "NEW"
+      "PROVISIONAL"
     );
     set(
       state,

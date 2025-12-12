@@ -1,37 +1,39 @@
 import { propertyDetails, locationDetails, propertyOwnerDetail, connectionHolderDetails, connectionHolderSameAsOwnerDetails } from "egov-wns/ui-config/screens/specs/wns/applyResource/review-trade";
 import { connDetailsWater, connDetailsSewerage } from "egov-wns/ui-config/screens/specs/wns/applyResource/task-connectiondetails";
+import store from "egov-ui-framework/ui-redux/store";
 import { plumberDetails, roadDetails, additionDetailsWater, additionDetailsSewerage, activateDetailsMeter, activateDetailsNonMeter } from "egov-wns/ui-config/screens/specs/wns/applyResource/review-owner";
 import { getFromObject } from "../PTCommon/FormWizardUtils/formUtils";
 import { reviewModificationsEffectiveDate } from "egov-wns/ui-config/screens/specs/wns/applyResource/reviewModificationsEffective";
 import { generateKeyValue, generatePDF, getDocumentsCard, getMultiItems, getMultipleItemCard, generateKeyValueForModify } from "./generatePDF";
-import { getQueryArg, getTransformedLocalStorgaeLabels, getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
-
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
+let ulbGrade;
+export const SrchUlbGrade = (state) => {
+  
+   
+    let { stateInfoById } = state.common || [];
+    let hasLocalisation = false;
+    let defaultUrl = process.env.REACT_APP_NAME === "Citizen" ? "/user/register" : "/user/login";
+    let isOpenLink = window.location.pathname.includes("openlink") || window.location.pathname.includes("withoutAuth");
+    const cities = state.common.cities || [];
+    const tenantId =  getTenantId() || process.env.REACT_APP_DEFAULT_TENANT_ID;
+    const userTenant = cities && cities.filter((item) => item.code === tenantId);
+    // const ulbGrade = userTenant && get(userTenant[0], "city.ulbGrade");
+   // const ulbGrade = userTenant[0].city.pwssbGrade;
+    ulbGrade= userTenant[0].city.pwssbGrade;
+    const ulbName = userTenant[0].city.name ;
+      
+  };
+ 
 export const generateWSAcknowledgement = (preparedFinalObject, fileName = "print", service, connType) => {
+    
+
     propertyDetails.reviewPropertyType.localiseValue = true;
     propertyDetails.reviewPropertyType.localiseValue = true;
     propertyDetails.reviewPropertyUsageType.localiseValue = true;
     propertyDetails.reviewPropertySubUsageType.localiseValue = true;
     roadDetails.reviewRoadType.localiseValue = true;
-
-    connDetailsWater.taskApplicationType.localiseValue = true;
-    connDetailsSewerage.taskApplicationType.localiseValue = true;
-
-    plumberDetails.reviewPlumberProvidedBy.localiseValue = true;
-
-    additionDetailsWater.reviewConnectionType.localiseValue = true;
-    additionDetailsWater.reviewWaterSubSource.localiseValue = true;
-    additionDetailsWater.reviewWaterSource.localiseValue = true;
-    additionDetailsSewerage.reviewConnectionType.localiseValue = true;
-
-    Object.keys(propertyOwnerDetail).forEach(owner => {
-        if(owner == "gender" || owner == "relationship" || owner == "specialApplicantCategory") propertyOwnerDetail[owner].localiseValue = true
-    });
-
-    Object.keys(connectionHolderDetails).forEach(owner => {
-        if(owner == "gender" || owner == "relationship" || owner == "specialApplicantCategory") propertyOwnerDetail[owner].localiseValue = true
-    });
-    
-
+    propertyOwnerDetail.gender.localiseValue = true;
     let propDetail = generateKeyValue(preparedFinalObject, propertyDetails);
     let propertyDetail = propDetail.map(cur => {
         if (cur.key === "Rainwater harvesting Facility") {
@@ -65,19 +67,19 @@ export const generateWSAcknowledgement = (preparedFinalObject, fileName = "print
 
     let UlbLogoForPdf = getFromObject(preparedFinalObject, 'UlbLogoForPdf', '');
     let WaterConnection = getFromObject(preparedFinalObject, 'WaterConnection[0]', {});
-    let isMode = (WaterConnection.applicationType !== null) ? WaterConnection.applicationType.split("_")[0] : "";
+    let isMode = (WaterConnection.applicationType !== null) ? WaterConnection.applicationType.split("_") : "";
     let reviewModificationsEffective = [];
     let plumberDetail = [];
     let roadDetail = [];
     let roadDetailInfo = [];
-    if (isMode === "MODIFY") {
+    if (isMode[0] === "MODIFY") {
         reviewModificationsEffective = generateKeyValueForModify(preparedFinalObject, reviewModificationsEffectiveDate);
     } else {
         plumberDetail = generateKeyValue(preparedFinalObject, plumberDetails);
         if (WaterConnection.roadCuttingInfo && WaterConnection.roadCuttingInfo.length > 1) {
             roadDetailInfo = getMultiItems(preparedFinalObject, roadDetails, 'WaterConnection[0].roadCuttingInfo')
             roadDetail = getMultipleItemCard(roadDetailInfo, 'WS_ROAD_CUTTING_CHARGE_DETAILS');
-        } else {
+        }else {
             roadDetail = generateKeyValue(preparedFinalObject, roadDetails);
         }
     }
@@ -105,7 +107,9 @@ export const generateWSAcknowledgement = (preparedFinalObject, fileName = "print
     }
     const documentsUploadRedux = getFromObject(preparedFinalObject, 'DocumentsData', []);
     const documentCard = getDocumentsCard(documentsUploadRedux);
-    const tenantId = getQueryArg(window.location.href, "tenantId");
+    //const tenantId = getQueryArg(window.location.href, "tenantId");
+    const tenantId = getTenantId();
+    
 
 
     let pdfData = {

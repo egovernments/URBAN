@@ -347,18 +347,18 @@ class BpaDocumentList extends Component {
           bpaDetails.documents.map(doc => {
             if (doc && docs && doc.fileStoreId === docs.fileStoreId) {
               if (doc.wfState === "SEND_TO_CITIZEN") {
-                docs.createdBy = "BPA_ARCHITECT"
+                docs.createdBy = "BPA Architect"
               }
               else if (doc.wfState === "DOC_VERIFICATION_PENDING") {
-                docs.createdBy = "BPA_DOC_VERIFIER"
+                docs.createdBy = "BPA Document Verifier"
               }
               else if (doc.wfState === "FIELDINSPECTION_PENDING") {
-                docs.createdBy = "BPA_FIELD_INSPECTOR"
+                docs.createdBy = "BPA Field Inspector"
               }
               else if (doc.wfState === "NOC_VERIFICATION_PENDING") {
-                docs.createdBy = "BPA_NOC_VERIFIER"
+                docs.createdBy = "BPA Noc Verifier"
               } else {
-                docs.createdBy = "BPA_ARCHITECT"
+                docs.createdBy = "BPA Architect"
               }
               data.push(docs);
             }

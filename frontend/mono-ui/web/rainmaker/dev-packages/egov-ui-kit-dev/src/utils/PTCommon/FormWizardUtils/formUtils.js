@@ -1,11 +1,10 @@
 import commonConfig from "config/common.js";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
-import { httpRequest } from "egov-ui-kit/utils/api";
-import { MDMS } from "egov-ui-kit/utils/endPoints";
-import { localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
 import cloneDeep from "lodash/cloneDeep";
-import get from "lodash/get";
 import { assessProperty, createProperty, routeTo } from "./formActionUtils";
+import { localStorageSet } from "egov-ui-kit/utils/localStorageUtils";
+import get from "lodash/get";
+import { httpRequest,httpRequestForAssessmentCancellation } from "egov-ui-kit/utils/api";
 
 const extractFromString = (str, index) => {
   if (!str) {
@@ -116,7 +115,7 @@ export const convertToOldPTObject = (newObject) => {
               otpReference: null,
               tenantId: "",
               isPrimaryOwner: null,
-              ownerShipPercentage: null,
+              ownerShipPercentage: 0,
               ownerType: "",
               institutionId: null,
               documents: [],
@@ -158,7 +157,7 @@ export const convertToOldPTObject = (newObject) => {
     unit.floorNo = unit.floorNo || unit.floorNo === 0 ? unit.floorNo.toString() : unit.floorNo
     return { ...unit, ...getUsageCategory(unit.usageCategory) }
   });
-  propertyDetails.units = propertyDetails.units && Array.isArray(propertyDetails.units) && propertyDetails.units.filter(unit => unit.active);
+  propertyDetails.units = propertyDetails.units&& Array.isArray(propertyDetails.units)&&propertyDetails.units.filter(unit=>unit.active);
   propertyDetails.documents = newProperty.documents;
   propertyDetails.additionalDetails = newProperty.additionalDetails;
   propertyDetails.financialYear = null;
@@ -176,13 +175,11 @@ export const convertToOldPTObject = (newObject) => {
   propertyDetails.adhocPenaltyReason = null;
   propertyDetails.owners = newProperty.owners;
   propertyDetails.owners = propertyDetails.owners.filter((owner) => owner.status == 'ACTIVE')
-  propertyDetails.owners = propertyDetails.owners && Array.isArray(propertyDetails.owners) && propertyDetails.owners.sort((owner1, owner2) => owner1.name.localeCompare(owner2.name));
+  propertyDetails.owners= propertyDetails.owners&&Array.isArray( propertyDetails.owners)&& propertyDetails.owners.sort((owner1,owner2)=>owner1.name.localeCompare(owner2.name));
   propertyDetails.auditDetails = newProperty.auditDetails;
   propertyDetails.calculation = null;
   propertyDetails.channel = newProperty.channel;
-  let floorArray = {};
   propertyDetails.units = propertyDetails.units && propertyDetails.units.map(unit => {
-    floorArray[unit.floorNo] = unit.floorNo;
     // unit.usageCategory;
     // propertyDetails.propertyType = extractFromString(newProperty.propertyType, 0);
     // propertyDetails.propertySubType = extractFromString(newProperty.propertyType, 1);
@@ -193,28 +190,48 @@ export const convertToOldPTObject = (newObject) => {
     // unit.constructionDetail = {
     //   builtUpArea: unit.unitArea,
     // };
-    unit.unitArea = unit.constructionDetail.builtUpArea;
+    let value = unit.constructionDetail.builtUpArea;;
+    value = value * 9.0;
+    value = Math.round(value * 100) / 100;
+    unit.unitArea =Math.round( value);
+
+    // unit.unitArea = unit.constructionDetail.builtUpArea;
+    // console.log("===================", unit.unitArea);
     return { ...unit }
   })
   localStorageSet("previousFloorNo", newProperty.noOfFloors)
   property["propertyDetails"] = [propertyDetails];
-  if (newProperty.propertyType.includes("SHAREDPROPERTY")) {
-    newProperty.noOfFloors = Object.keys(floorArray).length;
-    newProperty.landArea = newProperty.superBuiltUpArea;
-  }
-
   Properties[0] = { ...newProperty, ...property };
   return Properties;
 };
 
 export const getPropertyLink = (propertyId, tenantId, purpose, financialYear, assessmentNumber, isCompletePayment) => {
   if (financialYear == -1) {
-    return `/property-tax/assessment-form?assessmentId=${assessmentNumber}&purpose=${purpose}&propertyId=${propertyId}&tenantId=${tenantId}`;
+    return `/property-tax/assessment-form?assessmentId=${assessmentNumber}&purpose=${purpose}&propertyId=${
+      propertyId}&tenantId=${tenantId}`;
   }
   if (isCompletePayment) {
-    return `/property-tax/assessment-form?FY=${financialYear}&assessmentId=${assessmentNumber}&purpose=${purpose}&propertyId=${propertyId}&tenantId=${tenantId}&isCompletePayment=true`;
+    return `/property-tax/assessment-form?FY=${financialYear}&assessmentId=${assessmentNumber}&purpose=${purpose}&propertyId=${
+      propertyId}&tenantId=${tenantId}&isCompletePayment=true`;
   }
-  return `/property-tax/assessment-form?FY=${financialYear}&assessmentId=${assessmentNumber}&purpose=${purpose}&propertyId=${propertyId}&tenantId=${tenantId}`;
+  return `/property-tax/assessment-form?FY=${financialYear}&assessmentId=${assessmentNumber}&purpose=${purpose}&propertyId=${
+    propertyId}&tenantId=${tenantId}`;
+}
+export const cancelAssessment = async (assessment) => {
+  // const FETCHTRADEDETAILS = {
+  //   GET: {
+  //     URL: "/property-services/assessment/_cancel",
+  //     ACTION: "_get",
+  //   },
+  // };
+  let ReceiptBody = {
+    "Assessment": assessment
+  };
+  const response = await httpRequestForAssessmentCancellation("/property-services/assessment/_cancel", "_cancel",[],ReceiptBody,[],{});
+  if( response && response.Assessments && response.Assessments.length>=1 && response.Assessments[0].status=="CANCELLED")
+  alert("Assessment has been successfully cancelled")
+  else
+  alert(response);
 }
 
 export const PROPERTY_FORM_PURPOSE = {
@@ -222,8 +239,10 @@ export const PROPERTY_FORM_PURPOSE = {
   ASSESS: 'assess',
   CREATE: 'create',
   UPDATE: 'update',
+  CANCEL: 'cancel',
   SENDFOREDIT: 'sendforedit',
-  DEFAULT: 'create'
+  DEFAULT: 'create',
+  STATUS:'status'
 }
 
 export const formWizardConstants = {
@@ -257,6 +276,16 @@ export const formWizardConstants = {
     canEditOwner: false,
     isEstimateDetails: false
   },
+  [PROPERTY_FORM_PURPOSE.STATUS]: {
+    header: 'PT_UPDATE_PROPERTY',
+    parentButton: 'PT_UPDATE',
+    isSubHeader: true,
+    isFinancialYear: false,
+    buttonLabel: 'PT_UPDATE_PROPERTY_BUTTON',
+    isEditButton: true,
+    canEditOwner: false,
+    isEstimateDetails: false
+  },
   [PROPERTY_FORM_PURPOSE.SENDFOREDIT]: {
     header: 'PT_CREATE_PROPERTY',
     parentButton: 'PT_UPDATE',
@@ -276,7 +305,17 @@ export const formWizardConstants = {
     isEditButton: true,
     canEditOwner: true,
     isEstimateDetails: false
-  }
+  },
+  [PROPERTY_FORM_PURPOSE.CANCEL]: {
+    header: 'PT_CANCEL_PROPERTY',
+    parentButton: 'PT_CANCEL',
+    isSubHeader: true,
+    isFinancialYear: false,
+    buttonLabel: 'PT_CANCEL_ASSESS_PROPERTY_BUTTON',
+    isEditButton: true,
+    canEditOwner: false,
+    isEstimateDetails: false
+  },
 }
 
 export const routeToCommonPay = (propertyId, tenantId, businessService = 'PT') => {
@@ -296,8 +335,11 @@ export const propertySubmitAction = (Properties, action, props, isModify, prepar
     case PROPERTY_FORM_PURPOSE.UPDATE:
       createProperty(Properties, '_update', props, isModify, preparedFinalObject);
       break;
+    case PROPERTY_FORM_PURPOSE.STATUS:
+      createProperty(Properties, '_update', props, isModify, preparedFinalObject);
+      break;
     case PROPERTY_FORM_PURPOSE.CREATE:
-      createProperty(Properties, '_create', props, isModify, preparedFinalObject);
+      createProperty(Properties, '_create', props);
       break;
     case PROPERTY_FORM_PURPOSE.SENDFOREDIT:
       createProperty(Properties, '_create', props);
@@ -362,68 +404,7 @@ export const getFormattedEstimate = (estimateResponse = [{}], adhocPenaltyAmt = 
 }
 
 
-export const getFromObject = (object, path, defaultValue) => {
-  var result = object == null ? null : get(object, path, defaultValue);
+export const getFromObject= (object, path, defaultValue)=> {
+  var result = object == null ? null : get(object, path,defaultValue);
   return result === null ? defaultValue : result;
 }
-
-
-
-
-export const getPTApplicationTypes = async (prepareFinalObject) => {
-  try {
-    let requestBody = {
-      MdmsCriteria: {
-        tenantId: commonConfig.tenantId,
-        moduleDetails: [
-          {
-            moduleName: "PropertyTax",
-            masterDetails: [
-              {
-                name: "PTApplication"
-              }
-            ]
-          }
-        ]
-      }
-    };
-    const payload = await httpRequest(
-      MDMS.GET.URL,
-      MDMS.GET.ACTION,
-      [],
-      requestBody
-    );
-    let ptApplication = get(payload, 'MdmsRes.PropertyTax.PTApplication', [{
-      "creationReason": "MUTATION",
-      "businessService": "PT.MUTATION",
-      "action": "OPEN",
-      "editAction": "REOPEN"
-    },
-    {
-      "creationReason": "CREATE",
-      "businessService": "PT.CREATE",
-      "action": "OPEN",
-      "editAction": "REOPEN"
-    }, {
-      "creationReason": "UPDATE",
-      "businessService": "PT.UPDATE",
-      "action": "OPEN",
-      "editAction": "REOPEN"
-    }, {
-      "creationReason": "LEGACY_ENTRY",
-      "businessService": "PT.LEGACY",
-      "action": "OPEN",
-      "editAction": "REOPEN"
-    }
-    ]);
-    let ptWorkflow = {};
-
-    ptApplication.map(application => {
-      ptWorkflow[application.creationReason] = application;
-    })
-    prepareFinalObject("ptApplication", ptWorkflow)
-    return payload;
-  } catch (e) {
-    console.error(JSON.stringify(e))
-  }
-};

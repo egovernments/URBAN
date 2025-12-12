@@ -6,15 +6,13 @@ import get from "lodash/get";
 
 class EstimateCardContainer extends Component {
   render() {
-    return <FeesEstimateCard estimate={this.props.estimate} searchBillDetails={this.props.searchBillDetails} />;
+    return <FeesEstimateCard estimate={this.props.estimate} />;
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { screenConfiguration } = state;
   const fees = get( state, "screenConfiguration.preparedFinalObject.AmendmentTemp[0].estimateCardData", {});
-  const searchBillDetails = get( state, "screenConfiguration.preparedFinalObject.searchBillDetails-bill", {});
-  
   const amountType = get (state.screenConfiguration.preparedFinalObject, "BILL.AMOUNTTYPE", "");
   const estimate = {
     fees,
@@ -23,7 +21,7 @@ const mapStateToProps = (state, ownProps) => {
     ],
     amountType
   };
-  return { estimate ,searchBillDetails};
+  return { estimate };
 };
 
 export default connect(

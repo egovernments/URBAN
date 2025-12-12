@@ -11,7 +11,7 @@ const UploadSingleFile = ({
   inputProps,
   buttonLabel,
   id,
-  disabled = false
+  disabled=false
 }) => {
   return (
     <div>

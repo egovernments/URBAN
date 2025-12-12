@@ -6,10 +6,12 @@ import Label from "egov-ui-kit/utils/translationNode";
 import ServicesNearby from "./components/ServicesNearby";
 import { Notifications, Screen } from "modules/common";
 import LogoutDialog from "egov-ui-kit/common/common/Header/components/LogoutDialog";
-import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import { getUserInfo, localStorageSet, localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
 import { toggleSpinner } from "egov-ui-kit/redux/common/actions";
 import { setRoute } from "egov-ui-kit/redux/app/actions";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import WelcomeMessage from "egov-ui-kit/common/common/WelcomeMessage";
+import  wc_banner  from "egov-ui-kit/assets/images/wc_banner.png";
 import get from "lodash/get";
 import "./index.css";
 
@@ -17,22 +19,32 @@ class CitizenDashboard extends Component {
   state = {
     whatsNewEvents: [],
     openDialog: false,
+    openWCDialog : false,
+    pCity : ''
   };
-  constructor(props){
-    super(props);
-    /* RAIN-7250 Always Navigate to new UI Incase user clicks on Home  */
-    window.location.href="/digit-ui/citizen";
-  }
+
   componentWillReceiveProps = (nextProps) => {
     const { cityUpdateDialog } = nextProps;
+    let { whatShappTenants = [] } = this.props;
+    let { openWCDialog } = this.state;
     const permanentCity = get(nextProps, "userInfo.permanentCity");
     if (!permanentCity) {
-      if (get(this.props, "userInfo.permanentCity") !== get(nextProps, "userInfo.permanentCity")) {
+      let isCheck = get(this.props, "userInfo.permanentCity") !== get(nextProps, "userInfo.permanentCity")
+        if (isCheck) {
         if (cityUpdateDialog) {
           this.setState({
             openDialog: true,
           });
         }
+      }
+    }
+    if (permanentCity) {
+      let allCity = whatShappTenants['PGR.WHATSAPP'] && whatShappTenants['PGR.WHATSAPP'].tenants;
+      if(allCity && !openWCDialog) {
+        const isCityExists = allCity.find(o => o.code === permanentCity);
+        const whatsAppImage = localStorageGet("WhatsAppImage");
+        if(isCityExists) this.setState({ openWCDialog : whatsAppImage, pCity: isCityExists.name });
+        localStorageSet("WhatsAppImage", false);
       }
     }
   };
@@ -41,6 +53,10 @@ class CitizenDashboard extends Component {
     const { prepareFinalObject } = this.props;
     prepareFinalObject("cityUpdateDialog", false);
     this.setState({ ...this.state, openDialog: false });
+  };
+
+  handleWCClose = () => {
+    this.setState({ ...this.state, openWCDialog: false });
   };
 
   redirectToEditProfile = () => {
@@ -60,10 +76,13 @@ class CitizenDashboard extends Component {
 
   render() {
     const { history, loading, whatsNewEvents, setRoute } = this.props;
-    const { openDialog } = this.state;
+    const { openDialog, openWCDialog, pCity } = this.state;
     return (
       <Screen loading={loading}>
         {/* <SearchService history={history} /> */}
+        {/* <marquee style={{ color: "red", fontStyle: "italic", fontSize: "20px", margin: "20px 0" }}>
+          Planned Downtime Notice: The mSeva Punjab application will be unavailable from 15th August 2025 to 18th August 2025 due to scheduled maintenance. We regret the inconvenience and appreciate your understanding.
+        </marquee> */}
         <div className="citizen-dashboard-cont">
           {whatsNewEvents && (
             <Label
@@ -76,10 +95,10 @@ class CitizenDashboard extends Component {
           <ServiceList history={history} setRoute={setRoute} />
           {whatsNewEvents && (
             <Label
-              label="DASHBOARD_LOCAL_INFORMATION_LABEL"
-              fontSize={16}
-              color="rgba(0, 0, 0, 0.87"
-              containerStyle={{ paddingTop: 16, paddingBottom: 8 }}
+              // label="DASHBOARD_LOCAL_INFORMATION_LABEL"
+              // fontSize={16}
+              // color="rgba(0, 0, 0, 0.87"
+              // containerStyle={{ paddingTop: 16, paddingBottom: 8 }}
             />
           )}
           {whatsNewEvents && <ServicesNearby history={history} onServiceClick={this.onServiceClick} />}
@@ -102,6 +121,12 @@ class CitizenDashboard extends Component {
           title={"Alert"}
           body={"Please update your City"}
         />
+        <WelcomeMessage
+          WCPopupOpen={openWCDialog}
+          WCPopupClose={this.handleWCClose}
+          title={`mSeva WhatsApp Chatbot is now Live in ${pCity}`}
+          body={wc_banner}
+        />
       </Screen>
     );
   }
@@ -112,13 +137,14 @@ const mapStateToProps = (state) => {
   const cityUpdateDialog = get(state.screenConfiguration, "preparedFinalObject.cityUpdateDialog");
   const userInfo = get(state.auth, "userInfo");
   const loading = get(state.app, "notificationObj.loading");
+  const whatShappTenants = get(state.common, "citiesByModule");
   let filteredNotifications =
     notifications &&
     Object.values(notifications).filter((item) => {
       return item.type === "BROADCAST" || (item.type === "SYSTEMGENERATED" && item.actions);
     });
   let whatsNewEvents = filteredNotifications && filteredNotifications.slice(0, Math.min(3, filteredNotifications.length));
-  return { notifications, userInfo, loading, whatsNewEvents, cityUpdateDialog };
+  return { notifications, userInfo, loading, whatsNewEvents, cityUpdateDialog, whatShappTenants };
 };
 
 const mapDispatchToProps = (dispatch) => {

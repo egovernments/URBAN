@@ -11,198 +11,10 @@ import {
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getTodaysDateInYMD, getMaxDateInYMDForAbove18 } from "egov-ui-framework/ui-utils/commons";
-import { getDetailsForOwner } from "../../utils";
+import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
+import { getDetailsForOwner, updateOwnerShipEdit } from "../../utils";
 import get from "lodash/get";
-import set from "lodash/set";
 import "./index.css";
-import { getObjectValues } from 'egov-ui-framework/ui-utils/commons';
-
-export const updateOwnerShipEdit = async ( state, dispatch ) => {
-  let tradeSubOwnershipCat = get(
-    state,
-    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipType",''
-  );
-  
-  let tradeOwnershipCat = get(
-    state,
-    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipMajorType",
-    tradeSubOwnershipCat.split('.')[0]
-  );
-  if (tradeSubOwnershipCat) {
-    tradeOwnershipCat = tradeSubOwnershipCat.split(".")[0];
-  } else {
-    tradeOwnershipCat = get(
-      state.screenConfiguration.preparedFinalObject,
-      "DynamicMdms.common-masters.tradeOwner.ownershipTransformed[0].code",
-      ""
-    );
-    tradeSubOwnershipCat = get(
-      state.screenConfiguration.preparedFinalObject,
-      `DynamicMdms.common-masters.tradeOwner.ownershipTransformed.${tradeOwnershipCat}[0].code`,
-      ""
-    );
-    set(
-      state.screenConfiguration.preparedFinalObject,
-      "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
-      tradeSubOwnershipCat
-    );
-    
-      dispatch(
-        prepareFinalObject(
-          "Licenses[0].tradeLicenseDetail.subOwnerShipCategory",
-          tradeSubOwnershipCat
-        )
-      );
-  }
-
-  set(
-    state,
-    "screenConfiguration.preparedFinalObject.LicensesTemp[0].tradeLicenseDetail.ownerShipCategory",
-    tradeOwnershipCat
-  );
-  set(
-    state,
-    "screenConfiguration.preparedFinalObject.DynamicMdms.common-masters.tradeOwner.selectedValues[0].ownership",
-    tradeOwnershipCat
-  );
-  try {
-
-      dispatch(
-        prepareFinalObject(
-          "DynamicMdms.common-masters.tradeOwner.selectedValues[0].ownership",
-          tradeOwnershipCat
-        )
-      );
-
-    dispatch(prepareFinalObject( `DynamicMdms.common-masters.tradeOwner.subOwnershipTransformed.allDropdown[0]`, getObjectValues(get( state.screenConfiguration.preparedFinalObject, `DynamicMdms.common-masters.tradeOwner.tradeOwnerTransformed.${tradeOwnershipCat}`, [])) ));
-
-    dispatch(prepareFinalObject( `DynamicMdms.common-masters.tradeOwner.selectedValues[0].subOwnership`, tradeSubOwnershipCat ));
-    //handlefield for Type of OwnerShip while setting drop down values as beforeFieldChange won't be callled
-    if (tradeOwnershipCat === "INDIVIDUAL") {
-      dispatch(
-        handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard",
-          "visible",
-          true
-        )
-      );
-      dispatch(
-        handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.ownerInfoInstitutional",
-          "visible",
-          false
-        )
-      );
-    } else {
-      dispatch(
-        handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard",
-          "visible",
-          false
-        )
-      );
-      dispatch(
-        handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.ownerInfoInstitutional",
-          "visible",
-          true
-        )
-      );
-    }
-
-    //handlefield for type of sub ownership while setting drop down values as beforeFieldChange won't be callled
-
-    if (tradeSubOwnershipCat === "INDIVIDUAL.SINGLEOWNER") {
-      const ownerInfoCards = get(
-        state.screenConfiguration.screenConfig.apply, //hardcoded to apply screen
-        "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard.props.items"
-      );
-      dispatch(
-        handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard",
-          "props.hasAddItem",
-          false
-        )
-      );
-      if (ownerInfoCards && ownerInfoCards.length > 1) {
-        const singleCard = ownerInfoCards.slice(0, 1); //get the first element if multiple cards present
-
-        dispatch(
-          handleField(
-            "apply",
-            "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard",
-            "props.items",
-            singleCard
-          )
-        );
-        dispatch(
-          prepareFinalObject(
-            "Licenses[0].tradeLicenseDetail.owners",
-            get(
-              state.screenConfiguration.preparedFinalObject,
-              "Licenses[0].tradeLicenseDetail.owners"
-            ).slice(0, 1)
-          )
-        );
-      }
-    }
-
-    if (tradeSubOwnershipCat === "INDIVIDUAL.MULTIPLEOWNERS") {
-      dispatch(
-        handleField(
-          "apply",
-          "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.OwnerInfoCard",
-          "props.hasAddItem",
-          true
-        )
-      );
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-export const triggerUpdateByKey = (state, keyIndex, value, dispatch) => {
-  if(dispatch == "set"){
-    set(state, `screenConfiguration.preparedFinalObject.DynamicMdms.common-masters.applicantDetails.selectedValues[${keyIndex}]`, value);
-  } else {
-    dispatch(prepareFinalObject( `DynamicMdms.common-masters.applicantDetails.${keyIndex}`, value ));
-  }
-}
-export const updateUsageType = async ( state, dispatch ) => {  
-  let subUsageType = get(
-    state,
-    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipType",''
-  )||'';
-  
-  let usageType = get(
-    state,
-    "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipMajorType",
-    subUsageType.split('.')[0]
-  );
-  let i = 0;
-  let formObj = {
-    applicantType: usageType, applicantSubType: subUsageType
-  }
-  triggerUpdateByKey(state, i, formObj, 'set');
-  
-  triggerUpdateByKey(state, `applicantSubTypeTransformed.allDropdown[${i}]`, getObjectValues(get( state, `screenConfiguration.preparedFinalObject.DynamicMdms.common-masters.applicantDetails.applicantDetailsTransformed.${usageType}`, [])) , dispatch);
-
-  triggerUpdateByKey(state, `selectedValues[${i}]`, formObj , dispatch);
-
-
-  if(subUsageType){
-    beforeFieldChangeApplicantSubType({dispatch, state, value: subUsageType}) ;
-
-  }
-}
-
 
 const showComponent = (dispatch, componentJsonPath, display) => {
   let displayProps = display ? {} : { display: "none" };
@@ -361,8 +173,7 @@ const commonApplicantInformation = () => {
         props:{
           className:"applicant-details-error",
           inputProps: {
-            // max: getTodaysDateInYMD()
-            max: getMaxDateInYMDForAbove18()
+            max: getTodaysDateInYMD()
           }
         }
       }),
@@ -431,12 +242,12 @@ const commonApplicantInformation = () => {
             {
               labelName: "Father",
               labelKey: "NOC_APPLICANT_RELATIONSHIP_FATHER_RADIOBUTTON",
-              value: "FATHER"
+              value: "Father"
             },
             {
               label: "Husband",
               labelKey: "NOC_APPLICANT_RELATIONSHIP_HUSBAND_RADIOBUTTON",
-              value: "HUSBAND"
+              value: "Husband"
             }
           ],
           jsonPath:
@@ -490,39 +301,38 @@ const commonApplicantInformation = () => {
           className:"applicant-details-error"
         }
       }),
-      specialApplicantCategory: {
-          uiFramework: "custom-containers-local",
-          moduleName: "egov-firenoc",
-          componentPath: "AutosuggestContainer",
-          props: {
-            label: {
-              labelName: "Special Applicant Category",
-              labelKey: "NOC_SPECIAL_APPLICANT_CATEGORY_LABEL"
-            },
-            placeholder: {
-              labelName: "Select Special Applicant Category",
-              labelKey: "NOC_SPECIAL_APPLICANT_CATEGORY_PLACEHOLDER"
-            },
-            localePrefix: {
-              moduleName: "common-masters",
-              masterName: "OwnerType"
-            },
-            sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
-            jsonPath: "FireNOCs[0].fireNOCDetails.applicantDetails.owners[0].ownerType",
-            required: true,
-            isClearable: true,
-            labelsFromLocalisation: true,
-            className: "autocomplete-dropdown",
-            defaultSort:false
-          },
-          required: true,
-        jsonPath: "FireNOCs[0].fireNOCDetails.applicantDetails.owners[0].ownerType",
-        gridDefination: {
-          xs: 12,
-          sm: 12,
-          md: 6
-        }
-      }
+      // specialApplicantCategory: {
+      //     uiFramework: "custom-containers-local",
+      //     moduleName: "egov-firenoc",
+      //     componentPath: "AutosuggestContainer",
+      //     props: {
+      //       label: {
+      //         labelName: "Special Applicant Category",
+      //         labelKey: "NOC_SPECIAL_APPLICANT_CATEGORY_LABEL"
+      //       },
+      //       placeholder: {
+      //         labelName: "Select Special Applicant Category",
+      //         labelKey: "NOC_SPECIAL_APPLICANT_CATEGORY_PLACEHOLDER"
+      //       },
+      //       localePrefix: {
+      //         moduleName: "common-masters",
+      //         masterName: "OwnerType"
+      //       },
+      //       sourceJsonPath: "applyScreenMdmsData.common-masters.OwnerType",
+      //       jsonPath: "FireNOCs[0].fireNOCDetails.applicantDetails.owners[0].ownerType",
+      //       // required: true,
+      //       isClearable: true,
+      //       labelsFromLocalisation: true,
+      //       className: "autocomplete-dropdown",
+      //     },
+      //     // required: true,
+      //   jsonPath: "FireNOCs[0].fireNOCDetails.applicantDetails.owners[0].ownerType",
+      //   gridDefination: {
+      //     xs: 12,
+      //     sm: 12,
+      //     md: 6
+      //   }
+      // }
     })
   });
 };
@@ -739,26 +549,24 @@ export const applicantDetails = getCommonCard({
           dropdownFields: [
             {
               key : 'applicantType',
-              isRequired : false,
-            requiredValue : true,
+              required: true,
               fieldType : "autosuggest",
               className:"applicant-details-error autocomplete-dropdown",
               callBack: beforeFieldChangeApplicantType
             },
             {
               key : 'applicantSubType',
-              isRequired : false,
-              requiredValue : true,
+              required: true,
               fieldType : "autosuggest",
               className:"applicant-details-error autocomplete-dropdown",
               callBack: beforeFieldChangeApplicantSubType
             }
           ],
           required: true,
-          callBackEdit: updateUsageType,
           moduleName: "common-masters",
           masterName: "OwnerShipCategory",
           rootBlockSub : 'applicantDetails',
+          callBackEdit: updateOwnerShipEdit
         }
       },
     }),

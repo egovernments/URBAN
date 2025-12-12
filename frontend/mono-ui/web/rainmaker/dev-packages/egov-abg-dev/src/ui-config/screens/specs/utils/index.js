@@ -1,24 +1,31 @@
-import {
-  getCommonCaption, getCommonCard
-} from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { validate } from "egov-ui-framework/ui-redux/screen-configuration/utils";
-import { getLocaleLabels, getQueryArg, getTransformedLocalStorgaeLabels } from "egov-ui-framework/ui-utils/commons";
 import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
-import { set } from "lodash";
 import get from "lodash/get";
+import {
+  getQueryArg,
+  getTransformedLocalStorgaeLabels,
+  getLocaleLabels,
+} from "egov-ui-framework/ui-utils/commons";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import {
+  getCommonCard,
+  getCommonCaption,
+} from "egov-ui-framework/ui-config/screens/specs/utils";
 import { httpRequest } from "../../../../ui-utils";
-import { generateMultipleBill, generateMultipleBills } from "../utils/receiptPdf";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { set } from "lodash";
+import { downloadReceiptFromFilestoreID } from "egov-common/ui-utils/commons";
+import commonConfig from "config/common.js";
 
-export const getCommonApplyFooter = children => {
+export const getCommonApplyFooter = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Div",
     props: {
-      className: "apply-wizard-footer"
+      className: "apply-wizard-footer",
     },
-    children
+    children,
   };
 };
 
@@ -27,7 +34,7 @@ export const transformById = (payload, id) => {
     payload &&
     payload.reduce((result, item) => {
       result[item[id]] = {
-        ...item
+        ...item,
       };
 
       return result;
@@ -35,7 +42,7 @@ export const transformById = (payload, id) => {
   );
 };
 
-export const getMdmsData = async requestBody => {
+export const getMdmsData = async (requestBody) => {
   try {
     const response = await httpRequest(
       "post",
@@ -47,8 +54,124 @@ export const getMdmsData = async requestBody => {
 
     return response;
   } catch (error) {
+    console.log(error);
     return {};
   }
+};
+
+const getMdmsDataforCollection = async (businesService) => {
+  let mdmsBody = null;
+
+  if (businesService == "SW") {
+    mdmsBody = {
+      MdmsCriteria: {
+        tenantId: "pb",
+        moduleDetails: [
+          {
+            moduleName: "sw-services-calculation",
+            masterDetails: [{ name: "Penalty" }],
+          },
+        ],
+      },
+    };
+  } else {
+    mdmsBody = {
+      MdmsCriteria: {
+        tenantId: "pb",
+        moduleDetails: [
+          {
+            moduleName: "ws-services-calculation",
+            masterDetails: [{ name: "Penalty" }],
+          },
+        ],
+      },
+    };
+  }
+  try {
+    let payload = null;
+    payload = await httpRequest(
+      "post",
+      "/egov-mdms-service/v1/_search",
+      "_search",
+      [],
+      mdmsBody
+    );
+    if (
+      payload.MdmsRes["ws-services-calculation"] &&
+      payload.MdmsRes["ws-services-calculation"].Penalty !== undefined &&
+      payload.MdmsRes["ws-services-calculation"].Penalty.length > 0
+    ) {
+      return payload.MdmsRes["ws-services-calculation"].Penalty[0].rate;
+    } else if (
+      payload.MdmsRes["sw-services-calculation"] &&
+      payload.MdmsRes["sw-services-calculation"].Penalty !== undefined &&
+      payload.MdmsRes["sw-services-calculation"].Penalty.length > 0
+    ) {
+      return payload.MdmsRes["sw-services-calculation"].Penalty[0].rate;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const downloadMultipleBill = async (
+  bills = [],
+  configKey,
+  businesService
+) => {
+  let rate = await getMdmsDataforCollection(businesService);
+
+  try {
+    const DOWNLOADRECEIPT = {
+      GET: {
+        URL: "/pdf-service/v1/_create",
+        ACTION: "_get",
+      },
+    };
+    const queryStr = [
+      { key: "key", value: configKey },
+      { key: "tenantId", value: commonConfig.tenantId },
+    ];
+    var addDetail = null;
+
+    addDetail = {
+      penaltyRate: rate,
+      latePaymentc: ''
+    };
+    if (businesService == "SW") {
+      addDetail.latePaymentc = (bills[0].tenantId == "pb.patiala" || bills[0].tenantId == "pb.nabha") ? '0% Late payment charges will be applied after due date' : '10% late payment charges For both water and sewerage';
+    }
+    else if (businesService == "WS") {
+      addDetail.latePaymentc = (bills[0].tenantId == "pb.patiala" || bills[0].tenantId == "pb.nabha") ? '25% Late payment charges will be applied after due date' : '10% late payment charges For both water and sewerage';
+    }
+    bills = bills.filter((item) => item.totalAmount > 0);
+    bills.map((item) => {
+      item.additionalDetails = addDetail;
+    });
+
+    var actualBills = [], size = 20;
+    for (let i = 0; bills.length > 0; i++) {
+      actualBills.push(bills.splice(0, size));
+    }
+    for (let i = 0; i < actualBills.length; i++) {
+      await downloadPdfs(DOWNLOADRECEIPT, queryStr, actualBills[i]);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const downloadPdfs = async (DOWNLOADRECEIPT, queryStr, bills) => {
+  const pfResponse = await httpRequest(
+    "post",
+    DOWNLOADRECEIPT.GET.URL,
+    DOWNLOADRECEIPT.GET.ACTION,
+    queryStr,
+    { Bill: bills },
+    { Accept: "application/pdf" },
+    { responseType: "arraybuffer" }
+  );
+  downloadReceiptFromFilestoreID(pfResponse.filestoreIds[0], "download");
 };
 
 export const getTranslatedLabel = (labelKey, localizationLabels) => {
@@ -91,7 +214,7 @@ export const validateFields = (
             value: get(
               state.screenConfiguration.preparedFinalObject,
               fields[variable].jsonPath
-            )
+            ),
           },
           dispatch,
           true
@@ -120,7 +243,7 @@ export const convertDateToEpoch = (dateString, dayStartOrEnd = "dayend") => {
   }
 };
 
-export const getEpochForDate = date => {
+export const getEpochForDate = (date) => {
   const dateSplit = date.split("/");
   return new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime();
 };
@@ -137,17 +260,17 @@ export const sortByEpoch = (data, order) => {
   }
 };
 
-export const ifUserRoleExists = role => {
+export const ifUserRoleExists = (role) => {
   let userInfo = JSON.parse(getUserInfo());
   const roles = get(userInfo, "roles");
-  const roleCodes = roles ? roles.map(role => role.code) : [];
+  const roleCodes = roles ? roles.map((role) => role.code) : [];
   if (roleCodes.indexOf(role) > -1) {
     return true;
   } else return false;
 };
 
-export const convertEpochToDate = dateEpoch => {
-  if (dateEpoch == null || dateEpoch == undefined || dateEpoch == '') {
+export const convertEpochToDate = (dateEpoch) => {
+  if (dateEpoch == null || dateEpoch == undefined || dateEpoch == "") {
     return "NA";
   }
   const dateFromApi = new Date(dateEpoch);
@@ -236,7 +359,7 @@ export const showHideAdhocPopup = (state, dispatch) => {
   );
 };
 
-export const getCommonGrayCard = children => {
+export const getCommonGrayCard = (children) => {
   return {
     uiFramework: "custom-atoms",
     componentPath: "Container",
@@ -250,18 +373,18 @@ export const getCommonGrayCard = children => {
               backgroundColor: "rgb(242, 242, 242)",
               boxShadow: "none",
               borderRadius: 0,
-              overflow: "visible"
-            }
-          })
+              overflow: "visible",
+            },
+          }),
         },
         gridDefination: {
-          xs: 12
-        }
-      }
+          xs: 12,
+        },
+      },
     },
     gridDefination: {
-      xs: 12
-    }
+      xs: 12,
+    },
   };
 };
 
@@ -271,30 +394,32 @@ export const getLabelOnlyValue = (value, props = {}) => {
     componentPath: "Div",
     gridDefination: {
       xs: 6,
-      sm: 4
+      sm: 4,
     },
     props: {
       style: {
-        marginBottom: "16px"
+        marginBottom: "16px",
       },
-      ...props
+      ...props,
     },
     children: {
-      value: getCommonCaption(value)
-    }
+      value: getCommonCaption(value),
+    },
   };
 };
 
-
 export const onActionClick = (rowData) => {
   switch (rowData[8]) {
-    case "PAY": return "";
-    case "DOWNLOAD RECEIPT": ""
-    case "GENERATE NEW RECEIPT": ""
+    case "PAY":
+      return "";
+    case "DOWNLOAD RECEIPT":
+      "";
+    case "GENERATE NEW RECEIPT":
+      "";
   }
-}
+};
 
-export const getTextToLocalMapping = label => {
+export const getTextToLocalMapping = (label) => {
   const localisationLabels = getTransformedLocalStorgaeLabels();
   switch (label) {
     case "Bill No.":
@@ -393,11 +518,7 @@ export const getTextToLocalMapping = label => {
       );
     case "PAY":
     case "PARTIALLY PAID":
-      return getLocaleLabels(
-        "PAY",
-        "BILL_GENIE_PAY",
-        localisationLabels
-      );
+      return getLocaleLabels("PAY", "BILL_GENIE_PAY", localisationLabels);
     case "EXPIRED":
       return getLocaleLabels(
         "Expired",
@@ -445,11 +566,10 @@ export const getTextToLocalMapping = label => {
   }
 };
 
-
 export const setServiceCategory = (businessServiceData, dispatch) => {
   let nestedServiceData = {};
-  businessServiceData.forEach(item => {
-    if (item.code && item.code.indexOf(".") > 0) {
+  businessServiceData.forEach((item) => {
+    if (item.code && item.code.indexOf(".") > 0 && item.type == "Adhoc") {
       if (nestedServiceData[item.code.split(".")[0]]) {
         let child = get(
           nestedServiceData,
@@ -467,7 +587,26 @@ export const setServiceCategory = (businessServiceData, dispatch) => {
         set(nestedServiceData, `${item.code.split(".")[0]}.child[0]`, item);
       }
     } else {
-      set(nestedServiceData, `${item.code}`, item);
+      if (item.code.includes("WS") || item.code.includes("SW")) {
+        if (nestedServiceData[item.code.split(".")[0]]) {
+          let child = get(
+            nestedServiceData,
+            `${item.code.split(".")[0]}.child`,
+            []
+          );
+          child.push(item);
+          set(nestedServiceData, `${item.code.split(".")[0]}.child`, child);
+        } else {
+          set(
+            nestedServiceData,
+            `${item.code.split(".")[0]}.code`,
+            item.code.split(".")[0]
+          );
+          set(nestedServiceData, `${item.code.split(".")[0]}.child[0]`, item);
+        }
+      } else {
+        set(nestedServiceData, `${item.code}`, item);
+      }
     }
   });
   dispatch(
@@ -477,7 +616,7 @@ export const setServiceCategory = (businessServiceData, dispatch) => {
     )
   );
   let serviceCategories = Object.values(nestedServiceData).filter(
-    item => item.code
+    (item) => item.code
   );
   dispatch(
     prepareFinalObject(
@@ -486,96 +625,6 @@ export const setServiceCategory = (businessServiceData, dispatch) => {
     )
   );
 };
-export const checkValueForNA = value => {
-  return value == null || value == undefined || value == '' ? "NA" : value;
-};
-
-export const getMergeAndDownloadList = (state, dispatch, dataLength = 0) => {
-  let searchScreenObject = get(
-    state.screenConfiguration.preparedFinalObject,
-    "searchDetailsOfGroupBills",
-    {}
-  );
-  if (searchScreenObject.businesService && searchScreenObject.tenantId && searchScreenObject.locality) {
-    switch (searchScreenObject.businesService) {
-      case "WS":
-        dispatch(
-          handleField(
-            "groupBills",
-            "components.div.children.mergeDownloadButton.children.mergeButton",
-            "props.data.menu",
-            [
-              {
-                label: { labelName: "WATER CONNECTION", labelKey: "ABG_GROUP_BILLS_WATER_CONNECTION_BUTTON", },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, false, "WS", searchScreenObject.consumerCode); }
-              },
-              {
-                label: { labelName: "WATER & SEWERAGE CONNECTION", labelKey: parseInt(dataLength) == 1 ? "ABG_GROUP_BILLS_SINGLAR_WATER_AND_SEWERAGE_CONNECTION_BUTTON" : "ABG_GROUP_BILLS_WATER_AND_SEWERAGE_CONNECTION_BUTTON" },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, true, "WS", searchScreenObject.consumerCode); }
-              }
-            ]
-          )
-        );
-        break;
-      case "SW":
-        dispatch(
-          handleField(
-            "groupBills",
-            "components.div.children.mergeDownloadButton.children.mergeButton",
-            "props.data.menu",
-            [
-              {
-                label: { labelName: "SEWERAGE CONNECTION", labelKey: "ABG_GROUP_BILLS_SEWERAGE_CONNECTION_BUTTON", },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, false, "SW", searchScreenObject.consumerCode); }
-              },
-              {
-                label: { labelName: "WATER & SEWERAGE CONNECTION", labelKey: parseInt(dataLength) == 1 ? "ABG_GROUP_BILLS_SINGLAR_WATER_AND_SEWERAGE_CONNECTION_BUTTON" : "ABG_GROUP_BILLS_WATER_AND_SEWERAGE_CONNECTION_BUTTON" },
-                link: () => { generateMultipleBills(state, dispatch, searchScreenObject.tenantId, searchScreenObject.locality, true, "SW", searchScreenObject.consumerCode); }
-              }
-            ]
-          )
-        );
-        break;
-      default:
-        dispatch(
-          handleField(
-            "groupBills",
-            "components.div.children.mergeDownloadButton.children.mergeButton",
-            "props.data.menu",
-            [ {
-              label: { labelName: "SEWERAGE CONNECTION", labelKey: "ABG_GROUP_BILLS_MERGE_AND_DOWNLOAD_BUTTON", },
-              link: () => { generateMultipleBill(state, dispatch); }
-            },]
-          )
-        );
-    }
-  }
-}
-
-export const createEstimateData = async (
-  billData,
-  jsonPath,
-  dispatch,
-  href = {},
-  getFromReceipt
-) => {
-  const payload = billData
-  const estimateData = payload
-  dispatch(prepareFinalObject(jsonPath, estimateData));
-  var event = new CustomEvent("estimateLoaded", { detail: true });
-  window.parent.document.dispatchEvent(event);
-  return payload;
-};
-
-export const getFeesEstimateCard = props => {
-  const { sourceJsonPath, ...rest } = props;
-  return {
-    uiFramework: "custom-containers-local",
-    moduleName: "egov-wns",
-    componentPath: "EstimateCardContainer",
-    props: {
-      sourceJsonPath,
-      ...rest
-    }
-  };
+export const checkValueForNA = (value) => {
+  return value == null || value == undefined || value == "" ? "NA" : value;
 };

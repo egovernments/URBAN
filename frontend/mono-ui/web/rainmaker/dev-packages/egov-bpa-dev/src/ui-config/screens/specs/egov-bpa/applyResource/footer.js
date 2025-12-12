@@ -98,6 +98,7 @@ const getMdmsData = async (state, dispatch) => {
     );
     prepareDocumentsUploadData(state, dispatch);
   } catch (e) {
+    console.log(e);
   }
 };
 
@@ -143,18 +144,18 @@ const prepareDocumentsDetailsView = async (state, dispatch) => {
         obj.linkText = "View";
         obj.link = docDetail.fileUrl && docDetail.fileUrl.split(",")[0];
         if (docDetail.wfState === "SEND_TO_CITIZEN") {
-          obj.createdBy = "BPA_ARCHITECT"
+          obj.createdBy = "BPA Architect"
         }
         else if(docDetail.wfState === "DOC_VERIFICATION_PENDING") {
-          obj.createdBy = "BPA_DOC_VERIFIER"
+          obj.createdBy = "BPA Document Verifier"
         }
         else if (docDetail.wfState === "FIELDINSPECTION_PENDING") {
-          obj.createdBy = "BPA_FIELD_INSPECTOR"   
+          obj.createdBy = "BPA Field Inspector"   
         }
         else if (docDetail.wfState === "NOC_VERIFICATION_PENDING") {
-          obj.createdBy = "BPA_NOC_VERIFIER"    
+          obj.createdBy = "BPA Noc Verifier"    
         } else {
-          obj.createdBy = "BPA_ARCHITECT"
+          obj.createdBy = "BPA Architect"
         }
         
         documentsPreview.push(obj);
@@ -517,7 +518,7 @@ const callBackForNext = async (state, dispatch) => {
         if(activeStep === 0){
           const occupancytypeValid = get(
             state,
-            "screenConfiguration.preparedFinalObject.scrutinyDetails.planDetail.occupancies[0].typeHelper.type.code",
+            "screenConfiguration.preparedFinalObject.scrutinyDetails.planDetail.planInformation.occupancy",
             []
           );
           if(occupancytypeValid.length === 0){

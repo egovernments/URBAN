@@ -9,7 +9,7 @@ import { getHeader } from "./pay";
 
 
 const getReceiptData = (receiptNo) => {
- 
+    
     return getCommonContainer({
         h1:getCommonContainer({
         header: getCommonTitle({
@@ -54,7 +54,7 @@ const loadMdms = async (action, state, dispatch, consumerCode, tenantId, busines
         { key: "tenantId", value: tenantId },
         { key: "businessService", value:businessService }        
     ]
-    download(receiptQueryString, localStorage.getItem('receipt-channel')=='whatsapp'?"download":"open", receiptKey, "PAYMENT",state,true)
+    download(receiptQueryString, localStorage.getItem('receipt-channel')=='whatsapp'?"download":"open", receiptKey, state,true)
 }
 const screenConfig = {
     uiFramework: "material-ui",

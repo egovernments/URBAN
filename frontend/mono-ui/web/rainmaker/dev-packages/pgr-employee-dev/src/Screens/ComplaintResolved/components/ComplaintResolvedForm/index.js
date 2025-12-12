@@ -2,8 +2,13 @@ import React from "react";
 import { Button } from "components";
 import { ImageUpload } from "modules/common";
 import { TextArea } from "modules/common";
+import { httpRequest } from "egov-ui-kit/utils/api";
 
 const ComplaintResolvedForm = ({ formKey, form, handleFieldChange, onSubmit }) => {
+      var complaintId = (window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1)).replace(/%2F/gi, "/");
+      const updateStatus = async () => { await httpRequest("rainmaker-pgr/v1/requests/_apicall?complaintId="+complaintId);
+        };
+      
   const fields = form.fields || {};
   const submit = form.submit;
   return (
@@ -16,7 +21,7 @@ const ComplaintResolvedForm = ({ formKey, form, handleFieldChange, onSubmit }) =
       </div>
       <div className="responsive-action-button-cont">
         <Button
-          onClick={onSubmit}
+          onClick={onSubmit, updateStatus}
           className="responsive-action-button"
           id={"complaint-resolved-mark-resolved"}
           {...submit}

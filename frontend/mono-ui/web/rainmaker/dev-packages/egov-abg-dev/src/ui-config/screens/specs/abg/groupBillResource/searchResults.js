@@ -1,11 +1,13 @@
+import React from "react";
+import get from "lodash/get";
+import { sortByEpoch, getEpochForDate } from "../../utils";
+import { generateSingleBill } from "../../utils/receiptPdf";
 import { httpRequest } from "egov-ui-framework/ui-utils/api.js";
 import { localStorageGet } from "egov-ui-kit/utils/localStorageUtils";
-import get from "lodash/get";
-import React from "react";
-import { getEpochForDate, sortByEpoch } from "../../utils";
-import { billDownload } from "../billSearchResources/searchResults";
+import { download, downloadBill } from "egov-common/ui-utils/commons";
 
-const getConsumerDetail = (propertyResponse) => {
+
+const getConsumerDetail = propertyResponse => {
   return {
     propertyId: get(propertyResponse, "Properties[0].propertyId", "NA"),
     name: get(
@@ -19,15 +21,11 @@ const getConsumerDetail = (propertyResponse) => {
       "NA"
     ),
     address: get(propertyResponse, "Properties[0].address.city", "NA"),
-    locality: get(
-      propertyResponse,
-      "Properties[0].address.locality.name",
-      "NA"
-    ),
+    locality: get(propertyResponse, "Properties[0].address.locality.name", "NA")
   };
 };
 
-const getBillDetails = (billResponse) => {
+const getBillDetails = billResponse => {
   const requiredData = [];
 
   const billAccountDetails = get(
@@ -41,34 +39,34 @@ const getBillDetails = (billResponse) => {
       Amount: billAccountDetails[i].amount,
       Arrear: 0,
       Adjustmeents: 0,
-      Total: 0,
+      Total: 0
     };
     requiredData.push(obj);
   }
 };
 
-const onDownloadClick = async (rowData) => {
+const onDownloadClick = async rowData => {
   const queryObject1 = [
     {
-      key: "ids",
-      value: rowData["Property ID"],
+      key: "propertyIds",
+      value: rowData["Property ID"]
     },
 
     {
       key: "tenantId",
-      value: localStorageGet("tenant-id"),
-    },
+      value: localStorageGet("tenant-id")
+    }
   ];
   const queryObject2 = [
     {
       key: "consumerCode",
-      value: `${rowData["Property ID"]}:${rowData["Assessment No"]}`,
+      value: `${rowData["Property ID"]}:${rowData["Assessment No"]}`
     },
 
     {
       key: "tenantId",
-      value: localStorageGet("tenant-id"),
-    },
+      value: localStorageGet("tenant-id")
+    }
   ];
 
   const propertyendpoint = "/property-services/property/_search";
@@ -95,69 +93,58 @@ export const searchResults = {
   props: {
     columns: [
       {
-        labelKey: "ABG_COMMON_TABLE_COL_BILL_NO",
-        labelName: "Bill No.",
+        labelKey:"ABG_COMMON_TABLE_COL_BILL_NO",
+        labelName:"Bill No.",
         options: {
           filter: false,
           customBodyRender: (value, tableMeta) => (
-            <a
-              href="javascript:void(0)"
-              onClick={() =>
-                billDownload(
-                  tableMeta.rowData[1],
-                  tableMeta.rowData[5],
-                  tableMeta.rowData[7],
-                  tableMeta.rowData[6],
-                  tableMeta.rowData[8]
-                )
-              }
-            >
-              {value}
-            </a>
-          ),
-        },
-      },
+               <a href="javascript:void(0)" onClick={() =>  downloadBill(tableMeta.rowData[1], tableMeta.rowData[7], tableMeta.rowData[6],tableMeta.rowData[9],tableMeta.rowData[8])}>{value}</a>
+             
+          )
+        }
+      },  
+      {labelName: "Consumer ID", labelKey: "ABG_COMMON_TABLE_COL_CONSUMER_ID"},
+      {labelName: "Owner Name", labelKey: "ABG_COMMON_TABLE_COL_OWN_NAME"},
+      {labelName: "Bill Date", labelKey: "ABG_COMMON_TABLE_COL_BILL_DATE"},
+      {labelName: "Status", labelKey: "ABG_COMMON_TABLE_COL_STATUS"},
       {
-        labelName: "Consumer ID",
-        labelKey: "ABG_COMMON_TABLE_COL_CONSUMER_ID",
-      },
-      { labelName: "Owner Name", labelKey: "ABG_COMMON_TABLE_COL_OWN_NAME" },
-      { labelName: "Bill Date", labelKey: "ABG_COMMON_TABLE_COL_BILL_DATE" },
-      { labelName: "Status", labelKey: "ABG_COMMON_TABLE_COL_STATUS" },
-      {
-        labelName: "Tenant Id",
-        labelKey: "TENANT_ID",
+        labelName: "Receipt Key",
+        labelKey: "RECEIPT_KEY",
         options: {
-          display: false,
-        },
-      },
-      {
-        labelName: "business URL",
-        labelKey: "BUSINESS_URL",
-        options: {
-          display: false,
-        },
+          display: false
+        }
       },
       {
         labelName: "Bill Key",
         labelKey: "BILL_KEY",
         options: {
-          display: false,
-        },
+          display: false
+        }
       },
       {
-        labelKey: "BUSINESS_SERVICE",
-        labelName: "Business Service",
+        labelName: "Tenant ID",
+        labelKey: "TENANT_ID",
         options: {
-          display: false,
-        },
+          display: false
+        }
       },
-    ],
-    title: {
-      labelName: "Search Results for Group Bills",
-      labelKey: "BILL_GENIE_GROUP_SEARCH_HEADER",
-    },
-    rows: "",
+      {
+        labelName: "Business Service",
+        labelKey: "BUSINESS_SERVICE",
+        options: {
+          display: false
+        }
+      },
+      {
+        labelName: "Bill Search URL",
+        labelKey: "BILL_SEARCH_URL",
+        options: {
+          display: false
+        }
+      }
+    ], 
+    title: {labelName: "Search Results for Group Bills", labelKey: "BILL_GENIE_GROUP_SEARCH_HEADER"}, 
+    rows: "", 
     options: {
       filter: false,
       download: false,
@@ -174,12 +161,13 @@ export const searchResults = {
           return acc;
         }, []);
         const order = sortDateOrder === "asc" ? true : false;
-        const finalData = sortByEpoch(epochDates, !order).map((item) => {
+        const finalData = sortByEpoch(epochDates, !order).map(item => {
           item.pop();
           return item;
         });
         return { data: finalData, currentOrder: !order ? "asc" : "desc" };
-      },
-    },
-  },
+      }
+    }
+  }
 };
+

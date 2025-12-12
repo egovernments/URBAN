@@ -48,8 +48,8 @@ const processBills = async (state, data, viewBillTooltip, dispatch) => {
         }
         if (viewBillTooltip.length >= data.Bill[0].billDetails.length) {          
           let bPeriodMDMS = get(state.screenConfiguration.preparedFinalObject, "billingPeriodMDMS", {});
+          let expiryDemandDate = bills.expiryDate
           // let expiryDemandDate = billingPeriodMDMS(bills.toPeriod,bPeriodMDMS,service);
-          let expiryDemandDate = bills.expiryDate;
           let dataArray = [{
             total: data.Bill[0].totalAmount,
             expiryDate: expiryDemandDate
@@ -114,6 +114,7 @@ const fetchMDMSForBillPeriod = async(action,state,dispatch) => {
     let response = await getDescriptionFromMDMS(requestBody,dispatch);
     dispatch(prepareFinalObject("billingPeriodMDMS", response.MdmsRes))
   } catch (error) {        
+      console.log(error);
   }
 }
 const searchResults = async (action, state, dispatch, consumerCode) => {
@@ -165,14 +166,6 @@ const searchResults = async (action, state, dispatch, consumerCode) => {
             false
           )
         );
-        dispatch(
-          handleField(
-            "viewBill",
-            "components.div.children.viewBill.children.cardContent.children.serviceDetails.children.cardContent.children.waterDetails",
-            "visible",
-            true
-          )
-        );
         dispatch(prepareFinalObject("WaterConnection[0]", payload.WaterConnection[0]));
         dispatch(prepareFinalObject("billData", data.Bill[0]));
         dispatch(prepareFinalObject("consumptionDetails[0]", meterReadingsData.meterReadings[0]))
@@ -205,14 +198,6 @@ const searchResults = async (action, state, dispatch, consumerCode) => {
         if (payload.SewerageConnections[0].additionalDetails.adhocRebateReason === 'NA' || payload.SewerageConnections[0].additionalDetails.adhocRebateReason === null || payload.SewerageConnections[0].additionalDetails.adhocRebateReason === undefined) {
           payload.SewerageConnections[0].additionalDetails.adhocRebateReason = "";
         }
-        dispatch(
-          handleField(
-            "viewBill",
-            "components.div.children.viewBill.children.cardContent.children.serviceDetails.children.cardContent.children.sewerDetails",
-            "visible",
-            true
-          )
-        );
         dispatch(
           handleField(
             "viewBill",
@@ -272,25 +257,25 @@ let headerrow = getCommonContainer({
 const estimate = getCommonGrayCard({
   header: getCommonSubHeader({ labelKey: "WS_VIEWBILL_DETAILS_HEADER" }),
   estimateSection: getFeesEstimateCard({ sourceJsonPath: "viewBillToolipData" }),
-  addPenaltyRebateButton: {
-    componentPath: "Button",
-    props: {
-      color: "primary",
-      style: {}
-    },
-    children: {
-      previousButtonLabel: getLabel({
-        labelKey: "WS_PAYMENT_ADD_REBATE_PENALTY"
-      })
-    },
-    onClickDefination: {
-      action: "condition",
-      callBack: (state, dispatch) => {
-        showHideAdhocPopup(state, dispatch, "viewBill");
-      }
-    },
-    visible: process.env.REACT_APP_NAME !== "Citizen"
-  }
+  // addPenaltyRebateButton: {
+  //   componentPath: "Button",
+  //   props: {
+  //     color: "primary",
+  //     style: {}
+  //   },
+  //   children: {
+  //     previousButtonLabel: getLabel({
+  //       labelKey: "WS_PAYMENT_ADD_REBATE_PENALTY"
+  //     })
+  //   },
+  //   onClickDefination: {
+  //     action: "condition",
+  //     callBack: (state, dispatch) => {
+  //       showHideAdhocPopup(state, dispatch, "viewBill");
+  //     }
+  //   },
+  //   visible: process.env.REACT_APP_NAME !== "Citizen"
+  // }
 });
 
 const propertyDetails = getProperty();

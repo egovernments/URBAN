@@ -10,12 +10,21 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { searchApiCall } from "./functions";
+import {NOCareaTypeField} from "../ImpelExtendedFeature/feilds";
 
 const resetFields = (state, dispatch) => {
   dispatch(
     handleField(
       "search",
       "components.div.children.NOCApplication.children.cardContent.children.appNOCAndMobNumContainer.children.applicationNo",
+      "props.value",
+      ""
+    )
+  );
+  dispatch(
+    handleField(
+      "search",
+      "components.div.children.NOCApplication.children.cardContent.children.appNOCAndMobNumContainer.children.areaType",
       "props.value",
       ""
     )
@@ -86,7 +95,7 @@ export const NOCApplication = getCommonCard({
         sm: 4
       },
       required: false,
-      pattern: /^[a-zA-Z0-9-]*$/i,
+      pattern: /^[a-zA-Z0-9-/]*$/i,
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "searchScreen.applicationNumber"
     }),
@@ -104,7 +113,7 @@ export const NOCApplication = getCommonCard({
         sm: 4
       },
       required: false,
-      pattern: /^[a-zA-Z0-9-]*$/i,
+      pattern: /^[a-zA-Z0-9-/]*$/i,
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       jsonPath: "searchScreen.fireNOCNumber"
     }),
@@ -193,7 +202,9 @@ export const NOCApplication = getCommonCard({
       pattern: getPattern("Date"),
       errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
       required: false
-    })
+    }),
+     ...NOCareaTypeField,
+    
   }),
 
   button: getCommonContainer({
@@ -256,7 +267,7 @@ export const NOCApplication = getCommonCard({
           callBack: searchApiCall
         }
       }
-    },{className:"firenoc-btn-search-reset"})
+    })
   })
 }, {
   style: { overflow: "visible" }

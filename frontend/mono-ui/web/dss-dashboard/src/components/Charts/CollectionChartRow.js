@@ -11,7 +11,7 @@ import style from './styles';
 import Arrow_Downward from '../../images/arrows/Arrow_Downward.svg'
 import Arrow_Upward from '../../images/arrows/Arrow_Upward.svg'
 import moment from 'moment';
-import { getTenantId, removeSignFromInsightData } from '../../utils/commons';
+import { removeSignFromInsightData } from '../../utils/commons';
 import { isMobile } from 'react-device-detect';
 
 class CollectionChartRow extends React.Component {
@@ -25,10 +25,11 @@ class CollectionChartRow extends React.Component {
 	}
 
 	callAPI() {
+		console.log(this.props.chartData,"this.props.chartData")
 		let code = this.props.chartData['id'] ? this.props.chartData['id'] : "";
 		if (code) {
 			let filters = _.cloneDeep(this.props.filters)
-			if(code == 'todaysCollection'  || code == 'wstodaysCollection'){			   
+			if(code == 'todaysCollection'  || code == 'wstodaysCollection' || code == 'mcTodaysCollection'|| code == 'nocTodaysCollection' ){			   
 	           filters['duration'] = {
 	            title: "TODAY",
                 startDate: (moment().startOf('day').unix()) * 1000,
@@ -42,7 +43,7 @@ class CollectionChartRow extends React.Component {
 			if (this.props.page.includes('ulb')) {
 				if (!filters['tenantId']) {
 					let tenentFilter = []
-					tenentFilter.push(`${getTenantId()}`)
+					tenentFilter.push(`${localStorage.getItem('tenant-id')}`)
 
 					filters['tenantId'] = tenentFilter
 				}

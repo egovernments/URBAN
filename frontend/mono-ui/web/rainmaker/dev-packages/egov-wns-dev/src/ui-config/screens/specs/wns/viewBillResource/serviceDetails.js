@@ -32,11 +32,7 @@ export const connType = getLabelWithValue(
         labelKey: "WS_SERV_DETAIL_CONN_TYPE"
     },
     {
-        jsonPath: "WaterConnection[0].connectionType",
-        localePrefix: {
-            moduleName: "WS_SERVICES_MASTERS",
-            masterName: "WATERSOURCE"
-          },
+        jsonPath: "WaterConnection[0].connectionType"
     }
 );
 
@@ -127,23 +123,10 @@ export const getService = () => {
                 }
             },
         },
-        // serviceCardContainer: renderService()
         waterDetails:  waterDetailsCard(),
         sewerDetails: sewerDetailsCard(),
     });
 };
-
-// export const renderService = () => {
-//     if (service === serviceConst.WATER) {
-//         if (connectionType === "Metered") {
-//             return getCommonContainer({ serviceType, propertyUsage, connType, meterId, meterStatus, meterReadingDate, consumption, currentMeterReading, lastMeterReading });
-//         } else {
-//             return getCommonContainer({ serviceType, propertyUsage, connType });
-//         }
-//     } else if (service === serviceConst.SEWERAGE) {
-//         return getCommonContainer({ serviceType, propertyUsage })
-//     }
-// }
 
 export const waterDetailsCard = () => {
     if (connectionType === "Metered") {

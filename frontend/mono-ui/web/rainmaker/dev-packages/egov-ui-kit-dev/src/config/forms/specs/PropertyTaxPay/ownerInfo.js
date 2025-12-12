@@ -1,12 +1,9 @@
-import {
-  getPattern
-} from "egov-ui-framework/ui-config/screens/specs/utils";
-import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons.js";
-import { handleFieldChange, setFieldProperty } from "egov-ui-kit/redux/form/actions";
-import { getOwnerCategory } from "egov-ui-kit/utils/PTCommon";
+import { getOwnerCategoryByYear, getOwnerCategory } from "egov-ui-kit/utils/PTCommon";
+import { setDependentFields } from "./utils/enableDependentFields";
 import get from "lodash/get";
 import set from "lodash/set";
-import { setDependentFields } from "./utils/enableDependentFields";
+import { setFieldProperty, handleFieldChange } from "egov-ui-kit/redux/form/actions";
+import { localStorageSet, localStorageGet, getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 const formConfig = {
   name: "ownerInfo",
@@ -19,7 +16,7 @@ const formConfig = {
       hintText: "PT_FORM3_OWNER_NAME_PLACEHOLDER",
       required: true,
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      pattern: getPattern("Name"),
+      pattern: /^[^{0-9}^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,_:;“”‘’]{1,64}$/i,
       errorMessage: "PT_NAME_ERROR_MESSAGE",
     },
     ownerMobile: {
@@ -29,31 +26,34 @@ const formConfig = {
       floatingLabelText: "PT_FORM3_MOBILE_NO",
       hintText: "PT_FORM3_MOBILE_NO_PLACEHOLDER",
       required: true,
-      pattern: getPattern("MobileNo"),
-      errorMessage: "PT_MOBILE_NUMBER_ERROR_MESSAGE",
-      errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-    }, ownerAlterMobile: {
-      id: "ownerAlterMobile",
-      jsonPath: "Properties[0].propertyDetails[0].owners[0].alternatemobilenumber",
-      type: "textfield",
-      floatingLabelText: "PT_FORM3_ALT_MOBILE_NO",
-      hintText: "PT_FORM3_ALT_MOBILE_NO_PLACEHOLDER",
-      required: false,
-      pattern: getPattern("MobileNo"),
+      // pattern: /^([0]|((\+\d{1,2}[-]{0,1})))?\(?[6-9]\d{2}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i,
+      pattern: /^(?!.*(\d)\1{9})([0]|(\+\d{1,2}-?))?\(?[6-9]\d{2}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
       errorMessage: "PT_MOBILE_NUMBER_ERROR_MESSAGE",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
     },
+
     ownerGuardian: {
       id: "ownerGuardian",
       jsonPath: "Properties[0].propertyDetails[0].owners[0].fatherOrHusbandName",
       type: "textfield",
       floatingLabelText: "PT_SEARCHPROPERTY_TABEL_GUARDIANNAME",
       hintText: "PT_FORM3_GUARDIAN_PLACEHOLDER",
-      pattern: getPattern("Name"),
+      pattern: /^[^{0-9}^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,_:;“”‘’]{1,64}$/i,
       required: true,
       errorMessage: "PT_NAME_ERROR_MESSAGE",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
     },
+    // ownerPan: {
+    //   id: "ownerPan",
+    //   jsonPath: "Properties[0].additionalDetails.ownerPan",
+    //   type: "textfield",
+    //   floatingLabelText: "PAN Number",
+    //   hintText: "PAN Number",
+    //   //pattern: /^[^{0-9}^\$\"'<>?\\\\~`!@#$%^()+={}\[\]*,_:;“”‘’]{1,64}$/i,
+    //   required: getTenantId() == 'pb.mohali' ? true : false,
+    //   errorMessage: "PT_NAME_ERROR_MESSAGE",
+    //   errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
+    // },
     ownerEmail: {
       id: "ownerEmail",
       jsonPath: "Properties[0].propertyDetails[0].owners[0].emailId",
@@ -62,7 +62,21 @@ const formConfig = {
       hintText: "PT_FORM3_EMAIL_ID_PLACEHOLDER",
       errorMessage: "PT_EMAIL_ID_ERROR_MESSAGE",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      pattern: getPattern("Email"),
+      pattern: /^(?=^.{1,64}$)((([^<>()\[\]\\.,;:\s$*@'"]+(\.[^<>()\[\]\\.,;:\s@'"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))$/,
+    },
+
+    ownerPercentage: {
+      id: "ownerPercentage",
+      jsonPath: "Properties[0].propertyDetails[0].owners[0].ownerShipPercentage",
+      type: "textfield",
+      floatingLabelText: "PT_SEARCHPROPERTY_TABEL_OWNERSHIPPERCENTAGE",
+      hintText: "PT_FORM3_OWNERPERCENTAGE_PLACEHOLDER",
+      pattern: /^[1-9][0-9]?$|^100$/i,
+      required: true,
+      errorMessage: "PT_PERCENTAGE_ERROR_MESSAGE",
+      errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
+      //,value:"100",
+
     },
     ownerAddress: {
       id: "ownerAddress",
@@ -71,12 +85,11 @@ const formConfig = {
       floatingLabelText: "PT_FORM3_CORRESPONDENCE_ADDRESS",
       hintText: "PT_FORM3_CORRESPONDENCE_ADDRESS_PLACEHOLDER",
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      pattern: getPattern("Address"),
+      // pattern: /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*.:;“”‘’]{1,256}$/,
       errorMessage: "PT_ADDRESS_ERROR_MESSAGE",
     },
     ownerRelationship: {
       id: "ownerRelationship",
-      required: true,
       jsonPath: "Properties[0].propertyDetails[0].owners[0].relationship",
       type: "AutocompleteDropdown",
       localePrefix: "PT_RELATION",
@@ -87,9 +100,10 @@ const formConfig = {
         xs: 12,
         sm: 6
       },
-      dropDownData: [{ label: getLocaleLabels("Father's Name", "PT_ACK_LOCALIZATION_FATHERS_NAME"), value: "FATHER" }, { label: getLocaleLabels("Husband's Name", "PT_ACK_LOCALIZATION_HUSBAND_NAME"), value: "HUSBAND" }],
+      dropDownData: [{ label: "Father", value: "Father" }, { label: "Husband", value: "Husband" }, { label: "Mother", value: "Mother" } ],
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      formName: "ownerInfo"
+      formName: "ownerInfo",
+      required: true,
     },
     ownerCategory: {
       id: "ownerCategory",
@@ -97,7 +111,7 @@ const formConfig = {
       localePrefix: { moduleName: "PropertyTax", masterName: "OwnerType" },
       jsonPath: "Properties[0].propertyDetails[0].owners[0].ownerType",
       type: "AutocompleteDropdown",
-      defaultSort: false,
+      defaultSort: false, 
       floatingLabelText: "PT_FORM3_SPECIAL_CATEGORY",
       hintText: "PT_COMMONS_SELECT_PLACEHOLDER",
       dropDownData: [],
@@ -107,7 +121,7 @@ const formConfig = {
       },
       fullWidth: true,
       errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
-      formName: "ownerInfo",
+      formName: "ownerInfo", 
       updateDependentFields: ({ formKey, field: sourceField, dispatch, state }) => {
         const { value } = sourceField;
         const dependentFields = ["ownerCategoryId", "ownerCategoryIdType"];
@@ -128,7 +142,7 @@ const formConfig = {
             currAcc.push(dropDownData);
             return currAcc;
           }, []);
-        documentTypes && documentTypes.length > 0 && documentTypes.forEach(data => { data.label = getLocaleLabels(`PROPERTYTAX_OWNERTYPEDOCUMENT_${data.value}`, `PROPERTYTAX_OWNERTYPEDOCUMENT_${data.value}`) });
+
         dispatch(setFieldProperty(formKey, "ownerCategoryIdType", "dropDownData", documentTypes));
         dispatch(handleFieldChange(formKey, "ownerCategoryIdType", get(documentTypes, "[0].value", "")));
         dispatch(setFieldProperty(formKey, "ownerCategoryIdType", "value", get(documentTypes, "[0].value", "")));
@@ -169,7 +183,6 @@ const formConfig = {
             currAcc.push(dropDownData);
             return currAcc;
           }, []);
-        documentTypes && documentTypes.length > 0 && documentTypes.forEach(data => { data.label = getLocaleLabels(`PROPERTYTAX_OWNERTYPEDOCUMENT_${data.value}`, `PROPERTYTAX_OWNERTYPEDOCUMENT_${data.value}`) });
         dispatch(setFieldProperty(formKey, "ownerCategoryIdType", "dropDownData", documentTypes));
         dispatch(setFieldProperty(formKey, "ownerCategoryIdType", "value", get(documentTypes, "[0].value", "")));
         if (propertyValue.length > 0) {
@@ -224,10 +237,12 @@ const formConfig = {
         }
       },
     },
+
     ownerGender: {
       id: "ownerGender",
       jsonPath: "Properties[0].propertyDetails[0].owners[0].gender",
     },
+    
     isSameAsPropertyAddress: {
       id: "rcpt",
       type: "checkbox",
@@ -270,8 +285,7 @@ const formConfig = {
       // let financialYearFromQuery = window.location.search.split("FY=")[1];
       // financialYearFromQuery = financialYearFromQuery.split("&")[0];
       // const dropdownData = getOwnerCategoryByYear(Object.values(OwnerTypes), financialYearFromQuery);
-      let dropdownData = getOwnerCategory(Object.values(OwnerTypes));
-      dropdownData && dropdownData.length > 0 && dropdownData.forEach(data => { data.label = getLocaleLabels(`COMMON_MASTERS_OWNERTYPE_${data.value}`, `COMMON_MASTERS_OWNERTYPE_${data.value}`) });
+      const dropdownData = getOwnerCategory(Object.values(OwnerTypes));
       set(action, "form.fields.ownerCategory.dropDownData", dropdownData);
       const ownerShipType = get(state, "form.ownershipType.fields.typeOfOwnership.value", "");
       if (ownerShipType === "SINGLEOWNER") {
@@ -279,6 +293,7 @@ const formConfig = {
       }
       return action;
     } catch (e) {
+      console.log(e);
       return action;
     }
   },
@@ -287,7 +302,7 @@ const formConfig = {
       const formKey = get(action, "form.name", "");
       const state = store.getState();
       if (get(state, `form.${formKey}.fields.ownerRelationship.value`, "NONE") === "NONE") {
-        dispatch(handleFieldChange(formKey, "ownerRelationship", "FATHER"));
+        // dispatch(handleFieldChange(formKey, "ownerRelationship", "Father"));
       }
 
       if (get(state, `form.${formKey}.fields.ownerCategory.value`, "NONE") === "NONE") {
@@ -315,10 +330,11 @@ const formConfig = {
           currAcc.push(dropDownData);
           return currAcc;
         }, []);
-      documentTypes && documentTypes.length > 0 && documentTypes.forEach(data => { data.label = getLocaleLabels(`PROPERTYTAX_OWNERTYPEDOCUMENT_${data.value}`, `PROPERTYTAX_OWNERTYPEDOCUMENT_${data.value}`) });
+
       dispatch(setFieldProperty(action.form.name, "ownerCategoryIdType", "dropDownData", documentTypes));
       return action;
     } catch (e) {
+      console.log(e);
       return action;
     }
   },

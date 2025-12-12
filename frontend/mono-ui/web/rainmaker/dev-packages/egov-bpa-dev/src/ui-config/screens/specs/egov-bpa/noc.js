@@ -30,7 +30,7 @@ import {
     header: getCommonTitle(
       {
         labelName: "NOC Details",
-        labelKey: "BPA_NOC_DETAILS"
+        // labelKey: "BPA_DOCUMENT_DETAILS_HEADER"
       },
       {
         style: {
@@ -65,7 +65,7 @@ export const nocDetailsSearch = getCommonGrayCard({
   header: getCommonTitle(
     {
       labelName: "NOC Details",
-      labelKey: "BPA_NOC_DETAILS"
+      // labelKey: "BPA_DOCUMENT_DETAILS_HEADER"
     },
     {
       style: {

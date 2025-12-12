@@ -5,8 +5,8 @@ import { httpRequest } from "egov-ui-kit/utils/api";
 import difference from "lodash/difference";
 import uniq from "lodash/uniq";
 import commonConfig from "config/common.js";
-import { getUserInfo, getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-
+import { getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+import sortBy from "lodash/sortBy";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 
 //checking users there in action history
@@ -143,32 +143,47 @@ export const getComplaintDisplayOrder = (order) => {
   };
 };
 
-export const fetchComplaints = (queryObject, hasUsers = true, overWrite) => {
+export const fetchComplaints = (queryObject, hasUsers = true, overWrite,userInfo) => {
   return async (dispatch, getState) => {
     dispatch(complaintFetchPending());
     try {
       let tenantId = "";
-      if (queryObject && queryObject.length) {
-        let isTenantId = true;
-        queryObject.forEach(obj => {
-          if (obj.key === "tenantId") {
-            isTenantId = false
-          }
-        })
-        if (isTenantId) {
-          queryObject.push({ key: "tenantId", value: getTenantId() })
-        }
-      }
-
-      if (queryObject && queryObject.length == 0) {
-        queryObject.push({ key: "tenantId", value: getTenantId() })
-      }
-      
       const payload = await httpRequest(COMPLAINT.GET.URL, COMPLAINT.GET.ACTION, queryObject);
       if (payload.services && payload.services.length === 1) {
         tenantId = payload.services[0].tenantId;
       }
       checkUsers(dispatch, getState(), payload.actionHistory, hasUsers, tenantId);
+      let role = '';
+      if(userInfo){userInfo.roles.map((item, i) =>{
+        
+        if(item.code=='GRO'||item.code=='CSR')
+         {
+          role = item.code;   
+        }
+        });
+      
+      }
+         if(userInfo==undefined || userInfo==''||role=='CSR' ||role=='GRO')
+        {
+
+        }
+        else{
+      let selectedComplaints=[];
+      payload.actionHistory.map(item=>{
+       // item.actions=item.actions.filter(i => !i.by.includes("CITIZEN"));
+
+
+        item.actions=item.actions.filter(i =>(i.assignee || i.status=="open"));
+        item.actions=sortBy(item.actions, ite=>ite.when).reverse();
+        if(item.actions[0].assignee==userInfo.id || item.actions[0].assignee==userInfo.uuid)
+        {
+          selectedComplaints.push(item.actions[0].businessKey);
+        }
+      });
+//alert(selectedComplaints.length);
+payload.services=payload.services.filter(item => selectedComplaints.includes(item.serviceRequestId));
+payload.actionHistory=payload.actionHistory.filter(item => selectedComplaints.includes(item.actions[0].businessKey));
+        }
       dispatch(complaintFetchComplete(payload, overWrite));
     } catch (error) {
       dispatch(complaintFetchError(error.message));

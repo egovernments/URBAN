@@ -66,6 +66,9 @@
   min-width: 80%;
   position: absolute;
   z-index: 1900;
-  height: 150px;
-  max-height: 150px;
-  overflow-y: auto; }
+  height: 290px;
+  max-height: 290px;
+  overflow-y: hidden !important; }
+
+#material-ui-cardContent {
+  overflow: visible !important; }

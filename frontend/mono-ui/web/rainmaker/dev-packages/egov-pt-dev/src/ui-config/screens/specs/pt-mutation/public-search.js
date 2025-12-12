@@ -23,20 +23,12 @@ const getMDMSData = async dispatch => {
       tenantId: commonConfig.tenantId,
       moduleDetails: [
         {
-          "moduleName": "PropertyTax",
-          "masterDetails": [
-
+          moduleName: "tenant",
+          masterDetails: [
             {
-              "name": "UpdateNumber"
-            }
-          ]
-        }, {
-          "moduleName": "tenant",
-          "masterDetails": [
-            {
-              "name": "tenants"
+              name: "tenants"
             },
-            { "name": "citymodule" }
+            { name: "citymodule" }
           ]
         }
       ]
@@ -69,7 +61,8 @@ const screenConfig = {
     //   resetFields(state, dispatch);
     setModule(getModuleName());
     const tenantId = getTenantId();
-    // dispatch(fetchLocalizationLabel(getLocale(), tenantId, tenantId));
+    const default_language  = getLocale() ? getLocale(): "en_IN"
+    // dispatch(fetchLocalizationLabel(default_language, getTenantId(), getTenantId()));
     getMDMSData(dispatch);
 
     return action;
@@ -92,11 +85,6 @@ const screenConfig = {
         //     msevaLogo: msevaLogo
         //   }
         // },
-          linkComponent: {
-            uiFramework: "custom-atoms-local",
-            componentPath: "LinkComponent",
-            moduleName: "egov-pt",
-          },
         searchPropertyDetails,
         breakAfterSearch3: getBreak(),
         searchPropertyTable,

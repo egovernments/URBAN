@@ -14,7 +14,7 @@ export const COMPLAINT = {
 
 export const DRAFTS = {
   GET: {
-    URL: "property-services/drafts/_search",
+    URL: "pt-services-v2/drafts/_search",
     ACTION: "_search",
   },
 };
@@ -118,24 +118,6 @@ export const ACTIONMENU = {
     ACTION: "_get",
   },
 };
-export const INBOXRECORDS = {
-  GET: {
-    URL: "/egov-workflow-v2/egov-wf/process/_search",
-    ACTION: "_search",
-  },
-};
-export const INBOXRECORDSCOUNT = {
-  GET: {
-    URL: "/egov-workflow-v2/egov-wf/process/_count",
-    ACTION: "_get",
-  },
-};
-export const INBOXESCALTEDRECORDS = {
-  GET: {
-    URL: "/egov-workflow-v2/egov-wf/escalate/_search",
-    ACTION: "_search",
-  },
-};
 
 export const PROPERTY = {
   GET: {
@@ -146,7 +128,7 @@ export const PROPERTY = {
 
 export const DRAFT = {
   GET: {
-    URL: "/property-services/drafts/_search",
+    URL: "/pt-services-v2/drafts/_search",
     ACTION: "_get",
   },
 };

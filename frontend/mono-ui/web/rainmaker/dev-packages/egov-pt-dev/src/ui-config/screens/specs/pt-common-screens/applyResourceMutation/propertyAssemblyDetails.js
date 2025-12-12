@@ -21,7 +21,7 @@ const rendersubUsageType = (usageType, propType, dispatch, state) => {
     );
     const additionalDetailsJson = "components.div.children.formwizardFirstStep.children.propertyAssemblyDetails.children.cardContent.children.propertyAssemblyDetailsContainer.children.subUsageType";
 
-    let subUsage;
+    let subUsage;
     if (propertyType === "BUILTUP.SHAREDPROPERTY" || propertyType === "BUILTUP.INDEPENDENTPROPERTY") {
         if (usageType === "NONRESIDENTIAL.COMMERCIAL" || usageType === "NONRESIDENTIAL.INDUSTRIAL" || usageType === "NONRESIDENTIAL.INSTITUTIONAL") {
             dispatch(handleField('register-property', additionalDetailsJson, "visible", true));
@@ -44,29 +44,29 @@ const rendersubUsageType = (usageType, propType, dispatch, state) => {
         dispatch(handleField('register-property', additionalDetailsJson, "props.visible", false));
     }
 
-    //   if (propertyType === "BUILTUP.SHAREDPROPERTY") {
-    //     dispatch(handleField('register-property', additionalDetailsJson, "required", true));
-    //     dispatch(handleField('register-property', additionalDetailsJson, "props.required", true))
+//   if (propertyType === "BUILTUP.SHAREDPROPERTY") {
+//     dispatch(handleField('register-property', additionalDetailsJson, "required", true));
+//     dispatch(handleField('register-property', additionalDetailsJson, "props.required", true))
 
-    //     if (usageType === "MIXED") {
-    //       subUsage = subTypeValues;
-    //     } else {
-    //       subUsage = subTypeValues.filter(cur => {
-    //         return (cur.code.startsWith(usageType))
-    //       })
-    //     }
-    //   } else {
-    //     subUsage = [];
-    //     set(state.screenConfiguration.preparedFinalObject,"Property.subUsageCategory", "");
-    //     dispatch(handleField('register-property', additionalDetailsJson, "required", false));
-    //     dispatch(handleField('register-property', additionalDetailsJson, "props.required", false));
-    //   }
-    dispatch(
-        prepareFinalObject(
-            "propsubusagetypeForSelectedusageCategory",
-            subUsage
-        )
-    )
+//     if (usageType === "MIXED") {
+//       subUsage = subTypeValues;
+//     } else {
+//       subUsage = subTypeValues.filter(cur => {
+//         return (cur.code.startsWith(usageType))
+//       })
+//     }
+//   } else {
+//     subUsage = [];
+//     set(state.screenConfiguration.preparedFinalObject,"Property.subUsageCategory", "");
+//     dispatch(handleField('register-property', additionalDetailsJson, "required", false));
+//     dispatch(handleField('register-property', additionalDetailsJson, "props.required", false));
+//   }
+  dispatch(
+    prepareFinalObject(
+      "propsubusagetypeForSelectedusageCategory",
+      subUsage
+    )
+  )
 
 }
 
@@ -195,6 +195,22 @@ export const propertyAssemblyDetails = getCommonCard({
                 rendersubUsageType(action.value, propType, dispatch, state)
             }
         },
+        surveyid: getTextField({
+            label: {
+                labelName: "Enter Survey Id/UID",
+                labelKey: "Enter Survey Id/UID"
+            },
+            props: {
+            },
+            placeholder: {
+                labelName: "Enter Survey Id/UID",
+                labelKey: "Enter Survey Id/UID"
+            },
+            required: process.env.REACT_APP_NAME === "Citizen" ? false : true,
+            pattern: /^[0-9]\d{0,9}(\.\d{1,3})?%?$/,
+            errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+            jsonPath: "Property.surveyId"
+        }),
         subUsageType: {
             uiFramework: "custom-containers-local",
             moduleName: "egov-pt",
@@ -229,5 +245,5 @@ export const propertyAssemblyDetails = getCommonCard({
                 md: 6
             },
         },
-    })
+    })  
 });

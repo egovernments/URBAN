@@ -115,10 +115,6 @@ export const scrutinySummary = getCommonGrayCard({
                 labelKey: "BPA_BASIC_DETAILS_RISK_TYPE_LABEL"
             },
             {
-                localePrefix: {
-                    moduleName: "WF",
-                    masterName: "BPA"
-                  },
                 jsonPath: "BPA.riskType",
                 callBack: checkValueForNA
             }
@@ -370,14 +366,14 @@ export const scrutinySummary = getCommonGrayCard({
                                         className: "mymuitable",
                                         jsonPath: "edcr.blockDetail[0].blocks",
                                         style: { marginBottom: 20 },
-                                        columns: [
-                                            { key: "Floor Description", name: "BPA_COMMON_TABLE_COL_FLOOR_DES"},
-                                            { key: "Level", name: "BPA_COMMON_TABLE_COL_FLOOR_LEVEL"},
-                                            { key: "Occupancy/Sub Occupancy", name: "BPA_COMMON_TABLE_COL_OCCUP"},
-                                            { key: "Buildup Area", name: "BPA_COMMON_TABLE_COL_BUILD_AREA"},
-                                            { key: "Floor Area", name: "BPA_COMMON_TABLE_COL_FLOOR_AREA"},
-                                            { key: "Carpet Area", name: "BPA_COMMON_TABLE_COL_CARPET_AREA"}
-                                        ],
+                                        columns: {
+                                            "Floor Description": {},
+                                            "Level": {},
+                                            "Occupancy/Sub Occupancy": {},
+                                            "Buildup Area": {},
+                                            "Floor Area": {},
+                                            "Carpet Area": {},
+                                        },
                                         title: "",
                                         options: {
                                             filterType: "dropdown",

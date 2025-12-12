@@ -3,14 +3,10 @@ import { initLocalizationLabels } from "egov-ui-kit/redux/app/utils";
 import { getTranslatedLabel } from "egov-ui-kit/utils/commons";
 import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
+import { convertLocalDate } from "egov-ui-kit/utils/commons";
 import React from "react";
 import PropertyInfoCard from "../PropertyInfoCard";
-import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons.js";
 
-
-const checkNA = (val = '') => {
-  return val != null && val ? `${val}` : 'NA';
-}
 const locale = getLocale() || "en_IN";
 const localizationLabelsData = initLocalizationLabels(locale);
 
@@ -18,7 +14,7 @@ const transform = (floor, key, generalMDMSDataById, propertyDetails) => {
   const { propertySubType, usageCategoryMajor } = propertyDetails;
   const { masterName, dataKey } = key;
   if (!masterName) {
-    return floor["occupancyType"] === "RENTED" ? `INR ${floor["arv"]}` : `${Math.round(floor[dataKey] * 100) / 100} sq yards`;
+    return floor["occupancyType"] === "RENTED" || floor["occupancyType"] === "PG" ? `INR ${floor["arv"]}` : `${Math.round(floor[dataKey] * 100) / 100} sq yards`;
   } else {
     if (floor[dataKey]) {
       if (dataKey === "usageCategoryDetail") {
@@ -44,9 +40,9 @@ const transform = (floor, key, generalMDMSDataById, propertyDetails) => {
 
 export const getBuildingTypeInfo = (generalMDMSDataById, propertyDetails) => {
   if (!generalMDMSDataById) {
-    return propertyDetails.propertySubType ? propertyDetails.propertySubType : propertyDetails.propertyType ? getLocaleLabels(`PROPERTYTAX_BILLING_SLAB_${propertyDetails.propertyType}`, `PROPERTYTAX_BILLING_SLAB_${propertyDetails.propertyType}`) : getLocaleLabels('NA','NA');
+    return propertyDetails.propertySubType && propertyDetails.propertySubType !="NA" ? propertyDetails.propertySubType : propertyDetails.propertyType && propertyDetails.propertyType != "NA" ? propertyDetails.propertyType : 'NA';
   } else {
-    return getLocaleLabels(`PROPERTYTAX_BILLING_SLAB_${get(generalMDMSDataById, `PropertySubType.${propertyDetails.propertySubType}.code`, get(generalMDMSDataById, `PropertyType.${propertyDetails.propertyType}.code`, "NA"))}`, `PROPERTYTAX_BILLING_SLAB_${get(generalMDMSDataById, `PropertySubType.${propertyDetails.propertySubType}.code`, get(generalMDMSDataById, `PropertyType.${propertyDetails.propertyType}.code`, "NA"))}`)
+    return get(generalMDMSDataById, `PropertySubType.${propertyDetails.propertySubType}.name`, get(generalMDMSDataById, `PropertyType.${propertyDetails.propertyType}.name`, "NA"))
   }
 }
 
@@ -56,7 +52,7 @@ export const getUsageTypeInfo = (propertyDetails) => {
 
 export const getPlotSizeInfo = (propertyDetails) => {
   return propertyDetails.propertySubType === "SHAREDPROPERTY"
-    ? checkNA(propertyDetails.landArea) : propertyDetails.uom ? `${propertyDetails.landArea} ${propertyDetails.uom}` : `${Math.round(propertyDetails.landArea * 100) / 100} sq yards`;
+    ? "NA" : propertyDetails.uom ? `${propertyDetails.landArea} ${propertyDetails.uom}` : `${Math.round(propertyDetails.landArea * 100) / 100} sq yards`;
 }
 
 export const getRainWaterHarvestingInfo = (properties) => {
@@ -68,7 +64,7 @@ export const getaddressPropertyEntryTypeInfo = (properties) => {
 }
 
 export const getUnitUsageTypeInfo = (unit, propertyDetails) => {
-  return unit && unit.usageCategoryMinor ? getTranslatedLabel('PROPERTYTAX_BILLING_SLAB_' + unit && unit.usageCategoryMinor, localizationLabelsData) : (propertyDetails && propertyDetails.usageCategoryMinor ? getTranslatedLabel('PROPERTYTAX_BILLING_SLAB_' + propertyDetails && propertyDetails.usageCategoryMinor, localizationLabelsData) :
+  return unit && unit.usageCategoryMinor && unit.usageCategoryMinor !="NA" ? getTranslatedLabel('PROPERTYTAX_BILLING_SLAB_' + unit && unit.usageCategoryMinor, localizationLabelsData) : (propertyDetails && propertyDetails.usageCategoryMinor && propertyDetails.usageCategoryMinor != "NA" ? getTranslatedLabel('PROPERTYTAX_BILLING_SLAB_' + propertyDetails && propertyDetails.usageCategoryMinor, localizationLabelsData) :
     (unit && unit.usageCategoryMajor ? getTranslatedLabel('PROPERTYTAX_BILLING_SLAB_' + unit && unit.usageCategoryMajor, localizationLabelsData) : "NA"));
 }
 
@@ -107,16 +103,16 @@ export const getAssessmentInfo = (propertyDetails, generalMDMSDataById, properti
           value: noOfFloors ? `${noOfFloors}` : "NA", //noOfFloors
           oldValue: oldPropertydetails && oldPropertydetails.noOfFloors ? `${noOfFloors}` : "NA"
         },
-      {
-        key: getTranslatedLabel("PT_COMMONS_IS_RAINWATER_HARVESTING", localizationLabelsData),
-        value: getRainWaterHarvestingInfo(properties),
-        oldValue: OldProperty && getRainWaterHarvestingInfo(OldProperty),
-      },
-      process.env.REACT_APP_NAME !== "Citizen" ? {
-        key: getTranslatedLabel("PT_PROPERTY_ADDRESS_ENTRY_TYPE", localizationLabelsData),
-        value: getaddressPropertyEntryTypeInfo(properties),
-        oldValue: OldProperty && getaddressPropertyEntryTypeInfo(OldProperty),
-      } : "",
+      // {
+      //   key: getTranslatedLabel("PT_COMMONS_IS_RAINWATER_HARVESTING", localizationLabelsData),
+      //   value: getRainWaterHarvestingInfo(properties),
+      //   oldValue: OldProperty && getRainWaterHarvestingInfo(OldProperty),
+      // },
+      // process.env.REACT_APP_NAME !== "Citizen" ? {
+      //   key: getTranslatedLabel("PT_PROPERTY_ADDRESS_ENTRY_TYPE", localizationLabelsData),
+      //   value: getaddressPropertyEntryTypeInfo(properties),
+      //   oldValue: OldProperty && getaddressPropertyEntryTypeInfo(OldProperty),
+      // } : "",
     ]
   );
 };
@@ -139,14 +135,30 @@ export const getUnitInfo = (units = [], propertyDetails, oldPropertydetails) => 
       }, {
 
         key: getTranslatedLabel("PT_FORM2_BUILT_AREA", localizationLabelsData),
-        value: unit.unitArea ? unit.unitArea + '' : "NA",
+        value: unit.unitArea ? Math.round(unit.unitArea) + '' : "NA",
         oldValue: oldPropertydetails && oldPropertydetails.units && oldPropertydetails.units[index] && (`${Math.round(oldPropertydetails.units[index].unitArea * 9 * 100) / 100}`) || "NA",
+      },
+      {
+        key: getTranslatedLabel("PT_FLOOR_NO", localizationLabelsData),
+        value: units.length>0? `${unit.floorNo}` : "NA",
       }];
-      if (unit.occupancyType === "RENTED") {
+      if (unit.occupancyType === "RENTED" || unit.occupancyType === "PG" ) {
         floor.push({
           key: getTranslatedLabel("PT_FORM2_TOTAL_ANNUAL_RENT", localizationLabelsData),
           value: unit.arv ? unit.arv + '' : "NA",
           oldValue: oldPropertydetails && oldPropertydetails.units && oldPropertydetails.units[index] && (oldPropertydetails.units[index].arv + '') || "NA",
+        })
+
+        floor.push({
+          key: "Months on Rent",
+          value:unit.additionalDetails && unit.additionalDetails.rentedformonths ? unit.additionalDetails.rentedformonths + '' : "NA",
+          oldValue: oldPropertydetails && oldPropertydetails.units && oldPropertydetails.units[index] && ((oldPropertydetails.units[index].additionalDetails?oldPropertydetails.units[index].additionalDetails.rentedformonths:"NA") + '') || "NA",
+        })
+
+        floor.push({
+          key: "Usage for Pending Months",
+          value:unit.additionalDetails && unit.additionalDetails.usageForDueMonths ? unit.additionalDetails.usageForDueMonths + '' : "NA",
+          oldValue: oldPropertydetails && oldPropertydetails.units && oldPropertydetails.units[index] && ((oldPropertydetails.units[index].additionalDetails?oldPropertydetails.units[index].additionalDetails.usageForDueMonths:"NA") + '') || "NA",
         })
       }
       if (!floors[unit['floorNo']]) {
@@ -159,11 +171,56 @@ export const getUnitInfo = (units = [], propertyDetails, oldPropertydetails) => 
   )
   return floors;
 }
+const getVasikaItems = (additionalDetails) => {
+var vasika_date =(additionalDetails && additionalDetails.vasikaDate)? convertLocalDate( additionalDetails.vasikaDate):null;
+ var allotment_date =(additionalDetails && additionalDetails.allotmentDate)? convertLocalDate( additionalDetails.allotmentDate):null;
 
+  return (
+    additionalDetails && [
+          ...(process.env.REACT_APP_NAME !== "Citizen" ? [
+            {
+              key: "PT_COMMON_VASIKA_NO",
+              value:  additionalDetails.vasikaNo || "NA",
+            },
+            {
+              key: "PT_COMMON_VASIKA_DATE",
+              value: vasika_date ? `${vasika_date}` : "NA",
+            },
+            {
+              key: "PT_COMMON_ALLOTMENT_NO",
+              value:  additionalDetails.allotmentNo || "NA",
+            },
+            {
+              key: "PT_COMMON_ALLOTMENT_DATE",
+              value: allotment_date ? `${allotment_date}` : "NA",
+            }
+          ] : []),
+          {
+            key: "PT_COMMON_BUSSINESS_NAME",
+            value:  additionalDetails.businessName || "NA",
+          },
+          {
+            key: "PT_COMMON_REMARKS",
+            value:  additionalDetails.remrks || "NA",
+          },
+          {
+            key: "PT_COMMON_INFLAMMABLE_MATERIAL_PROPERTY",
+            value:  additionalDetails.inflammable === true ? "Yes" : "No",
+          },
+          {
+            key: "PT_COMMON_HEIGHT_OF_PROPERTY",
+            value: additionalDetails.heightAbove36Feet=== true ? "Yes" : "No",
+          },
+          
+
+        ]
+      );
+}
 const AssessmentInfo = ({ properties, editIcon, generalMDMSDataById, OldProperty }) => {
   let hideSubsectionLabel = false;
   let assessmentItems = [];
   let subUnitItems = [];
+  let subVasikaItems = [];
   let oldPropertydetails = '';
   const header = 'PT_ASSESMENT_INFO_SUB_HEADER';
   if (OldProperty && Object.keys(OldProperty).length > 0) {
@@ -171,8 +228,10 @@ const AssessmentInfo = ({ properties, editIcon, generalMDMSDataById, OldProperty
   }
   if (properties) {
     const { propertyDetails } = properties;
-    if (propertyDetails && propertyDetails.length > 0) {
+    const { additionalDetails } = properties;
+    if (propertyDetails && propertyDetails.length > 0 && propertyDetails[0] !=null) {
       subUnitItems = getUnitInfo(propertyDetails[0]['units'], propertyDetails[0], oldPropertydetails);
+      subVasikaItems = getVasikaItems(additionalDetails);
       assessmentItems = getAssessmentInfo(propertyDetails[0], generalMDMSDataById, properties, oldPropertydetails, OldProperty);
       if (propertyDetails[0].propertySubType === "SHAREDPROPERTY") {
         hideSubsectionLabel = true;
@@ -181,7 +240,7 @@ const AssessmentInfo = ({ properties, editIcon, generalMDMSDataById, OldProperty
   }
 
   return (
-    <PropertyInfoCard editIcon={editIcon} items={assessmentItems} header={header} subSection={subUnitItems} hideSubsectionLabel={hideSubsectionLabel} ></PropertyInfoCard>
+    <PropertyInfoCard editIcon={editIcon} items={assessmentItems} header={header} items2={subVasikaItems} subSection={subUnitItems} hideSubsectionLabel={hideSubsectionLabel} ></PropertyInfoCard>
   );
 };
 

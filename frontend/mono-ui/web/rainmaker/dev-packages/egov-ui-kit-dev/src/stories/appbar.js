@@ -54,7 +54,7 @@ storiesOf("AppBar", module)
       <br />
       <div>
         For more props information please visit{" "}
-        <a href="http://www.material-ui.com/#/components/app-bar" target="_blank"  rel="noopener noreferrer">
+        <a href="http://www.material-ui.com/#/components/app-bar" target="_blank">
           AppBar
         </a>
       </div>

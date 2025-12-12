@@ -22,8 +22,7 @@ import {
   getAppSearchResults,
   getNocSearchResults,
   prepareNOCUploadData,
-  nocapplicationUpdate,
-  getStakeHolderRoles
+  nocapplicationUpdate
 } from "../../../../ui-utils/commons";
 import "../egov-bpa/applyResource/index.css";
 import "../egov-bpa/applyResource/index.scss";
@@ -266,7 +265,7 @@ const setDownloadMenu = async (action, state, dispatch, applicationNumber, tenan
     for(let fee = 0; fee < businessServicesList.length; fee++ ) {
       let lowAppPaymentPayload = await httpRequest(
         "post",
-        getPaymentSearchAPI(businessServicesList[fee], true),
+        getPaymentSearchAPI(businessServicesList[fee]),
         "",
         queryObject
       );
@@ -331,8 +330,6 @@ const setDownloadMenu = async (action, state, dispatch, applicationNumber, tenan
   );
   /** END */
 };
-
-const stakeholerRoles = getStakeHolderRoles();
 
 const getRequiredMdmsDetails = async (state, dispatch) => {
   let mdmsBody = {
@@ -453,7 +450,7 @@ const setSearchResponse = async (
     let userInfo = JSON.parse(getUserInfo()), roles = get(userInfo, "roles"), isArchitect = false;
     if (roles && roles.length > 0) {
       roles.forEach(role => {
-        if (stakeholerRoles.includes(role.code)) {
+        if (role.code === "BPA_ARCHITECT") {
           isArchitect = true;
         }
       })
@@ -482,10 +479,11 @@ const setSearchResponse = async (
     let userInfo = JSON.parse(getUserInfo()),
       roles = get(userInfo, "roles"),
       owners = get(response.BPA["0"].landInfo, "owners"),
+      archtect = "BPA_ARCHITECT",
       isTrue = false, isOwner = true;
     if (roles && roles.length > 0) {
       roles.forEach(role => {
-        if (stakeholerRoles.includes(role.code)) {
+        if (role.code === archtect) {
           isTrue = true;
         }
       })
@@ -496,7 +494,7 @@ const setSearchResponse = async (
         if (owner.mobileNumber === userInfo.mobileNumber) {
           if (owner.roles && owner.roles.length > 0) {
             owner.roles.forEach(owrRole => {
-              if (stakeholerRoles.includes(owrRole.code)) {
+              if (owrRole.code === archtect) {
                 isOwner = false;
               }
             })

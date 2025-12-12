@@ -9,7 +9,7 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { httpRequest } from "egov-ui-framework/ui-utils/api.js";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons";
-import { getTenantId, getUserInfo, getAccessToken } from "egov-ui-kit/utils/localStorageUtils";
+import { getTenantId, getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import set from "lodash/set";
 import { edcrHttpRequest } from "../../../../ui-utils/api";
@@ -46,6 +46,7 @@ export const fetchData = async (
       }
     }
   } catch (error) {
+    console.log(error);
   }
 };
 
@@ -67,11 +68,6 @@ export const fetchDataForStakeHolder = async (
 
       let searchConvertedArray = [];
       response.edcrDetail.forEach(element => {
-        let planReportUrl = element.planReport;
-        let dxfFileurl = element.dxfFile;
-        let planReportUrlValue, dxfFileurlValue;
-        planReportUrlValue = (!planReportUrl.includes("https") && window.location.href.includes("https")) ? planReportUrl.replace(/http/g, "https") : planReportUrl;
-        dxfFileurlValue = (!dxfFileurl.includes("https") && window.location.href.includes("https")) ? dxfFileurl.replace(/http/g, "https") : dxfFileurl;
         searchConvertedArray.push({
           ["EDCR_COMMON_TABLE_APPL_NO"]: element.applicationNumber || "-",
           ["EDCR_COMMON_TABLE_SCRUTINY_NO"]: (element.edcrNumber === "null" ? "NA" : element.edcrNumber) || "NA",
@@ -80,8 +76,8 @@ export const fetchDataForStakeHolder = async (
           ["EDCR_COMMON_TABLE_COL_STATUS"]: element.status || "-",
           ["EDCR_DOWNLOAD_REPORT"]: getLocaleLabels("DOWNLOAD SCRUTINY REPORT", "EDCR_DOWNLOAD_REPORT"),
           ["EDCR_DOWNLOAD_BUILDING_PLAN"]: getLocaleLabels("DOWNLOAD BUILDING PLAN(DXF)", "EDCR_DOWNLOAD_BUILDING_PLAN"),
-          ["EDCR_DOWNLOAD_REPORT1"]: planReportUrlValue, //element.planReport,
-          ["EDCR_DOWNLOAD_BUILDING_PLAN1"]: dxfFileurlValue //element.dxfFile,
+          ["EDCR_DOWNLOAD_REPORT1"]: element.planReport,
+          ["EDCR_DOWNLOAD_BUILDING_PLAN1"]: element.dxfFile,
         })
       });
 
@@ -102,6 +98,7 @@ export const fetchDataForStakeHolder = async (
       );
     }
   } catch (error) {
+    console.log(error);
   }
 };
 
@@ -163,7 +160,7 @@ const moveToSuccess = (state, dispatch, edcrDetail, isOCApp) => {
 const getSearchResultsfromEDCR = async (action, state, dispatch) => {
   try {
     let EDCRHost = "";
-    const authToken = getAccessToken();
+
     const response = await axios.post(
       `${EDCRHost}/edcr/rest/dcr/scrutinydetails?tenantId=${getTenantId()}`,
       {
@@ -176,7 +173,7 @@ const getSearchResultsfromEDCR = async (action, state, dispatch) => {
           key: "",
           msgId: "gfcfc",
           correlationId: "wefiuweiuff897",
-          authToken: authToken,
+          authToken: "",
           userInfo: {
             id: userUUid,
             tenantId: userTenant
@@ -187,6 +184,7 @@ const getSearchResultsfromEDCR = async (action, state, dispatch) => {
     );
     return response.data;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -197,7 +195,6 @@ export const getSearchResultsfromEDCRWithApplcationNo = async (
 ) => {
   try {
     let EDCRHost = "";
-    const authToken = getAccessToken();
     const response = await axios.post(
       `${EDCRHost}/edcr/rest/dcr/scrutinydetails?tenantId=${tenantId}&transactionNumber=${applicationNumber}`,
       {
@@ -210,7 +207,7 @@ export const getSearchResultsfromEDCRWithApplcationNo = async (
           key: "",
           msgId: "gfcfc",
           correlationId: "wefiuweiuff897",
-          authToken: authToken,
+          authToken: "",
           userInfo: {
             id: userUUid,
             tenantId: userTenant
@@ -221,6 +218,7 @@ export const getSearchResultsfromEDCRWithApplcationNo = async (
     );
     return response;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
@@ -287,13 +285,13 @@ const scrutinizePlan = async (state, dispatch) => {
     var bodyFormData = new FormData();
     bodyFormData.append("edcrRequest", JSON.stringify(edcrRequest));
     bodyFormData.append("planFile", file);
-    const authToken = getAccessToken();
+
 
     let response = await axios({
       method: "post",
       url: url,
       data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data", "auth-token": authToken }
+      headers: { "Content-Type": "multipart/form-data" }
     });
     if (response) {
       let { data } = response;
@@ -306,6 +304,7 @@ const scrutinizePlan = async (state, dispatch) => {
   } catch (e) {
     dispatch(toggleSnackbar(true, { labelName: e.message }, "error"));
     dispatch(toggleSpinner());
+    console.log(e);
   }
 };
 
@@ -409,6 +408,7 @@ export const getMdmsData = async () => {
     );
     return payload;
   } catch (e) {
+    console.log(e);
   }
 };
 
@@ -464,6 +464,7 @@ export const getMdmsDataForOc = async () => {
     );
     return payload;
   } catch (e) {
+    console.log(e);
   }
 };
 

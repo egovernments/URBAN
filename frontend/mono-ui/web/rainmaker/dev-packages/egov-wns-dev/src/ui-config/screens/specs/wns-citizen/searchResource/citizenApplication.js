@@ -11,6 +11,9 @@ import {
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { searchApiCall } from "./functions";
 import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+const WSlink =() =>{
+    window.open("http://lgpunjab.gov.in/cms/apply-new-connection.php");
+}
 const resetFields = (state, dispatch) => {
     dispatch(
         handleField(
@@ -53,13 +56,49 @@ const resetFields = (state, dispatch) => {
         )
     );
 };
+
 export const citizenApplication = getCommonCard({
+    buttonn: getCommonContainer({
+        buttonContainer: getCommonContainer({
+            resetButton: {
+                componentPath: "Button",
+                gridDefination: {
+                    xs: 12,
+                    sm: 12
+                },
+                props: {
+                    variant: "outlined",
+                    style: {
+                         color: "#28292991",
+                         width: "721px",
+                         border: "none",
+                         position: "fixed",
+                         left: "119px",
+                         top: "115px",
+                         "text-transform": "none",
+                    }
+                },
+                children: {
+                    buttonLabel: getLabel({
+                        labelKey: "Towns other than Fazilka can click here to apply new water sewerage connection"
+                    })
+                },
+                onClickDefination: {
+                    action: "condition",
+                    callBack: WSlink
+                }
+            },
+           
+        })
+    }),
     subHeader: getCommonTitle({
         labelKey: "WS_SEARCH_CONNECTION_SUB_HEADER"
     }),
+    
     subParagraph: getCommonParagraph({
         labelKey: "WS_HOME_SEARCH_CONN_RESULTS_DESC"
     }),
+    
     cityPropertyAndMobNumContainer: getCommonContainer({
         city: {
             uiFramework: "custom-containers-local",
@@ -79,16 +118,19 @@ export const citizenApplication = getCommonCard({
               localePrefix: {
                 moduleName: "TENANT",
                 masterName: "TENANTS"
-              },
-              required: true,
-              isClearable: true,
-              labelsFromLocalisation: true,
-              jsonPath: "searchScreen.tenantId",
-              sourceJsonPath: "applyScreenMdmsData.tenant.tenants",
             },
             required: true,
-            gridDefination: { xs: 12, sm: 4 },
-          },
+            isClearable: true,
+            labelsFromLocalisation: true,
+            jsonPath: "searchScreen.tenantId",
+            sourceJsonPath: "applyScreenMdmsData.tenant.waterSewerage",
+            
+            },
+            gridDefination: {
+                xs: 12,
+                sm: 4
+            }
+        },
         propertyid: getTextField({
             label: {
                 labelKey: "WS_PROPERTY_ID_LABEL"
@@ -153,7 +195,7 @@ export const citizenApplication = getCommonCard({
                 sm: 4
             },
             required: false,
-            pattern: /^[a-zA-Z0-9-]*$/i,
+            // pattern: /^[a-zA-Z0-9-]*$/i,
             errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
             jsonPath: "searchScreen.oldConnectionNumber"
         }),        

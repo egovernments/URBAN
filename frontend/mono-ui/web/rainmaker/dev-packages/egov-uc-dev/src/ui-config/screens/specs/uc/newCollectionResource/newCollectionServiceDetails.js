@@ -1,4 +1,3 @@
-import commonConfig from "config/common.js";
 import {
   getCommonCard,
   getCommonContainer,
@@ -13,6 +12,7 @@ import { getTransformedLocale } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import find from "lodash/find";
 import get from "lodash/get";
+import "./index.css";
 import { setServiceCategory } from "../../utils";
 const tenantId = getTenantId();
 
@@ -68,7 +68,7 @@ export const newCollectionServiceDetailsCard = getCommonCard(
 
             let requestBody = {
               MdmsCriteria: {
-                tenantId: commonConfig.tenantId,
+                tenantId: action.value.split(".")[0],
                 moduleDetails: [
                   {
                     moduleName: "BillingService",
@@ -226,7 +226,7 @@ export const newCollectionServiceDetailsCard = getCommonCard(
             const serviceData = get(
               state.screenConfiguration,
               "preparedFinalObject.applyScreenMdmsData.nestedServiceData",
-              { }
+              {}
             );
             if (action.value) {
 
@@ -382,7 +382,18 @@ export const newCollectionServiceDetailsCard = getCommonCard(
           labelKey: "UC_COMMENT_PLACEHOLDER",
         },
         Required: false,
+        maxLength: 512,
         jsonPath: "Challan[0].description",
+        afterFieldChange: async (action, state, dispatch) => {
+
+          if (action.value) {
+            if(action.value.length >512){
+            alert("Please add comments less than 512 characters!!");
+            action.value="";
+            }
+        
+          }
+        },
       }),
     }),
   },
@@ -397,7 +408,7 @@ const setTaxHeadFields = (action, state, dispatch) => {
   const taxHeadMasters = get(
     state.screenConfiguration,
     "preparedFinalObject.applyScreenMdmsData.BillingService.TaxHeadMaster",
-    { }
+    {}
   );
   const matchingTaxHeads = taxHeadMasters.filter(
     (item) => item.service === action.value
@@ -412,7 +423,7 @@ const setTaxHeadFields = (action, state, dispatch) => {
     const taxFields = get(
       state.screenConfiguration,
       "screenConfig.newCollection.components.div.children.newCollectionServiceDetailsCard.children.cardContent.children.searchContainer.children",
-      { }
+      {}
     );
     const taxFieldKeys = Object.keys(taxFields).filter((item) =>
       item.startsWith("taxheadField_")

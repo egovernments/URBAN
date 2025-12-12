@@ -9,8 +9,8 @@ import { getCommonTenant } from "egov-ui-kit/utils/PTCommon/FormWizardUtils/form
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import orderby from "lodash/orderBy";
-import { downloadConReceipt } from "egov-common/ui-utils/commons";
 import * as actionTypes from "./actionTypes";
+import { convertEpochToDate } from "egov-ui-framework/ui-config/screens/specs/utils";
 
 const reset_property_reset = () => {
   return {
@@ -249,6 +249,7 @@ const fetchMohalla = (queryObj) => {
       }
       dispatch(mohallaFetchComplete(mergedMohallas));
     } catch (e) {
+      console.log(e);
     }
   };
 };
@@ -680,11 +681,306 @@ export const getFileUrlFromAPI = async fileStoreId => {
     );
     return fileUrl;
   } catch (e) {
+    console.log(e);
   }
 };
 
-/* Download Receipt using PDF service */
-/* export const downloadReceipt = (receiptQueryString) => {
+export const downloadReceiptpt = (receiptQueryString) => {
+  return async (dispatch) => {
+   
+    if (receiptQueryString) { 
+      let businessService = '';
+      receiptQueryString && Array.isArray(receiptQueryString) && receiptQueryString.map(query => {
+        if (query.key == "businessService") {
+          businessService = query.value;}  });
+          receiptQueryString = receiptQueryString && Array.isArray(receiptQueryString) && receiptQueryString.filter(query => query.key != "businessService")
+
+          const FETCHASSESSMENTDETAILS = {
+            GET: {
+              URL: "/property-services/assessment/_search",
+              ACTION: "_get",
+            },
+          };
+      // dispatch(downloadReceiptPending()); const responseForPT =  await httpRequest("post", FETCHPROPERTYDETAILS.GET.URL, FETCHPROPERTYDETAILS.GET.ACTION,queryObjectForPT);
+      const FETCHPROPERTYDETAILS = {
+        GET: {
+          URL: "/property-services/property/_search",
+          ACTION: "_get",
+        },
+      };
+      const USER = {
+        SEARCH: {
+          URL: "/user/_search",
+          ACTION: "search",
+        },
+      };
+
+      try {
+        const payloadReceiptDetails = await httpRequest(getPaymentSearchAPI(businessService), FETCHRECEIPT.GET.ACTION, receiptQueryString);
+
+        let queryObjectForPT = [
+          { key: "tenantId", value:receiptQueryString[1].value},
+          { key: "propertyIds", value: payloadReceiptDetails.Payments[0].paymentDetails[0].bill.consumerCode}
+        ];
+        const responseForPT =  await httpRequest(FETCHPROPERTYDETAILS.GET.URL, FETCHPROPERTYDETAILS.GET.ACTION,queryObjectForPT);
+        const responseForAssessment = await httpRequest(FETCHASSESSMENTDETAILS.GET.URL, FETCHASSESSMENTDETAILS.GET.ACTION,queryObjectForPT);
+
+  let uuid=responseForPT && responseForPT.Properties[0]?responseForPT.Properties[0].auditDetails.lastModifiedBy:null;
+  let data = {};
+  let bodyObject = {
+    uuid: [uuid]
+  };
+  let responseForUser= await httpRequest(USER.SEARCH.URL, USER.SEARCH.ACTION,null, bodyObject);
+
+  let lastmodifier=responseForUser && responseForUser.user[0]?responseForUser.user[0].name:null;
+        const oldFileStoreId=get(payloadReceiptDetails.Payments[0],"fileStoreId");
+        const businessModule=get(payloadReceiptDetails.Payments[0].paymentDetails[0],"businessService");
+        console.log("businee serice"+ businessModule);
+
+        let assessmentYear="",assessmentYearForReceipt ="";
+      let count=0;
+      if(payloadReceiptDetails.Payments[0].paymentDetails[0].businessService=="PT"){
+        let reasonss = null;
+        let adhocPenaltyReason=null,adhocRebateReason=null;
+       if(responseForAssessment && responseForAssessment.Assessments.length>0 && responseForAssessment.Assessments[0].additionalDetails)
+          {
+            adhocPenaltyReason = responseForAssessment.Assessments[0].additionalDetails.adhocPenaltyReason?responseForAssessment.Assessments[0].additionalDetails.adhocPenaltyReason:'NA';
+           adhocRebateReason = responseForAssessment.Assessments[0].additionalDetails.adhocExemptionReason?responseForAssessment.Assessments[0].additionalDetails.adhocExemptionReason:'NA';
+          }
+          reasonss = {
+            "adhocPenaltyReason": adhocPenaltyReason,
+            "adhocRebateReason":adhocRebateReason,
+            "lastModifier":lastmodifier
+            }
+        payloadReceiptDetails.Payments[0].paymentDetails[0].bill.additionalDetails=reasonss; 
+          let arrearRow={};  let arrearArray=[];
+          let taxRow={};  let taxArray=[];
+          
+          let roundoff=0,tax=0,firecess=0,cancercess=0,penalty=0,rebate=0,interest=0,usage_exemption=0,special_category_exemption=0,adhoc_penalty=0,adhoc_rebate=0,total=0;
+          let roundoffT=0,taxT=0,firecessT=0,cancercessT=0,penaltyT=0,rebateT=0,interestT=0,usage_exemptionT=0,special_category_exemptionT=0,adhoc_penaltyT=0,adhoc_rebateT=0,totalT=0;
+
+          payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails.map(element => {
+
+          if(element.amount >0 || element.amountPaid>0)
+          { count=count+1;
+            totalT=0;
+            let toDate=convertEpochToDate(element.toPeriod).split("/")[2];
+            let fromDate=convertEpochToDate(element.fromPeriod).split("/")[2];
+            assessmentYear=assessmentYear==""?fromDate+"-"+toDate+"(Rs."+element.amountPaid+")":assessmentYear+","+fromDate+"-"+toDate+"(Rs."+element.amountPaid+")";
+         assessmentYearForReceipt=fromDate+"-"+toDate;
+         rebate=0;
+         rebateT=0;
+         interest=0;
+         interestT=0;
+         penalty=0;
+         penaltyT=0;
+    element.billAccountDetails.map(ele => {
+    if(ele.taxHeadCode == "PT_TAX")
+    {tax=ele.adjustedAmount;
+      taxT=ele.amount}
+    else if(ele.taxHeadCode == "PT_TIME_REBATE")
+    {rebate=ele.adjustedAmount;
+      rebateT=ele.amount;}
+    else if(ele.taxHeadCode == "PT_CANCER_CESS")
+    {cancercess=ele.adjustedAmount;
+    cancercessT=ele.amount;}
+    else if(ele.taxHeadCode == "PT_FIRE_CESS")
+    {firecess=ele.adjustedAmount;
+      firecessT=ele.amount;}
+    else if(ele.taxHeadCode == "PT_TIME_INTEREST")
+    {interest=ele.adjustedAmount;
+      interestT=ele.amount;}
+    else if(ele.taxHeadCode == "PT_TIME_PENALTY")
+    {penalty=ele.adjustedAmount;
+      penaltyT=ele.amount;}
+    else if(ele.taxHeadCode == "PT_OWNER_EXEMPTION")
+    {special_category_exemption=ele.adjustedAmount;
+      special_category_exemptionT=ele.amount;}	
+    else if(ele.taxHeadCode == "PT_ROUNDOFF")
+    {roundoff=ele.adjustedAmount;
+      roundoffT=ele.amount;}	
+    else if(ele.taxHeadCode == "PT_UNIT_USAGE_EXEMPTION")
+    {usage_exemption=ele.adjustedAmount;
+      usage_exemptionT=ele.amount;}	
+    else if(ele.taxHeadCode == "PT_ADHOC_PENALTY")
+    {adhoc_penalty=ele.adjustedAmount;
+      adhoc_penaltyT=ele.amount;}
+    else if(ele.taxHeadCode == "PT_ADHOC_REBATE")
+    {adhoc_rebate=ele.adjustedAmount;
+      adhoc_rebateT=ele.amount;}
+  
+    totalT=totalT+ele.amount;
+    });
+  arrearRow={
+  "year":assessmentYearForReceipt,
+  "tax":tax,
+  "firecess":firecess,
+  "cancercess":cancercess,
+  "penalty":penalty,
+  "rebate": rebate,
+  "interest":interest,
+  "usage_exemption":usage_exemption,
+  "special_category_exemption": special_category_exemption,
+  "adhoc_penalty":adhoc_penalty,
+  "adhoc_rebate":adhoc_rebate,
+  "roundoff":roundoff,
+  "total":element.amountPaid
+  };
+  taxRow={
+    "year":assessmentYearForReceipt,
+    "tax":taxT,
+    "firecess":firecessT,
+    "cancercess":cancercessT,
+    "penalty":penaltyT,
+    "rebate": rebateT,
+    "interest":interestT,
+    "usage_exemption":usage_exemptionT,
+    "special_category_exemption": special_category_exemptionT,
+    "adhoc_penalty":adhoc_penaltyT,
+    "adhoc_rebate":adhoc_rebateT,
+    "roundoff":roundoffT,
+    "total":element.amount
+    };
+    
+  arrearArray.push(arrearRow);
+  taxArray.push(taxRow);
+  
+            } 
+          });
+  
+        if(count==0){  total=0; totalT=0;
+          let index=payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails.length;
+          let toDate=convertEpochToDate( payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].toPeriod).split("/")[2];
+          let fromDate=convertEpochToDate( payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].fromPeriod).split("/")[2];
+          assessmentYear=assessmentYear==""?fromDate+"-"+toDate:assessmentYear+","+fromDate+"-"+toDate; 
+          assessmentYearForReceipt=fromDate+"-"+toDate;
+          payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].billAccountDetails.map(ele => {
+            rebate=0;
+            rebateT=0;
+            if(ele.taxHeadCode == "PT_TAX")
+            {tax=ele.adjustedAmount;
+              taxT=ele.amount}
+            else if(ele.taxHeadCode == "PT_TIME_REBATE")
+            {rebate=ele.adjustedAmount;
+              rebateT=ele.amount;}
+            else if(ele.taxHeadCode == "PT_CANCER_CESS")
+            {cancercess=ele.adjustedAmount;
+            cancercessT=ele.amount;}
+            else if(ele.taxHeadCode == "PT_FIRE_CESS")
+            {firecess=ele.adjustedAmount;
+              firecessT=ele.amount;}
+            else if(ele.taxHeadCode == "PT_TIME_INTEREST")
+            {interest=ele.adjustedAmount;
+              interestT=ele.amount;}
+            else if(ele.taxHeadCode == "PT_TIME_PENALTY")
+            {penalty=ele.adjustedAmount;
+              penaltyT=ele.amount;}
+            else if(ele.taxHeadCode == "PT_OWNER_EXEMPTION")
+            {special_category_exemption=ele.adjustedAmount;
+              special_category_exemptionT=ele.amount;}	
+            else if(ele.taxHeadCode == "PT_ROUNDOFF")
+            {roundoff=ele.adjustedAmount;
+              roundoffT=ele.amount;}	
+            else if(ele.taxHeadCode == "PT_UNIT_USAGE_EXEMPTION")
+            {usage_exemption=ele.adjustedAmount;
+              usage_exemptionT=ele.amount;}	
+            else if(ele.taxHeadCode == "PT_ADHOC_PENALTY")
+            {adhoc_penalty=ele.adjustedAmount;
+              adhoc_penaltyT=ele.amount;}
+            else if(ele.taxHeadCode == "PT_ADHOC_REBATE")
+            {adhoc_rebate=ele.adjustedAmount;
+              adhoc_rebateT=ele.amount;}
+          
+            total=total+ele.adjustedAmount;
+            totalT=totalT+ele.amount;
+
+            });
+          arrearRow={
+          "year":assessmentYearForReceipt,
+          "tax":tax,
+          "firecess":firecess,
+          "cancercess":cancercess,
+          "penalty":penalty,
+          "interest":interest,
+          "usage_exemption":usage_exemption,
+          "special_category_exemption": special_category_exemption,
+          "adhoc_penalty":adhoc_penalty,
+          "adhoc_rebate":adhoc_rebate,
+          "roundoff":roundoff,
+          "total": payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].amountPaid
+          };
+          taxRow={
+            "year":assessmentYearForReceipt,
+            "tax":taxT,
+            "firecess":firecessT,
+            "cancercess":cancercessT,
+            "penalty":penaltyT,
+            "rebate": rebateT,
+            "interest":interestT,
+            "usage_exemption":usage_exemptionT,
+            "special_category_exemption": special_category_exemptionT,
+            "adhoc_penalty":adhoc_penaltyT,
+            "adhoc_rebate":adhoc_rebateT,
+            "roundoff":roundoffT,
+            "total":payloadReceiptDetails.Payments[0].paymentDetails[0].bill.billDetails[0].amount
+            };
+           
+          arrearArray.push(arrearRow);
+          taxArray.push(taxRow);
+  }  
+  
+          const details = {
+        "assessmentYears": assessmentYear,
+        "arrearArray":arrearArray,
+        "taxArray": taxArray
+            }
+            payloadReceiptDetails.Payments[0].paymentDetails[0].additionalDetails=details; 
+        }
+     
+      const paymentStatus = get(payloadReceiptDetails.Payments[0], "paymentStatus")
+      if(oldFileStoreId && paymentStatus!="CANCELLED"){
+        downloadReceiptFromFilestoreID(oldFileStoreId,"download");
+      } 
+      else if(oldFileStoreId && paymentStatus=="CANCELLED"){
+        getFileUrlFromAPI(oldFileStoreId).then((fileRes) => {
+          if(fileRes&&fileRes[oldFileStoreId]){
+            var win = window.open(fileRes[oldFileStoreId], '_blank');
+            win.focus();
+          }
+            else{
+              
+              download(payloadReceiptDetails.Payments,receiptQueryString[1].value.split('.')[0],businessModule)
+            }
+        }); }
+     else{
+        const queryStrReceipt = [
+          { key: "key", value: "property-receipt" },
+          { key: "tenantId", value: receiptQueryString[1].value.split('.')[0]}
+        ]
+      
+        const queryStrConsltdReceipt = [
+          { key: "key", value: "consolidatedreceipt" },
+          { key: "tenantId", value: receiptQueryString[1].value.split('.')[0]}
+        ]
+        
+        let queryStr = businessModule === "PT" ?  queryStrReceipt: queryStrConsltdReceipt;
+    
+        httpRequest(DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Payments: payloadReceiptDetails.Payments }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
+        .then(res => {
+          getFileUrlFromAPI(res.filestoreIds[0]).then((fileRes) => {
+            var win = window.open(fileRes[res.filestoreIds[0]], '_blank');
+            win.focus();
+          });
+        });
+
+        }
+      } catch (error) {
+        dispatch(downloadReceiptError(error.message));
+      }
+    }
+  }
+}
+export const downloadReceipt = (receiptQueryString) => {
   return async (dispatch) => {
     if (receiptQueryString) {
       // dispatch(downloadReceiptPending());
@@ -722,28 +1018,20 @@ export const getFileUrlFromAPI = async fileStoreId => {
       }
     }
   }
-} */
-
-/* Download Receipt using EGOV-PDF service */
-export const downloadReceipt = (receiptQueryString) => {
-  return async (dispatch) => {
-    if (receiptQueryString) {
-      // dispatch(downloadReceiptPending());
-      try {
-        downloadConReceipt(receiptQueryString,'consolidatedreceipt',"PAYMENT",`PTRECEIPT-consolidated.pdf` )
-      } catch (error) {
-        dispatch(downloadReceiptError(error.message));
-      }
-    }
-  }
 }
-
-
-const download =(Payments,tenant)=>{
-  const queryStr = [
-    { key: "key", value: "consolidatedreceipt" },
-    { key: "tenantId", value:tenant }
+const download =(Payments,tenant,businessModule)=>{
+  const queryStrReceipt = [
+    { key: "key", value: "property-receipt" },
+    { key: "tenantId", value: receiptQueryString[1].value.split('.')[0]}
   ]
+
+  const queryStrConsltdReceipt = [
+    { key: "key", value: "consolidatedreceipt" },
+    { key: "tenantId", value: receiptQueryString[1].value.split('.')[0]}
+  ]
+  
+  let queryStr = businessModule === "PT" ?  queryStrReceipt: queryStrConsltdReceipt;
+
   httpRequest(DOWNLOADRECEIPT.GET.URL, DOWNLOADRECEIPT.GET.ACTION, queryStr, { Payments: Payments }, { 'Accept': 'application/json' }, { responseType: 'arraybuffer' })
             .then(res => {
               getFileUrlFromAPI(res.filestoreIds[0]).then((fileRes) => {

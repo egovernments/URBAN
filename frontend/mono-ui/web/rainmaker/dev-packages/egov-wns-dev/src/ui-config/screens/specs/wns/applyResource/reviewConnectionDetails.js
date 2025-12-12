@@ -181,6 +181,28 @@ const propertyLocationDetails = {
           },
           { jsonPath: "applyScreenOld.property.address.pincode", callBack: handleNA },
         ),
+        surveyId: getLabelWithValueForModifiedLabel(
+          {
+            labelName: "Survey Id",
+            labelKey: "Survey Id"
+          },
+          { jsonPath: "applyScreen.property.surveyId", callBack: handleNA },
+          {
+            labelKey: "WS_OLD_LABEL_NAME"
+          },
+          { jsonPath: "applyScreenOld.property.surveyId", callBack: handleNA },
+        ),
+        OldPropertyId: getLabelWithValueForModifiedLabel(
+          {
+            labelName: "Old Property Id",
+            labelKey: "Old Property Id"
+          },
+          { jsonPath: "applyScreen.property.oldPropertyId", callBack: handleNA },
+          {
+            labelKey: "WS_OLD_LABEL_NAME"
+          },
+          { jsonPath: "applyScreenOld.property.oldPropertyId", callBack: handleNA },
+        ),
       })
     }),
 
@@ -319,23 +341,6 @@ const getPropertyDetails = {
             },
             { jsonPath: "applyScreenOld.property.noOfFloors", callBack: handleNA },
           ),
-          rainwaterHarvestingFacility: getLabelWithValueForModifiedLabel(
-            {
-              labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
-              labelName: "Rain Water Harvesting Facility"
-            },
-            {
-              jsonPath: "applyScreen.property.additionalDetails.isRainwaterHarvesting",
-              callBack: handleNA
-            },
-            {
-              labelKey: "WS_OLD_LABEL_NAME"
-            },
-            {
-              jsonPath: "applyScreenOld.property.additionalDetails.isRainwaterHarvesting",
-              callBack: handleNA
-            },
-          )
         })
     }),
     items: [],
@@ -483,10 +488,6 @@ export const specialApplicantCategory = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "applyScreen.property.owners[0].ownerType",
-    localePrefix: {
-      moduleName: "COMMON_MASTERS",
-      masterName: "OWNERTYPE"
-    },
     callBack: handleNA
   },
   {
@@ -599,10 +600,6 @@ const propertyOwnerDetails = () => {
             },
             {
               jsonPath: "applyScreen.property.owners[0].ownerType",
-              localePrefix: {
-                moduleName: "COMMON_MASTERS",
-                masterName: "OWNERTYPE"
-              },
               callBack: handleNA
             }
           )
@@ -628,10 +625,6 @@ export const taskApplicationType = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "applyScreen.service",
-    localePrefix: {
-      moduleName: "WS",
-      masterName: "APPLY"
-    },
     callBack: handleNA
   },
   {
@@ -639,62 +632,58 @@ export const taskApplicationType = getLabelWithValueForModifiedLabel(
   },
   {
     jsonPath: "applyScreenOld.service",
-    localePrefix: {
-      moduleName: "WS",
-      masterName: "APPLY"
-    },
     callBack: handleNA
   },
 );
 
-export const taskNumberOfTapsPropsed = getLabelWithValueForModifiedLabel(
-  {
-    labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TAPS_PROPOSED"
-  },
-  {
-    jsonPath: "applyScreen.proposedTaps",
-    callBack: handleNA
-  },
-  {
-    labelKey: "WS_OLD_LABEL_NAME"
-  },
-  {
-    jsonPath: "applyScreenOld.proposedTaps",
-    callBack: handleNA
-  },
-)
-export const taskPipeSizeProposed = getLabelWithValueForModifiedLabel(
-  {
-    labelKey: "WS_TASK_DETAILS_CONN_DETAIL_PIPE_SIZE_PROPOSED"
-  },
-  { jsonPath: "applyScreen.proposedPipeSize", callBack: handleNA },
-  {
-    labelKey: "WS_OLD_LABEL_NAME"
-  },
-  { jsonPath: "applyScreenOld.proposedPipeSize", callBack: handleNA },
-)
+// export const taskNumberOfTapsPropsed = getLabelWithValueForModifiedLabel(
+//   {
+//     labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TAPS_PROPOSED"
+//   },
+//   {
+//     jsonPath: "applyScreen.proposedTaps",
+//     callBack: handleNA
+//   },
+//   {
+//     labelKey: "WS_OLD_LABEL_NAME"
+//   },
+//   {
+//     jsonPath: "applyScreenOld.proposedTaps",
+//     callBack: handleNA
+//   },
+// )
+// export const taskPipeSizeProposed = getLabelWithValueForModifiedLabel(
+//   {
+//     labelKey: "WS_TASK_DETAILS_CONN_DETAIL_PIPE_SIZE_PROPOSED"
+//   },
+//   { jsonPath: "applyScreen.proposedPipeSize", callBack: handleNA },
+//   {
+//     labelKey: "WS_OLD_LABEL_NAME"
+//   },
+//   { jsonPath: "applyScreenOld.proposedPipeSize", callBack: handleNA },
+// )
 
-export const taskNoOfClosets = getLabelWithValueForModifiedLabel(
-  {
-    labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_CLOSETS_PROPOSED"
-  },
-  { jsonPath: "applyScreen.proposedWaterClosets", callBack: handleNA },
-  {
-    labelKey: "WS_OLD_LABEL_NAME"
-  },
-  { jsonPath: "applyScreenOld.proposedWaterClosets", callBack: handleNA },
-);
+// export const taskNoOfClosets = getLabelWithValueForModifiedLabel(
+//   {
+//     labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_CLOSETS_PROPOSED"
+//   },
+//   { jsonPath: "applyScreen.proposedWaterClosets", callBack: handleNA },
+//   {
+//     labelKey: "WS_OLD_LABEL_NAME"
+//   },
+//   { jsonPath: "applyScreenOld.proposedWaterClosets", callBack: handleNA },
+// );
 
-export const taskNoOfToilets = getLabelWithValueForModifiedLabel(
-  {
-    labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TOILETS_PROPOSED"
-  },
-  { jsonPath: "applyScreen.proposedToilets", callBack: handleNA },
-  {
-    labelKey: "WS_OLD_LABEL_NAME"
-  },
-  { jsonPath: "applyScreenOld.proposedToilets", callBack: handleNA },
-);
+// export const taskNoOfToilets = getLabelWithValueForModifiedLabel(
+//   {
+//     labelKey: "WS_TASK_DETAILS_CONN_DETAIL_NO_OF_TOILETS_PROPOSED"
+//   },
+//   { jsonPath: "applyScreen.proposedToilets", callBack: handleNA },
+//   {
+//     labelKey: "WS_OLD_LABEL_NAME"
+//   },
+//   { jsonPath: "applyScreenOld.proposedToilets", callBack: handleNA },
+// );
 
 const getConnectionDetails = () => {
   return getCommonContainer({
@@ -706,10 +695,10 @@ const getConnectionDetails = () => {
 export const renderService = () => {
   return getCommonContainer({
     taskApplicationType,
-    taskNumberOfTapsPropsed,
-    taskPipeSizeProposed,
-    taskNoOfClosets,
-    taskNoOfToilets
+    //taskNumberOfTapsPropsed,
+    //taskPipeSizeProposed,
+    //taskNoOfClosets,
+    //taskNoOfToilets
   });
 }
 

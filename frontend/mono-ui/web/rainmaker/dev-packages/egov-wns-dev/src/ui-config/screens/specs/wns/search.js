@@ -10,10 +10,11 @@ import { resetFieldsForConnection, resetFieldsForApplication } from '../utils';
 import { handleScreenConfigurationFieldChange as handleField ,unMountScreen } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import "./index.css";
 import { getRequiredDocData, showHideAdhocPopup } from "egov-ui-framework/ui-utils/commons";
+import {getLocality} from "../utils/index"
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "../../../../ui-utils/api";
 import commonConfig from "config/common.js";
-
+const tenant = getTenantId();
 const getMDMSData = (action, dispatch) => {
   const moduleDetails = [
     {
@@ -26,6 +27,7 @@ const getMDMSData = (action, dispatch) => {
   try {
     getRequiredDocData(action, dispatch, moduleDetails)
   } catch (e) {
+    console.log(e);
   }
 };
 
@@ -52,9 +54,7 @@ const getMDMSAppType =async (dispatch) => {
           applicationType.forEach(type=>getBusinessService(type.businessService,dispatch))
           dispatch(prepareFinalObject("applyScreenMdmsData.searchScreen.applicationType", applicationType));
         }
-    } catch (e) { 
-      
-     }
+    } catch (e) { console.log(e); }
   }
 
 const header = getCommonHeader({
@@ -117,9 +117,35 @@ export const getMdmsTenantsData = async (dispatch) => {
       dispatch(prepareFinalObject("applyScreenMdmsData.tenant", payload.MdmsRes.tenant));
 
   } catch (e) {
+      console.log(e);
   }
 };
-
+const getLocalityData = async (action, dispatch, tenantid) =>{
+    
+      let payload = await getLocality(tenantid)
+          //console.log("payload", payload)
+          const mohallaData =
+            payload &&
+            payload.TenantBoundary[0] &&
+            payload.TenantBoundary[0].boundary &&
+            payload.TenantBoundary[0].boundary.reduce((result, item) => {
+              result.push({
+                ...item,
+                name: `${tenantid
+                  .toUpperCase()
+                  .replace(
+                    /[.]/g,
+                    "_"
+                  )}_REVENUE_${item.code
+                    .toUpperCase()
+                    .replace(/[._:-\s\/]/g, "_")}`
+              });
+              return result;
+            }, []);
+  
+  
+            dispatch(prepareFinalObject('applyScreenMdmsData.searchConnection.locality', mohallaData));
+}
 const commonGetAppStatus=(payload)=>{
   const { states } = payload.BusinessServices[0] || [];
   if (states && states.length > 0) {
@@ -147,10 +173,11 @@ const employeeSearchResults = {
     resetFieldsForApplication(state, dispatch);
     getMDMSAppType(dispatch);
     getMdmsTenantsData(dispatch);
+    getLocalityData(action, dispatch,tenant)
     dispatch(prepareFinalObject("searchConnection.tenantId", getTenantIdCommon()));
     dispatch(prepareFinalObject("currentTab", "SEARCH_CONNECTION"));
-    localStorage.setItem("WS_ADDITIONAL_DETAILS_FOR_DATA", JSON.stringify({}));
-    localStorage.setItem("IS_WS_ADDITIONAL_DETAILS_FOR_DATA", JSON.stringify(false));
+
+    console.log("prepareFinalObject",state)
     return action;
   },
   components: {

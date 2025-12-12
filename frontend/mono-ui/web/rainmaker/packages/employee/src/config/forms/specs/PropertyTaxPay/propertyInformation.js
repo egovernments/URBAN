@@ -40,6 +40,23 @@ const formConfig = {
       pattern: /^[^\$\"'<>?\\\\~`!@$%^+={}*,.:;“”‘’]{1,64}$/i,
       maxLength: 64,
     },
+    UID: {
+      id: "UID",
+      type: "textfield",
+      className: "pt-old-pid-text-field",
+      text: "PT_SEARCH_BUTTON",
+      iconRedirectionURL: getTenantId()=='pb.amritsar'? "https://arcserver.punjab.gov.in/portal/apps/webappviewer/index.html?id=8b678d4d5020448499054bf346843ea9": getTenantId()=='pb.hoshiarpur'?"https://arcserver.punjab.gov.in/portal/apps/webappviewer/index.html?id=9bc1b255320a49c590dd17d4d258e054": "https://gis.punjab.gov.in",
+      jsonPath: "Properties[0].surveyId",
+      floatingLabelText: "Survey Id/UID",
+      hintText: "Enter Survey Id/UID",
+      numcols: 6,
+      errorMessage: "PT_PROPERTY_DETAILS_PINCODE_ERRORMSG",
+      errorStyle: { position: "absolute", bottom: -8, zIndex: 5 },
+      // toolTip: true,
+      //pattern: /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;“”‘’]{1,64}$/i,
+      // toolTipMessage: "PT_OLDPID_TOOLTIP_MESSAGE",
+      maxLength: 64,
+    },
   },
   beforeInitForm: (action, store) => {
     set(action, "form.fields.city.required", false);

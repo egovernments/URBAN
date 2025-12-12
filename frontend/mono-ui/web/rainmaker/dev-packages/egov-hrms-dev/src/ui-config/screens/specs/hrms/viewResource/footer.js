@@ -3,10 +3,7 @@ import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { showHideAdhocPopup } from "../../utils";
 import { handleCreateUpdateEmployee } from "./functions";
-const routeTo =(link)=>{
-    let moduleName = process.env.REACT_APP_NAME === "Citizen" ? '/citizen' : '/employee';
-    window.location.href = process.env.NODE_ENV === "production" ? moduleName + link : link;
-}
+
 const gotoCreateFlow = (state, dispatch) => {
   const employeeCode = getQueryArg(window.location.href, "employeeID");
   const tenantId = getQueryArg(window.location.href, "tenantId");
@@ -14,7 +11,7 @@ const gotoCreateFlow = (state, dispatch) => {
     process.env.REACT_APP_SELF_RUNNING === "true"
       ? `/egov-ui-framework/hrms/create?employeeCode=${employeeCode}&tenantId=${tenantId}`
       : `/hrms/create?employeeCode=${employeeCode}&tenantId=${tenantId}`;
-    routeTo(createUrl);
+  dispatch(setRoute(createUrl));
 };
 
 const getCommonCreateFooter = children => {

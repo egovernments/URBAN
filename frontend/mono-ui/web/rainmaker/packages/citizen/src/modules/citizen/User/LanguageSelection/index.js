@@ -1,26 +1,37 @@
-import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
-import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
-import get from "lodash/get";
-import { Banner, LanguageSelectionForm } from "modules/common";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Banner } from "modules/common";
+import { LanguageSelectionForm } from "modules/common";
+import { fetchLocalizationLabel } from "egov-ui-kit/redux/app/actions";
+import { getLocale, isValidLocale } from "egov-ui-kit/utils/localStorageUtils";
+import get from "lodash/get";
 
 class LanguageSelection extends Component {
   state = {
-    value: getLocale() || 'en_IN',
+    value: getLocale() || 'en_IN', // getLocale() now has fallback built-in
   };
 
-  componentDidMount = () => {
-    this.props.fetchLocalizationLabel(this.state.value);
+  componentDidMount=()=>{
+    // Ensure valid locale, fallback to en_IN
+    const locale = this.state.value || 'en_IN';
+    this.props.fetchLocalizationLabel(locale);
   }
 
   onClick = (value) => {
-    this.setState({ value });
-    this.props.fetchLocalizationLabel(value);
+    // Validate locale before setting, fallback to en_IN if invalid
+    const validLocale = isValidLocale(value) ? value : 'en_IN';
+
+    if (!isValidLocale(value)) {
+      console.warn(`[LanguageSelection] Invalid locale selected: "${value}", using en_IN instead`);
+    }
+
+    this.setState({ value: validLocale });
+    this.props.fetchLocalizationLabel(validLocale);
   };
 
   onLanguageSelect = () => {
-    this.props.history.push("/user/register");
+    //this.props.history.push("/user/register");
+    this.props.history.push("/user/login");
   };
 
   render() {
@@ -29,7 +40,7 @@ class LanguageSelection extends Component {
     const { bannerUrl, logoUrl, languages } = this.props;
     return (
       <Banner className="language-selection" bannerUrl={bannerUrl} logoUrl={logoUrl}>
-        <LanguageSelectionForm items={languages} value={value} onLanguageSelect={onLanguageSelect} onClick={onClick} logoUrl={logoUrl}/>
+        <LanguageSelectionForm items={languages} value={value} onLanguageSelect={onLanguageSelect} onClick={onClick} />
       </Banner>
     );
   }

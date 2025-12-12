@@ -24,26 +24,26 @@ const getRedirectionURL = () => {
   return redirectionURL;
 };
 
-const getRedirectionOCURL = async (state, dispatch) => {
+const getRedirectionOCURL = () => {
+  let state = store.getState();
   let tenantId = getQueryArg(window.location.href, "tenantId");
   let edcrNumber = get( state.screenConfiguration.preparedFinalObject, "edcrDetail[0].edcrNumber", "");
   if(!edcrNumber) {
     edcrNumber = getQueryArg(window.location.href, "edcrNumber");
   }
-  const environment = process.env.NODE_ENV === "production" ? "citizen" : "";
-  const origin =  process.env.NODE_ENV === "production" ? window.location.origin + "/" : window.location.origin;
-  window.location.assign(`${origin}${environment}/oc-bpa/apply?tenantId=${tenantId}&edcrNumber=${edcrNumber}`);
+  let url = `/oc-bpa/apply?tenantId=${tenantId}&edcrNumber=${edcrNumber}`;
+  return url;
 };
 
-const getRedirectionBPAURL = async (state, dispatch) => {
+const getRedirectionBPAURL = () => {
+  let state = store.getState();
   let tenantId = getQueryArg(window.location.href, "tenantId");
   let edcrNumber = get( state.screenConfiguration.preparedFinalObject, "edcrDetail[0].edcrNumber", "");
   if(!edcrNumber) {
     edcrNumber = getQueryArg(window.location.href, "edcrNumber");
   }
-  const environment = process.env.NODE_ENV === "production" ? "citizen" : "";
-  const origin =  process.env.NODE_ENV === "production" ? window.location.origin + "/" : window.location.origin;
-  window.location.assign(`${origin}${environment}/egov-bpa/apply?tenantId=${tenantId}&edcrNumber=${edcrNumber}`);
+  let url = `/egov-bpa/apply?tenantId=${tenantId}&edcrNumber=${edcrNumber}`;
+  return url;
 };
 
 export const gotoHomeFooter = getCommonApplyFooter({
@@ -88,8 +88,8 @@ export const gotoHomeFooter = getCommonApplyFooter({
       })
     },
     onClickDefination: {
-      action: "condition",
-      callBack: getRedirectionOCURL
+      action: "page_change",
+       path: getRedirectionOCURL()
     },
     visible : false
   },
@@ -111,8 +111,8 @@ export const gotoHomeFooter = getCommonApplyFooter({
       })
     },
     onClickDefination: {
-      action: "condition",
-      callBack: getRedirectionBPAURL
+      action: "page_change",
+       path: getRedirectionBPAURL()
     },
     visible : false
   }

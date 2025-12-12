@@ -2,17 +2,24 @@ import React, { Component } from "react";
 import { ButtonGroup, Icon } from "components";
 import { connect } from "react-redux";
 import get from "lodash/get";
-import { getLocale } from "egov-ui-kit/utils/localStorageUtils";
+import { getLocale, isValidLocale } from "egov-ui-kit/utils/localStorageUtils";
 import Label from "egov-ui-kit/utils/translationNode";
 
 class LanguageSelection extends Component {
   state = {
-    value: getLocale(),
+    value: getLocale() || 'en_IN', // getLocale() now has fallback built-in
   };
 
   onClick = (value) => {
-    this.setState({ value });
-    this.props.fetchLocalizationLabel(value);
+    // Validate locale before setting, fallback to en_IN if invalid
+    const validLocale = isValidLocale(value) ? value : 'en_IN';
+
+    if (!isValidLocale(value)) {
+      console.warn(`[Header LanguageSelection] Invalid locale selected: "${value}", using en_IN instead`);
+    }
+
+    this.setState({ value: validLocale });
+    this.props.fetchLocalizationLabel(validLocale);
   };
 
   styles = {

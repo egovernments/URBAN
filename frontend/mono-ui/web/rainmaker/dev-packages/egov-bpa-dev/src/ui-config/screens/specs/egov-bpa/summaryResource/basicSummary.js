@@ -99,11 +99,9 @@ export const basicSummary = getCommonGrayCard({
         labelKey: "BPA_BASIC_DETAILS_OCCUPANCY_LABEL"
       },
       {
-        localePrefix: {
-          moduleName: "BPA",
-          masterName: "OCCUPANCYTYPE"
-        },
-        jsonPath: "scrutinyDetails.planDetail.occupancies[0].typeHelper.type.code",
+        jsonPath:
+          "scrutinyDetails.planDetail.planInformation.occupancy",
+        callBack: checkValueForNA
       }
     ),
     applicationtype: getLabelWithValue(
@@ -137,10 +135,6 @@ export const basicSummary = getCommonGrayCard({
         labelKey: "BPA_BASIC_DETAILS_RISK_TYPE_LABEL"
       },
       {
-        localePrefix: {
-          moduleName: "WF",
-          masterName: "BPA"
-        },
         jsonPath: "BPA.riskType",
         callBack: checkValueForNA
       }

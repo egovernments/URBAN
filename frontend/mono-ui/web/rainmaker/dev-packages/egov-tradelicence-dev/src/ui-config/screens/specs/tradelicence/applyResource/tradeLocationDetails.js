@@ -1,10 +1,17 @@
 import {
-  getCommonCard, getCommonContainer, getCommonTitle, getPattern, getSelectField, getTextField
+  getCommonCard,
+  getCommonTitle,
+  getTextField,
+  getSelectField,
+  getCommonContainer,
+  getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { httpRequest } from "../../../../../ui-utils/api";
-import { getDetailsFromProperty, getMapLocator, showHideMapPopup } from "../../utils";
+import { getMapLocator } from "../../utils";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { showHideMapPopup, getDetailsFromProperty } from "../../utils";
+import { handleScreenConfigurationFieldChange as handleField } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import "./index.css";
 
 export const tradeLocationDetails = getCommonCard(
@@ -72,8 +79,8 @@ export const tradeLocationDetails = getCommonCard(
                       /[.]/g,
                       "_"
                     )}_REVENUE_${item.code
-                      .toUpperCase()
-                      .replace(/[._:-\s\/]/g, "_")}`
+                    .toUpperCase()
+                    .replace(/[._:-\s\/]/g, "_")}`
                 });
                 return result;
               }, []);
@@ -142,14 +149,14 @@ export const tradeLocationDetails = getCommonCard(
           labelName: "Door/House No.",
           labelKey: "TL_NEW_TRADE_DETAILS_DOOR_NO_LABEL"
         },
-        props: {
-          className: "applicant-details-error"
+        props:{
+          className:"applicant-details-error"
         },
         placeholder: {
           labelName: "Enter Door/House No.",
           labelKey: "TL_NEW_TRADE_DETAILS_DOOR_NO_PLACEHOLDER"
         },
-        pattern: getPattern("DoorHouseNo"),
+        // pattern: getPattern("DoorHouseNo"),
         jsonPath: "Licenses[0].tradeLicenseDetail.address.doorNo"
       }),
       tradeLocBuilidingName: getTextField({
@@ -157,14 +164,14 @@ export const tradeLocationDetails = getCommonCard(
           labelName: "Building/Colony Name",
           labelKey: "TL_NEW_TRADE_DETAILS_BLDG_NAME_LABEL"
         },
-        props: {
-          className: "applicant-details-error"
+        props:{
+          className:"applicant-details-error"
         },
         placeholder: {
           labelName: "Enter Building/Colony Name",
           labelKey: "TL_NEW_TRADE_DETAILS_BLDG_NAME_PLACEHOLDER"
         },
-        pattern: getPattern("BuildingStreet"),
+        pattern:/^[^\$\"?\\\\~`!@$%^+={}\[\]*“”‘’]{1,300}$/i,
         jsonPath: "Licenses[0].tradeLicenseDetail.address.buildingName"
       }),
       tradeLocStreetName: getTextField({
@@ -172,14 +179,14 @@ export const tradeLocationDetails = getCommonCard(
           labelName: "Street Name",
           labelKey: "TL_NEW_TRADE_DETAILS_SRT_NAME_LABEL"
         },
-        props: {
-          className: "applicant-details-error"
+        props:{
+          className:"applicant-details-error"
         },
         placeholder: {
           labelName: "Enter Street Name",
           labelKey: "TL_NEW_TRADE_DETAILS_SRT_NAME_PLACEHOLDER"
         },
-        pattern: getPattern("BuildingStreet"),
+        pattern: /^[^\$\"?\\\\~`!@$%^+={}\[\]*“”‘’]{1,300}$/i,
         jsonPath: "Licenses[0].tradeLicenseDetail.address.street"
       }),
       tradeLocMohalla: {
@@ -231,8 +238,8 @@ export const tradeLocationDetails = getCommonCard(
           labelName: "Pincode",
           labelKey: "TL_NEW_TRADE_DETAILS_PIN_LABEL"
         },
-        props: {
-          className: "applicant-details-error"
+        props:{
+          className:"applicant-details-error"
         },
         placeholder: {
           labelName: "Enter Pincode",
@@ -302,9 +309,9 @@ export const tradeLocationDetails = getCommonCard(
           "Licenses[0].tradeLicenseDetail.additionalDetail.electricityConnectionNo"
       })
     },
-      {
-        style: getQueryArg(window.location.href, "action") === "EDITRENEWAL" || getQueryArg(window.location.href, "workflowService") === "EDITRENEWAL"? { "pointer-events": "none" } : {}
-      }
+    {
+      style:getQueryArg(window.location.href, "action") === "EDITRENEWAL"? {"pointer-events":"none"}:{} 
+    }
     ),
     mapsDialog: {
       componentPath: "Dialog",
@@ -322,6 +329,7 @@ export const tradeLocationDetails = getCommonCard(
     }
   },
   {
-    style: getQueryArg(window.location.href, "action") === "EDITRENEWAL" || getQueryArg(window.location.href, "workflowService") === "EDITRENEWAL" ? { "cursor": "not-allowed", overflow: "visible" } : { overflow: "visible" }
+    style:getQueryArg(window.location.href, "action") === "EDITRENEWAL"? {"cursor":"not-allowed",overflow:"visible"}:{overflow: "visible"}
+
   }
 );

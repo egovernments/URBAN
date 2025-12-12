@@ -18,7 +18,7 @@ const OTPFormHOC = formHoc({ formKey: "otp" })(OTPForm);
 class OTP extends Component {
   state = {
     timerSwitch: false,
-    timeLeft: 30000
+    timeLeft:30000
   };
   componentWillMount() {
     const { previousRoute } = this.props;
@@ -28,10 +28,7 @@ class OTP extends Component {
   }
 
   sendOtpForAutoLogin = async () => {
-    let { phoneNumber, setFieldProperty } = this.props;
-    if (phoneNumber && typeof phoneNumber == 'string' && phoneNumber.length > 11 && phoneNumber.startsWith('91')) {
-      phoneNumber = phoneNumber && phoneNumber.replace && phoneNumber.replace('91', '') || phoneNumber;
-    }
+    const { phoneNumber, setFieldProperty } = this.props;
     if (phoneNumber) {
       await httpRequest(`/user-otp/v1/_send`, "_send", [], {
         otp: { mobileNumber: phoneNumber, type: "login", tenantId: commonConfig.tenantId },
@@ -43,9 +40,9 @@ class OTP extends Component {
   componentDidMount() {
     const { submitForm, handleFieldChange, previousRoute } = this.props;
     const otpElement = document.getElementById("otp");
-    if (window.mSewaApp) {
+    if(window.mSewaApp){
       localStorageSet("isNative", true);
-    } else {
+    }else{
       localStorageSet("isNative", false);
     }
     otpElement.addEventListener("smsReceived", (e) => {
@@ -73,31 +70,29 @@ class OTP extends Component {
   };
 
   completed = () => {
+    console.log('Timer has completed')
     this.setState({
-      timerSwitch: true
+      timerSwitch:true
     });
   };
   reset = () => {
     this.setState({
-      timerSwitch: false
+      timerSwitch:false
     });
     this.setState({
-      timeLeft: 60000
+      timeLeft:60000
     });
   };
-
+  
 
   render() {
-    let { phoneNumber, loading, bannerUrl, logoUrl, history } = this.props;
-    const { resendOTP, completed, reset } = this;
-    const { timerSwitch, timeLeft } = this.state;
-    if (phoneNumber && typeof phoneNumber == 'string' && phoneNumber.length > 11 && phoneNumber.startsWith('91')) {
-      phoneNumber = phoneNumber && phoneNumber.replace && phoneNumber.replace('91', '') || phoneNumber;
-    }
+    const { phoneNumber, loading, bannerUrl, logoUrl,history } = this.props;
+    const { resendOTP,completed,reset } = this;
+   const {timerSwitch,timeLeft}=this.state;
     return (
       <Screen loading={loading} className="force-padding-0">
         <Banner bannerUrl={bannerUrl} logoUrl={logoUrl}>
-          <OTPFormHOC resendOTP={resendOTP} phoneNumber={phoneNumber} logoUrl={logoUrl} history={history} timerSwitch={timerSwitch} completed={completed} timeLeft={timeLeft} reset={reset} />
+          <OTPFormHOC resendOTP={resendOTP} phoneNumber={phoneNumber} logoUrl={logoUrl} history={history} timerSwitch={timerSwitch} completed={completed} timeLeft={timeLeft} reset={reset}/>
         </Banner>
       </Screen>
     );

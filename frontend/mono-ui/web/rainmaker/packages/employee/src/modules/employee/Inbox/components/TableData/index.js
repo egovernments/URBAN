@@ -2,6 +2,7 @@ import Hidden from "@material-ui/core/Hidden";
 import { withStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getLocaleLabels, transformById } from "egov-ui-framework/ui-utils/commons";
@@ -116,9 +117,8 @@ class TableData extends Component {
     showFilter: false,
     value: 0,
     totalRowCount: 0,
-    tabData: [{ label: "COMMON_INBOX_TAB_ALL", dynamicArray: [0] }
-      , { label: "COMMON_INBOX_TAB_ASSIGNED_TO_ME", dynamicArray: [0] },
-      { label: "COMMON_INBOX_TAB_ESCALATED", dynamicArray: [0] }],
+    tabData: [{ label: "COMMON_INBOX_TAB_ASSIGNED_TO_ME", dynamicArray: [0] }
+      , { label: "COMMON_INBOX_TAB_ALL", dynamicArray: [0] }],
     taskboardData: [{ head: 0, body: "WF_TOTAL_TASK", color: "rgb(171,211,237)", baseColor: "rgb(53,152,219)" },
     { head: 0, body: "WF_TOTAL_NEARING_SLA", color: "rgb(238, 167, 58 ,0.38)", baseColor: "#EEA73A" },
     { head: 0, body: "WF_ESCALATED_SLA", color: "rgb(244, 67, 54 ,0.38)", baseColor: "#F44336" }],
@@ -126,15 +126,13 @@ class TableData extends Component {
     inboxData: [{ headers: [], rows: [] }],
     initialInboxData: [{ headers: [], rows: [] }],
     moduleName: "",
-    loaded: false,
+    loaded: true, // UI loads immediately
+    dataLoading: false, // API loading state for spinner
     showLocality: !Boolean(localStorage.getItem('disableLocality')),
     color: "rgb(53,152,219)",
     timeoutForTyping: false,
     loadLocalityForInitialData: false,
-    showLoadingTaskboard: false,
-    loadedRemainingData:false,
-    loadingLocality:false,
-    loadedLocality:false
+    showLoadingTaskboard:false
   };
 
   getUniqueList = (list = []) => {
@@ -215,11 +213,11 @@ class TableData extends Component {
     let ESCALATED_SLA = [];
     let NEARING_SLA = [];
     let totalRows = []
-    if (initialInboxData.length === 3) {
+    if (initialInboxData.length === 2) {
       initialInboxData.map((row, ind) => {
         row.rows = row.rows.filter((eachRow) => {
           let isValid = this.checkRow(eachRow, filter, searchFilter, taskboardLabel);
-          if (isValid && ind === 0) {
+          if (isValid && ind === 1) {
             let MAX_SLA = this.state.businessServiceSla[eachRow[2].text.props.label.split('_')[1]];
             if (eachRow[4].text <= 0) {
               ESCALATED_SLA.push(eachRow[4].text);
@@ -239,7 +237,7 @@ class TableData extends Component {
       })
     }
 
-    if (initialInboxData.length === 3) {
+    if (initialInboxData.length === 2) {
       initialInboxData.map((row, ind) => {
         row.rows = row.rows.filter((eachRow) => {
           let isValid = this.checkSLA(taskboardLabel, eachRow);
@@ -251,19 +249,16 @@ class TableData extends Component {
 
 
 
-    let { taskboardData, tabData, showLoadingTaskboard } = this.state;
-    if (totalRows.length == totalRowCount && showLoadingTaskboard == false) {
-
-      this.setState({ showLoadingTaskboard: true })
-    }
-    taskboardData[0].head = showLoadingTaskboard ? totalRows.length : totalRowCount;
-    let counts = totalRowCount < 100 ? totalRowCount - 1 : 100;
-    taskboardData[1].head = totalRows.length > counts || showLoadingTaskboard ? NEARING_SLA.length : 'LOADING';
-    taskboardData[2].head = totalRows.length > counts || showLoadingTaskboard ? ESCALATED_SLA.length : 'LOADING';
-    tabData[0].dynamicArray = [showLoadingTaskboard ? totalRows.length : totalRowCount];
-    tabData[1].dynamicArray = [initialInboxData[1].rows.length];
-    tabData[2].dynamicArray = [initialInboxData[2].rows.length];
-
+    let { taskboardData, tabData , showLoadingTaskboard } = this.state;
+if(totalRows.length == totalRowCount && showLoadingTaskboard==false){
+  
+  this.setState({showLoadingTaskboard:true})
+}
+    taskboardData[0].head = showLoadingTaskboard?totalRows.length: totalRowCount;
+    taskboardData[1].head = totalRows.length == totalRowCount || showLoadingTaskboard ? NEARING_SLA.length : 'LOADING';
+    taskboardData[2].head = totalRows.length == totalRowCount || showLoadingTaskboard ? ESCALATED_SLA.length : 'LOADING';
+    tabData[0].dynamicArray = [initialInboxData[0].rows.length];
+    tabData[1].dynamicArray = [showLoadingTaskboard?totalRows.length: totalRowCount];
     this.hideLoading();
     return {
       inboxData: initialInboxData,
@@ -309,40 +304,9 @@ class TableData extends Component {
     });
   }
   prepareInboxDataRows = async (data, all, loadLocality = false) => {
-    
-    // to avoid duplicate applications.
-    let inboxTotalData = cloneDeep(data);
-    let flags = [], output = [], l = inboxTotalData.length, i;
-    for (let i = 0; i < l; i++) {
-      if (flags[inboxTotalData[i].businessId]) continue;
-      flags[inboxTotalData[i].businessId] = true;
-      output.push(inboxTotalData[i]);
-    }
-
-    const lookup = inboxTotalData.reduce((a, e) => {
-      a[e.businessId] = ++a[e.businessId] || 0;
-      return a;
-    }, {});
-
-    const duplicateData = inboxTotalData.filter(e => lookup[e.businessId]);
-    let filteredDuplicateData = [];
-    if (duplicateData && duplicateData.length > 0) {
-      filteredDuplicateData = duplicateData.filter(data => data.businessId && data.isEscalatedApplication)
-    }
-
-    for (let j = 0; j < output.length; j++) {
-      for (let k = 0; k < filteredDuplicateData.length; k++) {
-        if (filteredDuplicateData[k].businessId == output[j].businessId) {
-          output[j] = filteredDuplicateData[k]
-        }
-      }
-    }
-    data = output;
-
-    
     const { toggleSnackbarAndSetText } = this.props;
     const uuid = get(this.props, "userInfo.uuid");
-    if (isEmpty(data)) return { allData: [], assignedToMe: [] };
+    if (isEmpty(data)) return{ allData: [], assignedToMe: [] };
     let businessServices = [];
     let businessIds = [];
     let ptApplicationNo = []
@@ -370,29 +334,21 @@ class TableData extends Component {
         let endpoints = []
         let queries = []
         uniqueModules.map((uniqueModule, ind) => {
-          if (uniqueModule == "PT") {
-            // const acknowledgementIds = [...ptApplicationNo];
-            // for (let i = 0; i <= ptApplicationNo.length + 50; i += 50) {
-            //   let acknowledgementId = acknowledgementIds.splice(0, 50);
-            //   if (acknowledgementId && acknowledgementId.length > 0) {
-            //     const query = [{ key: "tenantId", value: getTenantId() },
-            //     { key: "acknowledgementIds", value: acknowledgementId.join(',') }]
-            //     requestBodies.push(undefined)
-            //     queries.push(query)
-            //     endpoints.push("property-services/property/_search")
-            //   }
-            // }
+          // if (uniqueModule == "PT") {
+          //   const acknowledgementIds = [...ptApplicationNo];
+          //   for (let i = 0; i <= ptApplicationNo.length + 50; i += 50) {
+          //     let acknowledgementId = acknowledgementIds.splice(0, 50);
+          //     if (acknowledgementId && acknowledgementId.length > 0) {
+          //       const query = [{ key: "tenantId", value: getTenantId() },
+          //       { key: "acknowledgementIds", value: acknowledgementId.join(',') }]
+          //       requestBodies.push(undefined)
+          //       queries.push(query)
+          //       endpoints.push("property-services/property/_search")
+          //     }
+          //   }
+          // } else if (uniqueModule == "pt-services" || uniqueModule == "pgr-services") {
 
-            requestBodies.push({
-              searchCriteria: {
-                "referenceNumber": ptApplicationNo
-              }
-            })
-            queries.push([])
-            endpoints.push(`egov-searcher/locality/property-services/_get`)
-          } else if (uniqueModule == "pt-services" || uniqueModule == "pgr-services" || uniqueModule == "BS"||uniqueModule == "vehicle" ) {
-            /*Suppress Locality search of modules which ever not found  */
-          } else {
+          // } else {
             requestBodies.push({
               searchCriteria: {
                 "referenceNumber": businessIds
@@ -400,7 +356,7 @@ class TableData extends Component {
             })
             queries.push([])
             endpoints.push(`egov-searcher/locality/${uniqueModule}/_get`)
-          }
+          // }
 
         })
         const resp = await multiHttpRequest(endpoints, "search", queries, requestBodies)
@@ -451,17 +407,15 @@ class TableData extends Component {
             }
   
           } catch (e) {
+            console.log("error");
           }
         } */
       } catch (e) {
-        toggleSnackbarAndSetText(
-          true,
-          {
-            labelName: "Locality Empty!",
-            labelKey: "Locality Empty!",
-          },
-          "error"
-        );
+        // FIX: Better error handling - only show error if it's a real issue, not just missing locality
+        console.log('Log => ** [Inbox] Locality fetch error (non-critical):', e.message);
+        // Don't show toast for every locality fetch failure - it's too noisy
+        // Only log to console for debugging
+        // If locality is genuinely required, the UI will show "NA" gracefully
       }
     }
     let localityDropdownList = [];
@@ -469,14 +423,14 @@ class TableData extends Component {
     let statusDropdownList = [];
 
     let assignedToMe = [];
-    let escalatedToMe = [];
     const initialData = data.map((item) => {
       const locality = this.state.showLocality && localitymap.find(locality => {
         return locality.referencenumber === item.businessId;
       })
       var sla = item.businesssServiceSla && item.businesssServiceSla / (1000 * 60 * 60 * 24);
       let row0 = { text: item.businessId, subtext: item.businessService, hiddenText: item.moduleName };
-      let row1 = { text: locality ? <Label label={`${item.tenantId.toUpperCase().replace(/[.]/g, "_")}_REVENUE_${locality.locality}`} color="#000000" /> : <Label label={"NA"} color="#000000" /> };
+      let localityString = locality && locality.locality ? `${item.tenantId.toUpperCase().replace(/[.]/g, "_")}_REVENUE_${locality.locality.replace("-","_")}` : "NA";
+      let row1 = {text: locality ? <Label label={localityString} color="#000000" /> : <Label label={"NA"} color="#000000" /> };
       let row2 = {
         text: item.state ? (
           <Label
@@ -485,12 +439,12 @@ class TableData extends Component {
             color="#000000"
           />
         ) : (
-          "NA"
-        ),
+            "NA"
+          ),
       };
 
-      let row3 = { text: <Label label={get(item, 'assignes[0].name', 'NA')} color="#000000" /> };
-      let row4 = { text: Math.round(sla), badge: true, isEscalatedApplication: item.isEscalatedApplication || item.escalated  };
+      let row3 = { text: item.assignes != null  ? <Label label={item.assignes[0].name} color="#000000" /> : <Label label={"NA"} color="#000000" /> };
+      let row4 = { text: Math.round(sla), badge: true };
       let row5 = { historyButton: true };
 
       let localityDropdown = { label: getLocaleLabels("", row1.text.props.label, localizationLabels), value: row1.text.props.label };
@@ -518,9 +472,6 @@ class TableData extends Component {
       let assignes = get(item, 'assignes');
       if (get(assignes ? assignes[0] : {}, "uuid") === uuid) {
         assignedToMe.push([...dataRows])
-      }
-      if (get(item, "isEscalatedApplication", false)) {
-        escalatedToMe.push([...dataRows])
       }
       return dataRows;
     });
@@ -559,7 +510,7 @@ class TableData extends Component {
       });
 
     }
-    return { allData: initialData, assignedToMe: assignedToMe, escalatedToMe: escalatedToMe };
+    return { allData: initialData, assignedToMe: assignedToMe };
   };
 
   handleChange = (event, value) => {
@@ -568,27 +519,17 @@ class TableData extends Component {
 
   getBussinessServiceData() {
     let businessServiceData = JSON.parse(localStorageGet("businessServiceData"));
-    const list = ["NewTL","EDITRENEWAL","DIRECTRENEWAL","NewWS1","NewSW1","ModifySWConnection","ModifyWSConnection","BPA","BPA_LOW","BPA_OC","AIRPORT_NOC_OFFLINE","FIRE_NOC_SRV","PT.CREATE","PT.UPDATE","PT.MUTATION","PT.LEGACY","DEACTIVATE-PT.LEGACY","DEACTIVATE-PT.MUTATION","DEACTIVATE-PT.CREATEWITHWNS","FIRENOC","PGR"];
-    // businessServiceData = businessServiceData ? businessServiceData : this.setBusinessServiceDataToLocalStorage([{ key: "tenantId", value: getTenantId() }, { key: "businessServices", value: list }]);;
-    businessServiceData = this.setBusinessServiceDataToLocalStorage([{ key: "tenantId", value: getTenantId() }, { key: "businessServices", value: list }]);;
+    businessServiceData = businessServiceData ? businessServiceData : this.setBusinessServiceDataToLocalStorage([{ key: "tenantId", value: getTenantId() }]);;
     return businessServiceData;
   }
   getMaxSLA() {
-    // const businessServiceData = this.getBussinessServiceData();
-    // let businessServiceSla = {}
-    // businessServiceData && Array.isArray(businessServiceData) && businessServiceData.map(eachRow => {
-    //   businessServiceSla[eachRow.businessService.toUpperCase()] = this.convertMillisecondsToDays(eachRow.businessServiceSla);
-    // })
-    // this.setState({ businessServiceSla });
-    // return businessServiceSla;
-    this.getBussinessServiceData().then((businessServiceData, err) => {
-      let businessServiceSla = {}
-      businessServiceData && Array.isArray(businessServiceData) && businessServiceData.map(eachRow => {
-        businessServiceSla[eachRow.businessService.toUpperCase()] = this.convertMillisecondsToDays(eachRow.businessServiceSla);
-      })
-      this.setState({ businessServiceSla });
-      return businessServiceSla;
-    }).catch((e) => { });
+    const businessServiceData = this.getBussinessServiceData();
+    let businessServiceSla = {}
+    businessServiceData && Array.isArray(businessServiceData) && businessServiceData.map(eachRow => {
+      businessServiceSla[eachRow.businessService.toUpperCase()] = this.convertMillisecondsToDays(eachRow.businessServiceSla);
+    })
+    this.setState({ businessServiceSla });
+    return businessServiceSla;
   }
   setBusinessServiceDataToLocalStorage = async (queryObject) => {
     const { toggleSnackbarAndSetText } = this.props;
@@ -597,77 +538,66 @@ class TableData extends Component {
       localStorageSet("businessServiceData", JSON.stringify(get(payload, "BusinessServices")));
       return get(payload, "BusinessServices");
     } catch (e) {
-      if (e && e.message && e.message.includes('setItem')) {
+     if(e&&e.message&&e.message.includes('setItem')){
 
-      } else {
-        toggleSnackbarAndSetText(
-          true,
-          {
-            labelName: "Not authorized to access Business Service!",
-            labelKey: "ERR_NOT_AUTHORISED_BUSINESS_SERVICE",
-          },
-          "error"
-        );
-      }
-
+     }else{
+      toggleSnackbarAndSetText(
+        true,
+        {
+          labelName: "Not authorized to access Business Service!",
+          labelKey: "ERR_NOT_AUTHORISED_BUSINESS_SERVICE",
+        },
+        "error"
+      );
+     }
+   
     }
   };
 
   componentDidMount = async () => {
-    this.loadInitialData();
-
     this.getMaxSLA();
-    this.setState({loadedRemainingData:false,loadingLocality:false,loadedLocality:false});
+    
+    // Start API call 
+    setTimeout(() => {
+      this.loadDataInBackground();
+    }, 10); 
   };
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
-    // If we have a snapshot value, we've just added new items.
-    // Adjust scroll so these new items don't push the old ones out of view.
-    // (snapshot here is the value returned from getSnapshotBeforeUpdate)
-  
-    if ( this.props.remainingDataLoaded&&this.props.workflowData.loaded&&this.props.remainingRecords.length>0&&this.state.loadingLocality==false&&this.state.loadedLocality==false) {
-      const { remainingRecords = [], workflowData } = this.props;
-      const { records = [] } = workflowData;
-      
-      this.loadRemainingData({ "ProcessInstances": [...remainingRecords] }, { "ProcessInstances": [...records] });
-      this.setState({loadingLocality:true});
-    }
 
-    if(get(prevProps,'workflowData.count',0)!==get(this.props,'workflowData.count',0)){
-      this.setState({
-        totalRowCount: get(this.props,'workflowData.count',0),
-      });
+  loadDataInBackground = async () => {
+    this.setState({ dataLoading: true });
+    try {
+      await this.loadInitialData();
+    } catch (error) {
+      console.error("Background data loading failed:", error);
+    } finally {
+      this.setState({ dataLoading: false });
     }
-
-  }
+  };
   loadInitialData = async () => {
-    const { toggleSnackbarAndSetText, prepareFinalObject, workflowData } = this.props;
+    const { toggleSnackbarAndSetText, prepareFinalObject } = this.props;
     const tenantId = getTenantId();
     let { taskboardData, tabData } = this.state;
     const inboxData = [{ headers: [], rows: [] }];
     try {
       this.showLoading();
-
-      const { count = 0, records = [] } = workflowData;
-      let maxCount = count;
-      let responseData = { "ProcessInstances": [...records] };
-
-
-      // const requestBody1 = [{ key: "tenantId", value: tenantId }];
-      // let maxCount = await httpRequest("egov-workflow-v2/egov-wf/process/_count", "_search", requestBody1);
-      // maxCount = maxCount;
-      // const requestBody = [{ key: "tenantId", value: tenantId }, { key: "offset", value: 0 }, { key: "limit", value: maxCount > 500 ? 200 : maxCount }];
-      // const responseData = await httpRequest("egov-workflow-v2/egov-wf/process/_search", "_search", requestBody);
-
+      const requestBody1 = [{ key: "tenantId", value: tenantId }];
+      //let maxCount = await httpRequest("egov-workflow-v2/egov-wf/process/_count", "_search", requestBody1);
+      let maxCount = 5000 ;
+      let limit =100;
+      let offset =0;
+      const requestBody = [{ key: "tenantId", value: tenantId }, { key: "offset", value: 0 }, { key: "limit", value: maxCount > 100 ? limit: maxCount }];
+      const responseData = await httpRequest("egov-workflow-v2/egov-wf/process/_search", "_search", requestBody);
       const allData = orderBy(get(responseData, "ProcessInstances", []), ["businesssServiceSla"]);
       if (maxCount > 100) {
-        // this.loadRemainingData([{ key: "tenantId", value: tenantId }, { key: "offset", value: 100 }, { key: "limit", value: maxCount - 100 }], responseData)
+        offset = limit+1;
+        limit=limit+100
+        this.loadRemainingData([{ key: "tenantId", value: tenantId }, { key: "offset", value: offset }, { key: "limit", value: limit }], responseData)
       } else {
         this.loadLocalityForAllData(allData);
       }
       const convertedData = await this.prepareInboxDataRows(allData, true, false)
       const allDataRows = convertedData.allData;
       const assignedDataRows = convertedData.assignedToMe;
-      const escalatedDataRows = convertedData.escalatedToMe;
 
       let headersList = [
         "WF_INBOX_HEADER_APPLICATION_NO",
@@ -677,18 +607,13 @@ class TableData extends Component {
         "WF_INBOX_HEADER_SLA_DAYS_REMAINING",
       ];
       inboxData[0].headers = headersList;
-      inboxData[0].rows = allDataRows;
+      inboxData[0].rows = assignedDataRows;
 
-      tabData[0].dynamicArray = [allDataRows.length];
-      tabData[1].dynamicArray = [assignedDataRows.length];
-      tabData[2].dynamicArray = [escalatedDataRows.length];
+      tabData[0].dynamicArray = [assignedDataRows.length];
+      tabData[1].dynamicArray = [allDataRows.length];
       inboxData.push({
         headers: headersList,
-        rows: assignedDataRows,
-      });
-      inboxData.push({
-        headers: headersList,
-        rows: escalatedDataRows,
+        rows: allDataRows,
       });
       let NEARING_SLA = [];
       let ESCALATED_SLA = [];
@@ -710,13 +635,12 @@ class TableData extends Component {
     prepareFinalObject("InboxData", [...inboxData]);
     this.getMaxSLA();
   }
-  // loadRemainingData = async (requestBody = [], response) => {
-    loadRemainingData = async (responseNew, response) => {
+  loadRemainingData = async (requestBody = [], response) => {
     const { toggleSnackbarAndSetText, prepareFinalObject } = this.props;
     let { taskboardData, tabData } = this.state;
     const inboxData = [{ headers: [], rows: [] }];
     try {
-      const responseData = responseNew;
+      const responseData = await httpRequest("egov-workflow-v2/egov-wf/process/_search", "_search", requestBody);
       set(responseData, "ProcessInstances", [...responseData.ProcessInstances, ...response.ProcessInstances]);
 
       const allData = orderBy(get(responseData, "ProcessInstances", []), ["businesssServiceSla"]);
@@ -725,7 +649,6 @@ class TableData extends Component {
       const convertedData = await this.prepareInboxDataRows(allData, true, false)
       const allDataRows = convertedData.allData;
       const assignedDataRows = convertedData.assignedToMe;
-      const escalatedDataRows = convertedData.escalatedToMe;
 
       let headersList = [
         "WF_INBOX_HEADER_APPLICATION_NO",
@@ -735,19 +658,13 @@ class TableData extends Component {
         "WF_INBOX_HEADER_SLA_DAYS_REMAINING",
       ];
       inboxData[0].headers = headersList;
-      inboxData[0].rows = allDataRows;
+      inboxData[0].rows = assignedDataRows;
 
-      tabData[0].dynamicArray = [allDataRows.length];
-      tabData[1].dynamicArray = [assignedDataRows.length];
-      tabData[2].dynamicArray = [escalatedDataRows.length];
+      tabData[0].dynamicArray = [assignedDataRows.length];
+      tabData[1].dynamicArray = [allDataRows.length];
       inboxData.push({
         headers: headersList,
-        rows: assignedDataRows,
-      });
-
-      inboxData.push({
-        headers: headersList,
-        rows: escalatedDataRows
+        rows: allDataRows,
       });
       let NEARING_SLA = [];
       let ESCALATED_SLA = [];
@@ -758,10 +675,7 @@ class TableData extends Component {
 
       this.setState({
         loaded: true,
-        inboxData, taskboardData, tabData, initialInboxData: cloneDeep(inboxData),
-        loadedRemainingData:true,
-        loadedLocality:true,
-        loadingLocality:false
+        inboxData, taskboardData, tabData, initialInboxData: cloneDeep(inboxData)
       });
     } catch (e) {
       this.hideLoading();
@@ -778,7 +692,6 @@ class TableData extends Component {
       const convertedData = await this.prepareInboxDataRows(allData, true, true)
       const allDataRows = convertedData.allData;
       const assignedDataRows = convertedData.assignedToMe;
-      const escalatedDataRows = convertedData.escalatedToMe;
 
       let headersList = [
         "WF_INBOX_HEADER_APPLICATION_NO",
@@ -788,19 +701,13 @@ class TableData extends Component {
         "WF_INBOX_HEADER_SLA_DAYS_REMAINING",
       ];
       inboxData[0].headers = headersList;
-      inboxData[0].rows = allDataRows;
+      inboxData[0].rows = assignedDataRows;
 
-      tabData[0].dynamicArray = [allDataRows.length];
-      tabData[1].dynamicArray = [assignedDataRows.length];
-      tabData[2].dynamicArray = [escalatedDataRows.length];
+      tabData[0].dynamicArray = [assignedDataRows.length];
+      tabData[1].dynamicArray = [allDataRows.length];
       inboxData.push({
         headers: headersList,
-        rows: assignedDataRows,
-      });
-
-      inboxData.push({
-        headers: headersList,
-        rows: escalatedDataRows,
+        rows: allDataRows,
       });
       let NEARING_SLA = [];
       let ESCALATED_SLA = [];
@@ -833,10 +740,9 @@ class TableData extends Component {
           }),
         };
       });
-      
-      tabData[0] = { label: "COMMON_INBOX_TAB_ALL", dynamicArray: [filteredData[0].rows.length] };
-      tabData[1] = { label: "COMMON_INBOX_TAB_ASSIGNED_TO_ME", dynamicArray: [filteredData[1].rows.length] };
-      tabData[2] = { label: "COMMON_INBOX_TAB_ESCALATED", dynamicArray: [filteredData[2].rows.length] };
+
+      tabData[0] = { label: "COMMON_INBOX_TAB_ASSIGNED_TO_ME", dynamicArray: [filteredData[0].rows.length] };
+      tabData[1] = { label: "COMMON_INBOX_TAB_ALL", dynamicArray: [filteredData[1].rows.length] };
 
       this.setState({
         inboxData: filteredData,
@@ -854,16 +760,12 @@ class TableData extends Component {
     });
   };
   showLoading() {
-    const { prepareFinalObject } = this.props;
-    // prepareFinalObject('Loading.isLoading', true);
   }
   hideLoading() {
-    const { prepareFinalObject } = this.props;
-    // prepareFinalObject('Loading.isLoading', false);
   }
   render() {
-    const { value, filter, searchFilter, businessServiceSla } = this.state;
-    const { classes,remainingDataLoading } = this.props;
+    const { value, filter, searchFilter, businessServiceSla, dataLoading } = this.state;
+    const { classes } = this.props;
     const { handleChangeFilter, clearFilter, handleChangeSearch } = this;
     let { taskboardData, tabData, inboxData } = this.state;
 
@@ -874,7 +776,7 @@ class TableData extends Component {
       tabData = filteredData.tabData;
     }
     return (
-      <div className="col-md-12 col-sm-12 col-xs-12" style={{ marginBottom: "30px" }}>
+      <div className="col-md-12 col-sm-12 col-xs-12">
         <div>
           <div className="row" style={{ marginBottom: '5px', marginTop: '5px', marginLeft: '-20px' }}>
             <div className="col-md-9 col-sm-9 col-xs-12" style={{ marginTop: '5px' }}>
@@ -907,7 +809,7 @@ class TableData extends Component {
           </Hidden>
         </div>
         <Taskboard data={taskboardData} onSlaClick={this.onTaskBoardClick} color={this.state.color} />
-        <div className="backgroundWhite">
+        <div className="backgroundWhite" style={{ position: 'relative' }}>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -922,15 +824,26 @@ class TableData extends Component {
               );
             })}
           </Tabs>
-          <InboxData businessServiceSla={businessServiceSla} data={inboxData[value]} remainingDataLoading={remainingDataLoading} />
-          {remainingDataLoading&&<div>
-          <div className="jk-spinner-wrapper">
-            <div className="jk-sm-inbox-loader"></div>
+          <div style={{ position: 'relative', minHeight: '200px' }}>
+            <InboxData businessServiceSla={businessServiceSla} data={inboxData[value]} />
+            {this.state.dataLoading && (
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10,
+                minHeight: '200px'
+              }}>
+                <CircularProgress size={40} color="primary" />
+              </div>
+            )}
           </div>
-          <div className="jk-spinner-wrapper">
-            <Label label={"CS_INBOX_PG_LOADING_MSG"} />
-          </div>
-        </div>}
         </div>
       </div>
     );
@@ -938,15 +851,12 @@ class TableData extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { screenConfiguration, auth, app } = state;
+  const { screenConfiguration, auth } = state;
   const { userInfo } = auth;
-  const { inboxRemData } = app;
-  const { loading: remainingDataLoading, loaded: remainingDataLoaded, records: remainingRecords = [] } = inboxRemData || {};
-
   const { preparedFinalObject } = screenConfiguration;
   const { InboxData } = preparedFinalObject;
 
-  return { InboxData, userInfo, remainingDataLoading, remainingDataLoaded, remainingRecords };
+  return { InboxData, userInfo };
 };
 
 const mapDispatchToProps = (dispatch) => {

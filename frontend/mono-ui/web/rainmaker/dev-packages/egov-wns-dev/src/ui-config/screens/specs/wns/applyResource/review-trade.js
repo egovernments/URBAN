@@ -313,20 +313,34 @@ export const propertyDetails={
       callBack: handleNA      
     }
   ),
-  rainwaterHarvestingFacility: getLabelWithValueForModifiedLabel(
+  reviewSurveyID: getLabelWithValueForModifiedLabel(
     {
-      labelKey: "WS_SERV_DETAIL_CONN_RAIN_WATER_HARVESTING_FAC",
-      labelName: "Rain Water Harvesting Facility"
+      labelName: "Survey Id",
+      labelKey: "Survey Id"
     },
-    { jsonPath: "WaterConnection[0].property.additionalDetails.isRainwaterHarvesting",
+    { jsonPath: "WaterConnection[0].property.surveyId",
     callBack: handleNA },{
       labelKey: "WS_OLD_LABEL_NAME"
     },
     {
-      jsonPath: "WaterConnectionOld[0].property.additionalDetails.isRainwaterHarvesting",
+      jsonPath: "WaterConnectionOld[0].property.surveyId",
       callBack: handleNA      
     }
-  )
+  ),
+  reviewOldpropertyId: getLabelWithValueForModifiedLabel(
+    {
+      labelName: "Old Property Id",
+      labelKey: "Old Property Id"
+    },
+    { jsonPath: "WaterConnection[0].property.oldPropertyId",
+    callBack: handleNA },{
+      labelKey: "WS_OLD_LABEL_NAME"
+    },
+    {
+      jsonPath: "WaterConnectionOld[0].property.oldPropertyId",
+      callBack: handleNA      
+    }
+  ),
 }
 
 const getPropertyDetails = {
@@ -450,15 +464,11 @@ export const propertyOwnerDetail={
    },
    {
      jsonPath: "WaterConnection[0].property.owners[0].ownerType",
-     localePrefix: {
-      moduleName: "COMMON_MASTERS",
-      masterName: "OWNERTYPE"
-    },
      callBack: handleNA
    },  {
     labelKey: "WS_OLD_LABEL_NAME"
   },
-  { jsonPath: "WaterConnectionOld[0].property.owners[0].ownerType",localePrefix: { moduleName: "COMMON_MASTERS",masterName: "OWNERTYPE"}, callBack: handleNA },)
+  { jsonPath: "WaterConnectionOld[0].property.owners[0].ownerType", callBack: handleNA },)
 }
 
 const ownerDetails = {

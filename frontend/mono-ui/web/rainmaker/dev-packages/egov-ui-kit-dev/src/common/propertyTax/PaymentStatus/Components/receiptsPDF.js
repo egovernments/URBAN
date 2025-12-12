@@ -79,7 +79,7 @@ const generateReceipt = (role, details, generalMDMSDataById, receiptImageUrl, is
                 )
               );
               dataRow.push(transform(unit.occupancyType, "OccupancyType"));
-              if (unit.occupancyType === "RENTED") {
+              if (unit.occupancyType === "RENTED" || unit.occupancyType === "PG") {
                 dataRow.push(unit.arv || "");
               } else {
                 dataRow.push(`${Math.round(unit.unitArea * 100) / 100}` || "");
@@ -145,6 +145,7 @@ const generateReceipt = (role, details, generalMDMSDataById, receiptImageUrl, is
         }
 
         let newArray = [];
+        while (flatArray.length > 0) newArray.push(flatArray.splice(0, noOfColumns));
         return isInstitution
           ? [
               [

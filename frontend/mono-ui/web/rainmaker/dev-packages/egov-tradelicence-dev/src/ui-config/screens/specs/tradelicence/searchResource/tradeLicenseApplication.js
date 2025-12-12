@@ -9,9 +9,55 @@ import {
   getDateField,
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { searchApiCall } from "./functions";
+import store from "../../../../../ui-redux/store";
+import { searchApiCall, dataloc } from "./functions";
+import { httpRequest } from "../../../../../ui-utils/api";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getTenantId,getUserInfo } from "../../utils/localStorageUtils";
+// import { getTenantId,getUserInfo } from "egov-ui-kit/utils/localStorageUtils";
+var datalocality ;
+async function dummy(action, state, dispatch) {
+  const tenantId = getTenantId();
+  dispatch=store.dispatch;
+    try {
+      let payload = await httpRequest(
+        "post",
+        "/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality",
+        "_search",
+        [{ key: "tenantId", value: tenantId }],
+        {}
+      );
+      console.log("payload", payload)
+      var dtlocality = payload &&
+      payload.TenantBoundary[0] &&
+      payload.TenantBoundary[0].boundary &&
+      payload.TenantBoundary[0].boundary.reduce((result, item) => {
+        result.push({ ...item });
+        return result;
+      }, []);
+      // datalocality.push(payload.TenantBoundary[0].boundary);
+      datalocality = dtlocality;
+      
+      console.log("ddg", datalocality +"  "+dtlocality)
 
-export const tradeLicenseApplication = getCommonCard({
+ 
+      dispatch(
+        prepareFinalObject(
+          "applyScreenMdmsData.tenant.localities", datalocality
+        )
+      );
+      // dispatch(
+      //   fetchLocalizationLabel(getLocale(), action.value, action.value)
+      // );
+
+    } catch (e) {
+      console.log(e);
+    }
+    
+}
+dummy();
+
+export const tradeLicenseApplication = getCommonCard ({
   subHeader: getCommonTitle({
     labelName: "Search Trade License Application",
     labelKey: "TL_HOME_SEARCH_RESULTS_HEADING"
@@ -213,9 +259,80 @@ export const tradeLicenseApplication = getCommonCard({
         sm: 4
       }
     },
+ //-------------locality--------------
+ propertyMohalla: {
+  uiFramework: "custom-containers",
+  componentPath: "AutosuggestContainer",
+  jsonPath:"searchScreen.locality",
+  required: true,
+  props: {
+    // style: {
+    //   // width: "100%",
+    //   cursor: "pointer"
+    // },
+    label: {
+      labelName: "Locality/Mohalla",
+     // labelKey: "NOC_PROPERTY_DETAILS_MOHALLA_LABEL"
+    },
+    placeholder: {
+      labelName: "Select Locality/Mohalla",
+      //labelKey: "NOC_PROPERTY_DETAILS_MOHALLA_PLACEHOLDER"
+    },
+    //jsonPath:"ptSearchScreen.locality",
+    sourceJsonPath: "applyScreenMdmsData.tenant.localities",
+    //data: datalocality,
+    labelsFromLocalisation: true,
+    errorMessage: "ERR_DEFAULT_INPUT_FIELD_MSG",
+    suggestions: [],
+    fullwidth: true,
+    required: false,
+    disabled: process.env.REACT_APP_NAME === "Citizen" ? true : false,
+   // type:hidden,
+    inputLabelProps: {
+      shrink: true
+    }
+    // className: "tradelicense-mohalla-apply"
+  },
+  // onclick: async (action, state, dispatch) => {
+  //   console.log("helllo GG");
+  //   dummy(action, state, dispatch)
+  //   dispatch(
+  //     prepareFinalObject(
+  //       "Licenses[0].tradeLicenseDetail.address.locality.name",
+  //       action.value && action.value.label
+  //     )
+  //   );
+  // },
+  gridDefination: {
+    xs: 12,
+    sm: 4
+  }
+},
+//---------------locality-end--------------
+//-------------------Owner Name----------------------
+ownerName: getTextField({
+  label: {
+    labelName: "Owner Name",
+    labelKey: "Owner Name"
+  },
+  placeholder: {
+    labelName: "Enter Owner Name",
+    labelKey: "Owner Name"
+  },
+  gridDefination: {
+    xs: 12,
+    sm: 4,
 
+  },
+  required: false,
+ // pattern: /^[^\$\"'<>?\\\\~`!@$%^()+={}\[\]*:;“”‘’]{1,64}$/i,
+  errorMessage: "ERR_INVALID_PROPERTY_ID",
+  jsonPath: "searchScreen.name",
+  disabled: process.env.REACT_APP_NAME === "Citizen" ? true : false,
+}),
+//-------------------End Owner Name--------------------------------
   }),
-  
+ 
 
   button: getCommonContainer({
     // firstCont: {

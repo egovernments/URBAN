@@ -58,8 +58,13 @@ const CheckboxContainerConnHolder = Loadable({
     loading: () => <Loading />
   });
 const AutosuggestContainer = Loadable({
-  loader: () => import("./AutosuggestContainer"),
-  loading: () => <Loading />
+    loader: () => import("./AutosuggestContainer"),
+    loading: () => <Loading />
+});
+
+const EodbDialogContainer = Loadable({
+    loader: () => import("./EodbDialogContainer"),
+    loading: () => <Loading />
 });
 
 export {
@@ -75,5 +80,6 @@ export {
   EstimateOverviewCardContainer,
   ModificationDocumentListContainer,
   CheckboxContainerConnHolder,
-  AutosuggestContainer
+  AutosuggestContainer,
+  EodbDialogContainer
 };

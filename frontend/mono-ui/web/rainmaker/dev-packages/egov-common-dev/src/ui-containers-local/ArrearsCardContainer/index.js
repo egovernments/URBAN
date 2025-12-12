@@ -14,6 +14,7 @@ const getBillingPeriod = (from, to) => {
   return `${fromDate.toLocaleDateString()}-${toDate.toLocaleDateString()}`;
 }
 
+
 class ArrearsCardContainer extends Component {
   state = {
     showArrearsCard: false
@@ -30,10 +31,9 @@ class ArrearsCardContainer extends Component {
       <LabelContainer
         labelName={'CS_ARREARS_DETAILS'}
         labelKey={'CS_ARREARS_DETAILS'}
-        style={{ fontSize: 'medium' }}
       />
-      {this.props.estimate.arrears != 0 && this.state.showArrearsCard && <ArrearsMolecule fees={this.props.estimate.fees} arrears={this.props.estimate.arrears}></ArrearsMolecule>}
-      {this.props.estimate.arrears == 0 && this.state.showArrearsCard && <div> <LabelContainer
+        {this.props.estimate.arrears != 0 && this.state.showArrearsCard && <ArrearsMolecule fees={this.props.estimate.fees} arrears={this.props.estimate.arrears}></ArrearsMolecule>}
+        {this.props.estimate.arrears == 0 && this.state.showArrearsCard && <div> <LabelContainer
         labelName={'CS_NO_ARREARS'}
         labelKey={'CS_NO_ARREARS'}
       /></div>}
@@ -62,11 +62,9 @@ const formatTaxHeaders = (billDetail = {}) => {
     billAccountDetails,
     ["amount"],
     ["asce"]);
-
-  billAccountDetailsSorted.map((taxHead) => {
-    formattedFees[taxHead.taxHeadCode] = { value: taxHead.amount, order: taxHead.order };
+    billAccountDetailsSorted.map((taxHead) => {
+        formattedFees[taxHead.taxHeadCode] = { value: taxHead.amount, order: taxHead.order };
   })
-
   formattedFees['TL_COMMON_TOTAL_AMT'] = { value: billDetail.amount, order: 10 }
   return formattedFees;
 }

@@ -71,7 +71,7 @@ class YearDialog extends Component {
                 color="black"
               />
             </div>
-            <div className="year-range-botton-cont">
+            <div className="year-range-botton-cont" style={{overflowY:"scroll",maxHeight:"300px"}}>
               {Object.values(getYearList).map((item, index) => (
                 <YearDialogueHOC
                   handleRadioButton={this.handleRadioButton}
@@ -120,8 +120,8 @@ const mapStateToProps = state => {
   const { generalMDMSDataById } = common;
   const FinancialYear =
     generalMDMSDataById && generalMDMSDataById.FinancialYear;
-  const getYearList = FinancialYear && Object.keys(FinancialYear);
-  return { getYearList, form };
+    const getYearList = FinancialYear?Object.keys(FinancialYear).sort().reverse():null;
+    return { getYearList, form };
 };
 
 const mapDispatchToProps = dispatch => {

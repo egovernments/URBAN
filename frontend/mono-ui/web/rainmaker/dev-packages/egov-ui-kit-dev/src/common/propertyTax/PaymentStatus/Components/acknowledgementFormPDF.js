@@ -87,7 +87,7 @@ const generateAcknowledgementForm = (role, details, generalMDMSDataById, receipt
                   unit.usageCategoryDetail ? "UsageCategoryDetail" : "UsageCategorySubMinor"))
               );
               dataRow.push(getLocaleLabels('PROPERTYTAX_OCCUPANCYTYPE_' + transform(unit.occupancyType, "OccupancyType"), 'PROPERTYTAX_OCCUPANCYTYPE_' + transform(unit.occupancyType, "OccupancyType")));
-              if (unit.occupancyType === "RENTED") {
+              if (unit.occupancyType === "RENTED" || unit.occupancyType === "PG") {
                 dataRow.push(unit.arv || "");
               } else {
                 dataRow.push(`${Math.round(unit.unitArea * 100) / 100}` || "");
@@ -153,6 +153,7 @@ const generateAcknowledgementForm = (role, details, generalMDMSDataById, receipt
         }
 
         let newArray = [];
+        while (flatArray.length > 0) newArray.push(flatArray.splice(0, noOfColumns));
         return isInstitution
           ? [
             [
@@ -393,7 +394,7 @@ const generateAcknowledgementForm = (role, details, generalMDMSDataById, receipt
             },
             layout: tableborder,
           },
-
+          { text:"* This document does not certify payment of Property Tax", style: "pt-reciept-citizen-subheader" },
           { text: getLocaleLabels("Commissioner/EO", "PT_ACK_LOCALIZATION_COMMISSIONER_EO"), alignment: "right", color: "#484848", fontSize: 12, bold: true, margin: [0, 30, 0, 30] },
 
         ],

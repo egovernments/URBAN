@@ -145,15 +145,11 @@ const fontStyle = {
   fontWeight: "500",
   color: "rgba(0, 0, 0, 0.87)",
   fontFamily: "Roboto",
-  // width:150,
-  // overflow: "hidden", 
-  // whiteSpace: "nowrap",
-  // textOverflow: "ellipsis",
+  width:150,
+  overflow: "hidden", 
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
   // marginLeft:"7px",
-  marginLeft:"7px",
-  wordBreak: "break-word",
-  width: "90%",
-  marginRight: "7px"
 };
 
 const titleStyle = {
@@ -234,9 +230,7 @@ class NocDocDetailCard extends Component {
                 variant="subtitle1"
                 style={{ fontWeight: "bold", fontSize: "12px" }}
               >
-                <LabelContainer
-                  labelKey="BPA_NO_DOCUMENTS_UPLOADED_LABEL"
-                />
+                No Documents Uploaded
               </Typography>
             ) : (
               ""
@@ -251,9 +245,7 @@ class NocDocDetailCard extends Component {
                 style={{ float: "right" }}
                 onClick={() => this.props.toggleEditClick(docIndex)}
               >
-                <LabelContainer
-                  labelKey="BPA_UPLOAD_LABEL"
-                />
+                Upload
               </Button>
             )}
           </Grid>
@@ -270,9 +262,7 @@ class NocDocDetailCard extends Component {
                     gutterBottom
                     style={titleStyle}
                   >
-                  <LabelContainer
-                    labelKey="BPA_FILE_LABEL"
-                  />
+                    File
                   </Typography>
                   <LightTooltip title={!doc.fileName ? "" : doc.fileName} arrow>
                   <div style={fontStyle}>
@@ -286,13 +276,11 @@ class NocDocDetailCard extends Component {
                     gutterBottom
                     style={titleStyle}
                   >
-                  <LabelContainer
-                    labelKey="BPA_UPLOADED_BY_LABEL"
-                  />
+                    Uploaded By
                   </Typography>
-                  <LightTooltip title={!(doc.additionalDetails && doc.additionalDetails.uploadedBy) ? "" : <LabelContainer labelKey={doc.additionalDetails.uploadedBy} /> } arrow>
+                  <LightTooltip title={!(doc.additionalDetails && doc.additionalDetails.uploadedBy) ? "" : doc.additionalDetails.uploadedBy} arrow>
                   <div style={fontStyle}>
-                    {!(doc.additionalDetails && doc.additionalDetails.uploadedBy) ? "" : <LabelContainer labelKey={doc.additionalDetails.uploadedBy} />}
+                    {!(doc.additionalDetails && doc.additionalDetails.uploadedBy) ? "" : doc.additionalDetails.uploadedBy}
                   </div>
                   </LightTooltip>
                 </Grid>
@@ -302,9 +290,7 @@ class NocDocDetailCard extends Component {
                     gutterBottom
                     style={titleStyle}
                   >
-                  <LabelContainer
-                    labelKey="BPA_UPLOADED_DATE_LABEL"
-                  />
+                    Uploaded Date
                   </Typography>
                   
                   <div style={fontStyle}>
@@ -318,9 +304,7 @@ class NocDocDetailCard extends Component {
                       window.open(doc.link, "_blank");
                     }}
                   >
-                    <LabelContainer
-                      labelKey="BPA_VIEW_FILE_LABEL"
-                    />
+                    View File
                   </Button>
                 </Grid>
               </React.Fragment>)

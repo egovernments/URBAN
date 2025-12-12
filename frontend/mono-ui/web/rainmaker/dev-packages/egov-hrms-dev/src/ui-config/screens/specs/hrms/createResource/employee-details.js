@@ -67,8 +67,8 @@ export const employeeDetails = getCommonCard({
           labelName: "Enter Guardian's Name",
           labelKey: "HR_GUARDIAN_NAME_PLACEHOLDER"
         },
-        required: true,
-        pattern: getPattern("Name") || null,
+        //required: true,
+       // pattern: getPattern("Name") || null,
         jsonPath: "Employee[0].user.fatherOrHusbandName"
       })
     },
@@ -76,17 +76,17 @@ export const employeeDetails = getCommonCard({
       uiFramework: "custom-containers-local",
       moduleName: "egov-hrms",
       componentPath: "AutosuggestContainer",
-      jsonPath: "Employee[0].user.relationship",
+      jsonPath: "Employee[0].user.guardianRelation",
       props: {
         className: "hr-generic-selectfield autocomplete-dropdown",
         data: [
           {
-            code: "FATHER",
-            name: "COMMON_RELATION_FATHER"
+            code: "Father",
+            name: "Father"
           },
           {
-            code: "HUSBAND",
-            name: "COMMON_RELATION_HUSBAND"
+            code: "Husband",
+            name: "Husband"
           },
         ],
         optionValue: "value",
@@ -96,12 +96,12 @@ export const employeeDetails = getCommonCard({
           labelName: "Select Relationship",
           labelKey: "HR_RELATIONSHIP_PLACEHOLDER"
         },
-        required: true,
-        isClearable: true,
+       // required: true,
+       // isClearable: true,
         labelsFromLocalisation: true,
-        jsonPath: "Employee[0].user.relationship"
+        jsonPath: "Employee[0].user.guardianRelation"
       },
-      required: true,
+    // required: true,
       gridDefination: {
         xs: 12,
         sm: 12,
@@ -128,10 +128,6 @@ export const employeeDetails = getCommonCard({
             code:"TRANSGENDER",
             name:"COMMON_GENDER_TRANSGENDER"
           }
-          // {
-          //   value: "OTHERS",
-          //   label: "COMMON_GENDER_OTHERS"
-          // }
         ],
         optionValue: "value",
         optionLabel: "label",

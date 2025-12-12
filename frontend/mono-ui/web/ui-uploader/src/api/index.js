@@ -93,7 +93,7 @@ export const Api = () => {
     for (var i = 0; i < requestBody.UploadJobs.length; i++) {
       requestBody.UploadJobs[i].tenantId = tenantId;
     }
-    console.log(JSON.parse(fetchFromLocalStorage("Employee.user-info")));
+    console.log('Log => ** [Uploader:CreateJob]', JSON.parse(fetchFromLocalStorage("Employee.user-info")));
     requestBody.RequestInfo.userInfo = JSON.parse(
       fetchFromLocalStorage("Employee.user-info")
     );
@@ -123,7 +123,7 @@ export const Api = () => {
     };
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic ZWdvdi11c2VyLWNsaWVudDo="
+      Authorization: "Basic ZWdvdi11c2VyLWNsaWVudDplZ292LXVzZXItc2VjcmV0"
     };
     const endPoint = getRequestUrl(
       apiEndpoints.USER_LOGIN_ENDPOINT,

@@ -4,6 +4,7 @@ import { getRequiredDocuments } from "egov-pt/ui-config/screens/specs/pt-mutatio
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getLocaleLabels } from "egov-ui-framework/ui-utils/commons.js";
 import { initLocalizationLabels } from "egov-ui-kit/redux/app/utils";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import { httpRequest } from "egov-ui-kit/utils/api";
 import { getTranslatedLabel } from "egov-ui-kit/utils/commons";
 import { MDMS } from "egov-ui-kit/utils/endPoints";
@@ -54,25 +55,22 @@ export const getOwnershipTypeInfoCategory = (ownershipCategory, subOwnershipCate
     : getTranslatedLabel(`PROPERTYTAX_BILLING_SLAB_${ownershipCategory}`, localizationLabelsData);
 };
 
-export const getOwnershipInfoUserCategory = (owner, generalMDMSDataById, localizationLabelsData) => {
+export const getOwnershipInfoUserCategory = (owner, generalMDMSDataById) => {
   return (
     (owner &&
       owner.ownerType &&
       generalMDMSDataById &&
       generalMDMSDataById["OwnerType"] &&
       generalMDMSDataById["OwnerType"][owner.ownerType] &&
-      // generalMDMSDataById["OwnerType"][owner.ownerType].name) ||
-      getLocaleLabels(
-        `COMMON_MASTERS_OWNERTYPE_${generalMDMSDataById["OwnerType"][owner.ownerType].code}`,
-        `COMMON_MASTERS_OWNERTYPE_${generalMDMSDataById["OwnerType"][owner.ownerType].code}`
-      )) ||
+      generalMDMSDataById["OwnerType"][owner.ownerType].name) ||
     "NA"
   );
 };
 
 export const getOwnerInfo = (latestPropertyDetails, generalMDMSDataById, oldPropertydetails = {}) => {
   const isInstitution =
-    latestPropertyDetails.ownershipCategory === "INSTITUTIONALPRIVATE" || latestPropertyDetails.ownershipCategory === "INSTITUTIONALGOVERNMENT";
+    latestPropertyDetails &&
+    (latestPropertyDetails.ownershipCategory === "INSTITUTIONALPRIVATE" || latestPropertyDetails.ownershipCategory === "INSTITUTIONALGOVERNMENT");
   let { institution = {}, owners: ownerDetails = [], subOwnershipCategory, ownershipCategory } = latestPropertyDetails || {};
   let owner = [];
   ownerDetails = ownerDetails && Array.isArray(ownerDetails) && ownerDetails.sort((owner1, owner2) => owner1.name.localeCompare(owner2.name));
@@ -86,6 +84,13 @@ export const getOwnerInfo = (latestPropertyDetails, generalMDMSDataById, oldProp
       Array.isArray(oldPropertydetails.owners) &&
       oldPropertydetails.owners.sort((owner1, owner2) => owner1.name.localeCompare(owner2.name));
   }
+  if (
+    latestPropertyDetails &&
+    latestPropertyDetails.owners &&
+    latestPropertyDetails.owners.length > 0 &&
+    latestPropertyDetails.owners[0].hasOwnProperty("status")
+  )
+    ownerDetails = ownerDetails.filter((item) => item.status == "ACTIVE");
 
   return (
     ownerDetails &&
@@ -157,13 +162,13 @@ export const getOwnerInfo = (latestPropertyDetails, generalMDMSDataById, oldProp
               },
           isInstitution
             ? {
-                key: getTranslatedLabel("PT_OWNERSHIP_INFO_MOBILE_NO", localizationLabelsData),
-                value: owner.mobileNumber || "NA",
+                key: getTranslatedLabel("PT_OWNERSHIP_INFO_NAME_OF_AUTH", localizationLabelsData),
+                value: owner.name || "NA",
                 oldValue:
                   oldPropertydetails &&
                   oldPropertydetails.owners &&
                   Array.isArray(oldPropertydetails.owners) &&
-                  oldPropertydetails.owners[index].mobileNumber,
+                  oldPropertydetails.owners[index].name,
               }
             : {
                 key: getTranslatedLabel("PT_OWNERSHIP_INFO_MOBILE_NO", localizationLabelsData),
@@ -175,20 +180,41 @@ export const getOwnerInfo = (latestPropertyDetails, generalMDMSDataById, oldProp
                   oldPropertydetails.owners[index].mobileNumber,
               },
           {
-            key: getTranslatedLabel("PT_FORM3_ALT_MOBILE_NO", localizationLabelsData),
-            value: owner.alternatemobilenumber || "NA",
-            oldValue:
-              oldPropertydetails &&
-              oldPropertydetails.owners &&
-              Array.isArray(oldPropertydetails.owners) &&
-              oldPropertydetails.owners[index].alternatemobilenumber,
-          },
-          {
             key: getTranslatedLabel("PT_OWNERSHIP_INFO_EMAIL_ID", localizationLabelsData),
             value: owner.emailId ? owner.emailId || "NA" : "",
             oldValue:
               oldPropertydetails && oldPropertydetails.owners && Array.isArray(oldPropertydetails.owners) && oldPropertydetails.owners[index].emailId,
           },
+          {
+            key: getTranslatedLabel("PT_OWNERSHIP_PERCENTAGE", localizationLabelsData),
+            value: "" + (owner.ownerShipPercentage || "NA"),
+            //value: "NA",
+            //value: owner.ownerShipPercentage ? owner.ownerShipPercentage || "NA" : "",
+            oldValue:
+              oldPropertydetails &&
+              oldPropertydetails.owners &&
+              Array.isArray(oldPropertydetails.owners) &&
+              oldPropertydetails.owners[index].ownerShipPercentage,
+          },
+          isInstitution
+            ? {
+                key: getTranslatedLabel("PT_OWNERSHIP_INFO_MOBILE_NO", localizationLabelsData),
+                value: owner.mobileNumber || "NA",
+                oldValue:
+                  oldPropertydetails &&
+                  oldPropertydetails.owners &&
+                  Array.isArray(oldPropertydetails.owners) &&
+                  oldPropertydetails.owners[index].mobileNumber,
+              }
+            : {
+                key: getTranslatedLabel("PT_OWNERSHIP_INFO_USER_CATEGORY", localizationLabelsData),
+                value: getOwnershipInfoUserCategory(owner, generalMDMSDataById),
+                oldValue:
+                  oldPropertydetails &&
+                  oldPropertydetails.owners &&
+                  Array.isArray(oldPropertydetails.owners) &&
+                  getOwnershipInfoUserCategory(oldPropertydetails.owners[index], generalMDMSDataById, localizationLabelsData),
+              },
           isInstitution
             ? {
                 key: getTranslatedLabel("PT_OWNERSHIP_INFO_CORR_ADDR", localizationLabelsData),
@@ -207,25 +233,6 @@ export const getOwnerInfo = (latestPropertyDetails, generalMDMSDataById, oldProp
                   oldPropertydetails.owners &&
                   Array.isArray(oldPropertydetails.owners) &&
                   oldPropertydetails.owners[index].permanentAddress,
-              },
-          isInstitution
-            ? {
-                key: getTranslatedLabel("PT_OWNERSHIP_INFO_NAME_OF_AUTH", localizationLabelsData),
-                value: owner.name || "NA",
-                oldValue:
-                  oldPropertydetails &&
-                  oldPropertydetails.owners &&
-                  Array.isArray(oldPropertydetails.owners) &&
-                  oldPropertydetails.owners[index].name,
-              }
-            : {
-                key: getTranslatedLabel("PT_OWNERSHIP_INFO_USER_CATEGORY", localizationLabelsData),
-                value: getOwnershipInfoUserCategory(owner, generalMDMSDataById, localizationLabelsData),
-                oldValue:
-                  oldPropertydetails &&
-                  oldPropertydetails.owners &&
-                  Array.isArray(oldPropertydetails.owners) &&
-                  getOwnershipInfoUserCategory(oldPropertydetails.owners[index], generalMDMSDataById, localizationLabelsData),
               },
           checkDocument(owner) &&
             (isInstitution
@@ -304,47 +311,105 @@ class OwnerInfo extends Component {
       }
       this.props.prepareFinalObject("mutationDocumentUIChildren", documentUIChildren);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
+  // transformData = (property) => {
+  //   const { owners, institution, ownershipCategory } = property;
+  //   // const owners = property.owners;
+  //   // const snapshotInst = property.institution;
+  //   // const ownershipCategory = property.ownershipCategory;
+  //   let itemKey = [];
+
+  //   owners.map((item) => {
+  //     let owner = {};
+  //     if (institution) {
+  //       owner = {
+  //         // PT_OWNERSHIP_INFO_NAME_INSTI: snapshotInst.name || "NA",
+  //         // PT_OWNERSHIP_INFO_DESIGNATION: snapshotInst.designation || "NA",
+  //         // PT_OWNERSHIP_INFO_TYPE_INSTI: snapshotInst.type || "NA",
+  //         // PT_OWNERSHIP_INFO_NAME_OF_AUTH: snapshotInst.nameOfAuthorizedPerson || "NA",
+  //         PT_OWNERSHIP_INFO_NAME_INSTI: institution.name || "NA",
+  //         PT_OWNERSHIP_INFO_DESIGNATION: institution.designation || "NA",
+  //         PT_OWNERSHIP_INFO_TYPE_INSTI: institution.type || "NA",
+  //         PT_FORM3_OWNERSHIP_TYPE: getTranslatedLabel(`PROPERTYTAX_BILLING_SLAB_${ownershipCategory.split(".")[0]}`) || "NA",
+  //         PT_OWNERSHIP_INFO_NAME_OF_AUTH: institution.nameOfAuthorizedPerson || "NA",
+  //         PT_OWNERSHIP_INFO_TEL_NO: item.altContactNumber || "NA",
+  //         PT_MUTATION_AUTHORISED_EMAIL: item.emailId || "NA",
+  //         PT_OWNER_MOBILE_NO: item.mobileNumber || "NA",
+
+  //         PT_OWNERSHIP_INFO_CORR_ADDR: item.correspondenceAddress || "NA",
+  //       };
+  //     } else {
+  //       owner = {
+  //         PT_OWNER_NAME: item.name || "NA",
+  //         PT_GUARDIANS_NAME: item.fatherOrHusbandName || "NA",
+  //         PT_GENDER: item.gender || "NA",
+  //         // "PT_OWNERSHIP_INFO_DOB": convertEpochToDate(item.dob) || "NA",
+  //         PT_OWNER_MOBILE_NO: item.mobileNumber || "NA",
+  //         PT_MUTATION_AUTHORISED_EMAIL: item.emailId || "NA",
+  //         PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY: item.ownerType || "NA",
+  //         PT_OWNER_PERCENTAGE: "" + (item.ownerShipPercentage || "NA"),
+  //         PT_OWNERSHIP_INFO_CORR_ADDR: item.permanentAddress || "NA",
+  //       };
+  //       const document = checkDocument(item);
+  //       if (document) {
+  //         owner["PT_OWNERSHIP_DOCUMENT_TYPE"] = getTranslatedLabel("PT_" + document.documentType.toUpperCase(), localizationLabelsData);
+  //         owner["PT_OWNERSHIP_DOCUMENT_ID"] = document.documentUid;
+  //       }
+  //     }
+  //     itemKey.push(owner);
+  //   });
+  //   return itemKey;
+  // };
   transformData = (property) => {
-    const { owners, institution, ownershipCategory } = property;
-    let itemKey = [];
-    owners.map((item) => {
-      let owner = {};
-      if (institution) {
-        owner = {
-          PT_OWNERSHIP_INFO_NAME_INSTI: institution.name || "NA",
-          PT_OWNERSHIP_INFO_DESIGNATION: institution.designation || "NA",
-          PT_OWNERSHIP_INFO_TYPE_INSTI: institution.type || "NA",
-          PT_FORM3_OWNERSHIP_TYPE: getTranslatedLabel(`PROPERTYTAX_BILLING_SLAB_${ownershipCategory.split(".")[0]}`) || "NA",
-          PT_OWNERSHIP_INFO_NAME_OF_AUTH: institution.nameOfAuthorizedPerson || "NA",
-          PT_OWNERSHIP_INFO_TEL_NO: item.altContactNumber || "NA",
-          PT_MUTATION_AUTHORISED_EMAIL: item.emailId || "NA",
-          PT_OWNER_MOBILE_NO: item.mobileNumber || "NA",
-          PT_OWNERSHIP_INFO_CORR_ADDR: item.correspondenceAddress || "NA",
-        };
-      } else {
-        owner = {
-          PT_OWNER_NAME: item.name || "NA",
-          PT_GUARDIANS_NAME: item.fatherOrHusbandName || "NA",
-          PT_GENDER: item.gender || "NA",
-          // "PT_OWNERSHIP_INFO_DOB": convertEpochToDate(item.dob) || "NA",
-          PT_OWNER_MOBILE_NO: item.mobileNumber || "NA",
-          PT_MUTATION_AUTHORISED_EMAIL: item.emailId || "NA",
-          PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY: item.ownerType || "NA",
-          PT_OWNERSHIP_INFO_CORR_ADDR: item.permanentAddress || "NA",
-        };
-        const document = checkDocument(item);
-        if (document) {
-          owner["PT_OWNERSHIP_DOCUMENT_TYPE"] = getTranslatedLabel("PT_" + document.documentType.toUpperCase(), localizationLabelsData);
-          owner["PT_OWNERSHIP_DOCUMENT_ID"] = document.documentUid;
-        }
-      }
-      itemKey.push(owner);
+    const { institution, owners = [], ownershipCategory } = property;
+    const rows = [];
+    
+  const isInstitutional = institution && ownershipCategory && ownershipCategory.toUpperCase().startsWith("INSTITUTIONAL");
+  const activeOwners = owners.filter(owner => owner.status === "ACTIVE");
+  let usedOwnerUuid = null;
+    if (isInstitutional ) {
+      const contactOwner = activeOwners[0] || {};
+      usedOwnerUuid = contactOwner.uuid;
+      rows.push({
+        PT_OWNERSHIP_INFO_NAME_INSTI: institution.name || "NA",
+        PT_OWNERSHIP_INFO_DESIGNATION: institution.designation || "NA",
+        PT_OWNERSHIP_INFO_TYPE_INSTI: institution.type || "NA",
+        PT_FORM3_OWNERSHIP_TYPE: getTranslatedLabel(`PROPERTYTAX_BILLING_SLAB_${ownershipCategory.split(".")[0]}`) || "NA",
+        PT_OWNERSHIP_INFO_NAME_OF_AUTH: institution.nameOfAuthorizedPerson || "NA",
+        PT_OWNERSHIP_INFO_TEL_NO: contactOwner.altContactNumber || "NA",
+        PT_MUTATION_AUTHORISED_EMAIL: contactOwner.emailId || "NA",
+          PT_OWNER_MOBILE_NO: contactOwner.mobileNumber || "NA",          
+      });
+    }
+    owners.forEach((item) => {
+      if (isInstitutional && item.uuid === usedOwnerUuid) return;
+      rows.push({
+        PT_OWNER_NAME: item.name || "NA",
+        PT_GUARDIANS_NAME: item.fatherOrHusbandName || "NA",
+        PT_GENDER: item.gender || "NA",
+        // "PT_OWNERSHIP_INFO_DOB": convertEpochToDate(item.dob) || "NA",
+        PT_OWNER_MOBILE_NO: item.mobileNumber || "NA",
+        PT_MUTATION_AUTHORISED_EMAIL: item.emailId || "NA",
+        PT_MUTATION_TRANSFEROR_SPECIAL_CATEGORY: item.ownerType || "NA",
+        PT_OWNER_PERCENTAGE: `${item.ownerShipPercentage || "NA"}`,
+        PT_OWNERSHIP_INFO_CORR_ADDR: item.permanentAddress || "NA",
+        ...(() => {
+          const doc = checkDocument(item);
+          return doc
+            ? {
+                PT_OWNERSHIP_DOCUMENT_TYPE: getTranslatedLabel(`PT_${doc.documentType.toUpperCase(), localizationLabelsData}`),
+                PT_OWNERSHIP_DOCUMENT_ID: doc.documentUid,
+              }
+            : {};
+        })(),
+      });
     });
-    return itemKey;
+
+    return rows;
   };
+
 
   getUniqueList = (list = []) => {
     let newList = [];
@@ -365,21 +430,21 @@ class OwnerInfo extends Component {
     try {
       const payload = await httpRequest("property-services/property/_search", "_search", queryObject);
       if (payload && payload.Properties.length > 0) {
-        payload.Properties = this.getUniqueList(payload.Properties);
+        // payload.Properties = this.getUniqueList(payload.Properties);
         payload.Properties.map((item) => {
           // let lastModifiedDate = convertEpochToDate(item.auditDetails.lastModifiedTime);
           let lastModifiedDate = item.auditDetails.lastModifiedTime;
           if (!ownershipInfo[lastModifiedDate]) {
             ownershipInfo[lastModifiedDate] = [];
           }
-          item.owners = item.owners.filter((owner) => owner.status == "ACTIVE");
+          // item.owners = item.owners.filter(owner => owner.status == "ACTIVE")
           ownershipInfo[lastModifiedDate].push(...this.transformData(item));
         });
         this.setState({ [dialogName]: true, ownershipInfo });
         return true;
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -428,6 +493,7 @@ class OwnerInfo extends Component {
       OldProperty,
       updateNumberConfig,
     } = this.props;
+    // properties.tenantId = getTenantId();
     let ownerInfo = [];
     let multipleOwner = false;
     const header = "PT_OWNERSHIP_INFO_SUB_HEADER";
@@ -447,7 +513,6 @@ class OwnerInfo extends Component {
         }
       }
     }
-
     return (
       <div>
         {ownerInfo && (
@@ -505,9 +570,6 @@ class OwnerInfo extends Component {
                             additionalKey={{
                               key: getTranslatedLabel("PT_OWNERSHIP_INFO_MOBILE_NO", localizationLabelsData),
                               tenantId: properties.tenantId,
-                              key1: getTranslatedLabel("PT_FORM3_ALT_MOBILE_NO", localizationLabelsData),
-                              key2: getTranslatedLabel("PT_OWNERSHIP_INFO_CORR_ADDR", localizationLabelsData),
-                              key3: getTranslatedLabel("PT_OWNERSHIP_INFO_EMAIL_ID", localizationLabelsData),
                               propertyId: properties.propertyId,
                               updateNumberConfig: updateNumberConfig,
                             }}
@@ -520,11 +582,6 @@ class OwnerInfo extends Component {
                       </div>
                     );
                   })}
-                  {/* <UpdateMobile
-                    tenantId={properties.tenantId}
-                    propertyId={properties.propertyId}
-                    type={"VERIFY"} >
-                  </UpdateMobile> */}
                 </div>
               </div>
             }

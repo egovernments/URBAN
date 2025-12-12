@@ -2,7 +2,7 @@ import * as authType from "./actionTypes";
 import { toggleSnackbarAndSetText } from "egov-ui-kit/redux/app/actions";
 import { httpRequest, loginRequest } from "egov-ui-kit/utils/api";
 import { AUTH, USER, OTP } from "egov-ui-kit/utils/endPoints";
-import { prepareFormData ,getUserSearchedResponse} from "egov-ui-kit/utils/commons";
+import { prepareFormData } from "egov-ui-kit/utils/commons";
 import get from "lodash/get";
 import {
   setTenantId,
@@ -13,7 +13,7 @@ import {
   localStorageSet,
   localStorageGet,
   clearUserDetails,
-  setUserObj,
+  removeFields
 } from "../../utils/localStorageUtils";
 
 // temp fix
@@ -31,7 +31,6 @@ const fixUserDob = (user = {}) => {
 export const userProfileUpdated = (payload = {}) => {
   const user = fixUserDob(payload.user[0]);
   setUserInfo(JSON.stringify(user));
-  setUserObj(JSON.stringify(user));
   return { type: authType.USER_PROFILE_UPDATED, user };
 };
 
@@ -42,6 +41,11 @@ export const userProfileUpdateError = (error) => {
 //user search success/failure
 export const searchUserSuccess = (user = {}) => {
   user = fixUserDob(user.user[0]);
+  user = removeFields(user, [aadhaarNumber, pan, bloodGroup, identificationMark])
+  // delete user.aadhaarNumber;
+  // delete user.pan;
+  // delete user.bloodGroup;
+  // delete user.identificationMark;
   //temporary fix for dat of birth format issue in prfile update
   setUserInfo(JSON.stringify(user));
   return { type: authType.USER_SEARCH_SUCCESS, user };
@@ -68,6 +72,7 @@ export const authenticated = (payload = {}) => {
   setTenantId(userInfo.tenantId);
   localStorageSet("expires-in", expiresIn);
   localStorageSet("last-login-time", lastLoginTime);
+  localStorageSet("CITIZEN.CITY",userInfo.permanentCity);
 
   return { type: authType.AUTHENTICATED, userInfo, accessToken };
 };
@@ -90,10 +95,9 @@ export const searchUser = () => {
     const state = getState();
     const { userName, tenantId } = state.auth.userInfo || {};
     try {
-      // const user = await httpRequest(USER.SEARCH.URL, USER.SEARCH.ACTION, [], { userName, tenantId });
-      // delete user.responseInfo;
-      const response=getUserSearchedResponse();
-      dispatch(searchUserSuccess(response));
+      const user = await httpRequest(USER.SEARCH.URL, USER.SEARCH.ACTION, [], { userName, tenantId });
+      delete user.responseInfo;
+      dispatch(searchUserSuccess(user));
     } catch (error) {
       dispatch(searchUserError(error.message));
     }
@@ -137,7 +141,7 @@ export const logout = () => {
     try {
       const authToken = getAccessToken();
       if (authToken) {
-        const response = await httpRequest(AUTH.LOGOUT.URL, AUTH.LOGOUT.ACTION, [], { "access_token" : authToken });
+        const response = await httpRequest(AUTH.LOGOUT.URL, AUTH.LOGOUT.ACTION, [{ key: "access_token", value: authToken }]);
       } else {
         clearUserDetails();
         process.env.REACT_APP_NAME === "Citizen"
@@ -146,6 +150,7 @@ export const logout = () => {
         return;
       }
     } catch (error) {
+      console.log('Log => ** [Auth:Logout]', error);
       clearUserDetails();
     }
     // whatever happens the client should clear the user details

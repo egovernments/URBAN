@@ -128,6 +128,22 @@ const propertyLocationDetails = getCommonContainer({
       jsonPath: "WaterConnection[0].property.address.locality.locationOnMap"
     }
   ),
+  surveyId: getLabelWithValue(
+    {
+      labelKey: "Survey ID"
+    },
+    {
+      jsonPath: "WaterConnection[0].property.surveyId"
+    }
+  ),
+  oldPropertyId: getLabelWithValue(
+    {
+      labelKey: "Old Property No"
+    },
+    {
+      jsonPath: "WaterConnection[0].property.oldPropertyId"
+    }
+  ),
 })
 
 export const getPropertyDetails = (isEditable = true) => {

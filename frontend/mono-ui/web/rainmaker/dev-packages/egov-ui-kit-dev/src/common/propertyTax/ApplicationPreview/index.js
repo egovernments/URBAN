@@ -59,11 +59,12 @@ class ApplicationPreview extends Component {
       dialogueOpen: false,
       urlToAppend: "",
       showAssessmentHistory: false,
+      propertytoDisplay:null
     };
   }
 
-  componentDidMount = () => {
-    this.setPropertyId();
+  componentDidMount = async() => {
+    await this.setPropertyId();
     const { location, fetchGeneralMDMSData, fetchProperties, fetchLocalizationLabel } = this.props;
     const tenantId = getQueryValue(window.location.href, "tenantId");
     fetchLocalizationLabel(locale, tenantId, tenantId);
@@ -192,14 +193,16 @@ class ApplicationPreview extends Component {
     const tenantId = getQueryValue(window.location.href, "tenantId");
     const applicationNumber = getQueryValue(window.location.href, "applicationNumber");
     const propertyId = await this.getPropertyId(applicationNumber, tenantId);
+    const propertytoDisplay=await this.getPropertyDetails(applicationNumber, tenantId);
     this.props.fetchProperties([
       { key: "propertyIds", value: propertyId },
       { key: "tenantId", value: tenantId },
     ]);
     this.props.prepareFinalObject('PTApplication.propertyId', propertyId);
     this.setState({ propertyId });
-
-  }
+    //this.props.prepareFinalObject('PTApplication.propertytoDisplay', propertytoDisplay);
+    this.setState({propertytoDisplay: propertytoDisplay });
+      }
   getPropertyId = async (applicationNumber, tenantId) => {
     const applicationType = getQueryValue(window.location.href, "type");
     if (applicationType == 'assessment') {
@@ -237,6 +240,28 @@ class ApplicationPreview extends Component {
         console.log(e);
       }
     }
+  }
+
+
+  getPropertyDetails = async (applicationNumber,tenantId) => {
+    const applicationType = getQueryValue(window.location.href, "type");
+    const queryObject = [
+        { key: "acknowledgementIds", value: applicationNumber },
+        { key: "tenantId", value: tenantId }
+      ];
+      try {
+        const payload = await httpRequest(
+          "property-services/property/_search",
+          "_search",
+          queryObject
+        );
+        if (payload && payload.Properties.length > 0) {
+          return payload.Properties[0];
+        }
+        } catch (e) {
+        console.log(e);
+      }
+    
   }
   getApplicationType = () => {
     const applicationType = getQueryValue(window.location.href, "type");
@@ -281,46 +306,6 @@ class ApplicationPreview extends Component {
         }
       ]
       applicationObject.endpoint = PROPERTY;
-    } else if (applicationType == "updateProperty") {
-      applicationObject.responsePath = "Properties";
-      applicationObject.dataPath = "Property";
-      applicationObject.moduleName = "PT.UPDATE";
-      applicationObject.updateUrl = "/property-services/property/_update";
-      applicationObject.queryParams = [
-        {
-          key: "acknowledgementIds", value: getQueryArg(
-            window.location.href,
-            "applicationNumber"
-          )
-        },
-        {
-          key: "tenantId", value: getQueryArg(
-            window.location.href,
-            "tenantId"
-          )
-        }
-      ]
-      applicationObject.endpoint = PROPERTY;
-    }else if (applicationType == "legacy") {
-      applicationObject.responsePath = "Properties";
-      applicationObject.dataPath = "Property";
-      applicationObject.moduleName = "PT.LEGACY";
-      applicationObject.updateUrl = "/property-services/property/_update";
-      applicationObject.queryParams = [
-        {
-          key: "acknowledgementIds", value: getQueryArg(
-            window.location.href,
-            "applicationNumber"
-          )
-        },
-        {
-          key: "tenantId", value: getQueryArg(
-            window.location.href,
-            "tenantId"
-          )
-        }
-      ]
-      applicationObject.endpoint = PROPERTY;
     }
     return applicationObject;
   }
@@ -334,8 +319,31 @@ class ApplicationPreview extends Component {
     const { location, documentsUploaded } = this.props;
     const { search } = location;
     const applicationNumber = getQueryValue(search, "applicationNumber");
-    const { generalMDMSDataById, properties, cities } = this.props;
+    const { generalMDMSDataById,properties,cities } = this.props;
     const applicationType = this.getApplicationType();
+    //console.log("Deepika- state",this.state);
+    const propertiesUpdated=this.state.propertytoDisplay;
+    if(properties && properties.propertyId && propertiesUpdated){
+let varOne=propertiesUpdated.usageCategory.split(".");
+propertiesUpdated.usageCategoryMajor=varOne[0]?varOne[0]:"NA";
+propertiesUpdated.usageCategoryMinor=varOne[1]?varOne[1]:"NA";
+let pp=propertiesUpdated.propertyType.split(".");
+propertiesUpdated.propertyType=pp[0]?pp[0]:"NA";
+propertiesUpdated.propertySubType=pp[1]?pp[1]:"NA";
+let varTwo=null;
+if(propertiesUpdated.units)
+{ propertiesUpdated.units.map(item=> {
+varTwo=item.usageCategory.split(".");
+item.usageCategoryMajor=varTwo[0]?varTwo[0]:"NA";
+item.usageCategoryMinor=varTwo[1]?varTwo[1]:"NA";
+item.usageCategorySubMinor=varTwo[2]?varTwo[2]:"NA";
+item.usageCategoryDetail=varTwo[3]?varTwo[3]:"NA";
+item.unitArea=item.constructionDetail.builtUpArea*9;
+});
+}
+properties.propertyDetails[0]=propertiesUpdated;
+    }
+
     const applicationDownloadObject = {
       label: { labelName: "PT Application", labelKey: "PT_APPLICATION" },
       link: () => {
@@ -368,7 +376,7 @@ class ApplicationPreview extends Component {
       logoUrl = window.location.origin + `/${commonConfig.tenantId}-egov-assets/${tenantid}/logo.png`;
       corpCity = `TENANT_TENANTS_${get(properties, "tenantId").toUpperCase().replace(/[.:-\s\/]/g, "_")}`;
       const selectedCityObject = cities && cities.length > 0 && cities.filter(item => item.code === get(properties, "tenantId"));
-      ulbGrade = selectedCityObject ? `ULBGRADE_${get(selectedCityObject[0], "city.ulbGrade")}` : "MUNICIPAL CORPORATION";
+      ulbGrade = selectedCityObject ? get(selectedCityObject[0], "city.ulbType") && get(selectedCityObject[0], "city.ulbType").toUpperCase(): "MUNICIPAL CORPORATION";
     }
     return <div>
       <Screen className={""}>

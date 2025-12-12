@@ -51,9 +51,6 @@ const styles = {
     fontWeight: "500",
     color: "rgba(0, 0, 0, 0.87)",
     fontFamily: "Roboto",
-    wordBreak: "break-word",
-    width: "90%",
-    marginRight: "7px"
     // width:150,
     // overflow: "hidden", 
     // whiteSpace: "nowrap",
@@ -211,9 +208,7 @@ class NocData extends Component {
                         variant="subtitle1"
                         style={{ fontWeight: "bold", fontSize: "12px" , paddingTop: "12px" }}
                       >
-                      <LabelContainer
-                        labelKey="BPA_STATUS_LABEL"
-                      />
+                      Status
                       </Typography>
                         <LabelContainer
                             labelKey={getTransformedLocale(satus)}
@@ -228,9 +223,7 @@ class NocData extends Component {
                       variant="subtitle1"
                       style={{ fontWeight: "bold", fontSize: "12px", paddingTop: "12px" }}
                     >
-                      <LabelContainer
-                        labelKey="BPA_SUDMITTED_ON_LABEL"
-                      />
+                      Submitted On
                       </Typography>
                       <div style={styles.fontStyle}>
                       {!(submittedOn) ? "NA" :convertEpochToDate(JSON.parse(submittedOn))}
@@ -243,9 +236,7 @@ class NocData extends Component {
                         variant="subtitle1"
                         style={{ fontWeight: "bold", fontSize: "12px", paddingTop: "12px" }}
                       >
-                        <LabelContainer
-                        labelKey="BPA_APPROVED_REJECTED_ON_LABEL"
-                      />
+                        Approved/Rejected on
                       </Typography>
                       <div style={styles.fontStyle}>
                         {!satus ? "NA" : docItem.additionalDetails && convertEpochToDate(docItem.additionalDetails.approvedRejectedOn)}
@@ -258,11 +249,7 @@ class NocData extends Component {
                     <Grid item xs={12}>                    
                     <div style={styles.dividerStyle}>
                       <div style={ styles.labelStyle}>
-                        <span>
-                          <LabelContainer
-                            labelKey="BPA_COMMON_DOCS"
-                          />
-                          </span>
+                        <span>Documents</span>
                         <div style={styles.underlineStyle} />
                       </div>
                     </div>

@@ -13,7 +13,6 @@ import { ImageModalDisplay } from "modules/common";
 import { PrivacyPolicy } from "modules/common";
 import LandingPage from "modules/employee/LandingPage";
 import Inbox from "modules/employee/Inbox";
-import FireNocInbox from "modules/employee/Inbox/inbox";
 import MDMS from "modules/common/MDMS";
 import Home from "modules/employee/Home";
 import Report from "modules/employee/reports/report";
@@ -122,18 +121,6 @@ const routes = [
     },
   },
   {
-    path: "fire-noc/inbox",
-    component: FireNocInbox,
-    needsAuthentication: true,
-    options: {
-      hideFooter: true,
-      redirectionUrl,
-      title: "fire-noc/inbox",
-      hideTitle: true,
-      isHomeScreen: true,
-    },
-  },
-  {
     path: "image",
     component: ImageModalDisplay,
     needsAuthentication: true,
@@ -172,6 +159,18 @@ const routes = [
   },
   {
     path: "report/:moduleName/:reportName",
+    component: Report,
+    needsAuthentication: true,
+
+    options: {
+      hideFooter: true,
+      title: "CS_PGR_REPORTS_HEADER",
+      hideTitle: true,
+      redirectionUrl,
+    },
+  },
+  {
+    path: "report-v2/:moduleName/:reportName",
     component: Report,
     needsAuthentication: true,
 

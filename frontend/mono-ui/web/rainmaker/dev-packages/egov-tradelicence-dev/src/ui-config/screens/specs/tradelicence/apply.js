@@ -1,5 +1,5 @@
 import commonConfig from "config/common.js";
-import { getCommonCard, getCommonContainer, getCommonHeader, getCommonParagraph, getCommonTitle, getStepperObject } from "egov-ui-framework/ui-config/screens/specs/utils";
+import { getCommonCard, getCommonContainer, getCommonHeader, getCommonParagraph, getCommonTitle, getStepperObject, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject, unMountScreen } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
@@ -14,7 +14,7 @@ import { tradeDetails } from "./applyResource/tradeDetails";
 import { tradeLocationDetails } from "./applyResource/tradeLocationDetails";
 import { tradeOwnerDetails } from "./applyResource/tradeOwnerDetails";
 import { tradeReviewDetails } from "./applyResource/tradeReviewDetails";
-
+import { selfdeclarationdoc } from "./searchResource/functions"
 
 export const stepsData = [
   { labelName: "Trade Details", labelKey: "TL_COMMON_TR_DETAILS" },
@@ -30,12 +30,13 @@ export const header = getCommonContainer({
   header:
     getQueryArg(window.location.href, "action") !== "edit"
       ? getCommonHeader({
-        labelName: `Apply for New Trade License ${process.env.REACT_APP_NAME === "Citizen"
+        labelName: `Apply for New Trade License ${
+          process.env.REACT_APP_NAME === "Citizen"
             ? "(" + getCurrentFinancialYear() + ")"
             : ""
           }`,
         // dynamicArray: getQueryArg(window.location.href, "action") === "EDITRENEWAL" ? [getnextFinancialYear(getCurrentFinancialYear())]:[getCurrentFinancialYear()],
-        labelKey: getQueryArg(window.location.href, "action") === "EDITRENEWAL" || getQueryArg(window.location.href, "workflowService") === "EDITRENEWAL" ? "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR" : "TL_COMMON_APPL_NEW_LICENSE_YEAR"
+        labelKey: getQueryArg(window.location.href, "action") === "EDITRENEWAL" ? "TL_COMMON_APPL_RENEWAL_LICENSE_YEAR" : "TL_COMMON_APPL_NEW_LICENSE_YEAR"
 
       })
       : {},
@@ -67,10 +68,41 @@ export const tradeDocumentDetails = getCommonCard({
       "Only one file can be uploaded for one document. If multiple files need to be uploaded then please combine all files in a pdf and then upload",
     labelKey: "TL_NEW-UPLOAD-DOCS_SUBHEADER"
   }),
+  button: getCommonContainer({
+  searchButton: {
+    componentPath: "Button",
+    gridDefination: {
+      xs: 12,
+      sm: 6
+      // align: "center"
+    },
+    props: {
+      variant: "contained",
+      style: {
+        color: "white",
+        margin: "8px",
+        backgroundColor: "rgba(0, 0, 0, 0.6000000238418579)",
+        borderRadius: "2px",
+        width: "220px",
+        height: "48px"
+      }
+    },
+    children: {
+      buttonLabel: getLabel({
+        labelName: "Download Self Declaration Document",
+        labelKey: "Download Self Declaration Document"
+      })
+    },
+    onClickDefination: {
+      action: "condition",
+      callBack: selfdeclarationdoc
+    }
+  },}),
   documentList
 });
 
 export const getMdmsData = async (action, state, dispatch) => {
+  
   let mdmsBody = {
     MdmsCriteria: {
       tenantId: commonConfig.tenantId,
@@ -78,6 +110,7 @@ export const getMdmsData = async (action, state, dispatch) => {
         {
           moduleName: "TradeLicense",
           masterDetails: [
+            { name: "TradeType" },
             { name: "AccessoriesCategory" },
             { name: "ApplicationType" },
             { name: "documentObj" }
@@ -89,7 +122,6 @@ export const getMdmsData = async (action, state, dispatch) => {
             { name: "OwnerType" },
             { name: "DocumentType" },
             { name: "UOM" },
-            { name: "StructureType" }
           ]
         },
         {
@@ -116,6 +148,11 @@ export const getMdmsData = async (action, state, dispatch) => {
       [],
       mdmsBody
     );
+    set(
+      payload,
+      "MdmsRes.TradeLicense.MdmsTradeType",
+      get(payload, "MdmsRes.TradeLicense.TradeType", [])
+    );
     const localities = get(
       state.screenConfiguration,
       "preparedFinalObject.applyScreenMdmsData.tenant.localities",
@@ -125,12 +162,25 @@ export const getMdmsData = async (action, state, dispatch) => {
       payload.MdmsRes.tenant.localities = localities;
     }
     dispatch(prepareFinalObject("applyScreenMdmsData", payload.MdmsRes));
-    let financialYearData = get(
-      payload,
-      "MdmsRes.egf-master.FinancialYear",
-      []
-    ).filter(item => item.module === "TL" && item.active === true);
-    set(payload, "MdmsRes.egf-master.FinancialYear", financialYearData);
+    if(getQueryArg(window.location.href, "action") === "EDITRENEWAL"){
+     let financialYearData = get(
+       payload,
+       "MdmsRes.egf-master.FinancialYear",
+       []
+   //  ).filter(item => item.module === "TL"&& item.active === true && item.code === getCurrentFinancialYear());
+   ).filter(item => item.module === "TL" && item.visible === true);
+   //).filter(item => item.module === "TL" && item.visible === true);
+     set(payload, "MdmsRes.egf-master.FinancialYear",financialYearData);
+    }else{
+     let financialYearData = get(
+       payload,
+       "MdmsRes.egf-master.FinancialYear",
+       []
+     ).filter(item => item.module === "TL" && item.visible === true);
+   //  ).filter(item => item.module === "TL"&& item.active === true && item.code === getCurrentFinancialYear());
+
+     set(payload, "MdmsRes.egf-master.FinancialYear",financialYearData);
+    }
   } catch (e) {
     console.log(e);
   }
@@ -177,6 +227,18 @@ export const getData = async (action, state, dispatch) => {
     }
     // dispatch(prepareFinalObject("LicensesTemp", []));
     await updatePFOforSearchResults(action, state, dispatch, applicationNo, tenantId);
+    //To disabled the Trade Unit and Accessories 
+   let applicationStatus = get( state.screenConfiguration.preparedFinalObject, "Licenses[0].status")
+   if(applicationStatus != "INITIATED" || applicationStatus != "PENDINGPAYMENT") {
+     let isDisabledTUData = ['tradeCategory', 'tradeType', 'tradeSubType', 'tradeUOM', 'tradeUOMValue'];
+     let isDisabledASData = ['accessoriesCount', 'accessoriesName', 'accessoriesUOM', 'accessoriesUOMValue'];
+     isDisabledTUData.forEach(value => {
+       disabledKeyValue(dispatch, 'tradeUnitCard', value);
+     });
+     isDisabledASData.forEach(value => {
+       disabledKeyValue(dispatch, 'accessoriesCard', value);
+     });
+   }
 
     if (!queryValue) {
       const oldApplicationNo = get(
@@ -273,7 +335,16 @@ export const formwizardFourthStep = {
   },
   visible: false
 };
-
+const disabledKeyValue = (dispatch, key, value ) => {
+  dispatch(
+    handleField(
+      "apply",
+      `components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.${key}.props.items[0].item0.children.cardContent.children.${key}Container.children.${value}`,
+      "props.disabled",
+      true
+    )
+  );
+}
 const screenConfig = {
   uiFramework: "material-ui",
   name: "apply",
@@ -325,22 +396,41 @@ const screenConfig = {
         "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.tradeDetailsConatiner.children.tradeLicenseType.props.value",
         "PERMANENT"
       );
+      const applicationType = get(state.screenConfiguration.preparedFinalObject, 'Licenses[0].applicationType', "");
+      if(applicationType === "RENEWAL") {
+        dispatch(
+          handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.tradeLocationDetails",
+            "props.style",
+            {"pointer-events":"none"}
+          )
+         );
+        }
+         if(applicationType === "RENEWAL") {
+         dispatch(
+          handleField(
+            "apply",
+            "components.div.children.formwizardSecondStep.children.tradeOwnerDetails.children.cardContent.children.ownershipType",
+            "props.style",
+            {"pointer-events":"none"}
+          )
+         ); 
+      }
 
+      if(getQueryArg(window.location.href, "action") === "edit" || getQueryArg(window.location.href, "action") === "EDITRENEWAL") {
+        dispatch(
+          handleField(
+            "apply",
+            "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.tradeUnitCard.props.items[0].item0.children.cardContent.children.tradeUnitCardContainer",
+            "props.style",
+            {"pointer-events":"none"}
+          )
+        );
+      }
+      
     });
-    //hardcoding license type to permanent
-    if (getQueryArg(window.location.href, "action") == null) {
-      set(
-        action.screenConfig,
-        "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.tradeDetailsConatiner.children.financialYear.props.disabled",
-        false
-      );
-    } else {
-      set(
-        action.screenConfig,
-        "components.div.children.formwizardFirstStep.children.tradeDetails.children.cardContent.children.tradeDetailsConatiner.children.financialYear.props.disabled",
-        true
-      );
-    }
+
     return action;
   },
 

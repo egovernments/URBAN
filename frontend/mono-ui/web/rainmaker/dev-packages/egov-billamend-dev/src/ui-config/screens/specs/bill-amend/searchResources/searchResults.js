@@ -10,7 +10,7 @@ const getConnectionDetails = data => {
   if (data.rowData[0] == "WS" || data.rowData[0] == "SW") {
     routeTo(`/wns/redirect?connectionNumber=${data.rowData[2]}&tenantId=${data.rowData[6]}&businessService=${data.rowData[0]}`)
   } else {
-    // routeTo(`/wns/connection-details?connectionNumber=${data.rowData[2]}&tenantId=${data.rowData[6]}&service=${data.rowData[8]}&connectionType=${data.rowData[9]}`)
+     routeTo(`/wns/connection-details?connectionNumber=${data.rowData[2]}&tenantId=${data.rowData[6]}&service=${data.rowData[8]}&connectionType=${data.rowData[9]}`)
   }
 
 }

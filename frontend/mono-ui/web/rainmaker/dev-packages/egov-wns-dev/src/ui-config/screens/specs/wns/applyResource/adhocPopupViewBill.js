@@ -40,8 +40,7 @@ const getEstimateDataAfterAdhoc = async (state, dispatch) => {
       state.screenConfiguration.preparedFinalObject,
       "viewBillToolipData[0].description.demandId"
     );
-
-  const consumerCode = getQueryArg(window.location.href, "connectionNumber") || WSRequestBody[0].connectionNo;
+    const consumerCode = getQueryArg(window.location.href, "connectionNumber") || WSRequestBody[0].connectionNo;
   let serviceUrl,httpmethod;
   if (WSRequestBody[0].service === serviceConst.WATER) {
     serviceUrl = "ws-calculator/waterCalculator/_applyAdhocTax";
@@ -60,8 +59,7 @@ try{
       "demandId":demandId,
       "adhocrebate" : (WSRequestBody[0].additionalDetails.adhocRebate)?WSRequestBody[0].additionalDetails.adhocRebate:0,
       "adhocpenalty" : (WSRequestBody[0].additionalDetails.adhocPenalty)?WSRequestBody[0].additionalDetails.adhocPenalty:0,
-      "consumerCode": consumerCode,
-      "businessService": "WS"
+      "consumerCode": consumerCode
     }
   );
 
@@ -80,6 +78,7 @@ try{
       )
     }
 } catch (e) {
+  console.log(e);
   dispatch(
         toggleSnackbar(
           true, {
@@ -109,13 +108,12 @@ const updateAdhoc = (state, dispatch) => {
       state.screenConfiguration.preparedFinalObject,
       "billData.totalAmount"
     );
-    
-    if (parseFloat(rebateAmount) && parseFloat(rebateAmount) >= parseFloat(totalAmount)) {
+    if (parseFloat(rebateAmount) && parseFloat(rebateAmount) > parseFloat(totalAmount)) {
       dispatch(
         toggleSnackbar(
           true,
           {
-            labelKey: "ERR_WS_REBATE_GREATER_THAN_FEE_AMOUNT"
+            labelKey: "ERR_WS_REBATE_GREATER_THAN_AMOUNT"
           },
           "warning"
         )

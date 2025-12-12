@@ -8,9 +8,7 @@ import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import set from "lodash/set";
 
 const goToHome = gotoHomeFooter();
-
 const goToInbox = gotoInboxFooter();
-
 const getAcknowledgementCard = (
   state,
   dispatch,

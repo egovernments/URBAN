@@ -1,26 +1,23 @@
-import { download } from "egov-common/ui-utils/commons";
 import { getCommonCard, getCommonContainer, getCommonHeader, getLabelWithValue } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getFileUrl, getFileUrlFromAPI, getQueryArg, getTransformedLocale, setBusinessServiceDataToLocalStorage } from "egov-ui-framework/ui-utils/commons";
 import { generateNOCAcknowledgement } from "egov-ui-kit/utils/pdfUtils/generateNOCAcknowledgement";
 import { loadUlbLogo } from "egov-ui-kit/utils/pdfUtils/generatePDF";
 import jp from "jsonpath";
-import { uniqBy } from "lodash";
 import get from "lodash/get";
 import set from "lodash/set";
-import { getSearchResults } from "../../../../ui-utils/commons";
+import { getSearchResults,download } from "../../../../ui-utils/commons";
 import { checkValueForNA, generateBill } from "../utils/index";
 import generatePdf from "../utils/receiptPdf";
 import { loadPdfGenerationData } from "../utils/receiptTransformer";
 import "./index.css";
+import { citizenFooter } from "./searchResource/citizenFooter";
 import { applicantSummary, institutionSummary } from "./summaryResource/applicantSummary";
 import { documentsSummary } from "./summaryResource/documentsSummary";
 import { estimateSummary } from "./summaryResource/estimateSummary";
 import { nocSummary } from "./summaryResource/nocSummary";
 import { propertySummary } from "./summaryResource/propertySummary";
-import cloneDeep from "lodash/cloneDeep";
-import store from "ui-redux/store";
-
+import { uniqBy } from "lodash";
 
 const titlebar = getCommonContainer({
   header: getCommonHeader({
@@ -49,6 +46,15 @@ export const downloadPrintContainer = (
     state,
     "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.status"
   );
+  let applicationNumber=get(
+  state,
+  "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.applicationNumber"
+);
+let tenantId=get(
+  state,
+  "screenConfiguration.preparedFinalObject.FireNOCs[0].tenantId"
+);
+
   let downloadMenu = [];
   let printMenu = [];
   let certificateDownloadObject = {
@@ -71,9 +77,9 @@ export const downloadPrintContainer = (
       const receiptQueryString = [
         { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails, "applicationNumber") },
         { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.FireNOCs[0], "tenantId") },
-        { key: "businessService", value: 'FIRENOC' }
+        { key: "businessService", value:'FIRENOC' }        
       ]
-      download(receiptQueryString, "download", "consolidatedreceipt", 'PAYMENT', state);
+      download(receiptQueryString, "download", "firenocreceipt", state);
     },
     leftIcon: "receipt"
   };
@@ -83,9 +89,9 @@ export const downloadPrintContainer = (
       const receiptQueryString = [
         { key: "consumerCodes", value: get(state.screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails, "applicationNumber") },
         { key: "tenantId", value: get(state.screenConfiguration.preparedFinalObject.FireNOCs[0], "tenantId") },
-        { key: "businessService", value: 'FIRENOC' }
+        { key: "businessService", value:'FIRENOC' }      
       ]
-      download(receiptQueryString, "print", "consolidatedreceipt", 'PAYMENT', state);
+      download(receiptQueryString, "print", "consolidatedreceipt", state);
     },
     leftIcon: "receipt"
   };
@@ -193,7 +199,7 @@ export const prepareDocumentsView = async (state, dispatch) => {
   );
   let applicantDocuments = jp.query(
     firenoc,
-    "$.fireNOCDetails.applicantDetails.additionalDetail.documents.*"
+    "$.fireNOCDetails.applicantDetails.additionalDetail.ownerAuditionalDetail.documents.*"
   );
   let otherDocuments = jp.query(
     firenoc,
@@ -205,13 +211,46 @@ export const prepareDocumentsView = async (state, dispatch) => {
     ...otherDocuments
   ];
 
-  allDocuments.forEach(doc => {
+  allDocuments.forEach((doc, index) => {
     documentsPreview.push({
-      title: getTransformedLocale(doc.documentType),
+      title: getTransformedLocale(doc.documentType || doc.title),
       fileStoreId: doc.fileStoreId,
       linkText: "View"
     });
+    if(doc && doc.dropdown && doc.dropdown.value) {
+      documentsPreview[index].dropdown = {
+        value : doc.dropdown.value
+      }
+    }
   });
+  if(documentsPreview && documentsPreview.length <= 0) {
+    let reduxDocuments = get(
+      state,
+      "screenConfiguration.preparedFinalObject.documentsUploadRedux",
+      {}
+    );
+    jp.query(reduxDocuments, "$.*").forEach((doc, index) => {
+      if (doc.documents && doc.documents.length > 0) {
+        documentsPreview.push({
+          title: getTransformedLocale(doc.documentCode),
+          name: doc.documents[0].fileName,
+          fileStoreId: doc.documents[0].fileStoreId,
+          linkText: "View",
+        });
+        if(doc && doc.dropdown && doc.dropdown.value) {
+          documentsPreview[index].dropdown = {
+            value : doc.dropdown.value
+          }
+        }
+      }
+
+    });
+    set(
+      firenoc,
+      "fireNOCDetails.applicantDetails.additionalDetail.ownerAuditionalDetail.documents",
+      documentsPreview
+    );
+  }
   let fileStoreIds = jp.query(documentsPreview, "$.*.fileStoreId");
   let fileUrls =
     fileStoreIds.length > 0 ? await getFileUrlFromAPI(fileStoreIds) : {};
@@ -248,9 +287,8 @@ const prepareUoms = (state, dispatch) => {
   buildings.forEach((building, index) => {
     let uoms = get(building, "uoms", []);
     let uomsMap = {};
-    uoms.forEach(uom => {
-      uomsMap[uom.code] = uom.value;
-    });
+    uoms.forEach(uom => {if(uom.active==true){
+        uomsMap[uom.code] = uom.value;} });
     dispatch(
       prepareFinalObject(
         `FireNOCs[0].fireNOCDetails.buildings[${index}].uomsMap`,
@@ -266,17 +304,10 @@ const prepareUoms = (state, dispatch) => {
           labelKey: `NOC_PROPERTY_DETAILS_${item.code}_LABEL`
         },
         {
-          jsonPath: `FireNOCs[0].fireNOCDetails.buildings[${index}].uomsMap.${item.code}`,
-          // callBack: checkValueForNA,
-          callBack: value => {
-            if (value == 0 || value == '0') {
-              return "0";
-            } else if (value) {
-              return value
-            } else {
-              return checkValueForNA
-            }
-          }
+          jsonPath: `FireNOCs[0].fireNOCDetails.buildings[0].uomsMap.${
+            item.code
+            }`,
+          callBack: checkValueForNA,
         }
       );
 
@@ -284,15 +315,6 @@ const prepareUoms = (state, dispatch) => {
         handleField(
           "search-preview",
           "components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.scheama.children.cardContent.children.propertyContainer.children",
-          item.code,
-          labelElement
-        )
-      );
-
-      dispatch(
-        handleField(
-          "search-preview",
-          `components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardOne.props.items[${index}].item${index}.children.cardContent.children.propertyContainer.children`,
           item.code,
           labelElement
         )
@@ -312,40 +334,35 @@ const setSearchResponse = async (
   applicationNumber,
   tenantId
 ) => {
-  let edited = getQueryArg(window.location.href, "edited")
-
-  const response = edited ? { FireNOCs: get(state.screenConfiguration.preparedFinalObject, 'FireNOCs') } : await getSearchResults([
+  const fireDetails = get(state.screenConfiguration.preparedFinalObject, 'FireNOCs', []);
+  const response = await getSearchResults([
     {
       key: "tenantId",
       value: tenantId
     },
     { key: "applicationNumber", value: applicationNumber }
   ]);
+  const equals = (a, b) =>
+  a.length === b.length &&
+  a.every((v, i) => v === b[i]);
+  if( getQueryArg(window.location.href, "edited") ) {
+    if(fireDetails && fireDetails.length > 0 && !(equals(fireDetails, response.FireNOCs)) && (fireDetails[0].fireNOCDetails.applicationNumber === response.FireNOCs[0].fireNOCDetails.applicationNumber)) {
+      // const response = sampleSingleSearch();
+      dispatch(prepareFinalObject("FireNOCs", fireDetails, []));
+    }
+    else {
+      dispatch(prepareFinalObject("FireNOCs", get(response, "FireNOCs", [])));
+    }
+  }
+  else {
+    dispatch(prepareFinalObject("FireNOCs", get(response, "FireNOCs", [])));
+  }
   // const response = sampleSingleSearch();
+  // set(response,'FireNOCs[0].fireNOCDetails.additionalDetail.assignee[0]','');
+  // set(response,'FireNOCs[0].fireNOCDetails.additionalDetail.comment','');
   
-  if (response &&
-    response.FireNOCs.length &&
-    response.FireNOCs[0].fireNOCDetails &&
-    response.FireNOCs[0].fireNOCDetails.buildings && !edited) {
-    response.FireNOCs[0].fireNOCDetails.buildings.reverse();
-  }
-
-  response.FireNOCs[0].fireNOCDetails.buildings.forEach(data => {
-    let filterData = data.uoms.filter(uom => uom.active == true);
-    data.uoms = filterData
-  });
-
-  if (!edited) {
-    dispatch(prepareFinalObject("fireNOCsDetailsTemp", cloneDeep(response.FireNOCs[0])));
-  }
-
-
-  set(response, 'FireNOCs[0].fireNOCDetails.additionalDetail.assignee[0]', '');
-  set(response, 'FireNOCs[0].fireNOCDetails.additionalDetail.comment', '');
-  set(response, 'FireNOCs[0].fireNOCDetails.additionalDetail.wfDocuments', []);
-  dispatch(prepareFinalObject("FireNOCs", get(response, "FireNOCs", [])));
-  const additionalDocuments = cloneDeep(get(response, "FireNOCs[0].fireNOCDetails.additionalDetail.documents", [])); 
-  dispatch(prepareFinalObject("FireNOCs[0].fireNOCDetails.additionalDetail.document", additionalDocuments));
+  // set(response,'FireNOCs[0].fireNOCDetails.additionalDetail.wfDocuments',[]);
+  // dispatch(prepareFinalObject("FireNOCs", get(response, "FireNOCs", [])));
 
   // Set Institution/Applicant info card visibility
   if (
@@ -353,34 +370,100 @@ const setSearchResponse = async (
       response,
       "FireNOCs[0].fireNOCDetails.applicantDetails.ownerShipType",
       ""
-    ).includes("INDIVIDUAL")
+    ).startsWith("INSTITUTION")
   ) {
-    set(
-      action,
-      "screenConfig.components.div.children.body.children.cardContent.children.applicantSummary.visible",
-      true
-    );
-    set(
-      action,
-      "screenConfig.components.div.children.body.children.cardContent.children.institutionSummary.visible",
-      false
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.body.children.cardContent.children.applicantSummary",
+        "visible",
+        false
+      )
     );
   } else {
+    dispatch(
+      handleField(
+        "search-preview",
+        "components.div.children.body.children.cardContent.children.institutionSummary",
+        "visible",
+        false
+      )
+    );
+  }
+  let value = get(
+    state.screenConfiguration.preparedFinalObject,
+    "FireNOCs[0].fireNOCDetails.propertyDetails.address.areaType","");
+  if( value === 'Urban' ) {           
     set(
       action,
-      "screenConfig.components.div.children.body.children.cardContent.children.applicantSummary.visible",
+      "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.subDistrict.visible",
+      false
+    );   
+    set(
+      action,
+      "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.villageName.visible",
+      false
+    );  
+  } else {      
+    set(
+      action,
+      "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.city.visible",
       false
     );
     set(
       action,
-      "screenConfig.components.div.children.body.children.cardContent.children.institutionSummary.visible",
-      true
+      "screenConfig.components.div.children.body.children.cardContent.children.propertySummary.children.cardContent.children.cardTwo.children.cardContent.children.propertyLocationContainer.children.mohalla.visible",
+      false
     );
   }
 
-  await prepareDocumentsView(state, dispatch);
-  await loadPdfGenerationData(applicationNumber, tenantId);
+  let NOCTypeDta= get(response,
+    "FireNOCs[0].fireNOCDetails.fireNOCType",
+      ""
+    )
+    
+    let diffDays ;
+    const getdate=get(response, "FireNOCs[0].fireNOCDetails.auditDetails.lastModifiedTime");
+    
+  let firenoclength = response.FireNOCs.length - 1;
+  let fireDate = response.FireNOCs[firenoclength].fireNOCDetails.issuedDate;
+  let currentDate = new Date();
+  let appDate = new Date(getdate);
+  //const appDate = convertDateToEpoch(fireDate);
 
+  let diffTime = Math.abs(appDate - currentDate);
+  diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  console.log(diffTime + " milliseconds");
+  console.log(diffDays + " days");
+          	  
+    if(NOCTypeDta === "RENEWAL"){
+     // if (diffDays <= 455){
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.body.children.cardContent.children.nocSummary.children.cardContent.children.body.children.fireNocNumber",
+          "visible",
+          false
+        )
+      );
+    // }
+    // else{
+      // alert("NOC expired on 01-01-2023, max allowed time to apply for renewal is 90 days after expiry");
+   // }
+    }
+    else{
+      dispatch(
+        handleField(
+          "search-preview",
+          "components.div.children.body.children.cardContent.children.nocSummary.children.cardContent.children.body.children.oldFireNocNumber",
+          "visible",
+          false
+        )
+      );
+    }
+  prepareDocumentsView(state, dispatch);
+  prepareUoms(state, dispatch);
+  await loadPdfGenerationData(applicationNumber, tenantId);
   let status = get(
     state,
     "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.status"
@@ -397,48 +480,8 @@ const setSearchResponse = async (
       printCont
     )
   }
-  if (status) {
-    generateBill(dispatch, applicationNumber, tenantId, status);
-  }
-  await prepareUoms(state, dispatch);
+generateBill(state, dispatch, applicationNumber, tenantId, status);
 };
-
-
-export const beforeSubmitHook = async () => {
-  let state = store.getState();
-  let fireNocDetails = get(state, "screenConfiguration.preparedFinalObject.FireNOCs", {});
-  let otherDocuments = get(state, "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.additionalDetail.document", []);
-  let allDocuments = get(state, "screenConfiguration.preparedFinalObject.FireNOCs[0].fireNOCDetails.additionalDetail.documents", []);
-  let fireNOCsDetailsTemp =  get(state, "screenConfiguration.preparedFinalObject.fireNOCsDetailsTemp", {});
-  otherDocuments.forEach(data => {
-    allDocuments.map(allData => {
-      if(data.documentType && data.documentType.split('.').length == 2 && allData&& allData.title.includes(data.documentType.split('.')[1]) && allData.fileStoreId != data.fileStoreId) {
-        data.fileStoreId = allData.fileStoreId
-      }
-    })
-  })
-  fireNocDetails[0].fireNOCDetails.additionalDetail.documents = fireNocDetails[0].fireNOCDetails.additionalDetail.document;
-  
-  let oldBuildings = fireNOCsDetailsTemp.fireNOCDetails.buildings || [];
-  let newBuildings = fireNocDetails[0].fireNOCDetails.buildings || []
-  
-  newBuildings.map(newUom => {
-    oldBuildings.map(oldUom => {
-      if (newUom.id == oldUom.id) {
-        newUom.uoms.forEach(nwUM => {
-          oldUom.uoms.map(odUM => {
-            if (nwUM.code == odUM.code) nwUM.id = odUM.id
-          })
-        })
-      }
-    })
-  })
-
-  fireNocDetails[0].fireNOCDetails.buildings = newBuildings;
-  
-  return fireNocDetails;
-}
-
 
 const screenConfig = {
   uiFramework: "material-ui",
@@ -452,6 +495,7 @@ const screenConfig = {
       );
     const tenantId = getQueryArg(window.location.href, "tenantId");
     loadUlbLogo(tenantId);
+    generateBill(dispatch, applicationNumber, tenantId);
     const queryObject = [
       { key: "tenantId", value: tenantId },
       { key: "businessServices", value: "FIRENOC" }
@@ -484,11 +528,6 @@ const screenConfig = {
       action,
       "screenConfig.components.div.children.body.children.cardContent.children.documentsSummary.children.cardContent.children.header.children.editSection.visible",
       false
-    );
-    set(
-      action,
-      "screenConfig.components.div.children.headerDiv.children.header.children.applicationNumber.props.number",
-      applicationNumber
     );
     return action;
   },
@@ -531,11 +570,11 @@ const screenConfig = {
           uiFramework: "custom-containers-local",
           componentPath: "WorkFlowContainer",
           moduleName: "egov-workflow",
+          // visible: process.env.REACT_APP_NAME === "Citizen" ? false : true,
           props: {
             dataPath: "FireNOCs",
             moduleName: "FIRENOC",
-            updateUrl: "/firenoc-services/v1/_update",
-            beforeSubmitHook: beforeSubmitHook
+            updateUrl: "/firenoc-services/v1/_update"
           }
         },
         body: getCommonCard({
@@ -547,7 +586,7 @@ const screenConfig = {
           documentsSummary: documentsSummary
         }),
         citizenFooter:
-          process.env.REACT_APP_NAME === "Citizen" ? {} : {}
+          process.env.REACT_APP_NAME === "Citizen" ? citizenFooter : {}
       }
     }
   }

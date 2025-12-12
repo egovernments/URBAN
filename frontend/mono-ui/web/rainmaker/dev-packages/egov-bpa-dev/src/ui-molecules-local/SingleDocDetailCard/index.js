@@ -170,9 +170,7 @@ function SingleDocDetailCard(props) {
             </div>
           ) : (
             <Grid xs={7}>
-              <Typography style={documentStyle}>
-                <LabelContainer labelKey="BPA_NO_DOCS_UPLOAD_LABEL" /> 
-              </Typography>
+              <Typography style={documentStyle}>No Documents Uploaded</Typography>
             </Grid>
           )}
         </Grid>

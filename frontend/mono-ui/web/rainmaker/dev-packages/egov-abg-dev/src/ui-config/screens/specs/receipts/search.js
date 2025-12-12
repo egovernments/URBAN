@@ -29,7 +29,7 @@ const getMDMSData = async (action, state, dispatch) => {
         {
           moduleName: "BillingService",
           masterDetails: [
-            { name: "BusinessService", filter: "[?(@.type=='Adhoc')]" }
+            { name: "BusinessService" }
           ]
         },
         {
@@ -51,14 +51,16 @@ const getMDMSData = async (action, state, dispatch) => {
       [],
       mdmsBody
     );
-    setServiceCategory(
-      get(payload, "MdmsRes.BillingService.BusinessService", []),
+    let businessServiceAll= get(payload, "MdmsRes.BillingService.BusinessService", []);
+    let businessServicee=businessServiceAll&&businessServiceAll.filter(config=>config.cancelReceipt);
+    setServiceCategory(businessServicee,
       dispatch
     );
     let uiCommonPay=get(payload.MdmsRes, "common-masters.uiCommonPay",[]);
     dispatch(prepareFinalObject("applyScreenMdmsData.businessServices",uiCommonPay&&uiCommonPay.filter(config=>config.cancelReceipt)))
     dispatch(prepareFinalObject("applyScreenMdmsData.uiCommonConfig", get(payload.MdmsRes, "common-masters.uiCommonPay")))
   } catch (e) {
+    console.log(e);
     alert("Billing service data fetch failed");
   }
 };
@@ -67,7 +69,6 @@ const ucSearchAndResult = {
   uiFramework: "material-ui",
   name: "search",
   beforeInitScreen: (action, state, dispatch) => {
-    dispatch(prepareFinalObject("receiptCancelSearch", {}))
     getData(action, state, dispatch);
     resetFields(state,dispatch);
     return action;

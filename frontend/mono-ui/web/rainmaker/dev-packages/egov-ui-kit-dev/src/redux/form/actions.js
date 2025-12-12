@@ -4,7 +4,6 @@ import { httpRequest, loginRequest, uploadFile } from "egov-ui-kit/utils/api";
 import { FILE_UPLOAD } from "egov-ui-kit/utils/endPoints";
 import { validateForm } from "./utils";
 import transformer from "config/forms/transformers";
-import { setUserObj } from "../../utils/localStorageUtils";
 
 export const initForm = (form, recordData) => {
   return {
@@ -83,9 +82,6 @@ export const submitForm = (formKey, saveUrl) => {
           );
         } else {
           formResponse = await httpRequest(saveUrl, action, [], formData);
-        }
-        if(saveUrl=="/user/citizen/_create"&&formResponse&&formResponse.hasOwnProperty("UserRequest")){
-          setUserObj(JSON.stringify(formResponse.UserRequest));
         }
         dispatch(submitFormComplete(formKey, formResponse, saveUrl));
       } catch (error) {

@@ -1,27 +1,26 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Icon from "@material-ui/core/Icon";
-import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { LabelContainer } from "egov-ui-framework/ui-containers";
-import LoadingIndicator from "egov-ui-framework/ui-molecules/LoadingIndicator";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
   getFileUrlFromAPI,
   getQueryArg
 } from "egov-ui-framework/ui-utils/commons";
-import get from "lodash/get";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
 import { connect } from "react-redux";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { UploadSingleFile } from "../../ui-molecules-local";
-import { handleFileUpload } from "../../ui-utils/commons";
+import { handleFileUpload } from "../../ui-utils/commons"
+import { LabelContainer } from "egov-ui-framework/ui-containers";
+import get from "lodash/get";
 
 const styles = theme => ({
   documentContainer: {
     backgroundColor: "#F2F2F2",
     padding: "16px",
     marginBottom: "16px",
-    wordBreak: "break-word"
+    wordBreak : "break-word"
   },
   documentIcon: {
     backgroundColor: "#FFFFFF",
@@ -69,8 +68,7 @@ class DocumentList extends Component {
   state = {
     uploadedDocIndex: 0,
     uploadedIndex: [],
-    uploadedDocuments: [],
-    fileUploadingStatus: null
+    uploadedDocuments: []
   };
 
   componentDidMount = () => {
@@ -81,8 +79,8 @@ class DocumentList extends Component {
     } = this.props;
     if (uploadedDocuments && Object.keys(uploadedDocuments).length) {
       let simplified = Object.values(uploadedDocuments).map(item => item[0]);
-      simplified = simplified.filter(document => document && document.fileUrl && document.fileName);
-      documents = documents.filter(document => document);
+      simplified=simplified.filter(document=>document&&document.fileUrl&&document.fileName);
+      documents=documents.filter(document=>document);
       let uploadedDocumentsArranged = documents.reduce((acc, item, ind) => {
         const index = simplified.findIndex(i => i.documentType === item.code);
         index > -1 && (acc[ind] = [simplified[index]]);
@@ -100,13 +98,13 @@ class DocumentList extends Component {
       );
 
       getQueryArg(window.location.href, "action") !== "edit" &&
-        Object.values(uploadedDocuments).forEach((item, index) => {
-          prepareFinalObject(
-            `Licenses[0].tradeLicenseDetail.applicationDocuments[${uploadedIndex[index]}]`,
-            { ...item[0] }
-          );
-        });
-
+      Object.values(uploadedDocuments).forEach((item, index) => {
+        prepareFinalObject(
+          `Licenses[0].tradeLicenseDetail.applicationDocuments[${uploadedIndex[index]}]`,
+          { ...item[0] }
+        );
+      });
+      
       this.setState({
         uploadedDocuments: uploadedDocumentsArranged,
         uploadedIndex
@@ -117,14 +115,6 @@ class DocumentList extends Component {
   onUploadClick = uploadedDocIndex => {
     this.setState({ uploadedDocIndex });
   };
-
-
-  showLoading = () => {
-    this.setState({ fileUploadingStatus: "uploading" });
-  }
-  hideLoading = () => {
-    this.setState({ fileUploadingStatus: null });
-  }
 
   handleDocument = async (file, fileStoreId) => {
     let { uploadedDocIndex, uploadedDocuments } = this.state;
@@ -155,14 +145,13 @@ class DocumentList extends Component {
     });
     this.setState({ uploadedDocuments });
     this.getFileUploadStatus(true, uploadedDocIndex);
-    this.hideLoading();
   };
 
   removeDocument = remDocIndex => {
     let { uploadedDocuments } = this.state;
     const { prepareFinalObject, documents, preparedFinalObject } = this.props;
     const jsonPath = documents[remDocIndex].jsonPath;
-    (getQueryArg(window.location.href, "action") === "edit" || getQueryArg(window.location.href, "action") === "EDITRENEWAL" || getQueryArg(window.location.href, "workflowService") === "EDITRENEWAL") &&
+   (getQueryArg(window.location.href, "action") === "edit"||getQueryArg(window.location.href, "action") === "EDITRENEWAL" )&&
       uploadedDocuments[remDocIndex][0].id &&
       prepareFinalObject("LicensesTemp[0].removedDocs", [
         ...get(preparedFinalObject, "LicensesTemp[0].removedDocs", []),
@@ -194,14 +183,10 @@ class DocumentList extends Component {
   };
   render() {
     const { classes, documents, documentTypePrefix } = this.props;
-
+    
     const { uploadedIndex } = this.state;
-    const { fileUploadingStatus } = this.state;
     return (
       <div style={{ paddingTop: 10 }}>
-        {fileUploadingStatus == "uploading" &&
-          <div><LoadingIndicator></LoadingIndicator>
-          </div>}
         {documents &&
           documents.map((document, key) => {
             return (
@@ -240,7 +225,7 @@ class DocumentList extends Component {
                     </Typography>
                     <Typography variant="caption">
                       <LabelContainer
-                        labelKey={document.description}
+                     labelKey={document.description}
                       />
                     </Typography>
                   </Grid>
@@ -249,7 +234,7 @@ class DocumentList extends Component {
                       classes={this.props.classes}
                       id={`upload-button-${key}`}
                       handleFileUpload={e =>
-                        handleFileUpload(e, this.handleDocument, this.props.inputProps[key], this.showLoading)
+                        handleFileUpload(e, this.handleDocument, this.props.inputProps[key])
                       }
                       uploaded={uploadedIndex.indexOf(key) > -1}
                       removeDocument={() => this.removeDocument(key)}

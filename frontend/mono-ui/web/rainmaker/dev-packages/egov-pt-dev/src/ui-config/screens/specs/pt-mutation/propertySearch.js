@@ -1,11 +1,12 @@
+import commonConfig from "config/common.js";
 import { getBreak, getCommonHeader, getLabel } from "egov-ui-framework/ui-config/screens/specs/utils";
-import { prepareFinalObject, unMountScreen } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getQueryArg, getRequiredDocData, showHideAdhocPopup } from "egov-ui-framework/ui-utils/commons";
+import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { getQueryArg, getRequiredDocData,showHideAdhocPopup } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
-import get from "lodash/get";
-import set from "lodash/set";
+import {getLocality} from "../utils/index"
 import "./index.css";
-import { cityChange, resetFields } from "./mutation-methods";
+import get from "lodash/get";
+import { resetFields } from "./mutation-methods";
 import propertySearchTabs from "./property-search-tabs";
 import { searchApplicationTable, searchPropertyTable } from "./searchResource/searchResults";
 const hasButton = getQueryArg(window.location.href, "hasButton");
@@ -16,25 +17,25 @@ const tenant = getTenantId();
 //console.log(captureMutationDetails);
 
 const getMDMSData = async (action, dispatch) => {
-  const moduleDetails = [
-    {
-      moduleName: "PropertyTax",
-      masterDetails: [
-        { name: "Documents" }
-      ]
-    },
-    {
-      moduleName: "tenant",
-      masterDetails: [
+   const moduleDetails= [
         {
-          name: "tenants"
-        }, { name: "citymodule" }
+           moduleName: "PropertyTax", 
+           masterDetails: [
+             { name: "Documents" }
+            ] 
+          },
+        {
+          moduleName: "tenant",
+          masterDetails: [
+            {
+              name: "tenants"
+            }, { name: "citymodule" }
+          ]
+        } 
       ]
-    }
-  ]
-
+   
   try {
-    getRequiredDocData(action, dispatch, moduleDetails).then((payload) => {
+    getRequiredDocData(action, dispatch, moduleDetails).then((payload)=>{
       if (process.env.REACT_APP_NAME != "Citizen") {
         dispatch(
           prepareFinalObject(
@@ -42,24 +43,82 @@ const getMDMSData = async (action, dispatch) => {
             tenant
           )
         );
-        set(action.screenConfig,
-          "components.div.children.propertySearchTabs.children.cardContent.children.tabSection.props.tabs[0].tabContent.searchPropertyDetails.children.cardContent.children.ulbCityContainer.children.ulbCity.props.isDisabled",
-          true
-        );
-        set(action.screenConfig,
-          "components.div.children.propertySearchTabs.children.cardContent.children.tabSection.props.tabs[0].tabContent.searchPropertyDetails.children.cardContent.children.ulbCityContainer.children.ulbCity.isDisabled",
-          true
-        );
-        cityChange(dispatch, tenant)
       }
-      const tenants = get(payload, 'payload.MdmsRes.tenant.tenants', []).sort((t1, t2) => t1.code.localeCompare(t2.code))
+      const tenants=get(payload,'payload.MdmsRes.tenant.tenants',[]).sort((t1,t2)=>t1.code.localeCompare(t2.code))
       dispatch(prepareFinalObject("searchScreenMdmsData.tenant.tenants", tenants));
     })
-    
+    // const payload = await httpRequest(
+    //   "post",
+    //   "/egov-mdms-service/v1/_search",
+    //   "_search",
+    //   [],
+    //   mdmsBody
+    // );
+    // payload.MdmsRes.tenant.tenants = payload.MdmsRes.tenant.citymodule[1].tenants;
+
+
+    // let documents = get(
+    //   payload.MdmsRes,
+    //   "PropertyTax.Documents",
+    //   []
+    // );
+
+    // let documentUi = getRequiredDocuments(documents);
+    // set(documentUi, 'children.header.children.header.children.key.props.labelKey', 'PT_REQ_DOCS_HEADER')
+    // set(documentUi, 'children.footer.children.footer.children.applyButton.children.applyButtonLabel.props.labelKey', 'PT_COMMON_BUTTON_APPLY')
+    // set(documentUi, 'children.footer.children.footer.children.applyButton.onClickDefination', {
+    //   action: "condition",
+    //   callBack: startApplyFlow
+    // })
+    // set(
+    //   action,
+    //   "screenConfig.components.adhocDialog.children.popup",
+    //   documentUi
+    // );
+
+
+
+    // console.log("payload--", payload)
+    // dispatch(prepareFinalObject("searchScreenMdmsData", payload.MdmsRes));
+  //   if (process.env.REACT_APP_NAME != "Citizen") {
+  //     dispatch(
+  //       prepareFinalObject(
+  //         "ptSearchScreen.tenantId",
+  //         tenant
+  //       )
+  //     );
+  //   }
+  // }
   } catch (e) {
     console.log(e);
   }
 };
+
+const getLocalityData = async (action, dispatch, tenantid) =>{
+      let payload = await getLocality(tenantid)
+          //console.log("payload", payload)
+          const mohallaData =
+            payload &&
+            payload.TenantBoundary[0] &&
+            payload.TenantBoundary[0].boundary &&
+            payload.TenantBoundary[0].boundary.reduce((result, item) => {
+              result.push({
+                ...item,
+                name: `${tenantid
+                  .toUpperCase()
+                  .replace(
+                    /[.]/g,
+                    "_"
+                  )}_REVENUE_${item.code
+                    .toUpperCase()
+                    .replace(/[._:-\s\/]/g, "_")}`
+              });
+              return result;
+            }, []);
+  
+  
+            dispatch(prepareFinalObject('applyScreenMdmsData.tenant.localities', mohallaData));
+}
 
 const header = getCommonHeader({
   labelName: "Property Tax",
@@ -70,9 +129,11 @@ const screenConfig = {
   name: "propertySearch",
 
   beforeInitScreen: (action, state, dispatch) => {
+    
     resetFields(state, dispatch);
-    dispatch(unMountScreen("search-preview"));
+    
     getMDMSData(action, dispatch);
+    getLocalityData(action, dispatch,tenant)
     return action;
   },
 
@@ -137,7 +198,6 @@ const screenConfig = {
                 action: "condition",
                 callBack: (state, dispatch) => {
                   showHideAdhocPopup(state, dispatch, "propertySearch");
-
                 }
               },
               // roleDefination: {

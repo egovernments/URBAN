@@ -341,22 +341,26 @@ export const getEstimateFromBill = (bill) => {
 
 export const transformPropertyDataToAssessInfo = (data) => {
   const propertyType = data["Properties"][0]["propertyDetails"][0]["propertyType"];
-  const propertySubType = data["Properties"][0]["propertyDetails"][0]["propertySubType"];
+  const propertySubType = data["Properties"][0]["propertyDetails"][0]["propertySubType"] ? data["Properties"][0]["propertyDetails"][0]["propertySubType"] : data["Properties"][0]["propertyDetails"][0]["propertyType"];
   const usageCategoryMajor = data["Properties"][0]["propertyDetails"][0]["usageCategoryMajor"];
   const usageCategoryMinor = data["Properties"][0]["propertyDetails"][0]["usageCategoryMinor"];
   const propType = propertySubType === null ? propertyType : propertySubType;
   const propUsageType = usageCategoryMinor == null ? usageCategoryMajor : usageCategoryMinor;
-  const formConfigPath = getPlotAndFloorFormConfigPath(propUsageType, propType);
+  const heightOfProperty = data["Properties"][0].additionalDetails && data["Properties"][0].additionalDetails.heightAbove36Feet && data["Properties"][0].additionalDetails.heightAbove36Feet;
+  const inflammableMaterial = data["Properties"][0].additionalDetails && data["Properties"][0].additionalDetails.inflammable && data["Properties"][0].additionalDetails.inflammable;const formConfigPath = getPlotAndFloorFormConfigPath(propUsageType, propType);
   const path = formConfigPath["path"];
   let dictFloor = {};
   let dictCustomSelect = {};
 
   let customSelectconfig = require(`egov-ui-kit/config/forms/specs/PropertyTaxPay/customSelect.js`).default;
   let basicInfoConfig = require(`egov-ui-kit/config/forms/specs/PropertyTaxPay/basicInformation.js`).default;
+  let checkBoxDetailsConfig = require(`egov-ui-kit/config/forms/specs/PropertyTaxPay/ImpelExtended/checkBoxDetails.js`).default;
   let configPlot = null,
     configFloor = null;
 
   basicInfoConfig = cloneDeep(basicInfoConfig);
+  set(checkBoxDetailsConfig, "fields.heightOfProperty.value", heightOfProperty);
+  set(checkBoxDetailsConfig, "fields.inflammableMaterial.value", inflammableMaterial);
   set(basicInfoConfig, "fields.typeOfUsage.value", propUsageType);
   set(basicInfoConfig, "fields.typeOfBuilding.value", propType);
   if (propType === "SHAREDPROPERTY") {
@@ -418,7 +422,13 @@ export const transformPropertyDataToAssessInfo = (data) => {
     }
   }
 
-  
+  // Object.keys(basicInfoConfig["fields"]).map((item) => {
+  //   var jsonPath = basicInfoConfig["fields"][item]["jsonPath"];
+  //   var valueInJSON = get(data, jsonPath);
+  //   basicInfoConfig["fields"][item].value = valueInJSON;
+  //   console.log(jsonPath, valueInJSON, basicInfoConfig["fields"][item].value);
+  // });
+  // console.log(basicInfoConfig);
   return { basicInformation: basicInfoConfig, plotDetails: configPlot, ...dictFloor, ...dictCustomSelect };
 };
 
@@ -438,7 +448,7 @@ export const convertUnitsToSqFt = (unitArray) => {
     let value = unit.unitArea;
     value = value * 9.0;
     value = Math.round(value * 100) / 100;
-    unit.unitArea = value;
+    unit.unitArea =Math.round( value)/9;
     return unit;
   });
 };
@@ -476,8 +486,8 @@ export const generatePdfFromDiv = (action, applicationNumber, divIdName) => {
   }).then(canvas => {
    
     var data = canvas.toDataURL("image/png", 1);
-    var imgWidth = 200;
-    var pageHeight = 295;
+    var imgWidth = 165;
+    var pageHeight = 300;
     var imgHeight = (canvas.height * imgWidth) / canvas.width;
     var heightLeft = imgHeight;
     var doc = new jsPDF("p", "mm");
@@ -488,7 +498,7 @@ export const generatePdfFromDiv = (action, applicationNumber, divIdName) => {
     if (action === "download") {
       doc.save(`preview-${applicationNumber}.pdf`);
     } else if (action === "print") {
-      doc.autoPrint();
+      //doc.autoPrint();
       window.open(doc.output("bloburl"), "_blank");
     }
   });

@@ -4,7 +4,7 @@ import {
   getLabel
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { setRoute } from "egov-ui-framework/ui-redux/app/actions";
-import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
+import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import { getQueryArg } from "egov-ui-framework/ui-utils/commons";
 import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import store from "ui-redux/store";
@@ -17,6 +17,7 @@ import get from "lodash/get";
 
 const hasButton = getQueryArg(window.location.href, "hasButton");
 let enableButton = true;
+//let testData = true;
 enableButton = hasButton && hasButton === "false" ? false : true;
 const tenant = getTenantId();
 
@@ -32,7 +33,8 @@ const getMDMSData = async (dispatch) => {
           masterDetails: [
             {
               name: "tenants"
-            }, { name: "citymodule" }
+            }, { name: "citymodule" },
+            { name: "tenantsMapping" }
           ]
         },
         {
@@ -63,8 +65,20 @@ const getMDMSData = async (dispatch) => {
         )
       );
     }
-
+    let tenantsMapping = get(payload, "MdmsRes.tenant.tenantsMapping", [])
     let ptWorkflowDetails = get(payload, "MdmsRes.PropertyTax.PTWorkflow", []);
+    
+    const mainTenantID = tenantsMapping.filter(item => item.tenantName === tenant);
+    console.log("tenantsMapping",mainTenantID)
+    enableButton = mainTenantID[0].ITtenantName === tenant ? true : false;
+    dispatch(
+      handleField(
+        "propertySearch",
+        "components.div.children.headerDiv.children.newApplicationButton",
+        "visible",
+        enableButton
+      )
+    );
     ptWorkflowDetails.forEach(data => {
       if(data.enable) {
         dispatch(prepareFinalObject("applyScreenMdmsData.isCheckFromWNS", false));
@@ -87,6 +101,7 @@ const screenConfig = {
   name: "propertySearch",
 
   beforeInitScreen: (action, state, dispatch) => {
+    
     resetFields(state, dispatch);
     getMDMSData(dispatch);
     return action;
@@ -96,6 +111,7 @@ const screenConfig = {
     div: {
       uiFramework: "custom-atoms",
       componentPath: "Form",
+      
       props: {
         className: "common-div-css",
         id: "search"
@@ -120,7 +136,6 @@ const screenConfig = {
                 sm: 6,
                 align: "right"
               },
-              visible: enableButton,
               props: {
                 variant: "contained",
                 color: "primary",

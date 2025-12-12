@@ -5,17 +5,19 @@ import {
   LabelContainer,
   TextFieldContainer
 } from "egov-ui-framework/ui-containers";
-import LoadingIndicator from "egov-ui-framework/ui-molecules/LoadingIndicator";
 import { prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import {
-  getFileUrl, getFileUrlFromAPI, getTransformedLocale, handleFileUpload
+  getFileUrlFromAPI,
+  handleFileUpload,
+  getTransformedLocale,
+  getFileUrl
 } from "egov-ui-framework/ui-utils/commons";
-import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 import get from "lodash/get";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { UploadSingleFile } from "../../ui-molecules-local";
+import { getTenantId } from "egov-ui-kit/utils/localStorageUtils";
 
 const themeStyles = theme => ({
   documentContainer: {
@@ -121,8 +123,7 @@ const requiredIcon = (
 
 class DocumentList extends Component {
   state = {
-    uploadedDocIndex: 0,
-    fileUploadingStatus: null
+    uploadedDocIndex: 0
   };
 
   componentDidMount = () => {
@@ -188,13 +189,6 @@ class DocumentList extends Component {
     prepareFinalObject("documentsUploadRedux", documentsUploadRedux);
   };
 
-  showLoading = () => {
-    this.setState({ fileUploadingStatus: "uploading" });
-  }
-  hideLoading = () => {
-    this.setState({ fileUploadingStatus: null });
-  }
-
   onUploadClick = uploadedDocIndex => {
     this.setState({ uploadedDocIndex });
   };
@@ -219,7 +213,6 @@ class DocumentList extends Component {
         ]
       }
     });
-    this.hideLoading();
   };
 
   removeDocument = remDocIndex => {
@@ -277,17 +270,17 @@ class DocumentList extends Component {
         <Grid item={true} xs={12} sm={6} md={4}>
           {card.dropdown && (
             <TextFieldContainer
-              select={true}
-              label={{ labelKey: getTransformedLocale(card.dropdown.label) }}
-              placeholder={{ labelKey: getTransformedLocale(card.dropdown.label) }}
-              data={card.dropdown.menu}
-              optionValue="code"
-              optionLabel="label"
-              autoSelect={true}
-              required={card.required ? card.required : true}
-              onChange={event => this.handleChange(key, event)}
-              jsonPath={jsonPath}
-            />
+            select={true}
+            label={{labelKey: getTransformedLocale(card.dropdown.label)}}
+            placeholder={{ labelKey: getTransformedLocale(card.dropdown.label) }}
+            data={card.dropdown.menu}
+            optionValue="code"
+            optionLabel="label"
+            autoSelect={true}
+            required={ card.required ? card.required : true}
+            onChange={event => this.handleChange(key, event)}
+            jsonPath={jsonPath}
+          />
           )}
         </Grid>
         <Grid
@@ -298,10 +291,9 @@ class DocumentList extends Component {
           className={classes.fileUploadDiv}
         >
           <UploadSingleFile
-          id={`jk-document-id-${key}`}
             classes={this.props.classes}
             handleFileUpload={e =>
-              handleFileUpload(e, this.handleDocument, this.props, this.showLoading)
+              handleFileUpload(e, this.handleDocument, this.props)
             }
             uploaded={
               documentsUploadRedux[key] && documentsUploadRedux[key].documents
@@ -324,12 +316,8 @@ class DocumentList extends Component {
   render() {
     const { classes, documentsList } = this.props;
     let index = 0;
-    const { fileUploadingStatus } = this.state;
     return (
       <div>
-        {fileUploadingStatus == "uploading" &&
-          <div><LoadingIndicator></LoadingIndicator>
-          </div>}
         {documentsList &&
           documentsList.map(container => {
             return (

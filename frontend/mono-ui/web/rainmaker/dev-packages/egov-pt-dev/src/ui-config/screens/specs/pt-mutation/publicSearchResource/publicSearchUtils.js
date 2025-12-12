@@ -6,7 +6,9 @@ import {
 } from "egov-ui-framework/ui-redux/screen-configuration/actions";
 import get from "lodash/get";
 import { getSearchBillResult } from "../../../../../ui-utils/commons";
-
+import {
+  convertEpochToDate
+} from "egov-ui-framework/ui-config/screens/specs/utils";
 export const ComponentJsonPath = {
   ulbCity:
     "components.div.children.searchPropertyDetails.children.cardContent.children.searchPropertyContainer.children.ulbCity",
@@ -171,7 +173,7 @@ export const generateBill = async (
       });
       if (businessService) {
         queryObj.push({
-          key: "businessService",
+          key: "service",
           value: businessService,
         });
       }
@@ -210,13 +212,38 @@ export const getBill = async (queryObject, dispatch) => {
     console.log(error, "fetxh");
   }
 };
+const PAYMENTSEARCH = {
+  GET: {
+    URL: "/collection-services/payments/",
+    ACTION: "_search",
+  },
+};
+const getPaymentSearchAPI = (businessService = '') => {
+  if (businessService == '-1') {
+    return `${PAYMENTSEARCH.GET.URL}${PAYMENTSEARCH.GET.ACTION}`
+  } else if (process.env.REACT_APP_NAME === "Citizen") {
+    return `${PAYMENTSEARCH.GET.URL}${PAYMENTSEARCH.GET.ACTION}`;
+  }
+  return `${PAYMENTSEARCH.GET.URL}${businessService}/${PAYMENTSEARCH.GET.ACTION}`;
+};
+
+export const fetchPayments = async (
+  dispatch,
+  receiptQueryString,
+  FETCHRECEIPT
+) => {
+  let paymentResponse = null;
+  let businessService = 'PT';
+  paymentResponse = await httpRequest("post", getPaymentSearchAPI(businessService), FETCHRECEIPT.GET.ACTION, receiptQueryString);
+  return paymentResponse && paymentResponse;
+};
 
 export const getPropertyWithBillAmount = (propertyResponse, billResponse) => {
   try {
-    if(billResponse && billResponse.Bill && billResponse.Bill.length > 0) {
+    if (billResponse && billResponse.Bill && billResponse.Bill.length > 0) {
       propertyResponse.Properties.map((item, key) => {
         billResponse.Bill.map(bill => {
-          if(bill.consumerCode === item.propertyId) {
+          if (bill.consumerCode === item.propertyId) {
             propertyResponse.Properties[key].totalAmount = bill.totalAmount;
           }
         });

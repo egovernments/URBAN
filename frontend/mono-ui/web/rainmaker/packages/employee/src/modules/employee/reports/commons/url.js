@@ -11,12 +11,17 @@
 // };
 
 export const getResultUrl = (moduleName,reportName) => {
-  let reportResultUrl = `/report/${moduleName}/${reportName}/_get`;
+  let windowURL = window.location.href;
+  let endpoints = windowURL.includes("report-v2") ? "report-v2" : "report";
+  let reportResultUrl = `/${endpoints}/${moduleName}/_get`;
   return reportResultUrl;
 }
 
 export const getMetaDataUrl = (moduleName,reportName) => {
-  let metaDataUrl = `/report/${moduleName}/${reportName}/metadata/_get`;
+  let windowURL = window.location.href;
+  let endpoints = windowURL.includes("report-v2") ? "report-v2" : "report";
+  let metaDataUrl = `/${endpoints}/${moduleName}/metadata/_get`;
+  //let metaDataUrl = `/report/${moduleName}/metadata/_get`;
   return metaDataUrl;
 };
 

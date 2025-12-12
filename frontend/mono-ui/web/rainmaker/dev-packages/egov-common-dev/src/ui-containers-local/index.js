@@ -12,7 +12,10 @@ const LabelContainer = Loadable({
   loader: () => import("./LabelContainer"),
   loading: () => <Loading />
 });
-
+const ArrearsCardContainer = Loadable({
+  loader: () => import("./ArrearsCardContainer"),
+  loading: () => <Loading />
+});
 const CheckboxContainer = Loadable({
   loader: () => import("./CheckboxContainer"),
   loading: () => <Loading />
@@ -23,10 +26,6 @@ const DownloadFileContainer = Loadable({
 });
 const EstimateCardContainer = Loadable({
   loader: () => import("./EstimateCardContainer"),
-  loading: () => <Loading />
-});
-const ArrearsCardContainer = Loadable({
-  loader: () => import("./ArrearsCardContainer"),
   loading: () => <Loading />
 });
 const AutosuggestContainer = Loadable({

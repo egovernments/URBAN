@@ -59,7 +59,7 @@ class downloadFile extends React.Component {
     return (
       <div>
         <div className={classes.root}>{translatedLabel}</div>
-        <a className={classes.linkDetails} href={value} target="_blank"  rel="noopener noreferrer">
+        <a className={classes.linkDetails} href={value} target="_blank">
           {translatedLabelLink}
         </a>
       </div>

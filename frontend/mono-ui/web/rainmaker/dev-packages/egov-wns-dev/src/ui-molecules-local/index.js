@@ -75,6 +75,10 @@ const PastPaymentsDetails = Loadable({
   loading: () => <Loading />
 });
 
+const PaymentHistory = Loadable({
+  loader: () => import("./PaymentHistory"),
+  loading: () => <Loading />
+});
 const DividerWithLabel = Loadable({
   loader: () => import("./DividerWithLabel"),
   loading: () => <Loading />
@@ -99,7 +103,14 @@ const ActionFooter = Loadable({
   loader: () => import("./ActionFooter"),
   loading: () => <Loading />
 });
-
+const MyLink = Loadable({
+  loader: () => import("./MyLink"),
+  loading: () => <Loading />
+});
+const WnsWSmyLink = Loadable({
+  loader: () => import("./WnsWSmyLink"),
+  loading: () => <Loading />
+});
 export {
   TestMolecules,
   Tooltip,
@@ -112,6 +123,7 @@ export {
   DividerWithLabel,
   MyConnections,
   PastPaymentsDetails,
+  PaymentHistory,
   MeterReading,
   MeterReadingEditable,
   NewConnection,
@@ -120,5 +132,7 @@ export {
   WnsHowItWorks,
   FeesEstimateOverviewCard,
   OwnerHeader,
-  ActionFooter
+  ActionFooter,
+  MyLink,
+  WnsWSmyLink
 };

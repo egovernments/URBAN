@@ -6,10 +6,17 @@ import { RadioButton, Card, Icon, ToolTipUi } from "components";
 import Label from "egov-ui-kit/utils/translationNode";
 import get from "lodash/get";
 
+console.log("new property form loaded");
+if (!confirm("Only one property id should be created for a single property.\nplease check and verify your existing properties.\nDo you want to create new property ?"))
+  window.location.href = `${window.origin}/citizen/property-tax`;
+// window.location.href="http://localhost:3000/property-tax";
+
+console.log("allowed");
+
 const options = [
   { value: "Male", label: <Label label="PT_FORM3_MALE" /> },
   { value: "Female", label: <Label label="PT_FORM3_FEMALE" /> },
-  { value: "TRANSGENDER", label: <Label label="PT_FORM3_TRANSGENDER" /> },
+  { value: "OTHERS", label: <Label label="PT_FORM3_TRANSGENDER" /> },
 ];
 
 // const guardianOptions = [{ value: "Husband", label: <Label label="Husband" /> }, { value: "Father ", label: <Label label="Father" /> }];
@@ -97,9 +104,6 @@ const OwnerInformation = ({
             <div className="col-sm-6">
               <Field fieldKey="ownerMobile" field={fields["ownerMobile"]} handleFieldChange={handleFieldChange} disabled={disabled} />
             </div>
-            <div className="col-sm-6">
-              <Field fieldKey="ownerAlterMobile" field={fields["ownerAlterMobile"]} handleFieldChange={handleFieldChange} disabled={disabled} />
-            </div>
             <div style={{ padding: 0 }} className="col-sm-6">
               <div className="col-sm-6">
                 <Field fieldKey="ownerGuardian" field={fields["ownerGuardian"]} handleFieldChange={handleFieldChange} disabled={disabled} />
@@ -117,7 +121,7 @@ const OwnerInformation = ({
                 className="ownerCategory"
               />
             </div>
-            <div className="col-sm-6 ownerCategoryIdType" style={{  display: "flex", alignItems: "center" }}>
+            <div className="col-sm-6 ownerCategoryIdType" style={{ paddingBottom: "4px", display: "flex", alignItems: "center" }}>
               <Field
                 fieldKey="ownerCategoryIdType"
                 field={fields["ownerCategoryIdType"]}
@@ -136,10 +140,18 @@ const OwnerInformation = ({
               )}
             </div>
             <div className="col-sm-6" style={{ paddingBottom: "4px", paddingTop: "2px" }}>
+              <Field fieldKey="ownerPan" field={fields["ownerPan"]} handleFieldChange={handleFieldChange} disabled={disabled} />
+            </div>
+            <div className="col-sm-6" style={{ paddingBottom: "4px", paddingTop: "2px" }}>
               <Field fieldKey="ownerEmail" field={fields["ownerEmail"]} handleFieldChange={handleFieldChange} disabled={disabled} />
-            </div> 
+            </div>
+            <div className="col-sm-6" style={{ paddingBottom: "4px", paddingTop: "2px" }}>
+              <Field fieldKey="ownerPercentage" field={fields["ownerPercentage"]} handleFieldChange={handleFieldChange} disabled={disabled} />
+            </div>
             <div className="col-sm-6" style={{ paddingBottom: "8px" }}>
               <Field fieldKey="ownerAddress" field={fields["ownerAddress"]} handleFieldChange={handleFieldChange} disabled={disabled} />
+            </div>
+            <div>
               <Field
                 fieldKey="isSameAsPropertyAddress"
                 field={fields.isSameAsPropertyAddress}
@@ -147,9 +159,6 @@ const OwnerInformation = ({
                 disabled={disabled}
                 containerClassName="property-corr"
               />
-            </div>
-            <div>
-            
             </div>
           </div>
         </div>
@@ -174,7 +183,6 @@ const InstitutionAuthority = ({ form, formKey, handleFieldChange, cardTitle, for
             <div className="name-address">
               <Field fieldKey="name" field={fields["name"]} handleFieldChange={handleFieldChange} disabled={disabled} />
               <Field fieldKey="mobile" field={fields["mobile"]} handleFieldChange={handleFieldChange} disabled={disabled} />
-              <Field fieldKey="alterMobile" field={fields["alterMobile"]} handleFieldChange={handleFieldChange} disabled={disabled} />
               <Field fieldKey="email" field={fields["email"]} handleFieldChange={handleFieldChange} disabled={disabled} />
             </div>
             <div className="address">
@@ -197,6 +205,8 @@ const InstitutionAuthority = ({ form, formKey, handleFieldChange, cardTitle, for
 };
 
 const UsageInformationHOC = formHoc({ formKey: "basicInformation", path: "PropertyTaxPay", isCoreConfiguration: true })(GenericForm);
+const BussinessDetailsHOC = formHoc({ formKey: "bussinessDetailsct", path: "PropertyTaxPay/ImpelExtended", isCoreConfiguration: true })(GenericForm);
+const CheckBoxDetailsHOC = formHoc({ formKey: "checkBoxDetails", path: "PropertyTaxPay/ImpelExtended", isCoreConfiguration: true })(GenericForm);
 const PropertyAddressHOC = formHoc({ formKey: "propertyAddress", path: "PropertyTaxPay", isCoreConfiguration: true })(GenericForm);
 //const PlotInformationHOC = formHoc({ formKey: "plotInformation", path: "PropertyTaxPay" })(GenericForm);
 const OwnershipTypeHOC = formHoc({ formKey: "ownershipType", path: "PropertyTaxPay", isCoreConfiguration: true })(GenericForm);
@@ -216,6 +226,8 @@ const InstitutionAuthorityHOC = formHoc({
 
 export {
   UsageInformationHOC,
+  BussinessDetailsHOC,
+  CheckBoxDetailsHOC,
   PropertyAddressHOC,
   OwnershipTypeHOC,
   OwnerInfoHOC,

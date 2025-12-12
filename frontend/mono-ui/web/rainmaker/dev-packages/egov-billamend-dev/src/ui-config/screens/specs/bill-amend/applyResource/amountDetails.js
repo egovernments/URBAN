@@ -35,6 +35,11 @@ export const AddAdjustmentAmount = getCommonCard({
             uiFramework: "custom-containers-local",
             moduleName: "egov-billamend",
             componentPath: "AdjustmentAmountContainer",
+            // gridDefination: {
+            //   xs: 12,
+            //   sm: 12,
+            //   md: 12
+            // },
             props: {
                 label: {
                   labelName: "Uploaded Diagram",
