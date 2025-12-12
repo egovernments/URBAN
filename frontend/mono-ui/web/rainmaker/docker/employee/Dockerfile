@@ -1,4 +1,4 @@
-FROM egovio/alpine-node-builder-10:yarn AS build  
+FROM egovio/alpine-node-builder-12:yarn AS build  
 ARG WORK_DIR
 WORKDIR /app
 ENV NODE_OPTIONS "--max-old-space-size=4000"
