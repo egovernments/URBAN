@@ -248,7 +248,7 @@ export const setLocalizationLabelsAsync = async (locale, data, moduleKey = 'comb
   // Save to IndexedDB based on module type
   try {
     await indexedDBManager.setLocalization(localeToUse, moduleKey, data);
-    console.log(`Log => ** [IndexedDB] Saved ${data?.length || 0} entries as '${moduleKey}'`);
+    console.log(`Log => ** [IndexedDB] Saved ${data && data.length || 0} entries as '${moduleKey}'`);
   } catch (error) {
     console.warn(`Log => ** [IndexedDB] Failed to save '${moduleKey}' (non-critical):`, error);
   }

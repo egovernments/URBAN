@@ -217,7 +217,7 @@ export const fetchLocalizationLabel = (locale='en_IN', module, tenantId, isFromM
           { key: "tenantId", value: commonConfig.tenantId },
         ]);
         resultArray = [...payload1.messages];
-        console.log(`Log => ** [Localization] Received ${payload1.messages?.length || 0} messages for ${localeModule}`);
+        console.log(`Log => ** [Localization] Received ${payload1.messages.length || 0} messages for ${localeModule}`);
 
         // Mark all fetched modules as loaded to prevent re-fetching
         modulesToFetch.forEach(mod => {

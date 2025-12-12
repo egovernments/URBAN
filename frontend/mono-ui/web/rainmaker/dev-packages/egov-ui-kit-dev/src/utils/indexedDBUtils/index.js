@@ -138,7 +138,7 @@ class IndexedDBManager {
 
       return new Promise((resolve, reject) => {
         request.onsuccess = () => {
-          console.log(`Log => ** [IndexedDB] Saved localization: ${locale}/${module} (${data?.length || 0} entries)`);
+          console.log(`Log => ** [IndexedDB] Saved localization: ${locale}/${module} (${data.length || 0} entries)`);
           resolve(true);
         };
 
