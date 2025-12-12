@@ -51,11 +51,18 @@ const BreadCrumbs = Loadable({
   loader: () => import("./BreadCrumbs"),
   loading: () => <Loading />
 });
+
+const Icon = Loadable({
+  loader: () => import("./Icon"),
+  loading: () => <Loading />
+});
+
 export {
   TestAtoms,
   ApplicationNoContainer,
   Checkbox,
   MapLocation,
+  Icon,
   AutoSuggest,
   Asteric,
   MenuButton,

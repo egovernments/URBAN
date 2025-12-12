@@ -65,12 +65,18 @@ const Button = Loadable({
   loading: () => <Loading />
 });
 
+const Icon = Loadable({
+  loader: () => import("./Icon"),
+  loading: () => <Loading />
+});
+
 export {
   TestAtoms,
   ApplicationNoContainer,
   Checkbox,
   BreadCrumbs,
   MapLocation,
+  Icon,
   AutoSuggest,
   Asteric,
   MenuButton,
