@@ -29,11 +29,11 @@ const mapStateToProps = (state, ownProps) => {
   const propertyDetails = selPropertyDetails.propertyDetails || [];
 
   // FIX: Add null safety checks to prevent "Cannot read properties of undefined" errors
-  const propertiesAudit = state?.screenConfiguration?.preparedFinalObject?.propertiesAudit;
+  const propertiesAudit = state && state.screenConfiguration && state.screenConfiguration.preparedFinalObject && state.screenConfiguration.preparedFinalObject.propertiesAudit;
   const firstProperty = propertiesAudit && propertiesAudit.length > 0 ? propertiesAudit[0] : null;
 
   if (firstProperty) {
-    localityCode = firstProperty.address?.locality?.code || null;
+    localityCode = firstProperty.address && firstProperty.address.locality && firstProperty.address.locality.code || null;
     editlocalityCode = firstProperty.surveyId || null;
     surveyIdcode = firstProperty.surveyId || null;
   } else {
