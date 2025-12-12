@@ -64,10 +64,7 @@ const Button = Loadable({
   loader: () => import("./Button"),
   loading: () => <Loading />
 });
-const Icon = Loadable({
-  loader: () => import("./Icon"),
-  loading: () => <Loading />
-});
+
 export {
   TestAtoms,
   ApplicationNoContainer,
@@ -76,7 +73,6 @@ export {
   MapLocation,
   AutoSuggest,
   Asteric,
-  Icon,
   MenuButton,
   FireNocIcon,
   MyApplicationIcon,
