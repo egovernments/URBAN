@@ -21,14 +21,14 @@ var assessment = null;
 var propertiestenantId=null
 const mapStateToProps = (state) => {
   // FIX: Add null safety checks to prevent "Cannot read properties of undefined" errors
-  const propertiesAudit = state?.screenConfiguration?.preparedFinalObject?.propertiesAudit;
+  const propertiesAudit = state && state.screenConfiguration && state.screenConfiguration.preparedFinalObject && state.screenConfiguration.preparedFinalObject.propertiesAudit;
   const firstProperty = propertiesAudit && propertiesAudit.length > 0 ? propertiesAudit[0] : null;
 
   if (firstProperty) {
-    localityCode = firstProperty.address?.locality?.code || null;
+    localityCode = firstProperty.address && firstProperty.address.locality && firstProperty.address.locality.code || null;
     editlocalityCode = firstProperty.surveyId || null;
     surveyIdcode = firstProperty.surveyId || null;
-    constructionYear = firstProperty.additionalDetails?.yearConstruction || "NA";
+    constructionYear = firstProperty.additionalDetails && firstProperty.additionalDetails.yearConstruction || "NA";
     propertiestenantId = firstProperty.tenantId || null;
   } else {
     // Set defaults if no property data is available
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => {
     console.log('Log => ** [YearDialogue] Warning: propertiesAudit is empty or undefined');
   }
 
-  assessment = state.properties?.Assessments?.filter((item) => item.status === 'ACTIVE') || [];
+  assessment = state.properties && state.properties.Assessments && state.properties.Assessments.filter((item) => item.status === 'ACTIVE') || [];
 
   const { common, form } = state;
   const { generalMDMSDataById } = common;
