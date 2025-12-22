@@ -214,4 +214,7 @@ public class WSCalculationConfiguration {
     @Value("${state.level.tenant.id}")
     private String stateLevelTenantId;
 
+    @Value("${kafka.demand.batch.size:100}")
+    private Integer kafkaDemandBatchSize;
+
 }
