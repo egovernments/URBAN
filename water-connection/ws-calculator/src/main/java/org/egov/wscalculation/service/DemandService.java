@@ -860,8 +860,30 @@ public class DemandService {
 									.isconnectionCalculation(true)
 									.migrationCount(migrationCount).build();
 
-							wsCalculationProducer.push(configs.getCreateDemand(), calculationReq);
-							log.info("Bulk bill Gen chunk info : " + migrationCount + " (chunk " + (chunkOffset/kafkaBatchSize + 1) + " of " + ((totalRecords + kafkaBatchSize - 1) / kafkaBatchSize) + ")");
+							try {
+								wsCalculationProducer.push(configs.getCreateDemand(), calculationReq);
+								log.info("Bulk bill Gen chunk info : " + migrationCount + " (chunk " + (chunkOffset/kafkaBatchSize + 1) + " of " + ((totalRecords + kafkaBatchSize - 1) / kafkaBatchSize) + ")");
+							} catch (Exception ex) {
+								// Log the failure with full context
+								log.error("Failed to push chunk to Kafka - offset: " + migrationCount.getOffset()
+									+ ", recordCount: " + migrationCount.getRecordCount()
+									+ ", chunk: " + (chunkOffset/kafkaBatchSize + 1)
+									+ ", error: " + ex.getMessage(), ex);
+
+								// Send to audit topic for tracking and manual retry
+								migrationCount.setMessage("Failed to push to Kafka: " + ex.getMessage());
+								migrationCount.setAuditTime(System.currentTimeMillis());
+								try {
+									wsCalculationProducer.push(configs.getDeadLetterTopicBatch(), migrationCount);
+									log.info("Failed chunk sent to dead letter topic: offset=" + migrationCount.getOffset());
+								} catch (Exception auditEx) {
+									// Critical: Both Kafka push and audit failed
+									log.error("CRITICAL: Failed to send chunk to both main topic AND dead letter topic! "
+										+ "offset: " + migrationCount.getOffset()
+										+ ", recordCount: " + migrationCount.getRecordCount()
+										+ ", connections may be lost. Manual intervention required.", auditEx);
+								}
+							}
 						}
 						calculationCriteriaList.clear();
 					}
