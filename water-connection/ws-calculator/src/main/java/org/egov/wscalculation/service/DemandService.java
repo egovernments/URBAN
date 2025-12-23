@@ -782,10 +782,10 @@ public class DemandService {
 	public void generateDemandForULB(RequestInfo requestInfo, String tenantId, BulkBillCriteria bulkBillCriteria) {
 
 		Map<String, Object> billingMasterData = calculatorUtils.loadBillingFrequencyMasterData(requestInfo, tenantId);
-		
+
 		long startDay = (((int) billingMasterData.get(WSCalculationConstant.Demand_Generate_Date_String)) / 86400000);
 		if(isCurrentDateIsMatching((String) billingMasterData.get(WSCalculationConstant.Billing_Cycle_String), startDay)) {
-			
+
 			Integer batchsize = configs.getBulkbatchSize();
 			Integer batchOffset = configs.getBatchOffset();
 
@@ -801,13 +801,13 @@ public class DemandService {
 			ArrayList<?> billingFrequencyMap = (ArrayList<?>) masterMap
 					.get(WSCalculationConstant.Billing_Period_Master);
 			mstrDataService.enrichBillingPeriod(null, billingFrequencyMap, masterMap, WSCalculationConstant.nonMeterdConnection);
-			
+
 			Map<String, Object> financialYearMaster =  (Map<String, Object>) masterMap
 					.get(WSCalculationConstant.BILLING_PERIOD);
-			
+
 			Long fromDate = (Long) financialYearMaster.get(WSCalculationConstant.STARTING_DATE_APPLICABLES);
 			Long toDate = (Long) financialYearMaster.get(WSCalculationConstant.ENDING_DATE_APPLICABLES);
-			
+
 			long count = waterCalculatorDao.getConnectionCount(tenantId, fromDate, toDate);
 			log.info("batchsize: " + batchsize +  " batchOffset :" + batchOffset);
 			log.info("Connection Count: " + count);
@@ -830,24 +830,61 @@ public class DemandService {
 									.waterConnection(connection).build();
 							calculationCriteriaList.add(calculationCriteria);
 						}
-						MigrationCount migrationCount = MigrationCount.builder()
-								.tenantid(tenantId)
-								.businessService("WS")
-								.limit(Long.valueOf(batchsize))
-								.id(UUID.randomUUID().toString())
-								.offset(Long.valueOf(batchOffset))
-								.createdTime(System.currentTimeMillis())
-								.recordCount(Long.valueOf(connections.size()))
-								.build();
 
-						CalculationReq calculationReq = CalculationReq.builder()
-								.calculationCriteria(calculationCriteriaList)
-								.requestInfo(requestInfo)
-								.isconnectionCalculation(true)
-								.migrationCount(migrationCount).build();
-						
-						wsCalculationProducer.push(configs.getCreateDemand(), calculationReq);
-						log.info("Bulk bill Gen batch info : " + migrationCount);
+						// Split the calculationCriteriaList into smaller chunks to avoid Kafka message size limit
+						int kafkaBatchSize = configs.getKafkaDemandBatchSize();
+						int totalRecords = calculationCriteriaList.size();
+
+						for (int chunkOffset = 0; chunkOffset < totalRecords; chunkOffset += kafkaBatchSize) {
+							int chunkEnd = Math.min(chunkOffset + kafkaBatchSize, totalRecords);
+							// Create new list to avoid memory retention from subList()
+							List<CalculationCriteria> chunk = new ArrayList<>(calculationCriteriaList.subList(chunkOffset, chunkEnd));
+
+							// offset: unique position across all chunks (batchOffset + chunkOffset)
+							// This ensures each chunk has a unique offset for deduplication/mirroring scenarios
+							// limit: intended Kafka batch size, recordCount: actual records in this chunk
+							// These may differ for the last chunk or if records are filtered
+							MigrationCount migrationCount = MigrationCount.builder()
+									.tenantid(tenantId)
+									.businessService("WS")
+									.limit(Long.valueOf(kafkaBatchSize))
+									.id(UUID.randomUUID().toString())
+									.offset(Long.valueOf(batchOffset + chunkOffset))
+									.createdTime(System.currentTimeMillis())
+									.recordCount(Long.valueOf(chunk.size()))
+									.build();
+
+							CalculationReq calculationReq = CalculationReq.builder()
+									.calculationCriteria(chunk)
+									.requestInfo(requestInfo)
+									.isconnectionCalculation(true)
+									.migrationCount(migrationCount).build();
+
+							try {
+								wsCalculationProducer.push(configs.getCreateDemand(), calculationReq);
+								log.info("Bulk bill Gen chunk info : " + migrationCount + " (chunk " + (chunkOffset/kafkaBatchSize + 1) + " of " + ((totalRecords + kafkaBatchSize - 1) / kafkaBatchSize) + ")");
+							} catch (Exception ex) {
+								// Log the failure with full context
+								log.error("Failed to push chunk to Kafka - offset: " + migrationCount.getOffset()
+									+ ", recordCount: " + migrationCount.getRecordCount()
+									+ ", chunk: " + (chunkOffset/kafkaBatchSize + 1)
+									+ ", error: " + ex.getMessage(), ex);
+
+								// Send to audit topic for tracking and manual retry
+								migrationCount.setMessage("Failed to push to Kafka: " + ex.getMessage());
+								migrationCount.setAuditTime(System.currentTimeMillis());
+								try {
+									wsCalculationProducer.push(configs.getDeadLetterTopicBatch(), migrationCount);
+									log.info("Failed chunk sent to dead letter topic: offset=" + migrationCount.getOffset());
+								} catch (Exception auditEx) {
+									// Critical: Both Kafka push and audit failed
+									log.error("CRITICAL: Failed to send chunk to both main topic AND dead letter topic! "
+										+ "offset: " + migrationCount.getOffset()
+										+ ", recordCount: " + migrationCount.getRecordCount()
+										+ ", connections may be lost. Manual intervention required.", auditEx);
+								}
+							}
+						}
 						calculationCriteriaList.clear();
 					}
 					batchOffset = batchOffset + batchsize;
