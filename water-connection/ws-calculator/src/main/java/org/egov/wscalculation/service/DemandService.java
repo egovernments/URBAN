@@ -840,10 +840,12 @@ public class DemandService {
 							// Create new list to avoid memory retention from subList()
 							List<CalculationCriteria> chunk = new ArrayList<>(calculationCriteriaList.subList(chunkOffset, chunkEnd));
 
+							// limit: intended Kafka batch size, recordCount: actual records in this chunk
+							// These may differ for the last chunk or if records are filtered
 							MigrationCount migrationCount = MigrationCount.builder()
 									.tenantid(tenantId)
 									.businessService("WS")
-									.limit(Long.valueOf(chunk.size()))
+									.limit(Long.valueOf(kafkaBatchSize))
 									.id(UUID.randomUUID().toString())
 									.offset(Long.valueOf(batchOffset))
 									.createdTime(System.currentTimeMillis())
