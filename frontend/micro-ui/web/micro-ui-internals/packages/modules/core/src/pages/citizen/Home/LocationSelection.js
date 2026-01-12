@@ -8,7 +8,8 @@ const LocationSelection = () => {
   const history = useHistory();
   const location = useLocation();
   const { data: cities, isLoading } = Digit.Hooks.useTenants();
-
+console.log("cities", cities);
+console.log("Digit",Digit)
   const [selectedCity, setSelectedCity] = useState(() => ({ code: Digit.ULBService.getCitizenCurrentTenant(true) }));
   const [showError, setShowError] = useState(false);
 

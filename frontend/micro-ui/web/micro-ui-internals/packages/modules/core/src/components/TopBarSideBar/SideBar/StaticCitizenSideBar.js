@@ -55,13 +55,29 @@ Feature :: Citizen Webview sidebar
 const Profile = ({ info, stateName, t }) => (
   <div className="profile-section">
     <div className="imageloader imageloader-loaded">
-      <img className="img-responsive img-circle img-Profile" src={defaultImage} />
+      <img className="img-responsive img-circle img-Profile" src={defaultImage}  style={{height:"42px",width:"42px"}}/>
     </div>
     <div id="profile-name" className="label-container name-Profile">
-      <div className="label-text"> {info?.name} </div>
+      <div className="label-text" style={{
+        fontFamily: "Poppins",
+        fontWeight: 400,
+        fontSize: "12px",
+        lineHeight: "100%",
+        letterSpacing: "0%",
+        color: "#1D1616"
+      }}
+      > {info?.name} </div>
     </div>
     <div id="profile-location" className="label-container loc-Profile">
-      <div className="label-text"> {info?.mobileNumber} </div>
+      <div className="label-text" style={{
+        fontFamily: "Poppins",
+        fontWeight: 400,
+        fontSize: "10px",
+        lineHeight: "100%",
+        letterSpacing: "0%",
+        color: "#B9B9B9"
+      }}
+      > {info?.mobileNumber} </div>
     </div>
     {info?.emailId && (
       <div id="profile-emailid" className="label-container loc-Profile">
@@ -69,9 +85,9 @@ const Profile = ({ info, stateName, t }) => (
       </div>
     )}
     <div className="profile-divider"></div>
-    {window.location.href.includes("/employee") &&
-      !window.location.href.includes("/employee/user/login") &&
-      !window.location.href.includes("employee/user/language-selection") && <ChangeCity t={t} mobileView={true} />}
+    {window.location.href.includes("/digit-ui/employee") &&
+      !window.location.href.includes("/digit-ui/employee/user/login") &&
+      !window.location.href.includes("/digit-ui/employee/user/language-selection") && <ChangeCity t={t} mobileView={true} />}
   </div>
 );
 const IconsObject = {
@@ -150,12 +166,16 @@ const StaticCitizenSideBar = ({ linkData, islinkDataLoading }) => {
     const Item = () => (
       <span className="menu-item" {...item.populators}>
         {leftIcon}
-        <div className="menu-label">{itemComponent}</div>
+        <div className="menu-label" style={{
+          color: "#9197B3", fontFamily: "Poppins",
+          fontWeight: 400,
+          fontSize: "14px",
+        }}>{itemComponent}</div>
       </span>
     );
     if (item.type === "external-link") {
       return (
-        <a href={item.link}>
+        <a href={item.link} >
           <Item />
         </a>
       );
@@ -223,16 +243,15 @@ const StaticCitizenSideBar = ({ linkData, islinkDataLoading }) => {
 
   return (
     <React.Fragment>
-      <div>
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            top: "0px",
-            backgroundColor: "rgba(0, 0, 0, 0.54)",
-            pointerzevents: "auto",
-          }}
-        ></div>
+      <div style={{marginTop:"-15px"}}>
+        {/* <div style={{ width: "100%", borderBottom: "1px solid #6F3AFA", }}>
+          <img
+            src={stateInfo?.logoUrl}
+            alt="Logo"
+            style={{ width: "73px", height: "82px", display: "block", margin: "auto", padding: "10px 0" }}
+          />
+
+        </div> */}
         <div
           style={{
             display: "flex",

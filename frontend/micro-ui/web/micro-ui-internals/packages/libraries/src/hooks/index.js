@@ -93,6 +93,7 @@ import useEmployeeSearch from "./useEmployeeSearch";
 
 import usePropertyMDMS from "./pt/usePropertyMDMS";
 import usePropertyAPI from "./pt/usePropertyAPI";
+import useUpdateContent from "./pt/useUpdateContent";
 import usePropertyCreateNUpdateAPI from "./pt/usePropertyCreateNUpdateAPI";
 import usePropertyDocumentSearch from "./pt/usePropertyDocumentSearch";
 import useTenantsPT from "./pt/useTenants";
@@ -102,6 +103,7 @@ import usePtMDMS from "./pt/useMDMS";
 import usePropertyAssessment from "./pt/usePropertyAssessment";
 import usePtCalculationEstimate from "./pt/usePtCalculationEstimate";
 import useGenderMDMS from "./pt/useGenderMDMS";
+import useSalutationsMDMS from "./pt/useSalutationsMDMS";
 import usePTGenderMDMS from "./pt/usePTGenderMDMS";
 import useMyPropertyPayments from "./pt/useMyPropertyPayments";
 import useGenericViewProperty from "./pt/useGenericViewProperty";
@@ -318,6 +320,7 @@ const pt = {
   usePropertyMDMS,
   usePropertySearchWithDue,
   usePropertyAPI,
+  useUpdateContent,
   usePropertyCreateNUpdateAPI,
   usePropertyDocumentSearch,
   useTenants: useTenantsPT,
@@ -327,6 +330,7 @@ const pt = {
   usePropertyAssessment,
   usePtCalculationEstimate,
   useGenderMDMS,
+  useSalutationsMDMS,
   usePTGenderMDMS,
   useMyPropertyPayments,
   useGenericViewProperty,

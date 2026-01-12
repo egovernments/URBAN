@@ -42,7 +42,7 @@ const Modal = ({
   return (
     <PopUp>
       <div className="popup-module" style={popupStyles}>
-        <HeaderBar main={headerBarMain} end={headerBarEnd} style={headerBarMainStyle ? headerBarMainStyle : {}} />
+        <HeaderBar main={headerBarMain} end={headerBarEnd} style={headerBarMainStyle ? {headerBarMainStyle} : {}} />
         <div className="popup-module-main" style={popupModuleMianStyles ? popupModuleMianStyles : {}}>
           {children}
           <div

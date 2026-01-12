@@ -32,6 +32,7 @@ const fieldComponents = {
 };
 
 const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams, isInboxPage, defaultSearchParams, clearSearch: _clearSearch }) => {
+  console.log("SearchApplication rendered with searchFields:", searchFields);
   const { t } = useTranslation();
   const { handleSubmit, reset, watch, control, setError, clearErrors, formState, setValue } = useForm({
     defaultValues: isInboxPage ? searchParams : { locality: null, city: null, ...searchParams },
@@ -110,7 +111,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     const mobileViewStyles = mobileView ? { margin: 0 } : {};
     return (
       <LinkLabel style={{ display: "inline", ...mobileViewStyles }} onClick={clearSearch}>
-        {t("ES_COMMON_CLEAR_SEARCH")}
+        {t("Clear")}
       </LinkLabel>
     );
   };
@@ -118,8 +119,17 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
   return (
     <form onSubmit={handleSubmit(onSubmitInput)}>
       <React.Fragment>
-        <div className="search-container" style={{ width: "auto", marginLeft: isInboxPage ? "24px" : "revert" }}>
+        <div className="search-container" style={{ width: "auto", marginLeft: isInboxPage ? "" : "revert" }}>
+         
           <div className="search-complaint-container">
+             <div style={{
+            fontFamily: "Poppins",
+            fontWeight: 500,
+            fontSize: "16px",
+            lineHeight: "100%",
+            letterSpacing: "0%",
+            color: "#6B133F",
+          }}>Application Details</div>
             {(type === "mobile" || mobileView) && (
               <div className="complaint-header">
                 <h2>{t("ES_COMMON_SEARCH_BY")}</h2>
@@ -168,15 +178,18 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   </div>
                 ))}
 
+            </div>
+            <div style={{display:"flex",justifyContent:"end",paddingRight:"10px"}}>
               {isInboxPage && (
-                <div style={{ gridColumn: "2/3", textAlign: "right", paddingTop: "10px" }} className="input-fields">
-                  <div>{clearAll()}</div>
+                <div style={{ gridColumn: "2/3", textAlign: "right" }} className="input-fields">
+                  <div style={buttonStyle}>{clearAll()}</div>
                 </div>
               )}
 
               {type === "desktop" && !mobileView && (
                 <div style={{ maxWidth: "unset", marginLeft: "unset" }} className="search-submit-wrapper">
                   <SubmitBar
+                  style={{ width: "109px"}}
                     className="submit-bar-search"
                     label={t("ES_COMMON_SEARCH")}
                     disabled={!!Object.keys(formState.errors).length || formValueEmpty()}
@@ -186,7 +199,7 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
                   {!isInboxPage && <div>{clearAll()}</div>}
                 </div>
               )}
-            </div>
+              </div>
           </div>
         </div>
         {(type === "mobile" || mobileView) && (
@@ -201,5 +214,19 @@ const SearchApplication = ({ onSearch, type, onClose, searchFields, searchParams
     </form>
   );
 };
-
+  const buttonStyle = {
+    padding: "7px 30px",
+    border: "1px solid #FF4C51",
+    borderRadius: "4px",
+    backgroundColor: "white",
+    color: "#FF4C51",
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: 500,
+    fontSize: "14px",
+    lineHeight: "100%",
+    letterSpacing: "2px",
+    cursor: "pointer",
+    width:"109px",
+    marginTop:"1rem"
+  };
 export default SearchApplication;

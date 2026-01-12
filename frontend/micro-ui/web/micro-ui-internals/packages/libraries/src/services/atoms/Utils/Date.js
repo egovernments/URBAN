@@ -4,11 +4,6 @@ export const ConvertTimestampToDate = (timestamp, dateFormat = "d-MMM-yyyy") => 
   return timestamp ? format(toDate(timestamp), dateFormat) : null;
 };
 
-export const convertTimestampToDateFormat = (timestamp, dateFormat = "dd/MM/yyyy") => {
-  return timestamp ? format(toDate(timestamp), dateFormat) : null;
-};
-
-
 export const ConvertEpochToDate = (dateEpoch) => {
   if (dateEpoch == null || dateEpoch == undefined || dateEpoch == "") {
     return "NA";

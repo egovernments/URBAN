@@ -13,6 +13,7 @@ const SingleInput = ({ isFocus, onChange, onFocus, value, ...rest }) => {
 
   return (
     <input
+      style={{ borderRadius: "8px" }}
       className="input-otp"
       maxLength={1}
       onChange={onChange}
@@ -84,7 +85,7 @@ const OTPInput = (props) => {
     );
   }
 
-  return <div className="input-otp-wrap">{OTPStack}</div>;
+  return <div className="input-otp-wrap" style={{display:"flex",justifyContent:"space-between"}}>{OTPStack}</div>;
 };
 
 OTPInput.propTypes = {
