@@ -804,28 +804,66 @@ public class DemandService {
 									.sewerageConnection(connection).build();
 							calculationCriteriaList.add(calculationCriteria);
 						}
+                        // Split the calculationCriteriaList into smaller chunks to avoid Kafka message size limit
+                        Integer kafkaBatchSize = configs.getKafkaDemandBatchSize();
+                        if (kafkaBatchSize == null || kafkaBatchSize <= 0) {
+                            throw new CustomException("EG_SW_INVALID_KAFKA_BATCH_SIZE",
+                                    "kafka.demand.batch.size must be a positive integer");
+                        }
+                        int totalRecords = calculationCriteriaList.size();
 
-						/*MigrationCount migrationCount = MigrationCount.builder().id(UUID.randomUUID().toString()).offset(Long.valueOf(batchOffset)).limit(Long.valueOf(batchsize)).recordCount(Long.valueOf(connectionNos.size()))
-								.tenantid(tenantId).createdTime(System.currentTimeMillis()).businessService("SW").build();*/
+                        for (int chunkOffset = 0; chunkOffset < totalRecords; chunkOffset += kafkaBatchSize) {
+                            int chunkEnd = Math.min(chunkOffset + kafkaBatchSize, totalRecords);
+                            // Create new list to avoid memory retention from subList()
+                            List<CalculationCriteria> chunk = new ArrayList<>(calculationCriteriaList.subList(chunkOffset, chunkEnd));
 
-						MigrationCount migrationCount = MigrationCount.builder()
-								.tenantid(tenantId)
-								.businessService("SW")
-								.limit(Long.valueOf(batchsize))
-								.id(UUID.randomUUID().toString())
-								.offset(Long.valueOf(batchOffset))
-								.createdTime(System.currentTimeMillis())
-								.recordCount(Long.valueOf(connections.size()))
-								.build();
+                            // offset: unique position across all chunks (batchOffset + chunkOffset)
+                            // This ensures each chunk has a unique offset for deduplication/mirroring scenarios
+                            // limit: intended Kafka batch size, recordCount: actual records in this chunk
+                            // These may differ for the last chunk or if records are filtered
+                            MigrationCount migrationCount = MigrationCount.builder()
+                                    .tenantid(tenantId)
+                                    .businessService("SW")
+                                    .limit(Long.valueOf(kafkaBatchSize))
+                                    .id(UUID.randomUUID().toString())
+                                    .offset(Long.valueOf(batchOffset + chunkOffset))
+                                    .createdTime(System.currentTimeMillis())
+                                    .recordCount(Long.valueOf(chunk.size()))
+                                    .build();
 
-						CalculationReq calculationReq = CalculationReq.builder()
-								.calculationCriteria(calculationCriteriaList)
-								.requestInfo(requestInfo)
-								.isconnectionCalculation(true)
-								.migrationCount(migrationCount).build();
-						
-						kafkaTemplate.send(configs.getCreateDemand(), calculationReq);
-						log.info("Bulk bill Gen batch info : " + migrationCount);
+                            CalculationReq calculationReq = CalculationReq.builder()
+                                    .calculationCriteria(chunk)
+                                    .requestInfo(requestInfo)
+                                    .isconnectionCalculation(true)
+                                    .migrationCount(migrationCount).build();
+
+                            try {
+                                kafkaTemplate.send(configs.getCreateDemand(), calculationReq)
+                                        .get(30, java.util.concurrent.TimeUnit.SECONDS);
+                                log.info("Bulk bill Gen chunk info : " + migrationCount + " (chunk " + (chunkOffset/kafkaBatchSize + 1) + " of " + ((totalRecords + kafkaBatchSize - 1) / kafkaBatchSize) + ")");
+                            } catch (Exception ex) {
+                                // Log the failure with full context
+                                log.error("Failed to push chunk to Kafka - offset: " + migrationCount.getOffset()
+                                        + ", recordCount: " + migrationCount.getRecordCount()
+                                        + ", chunk: " + (chunkOffset/kafkaBatchSize + 1)
+                                        + ", error: " + ex.getMessage(), ex);
+
+                                // Send to audit topic for tracking and manual retry
+                                migrationCount.setMessage("Failed to push to Kafka: " + ex.getMessage());
+                                migrationCount.setAuditTime(System.currentTimeMillis());
+                                try {
+                                    kafkaTemplate.send(configs.getDeadLetterTopicBatch(), migrationCount)
+                                            .get(30, java.util.concurrent.TimeUnit.SECONDS);
+                                    log.info("Failed chunk sent to dead letter topic: offset=" + migrationCount.getOffset());
+                                } catch (Exception auditEx) {
+                                    // Critical: Both Kafka push and audit failed
+                                    log.error("CRITICAL: Failed to send chunk to both main topic AND dead letter topic! "
+                                            + "offset: " + migrationCount.getOffset()
+                                            + ", recordCount: " + migrationCount.getRecordCount()
+                                            + ", connections may be lost. Manual intervention required.", auditEx);
+                                }
+                            }
+                        }
 						calculationCriteriaList.clear();
 					}
 					batchOffset = batchOffset + batchsize;

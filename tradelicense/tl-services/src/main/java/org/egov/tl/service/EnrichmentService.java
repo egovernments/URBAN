@@ -1,5 +1,6 @@
 package org.egov.tl.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.tl.config.TLConfiguration;
 import org.egov.tl.repository.IdGenRepository;
@@ -22,6 +23,7 @@ import static org.egov.tl.util.TLConstants.*;
 
 
 @Service
+@Slf4j
 public class EnrichmentService {
 
     private IdGenRepository idGenRepository;
@@ -311,12 +313,29 @@ public class EnrichmentService {
         Map<String,OwnerInfo> userIdToOwnerMap = new HashMap<>();
         users.forEach(user -> userIdToOwnerMap.put(user.getUuid(),user));
         licenses.forEach(license -> {
-            license.getTradeLicenseDetail().getOwners().forEach(owner -> {
-                    if(userIdToOwnerMap.get(owner.getUuid())==null)
-                        throw new CustomException("OWNER SEARCH ERROR","The owner of the tradeCategoryDetail "+license.getTradeLicenseDetail().getId()+" is not coming in user search");
-                    else
-                        owner.addUserDetail(userIdToOwnerMap.get(owner.getUuid()));
-                 });
+            if (license == null
+                    || license.getTradeLicenseDetail() == null
+                    || CollectionUtils.isEmpty(license.getTradeLicenseDetail().getOwners())) {
+                return;
+            }
+                license.getTradeLicenseDetail().getOwners().forEach(owner -> {
+                        // Check if owner UUID is null first
+                        if (owner.getUuid() == null) {
+                            log.warn("Owner UUID is null for tradeLicenseDetail {}",
+                                    license.getTradeLicenseDetail().getId());
+                            return;
+                        }
+
+                        // Store the result to avoid double map lookup
+                        OwnerInfo userDetail = userIdToOwnerMap.get(owner.getUuid());
+                        if (userDetail == null) {
+                            // Log warning but don't fail the entire request for missing user data
+                            log.warn("Owner with UUID {} for tradeLicenseDetail {} not found in user search",
+                                    owner.getUuid(), license.getTradeLicenseDetail().getId());
+                        } else {
+                            owner.addUserDetail(userDetail);
+                        }
+                     });
 
            /* if(userIdToOwnerMap.get(license.getCitizenInfo().getUuid())!=null)
                 license.getCitizenInfo().addCitizenDetail(userIdToOwnerMap.get(license.getCitizenInfo().getUuid()));
