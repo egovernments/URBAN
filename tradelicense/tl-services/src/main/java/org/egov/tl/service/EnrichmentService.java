@@ -319,13 +319,21 @@ public class EnrichmentService {
                 return;
             }
                 license.getTradeLicenseDetail().getOwners().forEach(owner -> {
-                        if(userIdToOwnerMap.get(owner.getUuid())==null) {
+                        // Check if owner UUID is null first
+                        if (owner.getUuid() == null) {
+                            log.warn("Owner UUID is null for tradeLicenseDetail {}",
+                                    license.getTradeLicenseDetail().getId());
+                            return;
+                        }
+
+                        // Store the result to avoid double map lookup
+                        OwnerInfo userDetail = userIdToOwnerMap.get(owner.getUuid());
+                        if (userDetail == null) {
                             // Log warning but don't fail the entire request for missing user data
                             log.warn("Owner with UUID {} for tradeLicenseDetail {} not found in user search",
                                     owner.getUuid(), license.getTradeLicenseDetail().getId());
-                        }
-                        else {
-                            owner.addUserDetail(userIdToOwnerMap.get(owner.getUuid()));
+                        } else {
+                            owner.addUserDetail(userDetail);
                         }
                      });
 

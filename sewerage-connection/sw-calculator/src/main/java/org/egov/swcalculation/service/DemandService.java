@@ -805,7 +805,11 @@ public class DemandService {
 							calculationCriteriaList.add(calculationCriteria);
 						}
                         // Split the calculationCriteriaList into smaller chunks to avoid Kafka message size limit
-                        int kafkaBatchSize = configs.getKafkaDemandBatchSize();
+                        Integer kafkaBatchSize = configs.getKafkaDemandBatchSize();
+                        if (kafkaBatchSize == null || kafkaBatchSize <= 0) {
+                            throw new CustomException("EG_SW_INVALID_KAFKA_BATCH_SIZE",
+                                    "kafka.demand.batch.size must be a positive integer");
+                        }
                         int totalRecords = calculationCriteriaList.size();
 
                         for (int chunkOffset = 0; chunkOffset < totalRecords; chunkOffset += kafkaBatchSize) {
@@ -834,7 +838,8 @@ public class DemandService {
                                     .migrationCount(migrationCount).build();
 
                             try {
-                                kafkaTemplate.send(configs.getCreateDemand(), calculationReq);
+                                kafkaTemplate.send(configs.getCreateDemand(), calculationReq)
+                                        .get(30, java.util.concurrent.TimeUnit.SECONDS);
                                 log.info("Bulk bill Gen chunk info : " + migrationCount + " (chunk " + (chunkOffset/kafkaBatchSize + 1) + " of " + ((totalRecords + kafkaBatchSize - 1) / kafkaBatchSize) + ")");
                             } catch (Exception ex) {
                                 // Log the failure with full context
@@ -847,7 +852,8 @@ public class DemandService {
                                 migrationCount.setMessage("Failed to push to Kafka: " + ex.getMessage());
                                 migrationCount.setAuditTime(System.currentTimeMillis());
                                 try {
-                                    kafkaTemplate.send(configs.getDeadLetterTopicBatch(), migrationCount);
+                                    kafkaTemplate.send(configs.getDeadLetterTopicBatch(), migrationCount)
+                                            .get(30, java.util.concurrent.TimeUnit.SECONDS);
                                     log.info("Failed chunk sent to dead letter topic: offset=" + migrationCount.getOffset());
                                 } catch (Exception auditEx) {
                                     // Critical: Both Kafka push and audit failed
