@@ -62,6 +62,11 @@ public class BoundaryService {
             }
         });
 
+        // ✅ Early return if nothing to enrich
+        if (CollectionUtils.isEmpty(localities)) {
+            return;
+        }
+
         StringBuilder uri = new StringBuilder(config.getLocationHost());
         uri.append(config.getLocationContextPath()).append(config.getLocationEndpoint());
         uri.append("?").append("tenantId=").append(tenantId);
@@ -97,7 +102,7 @@ public class BoundaryService {
             if(!(boundaryObject instanceof ArrayList) || CollectionUtils.isEmpty((ArrayList)boundaryObject))
                 throw new CustomException("BOUNDARY MDMS DATA ERROR","The boundary data was not found");
 
-            ArrayList boundaryResponse = context.read(jsonPath);
+            ArrayList boundaryResponse = (ArrayList) boundaryObject;
             Boundary boundary = mapper.convertValue(boundaryResponse.get(0),Boundary.class);
             if(boundary.getName()==null)
                 throw new CustomException("INVALID BOUNDARY DATA","The boundary data for the code "+license.getTradeLicenseDetail().getAddress().getLocality().getCode()+ " is not available");

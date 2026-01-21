@@ -313,7 +313,11 @@ public class EnrichmentService {
         Map<String,OwnerInfo> userIdToOwnerMap = new HashMap<>();
         users.forEach(user -> userIdToOwnerMap.put(user.getUuid(),user));
         licenses.forEach(license -> {
-            if(!CollectionUtils.isEmpty(license.getTradeLicenseDetail().getOwners()))
+            if (license == null
+                    || license.getTradeLicenseDetail() == null
+                    || CollectionUtils.isEmpty(license.getTradeLicenseDetail().getOwners())) {
+                return;
+            }
                 license.getTradeLicenseDetail().getOwners().forEach(owner -> {
                         if(userIdToOwnerMap.get(owner.getUuid())==null) {
                             // Log warning but don't fail the entire request for missing user data
