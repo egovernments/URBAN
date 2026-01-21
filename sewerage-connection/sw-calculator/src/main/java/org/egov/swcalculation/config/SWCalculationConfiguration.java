@@ -200,4 +200,7 @@ public class SWCalculationConfiguration {
 	@Value("${egov.shortener.url}")
 	private String shortenerURL;
 
+    @Value("${kafka.demand.batch.size:100}")
+    private Integer kafkaDemandBatchSize;
+
 }
