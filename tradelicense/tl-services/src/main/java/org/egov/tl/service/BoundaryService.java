@@ -88,8 +88,8 @@ public class BoundaryService {
 
             ArrayList boundaryResponse = context.read(propertyIdToJsonPath.get(license.getId()));
             Boundary boundary = mapper.convertValue(boundaryResponse.get(0),Boundary.class);
-            if(boundary.getName()==null)
-                throw new CustomException("INVALID BOUNDARY DATA","The boundary data for the code "+license.getTradeLicenseDetail().getAddress().getLocality().getCode()+ " is not available");
+//            if(boundary.getName()==null)
+//                throw new CustomException("INVALID BOUNDARY DATA","The boundary data for the code "+license.getTradeLicenseDetail().getAddress().getLocality().getCode()+ " is not available");
             license.getTradeLicenseDetail().getAddress().setLocality(boundary);
 
         });
