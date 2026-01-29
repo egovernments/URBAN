@@ -103,7 +103,7 @@ public class BoundaryService {
      */
     private Map<String,String> getJsonpath(TradeLicenseRequest request){
         Map<String,String> idToJsonPath = new LinkedHashMap<>();
-        String jsonpath = "$..boundary[?(@.code==\"{}\")]";
+        String jsonpath = "$.Boundary[?(@.code==\"{}\")]";
         request.getLicenses().forEach(license -> {
             idToJsonPath.put(license.getId(),jsonpath.replace("{}",license.getTradeLicenseDetail().getAddress().getLocality().getCode()
             ));
