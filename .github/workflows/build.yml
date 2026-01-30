@@ -18,6 +18,7 @@ on:
         options:
           - "pt-services-v2"
           - "tl-services"
+          - "tl-calculator"
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
