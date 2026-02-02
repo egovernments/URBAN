@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BillingslabUtils {
 	
-	@Value("${egov.mdms.host}")
+	@Value("${egov.mdmsv2.host}")
 	private String mdmsHost;
 
 	@Value("${egov.mdms.search.endpoint}")
