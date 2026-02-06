@@ -1,4 +1,4 @@
-name: Build Pipeline
+name: Backend Build Pipeline
 
 on:
   workflow_dispatch:
