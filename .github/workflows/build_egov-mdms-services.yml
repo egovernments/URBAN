@@ -37,7 +37,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-          context: ./core-services/egov-mdms-service
-          file: ./egov-mdms-service
-          push: true
-          tags: egovernments/egov-mdms-service:v2-${{ env.SHA }}
+        context: ./core-services/egov-mdms-service
+        file: ./egov-mdms-service
+        push: true
+        tags: egovernments/egov-mdms-service:v2-${{ env.SHA }}
