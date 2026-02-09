@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom";
@@ -13,7 +13,45 @@ const CreateTradeLicence = ({ parentRoute }) => {
   const { pathname } = useLocation();
   const history = useHistory();
   let config = [];
-  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("TL_CREATE_TRADE", {});
+  const userInfo = Digit.UserService.getUser();
+
+  const initialTLParams = useMemo(() => {
+    const base = {};
+    if (userInfo?.info?.mobileNumber || userInfo?.info?.name) {
+      base.owners = {
+        owners: [{
+          name: userInfo.info.name || "",
+          mobilenumber: userInfo.info.mobileNumber || "",
+          isprimaryowner: true
+        }]
+      };
+    }
+    return base;
+  }, [userInfo?.info?.mobileNumber, userInfo?.info?.name]);
+
+  const [params, setParams, clearParams] = Digit.Hooks.useSessionStorage("TL_CREATE_TRADE", initialTLParams);
+
+  // Ensure the first owner's mobile number and name are populated if missing
+  useEffect(() => {
+    const shouldUpdateMobile = userInfo?.info?.mobileNumber && (!params?.owners?.owners?.[0]?.mobilenumber);
+    const shouldUpdateName = userInfo?.info?.name && (!params?.owners?.owners?.[0]?.name);
+
+    if (shouldUpdateMobile || shouldUpdateName) {
+      setParams({
+        ...params,
+        owners: {
+          ...params?.owners,
+          owners: [{
+            ...(params?.owners?.owners?.[0] || {}),
+            ...(shouldUpdateName && { name: userInfo.info.name }),
+            ...(shouldUpdateMobile && { mobilenumber: userInfo.info.mobileNumber }),
+            isprimaryowner: true
+          }]
+        }
+      });
+    }
+  }, [userInfo?.info?.mobileNumber, userInfo?.info?.name]);
+
   let isReneworEditTrade = window.location.href.includes("/renew-trade/") || window.location.href.includes("/edit-application/")
 
   const stateId = Digit.ULBService.getStateId();
