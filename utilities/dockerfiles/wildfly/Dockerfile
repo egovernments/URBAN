@@ -1,5 +1,6 @@
 FROM amazoncorretto:8
 
+RUN groupadd -r jboss && useradd -r -g jboss jboss
 
 # Set the WILDFLY_VERSION env variable
 ENV WILDFLY_VERSION wildfly-latest
