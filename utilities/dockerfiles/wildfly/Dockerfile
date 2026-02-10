@@ -1,4 +1,5 @@
-FROM jboss/base-jdk:8
+FROM amazoncorretto:8
+
 
 # Set the WILDFLY_VERSION env variable
 ENV WILDFLY_VERSION wildfly-latest
