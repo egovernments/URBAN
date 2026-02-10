@@ -31,9 +31,10 @@ RUN cd /tmp \
     && mv /tmp/wildfly-* $JBOSS_HOME \
     && rm $JBOSS_HOME/standalone/configuration/standalone.xml \
     && rm $JBOSS_HOME/bin/standalone.conf
-COPY org /opt/jboss/wildfly/modules/system/layers/base/org
-COPY standalone.xml /opt/jboss/wildfly/standalone/configuration/
-COPY standalone.conf /opt/jboss/wildfly/bin/
+COPY utilities/dockerfiles/wildfly/org /opt/jboss/wildfly/modules/system/layers/base/org
+COPY utilities/dockerfiles/wildfly/standalone.xml /opt/jboss/wildfly/standalone/configuration/
+COPY utilities/dockerfiles/wildfly/standalone.conf /opt/jboss/wildfly/bin/
+
 RUN chown -R jboss:jboss ${JBOSS_HOME} \
     && chmod -R 775 ${JBOSS_HOME}
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
