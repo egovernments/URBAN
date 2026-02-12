@@ -13,6 +13,7 @@ on:
           - core-ui
           - sandbox-ui
           - sanitation-ui
+          - employee
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
