@@ -79,6 +79,7 @@ config:
     build:
       - work-dir: "firenoc/firenoc-services"
         image-name: "firenoc-services"
+        dockerfile: "firenoc/firenoc-services/Dockerfile"
       - work-dir: "firenoc/firenoc-services/migration"
         image-name: "firenoc-services-db"
 
