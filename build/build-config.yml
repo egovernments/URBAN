@@ -86,6 +86,7 @@ config:
     build:
       - work-dir: "firenoc/firenoc-calculator"
         image-name: "firenoc-calculator"
+        dockerfile: "firenoc/firenoc-calculator/Dockerfile"
       - work-dir: "firenoc/firenoc-calculator/migration"
         image-name: "firenoc-calculator-db"
 
