@@ -14,6 +14,7 @@ on:
           - sandbox-ui
           - sanitation-ui
           - employee
+          - citizen
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
