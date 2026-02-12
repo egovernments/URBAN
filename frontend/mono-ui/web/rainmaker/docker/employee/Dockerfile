@@ -1,4 +1,4 @@
-FROM node:10 AS build
+FROM node:12 AS build
 ARG WORK_DIR
 WORKDIR /app
 ENV NODE_OPTIONS "--max-old-space-size=1792"
