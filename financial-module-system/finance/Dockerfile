@@ -14,7 +14,7 @@ RUN cd ${WORK_DIR} \
 
 # Create runtime image - using official multi-arch WildFly image
 # Supports both amd64 and arm64 platforms (replaces custom egovio/wildfly image)
-FROM quay.io/wildfly/wildfly:26.1.3.Final-jdk11
+FROM egovio/wildfly:nitish-edcr-71df1989
 
 # Re-declare ARG as it's not available across build stages in Docker
 ARG WORK_DIR
