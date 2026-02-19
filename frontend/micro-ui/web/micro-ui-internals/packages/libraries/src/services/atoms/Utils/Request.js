@@ -37,6 +37,11 @@ const handleServerError = (err, errorType, reason) => {
     console.warn(`[REQUEST-INTERCEPTOR] ${reason} during auto-login - letting retry handle it`);
     throw err;
   }
+  // Prevent infinite redirect loop if already on error page
+  if (window.location.pathname.includes("/error")) {
+    console.warn(`[REQUEST-INTERCEPTOR] ${reason} on error page - throwing error to avoid loop`);
+    throw err;
+  }
   redirectTo('/error', {
     type: errorType,
     from: window.location.pathname + window.location.search
@@ -207,7 +212,7 @@ export const Request = async ({
       data.RequestInfo = { ...data.RequestInfo, plainAccessRequest: { ...privacy } };
     }
 
-    if(plainAccessRequest){
+    if (plainAccessRequest) {
       data.RequestInfo = { ...data.RequestInfo, plainAccessRequest };
     }
 
@@ -220,7 +225,7 @@ export const Request = async ({
     if (isAutoLogin && sensitiveBootCall) {
       await waitForAuthReady(8000);
     }
-  } catch (_) {}
+  } catch (_) { }
 
   //for the central instance if any api doesnot need tenantId then url can be added in below confirguration
   const urlwithoutTenantId = [
@@ -274,7 +279,7 @@ export const Request = async ({
     Digit.SessionStorage.get("userType") === "citizen"
       ? Digit.ULBService.getStateId()
       : Digit.ULBService.getCurrentTenantId() || Digit.ULBService.getStateId();
-  if (!params["tenantId"] && window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE")  && !(urlwithoutTenantId?.filter((ob) => url?.includes(ob))?.length > 0)) {
+  if (!params["tenantId"] && window?.globalConfigs?.getConfig("ENABLE_SINGLEINSTANCE") && !(urlwithoutTenantId?.filter((ob) => url?.includes(ob))?.length > 0)) {
     params["tenantId"] = tenantInfo;
   }
 

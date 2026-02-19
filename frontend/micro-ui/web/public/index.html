@@ -120,10 +120,11 @@
             const pathname = new URL(url).pathname;
             const path = pathname.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
             // Define URL → Page Title mappings
+            const origin = window.location.origin;
             const pageTitleMap = {
-              "https://unified-demo.digit.org/digit-ui/citizen/select-location": "Citizen Select Location",
-              "https://unified-demo.digit.org/digit-ui/citizen/error": "Cititzen Error",
-              "https://unified-demo.digit.org/digit-ui/employee/error" :	"Employee Error",
+              [`${origin}/digit-ui/citizen/select-location`]: "Citizen Select Location",
+              [`${origin}/digit-ui/citizen/error`]: "Cititzen Error",
+              [`${origin}/digit-ui/employee/error`]: "Employee Error",
               "citizen/tl": "Business License Citizen",
               "employee/tl": "Business License Employee",
               "employee/dss/dashboard/tradelicense": "Business License Employee",
@@ -182,8 +183,12 @@
         _paq.push(['enableLinkTracking']);
         (function () {
           function resolveMatomoUrl() {
+            // Check early if analytics is enabled
+            if (!window.DIGIT_ENABLE_MATOMO) return null;
+
             // 1️⃣ Same-origin auto resolution (FIRST priority)
-            if (window?.location?.origin) {
+            // Skip localhost to avoid 404s/SyntaxErrors during dev
+            if (window?.location?.origin && !window.location.origin.includes('localhost')) {
               return `${window.location.origin}/matomo/`;
             }
 
@@ -191,7 +196,7 @@
             try {
               const cfg = window?.globalConfigs?.getConfig?.("MATOMO_URL");
               if (cfg) return cfg.endsWith("/") ? cfg : cfg + "/";
-            } catch (e) {}
+            } catch (e) { }
 
             return null;
           }
@@ -204,8 +209,8 @@
           _paq.push(['addTracker', u + 'matomo.php', 1]);
 
           var d = document,
-              g = d.createElement('script'),
-              s = d.getElementsByTagName('script')[0];
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
 
           g.async = true;
           g.src = u + 'matomo.js';

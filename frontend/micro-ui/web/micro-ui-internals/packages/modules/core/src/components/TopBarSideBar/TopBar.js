@@ -47,6 +47,8 @@ const TopBar = ({
   const { pathname } = useLocation();
 
   const conditionsToDisableNotificationCountTrigger = () => {
+    // Never fire on error pages - it would cause a redirect loop or unnecessary 500 errors
+    if (window.location.pathname.includes("/error")) return false;
     if (Digit.UserService?.getUser()?.info?.type === "EMPLOYEE") return false;
     if (Digit.UserService?.getUser()?.info?.type === "CITIZEN") {
       if (!CitizenHomePageTenantId) return false;

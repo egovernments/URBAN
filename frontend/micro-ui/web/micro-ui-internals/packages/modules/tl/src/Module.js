@@ -29,8 +29,8 @@ import TLCheckPage from "./pages/citizen/Create/CheckPage";
 import TLDocument from "./pageComponents/TLDocumets";
 import TLAcknowledgement from "./pages/citizen/Create/TLAcknowledgement";
 import TLMyApplications from "./pages/citizen/Applications/Application";
-import TradeLicenseList  from "./pages/citizen/Renewal/TradeLicenseList";
-import TLWFApplicationTimeline from "./pageComponents/TLWFApplicationTimeline";  
+import TradeLicenseList from "./pages/citizen/Renewal/TradeLicenseList";
+import TLWFApplicationTimeline from "./pageComponents/TLWFApplicationTimeline";
 import SelectOtherTradeDetails from "./pageComponents/SelectOtherTradeDetails";
 import TLSelectStreet from "./pageComponents/TLSelectStreet";
 import TLSelectLandmark from "./pageComponents/TLSelectLandMark";
@@ -150,15 +150,15 @@ const componentsToRegister = {
   TLInfoLabel,
   TLWFApplicationTimeline,
   TLApplicationDetails,
-  TLCreateTradeLicence : CreateTradeLicence,
-  TLEditTrade : EditTrade,
+  TLCreateTradeLicence: CreateTradeLicence,
+  TLEditTrade: EditTrade,
   TLList,
-  TLRenewTrade : RenewTrade,
-  TLSearchTradeComponent : SearchTradeComponent,
-  TLNewApplication : NewApplication,
-  TLReNewApplication : ReNewApplication,
-  TLSearch : Search,
-  TLResponse : Response,
+  TLRenewTrade: RenewTrade,
+  TLSearchTradeComponent: SearchTradeComponent,
+  TLNewApplication: NewApplication,
+  TLReNewApplication: ReNewApplication,
+  TLSearch: Search,
+  TLResponse: Response,
   SelectOtherTradeDetails,
   SelectTradeUnitsInitial,
   TLTradeUnitsEmployeeInitial,
