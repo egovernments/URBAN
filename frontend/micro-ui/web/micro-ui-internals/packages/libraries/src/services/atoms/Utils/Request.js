@@ -46,6 +46,11 @@ const handleServerError = (err, errorType, reason) => {
     type: errorType,
     from: window.location.pathname + window.location.search
   });
+  // CRITICAL: Always throw after redirect so Axios rejects the promise.
+  // Without this, the retry loop's catch block is never reached,
+  // the circuit breaker failure count is RESET (treated as success),
+  // and the caller receives {} instead of an error — causing silent loops.
+  throw err;
 };
 
 Axios.interceptors.response.use(
@@ -76,8 +81,10 @@ Axios.interceptors.response.use(
 
       default:
         if (status >= 500 && status < 600) {
+          // handleServerError always throws, so the throw below is a safety net only.
+          // The 'return' is intentionally removed — we must NOT return undefined here
+          // because that would make Axios resolve the promise as success.
           handleServerError(err, "maintenance", `Server error ${status}`);
-          return;
         }
     }
 
