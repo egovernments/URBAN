@@ -12,7 +12,7 @@ const isAutoLoginInProgress = () => {
   return window.location.pathname.includes('/auto-login') || window.Digit?.AutoLoginInProgress;
 };
 
-// Helper: Redirect to appropriate page
+// Helper: Redirect to login page
 const redirectTo = (path, queryParams = {}) => {
   const isEmployee = window.location.pathname.split("/").includes("employee");
   const basePath = isEmployee ? `/digit-ui/employee${path}` : `/digit-ui/citizen${path}`;
@@ -31,28 +31,6 @@ const handleAuthFailure = (err, reason) => {
   redirectTo('/login', { from: window.location.pathname + window.location.search });
 };
 
-// Helper: Redirect to error page
-const handleServerError = (err, errorType, reason) => {
-  if (isAutoLoginInProgress()) {
-    console.warn(`[REQUEST-INTERCEPTOR] ${reason} during auto-login - letting retry handle it`);
-    throw err;
-  }
-  // Prevent infinite redirect loop if already on error page
-  if (window.location.pathname.includes("/error")) {
-    console.warn(`[REQUEST-INTERCEPTOR] ${reason} on error page - throwing error to avoid loop`);
-    throw err;
-  }
-  redirectTo('/error', {
-    type: errorType,
-    from: window.location.pathname + window.location.search
-  });
-  // CRITICAL: Always throw after redirect so Axios rejects the promise.
-  // Without this, the retry loop's catch block is never reached,
-  // the circuit breaker failure count is RESET (treated as success),
-  // and the caller receives {} instead of an error — causing silent loops.
-  throw err;
-};
-
 Axios.interceptors.response.use(
   (res) => res,
   (err) => {
@@ -61,55 +39,28 @@ Axios.interceptors.response.use(
 
     // Network error - let retry logic handle it
     if (!hasResponse) {
-      if (isAutoLoginInProgress()) {
-        console.warn("[REQUEST-INTERCEPTOR] Network error during auto-login - letting retry handle it");
-      } else {
-        console.warn("[REQUEST-INTERCEPTOR] Network error - no response received");
-      }
+      console.warn("[REQUEST-INTERCEPTOR] Network error - no response received");
       throw err;
     }
 
-    // HTTP Status Code based error handling
-    switch (status) {
-      // case 401:
-      //   handleAuthFailure(err, "401 Unauthorized");
-      //   return;
-
-      case 403:
-        handleAuthFailure(err, "403 Forbidden");
-        return;
-
-      default:
-        if (status >= 500 && status < 600) {
-          // handleServerError always throws, so the throw below is a safety net only.
-          // The 'return' is intentionally removed — we must NOT return undefined here
-          // because that would make Axios resolve the promise as success.
-          handleServerError(err, "maintenance", `Server error ${status}`);
-        }
+    // 403 Forbidden - always means auth failure regardless of response body
+    if (status === 403) {
+      handleAuthFailure(err, "403 Forbidden");
+      return;
     }
 
-    // Message-based error handling (fallback for non-standard responses)
+    // Auth error detected in response body - redirect to login
     if (err?.response?.data?.Errors) {
       for (const error of err.response.data.Errors) {
         const errorMsg = error?.message?.toLowerCase() || "";
 
-        // Auth errors
         if (errorMsg.includes("invalidaccesstokenexception") || errorMsg.includes("invalid access token")) {
           handleAuthFailure(err, "Auth error");
           return;
         }
 
-        // Server errors
-        if (errorMsg.includes("internal server error") || errorMsg.includes("some error occured")) {
-          handleServerError(err, "maintenance", "Server error");
-          return;
-        }
-
-        // Gateway errors
-        if (errorMsg.includes("zuulruntimeexception") || errorMsg.includes("gateway")) {
-          handleServerError(err, "notfound", "Gateway error");
-          return;
-        }
+        // Server/Gateway errors - throw to caller, component-level error handling takes over
+        // No redirect to avoid maintenance page reload loops
       }
     }
 
@@ -138,7 +89,7 @@ window.Digit.RequestCircuit = window.Digit.RequestCircuit || {
 
 const isRetryableError = (err) => {
   const status = err?.response?.status;
-  if (!status) return true; // network
+  if (!status) return true; // network error
   return status >= 500 && status < 600;
 };
 
@@ -168,6 +119,7 @@ async function waitForAuthReady(timeoutMs = 8000) {
     onReady();
   });
 }
+
 export const Request = async ({
   method = "POST",
   url,
@@ -277,6 +229,7 @@ export const Request = async ({
     });
     return multipartFormDataRes;
   }
+
   /* 
   Feature :: Single Instance
 
