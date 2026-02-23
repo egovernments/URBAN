@@ -60,19 +60,20 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
 
   // Clear localization cache when new build is deployed
   React.useEffect(() => {
-   // Skip cache clearing logic entirely on localhost to prevent reload-induced MDMS cancellation
-   if (isLocalhost) {
-    console.log("Localhost detected - skipping cache clearing logic");
-    return;
-  }
-    
-    const currentTimestamp = process.env['REACT_APP_PUBLIC_PATH'] || Date.now().toString();
+    // Skip cache clearing logic entirely on localhost to prevent reload-induced MDMS cancellation
+    if (isLocalhost) {
+      console.log("Localhost detected - skipping cache clearing logic");
+      return;
+    }
+
+    const currentTimestamp = process.env['REACT_APP_PUBLIC_PATH'] || null;
     const storedTimestamp = localStorage.getItem("app_timestamp");
-    
+    console.log(`[Build Check] currentTimestamp (from env): ${currentTimestamp}, storedTimestamp (from localStorage): ${storedTimestamp}`);
+
     // Helper function to clear only localization-related cache
     const clearLocalizationCache = () => {
       const keysToRemove = [];
-      
+
       // Find all Digit.Locale.* keys in localStorage
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -80,19 +81,19 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
           keysToRemove.push(key);
         }
       }
-      
+
       // Remove localization keys
       keysToRemove.forEach(key => {
         console.log(`Removing expired/stale localization cache: ${key}`);
         localStorage.removeItem(key);
       });
-      
+
       // Clear React Query cache for localization queries
       queryClient.clear();
-      
+
       return keysToRemove.length;
     };
-    
+
     if (!storedTimestamp) {
       // First-time user - just store timestamp, no reload needed
       console.log("First-time user detected, storing build timestamp");
@@ -101,7 +102,7 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
       // Check if we're on an auto-login page - if so, skip cache clearing to not disrupt the flow
       const currentUrl = window.location.href;
       const isAutoLogin = currentUrl.includes('/auto-login') && (currentUrl.includes('username=') || currentUrl.includes('mobile='));
-      
+
       if (isAutoLogin) {
         console.log("On auto-login page - deferring cache clear until after login");
         // Store flag to clear cache after auto-login completes
@@ -109,15 +110,15 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
         localStorage.setItem("app_timestamp", currentTimestamp);
         return;
       }
-      
+
       // New build detected - clear only localization cache
       console.log("New build detected, clearing localization cache");
-      
+
       const clearedCount = clearLocalizationCache();
-      
+
       // Update stored timestamp
       localStorage.setItem("app_timestamp", currentTimestamp);
-      
+
       if (clearedCount > 0) {
         console.log(`Cleared ${clearedCount} localization cache entries`);
         console.log("Reloading to fetch fresh translations");
@@ -135,19 +136,19 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
         }
       }
     }
-    
+
     // Additionally, check for expired cache entries on every load
     const cleanupExpiredCache = () => {
       const now = Date.now();
       const keysToCheck = [];
-      
+
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith("Digit.")) {
           keysToCheck.push(key);
         }
       }
-      
+
       keysToCheck.forEach(key => {
         try {
           const item = localStorage.getItem(key);
@@ -163,10 +164,10 @@ export const DigitUI = ({ stateCode, registry, enabledModules, moduleReducers })
         }
       });
     };
-    
+
     // Clean up expired cache entries
     cleanupExpiredCache();
-  }, [queryClient,isLocalhost]);
+  }, [queryClient, isLocalhost]);
 
   const ComponentProvider = Digit.Contexts.ComponentProvider;
   const PrivacyProvider = Digit.Contexts.PrivacyProvider;
