@@ -68,9 +68,9 @@
           const path = pathname.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
           // Define URL → Page Title mappings
           const pageTitleMap = {
-            "https://unified-demo-new.digit.org/digit-ui/citizen/select-location": "Citizen Select Location",
-            "https://unified-demo-new.digit.org/digit-ui/citizen/error": "Cititzen Error",
-            "https://unified-demo-new.digit.org/digit-ui/employee/error": "Employee Error",
+            [`${window.location.origin}/digit-ui/citizen/select-location`]: "Citizen Select Location",
+            [`${window.location.origin}/digit-ui/citizen/error`]: "Cititzen Error",
+            [`${window.location.origin}/digit-ui/employee/error`]: "Employee Error",
             "citizen/tl": "Business License Citizen",
             "employee/tl": "Business License Employee",
             "employee/dss/dashboard/tradelicense": "Business License Employee",
