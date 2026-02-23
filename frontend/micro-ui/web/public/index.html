@@ -241,14 +241,6 @@
           function trackUrlChange() {
             const url = location.href;
             if (url !== lastUrl) {
-              lastUrl = url;
-              _paq.push(['setCustomUrl', url]);
-              _paq.push(['trackPageView']);
-            }
-          }
-          function trackUrlChange() {
-            const url = location.href;
-            if (url !== lastUrl) {
               const pageTitle = getPageTitle(url);
               // Add new page to flow
               const flow = getUserFlow();
