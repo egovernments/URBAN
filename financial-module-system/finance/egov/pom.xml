@@ -97,12 +97,14 @@
         <repository>
             <id>repo.egovernments.org</id>
             <name>eGov ERP Releases Repository</name>
-            <url>http://repo.egovernments.org/nexus/content/repositories/releases/</url>
+            <!-- Updated to HTTPS for Maven 3.8+ compatibility (required for multi-arch builds) -->
+            <url>https://nexus-repo.egovernments.org/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>repo.egovernments.org</id>
             <name>eGov ERP Snapshots Repository</name>
-            <url>http://repo.egovernments.org/nexus/content/repositories/snapshots/</url>
+            <!-- Updated to HTTPS for Maven 3.8+ compatibility (required for multi-arch builds) -->
+            <url>https://nexus-repo.egovernments.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -110,7 +112,8 @@
         <repository>
             <id>repo.egovernments.org</id>
             <name>eGov Public Repository Group</name>
-            <url>http://repo.egovernments.org/nexus/content/groups/public/</url>
+            <!-- Updated to HTTPS for Maven 3.8+ compatibility (required for multi-arch builds) -->
+            <url>https://nexus-repo.egovernments.org/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -133,7 +136,8 @@
         <pluginRepository>
             <id>repo.egovernments.org</id>
             <name>eGov Public Repository Group</name>
-            <url>http://repo.egovernments.org/nexus/content/groups/public/</url>
+            <!-- Updated to HTTPS for Maven 3.8+ compatibility (required for multi-arch builds) -->
+            <url>https://nexus-repo.egovernments.org/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
