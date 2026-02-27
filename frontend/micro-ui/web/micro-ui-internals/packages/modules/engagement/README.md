@@ -22,7 +22,7 @@ frontend/micro-ui/web/package.json
 
 ## Changelog
 
-### Summary for Version [1.7.35] - 2025-03-20
+### Summary for Version [1.7.40] - 2025-05-29
 
 Solved survey create and edit problem by adding tenantId in the api calls
 

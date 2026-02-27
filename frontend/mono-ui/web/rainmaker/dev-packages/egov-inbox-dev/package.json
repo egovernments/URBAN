@@ -30,5 +30,10 @@
     "babel-preset-es2020": "^1.0.2",
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-0": "6.24.1"
-  }
+  },
+  "resolutions": {
+		"**/minimatch": "7.4.6",
+		"**/glob": "7.2.3",
+		"**/chokidar": "3.5.3"
+	}
 }

@@ -205,7 +205,8 @@ public class BirthRepository {
 		try {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");	
 		pdfApplicationRequest.getBirthCertificate().forEach(cert-> {
-			String uiHost = config.getUiAppHost();
+			String stateLevelTenantId = centralInstanceUtil.getStateLevelTenant(cert.getTenantid());
+			String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
 			String birthCertPath = config.getBirthCertLink();
 			birthCertPath = birthCertPath.replace("$id",cert.getId());
 			birthCertPath = birthCertPath.replace("$tenantId",cert.getTenantid());

@@ -182,17 +182,35 @@ export const getUpdatedTopic = (tenantId, topic) => {
 
 export const replaceSchemaPlaceholder = (query, tenantId) => {
   let finalQuery = null;
-  var isCentralInstance  = envVariables.IS_ENVIRONMENT_CENTRAL_INSTANCE;
-  if(typeof isCentralInstance =="string")
-  isCentralInstance = (isCentralInstance.toLowerCase() == "true");
+  const SCHEMA_REPLACE_STRING = '{schema}';
+  const isCentralInstance = JSON.parse(envVariables.IS_ENVIRONMENT_CENTRAL_INSTANCE);
+  const stateSchemaIndexPositionInTenantId = parseInt(envVariables.STATE_SCHEMA_INDEX_POSITION); // set this in env
 
-	if (tenantId.includes('.') && isCentralInstance) {
-		let schemaName = tenantId.split('.')[1];
-		finalQuery = query.replace(/{schema}/g, schemaName);
-	} else {
-			finalQuery = query.replace(/{schema}./g, "");
-	}
-	return finalQuery;
+  if (isCentralInstance) {
+    if (tenantId.length <= stateSchemaIndexPositionInTenantId) {
+      throw new Error(
+        'The tenantId length is smaller than the defined schema index in tenantId for central instance'
+      );
+    }
+
+    let schemaName;
+    if (tenantId.includes('.')) {
+      const parts = tenantId.split('.');
+      schemaName = parts[stateSchemaIndexPositionInTenantId];
+    } else {
+      schemaName = tenantId;
+    }
+
+    // Case-insensitive global replace
+    const pattern = new RegExp(SCHEMA_REPLACE_STRING, 'gi');
+    finalQuery = query.replace(pattern, schemaName);
+  } else {
+    // Remove `{schema}.` case-insensitively
+    const pattern = new RegExp(SCHEMA_REPLACE_STRING + '\\.', 'gi');
+    finalQuery = query.replace(pattern, '');
+  }
+
+  return finalQuery;
 };
 
 // central-instance configs
@@ -204,16 +222,16 @@ let SCHEMA_REPLACE_STRING = "{schema}";
  * 
  * else it's tenant level
  */
-let stateLevelTenantIdLength = 1;
+let stateLevelTenantIdLength = parseInt(envVariables.STATE_LEVEL_TENANTID_LENGTH);
 /*
  * Boolean field informing whether the deployed server is a multi-state/central-instance 
  * 
  */
-let isEnvironmentCentralInstance = true;
+let isEnvironmentCentralInstance = envVariables.IS_ENVIRONMENT_CENTRAL_INSTANCE;
 /*
  * Index in which to find the schema name in a tenantId split by "."
  */
-let stateSchemaIndexPositionInTenantId = 1;
+let stateSchemaIndexPositionInTenantId = parseInt(envVariables.STATE_SCHEMA_INDEX_POSITION);
 /**
 * Method to fetch the state name from the tenantId
 * 
@@ -226,15 +244,20 @@ console.log("query : "+query);
 console.log(" tenantId :" + tenantId);
 let finalQuery = null;
 var isCentralInstance  = envVariables.IS_ENVIRONMENT_CENTRAL_INSTANCE;
+const stateSchemaIndexPositionInTenantId = parseInt(envVariables.STATE_SCHEMA_INDEX_POSITION);
 if(typeof isCentralInstance =="string")
   isCentralInstance = (isCentralInstance.toLowerCase() == "true");
 console.log(" IsCentralInstance :" + isCentralInstance);
-if (tenantId.includes(".") && isCentralInstance) {
+if (isCentralInstance) {
   if (stateSchemaIndexPositionInTenantId >= tenantId.length) {
     throw new InvalidTenantIdException(
         "The tenantId length is smaller than the defined schema index in tenantId for central instance");
   }
-  let schemaName = tenantId.split(".")[stateSchemaIndexPositionInTenantId];
+  let schemaName;
+  if(tenantId.includes("."))
+    schemaName = tenantId.split(".")[stateSchemaIndexPositionInTenantId];
+  else
+    schemaName = tenantId;
   console.log(" schemaName :" + schemaName);
   finalQuery = 	query.replace(/{schema}/g, schemaName);
 } else {

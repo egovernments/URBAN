@@ -1,4 +1,4 @@
-CREATE TABLE public.eg_noc(
+CREATE TABLE eg_noc(
     id character varying(256) NOT NULL,
     applicationno character varying(64),
     tenantid character varying(256),
@@ -19,7 +19,7 @@ CREATE TABLE public.eg_noc(
     CONSTRAINT pk_eg_noc PRIMARY KEY (id)
 );
 
-CREATE TABLE public.eg_noc_auditdetails(
+CREATE TABLE eg_noc_auditdetails(
     id character varying(256)  NOT NULL,
      applicationno character varying(64),
     tenantid character varying(256),
@@ -39,7 +39,7 @@ CREATE TABLE public.eg_noc_auditdetails(
     applicationstatus character varying(64) NOT NULL
 );
 
-CREATE TABLE public.eg_noc_document(
+CREATE TABLE eg_noc_document(
     id character varying(64)  NOT NULL,
     documenttype character varying(64),
     filestoreid character varying(64),
@@ -57,7 +57,7 @@ CREATE TABLE public.eg_noc_document(
         ON DELETE NO ACTION
 );
 
-CREATE INDEX noc_index  ON public.eg_noc 
+CREATE INDEX noc_index  ON eg_noc 
 (
     applicationno,
     nocno,

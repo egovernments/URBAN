@@ -90,7 +90,7 @@ public class ProcessInstance {
 	private List<Document> documents;
 
 	@JsonProperty("assignes")
-	private List<OwnerInfo> assignes;
+	private List<User> assignes;
 
 	public ProcessInstance addDocumentsItem(Document documentsItem) {
 		if (this.documents == null) {

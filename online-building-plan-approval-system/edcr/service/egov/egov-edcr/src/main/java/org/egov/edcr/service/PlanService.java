@@ -232,7 +232,11 @@ public class PlanService {
 
             if (rule != null) {
                 LOG.info("Looking for bean resulted in " + rule.getClass().getSimpleName());
-                rule.process(plan);
+                try {
+                    rule.process(plan);
+                } catch (Exception e) {
+                	e.printStackTrace();
+                }
                 LOG.info("Completed Process " + rule.getClass().getSimpleName() + "  " + new Date());
             }
 

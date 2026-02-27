@@ -119,10 +119,10 @@ public class EdcrApplicationService {
 
     private Plan callDcrProcess(EdcrApplication edcrApplication, String applicationType) {
         Plan planDetail = new Plan();
-        planDetail.setTenantId(ApplicationThreadLocals.getFullTenantID());
+        planDetail.setTenantId(edcrApplication.getTenantId());
         planDetail = planService.process(edcrApplication, applicationType);
         updateFile(planDetail, edcrApplication);
-        edcrApplication.getEdcrApplicationDetails().get(0).setTenantId(ApplicationThreadLocals.getFullTenantID());
+        edcrApplication.getEdcrApplicationDetails().get(0).setTenantId(edcrApplication.getTenantId());
         edcrApplicationDetailService.saveAll(edcrApplication.getEdcrApplicationDetails());
 
         return planDetail;

@@ -334,7 +334,7 @@ public class BPAService {
 
 	private List<BPA> getBPAFromLandId(BPASearchCriteria criteria, RequestInfo requestInfo, List<String> edcrNos) {
 		List<BPA> bpa = new LinkedList<>();
-		bpa = repository.getBPAData(criteria, edcrNos);
+		bpa = repository.getBPAData(criteria, edcrNos, requestInfo);
 		if (bpa.size() == 0) {
 			return Collections.emptyList();
 		}
@@ -352,7 +352,7 @@ public class BPAService {
 	 * @return List of bpa for the given criteria
 	 */
 	public List<BPA> getBPAFromCriteria(BPASearchCriteria criteria, RequestInfo requestInfo, List<String> edcrNos) {
-		List<BPA> bpa = repository.getBPAData(criteria, edcrNos);
+		List<BPA> bpa = repository.getBPAData(criteria, edcrNos, requestInfo);
 		if (bpa.isEmpty())
 			return Collections.emptyList();
 		return bpa;
@@ -376,6 +376,8 @@ public class BPAService {
 			throw new CustomException(BPAErrorConstants.UPDATE_ERROR, "Application Not found in the System" + bpa);
 		}
 
+		enrichmentService.computeAndSetRiskType(bpaRequest,mdmsData);
+
 		Map<String, String> edcrResponse = edcrService.getEDCRDetails(bpaRequest.getRequestInfo(), bpaRequest.getBPA());
 		String applicationType = edcrResponse.get(BPAConstants.APPLICATIONTYPE);
 		log.debug("applicationType is " + applicationType);
@@ -386,8 +388,7 @@ public class BPAService {
 		if (CollectionUtils.isEmpty(searchResult) || searchResult.size() > 1) {
 			throw new CustomException(BPAErrorConstants.UPDATE_ERROR, "Failed to Update the Application, Found None or multiple applications!");
 		}
-		
-		
+
 		Map<String, String> additionalDetails = bpa.getAdditionalDetails() != null ? (Map<String, String>)bpa.getAdditionalDetails()
 				: new HashMap<String, String>();
 		
@@ -535,7 +536,7 @@ public class BPAService {
 		ids.add(request.getBPA().getId());
 		criteria.setTenantId(request.getBPA().getTenantId());
 		criteria.setIds(ids);
-		List<BPA> bpa = repository.getBPAData(criteria, null);
+		List<BPA> bpa = repository.getBPAData(criteria, null, request.getRequestInfo());
 		return bpa;
 	}
 

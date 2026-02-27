@@ -238,6 +238,28 @@ config:
       - work-dir: "utilities/demo-utility"
         image-name: "demo-utility"
         dockerfile: "build/maven/Dockerfile"
+        
+  - name: "builds/urban/utilities/egov-searcher"
+    build:
+      - work-dir: "utilities/egov-searcher"
+        image-name: "egov-searcher"
+        dockerfile: "build/maven/Dockerfile"
+        
+  - name: "builds/urban/utilities/report"
+    build:
+      - work-dir: "utilities/report"
+        image-name: "report"
+        dockerfile: "build/maven/Dockerfile"  
+        
+  - name: "builds/urban/utilities/egov-survey-services"
+    build:
+      - work-dir: "utilities/egov-survey-services"
+        image-name: "egov-survey-services"
+        dockerfile: "build/maven/Dockerfile"
+      - work-dir: "utilities/egov-survey-services/src/main/resources/db"
+        image-name: "egov-survey-services-db"
+                    
+        
 
   - name: "builds/urban/utilities/egov-searcher"
     build:
@@ -258,6 +280,12 @@ config:
         dockerfile: "build/maven/Dockerfile"
       - work-dir: "utilities/egov-survey-services/src/main/resources/db"
         image-name: "egov-survey-services-db"
+  
+  - name: "builds/urban/utilities/dockerfiles/wildfly"
+    build:
+      - work-dir: "utilities/dockerfiles/wildfly"
+        image-name: "wildfly"
+        dockerfile: "utilities/dockerfiles/wildfly/Dockerfile"
         
 
   # Frontend
@@ -309,6 +337,12 @@ config:
         dockerfile: frontend/micro-ui/web/docker/Dockerfile
         image-name: digit-ui
 
+  - name: builds/urban/frontend/micro-ui/digit-ui-tl
+    build:
+      - work-dir: frontend/new-micro-ui/
+        dockerfile: frontend/new-micro-ui/web/docker/Dockerfile
+        image-name: digit-ui-tl
+
   - name: builds/urban/frontend/micro-ui/storybook
     build:
     - work-dir: .
@@ -332,27 +366,26 @@ config:
         image-name: egov-finance
         dockerfile: financial-module-system/finance/Dockerfile
         
-  - name: "builds/urban/business-services/egf-instrument"
+  - name: "builds/urban/egf-instrument"
     build:
-      - work-dir: financial-module-system/egf-instrument"
+      - work-dir: "financial-module-system/egf-instrument"
         image-name: "egf-instrument"
         dockerfile: "build/maven/Dockerfile"
       - work-dir: "financial-module-system/egf-instrument/src/main/resources/db"
         image-name: "egf-instrument-db"
 
-  - name: "builds/urban/business-services/egf-master"
+  - name: "builds/urban/egf-master"
     build:
-      - work-dir: "builds/urban/financial-module-system/egf-master"
-        image-name: urban/egf-master
+      - work-dir: "financial-module-system/egf-master"
+        image-name: "egf-master"
         dockerfile: "build/maven/Dockerfile"
       - work-dir: "financial-module-system/egf-master/src/main/resources/db"
         image-name: "egf-master-db"
   
   - name: "builds/urban/finance-collections-voucher-consumer"
     build:
-      - work-dir: "business-services/finance-collections-voucher-consumer"
-        image-name: urban/financial-module-system/finance-collections-voucher-consumer
+      - work-dir: "financial-module-system/finance-collections-voucher-consumer"
+        image-name: "finance-collections-voucher-consumer"
         dockerfile: "build/maven/Dockerfile"
-      - work-dir: "business-services/finance-collections-voucher-consumer/src/main/resources/db"
+      - work-dir: "financial-module-system/finance-collections-voucher-consumer/src/main/resources/db"
         image-name: "finance-collections-voucher-consumer-db"  
-

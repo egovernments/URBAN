@@ -194,6 +194,13 @@ const SurveyDetails = ({ location, match }) => {
     history.push("/digit-ui/employee/engagement/surveys/update-response", details);
   };
 
+  // const handleMarkInactive = () => {
+  //   const details = {
+  //     SurveyEntity: { ...surveyData, tenantId, questions: surveyData.questions.map(filterQuestion), status: "INACTIVE" },
+  //   };
+  //   history.push("/digit-ui/employee/engagement/surveys/update-response", details);
+  // };
+
   const handleMarkInactive = () => {
     const toEpoch = (dateStr, timeStr) => {
       // Combine date and time to a single ISO string and convert to epoch
@@ -220,6 +227,7 @@ const SurveyDetails = ({ location, match }) => {
     };
     history.push("/digit-ui/employee/engagement/surveys/update-response", details);
   };
+  
 
   const actionMenuOptions = useMemo(() => {
     const options = ["EDIT", "DELETE"];

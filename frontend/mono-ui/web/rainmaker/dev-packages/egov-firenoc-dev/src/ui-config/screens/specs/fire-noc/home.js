@@ -64,12 +64,13 @@ const tradeLicenseSearchAndResult = {
             items: cardItems,
             history: {}
           }
-        },
-        listCard: {
-          uiFramework: "custom-molecules-local",
-          moduleName: "egov-firenoc",
-          componentPath: "HowItWorks"
         }
+        // // for now disbling it, will add it later when content is ready
+        // listCard: {
+        //   uiFramework: "custom-molecules-local",
+        //   moduleName: "egov-firenoc",
+        //   componentPath: "HowItWorks"
+        // }
       }
     },
     // cityPickerDialog: {

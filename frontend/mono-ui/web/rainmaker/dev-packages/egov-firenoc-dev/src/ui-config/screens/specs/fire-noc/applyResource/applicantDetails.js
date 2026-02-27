@@ -11,7 +11,7 @@ import {
   getPattern
 } from "egov-ui-framework/ui-config/screens/specs/utils";
 import { handleScreenConfigurationFieldChange as handleField, prepareFinalObject } from "egov-ui-framework/ui-redux/screen-configuration/actions";
-import { getTodaysDateInYMD } from "egov-ui-framework/ui-utils/commons";
+import { getTodaysDateInYMD, getMaxDateInYMDForAbove18 } from "egov-ui-framework/ui-utils/commons";
 import { getDetailsForOwner } from "../../utils";
 import get from "lodash/get";
 import set from "lodash/set";
@@ -361,7 +361,8 @@ const commonApplicantInformation = () => {
         props:{
           className:"applicant-details-error",
           inputProps: {
-            max: getTodaysDateInYMD()
+            // max: getTodaysDateInYMD()
+            max: getMaxDateInYMDForAbove18()
           }
         }
       }),

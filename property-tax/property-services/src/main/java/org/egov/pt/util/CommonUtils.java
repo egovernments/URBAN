@@ -72,9 +72,9 @@ public class CommonUtils {
 	 * @param property Property whose owners are to be returned
 	 * @return Owners of the property
 	 */
-	public List<OwnerInfo> getUserForWorkflow(Property property) {
+	public List<User> getUserForWorkflow(Property property) {
 
-		List<OwnerInfo> users = new LinkedList<>();
+		List<User> users = new LinkedList<>();
 		users.addAll(property.getOwners());
 		users.add(OwnerInfo.builder().uuid(property.getAccountId()).build());
 		return users;

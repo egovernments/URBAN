@@ -120,26 +120,44 @@ public class EdcrValidator {
                         return error;
                     }
                     if (StringUtils.isNotBlank(value) && value.length() > 1) {
-                        value = value.trim();
-                        boolean isAllow = Pattern.matches(ALPHANUMERIC_WITH_SPECIAL_CHARS, value);
-                        if (!isAllow) {
-                            LOG.info("The Inalid Value is" + value);
-                            error.setErrorCode("EDCR-31");
-                            error.setErrorMessage(String.format(INVALID_CHAR, f.getName(), INVALID_CHAR_MSG));
-                            return error;
-                        }
+                    	if (f.getName().equals("applicantName") && StringUtils.isNotBlank(value) && value.length() > 1) {
 
-                        if(f.getName().equals("applicantName") && StringUtils.isNotBlank(value) && value.length() > 1)
-                        {
-                        	 boolean isAllowName = Pattern.matches(ALPHA_CHARS, value);
-                        	  if (!isAllowName) {
-                                  LOG.info("The Inalid Value is" + value);
-                                  error.setErrorCode("EDCR-31");
-                                  error.setErrorMessage(String.format(INVALID_CHAR, f.getName(), INVALID_CHAR_MSG));
-                                  return error;
-                              }
-                        }
+                            // Step 1: Normalize value (trim and collapse multiple spaces into one)
+                            String normalizedValue = value.trim().replaceAll("\\s+", " ");
 
+                            // Step 2: Define allowed pattern
+                            final String NAME_PATTERN = "^[a-zA-Z0-9]+([ _\\-\\&:,/.][a-zA-Z0-9]+)*$";
+
+                            boolean isValidName = Pattern.matches(NAME_PATTERN, normalizedValue);
+
+                            if (!isValidName) {
+                                LOG.info("Invalid value for field '{}': '{}'", f.getName(), value);
+
+                                // Step 3: Error details for user
+                                error.setErrorCode("EDCR-31");
+
+                                if (!Character.isLetterOrDigit(normalizedValue.charAt(0))) {
+                                    error.setErrorMessage("Name must start with a letter or number.");
+                                } else if (!Character.isLetterOrDigit(normalizedValue.charAt(normalizedValue.length() - 1))) {
+                                    error.setErrorMessage("Name must end with a letter or number.");
+                                } else if (normalizedValue.matches(".*[^a-zA-Z0-9 _\\-\\&:,/.].*")) {
+                                    error.setErrorMessage("Name contains invalid characters. Only letters, numbers, spaces, and _ - & : , / . are allowed.");
+                                } else {
+                                    error.setErrorMessage(String.format(INVALID_CHAR, f.getName(), INVALID_CHAR_MSG)); // fallback
+                                }
+
+                                return error;
+                            }
+						} else {
+							value = value.trim();
+							boolean isAllow = Pattern.matches(ALPHANUMERIC_WITH_SPECIAL_CHARS, value);
+							if (!isAllow) {
+								LOG.info("The Inalid Value is" + value);
+								error.setErrorCode("EDCR-31");
+								error.setErrorMessage(String.format(INVALID_CHAR, f.getName(), INVALID_CHAR_MSG));
+								return error;
+							}
+						}
                         if (value.length() > 256) {
                             error.setErrorCode("EDCR-32");
                             error.setErrorMessage(String.format(INVALID_CHAR, f.getName(), "Upto 256 characters only allowed"));
@@ -153,4 +171,5 @@ public class EdcrValidator {
         }
         return null;
     }
+    
 }

@@ -14,7 +14,7 @@ export const TLList = () => {
   if (licenseno) filter1.tenantId = tenantID;
   if (!licenseno) filter1.mobileNumber = userInfo?.info?.mobileNumber;
   filter1 = { ...filter1, tenantId: tenantId || tenantID, status: "APPROVED,CANCELLED,EXPIRED,MANUALEXPIRED",limit:50 };
-  const { isLoading, isError, error, data } = Digit.Hooks.tl.useTradeLicenseSearch({ filters: filter1, }, {});
+  const { isLoading, isError, error, data } = Digit.Hooks.tl.useTradeLicenseSearch({ filters: filter1 }, {});
   useEffect(() => {
     localStorage.setItem("TLAppSubmitEnabled", "true");
   }, []);

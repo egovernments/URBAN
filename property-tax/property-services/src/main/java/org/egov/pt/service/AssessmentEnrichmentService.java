@@ -131,7 +131,7 @@ public class AssessmentEnrichmentService {
     	
         if(request.getAssessment().getWorkflow().getAction().equalsIgnoreCase(WORKFLOW_SENDBACK_CITIZEN)){
 
-           List<OwnerInfo> owners = assessmentUtils.getUserForWorkflow(property);
+           List<User> owners = assessmentUtils.getUserForWorkflow(property);
 
            request.getAssessment().getWorkflow().setAssignes(owners);
         }
