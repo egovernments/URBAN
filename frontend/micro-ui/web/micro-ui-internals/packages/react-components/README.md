@@ -29,7 +29,7 @@ class Example extends Component {
 
 ## Changelog
 
-### Summary for Version [1.7.35] - 2025-03-20
+### Summary for Version [1.7.40] - 2025-05-29
 
 Matched the version to that of other modules of URBAN
 

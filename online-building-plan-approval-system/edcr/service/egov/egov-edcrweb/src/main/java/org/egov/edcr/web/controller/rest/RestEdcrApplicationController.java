@@ -81,6 +81,7 @@ import org.egov.infra.microservice.models.UserInfo;
 import org.egov.infra.utils.FileStoreUtils;
 import org.egov.infra.utils.StringUtils;
 import org.egov.infra.web.rest.error.ErrorResponse;
+import org.egov.infra.web.utils.ThreadLocalLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,6 +214,7 @@ public class RestEdcrApplicationController {
             @RequestParam("edcrRequest") String edcrRequest, final HttpServletRequest request) {
         String userInfo = request.getHeader(USER_INFO_HEADER_NAME);
         LOGGER.info("###User Info####"+userInfo);
+        ThreadLocalLogger.logAllThreadLocalValues("The scrutinize API request processing");
         EdcrDetail edcrDetail = new EdcrDetail();
         EdcrRequest edcr = new EdcrRequest();
         if (!isValidJson(edcrRequest) || (userInfo != null && !isValidJson(userInfo))) {

@@ -98,24 +98,6 @@ const getAssignerDetails = (instance, nextStep, moduleCode) => {
   return assigner;
 };
 
-
-const makeCommentsSubsidariesOfPreviousActionsV2 = async (wf) => {
-  const TimelineMap = new Map();
-  // const tenantId = window.location.href.includes("/obps/") ? Digit.ULBService.getStateId() : wf?.[0]?.tenantId;
-
-
-  for (const eventHappened of wf) {
-
-    //currenlty in workflow documentUid is getting populated so while update we are sending fileStoreId in documentUid field
-    if (eventHappened?.documents) {
-      eventHappened.thumbnailsToShow = await getThumbnailsV2(eventHappened?.documents?.map(e => e?.documentUid || e?.fileStoreId), eventHappened?.tenantId, eventHappened?.documents)
-    }
-
-
-  }
-
-}
-
 const getThumbnailsV2 = async (ids, tenantId, documents = []) => {
 
   const res = await Digit.UploadServices.Filefetch(ids, tenantId);

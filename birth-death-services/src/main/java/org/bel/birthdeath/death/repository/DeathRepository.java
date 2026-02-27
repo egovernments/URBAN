@@ -208,7 +208,8 @@ public class DeathRepository {
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");	
 			pdfApplicationRequest.getDeathCertificate().forEach(cert-> {
-				String uiHost = config.getUiAppHost();
+				String stateLevelTenantId = centralInstanceUtil.getStateLevelTenant(cert.getTenantid());
+				String uiHost = config.getUiAppHostMap().get(stateLevelTenantId);
 				String deathCertPath = config.getDeathCertLink();
 				deathCertPath = deathCertPath.replace("$id",cert.getId());
 				deathCertPath = deathCertPath.replace("$tenantId",cert.getTenantid());

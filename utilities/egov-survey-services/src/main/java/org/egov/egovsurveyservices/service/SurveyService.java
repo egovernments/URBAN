@@ -161,7 +161,7 @@ public class SurveyService {
         enrichmentService.enrichAnswerEntity(answerRequest);
 
         // Persist response if it passes all validations
-        producer.push("save-ss-answer", answerRequest);
+        producer.push(applicationProperties.getSaveAnswerTopic(), answerRequest);
     }
 
     public List<Question> fetchQuestionListBasedOnSurveyId(String surveyId) {

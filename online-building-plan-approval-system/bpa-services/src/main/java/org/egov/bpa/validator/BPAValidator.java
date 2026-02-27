@@ -348,7 +348,7 @@ public class BPAValidator {
 
 		try {
 			String questionsPath = BPAConstants.QUESTIONS_MAP.replace("{1}", wfState)
-					.replace("{2}", bpa.getRiskType().toString()).replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
+					.replace("{2}", bpa.getRiskType()).replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
 					.replace("{4}", edcrResponse.get(BPAConstants.APPLICATIONTYPE));
 
 			List<Object> mdmsQuestionsArray = (List<Object>) JsonPath.read(mdmsData, questionsPath);
@@ -437,7 +437,7 @@ public class BPAValidator {
 
 		try {
 			String docTypesPath = BPAConstants.DOCTYPES_MAP.replace("{1}", wfState)
-					.replace("{2}", bpa.getRiskType().toString()).replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
+					.replace("{2}", bpa.getRiskType()).replace("{3}", edcrResponse.get(BPAConstants.SERVICETYPE))
 					.replace("{4}", edcrResponse.get(BPAConstants.APPLICATIONTYPE));;
 
 			List<Object> docTypesArray = (List<Object>) JsonPath.read(mdmsData, docTypesPath);

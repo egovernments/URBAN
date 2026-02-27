@@ -555,7 +555,7 @@ public class PaymentUpdateService {
 				message = message.replace("{Billing Period}", billingPeriod);
 			}
 			if (message.contains("{receipt download link}")){
-				String link = config.getNotificationUrl() + config.getMyPaymentsLink();
+				String link = notificationUtil.getHost(paymentDetail.getTenantId()) + config.getMyPaymentsLink();
 				link = link.replace("$consumerCode", paymentDetail.getBill().getConsumerCode());
 				link = link.replace("$tenantId", paymentDetail.getTenantId());
 				link = link.replace("$businessService",paymentDetail.getBusinessService());

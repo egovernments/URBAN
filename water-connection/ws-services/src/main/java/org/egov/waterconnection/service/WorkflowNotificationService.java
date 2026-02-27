@@ -285,24 +285,24 @@ public class WorkflowNotificationService {
             messageTemplate = messageTemplate.replace(code, "");
             String actionLink = "";
             if (code.equalsIgnoreCase("Download Application")) {
-                actionLink = config.getNotificationUrl() + config.getViewHistoryLink();
+                actionLink = notificationUtil.getHost(property.getTenantId()) + config.getViewHistoryLink();
                 actionLink = actionLink.replace(applicationNumberReplacer, connectionRequest.getWaterConnection().getApplicationNo());
             }
             if (code.equalsIgnoreCase("PAY NOW")||code.equalsIgnoreCase("Pay Dues")) {
-                actionLink = config.getNotificationUrl() + config.getViewHistoryLink();
+                actionLink = notificationUtil.getHost(property.getTenantId()) + config.getViewHistoryLink();
                 actionLink = actionLink.replace(applicationNumberReplacer, connectionRequest.getWaterConnection().getApplicationNo());
             }
             if (code.equalsIgnoreCase("DOWNLOAD RECEIPT")) {
-                actionLink = config.getNotificationUrl() + config.getMyPaymentsLink();
+                actionLink = notificationUtil.getHost(property.getTenantId()) + config.getMyPaymentsLink();
             }
             if (code.equalsIgnoreCase("View History Link")) {
-                actionLink = config.getNotificationUrl() + config.getViewHistoryLink();
+                actionLink = notificationUtil.getHost(property.getTenantId()) + config.getViewHistoryLink();
                 actionLink = actionLink.replace(mobileNoReplacer, mobileNumber);
                 actionLink = actionLink.replace(applicationNumberReplacer, connectionRequest.getWaterConnection().getApplicationNo());
                 actionLink = actionLink.replace(tenantIdReplacer, property.getTenantId());
             }
             if (code.equalsIgnoreCase("Connection Detail Page")) {
-                actionLink = config.getNotificationUrl() + config.getConnectionDetailsLink();
+                actionLink = notificationUtil.getHost(property.getTenantId()) + config.getConnectionDetailsLink();
                 actionLink = actionLink.replace(applicationNumberReplacer, connectionRequest.getWaterConnection().getApplicationNo());
             }
             ActionItem item = ActionItem.builder().actionUrl(actionLink).code(code).build();
@@ -524,21 +524,21 @@ public class WorkflowNotificationService {
                 messageToReplace = messageToReplace.replace("{Reason for Rejection}",  waterConnectionRequest.getWaterConnection().getProcessInstance().getComment());
 
             if (messageToReplace.contains("{Application download link}")) {
-                String actionLink = config.getNotificationUrl() + config.getViewHistoryLink();
+                String actionLink = notificationUtil.getHost(property.getTenantId()) + config.getViewHistoryLink();
                 actionLink = actionLink.replace(applicationNumberReplacer, waterConnectionRequest.getWaterConnection().getApplicationNo());
                 messageToReplace = messageToReplace.replace("{Application download link}", waterServiceUtil.getShortnerURL(actionLink));
             }
 
             if (messageToReplace.contains("{mseva URL}"))
                 messageToReplace = messageToReplace.replace("{mseva URL}",
-                        waterServiceUtil.getShortnerURL(config.getNotificationUrl()));
+                        waterServiceUtil.getShortnerURL(notificationUtil.getHost(property.getTenantId())));
 
             if (messageToReplace.contains("{mseva app link}"))
                 messageToReplace = messageToReplace.replace("{mseva app link}",
                         waterServiceUtil.getShortnerURL(config.getMSevaAppLink()));
 
             if (messageToReplace.contains("{View History Link}")) {
-                String historyLink = config.getNotificationUrl() + config.getViewHistoryLink();
+                String historyLink = notificationUtil.getHost(property.getTenantId()) + config.getViewHistoryLink();
                 historyLink = historyLink.replace(mobileNoReplacer, mobileAndName.getKey());
                 historyLink = historyLink.replace(applicationNumberReplacer, waterConnectionRequest.getWaterConnection().getApplicationNo());
                 historyLink = historyLink.replace(tenantIdReplacer, property.getTenantId());
@@ -546,7 +546,7 @@ public class WorkflowNotificationService {
                         waterServiceUtil.getShortnerURL(historyLink));
             }
             if (messageToReplace.contains("{payment link}")) {
-                String paymentLink = config.getNotificationUrl() +  config.getViewHistoryLink();
+                String paymentLink = notificationUtil.getHost(property.getTenantId()) +  config.getViewHistoryLink();
                 paymentLink = paymentLink.replace(mobileNoReplacer, mobileAndName.getKey());
                 paymentLink = paymentLink.replace(applicationNumberReplacer, waterConnectionRequest.getWaterConnection().getApplicationNo());
                 paymentLink = paymentLink.replace(tenantIdReplacer, property.getTenantId());
@@ -556,10 +556,10 @@ public class WorkflowNotificationService {
 
 			/*if (messageToReplace.contains("{receipt download link}")){
 				messageToReplace = messageToReplace.replace("{receipt download link}",
-						waterServiceUtil.getShortnerURL(config.getNotificationUrl()));
+						waterServiceUtil.getShortnerURL(notificationUtil.getHost(property.getTenantId())));
 			}*/
             if (messageToReplace.contains("{connection details page}")) {
-                String connectionDetaislLink = config.getNotificationUrl() + config.getConnectionDetailsLink();
+                String connectionDetaislLink = notificationUtil.getHost(property.getTenantId()) + config.getConnectionDetailsLink();
                 connectionDetaislLink = connectionDetaislLink.replace(applicationNumberReplacer,
                         waterConnectionRequest.getWaterConnection().getApplicationNo());
                 messageToReplace = messageToReplace.replace("{connection details page}",
@@ -783,7 +783,7 @@ public class WorkflowNotificationService {
         String receiptNumber = getReceiptNumber(waterConnectionRequest);
         for (Entry<String, String> mobileAndMsg : mobileNumberAndMessage.entrySet()) {
             String messageToReplace = mobileAndMsg.getValue();
-            String link = config.getNotificationUrl() + config.getMyPaymentsLink();
+            String link = notificationUtil.getHost(property.getTenantId()) + config.getMyPaymentsLink();
             link = waterServiceUtil.getShortnerURL(link);
             messageToReplace = messageToReplace.replace("{receipt download link}", link);
             messageToReturn.put(mobileAndMsg.getKey(), messageToReplace);

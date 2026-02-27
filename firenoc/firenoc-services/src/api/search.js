@@ -194,16 +194,12 @@ export const searchApiResponse = async (request, next = {}) => {
       queryObj.ids = firenocIds.toString();
     }
   }
-  if (queryObj.hasOwnProperty("ids")) {
-    // console.log(queryObj.ids.split(","));
-    let ids = queryObj.ids.split(",");
-    sqlQuery = `${sqlQuery} FN.uuid IN ( `;
-    for (var i = 0; i < ids.length; i++) {
-      sqlQuery = `${sqlQuery} '${ids[i]}' `;
-      if (i != ids.length - 1) sqlQuery = `${sqlQuery} ,`;
-    }
 
-    if (ids.length > 1) sqlQuery = `${sqlQuery} ) AND`;
+  if (queryObj.hasOwnProperty("ids")) {
+    //Wraps each trimmed UUID in single quotes.
+    let ids = queryObj.ids.split(",").map(id => `'${id.trim()}'`);
+    //Joins them with commas.Always closes the parentheses correctly, even for one UUID
+    sqlQuery += ` FN.uuid IN (${ids.join(",")}) AND`;
   }
 
   if (queryKeys) {

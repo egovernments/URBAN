@@ -22,7 +22,7 @@ frontend/micro-ui/web/package.json
 
 ## Changelog
 
-### Summary for Version [1.7.35] - 2025-03-20
+### Summary for Version [1.7.40] - 2025-05-29
 
 Corrected WhatsNewCard to handle when no data is coming from mdms
 

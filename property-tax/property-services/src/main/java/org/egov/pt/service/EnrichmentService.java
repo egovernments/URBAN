@@ -316,7 +316,7 @@ public class EnrichmentService {
 
             if(config.getIsWorkflowEnabled() && property.getWorkflow().getAction().equalsIgnoreCase(PTConstants.CITIZEN_SENDBACK_ACTION)){
 
-                    List<OwnerInfo> assignes = new LinkedList<>();
+                    List<User> assignes = new LinkedList<>();
 
                     // Adding owners to assignes list
                     property.getOwners().forEach(ownerInfo -> {
