@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -33,6 +34,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User   {
 	
         @JsonProperty("id")
