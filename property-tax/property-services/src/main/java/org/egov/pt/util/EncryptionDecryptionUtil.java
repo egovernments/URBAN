@@ -48,6 +48,7 @@ public class EncryptionDecryptionUtil {
     }
 
     public <T> T encryptObject(Object objectToEncrypt, String key, Class<T> classType) {
+
         try {
             if (objectToEncrypt == null) {
                 return null;
