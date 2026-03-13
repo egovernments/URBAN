@@ -16,6 +16,7 @@ const SwitchComponent = (props) => {
   );
 };
 const SearchPTID = ({ tenantId, t, onSubmit, onReset, searchBy, PTSearchFields, setSearchBy ,payload}) => {
+  const [countryCode, setCountryCode] = useState("+91");
   const { register, control, handleSubmit, setValue, watch,getValues, reset, formState } = useForm({
     defaultValues: {
       ...payload,
@@ -62,7 +63,9 @@ const SearchPTID = ({ tenantId, t, onSubmit, onReset, searchBy, PTSearchFields, 
                 ...validation,
               })}
               type="number"
-              componentInFront={<div className="employee-card-input employee-card-input--front">+91</div>}
+              showCountryCodeSelector={true}
+              onCountryCodeChange={(value) => setCountryCode(value)}
+              countryCode={countryCode}
               //maxlength={10}
         />
         </div>
@@ -86,6 +89,7 @@ const SearchPTID = ({ tenantId, t, onSubmit, onReset, searchBy, PTSearchFields, 
          <p style={{color:"#F47738"}}
             onClick={() => {
               onReset({});
+              setCountryCode("+91");
             }}
           >
             {t(`ES_COMMON_CLEAR_ALL`)}

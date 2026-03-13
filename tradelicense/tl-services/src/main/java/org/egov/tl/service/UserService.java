@@ -135,6 +135,7 @@ public class UserService{
         newowner.setName(getFromOwnerIfNotNull(user.getName(),owner.getName()));
         newowner.setGender(getFromOwnerIfNotNull(user.getGender(),owner.getGender()));
         newowner.setMobileNumber(getFromOwnerIfNotNull(user.getMobileNumber(),owner.getMobileNumber()));
+        newowner.setCountryCode(getFromOwnerIfNotNull(user.getCountryCode(),owner.getCountryCode()));
         newowner.setEmailId(getFromOwnerIfNotNull(user.getEmailId(),owner.getEmailId()));
         newowner.setAltContactNumber(getFromOwnerIfNotNull(user.getAltContactNumber(),owner.getAltContactNumber()));
         newowner.setPan(getFromOwnerIfNotNull(user.getPan(),owner.getPan()));

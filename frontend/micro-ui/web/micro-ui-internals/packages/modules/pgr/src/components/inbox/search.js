@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TextInput, Label, SubmitBar, LinkLabel, ActionBar, CloseSvg } from "@egovernments/digit-ui-react-components";
+import { TextInput, Label, SubmitBar, LinkLabel, ActionBar, CloseSvg, MobileNumber } from "@egovernments/digit-ui-react-components";
 
 const SearchComplaint = ({ onSearch, type, onClose, searchParams }) => {
   const [complaintNo, setComplaintNo] = useState(searchParams?.search?.serviceRequestId || "");
   const [mobileNo, setMobileNo] = useState(searchParams?.search?.mobileNumber || "");
+  const [countryCode, setCountryCode] = useState(searchParams?.search?.countryCode || "+91");
   const { register, errors, handleSubmit, reset } = useForm();
   const { t } = useTranslation();
 
@@ -14,7 +15,7 @@ const SearchComplaint = ({ onSearch, type, onClose, searchParams }) => {
       if (data.serviceRequestId !== "") {
         onSearch({ serviceRequestId: data.serviceRequestId });
       } else if (data.mobileNumber !== "") {
-        onSearch({ mobileNumber: data.mobileNumber });
+        onSearch({ mobileNumber: data.mobileNumber, countryCode: countryCode });
       } else {
         onSearch({});
       }
@@ -30,6 +31,7 @@ const SearchComplaint = ({ onSearch, type, onClose, searchParams }) => {
     onSearch({});
     setComplaintNo("");
     setMobileNo("");
+    setCountryCode("+91");
   }
 
   const clearAll = () => {
@@ -76,14 +78,17 @@ const SearchComplaint = ({ onSearch, type, onClose, searchParams }) => {
               </span>
               <span className="mobile-input">
                 <Label>{t("CS_COMMON_MOBILE_NO")}.</Label>
-                <TextInput
+                <MobileNumber
                   name="mobileNumber"
                   value={mobileNo}
                   onChange={setMobile}
                   inputRef={register({
                     pattern: /^[6-9]\d{9}$/,
                   })}
-                ></TextInput>
+                  showCountryCodeSelector={true}
+                  onCountryCodeChange={(value) => setCountryCode(value)}
+                  countryCode={countryCode}
+                />
               </span>
               {type === "desktop" && (
                 <SubmitBar

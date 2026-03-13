@@ -20,6 +20,7 @@ const createConnectionHolderDetails = () => ({
   name: "",
   gender: "",
   mobileNumber: "",
+  countryCode: "+91",
   guardian: "",
   relationship: "",
   address: "",
@@ -215,13 +216,14 @@ const ConnectionDetails = (_props) => {
   const [name, setName] = useState(connectionHolderDetail?.name);
   const [gender, setGender] = useState(connectionHolderDetail?.gender);
   const [mobileNumber, setMobileNumber] = useState(connectionHolderDetail?.mobileNumber);
+  const [countryCode, setCountryCode] = useState(connectionHolderDetail?.countryCode || "+91");
   const [guardian, setGuardian] = useState(connectionHolderDetail?.guardian);
   const [relationship, setRelationship] = useState(connectionHolderDetail?.relationship);
   const [address, setAddress] = useState(connectionHolderDetail?.address);
   const [ownerType, setOwnerType] = useState(connectionHolderDetail?.ownerType);
   const [sameAsOwnerDetails, setSameAsOwnerDetails] = useState(connectionHolderDetail?.sameAsOwnerDetails);
   const [uuid, setuuid] = useState(connectionHolderDetail?.uuid);
-  const formValue = { name, gender, mobileNumber, guardian, relationship, ownerType, sameAsOwnerDetails, address, uuid };
+  const formValue = { name, gender, mobileNumber, countryCode, guardian, relationship, ownerType, sameAsOwnerDetails, address, uuid };
   const { errors } = localFormState;
   const isMobile = window.Digit.Utils.browser.isMobile();
   const isEmployee = window.location.href.includes("/employee")
@@ -472,9 +474,6 @@ const ConnectionDetails = (_props) => {
                 isMandatory={true}
                 render={(props) => (
                   <div style={{ display: "flex", alignItems: "baseline", marginRight: isEmployee && isMobile ? "" : (getValues("mobileNumber")?.includes("*") && !(isMobile && isEmployee) ? "-20px" : "-4%") }}>
-                    <div className="employee-card-input employee-card-input--front" style={{ position: "relative", marginTop: "4px" }}>
-                      +91
-                    </div>
                     <TextInput
                       //type="number"
                       //value={props.value}

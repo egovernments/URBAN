@@ -17,6 +17,9 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
   const [mobileNumber, setMobileNumber] = useState(
     (formData.owners && formData.owners[index] && formData.owners[index].mobileNumber) || formData?.owners?.mobileNumber || ""
   );
+  const [countryCode, setCountryCode] = useState(
+    (formData.owners && formData.owners[index] && formData.owners[index].countryCode) || formData?.owners?.countryCode || "+91"
+  );
   const [fatherOrHusbandName, setFatherOrHusbandName] = useState(
     (formData.owners && formData.owners[index] && formData.owners[index].fatherOrHusbandName) || formData?.owners?.fatherOrHusbandName || ""
   );
@@ -61,15 +64,15 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
     let owner = formData.owners && formData.owners[index];
     let ownerStep;
     if (userType === "employee") {
-      ownerStep = { ...owner, name, gender, mobileNumber, fatherOrHusbandName, relationship, emailId: email };
+      ownerStep = { ...owner, name, gender, mobileNumber, countryCode, fatherOrHusbandName, relationship, emailId: email };
       onSelect(config.key, { ...formData[config.key], ...ownerStep }, false, index);
     } else {
       if (mutationScreen) {
-        ownerStep = { ...owner, name, gender, mobileNumber, fatherOrHusbandName, relationship };
+        ownerStep = { ...owner, name, gender, mobileNumber, countryCode, fatherOrHusbandName, relationship };
         onSelect("", ownerStep);
         return;
       }
-      ownerStep = { ...owner, name, gender, mobileNumber, fatherOrHusbandName, relationship };
+      ownerStep = { ...owner, name, gender, mobileNumber, countryCode, fatherOrHusbandName, relationship };
       onSelect(config.key, ownerStep, false, index);
     }
   };
@@ -95,7 +98,7 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
     if (userType === "employee") {
       goNext();
     }
-  }, [name, gender, mobileNumber, fatherOrHusbandName, relationship]);
+  }, [name, gender, mobileNumber, countryCode, fatherOrHusbandName, relationship]);
 
   if (userType === "employee") {
     return (
@@ -260,6 +263,9 @@ const SelectOwnerDetails = ({ t, config, onSelect, userType, formData, ownerInde
           name="mobileNumber"
           onChange={(value) => setMobileNo({ target: { value } })}
           disable={isUpdateProperty || isEditProperty}
+          showCountryCodeSelector={true}
+          onCountryCodeChange={(value) => setCountryCode(value)}
+          countryCode={countryCode}
           {...{ required: true, pattern: "[6-9]{1}[0-9]{9}", type: "tel", title: t("CORE_COMMON_APPLICANT_MOBILE_NUMBER_INVALID") }}
         />
         <CardLabel>{`${t("PT_FORM3_GUARDIAN_NAME")}`}</CardLabel>

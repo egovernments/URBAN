@@ -51,9 +51,14 @@ public class User   {
         private String gender;
 
         @NotNull
-        @Pattern(regexp = "^[6-9][0-9]{9}$", message = "Invalid mobile number")
+        @Pattern(regexp = "^[0-9]{6,15}$", message = "Mobile number must be 6-15 digits")
         @JsonProperty("mobileNumber")
         private String mobileNumber;
+
+        @Size(max=10)
+        @Pattern(regexp = "^[+]?[0-9]{1,5}$", message = "Invalid country code")
+        @JsonProperty("countryCode")
+        private String countryCode;
 
         @Size(max=128)
         @JsonProperty("emailId")
@@ -167,6 +172,17 @@ public class User   {
                 return this;
         }
 
+        /**
+         * Returns the full mobile number with country code
+         * @return Full mobile number in format: countryCode-mobileNumber or just mobileNumber if no country code
+         */
+        public String getFullMobileNumber() {
+                if (countryCode != null && !countryCode.isEmpty()) {
+                        return countryCode + "-" + mobileNumber;
+                }
+                return mobileNumber;
+        }
+
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;
@@ -174,13 +190,14 @@ public class User   {
                 User user = (User) o;
                 return Objects.equals(uuid, user.uuid) &&
                         Objects.equals(name, user.name) &&
-                        Objects.equals(mobileNumber, user.mobileNumber);
+                        Objects.equals(mobileNumber, user.mobileNumber) &&
+                        Objects.equals(countryCode, user.countryCode);
         }
 
         @Override
         public int hashCode() {
 
-                return Objects.hash(uuid, name, mobileNumber);
+                return Objects.hash(uuid, name, mobileNumber, countryCode);
         }
 }
 

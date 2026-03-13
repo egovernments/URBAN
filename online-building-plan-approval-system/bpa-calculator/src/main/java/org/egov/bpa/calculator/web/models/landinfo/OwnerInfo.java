@@ -42,6 +42,10 @@ public class OwnerInfo {
 	@JsonProperty("mobileNumber")
 	private String mobileNumber = null;
 
+	@JsonProperty("countryCode")
+	@Pattern(regexp = "^\\+[1-9][0-9]{0,3}$", message = "CountryCode must be in format +X to +XXXX")
+	private String countryCode = null;
+
 	@JsonProperty("gender")
 	private String gender = null;
 
@@ -1063,6 +1067,7 @@ public class OwnerInfo {
 				&&Objects.equals(this.name, ownerInfo.name) 
 				&& Objects.equals(this.ownerId, ownerInfo.ownerId)
 				&& Objects.equals(this.mobileNumber, ownerInfo.mobileNumber)
+				&& Objects.equals(this.countryCode, ownerInfo.countryCode)
 				&& Objects.equals(this.gender, ownerInfo.gender)
 				&& Objects.equals(this.fatherOrHusbandName, ownerInfo.fatherOrHusbandName)
 				&& Objects.equals(this.correspondenceAddress, ownerInfo.correspondenceAddress)
@@ -1102,9 +1107,9 @@ public class OwnerInfo {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, mobileNumber, gender, fatherOrHusbandName, correspondenceAddress, isPrimaryOwner,
-				ownerShipPercentage, ownerType, institutionId, documents, relationship, additionalDetails, id, uuid, salutation, altContactNumber, pan, 
-				aadhaarNumber, permanentAddress, permanentCity, permanentPincode, correspondenceCity, correspondencePincode, 
+		return Objects.hash(name, mobileNumber, countryCode, gender, fatherOrHusbandName, correspondenceAddress, isPrimaryOwner,
+				ownerShipPercentage, ownerType, institutionId, documents, relationship, additionalDetails, id, uuid, salutation, altContactNumber, pan,
+				aadhaarNumber, permanentAddress, permanentCity, permanentPincode, correspondenceCity, correspondencePincode,
 				active, dob, pwdExpiryDate, locale, type, signature, accountLocked, roles, bloodGroup, identificationMark,
 				photo, otpReference, auditDetails);
 		}
@@ -1183,6 +1188,7 @@ public class OwnerInfo {
 		this.setName(user.getName());
 		this.setGender(user.getGender());
 		this.setMobileNumber(user.getMobileNumber());
+		this.setCountryCode(user.getCountryCode());
 		this.setEmailId(user.getEmailId());
 		this.setAltContactNumber(user.getAltContactNumber());
 		this.setPan(user.getPan());
@@ -1224,6 +1230,7 @@ public class OwnerInfo {
 		this.setUserName(user.getUserName());
 		this.setName(user.getName());
 		this.setMobileNumber(user.getMobileNumber());
+		this.setCountryCode(user.getCountryCode());
 		this.setUuid(user.getUuid());
 	}
 

@@ -60,6 +60,10 @@ public class User   {
         @JsonProperty("gender")
         private String gender;
 
+        @Pattern(regexp = "^\\+[1-9][0-9]{0,3}$", message = "Country code must start with + followed by 1-4 digits")
+        @JsonProperty("countryCode")
+        private String countryCode;
+
         @JsonProperty("mobileNumber")
         private String mobileNumber;
 
@@ -203,5 +207,16 @@ public class User   {
             commonUser.setUuid(this.getUuid());
             return commonUser;
     }
+
+        /**
+         * Returns the full mobile number with country code
+         * @return Full mobile number in format: countryCode+mobileNumber (e.g., +911234567890)
+         */
+        public String getFullMobileNumber() {
+                if (this.countryCode != null && this.mobileNumber != null) {
+                        return this.countryCode + this.mobileNumber;
+                }
+                return this.mobileNumber;
+        }
 }
 

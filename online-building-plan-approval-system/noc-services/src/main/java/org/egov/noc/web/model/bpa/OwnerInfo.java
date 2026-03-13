@@ -46,11 +46,15 @@ public class OwnerInfo {
 	@JsonProperty("ownerId")
 	private String ownerId = null;
 
-	
+
 	@JsonProperty("mobileNumber")
 	private String mobileNumber = null;
 
-	
+	@JsonProperty("countryCode")
+	@Pattern(regexp = "^\\+[1-9][0-9]{0,3}$", message = "CountryCode must be in format +X to +XXXX")
+	private String countryCode = null;
+
+
 	@JsonProperty("gender")
 	private String gender = null;
 
@@ -1112,6 +1116,7 @@ public class OwnerInfo {
 		this.setName(user.getName());
 		this.setGender(user.getGender());
 		this.setMobileNumber(user.getMobileNumber());
+		this.setCountryCode(user.getCountryCode());
 		this.setEmailId(user.getEmailId());
 		this.setAltContactNumber(user.getAltContactNumber());
 		this.setPan(user.getPan());
@@ -1153,6 +1158,7 @@ public class OwnerInfo {
 		this.setUserName(user.getUserName());
 		this.setName(user.getName());
 		this.setMobileNumber(user.getMobileNumber());
+		this.setCountryCode(user.getCountryCode());
 		this.setUuid(user.getUuid());
 	}
 

@@ -129,6 +129,7 @@ public class OwnerInfo extends User  {
                 this.setName(user.getName());
                 this.setGender(user.getGender());
                 this.setMobileNumber(user.getMobileNumber());
+                this.setCountryCode(user.getCountryCode());
                 this.setEmailId(user.getEmailId());
                 this.setAltContactNumber(user.getAltContactNumber());
                 this.setPan(user.getPan());
@@ -172,6 +173,7 @@ public class OwnerInfo extends User  {
                 this.setName(user.getName());
                 this.setType(user.getType());
                 this.setMobileNumber(user.getMobileNumber());
+                this.setCountryCode(user.getCountryCode());
                 this.setEmailId(user.getEmailId());
                 this.setRoles(user.getRoles());
                 this.setUuid(user.getUuid());
@@ -202,6 +204,7 @@ public class OwnerInfo extends User  {
                 this.setName(user.getName());
                 this.setGender(user.getGender());
                 this.setMobileNumber(user.getMobileNumber());
+                this.setCountryCode(user.getCountryCode());
                 this.setEmailId(user.getEmailId());
                 this.setAltContactNumber(user.getAltContactNumber());
                 this.setPan(user.getPan());

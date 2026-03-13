@@ -49,9 +49,13 @@ public class User   {
         @JsonProperty("gender")
         private String gender;
 
-        @Pattern(regexp = "^[0-9]{10}$", message = "MobileNumber should be 10 digit number")
+        @Pattern(regexp = "^[0-9]{6,15}$", message = "Mobile number must be 6-15 digits")
         @JsonProperty("mobileNumber")
         private String mobileNumber;
+
+        @Size(max=10)
+        @JsonProperty("countryCode")
+        private String countryCode;
 
         @Size(max=128)
         @JsonProperty("emailId")
@@ -174,13 +178,14 @@ public class User   {
                 User user = (User) o;
                 return Objects.equals(uuid, user.uuid) &&
                         Objects.equals(name, user.name) &&
-                        Objects.equals(mobileNumber, user.mobileNumber);
+                        Objects.equals(mobileNumber, user.mobileNumber) &&
+                        Objects.equals(countryCode, user.countryCode);
         }
 
         @Override
         public int hashCode() {
 
-                return Objects.hash(uuid, name, mobileNumber);
+                return Objects.hash(uuid, name, mobileNumber, countryCode);
         }
 
         public org.egov.common.contract.request.User toCommonUser(){
@@ -190,6 +195,7 @@ public class User   {
                 commonUser.setName(this.getName());
                 commonUser.setType(this.getType());
                 commonUser.setMobileNumber(this.getMobileNumber());
+                commonUser.setCountryCode(this.getCountryCode());
                 commonUser.setEmailId(this.getEmailId());
                 commonUser.setRoles(this.getRoles());
                 commonUser.setTenantId(this.getTenantId());

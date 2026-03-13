@@ -677,7 +677,7 @@ public class NotificationUtil {
 
 	/**
 	 * Creates sms request for the each owners
-	 * 
+	 *
 	 * @param message
 	 *            The message for the specific tradeLicense
 	 * @param mobileNumberToOwnerName
@@ -689,7 +689,11 @@ public class NotificationUtil {
 		for (Map.Entry<String, String> entryset : mobileNumberToOwnerName.entrySet()) {
 			String customizedMsg = message.replace("{1}", entryset.getValue());
 			customizedMsg = customizedMsg.replace(NOTIF_OWNER_NAME_KEY, entryset.getValue());
-			smsRequest.add(new SMSRequest(entryset.getKey(), customizedMsg));
+			smsRequest.add(SMSRequest.builder()
+					.mobileNumber(entryset.getKey())
+					.countryCode(null)
+					.message(customizedMsg)
+					.build());
 		}
 		return smsRequest;
 	}

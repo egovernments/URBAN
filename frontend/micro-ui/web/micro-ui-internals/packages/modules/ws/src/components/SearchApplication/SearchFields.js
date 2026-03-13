@@ -1,8 +1,9 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import { Controller, useWatch } from "react-hook-form";
 import { TextInput, SubmitBar, DatePicker, SearchField, Dropdown, Loader, MobileNumber } from "@egovernments/digit-ui-react-components";
 
 const SearchFields = ({ register, control, reset, tenantId, t,businessService }) => {
+    const [countryCode, setCountryCode] = useState("+91");
     const { isLoading: applicationTypesLoading, data: applicationTypes } = Digit.Hooks.ws.useWSMDMSWS.applicationTypes(Digit.ULBService.getStateId());
     const filterString = businessService==="WS" ? "WATER" : "SEWERAGE";
     const filteredApplicationTypes = applicationTypes?.filter(e => e?.code?.includes(filterString))
@@ -59,7 +60,9 @@ const SearchFields = ({ register, control, reset, tenantId, t,businessService })
         maxlength: 10,
         pattern: "[6-9][0-9]{9}",
         title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
-        componentInFront: "+91"
+        showCountryCodeSelector: true,
+        onCountryCodeChange: (value) => setCountryCode(value),
+        countryCode: countryCode
     }
     let validation = {}
     return <>
@@ -159,6 +162,7 @@ const SearchFields = ({ register, control, reset, tenantId, t,businessService })
                     sortBy: "commencementDate",
                     sortOrder: "DESC"
                 });
+                setCountryCode("+91");
             }}>{t(`CS_COMMON_CLEAR_SEARCH`)}</p>
         </SearchField>
     </>

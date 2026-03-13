@@ -45,6 +45,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
   const [canSubmitName, setCanSubmitName] = useState(false);
   const [canSubmitOtp, setCanSubmitOtp] = useState(true);
   const [canSubmitNo, setCanSubmitNo] = useState(true);
+  const [countryCode, setCountryCode] = useState('+91');
 
   useEffect(() => {
     let errorTimeout;
@@ -99,9 +100,13 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
     setParmas({ ...params, otp });
   };
 
-  const handleMobileChange = (event) => {
-    const { value } = event.target;
+  const handleMobileChange = (value) => {
     setParmas({ ...params, mobileNumber: value });
+  };
+
+  const handleCountryCodeChange = (code) => {
+    setCountryCode(code);
+    setParmas({ ...params, countryCode: code });
   };
 
   const selectMobileNumber = async (mobileNumber) => {
@@ -109,6 +114,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
     setParmas({ ...params, ...mobileNumber });
     const data = {
       ...mobileNumber,
+      countryCode: countryCode,
       tenantId: stateCode,
       userType: getUserType(),
     };
@@ -142,6 +148,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
   const selectName = async (name) => {
     const data = {
       ...params,
+      countryCode: countryCode,
       tenantId: stateCode,
       userType: getUserType(),
       ...name,
@@ -166,6 +173,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
         const requestData = {
           username: mobileNumber,
           password: otp,
+          countryCode: countryCode,
           tenantId: stateCode,
           userType: getUserType(),
         };
@@ -189,6 +197,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
           name,
           username: mobileNumber,
           otpReference: otp,
+          countryCode: countryCode,
           tenantId: stateCode,
         };
 
@@ -210,6 +219,7 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
     const { mobileNumber } = params;
     const data = {
       mobileNumber,
+      countryCode: countryCode,
       tenantId: stateCode,
       userType: getUserType(),
     };
@@ -239,21 +249,26 @@ const Login = ({ stateCode, isUserRegistered = true }) => {
               onSelect={selectMobileNumber}
               config={stepItems[0]}
               mobileNumber={params.mobileNumber || ""}
+              countryCode={countryCode}
               onMobileChange={handleMobileChange}
+              onCountryCodeChange={handleCountryCodeChange}
               canSubmit={canSubmitNo}
               showRegisterLink={isUserRegistered && !location.state?.role}
+              tenantId={stateCode}
               t={t}
             />
           </Route>
           <Route path={`${path}/otp`}>
             <SelectOtp
-              config={{ ...stepItems[1], texts: { ...stepItems[1].texts, cardText: `${stepItems[1].texts.cardText} ${params.mobileNumber || ""}` } }}
+              config={{ ...stepItems[1], texts: { ...stepItems[1].texts, cardText: `${stepItems[1].texts.cardText} ${countryCode} ${params.mobileNumber || ""}` } }}
               onOtpChange={handleOtpChange}
               onResend={resendOtp}
               onSelect={selectOtp}
               otp={params.otp}
               error={isOtpValid}
               canSubmit={canSubmitOtp}
+              countryCode={countryCode}
+              mobileNumber={params.mobileNumber}
               t={t}
             />
           </Route>

@@ -1,13 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { TextInput, SubmitBar, DatePicker, SearchField, Dropdown, Loader, MobileNumber } from "@egovernments/digit-ui-react-components";
 
 const SearchFields = ({ register, control, reset, tenantId, t }) => {
+  const [countryCode, setCountryCode] = useState("+91");
   const propsForMobileNumber = {
     maxlength: 10,
     pattern: "[6-9][0-9]{9}",
     title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
-    componentInFront: "+91",
+    showCountryCodeSelector: true,
+    onCountryCodeChange: (value) => setCountryCode(value),
+    countryCode: countryCode,
   };
 
   const propsForOldConnectionNumberNpropertyId = {
@@ -57,6 +60,7 @@ const SearchFields = ({ register, control, reset, tenantId, t }) => {
               connectionNumber: "",
               oldConnectionNumber: "",
             });
+            setCountryCode("+91");
           }}
         >
           {t("WS_SEARCH_CONNECTION_RESET_BUTTON")}

@@ -87,6 +87,7 @@ public class OwnerInfo extends User{
 		this.setSalutation(user.getSalutation());
 		this.setName(user.getName());
 		this.setGender(user.getGender());
+		this.setCountryCode(user.getCountryCode());
 		this.setMobileNumber(user.getMobileNumber());
 		this.setEmailId(user.getEmailId());
 		this.setAltContactNumber(user.getAltContactNumber());

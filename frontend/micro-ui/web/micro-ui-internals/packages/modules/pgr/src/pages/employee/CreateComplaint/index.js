@@ -32,6 +32,7 @@ export const CreateComplaint = ({ parentUrl }) => {
   const [selectedLocality, setSelectedLocality] = useState(null);
   const [canSubmit, setSubmitValve] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [countryCode, setCountryCode] = useState("+91");
 
   const [pincodeNotValid, setPincodeNotValid] = useState(false);
   const [params, setParams] = useState({});
@@ -133,7 +134,7 @@ export const CreateComplaint = ({ parentUrl }) => {
     const complaintType = key;
     const mobileNumber = data.mobileNumber;
     const name = data.name;
-    const formData = { ...data, cityCode, city, district, region, localityCode, localityName, landmark, complaintType, mobileNumber, name };
+    const formData = { ...data, cityCode, city, district, region, localityCode, localityName, landmark, complaintType, mobileNumber, name, countryCode };
     await dispatch(createComplaint(formData));
     await client.refetchQueries(["fetchInboxData"]);
     history.push(parentUrl + "/response");
@@ -156,14 +157,16 @@ export const CreateComplaint = ({ parentUrl }) => {
         {
           label: t("ES_CREATECOMPLAINT_MOBILE_NUMBER"),
           isMandatory: true,
-          type: "text",
+          type: "mobileNumber",
           populators: {
             name: "mobileNumber",
             validation: {
               required: true,
               pattern: /^[6-9]\d{9}$/,
             },
-            componentInFront: <div className="employee-card-input employee-card-input--front">+91</div>,
+            showCountryCodeSelector: true,
+            onCountryCodeChange: (value) => setCountryCode(value),
+            countryCode: countryCode,
             error: t("CORE_COMMON_MOBILE_ERROR"),
           },
         },

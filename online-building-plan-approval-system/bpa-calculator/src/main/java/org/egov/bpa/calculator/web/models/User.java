@@ -54,8 +54,12 @@ public class User {
     @JsonProperty("gender")
     private String gender;
 
+    @JsonProperty("countryCode")
+    @Pattern(regexp = "^\\+[1-9][0-9]{0,3}$", message = "CountryCode must be in format +X to +XXXX")
+    private String countryCode;
+
     @NotNull
-    @Pattern(regexp = "^[0-9]{10}$", message = "MobileNumber should be 10 digit number")
+    @Pattern(regexp = "^[0-9]{4,15}$", message = "MobileNumber should be 4 to 15 digits")
     @JsonProperty("mobileNumber")
     private String mobileNumber;
 
@@ -170,6 +174,20 @@ public class User {
             return this;
     }
 
+    /**
+     * Returns the full mobile number with country code.
+     * If countryCode is present, returns countryCode + mobileNumber.
+     * Otherwise, returns just the mobileNumber.
+     *
+     * @return Full mobile number with country code if available
+     */
+    public String getFullMobileNumber() {
+        if (countryCode != null && !countryCode.isEmpty()) {
+            return countryCode + mobileNumber;
+        }
+        return mobileNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
             if (this == o) return true;
@@ -177,13 +195,14 @@ public class User {
             User user = (User) o;
             return Objects.equals(uuid, user.uuid) &&
                     Objects.equals(name, user.name) &&
+                    Objects.equals(countryCode, user.countryCode) &&
                     Objects.equals(mobileNumber, user.mobileNumber);
     }
 
     @Override
     public int hashCode() {
 
-            return Objects.hash(uuid, name, mobileNumber);
+            return Objects.hash(uuid, name, countryCode, mobileNumber);
     }
     
     public org.egov.common.contract.request.User toCommonUser(){
@@ -197,6 +216,7 @@ public class User {
             commonUser.setRoles(this.getRoles());
             commonUser.setTenantId(this.getTenantId());
             commonUser.setUuid(this.getUuid());
+            // Note: countryCode is set separately on the common user model if it supports it
             return commonUser;
     }
 

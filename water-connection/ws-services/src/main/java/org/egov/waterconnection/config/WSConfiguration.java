@@ -253,4 +253,8 @@ public class WSConfiguration {
     @Value("${egov.url.shortner.host}")
     private String urlShortnerHost;
 
+    // Country Code
+    @Value("${egov.default.country.code:+91}")
+    private String defaultCountryCode;
+
 }

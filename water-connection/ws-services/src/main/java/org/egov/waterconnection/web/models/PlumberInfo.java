@@ -31,11 +31,15 @@ public class PlumberInfo {
 	@JsonProperty("licenseNo")
 	private String licenseNo = null;
 
-	
+
+	@JsonProperty("countryCode")
+	private String countryCode = null;
+
+
 	@JsonProperty("mobileNumber")
 	private String mobileNumber = null;
 
-	
+
 	@JsonProperty("gender")
 	private String gender = null;
 
@@ -128,6 +132,26 @@ public class PlumberInfo {
 
 	public void setLicenseNo(String licenseNo) {
 		this.licenseNo = licenseNo;
+	}
+
+	public PlumberInfo countryCode(String countryCode) {
+		this.countryCode = countryCode;
+		return this;
+	}
+
+	/**
+	 * Country code for the plumber's mobile number.
+	 *
+	 * @return countryCode
+	 **/
+	@ApiModelProperty(value = "Country code for the plumber's mobile number.")
+	@Size(max = 10)
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 
 	public PlumberInfo mobileNumber(String mobileNumber) {

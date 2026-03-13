@@ -24,6 +24,9 @@ public class Bill {
 	@JsonProperty("id")
 	private String id;
 
+	@JsonProperty("countryCode")
+	private String countryCode;
+
 	@JsonProperty("mobileNumber")
 	private String mobileNumber;
 
@@ -136,7 +139,21 @@ public class Bill {
 	private Address address;	
 	
 	@JsonProperty("user")
-	private User user;	
-	
+	private User user;
+
+	/**
+	 * Returns the full mobile number with country code prefix
+	 * @return Full mobile number in format +{countryCode}{mobileNumber}
+	 */
+	public String getFullMobileNumber() {
+		if (this.mobileNumber == null) {
+			return null;
+		}
+		if (this.countryCode != null && !this.countryCode.isEmpty()) {
+			return "+" + this.countryCode + this.mobileNumber;
+		}
+		return this.mobileNumber;
+	}
+
 
 }

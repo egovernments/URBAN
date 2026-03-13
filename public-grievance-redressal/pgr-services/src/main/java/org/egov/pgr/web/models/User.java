@@ -1,5 +1,6 @@
 package org.egov.pgr.web.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,12 +20,19 @@ public class User {
     private String name;
     private String type;
     private String mobileNumber;
+    private String countryCode;
     private String emailId;
     private List<Role> roles;
     private String tenantId;
     private String uuid;
     private Boolean active;
 
-
+    @JsonIgnore
+    public String getFullMobileNumber() {
+        if (countryCode != null && mobileNumber != null) {
+            return countryCode + mobileNumber;
+        }
+        return mobileNumber;
+    }
 
 }

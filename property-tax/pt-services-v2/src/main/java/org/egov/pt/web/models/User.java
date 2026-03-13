@@ -58,6 +58,10 @@ public class User   {
         @JsonProperty("mobileNumber")
         private String mobileNumber;
 
+        @Pattern(regexp = "^\\+[1-9][0-9]{0,3}$", message = "Invalid country code. Must be + followed by 1-4 digits, starting with non-zero")
+        @JsonProperty("countryCode")
+        private String countryCode;
+
         @Size(max=128)
         @JsonProperty("emailId")
         private String emailId;
@@ -172,6 +176,17 @@ public class User   {
         return this;
         }
 
+        /**
+         * Returns the full mobile number with country code prefix
+         * @return formatted mobile number with country code (e.g., +91xxxxxxxxxx) or just mobile number if no country code
+         */
+        public String getFullMobileNumber() {
+            if (this.countryCode != null && !this.countryCode.isEmpty() && this.mobileNumber != null) {
+                return this.countryCode + this.mobileNumber;
+            }
+            return this.mobileNumber;
+        }
+
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;
@@ -179,13 +194,14 @@ public class User   {
                 User user = (User) o;
                 return Objects.equals(uuid, user.uuid) &&
                         Objects.equals(name, user.name) &&
-                        Objects.equals(mobileNumber, user.mobileNumber);
+                        Objects.equals(mobileNumber, user.mobileNumber) &&
+                        Objects.equals(countryCode, user.countryCode);
         }
 
         @Override
         public int hashCode() {
 
-                return Objects.hash(uuid, name, mobileNumber);
+                return Objects.hash(uuid, name, mobileNumber, countryCode);
         }
 }
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect } from "react"
+import React, { useCallback, useMemo, useEffect, useState } from "react"
 import { useForm, Controller } from "react-hook-form";
 import { TextInput, SubmitBar, LinkLabel, ActionBar, CloseSvg, DatePicker, CardLabelError, SearchForm, SearchField, Dropdown, Table, Card, MobileNumber, Loader, CardText, Header } from "@egovernments/digit-ui-react-components";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import MobileSearchApplication from "./MobileSearchApplication";
 
 const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, setShowToast }) => {
     const isMobile = window.Digit.Utils.browser.isMobile();
+    const [countryCode, setCountryCode] = useState("+91");
     const { register, control, handleSubmit, setValue, getValues, reset, formState } = useForm({
         defaultValues: {
             offset: 0,
@@ -160,7 +161,9 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                     },
                 })}
                 type="number"
-                componentInFront={<div className="employee-card-input employee-card-input--front">+91</div>}
+                showCountryCodeSelector={true}
+                onCountryCodeChange={(value) => setCountryCode(value)}
+                countryCode={countryCode}
                 //maxlength={10}
                 />
                  <CardLabelError>{formState?.errors?.["mobileNumber"]?.message}</CardLabelError>
@@ -221,9 +224,9 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                     <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
                     <p style={{marginTop:"10px"}}
                      onClick={() => {
-                        reset({ 
-                            acknowledgementIds: "", 
-                            fromDate: "", 
+                        reset({
+                            acknowledgementIds: "",
+                            fromDate: "",
                             toDate: "",
                             propertyIds: "",
                             mobileNumber:"",
@@ -234,6 +237,7 @@ const PTSearchApplication = ({tenantId, isLoading, t, onSubmit, data, count, set
                             sortBy: "commencementDate",
                             sortOrder: "DESC"
                         });
+                        setCountryCode("+91");
                         setShowToast(null);
                         previousPage();
                     }}>{t(`ES_COMMON_CLEAR_ALL`)}</p>

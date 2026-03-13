@@ -260,6 +260,11 @@ public class UserService {
 		holderInfo.setCreatedBy(null);
 		holderInfo.setLastModifiedDate(null);
 		holderInfo.setLastModifiedBy(null);
+
+		// Enrich with default country code if not present
+		if (holderInfo.getCountryCode() == null || holderInfo.getCountryCode().isEmpty()) {
+			holderInfo.setCountryCode(configuration.getDefaultCountryCode());
+		}
 	}
 
 	/**

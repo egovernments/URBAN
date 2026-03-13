@@ -50,8 +50,12 @@ public class User {
         @JsonProperty("gender")
         private String gender;
 
+        @Size(max=10)
+        @JsonProperty("countryCode")
+        private String countryCode;
+
         @NotNull
-        @Pattern(regexp = "^[0-9]{10}$", message = "MobileNumber should be 10 digit number")
+        @Pattern(regexp = "^[0-9]{6,15}$", message = "MobileNumber should be 6 to 15 digit number")
         @JsonProperty("mobileNumber")
         private String mobileNumber;
 
@@ -166,6 +170,20 @@ public class User {
                 return this;
         }
 
+        /**
+         * Returns the full mobile number with country code prefix
+         * @return Full mobile number in format +{countryCode}{mobileNumber}
+         */
+        public String getFullMobileNumber() {
+                if (this.mobileNumber == null) {
+                        return null;
+                }
+                if (this.countryCode != null && !this.countryCode.isEmpty()) {
+                        return "+" + this.countryCode + this.mobileNumber;
+                }
+                return this.mobileNumber;
+        }
+
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;
@@ -173,13 +191,14 @@ public class User {
                 User user = (User) o;
                 return Objects.equals(uuid, user.uuid) &&
                         Objects.equals(name, user.name) &&
+                        Objects.equals(countryCode, user.countryCode) &&
                         Objects.equals(mobileNumber, user.mobileNumber);
         }
 
         @Override
         public int hashCode() {
 
-                return Objects.hash(uuid, name, mobileNumber);
+                return Objects.hash(uuid, name, countryCode, mobileNumber);
         }
 }
 

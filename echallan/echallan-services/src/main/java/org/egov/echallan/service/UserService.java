@@ -115,6 +115,10 @@ public class UserService {
 		 userInfo.setTenantId(tenantId.split("\\.")[0]);
 		 userInfo.setRoles(Collections.singletonList(role));
 		 userInfo.setType("CITIZEN");
+		 // Set default country code if not provided
+		 if (userInfo.getCountryCode() == null || userInfo.getCountryCode().isEmpty()) {
+			 userInfo.setCountryCode("+91");
+		 }
 	    }
 	
 	 public  UserDetailResponse searchByUserName(String userName,String tenantId){

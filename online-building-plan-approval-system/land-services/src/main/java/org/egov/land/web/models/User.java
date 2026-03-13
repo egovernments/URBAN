@@ -43,6 +43,25 @@ public class User {
     @JsonProperty("salutation")
     private String salutation;
 
+    @Size(max=100)
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("gender")
+    private String gender;
+
+    @JsonProperty("countryCode")
+    @Pattern(regexp = "^\\+[1-9][0-9]{0,3}$", message = "CountryCode must be in format +X to +XXXX")
+    private String countryCode;
+
+    @Pattern(regexp = "^[0-9]{4,15}$", message = "MobileNumber should be 4 to 15 digits")
+    @JsonProperty("mobileNumber")
+    private String mobileNumber;
+
+    @Size(max=100)
+    @JsonProperty("fatherOrHusbandName")
+    private String fatherOrHusbandName;
+
     @Size(max=128)
     @JsonProperty("emailId")
     private String emailId;
@@ -142,19 +161,37 @@ public class User {
             return this;
     }
 
+    /**
+     * Returns the full mobile number with country code.
+     * If countryCode is present, returns countryCode + mobileNumber.
+     * Otherwise, returns just the mobileNumber.
+     *
+     * @return Full mobile number with country code if available
+     */
+    public String getFullMobileNumber() {
+        if (countryCode != null && !countryCode.isEmpty()) {
+            return countryCode + mobileNumber;
+        }
+        return mobileNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             User user = (User) o;
-            return  Objects.equals(emailId, user.emailId);
+            return  Objects.equals(uuid, user.uuid) &&
+                    Objects.equals(name, user.name) &&
+                    Objects.equals(countryCode, user.countryCode) &&
+                    Objects.equals(mobileNumber, user.mobileNumber) &&
+                    Objects.equals(emailId, user.emailId);
 //                    Objects.equals(dob, user.dob) && //Epoch format not converting properly from UI
-                   
+
     }
 
     @Override
     public int hashCode() {
 
-            return Objects.hash(uuid);
+            return Objects.hash(uuid, name, countryCode, mobileNumber, emailId);
     }
 }

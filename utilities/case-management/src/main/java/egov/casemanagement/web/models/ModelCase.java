@@ -29,8 +29,12 @@ public class ModelCase   {
         @Size(message = "Max allowed characters for Name is 256 characters", max=256)
         private String name = null;
 
+        @JsonProperty("countryCode")
+        @Size(max=10)
+        private String countryCode = null;
+
         @JsonProperty("mobileNumber")
-        @Pattern(regexp = "^[0-9]{10}$", message = "MobileNumber should be 10 digit number")
+        @Pattern(regexp = "^[0-9]{6,15}$", message = "MobileNumber should be 6 to 15 digit number")
         @NotNull(message = "Mobile number is mandatory")
         private String mobileNumber = null;
 
@@ -82,6 +86,20 @@ public class ModelCase   {
 
         @JsonProperty("auditDetails")
         private AuditDetails auditDetails = null;
+
+        /**
+         * Returns the full mobile number with country code prefix
+         * @return Full mobile number in format +{countryCode}{mobileNumber}
+         */
+        public String getFullMobileNumber() {
+                if (this.mobileNumber == null) {
+                        return null;
+                }
+                if (this.countryCode != null && !this.countryCode.isEmpty()) {
+                        return "+" + this.countryCode + this.mobileNumber;
+                }
+                return this.mobileNumber;
+        }
 
 
 

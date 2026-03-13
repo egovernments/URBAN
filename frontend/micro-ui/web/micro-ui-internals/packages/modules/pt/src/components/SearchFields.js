@@ -1,8 +1,9 @@
-import React, {Fragment} from "react"
+import React, {Fragment, useState} from "react"
 import { Controller, useWatch } from "react-hook-form";
 import { TextInput, SubmitBar, LinkLabel, ActionBar, CloseSvg, DatePicker, CardLabelError, SearchForm, SearchField, Dropdown, Table, Card, MobileNumber, Loader, CardText, Header } from "@egovernments/digit-ui-react-components";
 
 const SearchFields = ({register, control, reset, tenantId, t, formState, setShowToast, previousPage }) => {
+    const [countryCode, setCountryCode] = useState("+91");
 
     const applicationTypes = [
         {
@@ -62,7 +63,9 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
                     },
                 })}
                 type="number"
-                componentInFront={<div className="employee-card-input employee-card-input--front">+91</div>}
+                showCountryCodeSelector={true}
+                onCountryCodeChange={(value) => setCountryCode(value)}
+                countryCode={countryCode}
                 //maxlength={10}
                 />
                  <CardLabelError>{formState?.errors?.["mobileNumber"]?.message}</CardLabelError>
@@ -123,9 +126,9 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
                     <SubmitBar label={t("ES_COMMON_SEARCH")} submit />
                     <p style={{marginTop:"10px"}}
                      onClick={() => {
-                        reset({ 
-                            acknowledgementIds: "", 
-                            fromDate: "", 
+                        reset({
+                            acknowledgementIds: "",
+                            fromDate: "",
                             toDate: "",
                             propertyIds: "",
                             mobileNumber:"",
@@ -136,6 +139,7 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
                             sortBy: "commencementDate",
                             sortOrder: "DESC"
                         });
+                        setCountryCode("+91");
                         setShowToast(null);
                         previousPage();
                     }}>{t(`ES_COMMON_CLEAR_ALL`)}</p>

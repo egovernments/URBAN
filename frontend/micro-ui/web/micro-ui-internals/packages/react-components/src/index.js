@@ -23,6 +23,7 @@ import CheckBox from "./atoms/CheckBox";
 import CitizenHomeCard from "./atoms/CitizenHomeCard";
 import CitizenInfoLabel from "./atoms/CitizenInfoLabel";
 import { CheckPoint, ConnectingCheckPoints } from "./atoms/ConnectingCheckPoints";
+import CountryCodeSelector from "./atoms/CountryCodeSelector";
 import CustomButton from "./atoms/CustomButton";
 import DatePicker from "./atoms/DatePicker";
 import DateRange from "./molecules/DateRange";
@@ -269,6 +270,7 @@ export {
   CheckPoint,
   Rating,
   CheckBox,
+  CountryCodeSelector,
   OTPInput,
   LocationSearch,
   UploadFile,

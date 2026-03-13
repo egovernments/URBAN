@@ -2,7 +2,7 @@ import React, { useState, Fragment } from "react";
 import { ButtonSelector, CardText, FormStep, LinkButton, OTPInput, CardLabelError } from "@egovernments/digit-ui-react-components";
 import useInterval from "../../../hooks/useInterval";
 
-const SelectOtp = ({ config, otp, onOtpChange, onResend, onSelect, t, error, userType = "citizen", canSubmit }) => {
+const SelectOtp = ({ config, otp, onOtpChange, onResend, onSelect, t, error, userType = "citizen", canSubmit, countryCode, mobileNumber }) => {
   const [timeLeft, setTimeLeft] = useState(30);
 
   useInterval(

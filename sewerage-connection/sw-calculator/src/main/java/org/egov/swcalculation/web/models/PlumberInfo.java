@@ -30,6 +30,9 @@ public class PlumberInfo {
 	@JsonProperty("mobileNumber")
 	private String mobileNumber = null;
 
+	@JsonProperty("countryCode")
+	private String countryCode = null;
+
 	@JsonProperty("gender")
 	private String gender = null;
 
@@ -140,6 +143,37 @@ public class PlumberInfo {
 
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
+	}
+
+	public PlumberInfo countryCode(String countryCode) {
+		this.countryCode = countryCode;
+		return this;
+	}
+
+	/**
+	 * Country code for the mobile number.
+	 *
+	 * @return countryCode
+	 **/
+	@ApiModelProperty(value = "Country code for the mobile number.")
+	@Size(max = 10)
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	/**
+	 * Returns the full mobile number with country code
+	 * @return Full mobile number in format: countryCode+mobileNumber (e.g., +911234567890)
+	 */
+	public String getFullMobileNumber() {
+		if (this.countryCode != null && this.mobileNumber != null) {
+			return this.countryCode + this.mobileNumber;
+		}
+		return this.mobileNumber;
 	}
 
 	public PlumberInfo gender(String gender) {

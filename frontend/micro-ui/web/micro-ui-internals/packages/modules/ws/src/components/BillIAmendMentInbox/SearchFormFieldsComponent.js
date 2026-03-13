@@ -1,14 +1,17 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { CardLabelError, SearchField, TextInput, MobileNumber } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 
 const SearchFormFieldsComponents = ({ registerRef, searchFormState }) => {
   const { t } = useTranslation();
+  const [countryCode, setCountryCode] = useState("+91");
   const propsForMobileNumber = {
     maxlength: 10,
     pattern: "[6-9][0-9]{9}",
     title: t("ES_SEARCH_APPLICATION_MOBILE_INVALID"),
-    componentInFront: "+91",
+    showCountryCodeSelector: true,
+    onCountryCodeChange: (value) => setCountryCode(value),
+    countryCode: countryCode,
   };
   let validation = {}
   return (

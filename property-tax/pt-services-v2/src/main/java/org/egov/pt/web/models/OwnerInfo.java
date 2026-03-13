@@ -88,9 +88,9 @@ public class OwnerInfo extends User  {
                          Boolean active, Long dob, Long pwdExpiryDate, String locale, String type, String signature, Boolean accountLocked,
                          List<Role> roles, String fatherOrHusbandName, String bloodGroup, String identificationMark, String photo,
                          String createdBy, Long createdDate, String lastModifiedBy, Long lastModifiedDate, String otpReference,
-                         String tenantId, Boolean isPrimaryOwner, Double ownerShipPercentage, String ownerType,String institutionId,
+                         String tenantId, String countryCode, Boolean isPrimaryOwner, Double ownerShipPercentage, String ownerType,String institutionId,
                          Set<Document> documents,RelationshipEnum relationship,Object additionalDetails) {
-                super(id,uuid, userName, password, salutation, name, gender, mobileNumber, emailId, altContactNumber, pan, aadhaarNumber, permanentAddress, permanentCity, permanentPincode, correspondenceCity, correspondencePincode, correspondenceAddress, active, dob, pwdExpiryDate, locale, type, signature, accountLocked, roles, fatherOrHusbandName, bloodGroup, identificationMark, photo, createdBy, createdDate, lastModifiedBy, lastModifiedDate, otpReference, tenantId);
+                super(id,uuid, userName, password, salutation, name, gender, mobileNumber, countryCode, emailId, altContactNumber, pan, aadhaarNumber, permanentAddress, permanentCity, permanentPincode, correspondenceCity, correspondencePincode, correspondenceAddress, active, dob, pwdExpiryDate, locale, type, signature, accountLocked, roles, fatherOrHusbandName, bloodGroup, identificationMark, photo, createdBy, createdDate, lastModifiedBy, lastModifiedDate, otpReference, tenantId);
                 this.isPrimaryOwner = isPrimaryOwner;
                 this.ownerShipPercentage = ownerShipPercentage;
                 this.ownerType = ownerType;
@@ -123,6 +123,7 @@ public class OwnerInfo extends User  {
                 this.setName(user.getName());
                 this.setGender(user.getGender());
                 this.setMobileNumber(user.getMobileNumber());
+                this.setCountryCode(user.getCountryCode());
                 this.setEmailId(user.getEmailId());
                 this.setAltContactNumber(user.getAltContactNumber());
                 this.setPan(user.getPan());
@@ -166,6 +167,7 @@ public class OwnerInfo extends User  {
                 this.setName(user.getName());
                 this.setType(user.getType());
                 this.setMobileNumber(user.getMobileNumber());
+                this.setCountryCode(user.getCountryCode());
                 this.setEmailId(user.getEmailId());
                 this.setRoles(user.getRoles());
                 this.setUuid(user.getUuid());

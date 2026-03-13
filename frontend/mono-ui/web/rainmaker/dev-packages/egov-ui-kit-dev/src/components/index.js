@@ -6,6 +6,7 @@ import ButtonGroup from "egov-ui-kit/components/ButtonGroup";
 import Card from "egov-ui-kit/components/Card";
 import Carousel from "egov-ui-kit/components/Carousel";
 import Checkbox from "egov-ui-kit/components/Checkbox";
+import CountryCodeDropdown from "egov-ui-kit/components/CountryCodeDropdown";
 import DatePicker from "egov-ui-kit/components/DatePicker";
 import Dialog from "egov-ui-kit/components/Dialog";
 import Divider from "egov-ui-kit/components/Divider";
@@ -52,6 +53,7 @@ export {
   TextArea,
   Button,
   Card,
+  CountryCodeDropdown,
   DatePicker,
   TimePicker,
   TimeLine,

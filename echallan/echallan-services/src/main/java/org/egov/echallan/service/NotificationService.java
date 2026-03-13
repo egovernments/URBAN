@@ -260,11 +260,14 @@ public class NotificationService {
 	 */
 	private void enrichSMSRequest(ChallanRequest challanRequest, List<SMSRequest> smsRequestslist, String code) {
 		String message = util.getCustomizedMsg(challanRequest.getRequestInfo(), challanRequest.getChallan(), code);
-		String mobilenumber = challanRequest.getChallan().getCitizen().getMobileNumber();
+		UserInfo citizen = challanRequest.getChallan().getCitizen();
+		String mobilenumber = citizen.getMobileNumber();
+		String countryCode = citizen.getCountryCode();
 
 		if (message != null && !StringUtils.isEmpty(message)) {
 			SMSRequest smsRequest = SMSRequest.builder().
 					mobileNumber(mobilenumber).
+					countryCode(countryCode).
 					message(message).build();
 			smsRequestslist.add(smsRequest);
 		} else {

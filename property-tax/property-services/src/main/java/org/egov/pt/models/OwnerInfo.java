@@ -94,6 +94,7 @@ public class OwnerInfo extends User {
 		this.setName(user.getName());
 		this.setGender(user.getGender());
 		this.setMobileNumber(user.getMobileNumber());
+		this.setCountryCode(user.getCountryCode());
 		this.setEmailId(user.getEmailId());
 		this.setAltContactNumber(user.getAltContactNumber());
 		this.setPan(user.getPan());
@@ -127,10 +128,10 @@ public class OwnerInfo extends User {
 					 Long dob, Long pwdExpiryDate, String locale, String type, String signature, Boolean accountLocked,
 					 List<Role> roles, String fatherOrHusbandName, String bloodGroup, String identificationMark, String photo,
 					 String createdBy, Long createdDate, String lastModifiedBy, Long lastModifiedDate, String tenantId,
-					 String ownerInfoUuid, String mobileNumber2, String gender2, String fatherOrHusbandName2,
+					 String countryCode, String ownerInfoUuid, String mobileNumber2, String gender2, String fatherOrHusbandName2,
 					 String correspondenceAddress2, Boolean isPrimaryOwner, Double ownerShipPercentage, String ownerType,
 					 String institutionId, Status status, List<Document> documents, Relationship relationship, String alternatemobilenumber) {
-		super(id, uuid, userName, password, salutation, name, gender, mobileNumber, emailId, altContactNumber, pan,
+		super(id, uuid, userName, password, salutation, name, gender, mobileNumber, countryCode, emailId, altContactNumber, pan,
 				aadhaarNumber, permanentAddress, permanentCity, permanentPincode, correspondenceCity,
 				correspondencePincode, correspondenceAddress, active, dob, pwdExpiryDate, locale, type, signature,
 				accountLocked, roles, fatherOrHusbandName, bloodGroup, identificationMark, photo, createdBy,
@@ -146,14 +147,14 @@ public class OwnerInfo extends User {
 		this.institutionId = institutionId;
 		this.status = status;
 		this.documents = documents;
-		this.relationship = relationship;		
+		this.relationship = relationship;
 	}
 
 
 	public OwnerInfo(OwnerInfo ownerInfo) {
 
 		super(ownerInfo.getId(), ownerInfo.getUuid(), ownerInfo.getUserName(), ownerInfo.getPassword(), ownerInfo.getSalutation(),
-				ownerInfo.getName(), ownerInfo.getGender(), ownerInfo.getMobileNumber(), ownerInfo.getEmailId(),
+				ownerInfo.getName(), ownerInfo.getGender(), ownerInfo.getMobileNumber(), ownerInfo.getCountryCode(), ownerInfo.getEmailId(),
 				ownerInfo.getAltContactNumber(), ownerInfo.getPan(), ownerInfo.getAadhaarNumber(), ownerInfo.getPermanentAddress(),
 				ownerInfo.getPermanentCity(), ownerInfo.getPermanentPincode(), ownerInfo.getCorrespondenceCity(),
 				ownerInfo.getCorrespondencePincode(), ownerInfo.getCorrespondenceAddress(), ownerInfo.getActive(), ownerInfo.getDob(),

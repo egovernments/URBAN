@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { CardText, FormStep, CitizenConsentForm, Loader, CheckBox } from "@egovernments/digit-ui-react-components";
+import { CardText, FormStep, CitizenConsentForm, Loader, CheckBox, MobileNumber } from "@egovernments/digit-ui-react-components";
 import { Link } from "react-router-dom";
 
-const SelectMobileNumber = ({ t, onSelect, showRegisterLink, mobileNumber, onMobileChange, config, canSubmit }) => {
+const SelectMobileNumber = ({ t, onSelect, showRegisterLink, mobileNumber, countryCode, onMobileChange, onCountryCodeChange, config, canSubmit, tenantId }) => {
 
   const [isCheckBox, setIsCheckBox] = useState(false);
   const [isCCFEnabled, setisCCFEnabled] = useState(false);
@@ -14,11 +14,30 @@ const SelectMobileNumber = ({ t, onSelect, showRegisterLink, mobileNumber, onMob
     setIsCheckBox(e.target.checked)
   }
 
+  // Get maxLength based on country code
+  const getMaxLength = (code) => {
+    const lengths = {
+      '+91': 10,  // India
+      '+1': 10,   // USA/Canada
+      '+44': 10,  // UK
+      '+971': 9,  // UAE
+      '+86': 11,  // China
+      '+61': 9,   // Australia
+      '+65': 8,   // Singapore
+      '+81': 10,  // Japan
+      '+49': 11,  // Germany
+      '+33': 9,   // France
+    };
+    return lengths[code] || 15; // Default to 15 if not found
+  };
+
+  const requiredLength = getMaxLength(countryCode || '+91');
+
   const checkDisbaled = () => {
     if (isCCFEnabled?.isCitizenConsentFormEnabled) {
-      return !(mobileNumber.length === 10 && canSubmit && isCheckBox)
+      return !(mobileNumber.length === requiredLength && canSubmit && isCheckBox)
     } else {
-      return !(mobileNumber.length === 10 && canSubmit)
+      return !(mobileNumber.length === requiredLength && canSubmit)
     }
   }
 
@@ -56,10 +75,18 @@ const SelectMobileNumber = ({ t, onSelect, showRegisterLink, mobileNumber, onMob
       onSelect={onSelect}
       config={config}
       t={t}
-      componentInFront="+91"
-      onChange={onMobileChange}
-      value={mobileNumber}
     >
+      <MobileNumber
+        value={mobileNumber}
+        onChange={onMobileChange}
+        countryCode={countryCode}
+        onCountryCodeChange={onCountryCodeChange}
+        showCountryCodeSelector={true}
+        tenantId={tenantId}
+        disable={false}
+        className=""
+        autoFocus={true}
+      />
       {isCCFEnabled?.isCitizenConsentFormEnabled && <div>
         <CheckBox
           className="form-field"

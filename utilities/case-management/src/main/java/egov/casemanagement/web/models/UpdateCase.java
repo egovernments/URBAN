@@ -20,6 +20,9 @@ public class UpdateCase   {
         @JsonProperty("caseId")
         private String caseId = null;
 
+        @JsonProperty("countryCode")
+        private String countryCode = null;
+
         @JsonProperty("mobileNumber")
         private String mobileNumber = null;
 
@@ -40,6 +43,20 @@ public class UpdateCase   {
 
         @JsonProperty("status")
         private Status status = null;
+
+        /**
+         * Returns the full mobile number with country code prefix
+         * @return Full mobile number in format +{countryCode}{mobileNumber}
+         */
+        public String getFullMobileNumber() {
+                if (this.mobileNumber == null) {
+                        return null;
+                }
+                if (this.countryCode != null && !this.countryCode.isEmpty()) {
+                        return "+" + this.countryCode + this.mobileNumber;
+                }
+                return this.mobileNumber;
+        }
 
 
 }
