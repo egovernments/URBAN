@@ -2,28 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 
-import { Loader } from "@egovernments/digit-ui-react-components";
+import { Loader, Card } from "@egovernments/digit-ui-react-components";
 
 import ActionModal from "./Modal";
 
 import { useHistory, useParams } from "react-router-dom";
-import ApplicationDetailsContent from "./components/ApplicationDetailsContent";
+import ApplicationDetailsContentVerifier from "./components/ApplicationDetailsContentVerifier";
+// import ApplicationDetailsContent from "./components/ApplicationDetailsContent";
 import ApplicationDetailsToast from "./components/ApplicationDetailsToast";
 import ApplicationDetailsActionBar from "./components/ApplicationDetailsActionBar";
 import ApplicationDetailsWarningPopup from "./components/ApplicationDetailsWarningPopup";
 
 const ApplicationDetails = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
+  console.log("tenantId", tenantId);
   const state = Digit.ULBService.getStateId();
   const { t } = useTranslation();
   const history = useHistory();
   let { id: applicationNumber } = useParams();
   const [displayMenu, setDisplayMenu] = useState(false);
+  const [propertyResponse, setPropertyResponse] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isEnableLoader, setIsEnableLoader] = useState(false);
   const [isWarningPop, setWarningPopUp] = useState(false);
-
+  // const { isLoading: assessmentLoading, mutate: assessmentMutate } = Digit.Hooks.pt.usePropertyAssessment(tenantId);
   const {
     applicationDetails,
     showToast,
@@ -48,7 +51,7 @@ const ApplicationDetails = (props) => {
     isInfoLabel = false,
     clearDataDetails
   } = props;
-  
+
   useEffect(() => {
     if (showToast) {
       workflowDetails.revalidate();
@@ -57,7 +60,7 @@ const ApplicationDetails = (props) => {
 
   function onActionSelect(action) {
     if (action) {
-      if(action?.isToast){
+      if (action?.isToast) {
         setShowToast({ key: "error", error: { message: action?.toastMessage } });
         setTimeout(closeToast, 5000);
       }
@@ -69,7 +72,7 @@ const ApplicationDetails = (props) => {
 
           history.push(`${action?.redirectionUrll?.pathname}`, JSON.stringify({ data: action?.redirectionUrll?.state, url: `${location?.pathname}${location.search}` }));
         }
-        else if (action?.redirectionUrll?.action === "RE-SUBMIT-APPLICATION"){
+        else if (action?.redirectionUrll?.action === "RE-SUBMIT-APPLICATION") {
           history.push(`${action?.redirectionUrll?.pathname}`, { data: action?.redirectionUrll?.state });
         }
         else {
@@ -98,7 +101,47 @@ const ApplicationDetails = (props) => {
   const closeWarningPopup = () => {
     setWarningPopUp(false);
   };
+  const units = applicationDetails?.applicationData?.units;
 
+
+  const yearRange = Array.isArray(units) && units.length > 0
+    ? units[0].toYear
+    : "N/A";
+  // const handleAssessment = () => {
+  //   const payload = {
+  //     Assessment: {
+  //       financialYear: yearRange,
+  //       propertyId: applicationData?.propertyId,
+  //       tenantId: tenantId,
+  //       source: "MUNICIPAL_RECORDS",
+  //       channel: "CFC_COUNTER",
+  //       assessmentDate: Date.now(),
+  //     }
+  //   };
+
+  //   assessmentMutate(payload, {
+  //     onSuccess: (data, variables) => {
+  //       const assessments = data?.Assessments || [];
+  //       if (assessments.length > 0) {
+  //         const latestAssessment = assessments[0];
+  //         const status = latestAssessment?.status || "UNKNOWN";
+
+  //         // Only fetch bill if assessment is ACTIVE or APPROVED
+  //         if (status === "ACTIVE" || status === "APPROVED") {
+  //           fetchBill(); // Call fetchBill only if valid
+  //         } else {
+  //           console.warn("Assessment status is not valid for billing:", status);
+  //         }
+  //       } else {
+  //         console.warn("No assessments returned in response");
+  //       }
+  //     },
+  //     onError: (error, variables) => {
+  //       // 
+  //     }
+
+  //   });
+  // }
   const submitAction = async (data, nocData = false, isOBPS = {}) => {
     setIsEnableLoader(true);
     if (typeof data?.customFunctionToExecute === "function") {
@@ -148,21 +191,22 @@ const ApplicationDetails = (props) => {
           if (isOBPS?.isNoc) {
             history.push(`/digit-ui/employee/noc/response`, { data: data });
           }
-          if (data?.Amendments?.length > 0 ){
+          if (data?.Amendments?.length > 0) {
             //RAIN-6981 instead just show a toast here with appropriate message
-          //show toast here and return 
+            //show toast here and return 
             //history.push("/digit-ui/employee/ws/response-bill-amend", { status: true, state: data?.Amendments?.[0] })
-            
-            if(variables?.AmendmentUpdate?.workflow?.action.includes("SEND_BACK")){
-              setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_SEND_BACK_UPDATE_SUCCESS")})
-            } else if (variables?.AmendmentUpdate?.workflow?.action.includes("RE-SUBMIT")){
+
+            if (variables?.AmendmentUpdate?.workflow?.action.includes("SEND_BACK")) {
+              setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_SEND_BACK_UPDATE_SUCCESS") })
+            } else if (variables?.AmendmentUpdate?.workflow?.action.includes("RE-SUBMIT")) {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_RE_SUBMIT_UPDATE_SUCCESS") })
-            } else if (variables?.AmendmentUpdate?.workflow?.action.includes("APPROVE")){
+            } else if (variables?.AmendmentUpdate?.workflow?.action.includes("APPROVE")) {
               setShowToast({ key: "success", label: t("ES_MODIFYSWCONNECTION_APPROVE_UPDATE_SUCCESS") })
+
             }
-            else if (variables?.AmendmentUpdate?.workflow?.action.includes("REJECT")){
+            else if (variables?.AmendmentUpdate?.workflow?.action.includes("REJECT")) {
               setShowToast({ key: "success", label: t("ES_MODIFYWSCONNECTION_REJECT_UPDATE_SUCCESS") })
-            }            
+            }
             return
           }
           setShowToast({ key: "success", action: selectedAction });
@@ -171,13 +215,14 @@ const ApplicationDetails = (props) => {
           queryClient.clear();
           queryClient.refetchQueries("APPLICATION_SEARCH");
           //push false status when reject
-          
+
         },
       });
     }
 
     closeModal();
   };
+
 
   if (isLoading || isEnableLoader) {
     return <Loader />;
@@ -186,8 +231,8 @@ const ApplicationDetails = (props) => {
   return (
     <React.Fragment>
       {!isLoading ? (
-        <React.Fragment>
-          <ApplicationDetailsContent
+        <div>
+          <ApplicationDetailsContentVerifier
             applicationDetails={applicationDetails}
             workflowDetails={workflowDetails}
             isDataLoading={isDataLoading}
@@ -200,6 +245,19 @@ const ApplicationDetails = (props) => {
             oldValue={oldValue}
             isInfoLabel={isInfoLabel}
           />
+          {/* <ApplicationDetailsContent
+            applicationDetails={applicationDetails}
+            workflowDetails={workflowDetails}
+            isDataLoading={isDataLoading}
+            applicationData={applicationData}
+            businessService={businessService}
+            timelineStatusPrefix={timelineStatusPrefix}
+            statusAttribute={statusAttribute}
+            paymentsList={paymentsList}
+            showTimeLine={showTimeLine}
+            oldValue={oldValue}
+            isInfoLabel={isInfoLabel}
+          /> */}
           {showModal ? (
             <ActionModal
               t={t}
@@ -236,8 +294,9 @@ const ApplicationDetails = (props) => {
             forcedActionPrefix={forcedActionPrefix}
             ActionBarStyle={ActionBarStyle}
             MenuStyle={MenuStyle}
+            applicationData={applicationData}
           />
-        </React.Fragment>
+        </div>
       ) : (
         <Loader />
       )}

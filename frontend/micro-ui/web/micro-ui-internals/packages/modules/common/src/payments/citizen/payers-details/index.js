@@ -228,6 +228,7 @@ const SelectPaymentType = (props) => {
 
           <SubmitBar
             label={t("CS_COMMON_NEXT")}
+            // label="SAVVVVVVVVV"
             disabled={checkDisbaled()}
             // disabled={paymentType?.code !== optionSecound?.code ? false : userInfo ? false : !canSubmit}
             submit={true}

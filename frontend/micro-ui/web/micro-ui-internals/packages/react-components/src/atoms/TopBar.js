@@ -30,18 +30,23 @@ const TopBar = ({
   //   }
   // };
   return (
-    <div className="navbar">
-      <div className="center-container back-wrapper">
+    <div className="navbar" style={{ background: "#6B133F",padding:"0px" }}>
+      <div className="center-container back-wrapper" style={{display:"flex",alignItems:"center"}}>
         <div className="hambuger-back-wrapper">
           {isMobile && <Hamburger handleClick={toggleSidebar} />}
-          <a href={window.location.href.includes("citizen")?"/digit-ui/citizen":"/digit-ui/employee"}><img
+          <a href={window.location.href.includes("citizen") ? "/digit-ui/citizen" : "/digit-ui/employee"}><img
+            style={{ height: "60px" }}
             className="city"
             id="topbar-logo"
             src={img || "https://cdn.jsdelivr.net/npm/@egovernments/digit-ui-css@1.0.7/img/m_seva_white_logo.png"}
             alt="mSeva"
           />
           </a>
-          <h3>{cityOfCitizenShownBesideLogo}</h3>
+          {/* <h3>{cityOfCitizenShownBesideLogo}</h3> */}
+          <div>
+            <div>मध्य प्रदेश सरकार</div>
+            <div>Government of Madhya  Pradesh</div>
+          </div>
         </div>
 
         <div className="RightMostTopBarOptions">

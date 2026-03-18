@@ -12,9 +12,8 @@ import { newConfigMutate } from "../../config/Mutate/config";
 import _ from "lodash";
 import get from "lodash/get";
 import { pdfDownloadLink } from "../../utils";
-import { useQueryClient } from "react-query";
+
 const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDetails, mutate}) => {
-  const [showToast, setShowToast] = useState(null);
   const { t } = useTranslation();
   const [displayMenu, setDisplayMenu] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -31,7 +30,7 @@ const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDe
   );
   const [billAmount, setBillAmount] = useState(null);
   const [billStatus, setBillStatus] = useState(null);
-  const queryClient = useQueryClient();
+
   const properties = get(data, "Properties", []);
   // const propertyId = get(data, "Properties[0].propertyId", []);
   let property = (properties && properties.length > 0 && properties[0]) || {};
@@ -64,10 +63,6 @@ const MutationApplicationDetails = ({ propertyId, acknowledgementIds, workflowDe
   const [showModal, setShowModal] = useState(false);
   const [selectedAction, setSelectedAction] = useState(null);
   const { isLoading: isLoadingApplicationDetails, isError: isErrorApplicationDetails, data: applicationDetails, error: errorApplicationDetails } = Digit.Hooks.pt.useApplicationDetail(t, tenantId, propertyId);
-
-  const closeToast = () => {
-    setShowToast(null);
-  };
 
   useEffect(async ()=>{
     if(acknowledgementIds){

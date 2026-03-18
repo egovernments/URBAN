@@ -14,7 +14,8 @@ export const InboxGeneral = {
   },
   SearchV2: ({ ...filters }) => {
     return Request({
-      url: Urls.InboxSearchV2,
+          //  url: Urls.InboxSearchV2,
+      url: Urls.InboxSearch,
       useCache: false,
       method: "POST",
       auth: true,

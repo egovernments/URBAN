@@ -311,7 +311,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
   if (loading) return <Loader></Loader>;
 
   return (
-    <div className="user-profile">
+    <div className="user-profile" style={{marginLeft:"auto"}}>
       <section style={{ margin: userType === "citizen" ? "8px" : "24px" }}>
         {userType === "citizen" ? (
           <BackButton></BackButton>
@@ -426,7 +426,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
               <LabelFieldPair>
                 <CardLabel style={editScreen ? { color: "#B1B4B6" } : {}}>{`${t("CORE_COMMON_PROFILE_GENDER")}`}</CardLabel>
                 <Dropdown
-                  style={{ width: "100%" }}
+                  style={{ width: "100%",border: "1px solid #B1B4B6" }}
                   className="form-field"
                   selected={gender?.length === 1 ? gender[0] : gender}
                   disable={gender?.length === 1 || editScreen}
@@ -461,7 +461,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                 onClick={updateProfile}
                 style={{
                   marginTop: "24px",
-                  backgroundColor: "#F47738",
+                  backgroundColor: "rgb(107, 19, 63)",
                   width: "100%",
                   height: "40px",
                   color: "white",
@@ -505,7 +505,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
                   "CORE_COMMON_PROFILE_GENDER"
                 )}`}</CardLabel>
                 <Dropdown
-                  style={{ width: "100%" }}
+                  style={{ width: "100%",border: "1px solid #B1B4B6" }}
                   selected={gender?.length === 1 ? gender[0] : gender}
                   disable={gender?.length === 1 || editScreen}
                   option={menu}
@@ -657,7 +657,7 @@ const UserProfile = ({ stateCode, userType, cityDetails }) => {
             onClick={updateProfile}
             style={{
               marginTop: "24px",
-              backgroundColor: "#F47738",
+              backgroundColor: "rgb(107, 19, 63)",
               width: windowWidth < 768 ? "100%" : "248px",
               height: "40px",
               float: "right",

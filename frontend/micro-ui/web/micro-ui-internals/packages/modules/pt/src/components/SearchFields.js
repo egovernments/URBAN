@@ -34,6 +34,7 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
     ]
 
     return <>
+        {/* <div style={assessmentStyles}>New Property Application</div> */}
          <SearchField>
                     <label>{t("PT_APPLICATION_NO_LABEL")}</label>
                     <TextInput name="acknowledgementIds" inputRef={register({})} />
@@ -142,4 +143,24 @@ const SearchFields = ({register, control, reset, tenantId, t, formState, setShow
                 </SearchField>
     </>
 }
+
+ const assessmentStyles= {
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: "bold",
+    fontSize: '24px',
+    lineHeight: '100%',
+    letterSpacing: '0',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#6B133F',
+    textDecorationThickness: '1px',
+    textDecorationOffset: '2px',
+    color: '#6B133F',
+    marginBottom: '20px',
+    display: "flex",
+    alignItems: "center",
+    background: "#6B133F4D",
+    borderRadius: "20px",
+    width:"330px",
+    padding:"16px"
+  }
 export default SearchFields

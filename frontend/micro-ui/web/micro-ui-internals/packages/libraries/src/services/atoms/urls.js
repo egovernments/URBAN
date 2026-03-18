@@ -5,7 +5,7 @@ const Urls = {
   localization: `/localization/messages/v1/_search`,
   location: {
     localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=ADMIN&boundaryType=Locality`,
-    revenue_localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality`,
+    revenue_localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=City`,
   },
 
   pgr_search: `/pgr-services/v2/request/_search`,
@@ -25,8 +25,10 @@ const Urls = {
   UserProfileUpdate: "/user/profile/_update",
   EmployeeSearch: "/egov-hrms/employees/_search",
 
-  InboxSearch: "/inbox/v1/_search",
+  // InboxSearch: "/inbox/v1/_search",
+  InboxSearch: "/inbox/v2/_search",
   InboxSearchV2: "/inbox/v2/_search",
+
 
   UserSearch: "/user/_search",
   UserLogout: "/user/_logout",
@@ -75,6 +77,7 @@ const Urls = {
     create: "/property-services/property/_create",
     search: "/property-services/property/_search",
     update: "/property-services/property/_update",
+    update_content: "/property-services/property/content/_update",
     pt_calculation_estimate: "/pt-calculator-v2/propertytax/v2/_estimate",
     assessment_create: "/property-services/assessment/_create",
     assessment_search: "/property-services/assessment/_search",
