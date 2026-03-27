@@ -7,8 +7,14 @@
         <mirror>
             <id>nexus</id>
             <mirrorOf>central</mirrorOf>
-            <url>http://repo.egovernments.org/nexus/content/groups/public/</url>
+            <url>https://nexus-repo.digit.org/nexus/content/groups/public/</url>
         </mirror>
+			<mirror>
+			  <id>insecure-repo</id>
+			  <mirrorOf>external:http:*</mirrorOf>
+			  <url>http://repository.jspresso.org/maven2/</url>
+			  <blocked>false</blocked>
+			</mirror>
     </mirrors>
 	
 	<servers>

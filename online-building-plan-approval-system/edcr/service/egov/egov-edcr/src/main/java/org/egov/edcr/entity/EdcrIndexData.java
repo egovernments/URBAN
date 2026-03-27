@@ -20,6 +20,7 @@ public class EdcrIndexData {
 	private String transactionNumber;
 	private String thirdPartyUserTenant;
 	private String applicantName;
+	private String tenantId;
 
 	// PlanInformation
 	private String serviceType;
@@ -231,13 +232,21 @@ public class EdcrIndexData {
 		this.floorsAboveGround = floorsAboveGround;
 	}
 
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+
 	@Override
 	public String toString() {
 		return "EdcrIndexData [applicationType=" + applicationType + ", applicationNumber=" + applicationNumber
 				+ ", applicationDate=" + applicationDate + ", status=" + status + ", planPermitNumber="
 				+ planPermitNumber + ", permitApplicationDate=" + permitApplicationDate + ", transactionNumber="
 				+ transactionNumber + ", thirdPartyUserTenant=" + thirdPartyUserTenant + ", applicantName="
-				+ applicantName + ", serviceType=" + serviceType + ", architectInformation=" + architectInformation
+				+ applicantName + ", tenantId=" + tenantId + ", serviceType=" + serviceType + ", architectInformation=" + architectInformation
 				+ ", dcrNumber=" + dcrNumber + ", comparisonDcrNumber=" + comparisonDcrNumber + ", plotBndryArea="
 				+ plotBndryArea + ", buildingHeight=" + buildingHeight + ", occupancyTypes=" + occupancyTypes
 				+ ", totalBuitUpArea=" + totalBuitUpArea + ", totalFloorArea=" + totalFloorArea + ", totalCarpetArea="

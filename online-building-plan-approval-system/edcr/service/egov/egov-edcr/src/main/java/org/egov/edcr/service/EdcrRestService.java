@@ -270,6 +270,9 @@ public class EdcrRestService {
     public EdcrIndexData setEdcrIndexData(EdcrApplication edcrApplication, EdcrApplicationDetail edcrApplnDtl) {
 
         EdcrIndexData edcrIndexData = new EdcrIndexData();
+        if (edcrApplication.getTenantId() != null) {
+            edcrIndexData.setTenantId(edcrApplication.getTenantId());
+        }
         if (edcrApplication.getApplicantName() != null) {
             edcrIndexData.setApplicantName(edcrApplication.getApplicantName());
         }

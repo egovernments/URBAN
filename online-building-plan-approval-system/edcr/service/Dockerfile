@@ -1,4 +1,4 @@
-FROM egovio/alpine-maven-builder-jdk-8:gcp AS build
+FROM maven:3.9.6-amazoncorretto-8-debian AS build
 ARG WORK_DIR
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN cd ${WORK_DIR} \
 
 # Create runtime image
 
-FROM egovio/wildfly:vNA-9371e7becf-6
+FROM egovio/wildfly:nitish-edcr-71df1989
 
 COPY --from=build /app/egov/egov-ear/target/*.ear /opt/jboss/wildfly/standalone/deployments/
 USER jboss
