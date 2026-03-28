@@ -1,97 +1,49 @@
 package org.egov.egf.instrument.domain.repository;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import org.egov.common.domain.model.Pagination;
 import org.egov.common.persistence.repository.ESRepository;
 import org.egov.egf.instrument.domain.model.Instrument;
 import org.egov.egf.instrument.persistence.entity.InstrumentEntity;
 import org.egov.egf.instrument.web.contract.InstrumentSearchContract;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class InstrumentESRepository extends ESRepository {
 
-    private TransportClient esClient;
-    private ElasticSearchQueryFactory elasticSearchQueryFactory;
-    public static final Logger logger = LoggerFactory.getLogger(InstrumentESRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(InstrumentESRepository.class);
+    private static final String INDEX_NAME = "instrument";
 
-    public InstrumentESRepository(TransportClient esClient, ElasticSearchQueryFactory elasticSearchQueryFactory) {
-        this.esClient = esClient;
-        this.elasticSearchQueryFactory = elasticSearchQueryFactory;
-    }
+    @Autowired
+    private ESHttpClient esHttpClient;
+
+    @Autowired
+    private ESQueryFactory esQueryFactory;
 
     public Pagination<Instrument> search(InstrumentSearchContract instrumentSearchContract) {
-        final SearchRequestBuilder searchRequestBuilder = getSearchRequest(instrumentSearchContract);
-        final SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        return mapToInstrumentList(searchResponse);
-    }
-
-    @SuppressWarnings("deprecation")
-    protected Pagination<Instrument> mapToInstrumentList(SearchResponse searchResponse) {
-        Pagination<Instrument> page = new Pagination<>();
-        if (searchResponse.getHits() == null || searchResponse.getHits().getTotalHits() == 0L)
-            return page;
-        List<Instrument> instruments = new ArrayList<Instrument>();
-        Instrument instrument = null;
-        for (SearchHit hit : searchResponse.getHits()) {
-
-            ObjectMapper mapper = new ObjectMapper();
-            // JSON from file to Object
-            try {
-                instrument = mapper.readValue(hit.getSourceAsString(), Instrument.class);
-            } catch (JsonParseException e1) {
-                // TODO Auto-generated catch block
-                logger.error("Error occurred while parsing JSON: " + e1.getMessage());
-            } catch (JsonMappingException e1) {
-                // TODO Auto-generated catch block
-                logger.error("JSON Mapping exception occurred: " + e1.getMessage());
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                logger.error("IO Exception occurred: " + e1.getMessage());
-            }
-
-            instruments.add(instrument);
+        try {
+            validateSortBy(instrumentSearchContract.getSortBy());
+            
+            Map<String, Object> query = esQueryFactory.buildInstrumentQuery(instrumentSearchContract);
+            
+            logger.debug("Searching instruments with query: {}", query);
+            
+            return esHttpClient.search(INDEX_NAME, query, Instrument.class);
+            
+        } catch (Exception e) {
+            logger.error("Error occurred while searching instruments: {}", e.getMessage(), e);
+            return new Pagination<>();
         }
-
-        page.setTotalResults(Long.valueOf(searchResponse.getHits().getTotalHits()).intValue());
-        page.setPagedData(instruments);
-
-        return page;
     }
 
-    protected SearchRequestBuilder getSearchRequest(InstrumentSearchContract criteria) {
-        List<String> orderByList = new ArrayList<>();
-        if (criteria.getSortBy() != null && !criteria.getSortBy().isEmpty()) {
-            validateSortByOrder(criteria.getSortBy());
-            validateEntityFieldName(criteria.getSortBy(), InstrumentEntity.class);
-            orderByList = elasticSearchQueryFactory.prepareOrderBys(criteria.getSortBy());
+    private void validateSortBy(String sortBy) {
+        if (sortBy != null && !sortBy.trim().isEmpty()) {
+            validateSortByOrder(sortBy);
+            validateEntityFieldName(sortBy, InstrumentEntity.class);
         }
-
-        final BoolQueryBuilder boolQueryBuilder = elasticSearchQueryFactory.searchInstrument(criteria);
-        SearchRequestBuilder searchRequestBuilder = esClient.prepareSearch(Instrument.class.getSimpleName().toLowerCase())
-                .setTypes(Instrument.class.getSimpleName().toLowerCase());
-        if (!orderByList.isEmpty())
-            for (String orderBy : orderByList)
-                searchRequestBuilder = searchRequestBuilder.addSort(orderBy.split(" ")[0],
-                        orderBy.split(" ")[1].equalsIgnoreCase("asc") ? SortOrder.ASC : SortOrder.DESC);
-
-        searchRequestBuilder.setQuery(boolQueryBuilder);
-        return searchRequestBuilder;
     }
-
 }
