@@ -68,3 +68,6 @@ cd "$BASEDIR/packages/modules/hrms" &&  rm -rf node_modules &&  rm -rf dist  && 
 
 msg "Building and publishing ws module"
 cd "$BASEDIR/packages/modules/ws" &&  rm -rf node_modules &&  rm -rf dist   &&  npm publish --access public
+
+msg "Building and publishing finance module"
+cd "$BASEDIR/packages/modules/finance" &&  rm -rf node_modules &&  rm -rf dist   &&  npm publish --access public
