@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS eg_land_unit(
 
 );
 
-CREATE TABLE IF NOT EXISTS public.eg_land_auditdetails
+CREATE TABLE IF NOT EXISTS eg_land_auditdetails
 (
     id character varying(256) COLLATE pg_catalog."default" NOT NULL,
     landUid character varying(64) COLLATE pg_catalog."default",
