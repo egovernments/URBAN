@@ -13,11 +13,245 @@
   <link rel="shortcut icon" href="%PUBLIC_URL%/browser-icon.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.bootstrap.min.css">
 
-  <title>DIGIT</title>
+  <title>Citizen</title>
+
+  <!-- Matomo -->
+  <script>
+    (function () {
+      var _paq = window._paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["setExcludedQueryParams", ["account", "accountnum", "address", "address1", "address2", "address3", "addressline1", "addressline2", "adres", "adresse", "age", "alter", "auth", "authpw", "bic", "billingaddress", "billingaddress1", "billingaddress2", "calle", "cardnumber", "cc", "ccc", "cccsc", "cccvc", "cccvv", "ccexpiry", "ccexpmonth", "ccexpyear", "ccname", "ccnumber", "cctype", "cell", "cellphone", "city", "clientid", "clientsecret", "company", "consumerkey", "consumersecret", "contrasenya", "contraseña", "creditcard", "creditcardnumber", "cvc", "cvv", "dateofbirth", "debitcard", "dirección", "dob", "domain", "ebost", "email", "emailaddress", "emailadresse", "epos", "epost", "eposta", "exp", "familyname", "firma", "firstname", "formlogin", "fullname", "gender", "geschlecht", "gst", "gstnumber", "handynummer", "hasło", "heslo", "iban", "ibanaccountnum", "ibanaccountnumber", "id", "identifier", "indirizzo", "kartakredytowa", "kennwort", "keyconsumerkey", "keyconsumersecret", "konto", "kontonr", "kontonummer", "kredietkaart", "kreditkarte", "kreditkort", "lastname", "login", "mail", "mobiili", "mobile", "mobilne", "nachname", "name", "nickname", "osoite", "parole", "pass", "passord", "password", "passwort", "pasword", "paswort", "paword", "phone", "pin", "plz", "postalcode", "postcode", "postleitzahl", "privatekey", "publickey", "pw", "pwd", "pword", "pwrd", "rue", "secret", "secretq", "secretquestion", "shippingaddress", "shippingaddress1", "shippingaddress2", "socialsec", "socialsecuritynumber", "socsec", "sokak", "ssn", "steuernummer", "strasse", "street", "surname", "swift", "tax", "taxnumber", "tel", "telefon", "telefonnr", "telefonnummer", "telefono", "telephone", "token", "token_auth", "tokenauth", "téléphone", "ulica", "user", "username", "vat", "vatnumber", "via", "vorname", "wachtwoord", "wagwoord", "webhooksecret", "website", "zip", "zipcode"]]);
+
+      // Function to get page title based on URL
+      function getPageTitle(url) {
+        try {
+          // --- Auto-login dynamic title logic ---
+          if (url.includes("auto-login")) {
+            var params = new URL(url).searchParams;
+            var module = params.get("module");
+            var userType = params.get("userType");
+
+            if (module && userType) {
+              var moduleMap = {
+                PT: "Property Tax",
+                WS: "Water & Sewerage",
+                TL: "Trade License",
+                PGR: "Complaints",
+                OBPS: "Building Permit",
+                mCollect: "mCollect",
+                FSM: "FSM",
+                SURVEY: "Survey",
+                Firenoc: "FNOC",
+                Finance: "Finance",
+                BND: "Birth & Death"
+              };
+
+              var userTypeLabel = {
+                citizen: "Citizen",
+                employee: "Employee",
+                stakeholder: "Stakeholder"
+              }[userType.toLowerCase()] || userType;
+
+              var moduleName = moduleMap[module] || module;
+              document.title = moduleName + " " + userTypeLabel;
+              return moduleName + " " + userTypeLabel;
+            }
+          }
+
+          var pathname = new URL(url).pathname;
+          var path = pathname.replace(/^\/+|\/+$/g, '');
+
+          var pageTitleMap = {
+            "https://unified-demo.digit.org/digit-ui/citizen/select-location": "Citizen Select Location",
+            "https://unified-demo.digit.org/digit-ui/citizen/error": "Citizen Error",
+            "https://unified-demo.digit.org/digit-ui/employee/error": "Employee Error",
+            "citizen/tl": "Business License Citizen",
+            "employee/tl": "Business License Employee",
+            "employee/dss/dashboard/tradelicense": "Business License Employee",
+            "citizen/pt": "Property Tax Citizen",
+            "employee/pt": "Property Tax Employee",
+            "employee/dss/dashboard/propertytax": "Property Tax Employee",
+            "citizen/obps": "Building Permit Citizen",
+            "employee/obps": "Building Permit Employee",
+            "employee/dss/dashboard/obps": "Building Permit Employee",
+            "employee/noc": "Building Permit Employee",
+            "citizen/mcollect": "mCollect Citizen",
+            "employee/mcollect": "mCollect Employee",
+            "employee/dss/dashboard/mcollect": "mCollect Employee",
+            "employee/finance": "Finance Employee",
+            "citizen/ws": "WS Citizen",
+            "employee/ws": "WS Employee",
+            "employee/dss/dashboard/ws": "WS Employee",
+            "citizen/birth": "Birth Citizen",
+            "employee/birth": "Birth Employee",
+            "employee/dss/dashboard/birth-death": "Birth&Death Dashboard Employee",
+            "citizen/death": "Death Citizen",
+            "employee/death": "Death Employee",
+            "citizen/fsm": "FSM Citizen",
+            "employee/fsm": "FSM Administrator",
+            "employee/dss/dashboard/fsm": "FSM Administrator",
+            "employee/tqm": "FSM Plant Operator",
+            "employee/dss/dashboard/pqm": "FSM Plant Operator",
+            "citizen/fire-noc": "FNOC Citizen",
+            "employee/fire-noc": "FNOC Employee",
+            "citizen/engagement/surveys": "Survey Citizen",
+            "employee/engagement/surveys": "Survey Employee"
+          };
+
+          if (pageTitleMap[path]) return pageTitleMap[path];
+          for (var key in pageTitleMap) {
+            if (path.includes(key)) return pageTitleMap[key];
+          }
+          return "Citizen";
+        } catch (e) {
+          console.error("Error getting page title:", e);
+          return "Citizen";
+        }
+      }
+
+      // Set initial page title and track
+      var initialPageTitle = getPageTitle(location.href);
+      document.title = initialPageTitle;
+      _paq.push(['setDocumentTitle', initialPageTitle]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+
+      (function () {
+        var u = (window.globalConfigs && window.globalConfigs.getConfig && window.globalConfigs.getConfig("MATOMO_URL")) || "https://unified-demo.digit.org/matomo/";
+        _paq.push(['setTrackerUrl', u + 'matomo.php']);
+        _paq.push(['setSiteId', '1']);
+        _paq.push(['addTracker', u + 'matomo.php', 3]);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.async = true; g.src = u + 'matomo.js';
+        s.parentNode.insertBefore(g, s);
+      })();
+
+      // SPA navigation tracking + user journey flow
+      (function () {
+        var lastUrl = location.href;
+        var lastPageTitle = getPageTitle(location.href);
+        var userFlow = [];
+
+        function getUserFlow() {
+          try {
+            var flow = sessionStorage.getItem('matomoUserFlow');
+            return flow ? JSON.parse(flow) : [];
+          } catch (e) { return []; }
+        }
+
+        function saveUserFlow(flow) {
+          try {
+            userFlow = flow;
+            sessionStorage.setItem('matomoUserFlow', JSON.stringify(flow));
+          } catch (e) { console.error('Failed to save user flow:', e); }
+        }
+
+        function sendCompleteFlow(reason) {
+          if (userFlow.length > 1) {
+            var journeySummary = userFlow.join(' → ');
+            _paq.push(['trackEvent', 'User Journey', reason || 'Session End', journeySummary, userFlow.length]);
+            try {
+              sessionStorage.removeItem('matomoUserFlow');
+              userFlow = [];
+            } catch (e) { console.error('Failed to clear user flow:', e); }
+          }
+        }
+
+        function trackUrlChange() {
+          var url = location.href;
+          if (url !== lastUrl) {
+            var pageTitle = getPageTitle(url);
+            var flow = getUserFlow();
+            flow.push(pageTitle);
+            saveUserFlow(flow);
+            _paq.push(['trackEvent', 'User Flow', 'Navigation', lastPageTitle + ' → ' + pageTitle]);
+            document.title = pageTitle;
+            _paq.push(['setCustomUrl', url]);
+            _paq.push(['setDocumentTitle', pageTitle]);
+            _paq.push(['deleteCustomVariables', 'page']);
+            _paq.push(['trackPageView']);
+            lastUrl = url;
+            lastPageTitle = pageTitle;
+          }
+        }
+
+        // Initialise flow
+        userFlow = getUserFlow();
+        if (userFlow.length === 0 || userFlow[userFlow.length - 1] !== lastPageTitle) {
+          userFlow.push(lastPageTitle);
+          saveUserFlow(userFlow);
+        }
+
+        window.sendMatomoUserFlow = function (reason) { sendCompleteFlow(reason || 'Manual Trigger'); };
+        window.clearMatomoUserFlow = function () {
+          try { sessionStorage.removeItem('matomoUserFlow'); } catch (e) { console.error('[Matomo] Failed to clear user flow:', e); }
+        };
+
+        window.addEventListener('beforeunload', function () { sendCompleteFlow('Tab Close'); });
+
+        // Logout detection via access token polling
+        var lastAccessToken = null;
+        var isInitialCheck = true;
+        setInterval(function () {
+          try {
+            var currentToken = null;
+            if (window.Digit && window.Digit.UserService && window.Digit.UserService.getUser()) {
+              currentToken = window.Digit.UserService.getUser().access_token;
+            } else {
+              currentToken = window.localStorage.getItem("token") || window.localStorage.getItem("Citizen.token") || window.localStorage.getItem("Employee.token");
+            }
+            if (isInitialCheck) { lastAccessToken = currentToken; isInitialCheck = false; return; }
+            if (lastAccessToken && !currentToken) sendCompleteFlow('Logout - Token Removed');
+            else if (lastAccessToken && currentToken && lastAccessToken !== currentToken) sendCompleteFlow('Logout - Token Changed');
+            lastAccessToken = currentToken;
+          } catch (e) { console.error('[Matomo] Error checking access token:', e); }
+        }, 500);
+
+        // Wrap history methods
+        history.pushState = (function (original) {
+          return function pushState() {
+            var result = original.apply(this, arguments);
+            trackUrlChange();
+            return result;
+          };
+        })(history.pushState);
+
+        history.replaceState = (function (original) {
+          return function replaceState() {
+            var result = original.apply(this, arguments);
+            trackUrlChange();
+            return result;
+          };
+        })(history.replaceState);
+
+        window.addEventListener('popstate', trackUrlChange);
+        window.addEventListener('hashchange', trackUrlChange);
+      })();
+
+      // Track clicks on buttons & links
+      (function () {
+        document.addEventListener("click", function (e) {
+          var selector = 'button, input[type="button"], input[type="submit"], input[type="actionButton"], [role="button"], a[href]:not([href^="mailto:"]):not([href^="tel:"]):not([href^="#"]):not([href^="javascript:"])';
+          var target = e.target.closest(selector);
+          if (target) {
+            var elementType = target.tagName.toLowerCase();
+            var text = (target.innerText && target.innerText.trim()) || target.value || 'Unnamed';
+            var id = target.id || 'no-id';
+            var classes = target.className || 'no-class';
+            var href = target.getAttribute('href') || '';
+            var pageTitle = getPageTitle(location.href);
+            _paq.push(['trackEvent', 'UI Interaction', elementType + ' click',
+              'Text: ' + text + ', Page: ' + pageTitle + ', ID: ' + id + ', Class: ' + classes + ', Href: ' + href]);
+          }
+        });
+      })();
+    })();
+  </script>
+  <!-- End Matomo Code -->
 </head>
 
 <body>
