@@ -8,13 +8,14 @@ const LOCALE_LIST = (locale) => `Locale.${locale}.List`;
 const LOCALE_ALL_LIST = () => `Locale.List`;
 const LOCALE_MODULE = (locale, module) => `Locale.${locale}.${module}`;
 
+const FALLBACK_LOCALE = window?.globalConfigs?.getConfig("DEFAULT_LANGUAGE_LOCALE") || "en_IN";
+
 const TransformArrayToObj = (traslationList) => {
   return traslationList.reduce(
     // eslint-disable-next-line
     (obj, item) => ((obj[item.code] = item.message), obj),
     {}
   );
-  // return trasformedTraslation;
 };
 
 const getUnique = (arr) => {
@@ -48,34 +49,63 @@ const LocalizationStore = {
     const storedModules = LocalizationStore.getList(locale);
     const newModules = modules.filter((module) => !storedModules.includes(module));
     const messages = [];
-    
+
     // Only get messages for the requested modules that are cached, not all stored modules
     const requestedCachedModules = modules.filter((module) => storedModules.includes(module));
     requestedCachedModules.forEach((module) => {
       const cachedModuleMessages = LocalizationStore.getCaheData(LOCALE_MODULE(locale, module)) || [];
       messages.push(...cachedModuleMessages);
     });
-    
-    console.log(`[LocalizationService] Cache retrieval - requested: [${modules.join(', ')}], cached: [${requestedCachedModules.join(', ')}], missing: [${newModules.join(', ')}]`);
+
     return [newModules, messages];
   },
 
   updateResources: (locale, messages) => {
-    let locales = TransformArrayToObj(messages);
-    console.log(`[LocalizationService] updateResources called - locale: ${locale}, messages count: ${messages.length}, transformed keys: ${Object.keys(locales).length}`);
-    
-    // Check if i18next is properly initialized before calling addResources
-    if (i18next && typeof i18next.addResources === 'function') {
-      console.log(`[LocalizationService] Adding ${Object.keys(locales).length} translations to i18next for locale: ${locale}`);
+    const locales = TransformArrayToObj(messages);
+    if (i18next && typeof i18next.addResources === "function") {
       i18next.addResources(locale, "translations", locales);
-      
-      // Verify the resources were added
-      const currentResources = i18next.getResourceBundle(locale, "translations");
-      console.log(`[LocalizationService] i18next now has ${Object.keys(currentResources || {}).length} translations for ${locale}`);
-    } else {
-      console.warn('[LocalizationService] i18next not ready, skipping resource update. i18next:', !!i18next, 'addResources function:', typeof i18next?.addResources);
     }
   },
+
+  // Returns true if all requested modules are already cached for FALLBACK_LOCALE in PersistantStorage.
+  // Uses storage (not i18next bundle size) so it correctly handles incremental module loads.
+  _hasFallbackForModules: (modules) => {
+    const storedModules = LocalizationStore.getList(FALLBACK_LOCALE);
+    return modules.every((m) => storedModules.includes(m));
+  },
+};
+
+// Fetches any uncached modules for the given locale, stores them, and returns
+// the full message array for all requested modules.
+const fetchAndStoreLocale = async (locale, modules, tenantId) => {
+  const [newModules, messages] = LocalizationStore.get(locale, modules);
+
+  if (newModules.length > 0) {
+    const fetchOnce = () =>
+      Request({ url: Urls.localization, params: { module: newModules.join(","), locale, tenantId }, useCache: false });
+
+    let data = null;
+    try {
+      data = await fetchOnce();
+    } catch (e1) {
+      // one retry after short delay
+      await new Promise((r) => setTimeout(r, 300));
+      try {
+        data = await fetchOnce();
+      } catch (e2) {
+        data = null;
+      }
+    }
+
+    if (data && Array.isArray(data.messages)) {
+      messages.push(...data.messages);
+      try {
+        LocalizationStore.store(locale, newModules, data.messages);
+      } catch (e) {}
+    }
+  }
+
+  return messages;
 };
 
 export const LocalizationService = {
@@ -83,52 +113,27 @@ export const LocalizationService = {
     if (locale.indexOf("_IN") === -1) {
       locale += "_IN";
     }
-    
-    console.log(`[LocalizationService] getLocale called - modules: [${modules.join(', ')}], locale: ${locale}, tenantId: ${tenantId}`);
-    
-    const [newModules, messages] = LocalizationStore.get(locale, modules);
-    
-    // Note: The first fix (proper module filtering) should resolve most cache issues
-    // Additional validation can be added here if needed in the future
-    
-    console.log(`[LocalizationService] Cache check - newModules: [${newModules.join(', ')}], cached messages: ${messages.length}`);
-    
-    if (newModules.length > 0) {
-      const fetchOnce = () =>
-        Request({ url: Urls.localization, params: { module: newModules.join(","), locale, tenantId }, useCache: false });
-      let data = null;
-      try {
-        data = await fetchOnce();
-      } catch (e1) {
-        // one retry after short delay
-        await new Promise((r) => setTimeout(r, 300));
-        try {
-          data = await fetchOnce();
-        } catch (e2) {
-          data = null;
-        }
-      }
-      if (data && Array.isArray(data.messages)) {
-        console.log(`[LocalizationService] API returned ${data.messages.length} new messages`);
-        messages.push(...data.messages);
-        // Store immediately to avoid race conditions across multiple tabs
-        try {
-          LocalizationStore.store(locale, newModules, data.messages);
-          console.log(`[LocalizationService] Stored ${data.messages.length} messages in cache`);
-        } catch (e) {
-          console.error('[LocalizationService] Failed to store messages in cache:', e);
-        }
-      } else {
-        console.warn('[LocalizationService] API returned invalid data:', data);
-      }
-    } else {
-      console.log(`[LocalizationService] Using ${messages.length} cached messages, no API call needed`);
-    }
-    
-    console.log(`[LocalizationService] Total messages to add to i18next: ${messages.length}`);
+
+    const messages = await fetchAndStoreLocale(locale, modules, tenantId);
     LocalizationStore.updateResources(locale, messages);
+
+    // When a non-English locale is requested, also load en_IN resources into
+    // i18next so its fallbackLng mechanism can show English text for any key
+    // that has no translation in the requested locale (e.g. hi_IN is partially
+    // translated). Without this, i18next returns the raw key code.
+    if (locale !== FALLBACK_LOCALE && !LocalizationStore._hasFallbackForModules(modules)) {
+      try {
+        const fallbackMessages = await fetchAndStoreLocale(FALLBACK_LOCALE, modules, tenantId);
+        LocalizationStore.updateResources(FALLBACK_LOCALE, fallbackMessages);
+      } catch (e) {
+        // Non-fatal: if English load fails, keys missing in the target locale
+        // will still show raw codes — acceptable degradation.
+      }
+    }
+
     return messages;
   },
+
   verifyAndRefetch: async ({ modules = [], locale = "en_IN", tenantId }) => {
     if (locale.indexOf("_IN") === -1) {
       locale += "_IN";
@@ -144,6 +149,7 @@ export const LocalizationService = {
       } catch (e) {}
     }
   },
+
   changeLanguage: (locale, tenantId) => {
     const modules = LocalizationStore.getList(locale);
     const allModules = LocalizationStore.getAllList();
@@ -154,6 +160,7 @@ export const LocalizationService = {
     Digit.SessionStorage.set("locale", locale);
     i18next.changeLanguage(locale);
   },
+
   updateResources: (locale = "en_IN", messages) => {
     if (locale.indexOf("_IN") === -1) {
       locale += "_IN";
